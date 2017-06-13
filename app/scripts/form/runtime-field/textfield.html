@@ -7,7 +7,7 @@
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
 
-    <div ng-if="isRegular() && showMultiple('paged')"
+    <div ng-if="isRegular() && !showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
@@ -17,7 +17,7 @@
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isConstrained() && showMultiple('paged')"
+    <div ng-if="isConstrained() && !showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
@@ -28,7 +28,7 @@
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isRecommended() && showMultiple('paged')"
+    <div ng-if="isRecommended() && !showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>

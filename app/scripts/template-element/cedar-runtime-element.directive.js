@@ -38,7 +38,7 @@ define([
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
       scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
-      scope.multipleState = 'paged';
+      scope.multipleState = 'spreadsheet';
       scope.index = 0;
       scope.pageMin = 0;
       scope.pageMax = 0;
@@ -126,6 +126,7 @@ define([
 
       // add a new empty element at the end of the array
       scope.addElement = function () {
+        console.log('addElement');
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
           var seed = {};
           scope.model.push(seed);
@@ -153,17 +154,18 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element, function () {
+        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element, 0, function () {
+          return false;
+        }, function () {
           scope.addMoreInput();
-        });
+        }, function () {
+          scope.removeElement(scope.model.length - 1);
+        })
       };
 
       scope.toggleExpanded = function (index) {
-        console.log('toggleExpanded');
         scope.expanded[index] = !scope.expanded[index];
-        if (scope.expanded[index]) {
-          scope.setActive(index, true);
-        }
+        scope.setActive(index, !scope.isActive());
       };
 
       scope.isExpanded = function (index) {
@@ -392,11 +394,13 @@ define([
       scope.pageMinMax();
 
       scope.addMoreInput = function () {
+        console.log('addMoreInput');
         scope.addElement();
         scope.pageMinMax();
       };
 
       scope.setActive = function (index, value) {
+        console.log('setActive ' + value + ' ' + scope.getLocator(index));
         DataManipulationService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {
           scope.index = index;
@@ -426,20 +430,72 @@ define([
         scope.multipleState = scope.multipleStates[i];
 
         if (scope.multipleState === 'spreadsheet' || oldState === 'spreadsheet') {
-
           $timeout(function () {
             // create or destroy the spreadsheet
             scope.switchToSpreadsheet();
             scope.$apply();
           }, 0);
-
         }
-
-        //$timeout(function () {
-        //  scope.$apply();
-        //}, 100);
         return scope.multipleState;
       };
+
+      scope.fullscreen = function () {
+
+        var elm = document.querySelector('#' + scope.getLocator(0) + ' .spreadsheetViewContainer');
+        if (!("requestFullscreen" in elm)) {
+          if (!("webkitRequestFullscreen" in elm)) {
+          } else {
+            elm.setAttribute('style', 'width:100%;height:100%');
+            elm.webkitRequestFullscreen();
+          }
+        } else {
+          elm.setAttribute('style', 'width:100%;height:100%');
+          elm.requestFullscreen();
+        }
+      };
+
+
+
+
+      scope.zeroedLocator = function(value) {
+        var result = '';
+        if (value) {
+          var result =  value.replace(/-([^-]*)$/, '-0');
+        }
+        return result;
+      };
+
+      scope.$watch(
+          function () {
+            return ( $rootScope.activeLocator);
+          },
+          function (newValue, oldValue) {
+            if (scope.multipleState === 'spreadsheet') {
+
+              $timeout(function () {
+                var locator = scope.getLocator(0);
+                var oldZero = scope.zeroedLocator(oldValue);
+                var newZero = scope.zeroedLocator(newValue);
+
+                if (newZero === oldZero) {
+                } else {
+
+                  if (locator === oldZero) {
+                    console.log('destroy ' + locator);
+                    SpreadsheetService.destroySpreadsheet(scope);
+                    scope.$apply();
+                  }
+                  if (locator === newZero) {
+                    console.log('switch to ' + locator);
+                    scope.switchToSpreadsheet();
+                    scope.$apply();
+                  }
+                }
+
+              }, 0);
+            }
+          }
+      );
 
       // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {

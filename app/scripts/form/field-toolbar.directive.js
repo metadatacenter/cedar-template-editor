@@ -36,6 +36,7 @@ define([
         description : '=',
         toggle      : '=',
         showMultiple: '=',
+        fullscreen  : '=',
         cardinality : "=",
         spreadsheet : "=",
         expandAll   : '=',

@@ -249,6 +249,7 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 

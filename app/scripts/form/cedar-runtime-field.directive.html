@@ -19,63 +19,41 @@
 
       <!-- show the spreadsheet -->
       <div ng-if="showMultiple('spreadsheet')">
-        <!-- inactive,not being edited at the moment -->
-        <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
+
+        <div class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"  id="{{getLocator(0)}}">
           <div class="col-sm-3 col-xs-* ">
             <div class="leader"></div>
 
-            <div ng-click="setActive(index, true,'spreadsheet')" class="title isInactive">
+            <div ng-click="toggleActive(index)" class="title isInactive">
               {{getTitle(field)}}
             </div>
 
           </div>
-          <div class="col-sm-9 col-xs-* " ng-click="setActive(index, true,'spreadsheet')">
+          <div class="col-sm-9 col-xs-* " ng-click="toggleActive(index)" ng-if="!isActive(index)">
             <div class="answer originalContent" ng-include="getFieldUrl()"></div>
           </div>
-        </div>
+          <div class="col-sm-9 " ng-if="isActive(index)">
+            <div class="row tools">
+              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" copy="copyField" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                  cardinality="cardinalityString" close="setInactive"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"
+                  expand-all="expandAll"
+                  is-expandable="isExpandable" fullscreen="fullscreen"></field-toolbar>
 
-        <!-- active --->
-        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
-          <div class="col-sm-3">
-            <div class="leader"></div>
-
-            <div class="title field isActive">
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
             </div>
 
-          </div>
-          <div class="col-sm-9 ">
-            <div class="answer">
-
-              <div class="row tools">
-
-                <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
-                    remove="removeInput" add="addMoreInput" copy="copyField" is-active="isActive" set-active="setActive"
-                    description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                    cardinality="cardinalityString" close="setInactive"
-                    is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"
-                    expand-all="expandAll"
-                    is-expandable="isExpandable"></field-toolbar>
-
-              </div>
-
-              <div class="row">
-
+            <div class="row">
+              <div class="col-sm-12">
                 <div class="spreadsheetViewDetector"></div>
                 <div class="spreadsheetViewContainer"></div>
-
+                <div id="spreadsheetViewLogs"></div>
+                <div id="hooksList"></div>
               </div>
-
-              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                <div class="originalContent" ng-include="getFieldUrl()"></div>
-                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info" translate>GENERIC.Submit</label>
-              </form>
             </div>
-
           </div>
         </div>
-
       </div>
 
       <!-- show a paged list of fields  -->
@@ -85,7 +63,7 @@
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
 
           <div class="col-sm-3 col-xs-* question">
-            <div ng-click="setActive(index, true)" class="title field isInactive"
+            <div ng-click="toggleActive(index)" class="title field isInactive"
                 ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
               <span ng-if="isRequired()" style="color:red"> * </span>{{getTitle(field)}}
             </div>
@@ -137,74 +115,6 @@
         </div>
       </div>
 
-      <!-- show a paged list of fields  -->
-      <!--<div ng-if="showMultiple('paged') && valueArray.length > 0">-->
-      <!--<div class="row" id="{{getLocator(index)}}"-->
-      <!--ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">-->
-      <!--<div ng-if="!isActive(index)" ng-click="setActive(index)" class="col-sm-12 col-xs-*  question">-->
-      <!--<div  class="title field isInactive"-->
-      <!--ng-class="{'isInactive':!isActive(index), 'required':isRequired()}" >-->
-      <!--<span ng-if="isRequired()" style="color:red"> * </span>-->
-      <!--{{getTitle(field)}}-->
-      <!--</div>-->
-      <!--<div class="answer">-->
-      <!--<div ng-repeat="(i, valueElement) in valueArray">-->
-      <!--<div ng-if="i===index">-->
-      <!--<div ng-include="getFieldUrl()"></div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div ng-if="isActive(index)" class="col-sm-12">-->
-      <!--<div class="row">-->
-      <!--<div class="col-sm-12">-->
-      <!--<div class="answer">-->
-      <!--<div class="row tools">-->
-      <!--<div class="col-sm-3 col-xs-* question">-->
-      <!--<div ng-click="setActive(index, true, 'ng-click title')" class="title field isInactive"-->
-      <!--ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">-->
-      <!--<span ng-if="isRequired()" style="color:red"> * </span>-->
-      <!--{{getTitle(field)}}-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <!--<cedar-pager class="col-sm-5" ng-if="isMultipleCardinality()" values="valueArray" index="index"-->
-      <!--min="pageMin"-->
-      <!--max="pageMax" select="selectPage"-->
-      <!--range="pageRange" class="col-xs-4 ">-->
-      <!--</cedar-pager>-->
-
-      <!--<field-toolbar class="col-xs-4 pull-right" model="model" field="field" index="index"-->
-      <!--remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"-->
-      <!--description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"-->
-      <!--cardinality="cardinalityString" close="setInactive" expand-all="expandAll"-->
-      <!--is-expandable="isExpandable"-->
-      <!--is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>-->
-      <!--</div>-->
-      <!--<div ng-if="isPreviousStatic()" style="margin-bottom:20px;">-->
-      <!--<div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>-->
-      <!--<div ng-if="isYouTube(previous)">-->
-      <!--<figure>-->
-      <!--<div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>-->
-      <!--</figure>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div ng-repeat="(i, valueElement) in valueArray">-->
-      <!--<div ng-if="i===index">-->
-      <!--<form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">-->
-      <!--<div ng-include="getFieldUrl()"></div>-->
-      <!--<button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>-->
-      <!--<label class="submit-info" translate>GENERIC.Submit</label>-->
-      <!--</form>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-
       <!-- show an expanded list of fields from the valueArray -->
       <div ng-if="showMultiple('expanded')" ng-repeat="(index, valueElement) in valueArray">
 
@@ -212,7 +122,7 @@
         <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3 col-xs-* ">
 
-            <div ng-click="setActive(index, true)" class="title field isInactive">
+            <div ng-click="toggleActive(index)" class="title field isInactive">
               {{getTitle(field)}} <span ng-if="isMultipleCardinality()" class="" count>({{index+1}})</span>
             </div>
           </div>

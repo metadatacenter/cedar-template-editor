@@ -221,7 +221,6 @@ define([
           colDescriptors.push(desc);
         }
       }
-      console.log(colDescriptors);
       return colDescriptors;
     };
 
@@ -289,22 +288,42 @@ define([
 
     };
 
-    service.switchToSpreadsheet = function (ctx, $scope, $element, callback) {
-      var context = ctx;
+    service.destroySpreadsheet = function ($scope) {
+
+
       if ($scope.hasOwnProperty('spreadsheetContext')) {
-        context = $scope.spreadsheetContext;
+
+        var context = $scope.spreadsheetContext;
         context.switchVisibility();
         if (context.isOriginalContentVisible()) {
+          console.log('destroySpreadsheet ' + $scope.getLocator(0));
           context.getTable().destroy();
           jQuery(context.getSpreadsheetContainer()).html("");
           service.applyVisibility($scope);
-          return;
-        } else {
-          context.switchVisibility();
+
         }
-      } else {
-        $scope.spreadsheetContext = context;
       }
+    };
+
+
+    var switchToSpreadsheet = function (ctx, $scope, $element, index, isField, addCallback, removeCallback) {
+      var context = ctx;
+      // if ($scope.hasOwnProperty('spreadsheetContext')) {
+      //   context = $scope.spreadsheetContext;
+      //
+      //   context.switchVisibility();
+      //   if (context.isOriginalContentVisible()) {
+      //     context.getTable().destroy();
+      //     jQuery(context.getSpreadsheetContainer()).html("");
+      //     service.applyVisibility($scope);
+      //     return;
+      //   } else {
+      //     context.switchVisibility();
+      //   }
+      // } else {
+        $scope.spreadsheetContext = context;
+      //}
+      context.isField = isField;
 
 
       var owner = this;
@@ -318,32 +337,37 @@ define([
         colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
       }
       var config = {
-        data           : tableData,
-        minSpareRows   : 1,
-        autoWrapRow    : true,
-        contextMenu    : true,
-        minRows        : this.getMinItems(scopeElement),
-        maxRows        : this.getMaxItems(scopeElement),
-        rowHeaders     : true,
-        stretchH       : 'all',
-        trimWhitespace : false,
-        manualRowResize: true,
-        columns        : columnDescriptors,
-        colHeaders     : colHeaders
+        data              : tableData,
+        minSpareRows      : 1,
+        autoWrapRow       : true,
+        contextMenu       : true,
+        minRows           : service.getMinItems(scopeElement),
+        maxRows           : service.getMaxItems(scopeElement),
+        rowHeaders        : true,
+        stretchH          : 'last',
+        trimWhitespace    : false,
+        manualRowResize   : true,
+        manualColumnResize: true,
+        columns           : columnDescriptors,
+        colHeaders        : colHeaders,
+        colWidths         : 247,
+        autoColumnSize    : {syncLimit: 300},
       };
 
 
       // detector and container elements
-      var detectorElement = angular.element(document.querySelector('.spreadsheetViewDetector'),
+      var id = '#' + $scope.getLocator(index) + ' ';
+      console.log('switchToSpreadsheet ' + $scope.getLocator(index) );
+      var detectorElement = angular.element(document.querySelector(id + '.spreadsheetViewDetector'),
           context.getPlaceholderContext());
-      var container = angular.element(document.querySelector('.spreadsheetViewContainer'),
+      var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
           context.getPlaceholderContext())[0];
 
       context.setSpreadsheetContainer(container);
 
       // Compute size based on available width and number of rows
       var spreadsheetRowCount = tableData.length;
-      var spreadsheetContainerHeight = 30 + spreadsheetRowCount * 30 + 20;
+      var spreadsheetContainerHeight = Math.min(300,30 + spreadsheetRowCount * 30 + 20);
       var spreadsheetContainerWidth = detectorElement.width() - 5;
 
 
@@ -361,7 +385,8 @@ define([
         tableData        : tableData,
         tableDataSource  : tableDataSource,
         columnDescriptors: columnDescriptors,
-        callback         : callback
+        addCallback      : addCallback,
+        removeCallback   : removeCallback,
       };
       $scope.config = config;
 
@@ -424,46 +449,33 @@ define([
         }
       };
 
-      //console.log('hooks'); console.log(hooks);
+
       hooks.forEach(function (hook) {
         var checked = '';
-
         if (hook === 'beforePaste' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
             hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
           checked = 'checked';
         }
-        // $hooksList.append(
-        //     '<li><label><input type="checkbox" ' + checked + ' id="check_' + hook + '"> ' + hook + '</label></li>');
-        // config[hook] = function () {
-        //   log_events(hook, arguments);
-        // };
+
         hot.addHook(hook, function () {
 
-          //log_events(hook, arguments);
           if (hook === 'afterChange') {
-            console.log(hook);
             service.updateDataModel($scope, $element);
-            console.log('$scope.spreadsheetDataScope.tableDataSource');console.log($scope.spreadsheetDataScope.tableDataSource);
-            console.log('$scope.spreadsheetDataScope.tableData');console.log($scope.spreadsheetDataScope.tableData);
-            console.log('$scope.model');console.log($scope.model);
           }
 
           if (hook === 'afterCreateRow') {
-            console.log(hook + ' ' + 'three tables');
-
-            $scope.spreadsheetDataScope.callback();
-            console.log('$scope.model');console.log($scope.model);
-
-            $scope.spreadsheetDataScope.tableDataSource = service.getTableDataSource(context, $scope, columnHeaderOrder);
-            console.log('$scope.spreadsheetDataScope.tableDataSource');console.log($scope.spreadsheetDataScope.tableDataSource);
-
+            $scope.spreadsheetDataScope.addCallback();
+            $scope.spreadsheetDataScope.tableDataSource = service.getTableDataSource(context, $scope,
+                columnHeaderOrder);
             service.updateDataModel($scope, $element);
-            console.log('$scope.spreadsheetDataScope.tableData');console.log($scope.spreadsheetDataScope.tableData);
-
-
           }
 
-
+          if (hook === 'afterRemoveRow') {
+            $scope.spreadsheetDataScope.removeCallback();
+            $scope.spreadsheetDataScope.tableDataSource = service.getTableDataSource(context, $scope,
+                columnHeaderOrder);
+            service.updateDataModel($scope, $element);
+          }
         });
       });
 
@@ -473,18 +485,14 @@ define([
 
     };
 
-    service.switchToSpreadsheetField = function ($scope, $element, callback) {
-      console.log("Switch to spreadsheet on FIELD");
-      console.log($scope);
-      console.log($element);
-      var context = new SpreadsheetContext("field", $element);
-      service.switchToSpreadsheet(context, $scope, $element, callback);
+    service.switchToSpreadsheetField = function ($scope, $element, index, isField, addCallback, removeCallback) {
+      switchToSpreadsheet(new SpreadsheetContext("field", $element), $scope, $element, index, isField, addCallback, removeCallback);
     };
 
-    service.switchToSpreadsheetElement = function ($scope, $element, callback) {
-      var context = new SpreadsheetContext("element", $element);
-      service.switchToSpreadsheet(context, $scope, $element, callback);
+    service.switchToSpreadsheetElement = function ($scope, $element,index, isField, addCallback, removeCallback) {
+      switchToSpreadsheet(new SpreadsheetContext("element", $element), $scope, $element, index, isField, addCallback, removeCallback);
     };
+
 
     return service;
   };

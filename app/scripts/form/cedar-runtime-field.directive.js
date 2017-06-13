@@ -24,8 +24,8 @@ define([
       $scope.data = {
         model: null
       };
-      $scope.multipleStates = ['expanded', 'paged'];
-      $scope.multipleState = 'paged';
+      $scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
+      $scope.multipleState = 'spreadsheet';
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = 0;
@@ -218,7 +218,13 @@ define([
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
 
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
+        SpreadsheetService.switchToSpreadsheetField($scope, $scope.field, 0, function () {
+          return true;
+        },function () {
+          $scope.addMoreInput();
+        }, function () {
+          $scope.removeInput($scope.model.length-1);
+        })
       };
 
       $scope.showMultiple = function (state) {
@@ -231,10 +237,27 @@ define([
         $scope.multipleState = $scope.multipleStates[index];
         if ($scope.multipleState === 'spreadsheet') {
           setTimeout(function () {
+            console.log('toggleMultiple');
             $scope.switchToSpreadsheet();
           }, 0);
         }
         return $scope.multipleState;
+      };
+
+      $scope.toggleExpanded = function () {
+        if (scope.expanded[index]) {
+          scope.setActive(index, true);
+        }
+
+        // if (scope.multipleState === 'spreadsheet') {
+        //   console.log('toggle spreadsheet');
+        //
+        //   $timeout(function () {
+        //     // create or destroy the spreadsheet
+        //     $scope.switchToSpreadsheet();
+        //     $scope.$apply();
+        //   }, 0);
+        // }
       };
 
       //
@@ -414,6 +437,7 @@ define([
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
+        console.log('addMoreInput');
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
@@ -468,10 +492,11 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value) {
+        console.log('setActive ' + index + ' ' + value);
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
-        var locator = $scope.getLocator(index);
+        var locator = $scope.getLocator($scope.multipleState === 'spreadsheet' ? 0 : index);
         var current = DataManipulationService.isActive(locator);
 
         if (active !== current) {
@@ -785,6 +810,67 @@ define([
           $scope.setActive(index, value);
         }
       });
+
+      $scope.fullscreen = function () {
+
+        var elm = document.querySelector('#' + $scope.getLocator(0) + ' .spreadsheetViewContainer');
+        if (!("requestFullscreen" in elm)) {
+          if (!("webkitRequestFullscreen" in elm)) {
+          } else {
+            elm.setAttribute('style', 'width:100%;height:100%');
+            elm.webkitRequestFullscreen();
+          }
+        } else {
+          elm.setAttribute('style', 'width:100%;height:100%');
+          elm.requestFullscreen();
+        }
+      };
+
+      $scope.zeroedLocator = function(value) {
+        var result = '';
+        if (value) {
+          var result =  value.replace(/-([^-]*)$/, '-0');
+        }
+        return result;
+      };
+
+      $scope.$watch(
+          function () {
+            return ( $rootScope.activeLocator);
+          },
+          function (newValue, oldValue) {
+            if ($scope.multipleState === 'spreadsheet') {
+
+              $timeout(function () {
+                var locator = $scope.getLocator(0);
+                var oldZero = $scope.zeroedLocator(oldValue);
+                var newZero = $scope.zeroedLocator(newValue);
+
+                if (newZero === oldZero) {
+                } else {
+
+                  if (locator === oldZero) {
+                    console.log('destroy ' + locator);
+                    SpreadsheetService.destroySpreadsheet($scope);
+                    $scope.$apply();
+                  }
+                  if (locator === newZero) {
+                    console.log('switch to ' + locator);
+                    $scope.switchToSpreadsheet();
+                    $scope.$apply();
+                  }
+                }
+
+              }, 0);
+            }
+          }
+      );
+
+
+
+      $scope.toggleActive = function(index) {
+        $scope.setActive(index, !$scope.isActive(index));
+      };
 
       $scope.setInactive = function (index) {
         $scope.setActive(index, false);

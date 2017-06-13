@@ -615,8 +615,10 @@ define([
         service.setActive = function (field, index, path, uid, value) {
           if (value) {
             $rootScope.activeLocator = service.getLocator(field, index, path, uid);
+            $rootScope.activeZeroLocator = service.getLocator(field, 0, path, uid);
           } else {
             $rootScope.activeLocator = null;
+            $rootScope.activeZeroLocator = null;
           }
 
         };

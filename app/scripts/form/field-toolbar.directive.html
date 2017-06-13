@@ -1,6 +1,7 @@
 <div class="toolbar">
 
-  <button type="button" class="delete pull-right" ng-click="remove(index);$event.stopPropagation()"
+
+  <button type="button" class="delete pull-right" ng-click="console.log('remove');remove(index);$event.stopPropagation()"
       ng-if="model.length > field.minItems"
       uib-tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-trigger
@@ -9,6 +10,21 @@
       data-toggle="tooltip">
     <i class="fa fa-trash"></i>
   </button>
+
+  <!-- have a second disabled trash so the rest of these do not move around -->
+  <button type="button" class="delete pull-right"
+      ng-click="$event.stopPropagation()"
+      ng-if="model.length <= field.minItems"
+      uib-tooltip="{{'GENERIC.Remove' | translate}}"
+      tooltip-trigger
+      tooltip-animation="false"
+      tooltip-placement="top"
+      data-toggle="tooltip"
+      style="opacity:.5">
+    <i class="fa fa-trash"></i>
+  </button>
+
+
 
   <button type="button" class=" expand-all pull-right"
       ng-if="isExpandable()"
@@ -64,6 +80,13 @@
     <i ng-if="showMultiple('paged')" class="fa fa-sort  fa-rotate-90 "></i>
     <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
     <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
+  </button>
+
+  <button type="button" class=" expand-all pull-right"
+      ng-if="showMultiple('spreadsheet')"
+      uib-tooltip="{{'GENERIC.FullScreen' | translate}}"
+      ng-click="fullscreen();$event.stopPropagation()">
+    <i class="fa fa-expand "></i>
   </button>
 
 
