@@ -209,7 +209,7 @@ define([
 
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
-        DataManipulationService.defaultTitleAndDescription($scope.element._ui);
+        DataManipulationService.defaultSchemaTitleAndDescription($scope.element);
 
         this.disableSaveButton();
         var owner = this;

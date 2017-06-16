@@ -75,14 +75,14 @@ define([
       $scope.canSelect = function (select) {
         var result = select;
         if (select) {
-          result = DataManipulationService.canSelect($scope.field);
+          result = UIUtilService.canSelect($scope.field);
         }
         return result;
       };
 
       // try to deselect this field
       $scope.canDeselect = function (field) {
-        return DataManipulationService.canDeselect(field, $scope.renameChildKey);
+        return UIUtilService.canDeselect(field, $scope.renameChildKey);
       };
 
       $scope.getForm = function () {
@@ -232,7 +232,7 @@ define([
       $scope.$watch("model", function () {
 
         $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
+          return (UIUtilService.isEditState($scope.field));
         };
 
         $scope.isNested = function () {
@@ -275,7 +275,7 @@ define([
                   if ($rootScope.isEmpty(valueElement['@value'])) {
                     allRequiredFieldsAreFilledIn = false;
                   }
-                  // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+                  // else if (DataManipulationService.schemaOf($scope.field)._ui.dateType == "date-range") {
                   //   if (!valueElement['@value'].start || !valueElement['@value'].end) {
                   //     allRequiredFieldsAreFilledIn = false;
                   //   }
@@ -311,7 +311,7 @@ define([
               if ($rootScope.isEmpty($scope.model['@value'])) {
                 allRequiredFieldsAreFilledIn = false;
               }
-              // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+              // else if (DataManipulationService.schemaOf($scope.field)._ui.dateType == "date-range") {
               //   if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
               //     allRequiredFieldsAreFilledIn = false;
               //   }
@@ -333,7 +333,7 @@ define([
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
             $scope.$emit('emptyRequiredField',
-                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+                ['add', DataManipulationService.schemaOf($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
@@ -342,7 +342,7 @@ define([
             $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
           $scope.$emit('emptyRequiredField',
-              ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+              ['remove', DataManipulationService.schemaOf($scope.field)._ui.title, $scope.uuid]);
         }
 
 
@@ -399,7 +399,7 @@ define([
         }
 
         $scope.$emit('invalidFieldValues',
-            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.getFieldSchema($scope.field)._ui.title,
+            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.schemaOf($scope.field)._ui.title,
              $scope.uuid]);
 
       });
@@ -426,7 +426,7 @@ define([
       };
       setDirectory();
 
-      var field = DataManipulationService.getFieldSchema($scope.field);
+      var field = DataManipulationService.schemaOf($scope.field);
 
       // Checking each field to see if required, will trigger flag for use to see there is required fields
       if (field._valueConstraints && field._valueConstraints.requiredValue) {
@@ -690,36 +690,6 @@ define([
         }
       }
 
-      // look for errors
-      // $scope.checkFieldConditions = function (field) {
-      //   console.log('checkFieldConditions')
-      //   field = $rootScope.schemaOf(field);
-      //
-      //   var unmetConditions = [],
-      //       extraConditionInputs = ['checkbox', 'radio', 'list'];
-      //
-      //   // Field title is required, if it's empty create error message
-      //   if (!field._ui.title) {
-      //     unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-      //   }
-      //
-      //   // If field is within multiple choice field types
-      //   if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
-      //     var optionMessage = '"Enter Option" input cannot be left empty.';
-      //     angular.forEach(field._valueConstraints.literals, function (value, index) {
-      //       // If any 'option' title text is left empty, create error message
-      //       if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
-      //         unmetConditions.push(optionMessage);
-      //       }
-      //     });
-      //   }
-      //   // If field type is 'radio' or 'pick from a list' there must be more than one option created
-      //   if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
-      //     unmetConditions.push('Multiple Choice fields must have at least two possible options');
-      //   }
-      //   // Return array of error messages
-      //   return unmetConditions;
-      // };
 
 
 

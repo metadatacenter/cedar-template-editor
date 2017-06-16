@@ -57,7 +57,7 @@ define([
 
 
       scope.isEditState = function () {
-        return DataManipulationService.isEditState(scope.element);
+        return UIUtilService.isEditState(scope.element);
       };
 
       scope.isSelectable = function () {
@@ -67,7 +67,7 @@ define([
       // try to select this element
       scope.canSelect = function (select) {
         if (select) {
-          DataManipulationService.canSelect(scope.element);
+          UIUtilService.canSelect(scope.element);
         }
       };
 
@@ -77,7 +77,7 @@ define([
             !scope.isRoot() &&
             !$rootScope.isRuntime() &&
             !scope.isNested() &&
-            DataManipulationService.isEditState(scope.element);
+            UIUtilService.isEditState(scope.element);
 
         return result;
       };
@@ -169,10 +169,10 @@ define([
         if (!$rootScope.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
-              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+              DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), m);
             });
           } else {
-            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+            DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
           }
         }
       };
@@ -206,7 +206,7 @@ define([
 
 
       scope.isEditState = function () {
-        return (DataManipulationService.isEditState(scope.element));
+        return (UIUtilService.isEditState(scope.element));
       };
 
 
@@ -226,10 +226,10 @@ define([
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
-                  $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+                  DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), m);
                 });
               } else {
-                $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+                DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
               }
               resetElement(seed, scope.element);
             }
@@ -254,7 +254,7 @@ define([
       };
 
       scope.switchExpandedState = function (domId) {
-        $rootScope.toggleElement(domId);
+        UIUtilService.toggleElement(domId);
       };
 
 
@@ -275,7 +275,7 @@ define([
 
       // try to deselect this element
       scope.canDeselect = function (element) {
-        return DataManipulationService.canDeselect(element);
+        return UIUtilService.canDeselect(element);
       };
 
       // when element is deseleted, look at errors and parse if none
@@ -294,7 +294,7 @@ define([
         var childId = DataManipulationService.idOf(child);
 
         if (!childId || /^tmp\-/.test(childId)) {
-          var p = $rootScope.propertiesOf(scope.element);
+          var p = DataManipulationService.propertiesOf(scope.element);
           if (p[newKey] && p[newKey] == child) {
             return;
           }
@@ -335,7 +335,7 @@ define([
 
       // try to deselect this field
       scope.canDeselect = function (field) {
-        return DataManipulationService.canDeselect(field, scope.renameChildKey);
+        return UIUtilService.canDeselect(field, scope.renameChildKey);
       };
 
       scope.$on('saveForm', function (event) {

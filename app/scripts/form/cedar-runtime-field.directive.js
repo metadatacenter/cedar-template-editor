@@ -24,8 +24,8 @@ define([
       $scope.data = {
         model: null
       };
-      $scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
-      $scope.multipleState = 'spreadsheet';
+      $scope.multipleStates = ['paged','expanded'];
+      $scope.multipleState = $scope.multipleStates[0];
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = 0;
@@ -54,7 +54,7 @@ define([
       };
 
       $scope.cardinalityString = function () {
-        return DataManipulationService.cardinalityString($scope.field);
+        return UIUtilService.cardinalityString($scope.field);
       };
 
       // what is the content
@@ -88,7 +88,7 @@ define([
 
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
-        return DataManipulationService.isMultipleCardinality($scope.field);
+        return DataManipulationService.isCardinalElement($scope.field);
       };
 
       // is this field required?
@@ -103,16 +103,16 @@ define([
 
       // what is the dom id for this field?
       $scope.getLocator = function (index) {
-        return DataManipulationService.getLocator($scope.field, index, $scope.path, $scope.uid);
+        return UIUtilService.getLocator($scope.field, index, $scope.path, $scope.uid);
       };
 
       // is this field actively being edited?
       $scope.isActive = function (index) {
-        return DataManipulationService.isActive($scope.getLocator(index));
+        return UIUtilService.isActive($scope.getLocator(index));
       };
 
       $scope.isInactive = function (index) {
-        return DataManipulationService.isInactive($scope.getLocator(index));
+        return UIUtilService.isInactive($scope.getLocator(index));
       };
 
       // is this a youTube field?
@@ -215,21 +215,30 @@ define([
       $scope.expandAll = function () {
       };
 
+
+
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
 
-        SpreadsheetService.switchToSpreadsheetField($scope, $scope.field, 0, function () {
+        SpreadsheetService.switchToSpreadsheet($scope, $scope.field, 0, function () {
           return true;
-        },function () {
+        }, function () {
           $scope.addMoreInput();
         }, function () {
-          $scope.removeInput($scope.model.length-1);
+          $scope.removeInput($scope.model.length - 1);
         })
       };
 
       $scope.showMultiple = function (state) {
         return ($scope.multipleState === state);
       };
+
+      var initMultiple = function () {
+        if (UIUtilService.isSpreadsheetable($scope.field)) {
+          $scope.multipleStates.push('spreadsheet');
+        }
+      };
+      initMultiple();
 
       $scope.toggleMultiple = function () {
         var index = $scope.multipleStates.indexOf($scope.multipleState);
@@ -435,21 +444,32 @@ define([
         }
       };
 
-      // add more instances to a multiple cardinality field if possible
-      $scope.addMoreInput = function () {
-        console.log('addMoreInput');
-        var fieldValue = DataManipulationService.getValueLocation($scope.field);
-        var maxItems = DataManipulationService.getMaxItems($scope.field);
-        if ((!maxItems || $scope.model.length < maxItems)) {
-
-          // add another instance in the model
-          var obj = {};
-          obj[fieldValue] = DataManipulationService.getDefaultValue(fieldValue);
-          $scope.model.push(obj);
-
-          // activate the new instance
-          $timeout($scope.setActive($scope.model.length - 1, true), 100);
+      $scope.addRow = function() {
+        if ($scope.showMultiple('spreadsheet')) {
+          SpreadsheetService.addRow($scope);
+        } else {
+          $scope.addMoreInput();
         }
+      };
+
+      // add more instances to a multiple cardinality field if multiple and not at the max limit
+      $scope.addMoreInput = function () {
+        if ($scope.isMultipleCardinality()) {
+          var fieldValue = DataManipulationService.getValueLocation($scope.field);
+          var maxItems = DataManipulationService.getMaxItems($scope.field);
+          if ((!maxItems || $scope.model.length < maxItems)) {
+
+            // add another instance in the model
+            var obj = {};
+            obj[fieldValue] = DataManipulationService.getDefaultValue(fieldValue);
+            $scope.model.push(obj);
+
+            // activate the new instance
+            $scope.setActive($scope.model.length - 1, true);
+          }
+        }
+        $scope.pageMinMax();
+
       };
 
       // remove the value of field at index
@@ -460,69 +480,40 @@ define([
         }
       };
 
-      // look for errors
-      $scope.checkFieldConditions = function (field) {
-        field = $rootScope.schemaOf(field);
 
-        var unmetConditions = [],
-            extraConditionInputs = ['checkbox', 'radio', 'list'];
-
-        // Field title is required, if it's empty create error message
-        if (!field._ui.title) {
-          unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-        }
-
-        // If field is within multiple choice field types
-        if (extraConditionInputs.indexOf($scope.getInputType()) !== -1) {
-          var optionMessage = '"Enter Option" input cannot be left empty.';
-          angular.forEach(field._valueConstraints.literals, function (value, index) {
-            // If any 'option' title text is left empty, create error message
-            if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
-              unmetConditions.push(optionMessage);
-            }
-          });
-        }
-        // If field type is 'radio' or 'pick from a list' there must be more than one option created
-        if (($scope.getInputType() == 'radio' || $scope.getInputType() == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
-          unmetConditions.push('Multiple Choice fields must have at least two possible options');
-        }
-        // Return array of error messages
-        return unmetConditions;
-      };
 
       // set this field and index active
-      $scope.setActive = function (index, value) {
-        console.log('setActive ' + index + ' ' + value);
+      $scope.setActive = function (idx, value) {
 
-        // off or on
         var active = (typeof value === "undefined") ? true : value;
-        var locator = $scope.getLocator($scope.multipleState === 'spreadsheet' ? 0 : index);
-        var current = DataManipulationService.isActive(locator);
+        var index = $scope.showMultiple('spreadsheet') ? 0 : idx;
 
-        if (active !== current) {
+        // if zero cardinality,  add a new item
+        if (active && $scope.isMultipleCardinality() && $scope.model.length <= 0) {
+          $scope.addMoreInput();
+        }
 
-          // if zero cardinality,  add a new item
-          if (active && $scope.isMultipleCardinality() && $scope.model.length <= 0) {
-            $scope.addMoreInput();
+        // set it active or inactive
+        UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
+
+        if (active) {
+
+          $scope.index = index;
+          $scope.pageMinMax();
+
+          // set the parent active index
+          if ($scope.path) {
+            var indices = $scope.path.split('-');
+            var last = indices[indices.length - 1];
+            $scope.$parent.setIndex(parseInt(last));
           }
 
-          // set it active or inactive
-          DataManipulationService.setActive($scope.field, index, $scope.path, $scope.uid, active);
-
-          if (active) {
-
-            $scope.index = index;
-            $scope.pageMinMax();
-
-            // set the parent active index
-            if ($scope.path) {
-              var indices = $scope.path.split('-');
-              var last = indices[indices.length - 1];
-              $scope.$parent.setIndex(parseInt(last));
-            }
+          if (!$scope.showMultiple('spreadsheet')) {
+            var zeroedIndex = $scope.multipleState === 'spreadsheet' ? 0 : index;
+            var zeroedLocator = $scope.getLocator(zeroedIndex);
 
             // scroll it into the center of the screen and listen for shift-enter
-            $scope.scrollToLocator(locator, ' .select');
+            $scope.scrollToLocator(zeroedLocator, ' .select');
             $document.unbind('keypress');
             $document.bind('keypress', function (e) {
               $scope.isSubmit(e, index);
@@ -531,15 +522,6 @@ define([
             $document.bind('keyup', function (e) {
               $scope.isSubmit(e, index);
             });
-
-          } else {
-            // set blur and force a redraw
-            jQuery("#" + locator).blur();
-
-            setTimeout(function () {
-              $scope.$apply();
-            }, 0);
-
           }
         }
       };
@@ -587,7 +569,7 @@ define([
 
         if ($scope.isActive(index)) {
 
-          DataManipulationService.setActive($scope.field, index, $scope.path, false);
+          UIUtilService.setActive($scope.field, index, $scope.path, false);
 
           // is there a next one to set active
           if ($scope.isMultipleCardinality()) {
@@ -659,7 +641,7 @@ define([
                 } else if (angular.isObject(valueElement[location])) {
                   if ($rootScope.isEmpty(valueElement[location])) {
                     allRequiredFieldsAreFilledIn = false;
-                  } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+                  } else if (DataManipulationService.schemaOf($scope.field)._ui.dateType == "date-range") {
                     if (!valueElement[location].start || !valueElement[location].end) {
                       allRequiredFieldsAreFilledIn = false;
                     }
@@ -693,7 +675,7 @@ define([
             } else if (angular.isObject($scope.model[location])) {
               if ($rootScope.isEmpty($scope.model[location])) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+              } else if (DataManipulationService.schemaOf($scope.field)._ui.dateType == "date-range") {
                 if (!$scope.model[location].start || !$scope.model[location].end) {
                   allRequiredFieldsAreFilledIn = false;
                 }
@@ -714,7 +696,7 @@ define([
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
             $scope.$emit('emptyRequiredField',
-                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+                ['add', DataManipulationService.schemaOf($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
@@ -730,7 +712,7 @@ define([
         var allFieldsAreValid = true;
         if (angular.isArray($scope.model)) {
           for (var i = 0; i < $scope.model.length; i++) {
-            if (!DataManipulationService.isValidPattern($scope.field, i, $scope.path, $scope.uid)) {
+            if (!UIUtilService.isValidPattern($scope.field, i, $scope.path, $scope.uid)) {
               $scope.model[i][location] = DataManipulationService.getDomValue($scope.field, i, $scope.path, $scope.uid);
               allFieldsAreValid = false;
             }
@@ -779,7 +761,7 @@ define([
         }
 
         $scope.$emit('invalidFieldValues',
-            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.getFieldSchema($scope.field)._ui.title,
+            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.schemaOf($scope.field)._ui.title,
              $scope.uuid]);
 
       });
@@ -826,49 +808,42 @@ define([
         }
       };
 
-      $scope.zeroedLocator = function(value) {
-        var result = '';
-        if (value) {
-          var result =  value.replace(/-([^-]*)$/, '-0');
-        }
-        return result;
-      };
 
+      // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
       $scope.$watch(
           function () {
             return ( $rootScope.activeLocator);
           },
           function (newValue, oldValue) {
-            if ($scope.multipleState === 'spreadsheet') {
+            if ($scope.showMultiple('spreadsheet')) {
+              console.log('watch activeLocator ' + newValue + ' ' + oldValue);
+
+              // spreadsheet view will use the 0th instance
+              var zeroedLocator = function (value) {
+                var result = '';
+                if (value) {
+                  var result = value.replace(/-([^-]*)$/, '-0');
+                }
+                return result;
+              };
 
               $timeout(function () {
-                var locator = $scope.getLocator(0);
-                var oldZero = $scope.zeroedLocator(oldValue);
-                var newZero = $scope.zeroedLocator(newValue);
-
-                if (newZero === oldZero) {
-                } else {
-
-                  if (locator === oldZero) {
-                    console.log('destroy ' + locator);
-                    SpreadsheetService.destroySpreadsheet($scope);
-                    $scope.$apply();
-                  }
-                  if (locator === newZero) {
-                    console.log('switch to ' + locator);
-                    $scope.switchToSpreadsheet();
-                    $scope.$apply();
-                  }
+                var zeroLocator = $scope.getLocator(0);
+                if (zeroLocator === zeroedLocator(oldValue)) {
+                  SpreadsheetService.destroySpreadsheet($scope);
+                  $scope.$apply();
                 }
-
+                if (zeroLocator === zeroedLocator(newValue)) {
+                  $scope.switchToSpreadsheet();
+                  $scope.$apply();
+                }
               }, 0);
             }
           }
       );
 
 
-
-      $scope.toggleActive = function(index) {
+      $scope.toggleActive = function (index) {
         $scope.setActive(index, !$scope.isActive(index));
       };
 
@@ -929,4 +904,5 @@ define([
 
   }
 
-});
+})
+;

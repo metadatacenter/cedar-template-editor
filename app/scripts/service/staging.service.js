@@ -7,11 +7,11 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService", "UIUtilService",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout", "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,
+  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,UIUtilService,
                           ClientSideValidationService,
                           UIMessageService, FieldTypeService, $timeout, AuthorizedBackendService, CONST) {
 
@@ -114,7 +114,7 @@ define([
 
     service.addFieldToForm = function (form, fieldType, divId, callback) {
       var field = DataManipulationService.generateField(fieldType);
-      DataManipulationService.setSelected(field);
+      UIUtilService.setSelected(field);
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
@@ -167,7 +167,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            DataManipulationService.setSelected(clonedElement);
+            UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
             var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
@@ -205,7 +205,7 @@ define([
 
     service.addClonedElementToForm = function (form, elementId, clonedElement, divId, callback) {
 
-            DataManipulationService.setSelected(clonedElement);
+            UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
             var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
@@ -240,7 +240,7 @@ define([
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      DataManipulationService.setSelected(field);
+      UIUtilService.setSelected(field);
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
@@ -282,7 +282,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            DataManipulationService.setSelected(el);
+            UIUtilService.setSelected(el);
 
             var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);

@@ -9,7 +9,7 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "DataManipulationService",
+                                          "TemplateService", "UIMessageService", "UIUtilService", "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
@@ -17,7 +17,7 @@ define([
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, UIMessageService,
-                                        DataManipulationService, controlledTermDataService, StringUtilsService,
+                                        UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
@@ -225,7 +225,7 @@ define([
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
-            DataManipulationService.defaultTitleAndDescription($scope.form._ui);
+            DataManipulationService.defaultSchemaTitleAndDescription($scope.form);
 
             // create a copy of the form and strip out the _tmp fields before saving it
             //var copiedForm = $scope.stripTmpFields();
@@ -290,9 +290,11 @@ define([
 
         // close all the first order elements
         var closeAllElements = function () {
-          angular.forEach($scope.form._ui.order, function (field, index) {
-            if ($rootScope.isElement($rootScope.schemaOf($scope.form.properties[field]))) {
-              $rootScope.toggleElement($scope.form.properties[field]._tmp.domId);
+          angular.forEach($scope.form._ui.order, function (key, index) {
+            var node = $scope.form.properties[key];
+            var schema = DataManipulationService.schemaOf(node);
+            if (DataUtilService.isElement(schema)) {
+              UIUtilService.toggleElement(DataManipulationService.getDomId(node));
             }
           });
         };
@@ -318,6 +320,8 @@ define([
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('form._ui.title', function (v) {
+          console.log($scope.form);
+          console.log($rootScope.schemaOf($scope.form));
           if (!angular.isUndefined($scope.form)) {
             var title = $scope.form._ui.title;
             if (title.length > 0) {

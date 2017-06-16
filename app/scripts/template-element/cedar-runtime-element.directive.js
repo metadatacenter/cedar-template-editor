@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarRuntimeElement', [])
       .directive('cedarRuntimeElement', cedarRuntimeElement);
 
-  cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'DataManipulationService', 'DataUtilService',
+  cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'UIUtilService','DataManipulationService', 'DataUtilService',
                                  'SpreadsheetService'];
 
-  function cedarRuntimeElement($rootScope, $timeout, $window, DataManipulationService, DataUtilService,
+  function cedarRuntimeElement($rootScope, $timeout, $window, UIUtilService, DataManipulationService, DataUtilService,
                                SpreadsheetService) {
 
     var directive = {
@@ -37,12 +37,14 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
-      scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
+      scope.multipleStates = ['paged','expanded', 'spreadsheet'];
       scope.multipleState = 'spreadsheet';
       scope.index = 0;
       scope.pageMin = 0;
       scope.pageMax = 0;
       scope.pageRange = 6;
+
+
 
 
       scope.getTitle = function () {
@@ -54,16 +56,16 @@ define([
       };
 
       scope.canDeselect = function (node) {
-        return DataManipulationService.canDeselect(node);
+        return UIUtilService.canDeselect(node);
       };
 
       scope.canSelect = function (select) {
         if (select)
-          DataManipulationService.canSelect(scope.element);
+          UIUtilService.canSelect(scope.element);
       };
 
       scope.getLocator = function (index) {
-        return DataManipulationService.getLocator(scope.element, index, scope.path, scope.uid);
+        return UIUtilService.getLocator(scope.element, index, scope.path, scope.uid);
       };
 
       scope.isField = function () {
@@ -79,16 +81,16 @@ define([
       };
 
       scope.isMultiple = function () {
-        return DataManipulationService.isMultiple(scope.model);
+        return angular.isArray(scope.model);
       };
 
       // is this field actively being edited?
       scope.isActive = function (index) {
-        return DataManipulationService.isActive(scope.getLocator(index));
+        return UIUtilService.isActive(scope.getLocator(index));
       };
 
       scope.isInactive = function (index) {
-        return DataManipulationService.isInactive(scope.getLocator(index));
+        return UIUtilService.isInactive(scope.getLocator(index));
       };
 
       scope.isNested = function () {
@@ -96,7 +98,7 @@ define([
       };
 
       scope.cardinalityString = function () {
-        return DataManipulationService.cardinalityString(scope.element);
+        return UIUtilService.cardinalityString(scope.element);
       };
 
       scope.getPropertyLabel = function () {
@@ -126,16 +128,15 @@ define([
 
       // add a new empty element at the end of the array
       scope.addElement = function () {
-        console.log('addElement');
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
           var seed = {};
           scope.model.push(seed);
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
-              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+              $rootScope.findChildren(DataManipulationService.propertiesOf(scope.element), m);
             });
           } else {
-            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+            $rootScope.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
           }
           // activate the new instance
           var index = scope.model.length - 1;
@@ -154,7 +155,7 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element, 0, function () {
+        SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
           return false;
         }, function () {
           scope.addMoreInput();
@@ -186,13 +187,13 @@ define([
 
         var schema = $rootScope.schemaOf(scope.element);
         var result = false;
-        var props = $rootScope.propertiesOf(scope.element);
+        var props = DataManipulationService.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
 
           var valueSchema = $rootScope.schemaOf(value);
           var valueId = valueSchema["@id"];
 
-          if ($rootScope.isElement(valueSchema)) {
+          if (DataUtilService.isElement(valueSchema)) {
             result = true;
           }
         });
@@ -200,6 +201,7 @@ define([
       };
 
       scope.expandAll = function () {
+        console.log('expandAll');
 
         // expand all the items in the valueArray
         if (scope.valueArray.length == 0) {
@@ -215,7 +217,7 @@ define([
         $timeout(function () {
           var schema = $rootScope.schemaOf(scope.element);
           var selectedKey;
-          var props = $rootScope.propertiesOf(scope.element);
+          var props = DataManipulationService.propertiesOf(scope.element);
           angular.forEach(props, function (value, key) {
 
             var valueSchema = $rootScope.schemaOf(value);
@@ -244,7 +246,7 @@ define([
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
 
         var selectedKey;
-        var props = $rootScope.propertiesOf(scope.element);
+        var props = DataManipulationService.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
           if (value["@id"] == fieldOrElement["@id"]) {
             selectedKey = key;
@@ -281,7 +283,7 @@ define([
         var childId = DataManipulationService.idOf(child);
 
         if (!childId || /^tmp\-/.test(childId)) {
-          var p = $rootScope.propertiesOf(scope.element);
+          var p = DataManipulationService.propertiesOf(scope.element);
           if (p[newKey] && p[newKey] == child) {
             return;
           }
@@ -393,15 +395,22 @@ define([
       };
       scope.pageMinMax();
 
+      scope.addRow = function() {
+        if (scope.showMultiple('spreadsheet')) {
+          SpreadsheetService.addRow(scope);
+        } else {
+          scope.addElement();
+        }
+      };
+
       scope.addMoreInput = function () {
-        console.log('addMoreInput');
         scope.addElement();
         scope.pageMinMax();
       };
 
-      scope.setActive = function (index, value) {
-        console.log('setActive ' + value + ' ' + scope.getLocator(index));
-        DataManipulationService.setActive(scope.element, index, scope.path, scope.uid, value);
+      scope.setActive = function (idx, value) {
+        var index = scope.showMultiple('spreadsheet') ? 0 : idx;
+        UIUtilService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {
           scope.index = index;
           scope.pageMinMax();
@@ -423,17 +432,21 @@ define([
         return (scope.multipleState === state);
       };
 
-      scope.toggleMultiple = function () {
-        var i = scope.multipleStates.indexOf(scope.multipleState);
-        var oldState = scope.multipleState;
-        i = (i + 1) % scope.multipleStates.length;
-        scope.multipleState = scope.multipleStates[i];
+      // var initMultiple = function () {
+      //   //if (UIUtilService.isSpreadsheetable(scope.element)) {
+      //     scope.multipleStates.push('spreadsheet');
+      //   //}
+      // };
+      // initMultiple();
 
-        if (scope.multipleState === 'spreadsheet' || oldState === 'spreadsheet') {
-          $timeout(function () {
-            // create or destroy the spreadsheet
+      scope.toggleMultiple = function () {
+        console.log('toggleMultiple');
+        var index = scope.multipleStates.indexOf(scope.multipleState);
+        index = (index + 1) % scope.multipleStates.length;
+        scope.multipleState = scope.multipleStates[index];
+        if (scope.multipleState === 'spreadsheet') {
+          setTimeout(function () {
             scope.switchToSpreadsheet();
-            scope.$apply();
           }, 0);
         }
         return scope.multipleState;
@@ -455,16 +468,7 @@ define([
       };
 
 
-
-
-      scope.zeroedLocator = function(value) {
-        var result = '';
-        if (value) {
-          var result =  value.replace(/-([^-]*)$/, '-0');
-        }
-        return result;
-      };
-
+// watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
       scope.$watch(
           function () {
             return ( $rootScope.activeLocator);
@@ -472,30 +476,30 @@ define([
           function (newValue, oldValue) {
             if (scope.multipleState === 'spreadsheet') {
 
-              $timeout(function () {
-                var locator = scope.getLocator(0);
-                var oldZero = scope.zeroedLocator(oldValue);
-                var newZero = scope.zeroedLocator(newValue);
-
-                if (newZero === oldZero) {
-                } else {
-
-                  if (locator === oldZero) {
-                    console.log('destroy ' + locator);
-                    SpreadsheetService.destroySpreadsheet(scope);
-                    scope.$apply();
-                  }
-                  if (locator === newZero) {
-                    console.log('switch to ' + locator);
-                    scope.switchToSpreadsheet();
-                    scope.$apply();
-                  }
+              // spreadsheet view will use the 0th instance
+              var zeroedLocator = function (value) {
+                var result = '';
+                if (value) {
+                  var result = value.replace(/-([^-]*)$/, '-0');
                 }
+                return result;
+              };
 
+              $timeout(function () {
+                var zeroLocator = scope.getLocator(0);
+                if (zeroLocator === zeroedLocator(oldValue)) {
+                  SpreadsheetService.destroySpreadsheet(scope);
+                  scope.$apply();
+                }
+                if (zeroLocator === zeroedLocator(newValue)) {
+                  scope.switchToSpreadsheet();
+                  scope.$apply();
+                }
               }, 0);
             }
           }
       );
+
 
       // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {

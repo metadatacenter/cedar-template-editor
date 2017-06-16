@@ -32,132 +32,26 @@ define([
 
     // Global utility functions
 
-    // Simple function to check if an object is empty
-    $rootScope.isEmpty = function (obj) {
-      return !obj || Object.keys(obj).length === 0;
-    };
 
-    $rootScope.propertiesOf = function (fieldOrElement) {
-      return DataManipulationService.getFieldProperties(fieldOrElement);
-    };
+    $rootScope.propertiesOf = DataManipulationService.propertiesOf;
+    $rootScope.schemaOf = DataManipulationService.schemaOf;
+    $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
+    $rootScope.isElement = UIUtilService.isElement;
+    $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
+    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
+    $rootScope.toggleElement = UIUtilService.toggleElement;
+    $rootScope.getDomId = DataManipulationService.getDomId;
+    $rootScope.findChildren = DataManipulationService.findChildren;
 
-    $rootScope.schemaOf = function (fieldOrElement) {
-      return DataManipulationService.getFieldSchema(fieldOrElement);
-    };
-
-    $rootScope.console = function (txt, label) {
-      console.log(label + ' ' + JSON.stringify(txt, null, 2));
-    };
 
     $rootScope.isRuntime = function () {
       return $rootScope.pageId == 'RUNTIME';
     };
 
-    $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
-
-    $rootScope.isElement = function (value) {
-      if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
-        return true;
-      }
-      else {
-        return false;
-      }
+    // Simple function to check if an object is empty
+    $rootScope.isEmpty = function (obj) {
+      return !obj || Object.keys(obj).length === 0;
     };
-
-    // Used in cedar-template-element.directive.js, form.directive
-    $rootScope.findChildren = function (iterator, parentModel, parentKey, level) {
-      var ctx, min, type, i;
-      angular.forEach(iterator, function (value, name) {
-        // Add @context information to instance
-        if (name == '@context') {
-          ctx = DataManipulationService.generateInstanceContext(value);
-        }
-      });
-
-      angular.forEach(iterator, function (value, name) {
-        // Add @context information to instance
-        if (name == '@context') {
-          parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
-        }
-        // Add @type information to instance
-        // else if (name == '@type') {
-        //   type = DataManipulationService.generateInstanceType(value);
-        //   if (type) {
-        //     parentModel['@type'] = type;
-        //   }
-        // }
-
-        min = value.minItems || 0;
-
-        if (!DataUtilService.isSpecialKey(name)) {
-          // We can tell we've reached an element level by its '@type' property
-          if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
-
-            if (DataManipulationService.isCardinalElement(value)) {
-              if (!parentModel[name] || angular.isObject(parentModel[name])) {
-                parentModel[name] = [];
-              }
-
-              for (i = 0; i < min - parentModel[name].length; i++) {
-                parentModel[name].push({});
-              }
-
-              parentModel[name].splice(min, parentModel[name].length);
-            } else {
-              if (!parentModel[name] || angular.isArray(parentModel[name])) {
-                parentModel[name] = {};
-              }
-            }
-          } else {
-
-            // Assign empty field instance model to $scope.model only if it does not exist
-            if (!parentModel[name]) {
-              // Not multiple instance
-              if (!DataManipulationService.isCardinalElement(value)) {
-                // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                if (DataManipulationService.isMultipleChoiceField(value)) {
-                  parentModel[name] = [];
-                }
-                // All other fields, including the radio field and the list field with single option
-                else {
-                  parentModel[name] = {};
-                }
-              // Multiple instance
-              } else {
-                parentModel[name] = [];
-                for (i = 0; i < min; i++) {
-                  var obj = {};
-                  parentModel[name].push(obj);
-                }
-              }
-            }
-
-            var p = $rootScope.propertiesOf(value);
-
-            // Add @type information to instance at the field level
-            // if (p && !angular.isUndefined(p['@type'])) {
-            //   type = DataManipulationService.generateInstanceType(p['@type']);
-            //
-            //   if (type) {
-            //     if (angular.isArray(parentModel[name])) {
-            //       for (i = 0; i < min; i++) {
-            //         parentModel[name][i]["@type"] = type || "";
-            //       }
-            //     } else {
-            //       parentModel[name]["@type"] = type || "";
-            //     }
-            //   }
-            // }
-          }
-        }
-      });
-    };
-
-    $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
-    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
-    $rootScope.toggleElement = UIUtilService.toggleElement;
-    $rootScope.getDomId = DataManipulationService.getDomId;
-
 
     // BioPortal term selection integration code.
     // TODO: separate the calls, create a service for these

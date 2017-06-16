@@ -7,9 +7,9 @@ define([
       .directive('constrainedValue', constrainedValue);
 
 
-  constrainedValue.$inject = ["$rootScope", "DataManipulationService"];
+  constrainedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService"];
 
-  function constrainedValue($rootScope, DataManipulationService) {
+  function constrainedValue($rootScope, DataManipulationService, UIUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -37,7 +37,7 @@ define([
       $scope.$watch("model", function () {
 
         $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
+          return (UIUtilService.isEditState($scope.field));
         };
 
         $scope.isNested = function () {

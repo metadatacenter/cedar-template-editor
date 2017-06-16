@@ -240,10 +240,10 @@ define([
                 if (angular.isArray(parentModel[name])) {
                   for (var i = 0; i < min; i++) {
                     // Indication of nested element or nested fields reached, recursively call function
-                    $scope.parseForm($rootScope.propertiesOf(value), parentModel[name][i], name);
+                    $scope.parseForm(DataManipulationService.propertiesOf(value), parentModel[name][i], name);
                   }
                 } else {
-                  $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
+                  $scope.parseForm(DataManipulationService.propertiesOf(value), parentModel[name], name);
                 }
                 // Template Field
               } else {
@@ -539,7 +539,7 @@ define([
             // expand all the elements inside the form
             var schema = $rootScope.schemaOf($scope.form);
             var selectedKey;
-            var props = $rootScope.propertiesOf($scope.form);
+            var props = DataManipulationService.propertiesOf($scope.form);
             angular.forEach(props, function (value, key) {
               var valueSchema = $rootScope.schemaOf(value);
               var valueId = valueSchema["@id"];
