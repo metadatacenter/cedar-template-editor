@@ -1,8 +1,8 @@
 <div class="item-root field-root" id="{{$root.getDomId(field)}}"
-    ng-click="canSelect(!isNested() && !$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()">
+    ng-click="canSelect(!isNested() && !isRuntime()); $event.preventDefault(); $event.stopPropagation()">
 
   <!-- field title first -->
-  <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"
+  <div menuDropDownId="" ng-show="field.items && isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
     <div>
@@ -23,7 +23,7 @@
       <!--</span>-->
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
-      <span class="zero-input-wrapper" ng-if="$root.isRuntime() && field.items && model.length == 0">
+      <span class="zero-input-wrapper" ng-if="isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
           uib-tooltip="{{'HELP.addMore' | translate}}"
           tooltip-trigger
@@ -40,7 +40,7 @@
 
   </div>
 
-  <div menuDropDownId="" ng-show="!field.items && $root.isRuntime()"
+  <div menuDropDownId="" ng-show="!field.items && isRuntime()"
       class="field"
       style="position:relative">
   </div>

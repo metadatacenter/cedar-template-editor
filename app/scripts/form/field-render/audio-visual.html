@@ -1,6 +1,6 @@
 <div class="fields audio-visual-fields">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
+	<!--<p class="extra-label-context" ng-if="isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="text"
            class="form-control"
            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
@@ -8,7 +8,7 @@
            placeholder="{{$root.schemaOf(field)._ui.title}}"
            aria-label="{{$root.schemaOf(field)._ui.description}}"
            ng-model="valueElement['@value']"
-           ng-disabled="!$root.isRuntime() || preview"
+           ng-disabled="!isRuntime() || preview"
            with-floating-label="" />
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
@@ -26,7 +26,7 @@
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ></div>
   </div>
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
+  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="form-group floating-label-wrapper">
     <input type="text"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
@@ -57,7 +57,7 @@
            placeholder="{{$root.schemaOf(field)._ui.title}}"
            aria-label="{{$root.schemaOf(field)._ui.description}}"
            ng-model="model['@value']"
-           ng-disabled="!$root.isRuntime() || preview"
+           ng-disabled="!isRuntime() || preview"
            with-floating-label="">
     </input>
     <div class="input-indicator-icons">

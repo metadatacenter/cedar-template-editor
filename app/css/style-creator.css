@@ -11654,7 +11654,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .toolbar button,
 .template-body form .runtime .toolbar .paging {
-  background-color: #F0F0F0;
+  background-color: transparent;
+}
+.template-body form .runtime .toolbar .cedar-pager {
+  padding-right: 20px;
 }
 .template-body form .runtime .row:hover .toolbar {
   visibility: visible;
@@ -11747,18 +11750,14 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 0;
   right: 0;
 }
-.template-body form .runtime button.xxx {
-  color: #aaa;
-  font-size: 1.6em;
-  margin-left: -12px;
-  margin-top: -0.5em;
-  -webkit-margin-before: -0.4em;
-}
 .template-body form .runtime button.add {
   color: #ff8c00;
 }
-.template-body form .runtime button.delete {
-  color: #999;
+.template-body form .runtime button.delete-hidden {
+  color: transparent;
+}
+.template-body form .runtime button.remove-hidden {
+  color: transparent;
 }
 .template-body form .runtime button.expand-all {
   color: #999;
@@ -11772,8 +11771,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button.edit {
   color: #999;
 }
-.template-body form .runtime button.remove {
-  color: #999;
+.template-body form .runtime button.question {
+  color: #5795ba;
 }
 .template-body form .runtime button.spreadsheet {
   color: #999;

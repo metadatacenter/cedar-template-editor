@@ -5,17 +5,17 @@
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">-->
+    <!--<p class="extra-label-context" ng-if="!isRuntime() && $root.schemaOf(field)._ui.title">-->
       <!--{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="text"
         id="{{getId($index)}}"
         class="form-control"
         ng-change="setDefaultValueIfEmpty(model)"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': isRequired()}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="valueElement['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         validate-on="blur"
         ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
         with-floating-label=""/>
@@ -24,17 +24,17 @@
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+    <div ng-if="isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
   <!-- /.form-group -->
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
+  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="form-group floating-label-wrapper">
     <div >
       <input type="text"
           id="{{getId(0)}}"
           class="form-control"
-          ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+          ng-class="{'required': isRequired()}"
           placeholder="{{$root.schemaOf(field)._ui.title}}"
           aria-label="{{$root.schemaOf(field)._ui.description}}"
           ng-model="model['@value']"
@@ -55,11 +55,11 @@
     <input id="{{getId(0)}}" type="text"
         ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': isRequired()}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="model['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         validate-on="blur"
         ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
         with-floating-label="">

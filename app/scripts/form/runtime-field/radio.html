@@ -1,4 +1,4 @@
-<div ng-init="initializeValue(field)">
+<div ng-init="initializeValue()">
 
   <div ng-if="isActive(index)" class="form-group radio-item" ng-repeat="(i, value) in getLiterals() ">
     <div class="radio radio-primary">
@@ -8,8 +8,8 @@
           id="radio-{{uuid}}-{{index}}-{{i}}"
           name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
           ng-model="optionsUI.radioOption"
-          ng-click="uncheck(field, value.label)"
-          ng-change="updateModelFromUI(field); $event.stopPropagation();"
+          ng-click="uncheck(value.label)"
+          ng-change="updateModelFromUI(); $event.stopPropagation();"
           ng-value="value.label"/>
       <label for="radio-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i]['label']}}</label>
     </div>

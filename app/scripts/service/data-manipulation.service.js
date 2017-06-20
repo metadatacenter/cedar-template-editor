@@ -51,6 +51,17 @@ define([
           }
         };
 
+        // does the node have this property in its property array?
+        service.hasProperty = function (node, key) {
+          return node && service.propertiesOf(node).hasOwnProperty(key)
+        };
+
+        service.getPropertyNode = function (node, key) {
+          if (service.hasProperty(node, key)) {
+            return service.propertiesOf(node)[key];
+          }
+        };
+
         service.getType = function (node) {
           var schema = service.schemaOf(node);
           return schema['@type'];
@@ -148,8 +159,25 @@ define([
           return (service.getInputType(node) == 'date');
         };
 
+        // is this a date range?
+        service.isDateRange = function (node) {
+          return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+        };
+
         service.isLinkType = function (node) {
           return (service.getInputType(node) == 'link');
+        };
+
+        service.isCheckboxType = function (node) {
+          return (service.getInputType(node) == 'checkbox');
+        };
+
+        service.isRadioType = function (node) {
+          return (service.getInputType(node) == 'radio');
+        };
+
+        service.isListType = function (node) {
+          return (service.getInputType(node) == 'list');
         };
 
         // is this a checkbox, radio or list question?
@@ -470,6 +498,10 @@ define([
           }
         };
 
+        service.getPropertyLabels = function(node) {
+          return service.schemaOf(node)['_ui']['propertyLabels'];
+        };
+
         // relabel the key with a new value from the propertyLabels
         service.relabel = function (node, key) {
 
@@ -529,6 +561,16 @@ define([
             }
           });
         };
+
+        //
+        //  children
+        //
+
+        service.getChildNode = function (parentNode, childKey) {
+          return service.propertiesOf(parentNode)[childKey];
+        };
+
+
 
         //
         //  generate stuff
@@ -791,7 +833,7 @@ define([
           }
         }
 
-        // Initializes the value @type field.
+        // Initializes the value @type field in the model based on the fieldType.
         // Note that for 'date' and 'numeric' fields, the field schema is flexible, allowing any string as a type.
         // Users may want to manually create instances that use different date or numeric types (e.g., xsd:integer).
         // As a consequence, we cannot use the @type definition from the schema to generate the @type for the instance
@@ -836,8 +878,8 @@ define([
           }
         };
 
+        // get the location of the value and null it
         service.resetValue = function (field) {
-          // get the location of the value and clear it
           var fieldValue = service.getValueLocation(field);
           field[fieldValue] = null;
         };
@@ -975,6 +1017,7 @@ define([
           });
         };
 
+        // create the order array for node and children
         service.createOrder = function (node, order) {
 
           if (node.hasOwnProperty("@id")) {
@@ -1029,6 +1072,59 @@ define([
           return array;
         };
 
+        // rename the key of a child in the form
+        service.renameChildKey = function (parent, child, newKey) {
+          if (!child) {
+            return;
+          }
+
+          var parentSchema = service.schemaOf(parent);
+
+          var childId = service.idOf(child);
+          if (!childId || /^tmp\-/.test(childId)) {
+            var p = service.propertiesOf(parent);
+            if (p[newKey] && p[newKey] == child) {
+              return;
+            }
+
+            newKey = service.getAcceptableKey(p, newKey);
+            angular.forEach(p, function (value, key) {
+              if (!value) {
+                return;
+              }
+
+              var idOfValue = service.idOf(value);
+              if (idOfValue && idOfValue == childId) {
+                service.renameKeyOfObject(p, key, newKey);
+
+                if (p["@context"] && p["@context"].properties) {
+                  service.renameKeyOfObject(p["@context"].properties, key, newKey);
+
+                  if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
+
+
+                    //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                    p["@context"].properties[newKey].enum[0] = service.getPropertyOf(newKey,
+                        p["@context"].properties[newKey].enum[0]);
+                  }
+                }
+
+                if (p["@context"].required) {
+                  var idx = p["@context"].required.indexOf(key);
+                  p["@context"].required[idx] = newKey;
+                }
+
+                // Rename key in the 'order' array
+                parentSchema._ui.order = service.renameItemInArray(parentSchema._ui.order, key, newKey);
+
+                // Rename key in the 'required' array
+                parentSchema.required = service.renameItemInArray(parentSchema.required, key, newKey);
+              }
+            });
+          }
+        };
+
+
 
         //
         // value constraints
@@ -1036,7 +1132,18 @@ define([
 
         // does this field have a value constraint?
         service.hasValueConstraint = function (node) {
-          return $rootScope.hasValueConstraint(service.schemaOf(node)._valueConstraints);
+          var vcst = service.schemaOf(node)._valueConstraints;
+          var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
+              vcst.valueSets && vcst.valueSets.length > 0 ||
+              vcst.classes && vcst.classes.length > 0 ||
+              vcst.branches && vcst.branches.length > 0);
+
+          return typeof result !== 'undefined';
+        };
+
+        // does this field have a value constraint?
+        service.getValueConstraint = function (node) {
+          return service.schemaOf(node)._valueConstraints;
         };
 
         // get the value constraint literal values
@@ -1069,17 +1176,16 @@ define([
         };
 
         // add an option to this field
-        service.addOption = function (field) {
+        service.addOption = function (node) {
           var emptyOption = {
             "label": ""
           };
-          field._valueConstraints.literals.push(emptyOption);
+          service.schemaOf(node)._valueConstraints.literals.push(emptyOption);
         };
 
         service.defaultOptions = function (node, value) {
           var MIN_OPTIONS = 2;
           var schema = service.schemaOf(node);
-
 
           // make sure we have the minimum number of options
           while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
@@ -1185,7 +1291,7 @@ define([
         // delete the branch in valueConstraints
         service.deleteFieldAddedBranch = function (branch, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.branches.length; i < len; i += 1) {
             if (valueConstraints.branches[i]['uri'] == branch['uri']) {
               valueConstraints.branches.splice(i, 1);
@@ -1234,6 +1340,9 @@ define([
           service.initializeSchema(node);
         };
 
+        service.removeValueRecommendationField = function (node) {
+          delete service.schemaOf(node)._ui.valueRecommendationEnabled;
+        };
 
 
         // TODO this clears the @value fields, but does not work if the values are elsewhere as they are for some field types, but this is not being called currently

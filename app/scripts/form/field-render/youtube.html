@@ -4,7 +4,7 @@
   <div ng-init="fieldTitle='&nbsp;YouTube Video';fieldIconClass='cedar-svg-youtube'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="!$root.isRuntime()" style="padding-top: 10px;">
+  <div ng-if="!isRuntime()" style="padding-top: 10px;">
     <!-- let's put the video into a figure so we can use the figcaption for the title -->
     <figure>
       <!-- fit-vids directive automatically resizes the video to full width -->
@@ -14,7 +14,7 @@
   </div>
 
 
-  <div ng-if="$root.isRuntime()">
+  <div ng-if="isRuntime()">
     <!-- let's put the video into a figure so we can use the figcaption for the title -->
     <figure>
       <!-- fit-vids directive automatically resizes the video to full width -->

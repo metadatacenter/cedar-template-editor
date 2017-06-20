@@ -18,7 +18,7 @@
                 name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                 ng-model="optionsUI.option"
                 ng-value="value.label"
-                ng-disabled="!$root.isRuntime() || preview"/>
+                ng-disabled="!isRuntime() || preview"/>
             <label ng-click="$event.stopPropagation();"
                 for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
           </div>

@@ -34,78 +34,248 @@ define([
 
     function linker(scope, el, attrs) {
 
-      scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
-      scope.uuid = DataManipulationService.generateTempGUID();
+      // scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
+      // scope.uuid = DataManipulationService.generateTempGUID();
+
+      // state of the view
       scope.expanded = [];
-      scope.multipleStates = ['paged','expanded', 'spreadsheet'];
-      scope.multipleState = 'spreadsheet';
+      scope.viewState;
       scope.index = 0;
+
+      // pager's min, max, and range
       scope.pageMin = 0;
       scope.pageMax = 0;
       scope.pageRange = 6;
 
+      // allows us to look a the model as an array
+      scope.valueArray;
 
+      // hide the details of the element schema by calling DataManipulationService
+      var dms = DataManipulationService;
 
+      //
+      //  basic schema getters and setters
+      //
 
+      // get the element title
       scope.getTitle = function () {
-        return DataManipulationService.getTitle(scope.element);
+        return dms.getTitle(scope.element);
       };
 
-      scope.getId = function (index) {
-        return DataManipulationService.getId(scope.element);
+      // get the element id
+      scope.getId = function () {
+        return dms.getId(scope.element);
       };
 
-      scope.canDeselect = function (node) {
-        return UIUtilService.canDeselect(node);
+      // does the element contain this property
+      scope.hasProperty = function(key) {
+        return dms.hasProperty(scope.element, key);
       };
 
-      scope.canSelect = function (select) {
-        if (select)
-          UIUtilService.canSelect(scope.element);
+      // get the child node for this property
+      scope.getChildNode = function(key) {
+        return dms.getChildNode(scope.element, key);
       };
 
-      scope.getLocator = function (index) {
-        return UIUtilService.getLocator(scope.element, index, scope.path, scope.uid);
+      // is the child an element?
+      scope.isChildElement = function(key) {
+        return DataUtilService.isElement(dms.getChildNode(scope.element, key))
       };
 
+      // get the order array
+      scope.getOrder = function() {
+        return dms.getOrder(scope.element);
+      };
+
+      // get the property labels from the element
+      scope.getPropertyLabels = function() {
+        return dms.getPropertyLabels(scope.element);
+      };
+
+      // get the dom locator
+      scope.getLocator = function (idx) {
+        return UIUtilService.getLocator(scope.element, idx || 0, scope.path, scope.uid);
+      };
+
+      // is this a field?
       scope.isField = function () {
         return false;
       };
 
+      // is this an element?
       scope.isElement = function () {
         return true;
       };
 
-      scope.isCardinal = function () {
-        return DataManipulationService.isCardinalElement(scope.element);
-      };
+      // scope.isNested = function () {
+      //   return dms.isNested(scope.element);
+      // };
 
+      //
+      // multiple cardinality elements
+      //
+
+      // is the model multiple?
       scope.isMultiple = function () {
         return angular.isArray(scope.model);
       };
 
-      // is this field actively being edited?
-      scope.isActive = function (index) {
-        return UIUtilService.isActive(scope.getLocator(index));
-      };
-
-      scope.isInactive = function (index) {
-        return UIUtilService.isInactive(scope.getLocator(index));
-      };
-
-      scope.isNested = function () {
-        return DataManipulationService.isNested(scope.element);
-      };
-
+      // get the cardinality string, i.e.  1..N
       scope.cardinalityString = function () {
         return UIUtilService.cardinalityString(scope.element);
       };
 
+      // switch into full screen mode for a spreadsheet
+      scope.fullscreen = function () {
+        UIUtilService.fullscreen(scope.getLocator());
+      };
+
+
+      // turn on spreadsheet view
+      scope.switchToSpreadsheet = function () {
+        SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
+          return false;
+        }, function () {
+          scope.addMoreInput();
+        }, function () {
+          scope.removeElement(scope.model.length - 1);
+        })
+      };
+
+      scope.isTabView = function () {
+        return UIUtilService.isTabView(scope.viewState);
+      };
+
+      scope.isListView = function () {
+        return UIUtilService.isListView(scope.viewState);
+      };
+
+      scope.isSpreadsheetView = function () {
+        return UIUtilService.isSpreadsheetView(scope.viewState);
+      };
+
+      // toggle through the list of view states
+      scope.toggleView = function () {
+        scope.viewState = UIUtilService.toggleView(scope.viewState);
+      };
+
+      // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
+      scope.$watch(
+          function () {
+            return ( $rootScope.activeLocator);
+          },
+          function (newValue, oldValue) {
+            if (scope.isSpreadsheetView()) {
+
+              // spreadsheet view will use the 0th instance
+              var zeroedLocator = function (value) {
+                var result = '';
+                if (value) {
+                  var result = value.replace(/-([^-]*)$/, '-0');
+                }
+                return result;
+              };
+
+              $timeout(function () {
+                var zeroLocator = scope.getLocator(0);
+                if (zeroLocator === zeroedLocator(oldValue)) {
+                  SpreadsheetService.destroySpreadsheet(scope);
+                  scope.$apply();
+                }
+                if (zeroLocator === zeroedLocator(newValue)) {
+                  scope.switchToSpreadsheet();
+                  scope.$apply();
+                }
+              }, 0);
+            }
+          }
+      );
+
+
+
+
+      //
+      // control element visibility
+      //
+
+      // toggle visibility at this index and activate if visible
+      scope.toggleExpanded = function (idx) {
+        scope.expanded[idx] = !scope.expanded[idx];
+        scope.setActive(idx, scope.expanded[idx]);
+      };
+
+      // is this index viewable?
+      scope.isExpanded = function (idx) {
+        return scope.expanded[idx];
+      };
+
+      // set the view at this index
+      scope.setExpanded = function (idx, value) {
+        return scope.expanded[idx] = value;
+      };
+
+      // close the view at this index
+      scope.unExpand = function (idx) {
+        scope.expanded[idx] = false;
+        scope.setActive(idx, false);
+      };
+
+      // can we recursively expand this element, i.e. does it have nested elements?
+      scope.isExpandable = function () {
+        var result = false;
+        var props = dms.propertiesOf(scope.element);
+        angular.forEach(props, function (value, key) {
+          if (DataUtilService.isElement(dms.schemaOf(value))) {
+            result = true;
+          }
+        });
+        return result;
+      };
+
+      // expand all the nodes and their children
+      scope.expandAll = function () {
+
+        // expand all the items in the valueArray
+        if (scope.valueArray.length == 0) {
+          scope.addMoreInput();
+        } else {
+          for (var i = 0; i < scope.valueArray.length; i++) {
+            scope.expanded[i] = true;
+            scope.setActive(0, true);
+          }
+        }
+
+        // let these draw, then send out expandAll to the newly drawn elements
+        $timeout(function () {
+          var props = dms.propertiesOf(scope.element);
+          angular.forEach(props, function (value, key) {
+            if (DataUtilService.isElement(dms.schemaOf(value))) {
+              scope.$broadcast("expandAll", [dms.getId(value)]);
+            }
+          });
+        });
+      };
+
+      // listen for requests to expand this element
+      scope.$on('expandAll', function (event, args) {
+        var id = args[0];
+
+        // only look at first level elements
+        if (id === scope.getId()) {
+
+          scope.expandAll();
+        }
+      });
+
+      //
+      //  toolbar functions
+      //
+
+      // get the property label for the fieldKey, labels and fieldKey are passed into this scope
       scope.getPropertyLabel = function () {
         if (scope.labels && scope.fieldKey) {
           return scope.labels[scope.fieldKey];
         } else {
-          console.log("error: no propertyLabels");
           return scope.getTitle();
         }
       };
@@ -113,7 +283,8 @@ define([
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
         var fromIndex = (typeof index === 'undefined') ? scope.index : index;
-        if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+        var maxItems = dms.getMaxItems(scope.element);
+        if ((!maxItems || scope.model.length < maxItems)) {
           if (scope.model.length > 0) {
             var seed = {};
             seed = angular.copy(scope.model[fromIndex]);
@@ -128,25 +299,26 @@ define([
 
       // add a new empty element at the end of the array
       scope.addElement = function () {
-        if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+        var maxItems = dms.getMaxItems(scope.element);
+        if ((!maxItems || scope.model.length < maxItems)) {
           var seed = {};
+          var properties = dms.propertiesOf(scope.element);
           scope.model.push(seed);
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
-              $rootScope.findChildren(DataManipulationService.propertiesOf(scope.element), m);
+              dms.findChildren(properties, m);
             });
           } else {
-            $rootScope.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
+            dms.findChildren(properties, scope.model);
           }
           // activate the new instance
-          var index = scope.model.length - 1;
-          scope.setActive(index, true);
+          scope.setActive(scope.model.length - 1, true);
         }
       };
 
       // remove the element at index
       scope.removeElement = function (index) {
-        if (scope.model.length > scope.element.minItems) {
+        if (scope.model.length > dms.getMinItems(scope.element)) {
           scope.model.splice(index, 1);
           if (scope.model.length === 0) {
             scope.toggleExpanded(0);
@@ -154,101 +326,48 @@ define([
         }
       };
 
-      scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
-          return false;
-        }, function () {
-          scope.addMoreInput();
-        }, function () {
-          scope.removeElement(scope.model.length - 1);
-        })
-      };
-
-      scope.toggleExpanded = function (index) {
-        scope.expanded[index] = !scope.expanded[index];
-        scope.setActive(index, !scope.isActive());
-      };
-
-      scope.isExpanded = function (index) {
-        return scope.expanded[index];
-      };
-
-      scope.setExpanded = function (index, value) {
-        return scope.expanded[index] = value;
-      };
-
-      scope.unExpand = function (index) {
-        scope.expanded[index] = false;
-        scope.setActive(index, false);
-      };
-
-      // can we recursively expand this element, i.e. does it have nested elements?
-      scope.isExpandable = function () {
-
-        var schema = $rootScope.schemaOf(scope.element);
-        var result = false;
-        var props = DataManipulationService.propertiesOf(scope.element);
-        angular.forEach(props, function (value, key) {
-
-          var valueSchema = $rootScope.schemaOf(value);
-          var valueId = valueSchema["@id"];
-
-          if (DataUtilService.isElement(valueSchema)) {
-            result = true;
-          }
-        });
-        return result;
-      };
-
-      scope.expandAll = function () {
-        console.log('expandAll');
-
-        // expand all the items in the valueArray
-        if (scope.valueArray.length == 0) {
-          scope.addMoreInput();
+      scope.addRow = function() {
+        if (scope.isSpreadsheetView()) {
+          SpreadsheetService.addRow(scope);
         } else {
-          for (var i = 0; i < scope.valueArray.length; i++) {
-            scope.expanded[i] = true;
-            scope.setActive(0, true);
-          }
+          scope.addElement();
         }
-
-        // let these draw, then send out expandAll to the newly drawn elements
-        $timeout(function () {
-          var schema = $rootScope.schemaOf(scope.element);
-          var selectedKey;
-          var props = DataManipulationService.propertiesOf(scope.element);
-          angular.forEach(props, function (value, key) {
-
-            var valueSchema = $rootScope.schemaOf(value);
-            var valueId = valueSchema["@id"];
-
-            if ($rootScope.isElement(valueSchema)) {
-              scope.$broadcast("expandAll", [valueId]);
-            }
-          });
-
-        }, 0);
       };
 
-      scope.$on('expandAll', function (event, args) {
-        var id = args[0];
+      scope.addMoreInput = function () {
+        scope.addElement();
+        scope.pageMinMax();
+      };
 
-        // only look at first level elements
-        if (id === scope.getId()) {
+      // toolbar pager min and max
+      scope.pageMinMax = function () {
+        scope.pageMax = Math.min(scope.valueArray.length, scope.index + scope.pageRange);
+        scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
+      };
 
-          scope.expandAll();
-        }
-      });
+      // set the index active
+      scope.selectPage = function (idx) {
+        scope.setActive(idx, true);
+      };
 
-      scope.removeChild = function (fieldOrElement) {
-        // fieldOrElement must contain the schema level
-        fieldOrElement = $rootScope.schemaOf(fieldOrElement);
+      //
+      //  passed to child scope
+      //
+
+      // rename the property key of this child
+      scope.renameChildKey = function (child, newKey) {
+        dms.renameChildKey(scope.element, child, newKey);
+      };
+
+      // TODO this needs to be refactored to move schema details to dms
+      // remove child node from element
+      scope.removeChild = function (node) {
 
         var selectedKey;
-        var props = DataManipulationService.propertiesOf(scope.element);
+        var schema = dms.schemaOf(node);
+        var props = dms.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (value["@id"] == fieldOrElement["@id"]) {
+          if (value["@id"] == schema["@id"]) {
             selectedKey = key;
           }
         });
@@ -257,69 +376,40 @@ define([
           delete props[selectedKey];
 
           // remove it from the order array
-          var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
-          $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
+          var idx = dms.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
+          dms.schemaOf(scope.element)._ui.order.splice(idx, 1);
 
           // remove it from the property Labels?
           console.log('delete property labels?');
           console.log($rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
           //delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
 
-          if ($rootScope.isElement(fieldOrElement)) {
+          if ($rootScope.isElement(schema)) {
             scope.$emit("invalidElementState",
-                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                ["remove", schema._ui.title, schema["@id"]]);
           } else {
             scope.$emit("invalidFieldState",
-                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                ["remove", schema._ui.title, schema["@id"]]);
           }
         }
       };
 
-      scope.renameChildKey = function (child, newKey) {
-        if (!child) {
-          return;
-        }
 
-        var childId = DataManipulationService.idOf(child);
+      //
+      //  activate or deactivate - set edit state
+      //
 
-        if (!childId || /^tmp\-/.test(childId)) {
-          var p = DataManipulationService.propertiesOf(scope.element);
-          if (p[newKey] && p[newKey] == child) {
-            return;
-          }
-
-          newKey = DataManipulationService.getAcceptableKey(p, newKey);
-          angular.forEach(p, function (value, key) {
-            if (!value) {
-              return;
-            }
-
-            var idOfValue = DataManipulationService.idOf(value);
-            if (idOfValue && idOfValue == childId) {
-              DataManipulationService.renameKeyOfObject(p, key, newKey);
-
-              if (p["@context"] && p["@context"].properties) {
-                DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
-
-                if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
-                }
-              }
-
-              if (p["@context"].required) {
-                var idx = p["@context"].required.indexOf(key);
-                p["@context"].required[idx] = newKey;
-              }
-
-              var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(key);
-              $rootScope.schemaOf(scope.element)._ui.order[idx] = newKey;
-            }
-          });
-        }
+      // is this index actively being edited?
+      scope.isActive = function (idx) {
+        var index = scope.isSpreadsheetView() ? 0 : idx;
+        return UIUtilService.isActive(scope.getLocator(index));
       };
 
-      // allows us to look a the model as an array
-      scope.valueArray;
+      // is this not being edited?
+      scope.isInactive = function (idx) {
+        return UIUtilService.isInactive(scope.getLocator(idx));
+      };
+
       scope.setValueArray = function () {
         scope.valueArray = [];
         if (scope.model instanceof Array) {
@@ -332,7 +422,6 @@ define([
           scope.valueArray.push(scope.model);
         }
       };
-      scope.setValueArray();
 
       // watch for this field's active state
       scope.$on('setActive', function (event, args) {
@@ -364,52 +453,27 @@ define([
         }
       });
 
-      scope.onSetActive = function (i) {
-        var id = scope.getId();
-        var index = i;
-        var path = scope.path;
-        var fieldKey = scope.fieldKey;
-        var parentKey = scope.parentKey;
-        var value = true;
+      scope.onSetActive = function (idx) {
 
-        scope.setActive(index, value);
-
+        scope.setActive(idx, true);
         $timeout(function () {
 
           scope.$apply();
 
-          var props = $rootScope.schemaOf(scope.element).properties;
-          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          var props = dms.propertiesOf(scope.element);
+          var order = dms.getOrder(scope.element);
           var nextKey = order[0];
           var next = props[nextKey];
+
           $rootScope.$broadcast("setActive",
-              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true,
+              [dms.getId(next), 0, scope.path + '-' + idx, nextKey, scope.fieldKey, true,
                scope.uid + '-' + nextKey]);
 
         }, 0);
       };
 
-      scope.pageMinMax = function () {
-        scope.pageMax = Math.min(scope.valueArray.length, scope.index + scope.pageRange);
-        scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
-      };
-      scope.pageMinMax();
-
-      scope.addRow = function() {
-        if (scope.showMultiple('spreadsheet')) {
-          SpreadsheetService.addRow(scope);
-        } else {
-          scope.addElement();
-        }
-      };
-
-      scope.addMoreInput = function () {
-        scope.addElement();
-        scope.pageMinMax();
-      };
-
       scope.setActive = function (idx, value) {
-        var index = scope.showMultiple('spreadsheet') ? 0 : idx;
+        var index = scope.isSpreadsheetView() ? 0 : idx;
         UIUtilService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {
           scope.index = index;
@@ -418,88 +482,10 @@ define([
         scope.expanded[index] = value;
       };
 
-      // set the index active
-      scope.selectPage = function (i) {
-        scope.setActive(i, true);
-      };
-
       // set the active index
-      scope.setIndex = function (value) {
-        scope.index = value;
+      scope.setIndex = function (idx) {
+        scope.index = idx;
       };
-
-      scope.showMultiple = function (state) {
-        return (scope.multipleState === state);
-      };
-
-      // var initMultiple = function () {
-      //   //if (UIUtilService.isSpreadsheetable(scope.element)) {
-      //     scope.multipleStates.push('spreadsheet');
-      //   //}
-      // };
-      // initMultiple();
-
-      scope.toggleMultiple = function () {
-        console.log('toggleMultiple');
-        var index = scope.multipleStates.indexOf(scope.multipleState);
-        index = (index + 1) % scope.multipleStates.length;
-        scope.multipleState = scope.multipleStates[index];
-        if (scope.multipleState === 'spreadsheet') {
-          setTimeout(function () {
-            scope.switchToSpreadsheet();
-          }, 0);
-        }
-        return scope.multipleState;
-      };
-
-      scope.fullscreen = function () {
-
-        var elm = document.querySelector('#' + scope.getLocator(0) + ' .spreadsheetViewContainer');
-        if (!("requestFullscreen" in elm)) {
-          if (!("webkitRequestFullscreen" in elm)) {
-          } else {
-            elm.setAttribute('style', 'width:100%;height:100%');
-            elm.webkitRequestFullscreen();
-          }
-        } else {
-          elm.setAttribute('style', 'width:100%;height:100%');
-          elm.requestFullscreen();
-        }
-      };
-
-
-// watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
-      scope.$watch(
-          function () {
-            return ( $rootScope.activeLocator);
-          },
-          function (newValue, oldValue) {
-            if (scope.multipleState === 'spreadsheet') {
-
-              // spreadsheet view will use the 0th instance
-              var zeroedLocator = function (value) {
-                var result = '';
-                if (value) {
-                  var result = value.replace(/-([^-]*)$/, '-0');
-                }
-                return result;
-              };
-
-              $timeout(function () {
-                var zeroLocator = scope.getLocator(0);
-                if (zeroLocator === zeroedLocator(oldValue)) {
-                  SpreadsheetService.destroySpreadsheet(scope);
-                  scope.$apply();
-                }
-                if (zeroLocator === zeroedLocator(newValue)) {
-                  scope.switchToSpreadsheet();
-                  scope.$apply();
-                }
-              }, 0);
-            }
-          }
-      );
-
 
       // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
@@ -515,13 +501,13 @@ define([
           while (idx < order.length && !found) {
             var nextKey = order[idx];
             var next = props[nextKey];
-            found = !DataManipulationService.isStaticField(next);
+            found = !dms.isStaticField(next);
             idx += 1;
           }
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true,
+                [dms.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true,
                  scope.uid + '-' + nextKey]);
           }
         }
@@ -548,6 +534,17 @@ define([
           scope.$parent.activateNextSiblingOf(scope.fieldKey, scope.parentKey);
         }
       }
+
+      //
+      //  initialization
+      //
+
+      scope.setValueArray();
+
+      scope.pageMinMax();
+
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet);
+      console.log(scope.viewState);
     }
   };
 });

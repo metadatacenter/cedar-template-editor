@@ -61,7 +61,7 @@ define([
       };
 
       scope.isSelectable = function () {
-        return !scope.isRoot() && !$rootScope.isRuntime() && !scope.isNested();
+        return !scope.isRoot() && !UIUtilService.isRuntime() && !scope.isNested();
       };
 
       // try to select this element
@@ -75,7 +75,7 @@ define([
 
         var result =
             !scope.isRoot() &&
-            !$rootScope.isRuntime() &&
+            !UIUtilService.isRuntime() &&
             !scope.isNested() &&
             UIUtilService.isEditState(scope.element);
 
@@ -166,7 +166,7 @@ define([
       };
 
       var parseElement = function () {
-        if (!$rootScope.isRuntime() && scope.element) {
+        if (!UIUtilService.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
               DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), m);
@@ -177,7 +177,7 @@ define([
         }
       };
 
-      if (!$rootScope.isRuntime()) {
+      if (!UIUtilService.isRuntime()) {
         if (!scope.model) {
           if (scope.element.items) {
             scope.model = [];
@@ -213,7 +213,7 @@ define([
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
-        if ($rootScope.isRuntime()) {
+        if (UIUtilService.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
 

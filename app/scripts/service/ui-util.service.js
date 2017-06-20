@@ -7,13 +7,138 @@ define([
       .service('UIUtilService', UIUtilService);
 
   UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService", "DataUtilService",
-                           "ClientSideValidationService","$translate"];
+                           "ClientSideValidationService", "$translate"];
 
   function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService, DataUtilService,
                          ClientSideValidationService, $translate) {
 
     var service = {
-      serviceId: "UIUtilService"
+      serviceId    : "UIUtilService",
+      showOutput   : false,
+      showOutputTab: 0
+    };
+
+
+    //
+    //  view states: spreadsheet, tabbed, and list
+    //
+
+    // is this state currently active?
+    service.isSpreadsheetView = function (viewState) {
+      return (viewState && viewState.selected === 'spreadsheet');
+    };
+
+    service.isListView = function (viewState) {
+      return (viewState && viewState.selected === 'list');
+    };
+
+    service.isTabView = function (viewState) {
+      return (viewState && viewState.selected === 'tab');
+    };
+
+    // toggle through the list of view states, call the callback for spreadsheets
+    service.toggleView = function (viewState) {
+      var index = viewState.views.indexOf(viewState.selected);
+      index = (index + 1) % viewState.views.length;
+      viewState.selected = viewState.views[index];
+      if (service.isSpreadsheetView(viewState)) {
+        setTimeout(function () {
+          viewState.spreadsheetCallback();
+        });
+      }
+      return viewState;
+    };
+
+    // switch into full screen mode for a spreadsheet
+    service.fullscreen = function (zerothLocator) {
+
+      var elm = document.querySelector('#' + zerothLocator + ' .spreadsheetViewContainer');
+      if (!("requestFullscreen" in elm)) {
+        if (!("webkitRequestFullscreen" in elm)) {
+        } else {
+          elm.setAttribute('style', 'width:100%;height:100%');
+          elm.webkitRequestFullscreen();
+        }
+      } else {
+        elm.setAttribute('style', 'width:100%;height:100%');
+        elm.requestFullscreen();
+      }
+    };
+
+
+    // element or field be edited as a spreadsheet if it is multi-instance
+    // and does not contain nested elements or multi-instance fields
+    service.isSpreadsheetable = function (node) {
+      var schema = DataManipulationService.schemaOf(node);
+      var result = DataManipulationService.isCardinalElement(node);
+      if (DataUtilService.isElement(node)) {
+        angular.forEach(schema.properties, function (value, key) {
+          if (!DataUtilService.isSpecialKey(key)) {
+            var isElement = DataUtilService.isElement(value);
+            var isCardinal = DataManipulationService.isCardinalElement(value);
+            result = result && (!isElement && !isCardinal);
+          }
+        });
+      }
+      return result;
+    };
+
+    // is this an element that can be expanded?
+    service.isExpandable = function (node) {
+      var result = false;
+      if (DataUtilService.isElement(DataManipulationService.schemaOf(node))) {
+        var props = DataManipulationService.propertiesOf(node);
+        angular.forEach(props, function (value, key) {
+          if (DataUtilService.isElement(DataManipulationService.schemaOf(value))) {
+            result = true;
+          }
+        });
+      }
+      return result;
+    };
+
+    service.createViewState = function (node, callback) {
+      var viewState = {
+        views   : ['tab', 'list'],
+        selected: 'tab'
+      };
+      if (service.isSpreadsheetable(node)) {
+        viewState.views.push('spreadsheet');
+        viewState.spreadsheetCallback = callback;
+      }
+      return viewState;
+    };
+
+    //
+    //
+    //
+
+    service.isRuntime = function () {
+      return $rootScope.pageId == 'RUNTIME';
+    };
+
+    service.isShowOutput = function () {
+      return service.showOutput;
+    };
+
+    service.setShowOutput = function (value) {
+      service.showOutput = value;
+    };
+
+    service.toggleShowOutput = function () {
+      service.setShowOutput(!service.isShowOutput());
+    };
+
+    service.isShowMetadata = function () {
+      return service.isRuntime() && service.isShowOutput();
+    };
+
+    service.getShowOutputTab = function () {
+      return service.showOutputTab;
+    };
+
+    service.setShowOutputTab = function (index) {
+      service.showOutputTab = index;
     };
 
     // get the locator for the node's dom object
@@ -153,23 +278,6 @@ define([
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
 
-    // element or field be edited as a spreadsheet if it is multi-instance
-    // and does not contain nested elements or multi-instance fields
-    service.isSpreadsheetable = function (node) {
-
-      var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node);
-      if (DataUtilService.isElement(node)) {
-        angular.forEach(schema.properties, function (value, key) {
-          if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(value);
-            var isCardinal = DataManipulationService.isCardinalElement(value);
-            result = result && (!isElement && !isCardinal);
-          }
-        });
-      }
-      return result;
-    };
 
     service.cardinalityString = function (node) {
       var result = '';

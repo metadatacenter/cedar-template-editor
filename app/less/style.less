@@ -2728,7 +2728,7 @@ section.dashboard-elements {
       margin: 0;
       padding: 0 0 0 12px;
       position: relative;
-      border-left:1px solid @med-gray;
+      border-left: 1px solid @med-gray;
     }
 
     li.tv::before, li.tv::after {
@@ -2746,7 +2746,7 @@ section.dashboard-elements {
     }
 
     li.last.tv {
-      border-left-width:0px;
+      border-left-width: 0px;
     }
     /* horizontal line on inner list items */
     li.tv.element::before {
@@ -2774,7 +2774,7 @@ section.dashboard-elements {
     }
 
     li.tv.last.element::before {
-      border-left:1px solid @med-gray;
+      border-left: 1px solid @med-gray;
     }
 
     li.tv.element::after, li.tv.last.element::after, ul li.last.element::after {
@@ -2783,14 +2783,13 @@ section.dashboard-elements {
     }
 
     li.tv.last.element::before {
-      border-left:1px solid @med-gray;
-      height:16px;
-      top:0;
-      border-bottom:1px solid @med-gray;
-      width:10px;
+      border-left: 1px solid @med-gray;
+      height: 16px;
+      top: 0;
+      border-bottom: 1px solid @med-gray;
+      width: 10px;
     }
   }
-
 
   .paging {
     max-height: 17px;
@@ -2827,7 +2826,10 @@ section.dashboard-elements {
     font-size: 18px;
     visibility: hidden;
     button, .paging {
-      background-color: @lt-gray;
+      background-color: transparent;
+    }
+    .cedar-pager {
+      padding-right:20px;
     }
   }
 
@@ -2927,19 +2929,16 @@ section.dashboard-elements {
       right: 0;
     }
 
-    &.xxx {
-      color: #aaa;
-      font-size: 1.6em;
-      margin-left: -12px;
-      margin-top: -.5em;
-      -webkit-margin-before: -.4em;
-    }
-
     &.add {
       color: @brand-accent;
     }
     &.delete {
-      color: #999;
+    }
+    &.delete-hidden {
+      color: transparent;
+    }
+    &.remove-hidden {
+      color: transparent;
     }
     &.expand-all {
       color: #999;
@@ -2953,8 +2952,10 @@ section.dashboard-elements {
     &.edit {
       color: #999;
     }
+    &.question {
+      color: @brand-primary;
+    }
     &.remove {
-      color: #999;
     }
     &.spreadsheet {
       color: #999;
@@ -2962,7 +2963,6 @@ section.dashboard-elements {
     i {
       min-width: 12px;
     }
-
     &:disabled {
       color: @brand-primary-disabled;
     }

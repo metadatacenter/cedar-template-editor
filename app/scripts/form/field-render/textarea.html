@@ -1,13 +1,14 @@
 <div class="fields fields-textarea">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph';setDefaultValueIfEmpty(model)"
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph';"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
+      ng-class="{'required': isRequired()}">
     <input type="text"
         class="form-control has-success has-feedback"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': isRequired()}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-disabled="true"
@@ -22,22 +23,22 @@
         id="comment"
         class="form-control"
         ng-change="setDefaultValueIfEmpty(model)"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': isRequired()}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="valueElement['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         with-floating-label=""></textarea>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper yy"
+    <div ng-if="isRuntime()" class="more-input-wrapper yy"
         ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
   <!-- /.form-group -->
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
+  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()"
       class="form-group floating-label-wrapper has-feedback">
 
     <textarea rows="5"
@@ -50,7 +51,7 @@
         with-floating-label=""></textarea>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-disabled="true"
+    <div ng-if="isRuntime()" class="more-input-wrapper" ng-disabled="true"
         ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
   </div>
   <!-- /.form-group -->
@@ -63,7 +64,7 @@
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="model['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         with-floating-label=""></textarea>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

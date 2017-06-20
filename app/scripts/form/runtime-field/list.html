@@ -9,7 +9,7 @@
       field="field"
       close-on-select="true"
       ng-model="optionsUI.listSingleSelect"
-      ng-change="updateModelFromUI(field)"
+      ng-change="updateModelFromUI()"
       select-picker="">
     <option style="color:gray" value="">Nothing selected</option>
     <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
@@ -26,7 +26,7 @@
       data-actions-box="true"
       title="Nothing selected"
       field="field"
-      ng-change="updateModelFromUI(field)"
+      ng-change="updateModelFromUI()"
       ng-model="optionsUI.listMultiSelect"
       select-picker="">
     <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"

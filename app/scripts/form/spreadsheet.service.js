@@ -397,7 +397,6 @@ define([
         };
 
         service.addRow = function($scope) {
-          console.log('addRow');
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             var hot = context.getTable();
@@ -407,14 +406,15 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
-          console.log('destroySpreadsheet');
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             context.switchVisibility();
             if (context.isOriginalContentVisible()) {
-              context.getTable().destroy();
-              jQuery(context.getSpreadsheetContainer()).html("");
-              applyVisibility($scope);
+              if (context.getTable()) {
+                context.getTable().destroy();
+                jQuery(context.getSpreadsheetContainer()).html("");
+                applyVisibility($scope);
+              }
             } else {
               context.switchVisibility();
             }
@@ -423,7 +423,6 @@ define([
 
         // create spreadsheet view using handsontable
         service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback) {
-          console.log('switchToSpreadsheet');
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
           createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback);

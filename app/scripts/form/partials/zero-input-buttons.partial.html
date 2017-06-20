@@ -1,11 +1,11 @@
 <!-- show this during runtime and only when you have cardinality -->
-<div class="more-input-buttons" ng-show="$root.isRuntime() && $root.isArray(model)">
+<div class="more-input-buttons" ng-show="isRuntime() && $root.isArray(model)">
 
   <!-- add button when you have no items in the model array and min cardinality is zero -->
-  <button type="button" class="add" ng-click="addMoreInput()" ng-disabled="!$root.isRuntime()"
+  <button type="button" class="add" ng-click="addMoreInput()" ng-disabled="!isRuntime()"
       ng-show="$parent.model.length == 0"></button>
 
-  <button type="button" class="add" ng-show="$root.isRuntime()" ng-click="addMoreInput()"
+  <button type="button" class="add" ng-show="isRuntime()" ng-click="addMoreInput()"
       ng-show=" (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems )"
   uib-tooltip="{{'HELP.addMore' | translate}} {{$parent.field.items._ui.title}}"
   tooltip-trigger
