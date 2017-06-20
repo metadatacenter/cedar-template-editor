@@ -1,41 +1,40 @@
 <div ng-init="initializeValue(); initializeValueType()">
-  <!--- not active --->
+
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
 
     <!-- Regular field -->
-    <div ng-if="isRegular() && showMultiple('expanded')"
+    <div ng-if="isRegular() && isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
 
-    <div ng-if="isRegular() && !showMultiple('expanded')"
+    <div ng-if="isRegular() && !isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
     <!-- Field with values have been constrained using controlled terms -->
-    <div ng-if="isConstrained() && showMultiple('expanded')"
+    <div ng-if="isConstrained() && isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isConstrained() && !showMultiple('expanded')"
+    <div ng-if="isConstrained() && !isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
     <!-- Field with value recommendation functionality -->
     <!--TODO: pick _valueLabel or @value depending on the existing field value-->
-    <div ng-if="isRecommended() && showMultiple('expanded')"
+    <div ng-if="isRecommended() && isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isRecommended() && !showMultiple('expanded')"
+    <div ng-if="isRecommended() && !isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
   </div>
-
-  <!-- actively being edited -->
+  
   <div ng-if="isActive(index)">
 
     <!-- Regular field -->

@@ -50,9 +50,8 @@ define([
     };
 
     // switch into full screen mode for a spreadsheet
-    service.fullscreen = function (zerothLocator) {
-
-      var elm = document.querySelector('#' + zerothLocator + ' .spreadsheetViewContainer');
+    service.fullscreen = function (locator) {
+      var elm = document.querySelector('#' + locator + ' .spreadsheetViewContainer');
       if (!("requestFullscreen" in elm)) {
         if (!("webkitRequestFullscreen" in elm)) {
         } else {

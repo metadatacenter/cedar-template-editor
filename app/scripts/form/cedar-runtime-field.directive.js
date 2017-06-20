@@ -199,13 +199,6 @@ define([
         $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.switchToSpreadsheet);
       };
 
-
-      $scope.toggleExpanded = function () {
-        if (scope.expanded[index]) {
-          scope.setActive(index, true);
-        }
-      };
-
       $scope.toggleActive = function (index) {
         $scope.setActive(index, !$scope.isActive(index));
       };
@@ -215,17 +208,7 @@ define([
       };
 
       $scope.fullscreen = function () {
-        var elm = document.querySelector('#' + $scope.getLocator(0) + ' .spreadsheetViewContainer');
-        if (!("requestFullscreen" in elm)) {
-          if (!("webkitRequestFullscreen" in elm)) {
-          } else {
-            elm.setAttribute('style', 'width:100%;height:100%');
-            elm.webkitRequestFullscreen();
-          }
-        } else {
-          elm.setAttribute('style', 'width:100%;height:100%');
-          elm.requestFullscreen();
-        }
+        UIUtilService.fullscreen($scope.getLocator(0));
       };
 
       // set this field and index active
@@ -422,12 +405,12 @@ define([
         }
       };
 
-      // This function initializes the value @type field if it has not been initialized yet
+      // initializes the value @type field if it has not been initialized yet
       $scope.initializeValueType = function () {
         dms.initializeValueType($scope.field, $scope.model);
       };
 
-      // This function initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
+      // initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
       // It also initializes optionsUI
       $scope.initializeValue = function () {
         if (!$scope.hasBeenInitialized) {
@@ -444,7 +427,7 @@ define([
         $scope.hasBeenInitialized = true;
       };
 
-      // This function is used to uncheck radio buttons
+      // uncheck radio buttons
       $scope.uncheck = function (label) {
         if (dms.isRadioType($scope.field)) {
           if ($scope.optionsUI.radioPreviousOption == label) {
@@ -459,7 +442,7 @@ define([
         }
       };
 
-      // Sets the instance @value fields based on the options selected at the UI
+      // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
         var fieldValue = getValueLocation();
         var inputType = getInputType();
@@ -511,7 +494,7 @@ define([
         }
       };
 
-      // Set the UI with the values from the model
+      // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
         if (isMultiAnswer()) {
           $scope.optionsUI = {};
@@ -560,7 +543,7 @@ define([
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
         var valueLocation = getValueLocation();
-        var maxItems = DataManipulationService.getMaxItems($scope.field);
+        var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
           // copy selected instance in the model and insert immediately after
@@ -582,7 +565,7 @@ define([
 
             // add another instance in the model
             var obj = {};
-            obj[valueLocation] = DataManipulationService.getDefaultValue(valueLocation);
+            obj[valueLocation] = dms.getDefaultValue(valueLocation);
             $scope.model.push(obj);
 
             // activate the new instance
