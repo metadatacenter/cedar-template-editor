@@ -89,7 +89,7 @@ define([
         // can we add more?
         scope.canAdd = function () {
           var maxItems = DataManipulationService.getMaxItems(scope.field);
-          return scope.isMultiple && (!maxItems || scope.model.length < maxItems);
+          return scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
         };
 
         // can we delete?

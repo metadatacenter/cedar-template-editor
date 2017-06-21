@@ -63,6 +63,7 @@ define([
             $scope.model['@id'] = modelValue[index].termInfo['@id'];
             $scope.model['_valueLabel'] = modelValue[index].termInfo.label;
           }
+
         }
         // Value is undefined
         else {

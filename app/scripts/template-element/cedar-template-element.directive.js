@@ -42,7 +42,7 @@ define([
       };
 
       scope.getTitle = function () {
-        return $rootScope.schemaOf(scope.element)._ui.title;
+        return DataManipulationService.getTitle(scope.element);
       };
 
       scope.isNested = function () {
@@ -260,6 +260,7 @@ define([
 
       scope.removeChild = function () {
 
+        console.log('removeChild');console.log(scope.parentElement);console.log(scope.element);
         DataManipulationService.removeChild(scope.parentElement, scope.element);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), DataManipulationService.getId(scope.element)]);

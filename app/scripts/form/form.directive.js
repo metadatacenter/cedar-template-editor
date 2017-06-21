@@ -386,7 +386,6 @@ define([
 
         // create a copy of the form with the _tmp fields stripped out
         $scope.cleanForm = function () {
-          console.log('cleanForm')
 
           var copiedForm = jQuery.extend(true, {}, $scope.model);
           if (copiedForm) {

@@ -6,13 +6,19 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$filter', 'DataManipulationService', 'DataUtilService'];
+      SpreadsheetService.$inject = ['$rootScope', '$filter', 'DataManipulationService', 'DataUtilService',
+                                    'AuthorizedBackendService', 'HttpBuilderService', 'UrlService'];
 
-      function SpreadsheetService($rootScope, $filter, DataManipulationService, DataUtilService) {
+      function SpreadsheetService($rootScope, $filter, DataManipulationService, DataUtilService, AuthorizedBackendService,
+                                  HttpBuilderService, UrlService) {
 
         var service = {
-          serviceId: "SpreadsheetService"
+          serviceId: "SpreadsheetService",
+          fullScreen: false
         };
+
+        var dms = DataManipulationService;
+
 
         service.validators = function () {
           email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
@@ -45,7 +51,7 @@ define([
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
         // copy table data to source table
-        var updateDataModel = function ($scope) {
+        var updateDataModel = function ($scope, $element) {
           var sds = $scope.spreadsheetDataScope;
           for (var row in sds.tableData) {
             for (var col in sds.tableData[row]) {
@@ -60,12 +66,13 @@ define([
                 }
               }
 
+              // get the types and thge node for a nested field in an element
               var inputType = sds.columnDescriptors[col].type;
               var cedarType = sds.columnDescriptors[col].cedarType;
+
+
               if (inputType == 'dropdown') {
-                var containerArray = [];
-                containerArray.push(sds.tableData[row][col]);
-                sds.tableDataSource[row][col]['@value'] = containerArray;
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               } else if (cedarType == 'checkbox') {
                 var valueObject = JSON.parse(sds.tableData[row][col]);
                 var value = {};
@@ -73,6 +80,25 @@ define([
                   value[key] = true;
                 }
                 sds.tableDataSource[row][col]['@value'] = value;
+              } else if (inputType == 'autocomplete') {
+                if (sds.tableData[row][col]) {
+                  var value = sds.tableData[row][col];
+                  var nodeId = sds.columnDescriptors[col].nodeId;
+
+                  // do we have some autocomplete results?
+                  if ($rootScope.autocompleteResultsCache[nodeId]) {
+                    var results = $rootScope.autocompleteResultsCache[nodeId]['results']
+                    if (results) {
+                      for (var i = 0; i < results.length; i++) {
+                        if (value === results[i]['label']) {
+                          //sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                          sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
+                          sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                        }
+                      }
+                    }
+                  }
+                }
               } else {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               }
@@ -86,7 +112,7 @@ define([
           if (context.isField()) {
             headerOrder.push('value');
           } else {
-            var itemOrder = DataManipulationService.getOrder(scopeElement);
+            var itemOrder = dms.getOrder(scopeElement);
             for (var i in itemOrder) {
               headerOrder.push(itemOrder[i]);
             }
@@ -103,16 +129,28 @@ define([
           return list;
         };
 
+        // has recommendations?
+        var isRecommended = function (node) {
+          return $rootScope.vrs.getIsValueRecommendationEnabled(dms.schemaOf(node));
+        };
+
+        // has value constraints?
+        var isConstrained = function (node) {
+          return dms.hasValueConstraint(node) && !isRecommended(node);
+        };
+
         // build a description of the cell data
-        var getDescriptor = function(node) {
+        var getDescriptor = function (node) {
           var desc = {};
-          var literals = DataManipulationService.getLiterals(node);
-          var inputType = DataManipulationService.getInputType(node);
+          var literals = dms.getLiterals(node);
+          var inputType = dms.getInputType(node);
+
+
           desc.cedarType = inputType;
 
           if (inputType == 'date') {
             desc.type = 'date';
-            desc.dateFormat = 'MM/DD/YYYY HH:mm';
+            desc.dateFormat = 'MM/DD/YYYY';
             desc.correctFormat = true;
           } else if (inputType == 'email') {
             desc.allowInvalid = true;
@@ -120,17 +158,38 @@ define([
           } else if (inputType == 'numeric') {
             desc.type = 'numeric';
           } else if (inputType == 'list') {
-            //if (valueConstraints.multipleChoice == false) {
             desc.type = 'dropdown';
-            desc.source = extractOptionsForList(valueConstraints.literals);
+            desc.source = extractOptionsForList(dms.getLiterals(node));
             //}
           } else if (inputType == 'checkbox') {
             desc.type = 'checkboxes';
             desc.renderer = service.customRendererCheckboxes;
             desc.editor = 'checkboxes';//MultiCheckboxEditor;
-            desc.source = service.extractOptionsForList(valueConstraints.literals);
-          } else if (inputType == 'text') {
-            desc.type = 'text';
+            desc.source = extractOptionsForList(dms.getLiterals(node));
+          } else if (inputType == 'textfield') {
+            if (isConstrained(node)) {
+              desc.type = 'autocomplete';
+              desc.strict = true;
+              desc.nodeId = dms.getId(node);
+              // get the values for the async autocomplete
+              desc.source = function (query, process) {
+                $rootScope.updateFieldAutocomplete(dms.schemaOf(node), query);
+                setTimeout(function () {
+
+                  var id = dms.getId(node);
+                  var results = $rootScope.autocompleteResultsCache[id]['results'];
+
+                  var labels = [];
+                  for (var i = 0; i < results.length; i++) {
+                    labels[i] = results[i]['label'];
+                  }
+                  process(labels);
+                }, 200);
+              };
+            } else {
+              desc.type = 'text';
+            }
+
           }
           return desc;
         };
@@ -143,7 +202,7 @@ define([
               colDescriptors.push(getDescriptor(node));
             } else {
               var key = columnHeaderOrder[i];
-              var child = DataManipulationService.propertiesOf(node)[key];
+              var child = dms.propertiesOf(node)[key];
               colDescriptors.push(getDescriptor(child));
             }
           }
@@ -208,7 +267,7 @@ define([
           return tableDataSource;
         };
 
-        var getColHeaders = function(columnHeaderOrder) {
+        var getColHeaders = function (columnHeaderOrder) {
           var colHeaders = [];
           for (var i in columnHeaderOrder) {
             colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
@@ -225,7 +284,7 @@ define([
         };
 
         // register the event hooks
-        var registerHooks = function(hot, $scope, $element,columnHeaderOrder) {
+        var registerHooks = function (hot, $scope, $element, columnHeaderOrder) {
           var $hooksList = $('#hooksList');
           var hooks = Handsontable.hooks.getRegistered();
           var example1_events = document.getElementById("spreadsheetViewLogs");
@@ -294,6 +353,7 @@ define([
 
               if (hook === 'afterChange') {
                 updateDataModel($scope, $element);
+                resize($scope);
               }
 
               if (hook === 'afterCreateRow') {
@@ -316,18 +376,21 @@ define([
         };
 
         // resize the container based on size of table
-        var resize = function($scope) {
-          var tableData = $scope.spreadsheetDataScope.tableData;
-          var container = $scope.spreadsheetDataScope.container;
-          var detectorElement = $scope.spreadsheetDataScope.detectorElement;
+        var resize = function ($scope) {
+          if (!service.isFullscreen()) {
+            var tableData = $scope.spreadsheetDataScope.tableData;
+            var container = $scope.spreadsheetDataScope.container;
+            var detectorElement = $scope.spreadsheetDataScope.detectorElement;
 
-          // Compute size based on available width and number of rows
-          var spreadsheetRowCount = tableData.length;
-          var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
-          var spreadsheetContainerWidth = detectorElement.width() - 5;
+            // Compute size based on available width and number of rows
+            var spreadsheetRowCount = tableData.length;
+            var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
+            var spreadsheetContainerWidth = detectorElement.width() - 5;
 
-          angular.element(container).css("height", spreadsheetContainerHeight + "px");
-          angular.element(container).css("width", spreadsheetContainerWidth + "px");
+            angular.element(container).css("height", spreadsheetContainerHeight + "px");
+            angular.element(container).css("width", spreadsheetContainerWidth + "px");
+          }
+
         };
 
         // build the spreadsheet, stuff it into the dom, and make it visible
@@ -335,14 +398,14 @@ define([
 
           $scope.spreadsheetContext = context;
           context.isField = isField;
-
+          
           var columnHeaderOrder = getColumnHeaderOrder(context, $element);
           var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder);
           var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
           var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
           var colHeaders = getColHeaders(columnHeaderOrder);
-          var minRows = DataManipulationService.getMinItems($element) || 0;
-          var maxRows = DataManipulationService.getMaxItems($element) || Number.POSITIVE_INFINITY;
+          var minRows = dms.getMinItems($element) || 0;
+          var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
           var config = {
             data              : tableData,
             minSpareRows      : 1,
@@ -373,6 +436,7 @@ define([
             tableData        : tableData,
             tableDataSource  : tableDataSource,
             columnDescriptors: columnDescriptors,
+            columnHeaderOrder: columnHeaderOrder,
             addCallback      : addCallback,
             removeCallback   : removeCallback,
             detectorElement  : detectorElement,
@@ -396,7 +460,12 @@ define([
           context.setTable(hot);
         };
 
-        service.addRow = function($scope) {
+
+        service.isFullscreen = function() {
+          return window.innerHeight == screen.height;
+        };
+
+        service.addRow = function ($scope) {
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             var hot = context.getTable();

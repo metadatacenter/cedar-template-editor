@@ -6,7 +6,8 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarRuntimeElement', [])
       .directive('cedarRuntimeElement', cedarRuntimeElement);
 
-  cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'UIUtilService','DataManipulationService', 'DataUtilService',
+  cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'UIUtilService', 'DataManipulationService',
+                                 'DataUtilService',
                                  'SpreadsheetService'];
 
   function cedarRuntimeElement($rootScope, $timeout, $window, UIUtilService, DataManipulationService, DataUtilService,
@@ -68,27 +69,27 @@ define([
       };
 
       // does the element contain this property
-      scope.hasProperty = function(key) {
+      scope.hasProperty = function (key) {
         return dms.hasProperty(scope.element, key);
       };
 
       // get the child node for this property
-      scope.getChildNode = function(key) {
+      scope.getChildNode = function (key) {
         return dms.getChildNode(scope.element, key);
       };
 
       // is the child an element?
-      scope.isChildElement = function(key) {
+      scope.isChildElement = function (key) {
         return DataUtilService.isElement(dms.getChildNode(scope.element, key))
       };
 
       // get the order array
-      scope.getOrder = function() {
+      scope.getOrder = function () {
         return dms.getOrder(scope.element);
       };
 
       // get the property labels from the element
-      scope.getPropertyLabels = function() {
+      scope.getPropertyLabels = function () {
         return dms.getPropertyLabels(scope.element);
       };
 
@@ -192,8 +193,6 @@ define([
       );
 
 
-
-
       //
       // control element visibility
       //
@@ -282,51 +281,59 @@ define([
 
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
-        var fromIndex = (typeof index === 'undefined') ? scope.index : index;
-        var maxItems = dms.getMaxItems(scope.element);
-        if ((!maxItems || scope.model.length < maxItems)) {
-          if (scope.model.length > 0) {
-            var seed = {};
-            seed = angular.copy(scope.model[fromIndex]);
-            // delete the @id field of the template-element-instance. The backend will need to generate a new one
-            delete seed['@id'];
-            scope.model.splice(fromIndex + 1, 0, seed);
+        if (scope.isMultiple()) {
+          var fromIndex = (typeof index === 'undefined') ? scope.index : index;
+          var maxItems = dms.getMaxItems(scope.element);
+          if ((!maxItems || scope.model.length < maxItems)) {
+            if (scope.model.length > 0) {
+              var seed = {};
+              seed = angular.copy(scope.model[fromIndex]);
+              // delete the @id field of the template-element-instance. The backend will need to generate a new one
+              delete seed['@id'];
+              scope.model.splice(fromIndex + 1, 0, seed);
+            }
+            // activate the new instance
+            scope.setActive(fromIndex + 1, true);
           }
-          // activate the new instance
-          scope.setActive(fromIndex + 1, true);
         }
       };
 
       // add a new empty element at the end of the array
       scope.addElement = function () {
-        var maxItems = dms.getMaxItems(scope.element);
-        if ((!maxItems || scope.model.length < maxItems)) {
-          var seed = {};
-          var properties = dms.propertiesOf(scope.element);
-          scope.model.push(seed);
-          if (angular.isArray(scope.model)) {
-            angular.forEach(scope.model, function (m) {
-              dms.findChildren(properties, m);
-            });
-          } else {
-            dms.findChildren(properties, scope.model);
+        if (scope.isMultiple()) {
+
+          var maxItems = dms.getMaxItems(scope.element);
+          if ((!maxItems || scope.model.length < maxItems)) {
+            var seed = {};
+            var properties = dms.propertiesOf(scope.element);
+            scope.model.push(seed);
+            if (angular.isArray(scope.model)) {
+              angular.forEach(scope.model, function (m) {
+                dms.findChildren(properties, m);
+              });
+            } else {
+              dms.findChildren(properties, scope.model);
+            }
+            // activate the new instance
+            scope.setActive(scope.model.length - 1, true);
           }
-          // activate the new instance
-          scope.setActive(scope.model.length - 1, true);
+
         }
       };
 
       // remove the element at index
       scope.removeElement = function (index) {
-        if (scope.model.length > dms.getMinItems(scope.element)) {
-          scope.model.splice(index, 1);
-          if (scope.model.length === 0) {
-            scope.toggleExpanded(0);
+        if (scope.isMultiple()) {
+          if (scope.model.length > dms.getMinItems(scope.element)) {
+            scope.model.splice(index, 1);
+            if (scope.model.length === 0) {
+              scope.toggleExpanded(0);
+            }
           }
         }
       };
 
-      scope.addRow = function() {
+      scope.addRow = function () {
         if (scope.isSpreadsheetView()) {
           SpreadsheetService.addRow(scope);
         } else {

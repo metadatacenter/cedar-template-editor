@@ -102,7 +102,9 @@ define([
         };
 
         service.defaultTitle = function (node) {
-          service.schemaOf(node)._ui.title = $translate.instant("GENERIC.Untitled");
+          if (service.schemaOf(node)._ui.title.length == 0) {
+            service.schemaOf(node)._ui.title = $translate.instant("GENERIC.Untitled");
+          }
         };
 
         service.getDescription = function (node) {
@@ -1209,6 +1211,16 @@ define([
         // controlled terms
         //
 
+        // has recommendations?
+        service.isRecommended = function (node) {
+          return $rootScope.vrs.getIsValueRecommendationEnabled(service.schemaOf(node));
+        };
+
+        // has value constraints?
+        service.isConstrained = function (node) {
+          return service.hasValueConstraint(node) && !service.isRecommended();
+        };
+
         // get the controlled terms list for field types
         service.getFieldControlledTerms = function (node) {
 
@@ -1419,12 +1431,12 @@ define([
 
         service.removeChild = function (parent, child) {
           // child must contain the schema level
-          child = $rootScope.schemaOf(child);
+          var id = service.getId(child);
 
           var selectedKey;
-          var props = $rootScope.propertiesOf(parent);
+          var props = service.propertiesOf(parent);
           angular.forEach(props, function (value, key) {
-            if (value["@id"] == child["@id"]) {
+            if (service.getId(value) == id) {
               selectedKey = key;
             }
           });
@@ -1432,11 +1444,11 @@ define([
           if (selectedKey) {
             delete props[selectedKey];
 
-            var idx = $rootScope.schemaOf(parent)._ui.order.indexOf(selectedKey);
-            $rootScope.schemaOf(parent)._ui.order.splice(idx, 1);
+            var idx = service.getOrder(parent).indexOf(selectedKey);
+            service.getOrder(parent).splice(idx, 1);
 
             // remove property label for this element
-            delete $rootScope.schemaOf(parent)._ui.propertyLabels[selectedKey];
+            delete service.getPropertyLabels(parent)[selectedKey];
 
             // Remove it from the top-level 'required' array
             parent = service.removeKeyFromRequired(parent, selectedKey);

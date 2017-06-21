@@ -55,11 +55,11 @@ define([
       if (!("requestFullscreen" in elm)) {
         if (!("webkitRequestFullscreen" in elm)) {
         } else {
-          elm.setAttribute('style', 'width:100%;height:100%');
+          elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
           elm.webkitRequestFullscreen();
         }
       } else {
-        elm.setAttribute('style', 'width:100%;height:100%');
+        elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
         elm.requestFullscreen();
       }
     };
@@ -104,6 +104,7 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
+        viewState.selected = 'spreadsheet';
       }
       return viewState;
     };
@@ -351,6 +352,7 @@ define([
     service.setDefaults = function (node) {
 
       DataManipulationService.defaultTitle(node);
+
 
       var inputType = DataManipulationService.getInputType(node);
       if (inputType == "radio" || inputType == "checkbox" || inputType == "list") {
