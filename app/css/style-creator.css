@@ -11662,6 +11662,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .row:hover .toolbar {
   visibility: visible;
 }
+.template-body form .runtime .row.isActive .toolbar {
+  visibility: visible;
+}
 .template-body form .runtime .answer {
   border: 1px solid transparent;
   font-size: 1em;
@@ -11744,14 +11747,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button {
   vertical-align: middle;
   background-color: transparent;
+  color: #616161;
 }
 .template-body form .runtime button.goaway {
   position: absolute;
   top: 0;
   right: 0;
-}
-.template-body form .runtime button.add {
-  color: #ff8c00;
 }
 .template-body form .runtime button.delete-hidden {
   color: transparent;
@@ -11759,23 +11760,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button.remove-hidden {
   color: transparent;
 }
-.template-body form .runtime button.expand-all {
-  color: #999;
-}
 .template-body form .runtime button.expand {
   margin-right: 0;
   padding-right: 0;
   margin-left: 0;
   padding-left: 0;
-}
-.template-body form .runtime button.edit {
-  color: #999;
-}
-.template-body form .runtime button.question {
-  color: #5795ba;
-}
-.template-body form .runtime button.spreadsheet {
-  color: #999;
 }
 .template-body form .runtime button i {
   min-width: 12px;

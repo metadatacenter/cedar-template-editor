@@ -21,7 +21,7 @@
     <!-- a spreadsheet list of elements -->
     <div ng-if="isSpreadsheetView() && valueArray.length > 0">
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
-        <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
+        <div class="row " style="cursor:pointer"  ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
 
           <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
@@ -59,7 +59,7 @@
 
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
-      <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
+      <div class="row " style="cursor:pointer"  ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
@@ -109,7 +109,7 @@
     <div ng-if="isListView()" ng-repeat="(i, valueElement) in valueArray">
       <div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
-        <div class="row isInactive " ng-click="toggleExpanded(i)">
+        <div class="row"  ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
           <div class="col-sm-8 ">
 
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">

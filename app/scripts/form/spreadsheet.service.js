@@ -13,16 +13,14 @@ define([
                                   HttpBuilderService, UrlService) {
 
         var service = {
-          serviceId: "SpreadsheetService",
-          fullScreen: false
+          serviceId     : "SpreadsheetService",
+          emailValidator: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
+          phoneValidator: /^[\s()+-]*([0-9][\s()+-]*){6,20}$/,
+          linkValidator : /^(ftp|http|https):\/\/[^ "]+$/
         };
 
         var dms = DataManipulationService;
 
-
-        service.validators = function () {
-          email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-        };
 
         service.customRendererCheckboxes = function (instance, td, row, col, prop, value, cellProperties) {
           var objValue = JSON.parse(value);
@@ -89,11 +87,16 @@ define([
                   if ($rootScope.autocompleteResultsCache[nodeId]) {
                     var results = $rootScope.autocompleteResultsCache[nodeId]['results']
                     if (results) {
-                      for (var i = 0; i < results.length; i++) {
+                      console.log('looking for value ' + value);
+                      loop: for (var i = 0; i < results.length; i++) {
                         if (value === results[i]['label']) {
+
+
                           //sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
                           sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
                           sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                          console.log('found');
+                          break loop;
                         }
                       }
                     }
@@ -144,52 +147,72 @@ define([
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
-
-
           desc.cedarType = inputType;
+          switch (inputType) {
 
-          if (inputType == 'date') {
-            desc.type = 'date';
-            desc.dateFormat = 'MM/DD/YYYY';
-            desc.correctFormat = true;
-          } else if (inputType == 'email') {
-            desc.allowInvalid = true;
-            desc.validator = service.validators.email;
-          } else if (inputType == 'numeric') {
-            desc.type = 'numeric';
-          } else if (inputType == 'list') {
-            desc.type = 'dropdown';
-            desc.source = extractOptionsForList(dms.getLiterals(node));
-            //}
-          } else if (inputType == 'checkbox') {
-            desc.type = 'checkboxes';
-            desc.renderer = service.customRendererCheckboxes;
-            desc.editor = 'checkboxes';//MultiCheckboxEditor;
-            desc.source = extractOptionsForList(dms.getLiterals(node));
-          } else if (inputType == 'textfield') {
-            if (isConstrained(node)) {
-              desc.type = 'autocomplete';
-              desc.strict = true;
-              desc.nodeId = dms.getId(node);
-              // get the values for the async autocomplete
-              desc.source = function (query, process) {
-                $rootScope.updateFieldAutocomplete(dms.schemaOf(node), query);
-                setTimeout(function () {
+            case 'date':
+              desc.type = 'date';
+              desc.dateFormat = 'MM/DD/YYYY';
+              desc.correctFormat = true;
+              break;
+            case 'link':
+              desc.allowInvalid = true;
+              desc.validator = service.linkValidator;
+              desc.allowInvalid = true;
+              break;
+            case 'phone-number':
+              desc.allowInvalid = true;
+              desc.validator = service.phoneValidator;
+              desc.allowInvalid = true;
+              break;
+            case 'email':
+              desc.allowInvalid = true;
+              desc.validator = service.emailValidator;
+              desc.allowInvalid = true;
+              break;
+            case 'numeric':
+              desc.type = 'numeric';
+              desc.format = '0.0[0000]';
+              desc.allowInvalid = true;
+              break;
+            case 'list':
+              desc.type = 'dropdown';
+              desc.source = extractOptionsForList(dms.getLiterals(node));
+              break;
+            case 'checkbox':
+              //   desc.type = 'checkboxes';
+              //   desc.renderer = service.customRendererCheckboxes;
+              //   desc.editor = 'checkboxes';//MultiCheckboxEditor;
+              //   desc.source = extractOptionsForList(dms.getLiterals(node));
+              break;
+            case 'textfield':
+              if (isConstrained(node)) {
+                desc.type = 'autocomplete';
+                desc.strict = true;
+                desc.nodeId = dms.getId(node);
+                // get the values for the async autocomplete
+                desc.source = function (query, process) {
+                  console.log('get the values for this query ' + query);
+                  $rootScope.updateFieldAutocomplete(dms.schemaOf(node), query);
+                  setTimeout(function () {
 
-                  var id = dms.getId(node);
-                  var results = $rootScope.autocompleteResultsCache[id]['results'];
+                    var id = dms.getId(node);
+                    var results = $rootScope.autocompleteResultsCache[id]['results'];
 
-                  var labels = [];
-                  for (var i = 0; i < results.length; i++) {
-                    labels[i] = results[i]['label'];
-                  }
-                  process(labels);
-                }, 200);
-              };
-            } else {
-              desc.type = 'text';
-            }
+                    var labels = [];
+                    for (var i = 0; i < results.length; i++) {
+                      labels[i] = results[i]['label'];
+                    }
+                    console.log('process lables for query ' + query);
+                    process(labels);
+                  }, 200);
+                };
+              } else if (isRecommended(node)) {
 
+              } else {
+                desc.type = 'text';
+              }
+              break;
           }
           return desc;
         };
@@ -267,13 +290,23 @@ define([
           return tableDataSource;
         };
 
-        var getColHeaders = function (columnHeaderOrder) {
+        // get the single field or nested field titles
+        var getColHeaders = function ( $element,  columnHeaderOrder, isField) {
           var colHeaders = [];
-          for (var i in columnHeaderOrder) {
-            colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
+
+          if (isField) {
+            colHeaders.push(DataManipulationService.getTitle($element));
+          } else {
+            for (var i in columnHeaderOrder) {
+              var key = columnHeaderOrder[i];
+              var node = DataManipulationService.propertiesOf($element)[key];
+              var title = DataManipulationService.getTitle(node);
+              colHeaders.push(title);
+            }
           }
           return colHeaders;
         };
+
 
         var applyVisibility = function ($scope) {
           var context = $scope.spreadsheetContext;
@@ -344,14 +377,23 @@ define([
 
           hooks.forEach(function (hook) {
             var checked = '';
-            if (hook === 'beforePaste' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
+            if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
                 hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
               checked = 'checked';
             }
 
             hot.addHook(hook, function () {
 
+              if (hook === 'afterPaste') {
+                console.log('afterPaste');
+              }
+
+              if (hook === 'beforePaste') {
+                console.log('beforePaste');
+              }
+
               if (hook === 'afterChange') {
+                console.log('afterChange');
                 updateDataModel($scope, $element);
                 resize($scope);
               }
@@ -390,20 +432,20 @@ define([
             angular.element(container).css("height", spreadsheetContainerHeight + "px");
             angular.element(container).css("width", spreadsheetContainerWidth + "px");
           }
-
         };
 
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
+          console.log('createSpreadsheet');
 
           $scope.spreadsheetContext = context;
           context.isField = isField;
-          
+
           var columnHeaderOrder = getColumnHeaderOrder(context, $element);
           var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder);
           var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
           var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
-          var colHeaders = getColHeaders(columnHeaderOrder);
+          var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
           var minRows = dms.getMinItems($element) || 0;
           var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
           var config = {
@@ -461,7 +503,7 @@ define([
         };
 
 
-        service.isFullscreen = function() {
+        service.isFullscreen = function () {
           return window.innerHeight == screen.height;
         };
 
@@ -475,6 +517,7 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
+          console.log('destroySpreadsheet');
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             context.switchVisibility();

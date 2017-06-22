@@ -2839,6 +2839,12 @@ section.dashboard-elements {
     }
   }
 
+  .row.isActive {
+    .toolbar {
+      visibility: visible;
+    }
+  }
+
   .answer {
     border: 1px solid transparent;
     font-size: 1em;
@@ -2922,6 +2928,7 @@ section.dashboard-elements {
   button {
     vertical-align: middle;
     background-color: transparent;
+    color: @dark-gray;
 
     &.goaway {
       position: absolute;
@@ -2929,36 +2936,17 @@ section.dashboard-elements {
       right: 0;
     }
 
-    &.add {
-      color: @brand-accent;
-    }
-    &.delete {
-    }
-    &.delete-hidden {
+    &.delete-hidden{
       color: transparent;
     }
     &.remove-hidden {
       color: transparent;
-    }
-    &.expand-all {
-      color: #999;
     }
     &.expand {
       margin-right: 0;
       padding-right: 0;
       margin-left: 0;
       padding-left: 0;
-    }
-    &.edit {
-      color: #999;
-    }
-    &.question {
-      color: @brand-primary;
-    }
-    &.remove {
-    }
-    &.spreadsheet {
-      color: #999;
     }
     i {
       min-width: 12px;
