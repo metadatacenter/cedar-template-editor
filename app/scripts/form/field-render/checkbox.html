@@ -7,7 +7,7 @@
   <div class="form-group floating-label-wrapper ng-scope"
       ng-class="{'required': isRequired()}">
     <div class="form-group field-wrapper-checkbox  ">
-      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{getTitle()}}</p>
       <div ng-init="initializeSelectionField()">
         <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="checkbox checkbox-primary">

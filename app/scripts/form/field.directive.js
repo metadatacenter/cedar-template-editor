@@ -56,6 +56,23 @@ define([
         return dms.isRequired($scope.field);
       };
 
+      $scope.getDomId = function (node) {
+        return dms.getDomId(node);
+      };
+
+      $scope.getTitle = function () {
+        return dms.getTitle($scope.field);
+      };
+
+      $scope.getDescription = function () {
+        return dms.getDescription($scope.field);
+      };
+
+
+      $scope.getLiterals = function () {
+        return dms.getLiterals($scope.field);
+      };
+
       // default the cardinality to 1..N
       $scope.defaultMinMax = function () {
         dms.defaultMinMax($scope.field);

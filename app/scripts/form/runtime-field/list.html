@@ -38,14 +38,14 @@
   <!-- Single choice (Inactive) -->
   <div ng-if="!isActive(index) && !isMultipleChoice()">
     <div class=" value" ng-click="setActive(index,true)"
-        aria-label="{{getDescription(field)}}">{{model['@value']}}
+        aria-label="{{getDescription()}}">{{model['@value']}}
     </div>
   </div>
 
   <!-- Multiple choice (Inactive) -->
   <div ng-if="!isActive(index) && isMultipleChoice()">
     <div class=" value" ng-click="setActive(index,true)"
-        aria-label="{{getDescription(field)}}">{{getValueString(valueArray[index])}}
+        aria-label="{{getDescription()}}">{{getValueString(valueArray[index])}}
     </div>
   </div>
 

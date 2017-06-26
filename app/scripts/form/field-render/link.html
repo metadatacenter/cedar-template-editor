@@ -11,8 +11,8 @@
           class="form-control xx"
           ng-change="setDefaultValueIfEmpty(model)"
           ng-class="{'required': isRequired()}"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
+          placeholder="{{getTitle()}}"
+          aria-label="{{getDescription()}}"
           ng-model="model['@value']"
           ng-disabled="!isRuntime() || preview"
           with-floating-label="">
@@ -28,9 +28,8 @@
     <input type="text"
         class="form-control has-success has-feedback"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
     <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
@@ -47,8 +46,8 @@
           class="form-control has-success has-feedback"
           ng-change="setDefaultValueIfEmpty(model)"
           ng-class="{'required': isRequired()}"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
+          placeholder="{{getTitle()}}"
+          aria-label="{{getDescription()}}"
           ng-model="valueElement['@value']"
           ng-disabled="!isRuntime() || preview"
           with-floating-label=""/>

@@ -11,7 +11,7 @@
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
 
-      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
 
       <select class="form-control"
           multiple="false"
@@ -34,7 +34,7 @@
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': isRequired()}">
 
-      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
 
       <select class="form-control"
           multiple="true"

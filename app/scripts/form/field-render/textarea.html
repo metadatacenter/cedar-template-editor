@@ -9,8 +9,8 @@
     <input type="text"
         class="form-control has-success has-feedback"
         ng-class="{'required': isRequired()}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
     <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
@@ -24,8 +24,8 @@
         class="form-control"
         ng-change="setDefaultValueIfEmpty(model)"
         ng-class="{'required': isRequired()}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"
         ng-disabled="!isRuntime() || preview"
         with-floating-label=""></textarea>
@@ -44,8 +44,8 @@
     <textarea rows="5"
         id="comment"
         class="form-control"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="model['@value']"
         ng-disabled="true"
         with-floating-label=""></textarea>
@@ -61,8 +61,8 @@
         id="comment"
         ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="model['@value']"
         ng-disabled="!isRuntime() || preview"
         with-floating-label=""></textarea>

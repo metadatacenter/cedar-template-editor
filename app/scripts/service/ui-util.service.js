@@ -49,20 +49,21 @@ define([
       return viewState;
     };
 
-    // switch into full screen mode for a spreadsheet
+    // switch into full screen mode  for the spreadsheet container
     service.fullscreen = function (locator) {
       var elm = document.querySelector('#' + locator + ' .spreadsheetViewContainer');
-      if (!("requestFullscreen" in elm)) {
+      if (!("mozRequestFullScreen" in elm)) {
         if (!("webkitRequestFullscreen" in elm)) {
+          console.log('no fullscreen ' + document.fullscreenEnabled);
         } else {
           elm.webkitRequestFullscreen();
           elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
         }
       } else {
-        elm.requestFullscreen();
+        elm.mozRequestFullScreen();
+        elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
       }
     };
-
 
     // element or field be edited as a spreadsheet if it is multi-instance
     // and does not contain nested elements or multi-instance fields
@@ -103,13 +104,13 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
-        viewState.selected = 'spreadsheet';
+        //viewState.selected = 'spreadsheet';
       }
       return viewState;
     };
 
     //
-    //
+    //  basics
     //
 
     service.isRuntime = function () {
@@ -145,14 +146,14 @@ define([
       return 'dom-' + id + '-' + (path || 0).toString() + '-' + (index || 0).toString();
     };
 
-    // look to see if this node has been identified by angular as an invalid pattern
+    // look to see if this node's value has been identified by angular as invalid
     service.isValidPattern = function (node, index, path, id) {
       var locator = service.getLocator(node, index, path, id) + '.ng-invalid';
       var target = jQuery('#' + locator);
       return (target.length == 0);
     };
 
-    // get the value of the dom object for this node
+    // get the dom object for this node
     service.getDomValue = function (node, index, path, id) {
       var result;
       var locator = service.getLocator(node, index, path, id);
@@ -162,7 +163,6 @@ define([
       }
       return result;
     };
-
 
     // set this field instance active
     service.setActive = function (field, index, path, uid, value) {
@@ -197,10 +197,7 @@ define([
       }, 250);
     };
 
-    /**
-     * Scroll to a dom id. Delay ensures that a new field or element has been created and drawn.
-     * @param id
-     */
+    // Scroll to a dom id. Delay ensures that a new field or element has been created and drawn.
     service.scrollToDomId = function (id) {
 
       $timeout(function () {
@@ -216,10 +213,7 @@ define([
       );
     };
 
-    /**
-     * toggle element's contents.
-     * @param id
-     */
+    // toggle element's contents
     service.toggleElement = function (id) {
 
       $timeout(function () {
@@ -233,25 +227,6 @@ define([
           }, 350
       );
     };
-
-    // create a modal id for the controlled terms modals
-    service.getModalId = function (id, type) {
-      if (id) {
-        id = id.substring(id.lastIndexOf('/') + 1);
-      }
-      return "control-options-" + id + "-" + type;
-    };
-
-    // show the controlled terms modal
-    service.showModal = function (id, type) {
-      jQuery("#" + service.getModalId(id, type)).modal('show');
-    };
-
-    // hide the controlled terms modal
-    service.hideModal = function (id, type) {
-      jQuery("#" + service.getModalId(id, type)).modal('hide');
-    };
-
 
     service.getYouTubeEmbedFrame = function (field) {
 
@@ -277,7 +252,6 @@ define([
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
 
-
     service.cardinalityString = function (node) {
       var result = '';
       if (DataManipulationService.isMultipleCardinality(node)) {
@@ -286,6 +260,30 @@ define([
       }
       return result;
     };
+
+    //
+    //  modals
+    //
+
+    // create a modal id for the controlled terms modals
+    service.getModalId = function (id, type) {
+      if (id) {
+        id = id.substring(id.lastIndexOf('/') + 1);
+      }
+      return "control-options-" + id + "-" + type;
+    };
+
+    // show the controlled terms modal
+    service.showModal = function (id, type) {
+      jQuery("#" + service.getModalId(id, type)).modal('show');
+    };
+
+    // hide the controlled terms modal
+    service.hideModal = function (id, type) {
+      jQuery("#" + service.getModalId(id, type)).modal('hide');
+    };
+
+
 
 
     //
@@ -348,13 +346,10 @@ define([
       return errorMessages.length == 0;
     };
 
+    // default the title and options if necessary
     service.setDefaults = function (node) {
-
       DataManipulationService.defaultTitle(node);
-
-
-      var inputType = DataManipulationService.getInputType(node);
-      if (inputType == "radio" || inputType == "checkbox" || inputType == "list") {
+      if (DataManipulationService.isMultiAnswer(node)) {
         DataManipulationService.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
       }
     };

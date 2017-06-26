@@ -61,6 +61,7 @@ define(['angular'], function (angular) {
     };
 
     service.getValueRecommendationResults = function (field) {
+      console.log('getValueRecommendationResults');
       var fieldId = service.getFieldId(field);
       if (fieldId) {
         if (angular.isUndefined(valueRecommendationResults[fieldId])) {
@@ -79,6 +80,7 @@ define(['angular'], function (angular) {
      * Service methods.
      */
     service.updatePopulatedFields = function (field, value) {
+      console.log('updatePopulatedFields');
       var fieldId = service.getFieldId(field);
       if (fieldId) {
         if (value) {
@@ -95,6 +97,7 @@ define(['angular'], function (angular) {
 
     // Returns all populated fields (name and value) except excludedFieldId, which is the field that is being filled out
     service.getRelevantPopulatedFields = function (excludedFieldId) {
+      console.log('getRelevantPopulatedFields');
       var relevantPopulatedFieldsArray = [];
       if (populatedFields) {
         // Shallow copy
@@ -110,6 +113,7 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field) {
+      console.log('updateValueRecommendationResults');
       var fieldId = service.getFieldId(field);
       if (fieldId) {
         var targetFieldPath = field._path;
@@ -161,6 +165,7 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
+      console.log('getRecommendation');
       var inputData = {};
       if (populatedFields.length > 0) {
         inputData['populatedFields'] = populatedFields;

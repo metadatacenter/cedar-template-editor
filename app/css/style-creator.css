@@ -11835,12 +11835,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: transparent;
   min-height: 10px;
 }
-.template-body form .runtime .field-root .add {
-  color: #ff8c00;
-}
-.template-body form .runtime .field-root .question {
-  color: #5795ba;
-}
 .template-body form .runtime .field-root .title {
   color: #666;
   font-weight: 200;
@@ -12182,6 +12176,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: inline-block;
   vertical-align: top;
   color: red;
+}
+.spreadsheetViewContainer {
+  overflow: hidden;
 }
 .alert {
   border-radius: 0;

@@ -388,10 +388,10 @@ define([
 
           // remove it from the property Labels?
           console.log('delete property labels?');
-          console.log($rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
-          //delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
+          console.log(dms.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
 
-          if ($rootScope.isElement(schema)) {
+
+          if (UIUtilService.isElement(schema)) {
             scope.$emit("invalidElementState",
                 ["remove", schema._ui.title, schema["@id"]]);
           } else {
@@ -448,8 +448,8 @@ define([
 
             scope.$apply();
 
-            var props = $rootScope.schemaOf(scope.element).properties;
-            var order = $rootScope.schemaOf(scope.element)._ui.order;
+            var props = dms.schemaOf(scope.element).properties;
+            var order = dms.schemaOf(scope.element)._ui.order;
             var nextKey = order[0];
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
@@ -500,8 +500,8 @@ define([
 
         // is there another sibling
         if (!found) {
-          var order = $rootScope.schemaOf(scope.element)._ui.order;
-          var props = $rootScope.schemaOf(scope.element).properties;
+          var order = dms.schemaOf(scope.element)._ui.order;
+          var props = dms.schemaOf(scope.element).properties;
           var idx = order.indexOf(fieldKey);
 
           idx += 1;

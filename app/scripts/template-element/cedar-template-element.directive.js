@@ -38,11 +38,19 @@ define([
       };
 
       scope.isRoot = function () {
-        return ($rootScope.schemaOf(scope.element)['@id'] === $rootScope.keyOfRootElement);
+        return (DataManipulationService.getId(scope.element) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
         return DataManipulationService.getTitle(scope.element);
+      };
+
+      scope.getId = function () {
+        return DataManipulationService.getId(scope.element);
+      };
+
+      scope.getDomId = function (node) {
+        return DataManipulationService.getDomId(node);
       };
 
       scope.isNested = function () {
@@ -93,7 +101,7 @@ define([
           if (!DataUtilService.isSpecialKey(key)) {
             if (key == '@value') {
               if (angular.isArray(model)) {
-                if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                if (DataManipulationService.schemaOf(settings)._ui.inputType == "list") {
                   model.splice(0, model.length);
                 } else {
                   for (var i = 0; i < model.length; i++) {
@@ -121,7 +129,7 @@ define([
                 angular.forEach(model, function (v, k) {
                   if (k == '@value') {
                     if (angular.isArray(v)) {
-                      if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                      if (DataManipulationService.schemaOf(settings)._ui.inputType == "list") {
                         v.splice(0, v.length);
                       } else {
                         for (var i = 0; i < v.length; i++) {
@@ -161,7 +169,7 @@ define([
 
       var setLabels = function() {
         if (scope.parentElement) {
-          scope.labels = $rootScope.schemaOf(scope.parentElement)._ui.propertyLabels;
+          scope.labels = DataManipulationService.getPropertyLabels(scope.parentElement);
         }
       };
 
@@ -191,7 +199,7 @@ define([
       }
 
       if (!scope.state) {
-        if (scope.element && $rootScope.schemaOf(scope.element)._ui && $rootScope.schemaOf(scope.element)._ui.title) {
+        if (scope.element && DataManipulationService.schemaOf(scope.element)._ui && DataManipulationService.getTitle(scope.element)) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -249,7 +257,6 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
@@ -260,10 +267,10 @@ define([
 
       scope.removeChild = function () {
 
-        console.log('removeChild');console.log(scope.parentElement);console.log(scope.element);
+
         DataManipulationService.removeChild(scope.parentElement, scope.element);
         scope.$emit("invalidElementState",
-            ["remove", scope.getTitle(), DataManipulationService.getId(scope.element)]);
+            ["remove", scope.getTitle(), scope.getId()]);
 
       };
 
@@ -339,14 +346,18 @@ define([
         return UIUtilService.canDeselect(field, scope.renameChildKey);
       };
 
+      scope.elementIsMultiInstance = function (node) {
+        return DataManipulationService.elementIsMultiInstance(node);
+      };
+
       scope.$on('saveForm', function (event) {
         if (scope.isEditState() && !scope.canDeselect(scope.element)) {
 
           scope.$emit("invalidElementState",
-              ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
+              ["add", scope.getTitle(), scope.getId()]);
         } else {
           scope.$emit("invalidElementState",
-              ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
+              ["remove", scope.getTitle(), scope.getId()]);
         }
       });
 
@@ -386,21 +397,21 @@ define([
       scope.modalType;
       // create an id for the controlled terms modal
       scope.getModalId = function (type) {
-        return UIUtilService.getModalId(DataManipulationService.getId(scope.element), type);
+        return UIUtilService.getModalId(scope.getId(), type);
       };
 
       // show the controlled terms modal
       scope.showModal = function (type) {
         if (type) {
           scope.modalType = type;
-          UIUtilService.showModal(DataManipulationService.getId(scope.element), type);
+          UIUtilService.showModal(scope.getId(), type);
         }
       };
 
       // show the controlled terms modal
       scope.hideModal = function () {
         if (scope.modalType) {
-          UIUtilService.hideModal(DataManipulationService.getId(scope.element), scope.modalType);
+          UIUtilService.hideModal(scope.getId(), scope.modalType);
         }
       };
 

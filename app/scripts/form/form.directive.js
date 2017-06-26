@@ -150,7 +150,7 @@ define([
         var startParseForm = function () {
           if ($scope.form) {
             var model;
-            if ($rootScope.isRuntime()) {
+            if (UIUtilService.isRuntime()) {
               if ($scope.isEditData) {
                 model = {};
               } else {
@@ -160,13 +160,13 @@ define([
               model = $scope.model;
             }
 
-            if ($rootScope.isRuntime()) {
+            if (UIUtilService.isRuntime()) {
               $scope.parseForm($scope.form.properties, model);
 
               $rootScope.formModel = model;
               $rootScope.rootElement = $scope.form;
             } else {
-              $rootScope.findChildren($scope.form.properties, model);
+              DataManipulationService.findChildren($scope.form.properties, model);
             }
 
             paginate();
@@ -194,7 +194,7 @@ define([
 
             if (!DataUtilService.isSpecialKey(name)) {
               // Template Element
-              if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist
@@ -520,8 +520,8 @@ define([
         // find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
           var index = 0;
-          var order = $rootScope.schemaOf($scope.form)._ui.order;
-          var props = $rootScope.schemaOf($scope.form).properties;
+          var order = dms.schemaOf($scope.form)._ui.order;
+          var props = dms.schemaOf($scope.form).properties;
           var idx = order.indexOf(fieldKey);
 
           idx += 1;

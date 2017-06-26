@@ -686,7 +686,7 @@ define([
 
         // If necessary, updates the field schema according to whether the field is controlled or not
         service.initializeSchema = function (field) {
-          var fieldSchema = $rootScope.schemaOf(field);
+          var fieldSchema = service.schemaOf(field);
           // If regular field
           if (!service.hasValueConstraint(field)) {
             if (fieldSchema.required[0] != "@value") {
@@ -1316,7 +1316,7 @@ define([
         // delete the ontologyCLass in valueConstraints
         service.deleteFieldAddedClass = function (ontologyClass, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
             if (valueConstraints.classes[i] == ontologyClass) {
               valueConstraints.classes.splice(i, 1);
@@ -1329,7 +1329,7 @@ define([
         // delete the ontology in valueConstraints
         service.deleteFieldAddedOntology = function (ontology, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.ontologies.length; i < len; i += 1) {
             if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
               valueConstraints.ontologies.splice(i, 1);
@@ -1342,7 +1342,7 @@ define([
         // delete the valueSet in valueConstraints
         service.deleteFieldAddedValueSet = function (valueSet, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.valueSets.length; i < len; i += 1) {
             if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
               valueConstraints.valueSets.splice(i, 1);
@@ -1367,7 +1367,7 @@ define([
             if (!DataUtilService.isSpecialKey(key)) {
               if (key == '@value') {
                 if (angular.isArray(model)) {
-                  if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                  if (service.schemaOf(settings)._ui.inputType == "list") {
                     model.splice(0, model.length);
                   } else {
                     for (var i = 0; i < model.length; i++) {
@@ -1395,7 +1395,7 @@ define([
                   angular.forEach(model, function (v, k) {
                     if (k == '@value') {
                       if (angular.isArray(v)) {
-                        if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                        if (service.schemaOf(settings)._ui.inputType == "list") {
                           v.splice(0, v.length);
                         } else {
                           for (var i = 0; i < v.length; i++) {

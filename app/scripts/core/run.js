@@ -30,23 +30,12 @@ define([
       handle: ".sortable-handler"
     };
 
-    // Global utility functions
+
 
 
     $rootScope.propertiesOf = DataManipulationService.propertiesOf;
     $rootScope.schemaOf = DataManipulationService.schemaOf;
-    $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
-    $rootScope.isElement = UIUtilService.isElement;
-    $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
-    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
-    $rootScope.toggleElement = UIUtilService.toggleElement;
-    $rootScope.getDomId = DataManipulationService.getDomId;
-    $rootScope.findChildren = DataManipulationService.findChildren;
 
-
-    $rootScope.isRuntime = function () {
-      return $rootScope.pageId == 'RUNTIME';
-    };
 
     // Simple function to check if an object is empty
     $rootScope.isEmpty = function (obj) {
@@ -157,7 +146,7 @@ define([
     // Used in textfield.html
     $rootScope.updateFieldAutocomplete = function (field, term) {
       // Only populate the field at runtime
-      if ($rootScope.isRuntime()) {
+      if (UIUtilService.isRuntime()) {
         if (term === '') {
           term = '*';
         }
@@ -328,15 +317,6 @@ define([
     // read from Keycloak
     // read in Non-Angular way from user.... REST endpoint
     UserService.injectUserHandler($window.bootstrapUserHandler);
-
-
-    // the below console.log statements break the karma tests
-    // User data is available at this point:
-    // console.log("Cedar service providing user data at this point:");
-    // console.log(Cedar.getUserId());
-    // console.log(Cedar.getScreenName());
-    // console.log(Cedar.getHome());
-    // console.log(CedarUser.getPermissions());
 
     // Init the services that have dependencies on configuration
     DataTemplateService.init();

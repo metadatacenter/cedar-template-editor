@@ -8,8 +8,8 @@
     <input type="text"
         class="form-control has-success has-feedback"
         ng-class="{'required': isRequired()}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
     <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>

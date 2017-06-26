@@ -7,7 +7,7 @@
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter phone number' : ''}}"
-        aria-label="{{getDescription(field)}}"
+        aria-label="{{getDescription()}}"
         ng-model-options="{allowInvalid:true}"
         validate-on="blur"
         ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
@@ -23,13 +23,13 @@
 
     <!-- expanded view -->
     <div ng-if="isListView()"
-        aria-label="{{getDescription(field)}}"
+        aria-label="{{getDescription()}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
     </div>
 
     <!-- paged view -->
     <div ng-if="isTabView()"
-        aria-label="{{getDescription(field)}}"
+        aria-label="{{getDescription()}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 

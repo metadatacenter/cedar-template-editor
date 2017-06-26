@@ -3,9 +3,9 @@
   <div ng-if="isActive(index)" class="form-group  has-feedback ">
     <input type="email"
         class="form-control select"
-        ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter email' : ''}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"
         ng-model-options="{allowInvalid:true}"
         validate-on="blur"
@@ -23,7 +23,7 @@
 
     <!-- expanded view -->
     <div ng-if="isListView()"
-        aria-label="{{getDescription(field)}}"
+        aria-label="{{getDescription()}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
     </div>
 

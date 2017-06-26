@@ -6,11 +6,13 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$filter', 'DataManipulationService', 'DataUtilService',
-                                    'AuthorizedBackendService', 'HttpBuilderService', 'UrlService'];
+      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
+                                    'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
+                                    'ValueRecommenderService'];
 
-      function SpreadsheetService($rootScope, $filter, DataManipulationService, DataUtilService, AuthorizedBackendService,
-                                  HttpBuilderService, UrlService) {
+      function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
+                                  AuthorizedBackendService,
+                                  HttpBuilderService, UrlService, ValueRecommenderService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -78,21 +80,42 @@ define([
                   value[key] = true;
                 }
                 sds.tableDataSource[row][col]['@value'] = value;
+
               } else if (inputType == 'autocomplete') {
                 if (sds.tableData[row][col]) {
                   var value = sds.tableData[row][col];
                   var nodeId = sds.columnDescriptors[col].nodeId;
+                  var schema = sds.columnDescriptors[col].schema;
 
-                  // do we have some autocomplete results?
-                  if ($rootScope.autocompleteResultsCache[nodeId]) {
-                    var results = $rootScope.autocompleteResultsCache[nodeId]['results']
+
+                  if (isConstrained(schema)) {
+
+                    // do we have some autocomplete results?
+                    if ($rootScope.autocompleteResultsCache[nodeId]) {
+                      var results = $rootScope.autocompleteResultsCache[nodeId]['results'];
+                      if (results) {
+                        console.log('looking for value ' + value);
+                        loop: for (var i = 0; i < results.length; i++) {
+                          if (value === results[i]['label']) {
+
+                            sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
+                            sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                            console.log('found');
+                            break loop;
+                          }
+                        }
+                      }
+                    }
+
+                  } else if (isRecommended(schema)) {
+
+
+                    var results = $rootScope.vrs.getValueRecommendationResults(schema);
                     if (results) {
-                      console.log('looking for value ' + value);
+
                       loop: for (var i = 0; i < results.length; i++) {
                         if (value === results[i]['label']) {
 
-
-                          //sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
                           sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
                           sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
                           console.log('found');
@@ -100,7 +123,10 @@ define([
                         }
                       }
                     }
+
+
                   }
+
                 }
               } else {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
@@ -141,6 +167,24 @@ define([
         var isConstrained = function (node) {
           return dms.hasValueConstraint(node) && !isRecommended(node);
         };
+
+        var getConstrained = function (query, process) {
+
+          $rootScope.updateFieldAutocomplete(desc.schema, query);
+          setTimeout(function () {
+
+            var id = dms.getId(node);
+            var results = $rootScope.autocompleteResultsCache[id]['results'];
+
+            var labels = [];
+            for (var i = 0; i < results.length; i++) {
+              labels[i] = results[i]['label'];
+            }
+            console.log('process lables for query ' + query);
+            process(labels);
+          }, 200);
+        };
+
 
         // build a description of the cell data
         var getDescriptor = function (node) {
@@ -186,14 +230,16 @@ define([
               //   desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
             case 'textfield':
+
+
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
                 desc.strict = true;
                 desc.nodeId = dms.getId(node);
-                // get the values for the async autocomplete
+                desc.schema = dms.schemaOf(node);
                 desc.source = function (query, process) {
-                  console.log('get the values for this query ' + query);
-                  $rootScope.updateFieldAutocomplete(dms.schemaOf(node), query);
+
+                  $rootScope.updateFieldAutocomplete(desc.schema, query);
                   setTimeout(function () {
 
                     var id = dms.getId(node);
@@ -208,6 +254,30 @@ define([
                   }, 200);
                 };
               } else if (isRecommended(node)) {
+                desc.type = 'autocomplete';
+                desc.strict = true;
+                desc.nodeId = dms.getId(node);
+                desc.schema = dms.schemaOf(node);
+                desc.source = function (query, process) {
+
+
+                  ValueRecommenderService.updatePopulatedFields(desc.schema, query);
+                  $rootScope.updateFieldAutocomplete(desc.schema, query);
+
+                  setTimeout(function () {
+
+                    var results = ValueRecommenderService.getValueRecommendationResults(desc.schema);
+                    console.log(results);
+                    var labels = [];
+                    for (var i = 0; i < results.length; i++) {
+                      labels[i] = results[i]['label'];
+                    }
+
+                    console.log(labels);
+                    process(labels);
+                  }, 200);
+                };
+
 
               } else {
                 desc.type = 'text';
@@ -291,7 +361,7 @@ define([
         };
 
         // get the single field or nested field titles
-        var getColHeaders = function ( $element,  columnHeaderOrder, isField) {
+        var getColHeaders = function ($element, columnHeaderOrder, isField) {
           var colHeaders = [];
 
           if (isField) {
@@ -382,20 +452,17 @@ define([
               checked = 'checked';
             }
 
+
             hot.addHook(hook, function () {
 
-              if (hook === 'afterPaste') {
-                console.log('afterPaste');
+              if (hook === 'afterSelection') {
+                // onClick for recommended fields
+                //ValueRecommenderService.updateValueRecommendationResults(desc.schema);
               }
 
-              if (hook === 'beforePaste') {
-                console.log('beforePaste');
-              }
 
               if (hook === 'afterChange') {
-                console.log('afterChange');
                 updateDataModel($scope, $element);
-                resize($scope);
               }
 
               if (hook === 'afterCreateRow') {
@@ -419,7 +486,8 @@ define([
 
         // resize the container based on size of table
         var resize = function ($scope) {
-          if (!service.isFullscreen()) {
+          if (!service.isFullscreen($scope)) {
+            console.log('resize');
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
@@ -431,6 +499,7 @@ define([
 
             angular.element(container).css("height", spreadsheetContainerHeight + "px");
             angular.element(container).css("width", spreadsheetContainerWidth + "px");
+            angular.element(container).css("overflow", "hidden");
           }
         };
 
@@ -500,12 +569,33 @@ define([
           var hot = new Handsontable(container, config);
           registerHooks(hot, $scope, $element, columnHeaderOrder);
           context.setTable(hot);
+
+          // var fullScreenHandler = function (event) {
+          //
+          //   setTimeout(function () {
+          //     // The event object doesn't carry information about the fullscreen state of the browser,
+          //     // but it is possible to retrieve it through the fullscreen API
+          //     if (service.isFullscreen($scope)) {
+          //       console.log('entered fullscreen');
+          //     } else {
+          //       console.log('exited fullscreen');
+          //     }
+          //
+          //   }, 200);
+          // };
+          //
+          // $document[0].addEventListener('webkitfullscreenchange', fullScreenHandler);
+          // $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
+          // $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
+          // $document[0].addEventListener('fullscreenchange', fullScreenHandler);
         };
 
-
-        service.isFullscreen = function () {
-          return window.innerHeight == screen.height;
+        service.isFullscreen = function ($scope) {
+          var elm = $scope.spreadsheetDataScope.container;
+          console.log('isFullscreen ' + (window.innerWidth == screen.width));
+          return window.innerWidth == screen.width;
         };
+
 
         service.addRow = function ($scope) {
           if ($scope.hasOwnProperty('spreadsheetContext')) {

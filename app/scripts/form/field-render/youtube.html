@@ -9,7 +9,7 @@
     <figure>
       <!-- fit-vids directive automatically resizes the video to full width -->
       <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+      <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>
   </div>
 
@@ -19,7 +19,7 @@
     <figure>
       <!-- fit-vids directive automatically resizes the video to full width -->
       <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+      <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>
   </div>
 

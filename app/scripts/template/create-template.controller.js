@@ -34,8 +34,6 @@ define([
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
-        //$scope.addedFieldKeys = [];
-        //$scope.addedFields = new Map();
         $scope.viewType = 'popup';
 
         var getTemplate = function () {
@@ -83,11 +81,11 @@ define([
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
 
-        }
+        };
 
         var dontHaveCreatingFieldOrElement = function () {
           return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
-        }
+        };
 
         $scope.isPropertiesEmpty = function () {
           return DataUtilService.isPropertiesEmpty($scope.form);
@@ -100,7 +98,7 @@ define([
             var domId = DataManipulationService.createDomId();
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
-              $rootScope.scrollToDomId(domId);
+              UIUtilService.scrollToDomId(domId);
               $rootScope.$broadcast("form:dirty");
               $scope.toggleMore();
             });
@@ -113,12 +111,11 @@ define([
           $scope.moreIsOpen = !$scope.moreIsOpen;
         };
 
-        $scope.getTitle = function (element) {
-          return $rootScope.schemaOf(element)._ui.title;
+        $scope.getTitle = function (node) {
+          return DataManipulationService.getTitle(node);
         };
 
         $scope.addElementToTemplate = function (element) {
-          console.log('addElementToTemplate');console.log(element);
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
@@ -128,7 +125,7 @@ define([
             StagingService.addElementToForm($scope.form, element["@id"], domId, function (e) {
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
-              $rootScope.scrollToDomId(domId);
+              UIUtilService.scrollToDomId(domId);
 
             });
             $rootScope.$broadcast("form:update", element);
@@ -320,8 +317,7 @@ define([
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('form._ui.title', function (v) {
-          console.log($scope.form);
-          console.log($rootScope.schemaOf($scope.form));
+
           if (!angular.isUndefined($scope.form)) {
             var title = $scope.form._ui.title;
             if (title.length > 0) {
@@ -456,11 +452,11 @@ define([
           var property = args[0];
           var id = args[1];
 
-          var props = $rootScope.propertiesOf($scope.form);
+          var props = DataManipulationService.propertiesOf($scope.form);
 
           var fieldProp;
           for (var prop in props) {
-            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+            if (DataManipulationService.schemaOf(props[prop])['@id'] === id) {
               fieldProp = prop;
               break;
             }

@@ -138,6 +138,10 @@ define([
       return UIUtilService.toggleShowOutput();
     };
 
+    vm.scrollToAnchor = function(hash) {
+      UIUtilService.scrollToAnchor(hash);
+    };
+
     //*********** ENTRY POINT
 
     vm.isPrivacy = function () {
