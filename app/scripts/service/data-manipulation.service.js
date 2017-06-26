@@ -506,6 +506,7 @@ define([
 
         // relabel the key with a new value from the propertyLabels
         service.relabel = function (node, key) {
+          console.log('relabel ' + key);
 
           var schema = service.schemaOf(node);
           var p = service.propertiesOf(node);

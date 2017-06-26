@@ -487,7 +487,7 @@ define([
         // resize the container based on size of table
         var resize = function ($scope) {
           if (!service.isFullscreen($scope)) {
-            console.log('resize');
+     
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
@@ -500,12 +500,14 @@ define([
             angular.element(container).css("height", spreadsheetContainerHeight + "px");
             angular.element(container).css("width", spreadsheetContainerWidth + "px");
             angular.element(container).css("overflow", "hidden");
+
+            $scope.spreadsheetContext.getTable().updateSettings({});
           }
         };
 
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
-          console.log('createSpreadsheet');
+          //console.log('createSpreadsheet');
 
           $scope.spreadsheetContext = context;
           context.isField = isField;
@@ -558,7 +560,7 @@ define([
 
           // put the spreadsheet into the container
           context.setSpreadsheetContainer(container);
-          resize($scope);
+          //resize($scope);
 
           context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
           context.switchVisibility();
@@ -569,30 +571,32 @@ define([
           var hot = new Handsontable(container, config);
           registerHooks(hot, $scope, $element, columnHeaderOrder);
           context.setTable(hot);
+          resize($scope);
 
-          // var fullScreenHandler = function (event) {
-          //
-          //   setTimeout(function () {
-          //     // The event object doesn't carry information about the fullscreen state of the browser,
-          //     // but it is possible to retrieve it through the fullscreen API
-          //     if (service.isFullscreen($scope)) {
-          //       console.log('entered fullscreen');
-          //     } else {
-          //       console.log('exited fullscreen');
-          //     }
-          //
-          //   }, 200);
-          // };
-          //
-          // $document[0].addEventListener('webkitfullscreenchange', fullScreenHandler);
-          // $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
-          // $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
-          // $document[0].addEventListener('fullscreenchange', fullScreenHandler);
+          var fullScreenHandler = function (event) {
+
+            setTimeout(function () {
+              // The event object doesn't carry information about the fullscreen state of the browser,
+              // but it is possible to retrieve it through the fullscreen API
+              if (service.isFullscreen($scope)) {
+                console.log('entered fullscreen');
+              } else {
+                console.log('exited fullscreen');
+                resize($scope);
+              }
+
+            }, 200);
+          };
+
+          $document[0].addEventListener('webkitfullscreenchange', fullScreenHandler);
+          $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
+          $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
+          $document[0].addEventListener('fullscreenchange', fullScreenHandler);
         };
 
         service.isFullscreen = function ($scope) {
           var elm = $scope.spreadsheetDataScope.container;
-          console.log('isFullscreen ' + (window.innerWidth == screen.width));
+          //console.log('isFullscreen ' + (window.innerWidth == screen.width));
           return window.innerWidth == screen.width;
         };
 
@@ -607,7 +611,7 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
-          console.log('destroySpreadsheet');
+          //console.log('destroySpreadsheet');
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             context.switchVisibility();

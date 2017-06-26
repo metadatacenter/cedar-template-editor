@@ -170,7 +170,8 @@ define([
             UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
-            var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
+            var title = clonedElement._ui.title;
+            var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
             // Adding corresponding property type to @context
@@ -190,11 +191,12 @@ define([
             form._ui.order.push(elName);
 
             form._ui.propertyLabels = form._ui.propertyLabels || {};
-            form._ui.propertyLabels[elName] = elName;
+            form._ui.propertyLabels[elName] = title;
 
 
             DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
             callback(clonedElement);
+
 
           },
           function (err) {
