@@ -487,7 +487,7 @@ define([
         // resize the container based on size of table
         var resize = function ($scope) {
           if (!service.isFullscreen($scope)) {
-     
+
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
@@ -497,11 +497,14 @@ define([
             var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
             var spreadsheetContainerWidth = detectorElement.width() - 5;
 
-            angular.element(container).css("height", spreadsheetContainerHeight + "px");
-            angular.element(container).css("width", spreadsheetContainerWidth + "px");
-            angular.element(container).css("overflow", "hidden");
+            // angular.element(container).css("height", spreadsheetContainerHeight + "px");
+            // angular.element(container).css("width", spreadsheetContainerWidth + "px");
+            // angular.element(container).css("overflow", "hidden");
 
-            $scope.spreadsheetContext.getTable().updateSettings({});
+            $scope.spreadsheetContext.getTable().updateSettings({
+              height: spreadsheetContainerHeight,
+              width: spreadsheetContainerWidth
+            });
           }
         };
 
@@ -527,7 +530,7 @@ define([
             minRows           : minRows,
             maxRows           : maxRows,
             rowHeaders        : true,
-            stretchH          : 'last',
+            stretchH          : 'all',
             trimWhitespace    : false,
             manualRowResize   : true,
             manualColumnResize: true,

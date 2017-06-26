@@ -181,7 +181,7 @@
 <div ng-if="isRuntime() && isShowOutput()" ng-model="metaToRDF">
 
   <div id="outputJSON"  style="margin-top:40px">
-    <uib-tabset active="getShowOutputTab()">
+    <uib-tabset active="{{getShowOutputTab()}}">
 
       <uib-tab index="0" ng-click="setShowOutputTab(0)">
         <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>
