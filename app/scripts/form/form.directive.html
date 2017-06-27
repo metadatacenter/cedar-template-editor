@@ -56,7 +56,7 @@
     <ul class="treeview tv">
 
       <li ng-repeat="item in page" class="animate-fade tv"
-          ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"
+          ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
           ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->

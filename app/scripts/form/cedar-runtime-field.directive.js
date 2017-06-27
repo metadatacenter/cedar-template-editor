@@ -420,7 +420,7 @@ define([
 
           // add another instance in the model
           var obj = {};
-          obj[fieldValue] = DataManipulationService.getDefaultValue(fieldValue);
+          obj[fieldValue] = DataManipulationService.getDefaultValue(fieldValue) || DataManipulationService.getDefault($scope.field);
           $scope.model.push(obj);
 
           // activate the new instance
@@ -796,11 +796,31 @@ define([
         }
       };
 
+      $scope.isHidden = function() {
+        return DataManipulationService.isHidden($scope.field);
+      };
+
+      $scope.initValue = function() {
+        if (DataManipulationService.hasDefault($scope.field)) {
+          var location = DataManipulationService.getValueLocation($scope.field);
+          var value = DataManipulationService.getDefault($scope.field);
+          if (angular.isArray($scope.model)) {
+            angular.forEach($scope.model, function (model) {
+              model[location] = model[location] || value;
+            });
+          } else {
+            $scope.model[location] = $scope.model[location] || value;
+          }
+        }
+      };
+
       //
       // initialization
       //
 
       $scope.setValueArray();
+
+      $scope.initValue();
 
 
     };

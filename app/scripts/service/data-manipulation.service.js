@@ -1639,6 +1639,43 @@ define([
           return selectedKey;
         };
 
+        // is this field hidden?
+        service.hasDefault = function (node) {
+          if (!$rootScope.schemaOf(node)._ui.hasOwnProperty('defaultValue')) {
+            $rootScope.schemaOf(node)._ui.defaultValue = "";
+          }
+          return $rootScope.schemaOf(node)._ui.defaultValue && $rootScope.schemaOf(node)._ui.defaultValue.length > 0;
+        };
+
+        // get the default value
+        service.getDefault = function (node) {
+          if ($rootScope.schemaOf(node)._ui.hasOwnProperty('defaultValue')) {
+          } else {
+            $rootScope.schemaOf(node)._ui.defaultValue = '';
+          }
+          return $rootScope.schemaOf(node)._ui.defaultValue;
+        };
+
+        // does this field allow the hidden attribute?
+        service.allowsHidden = function (node) {
+          return ($rootScope.schemaOf(node)._ui.inputType === 'textfield');
+        };
+
+        // does this field allow the hidden attribute?
+        service.allowsDefault = function (node) {
+          return ($rootScope.schemaOf(node)._ui.inputType === 'textfield');
+        };
+
+        // is this field hidden?
+        service.isHidden = function (node) {
+          return $rootScope.schemaOf(node)._ui.isHidden || false;
+        };
+
+        // toggle the hidden field attribute
+        service.setHidden = function (node, value) {
+          $rootScope.schemaOf(node)._ui.isHidden = value;
+        };
+
 
         return service;
       }

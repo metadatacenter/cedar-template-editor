@@ -2,11 +2,11 @@
 <div class="">
   <div class="detail-options">
     <div class="element-toggles list table-style">
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style field-controlled-terms-tab"
-          ng-class="{active: isTabActive('field')}"
-          ng-click="setTab('field');  $event.stopPropagation();">
-        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field Type</span>
-      </div>
+      <!--<div ng-if="hasControlledTerms()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
+          <!--ng-class="{active: isTabActive('field')}"-->
+          <!--ng-click="setTab('field');  $event.stopPropagation();">-->
+        <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field Type</span>-->
+      <!--</div>-->
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
@@ -25,6 +25,11 @@
           ng-class="{active: isTabActive('value-recommendation')}"
           ng-click="setTab('value-recommendation');  $event.stopPropagation();">
         <span>Suggestions</span>
+      </div>
+      <div ng-if="allowsHidden()" class="element-toggle table-cell-style"
+          ng-class="{active: isTabActive('hidden')}"
+          ng-click="setTab('hidden');  $event.stopPropagation();">
+        <span>Hidden</span>
       </div>
     </div>
   </div>
@@ -203,6 +208,23 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Hidden tab  -->
+  <div id="hidden"  ng-show="isTabActive('hidden')">
+    <div class="type-toggle date">
+      <div class="single-date d-option"
+          ng-click="setHidden(false); $event.stopPropagation();"
+          ng-class="{active: !isHidden()}">
+        <span>No</span>
+      </div>
+      <div class="date-range d-option"
+          ng-click="setHidden(true);   $event.stopPropagation();"
+          ng-class="{active: isHidden()}">
+        <span>Yes</span>
+      </div>
+    </div>
+
   </div>
 </div>
 

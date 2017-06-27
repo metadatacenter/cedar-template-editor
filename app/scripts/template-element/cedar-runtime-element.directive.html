@@ -70,8 +70,9 @@
       </div>
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
+        
         <li class="tv"
-            ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey]))}"
+            ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
             ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
 
           <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"

@@ -350,6 +350,8 @@ define([
         });
 
 
+
+
 //
 // watches
 //
@@ -450,6 +452,12 @@ define([
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+        $scope.isHidden = function(item) {
+          var node = $scope.form.properties[item];
+          console.log('isHidden' + DataManipulationService.isHidden(node));console.log(node);
+          return DataManipulationService.isHidden(node);
         };
 
         $scope.getPreviousItem = function (index) {
