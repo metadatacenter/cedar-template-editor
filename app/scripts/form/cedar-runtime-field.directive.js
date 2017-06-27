@@ -702,7 +702,7 @@ define([
 
         if (hasValueConstraint()) {
           var valueConstraint = dms.getValueConstraint($scope.field);
-          var id = $scope.getId();
+          var id = $scope.getId() + '-' + $scope.index;
 
           if (angular.isArray($scope.model)) {
             angular.forEach($scope.model, function (valueElement) {

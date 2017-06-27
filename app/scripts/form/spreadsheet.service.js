@@ -52,88 +52,68 @@ define([
 
         // copy table data to source table
         var updateDataModel = function ($scope, $element) {
-          var sds = $scope.spreadsheetDataScope;
-          for (var row in sds.tableData) {
-            for (var col in sds.tableData[row]) {
+              var sds = $scope.spreadsheetDataScope;
+              for (var row in sds.tableData) {
+                for (var col in sds.tableData[row]) {
 
-              // do we have this row in the source?
-              if (row >= sds.tableDataSource.length) {
-                sds.tableDataSource.push([]);
-                for (var i = 0; i < $scope.config.columns.length; i++) {
-                  var obj = {};
-                  obj['@value'] = '';
-                  sds.tableDataSource[row].push(obj);
-                }
-              }
+                  // do we have this row in the source?
+                  if (row >= sds.tableDataSource.length) {
+                    sds.tableDataSource.push([]);
+                    for (var i = 0; i < $scope.config.columns.length; i++) {
+                      var obj = {};
+                      obj['@value'] = '';
+                      sds.tableDataSource[row].push(obj);
+                    }
+                  }
 
-              // get the types and thge node for a nested field in an element
-              var inputType = sds.columnDescriptors[col].type;
-              var cedarType = sds.columnDescriptors[col].cedarType;
-
-
-              if (inputType == 'dropdown') {
-                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-              } else if (cedarType == 'checkbox') {
-                var valueObject = JSON.parse(sds.tableData[row][col]);
-                var value = {};
-                for (var key in valueObject) {
-                  value[key] = true;
-                }
-                sds.tableDataSource[row][col]['@value'] = value;
-
-              } else if (inputType == 'autocomplete') {
-                if (sds.tableData[row][col]) {
-                  var value = sds.tableData[row][col];
-                  var nodeId = sds.columnDescriptors[col].nodeId;
-                  var schema = sds.columnDescriptors[col].schema;
+                  // get the types and thge node for a nested field in an element
+                  var inputType = sds.columnDescriptors[col].type;
+                  var cedarType = sds.columnDescriptors[col].cedarType;
 
 
-                  if (isConstrained(schema)) {
+                  if (inputType == 'dropdown') {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                  } else if (cedarType == 'checkbox') {
+                    var valueObject = JSON.parse(sds.tableData[row][col]);
+                    var value = {};
+                    for (var key in valueObject) {
+                      value[key] = true;
+                    }
+                    sds.tableDataSource[row][col]['@value'] = value;
 
-                    // do we have some autocomplete results?
-                    if ($rootScope.autocompleteResultsCache[nodeId]) {
-                      var results = $rootScope.autocompleteResultsCache[nodeId]['results'];
-                      if (results) {
-                        console.log('looking for value ' + value);
-                        loop: for (var i = 0; i < results.length; i++) {
-                          if (value === results[i]['label']) {
+                  } else if (inputType == 'autocomplete') {
+                    if (sds.tableData[row][col]) {
+                      var value = sds.tableData[row][col];
+                      var newId = sds.columnDescriptors[col].nodeId + '-' + row;
+                      var schema = sds.columnDescriptors[col].schema;
 
-                            sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                            sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
-                            console.log('found');
-                            break loop;
+                      if (isConstrained(schema)) {
+
+                        // do we have some autocomplete results?
+                        if ($rootScope.autocompleteResultsCache[newId]) {
+                          var results = $rootScope.autocompleteResultsCache[newId]['results'];
+                          if (results) {
+                            console.log('looking for value ' + value);
+                            loop: for (var i = 0; i < results.length; i++) {
+                              if (value === results[i]['label']) {
+
+                                sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
+                                sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                                console.log('found');
+                                break loop;
+                              }
+                            }
                           }
                         }
                       }
                     }
-
-                  } else if (isRecommended(schema)) {
-
-
-                    var results = $rootScope.vrs.getValueRecommendationResults(schema);
-                    if (results) {
-
-                      loop: for (var i = 0; i < results.length; i++) {
-                        if (value === results[i]['label']) {
-
-                          sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                          sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
-                          console.log('found');
-                          break loop;
-                        }
-                      }
-                    }
-
-
+                  } else {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
                   }
-
                 }
-              } else {
-                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               }
             }
-          }
-        };
+        ;
 
         // get column headers for single field or element's fields
         var getColumnHeaderOrder = function (context, scopeElement) {
@@ -158,36 +138,13 @@ define([
           return list;
         };
 
-        // has recommendations?
-        var isRecommended = function (node) {
-          return $rootScope.vrs.getIsValueRecommendationEnabled(dms.schemaOf(node));
-        };
-
         // has value constraints?
         var isConstrained = function (node) {
-          return dms.hasValueConstraint(node) && !isRecommended(node);
+          return dms.hasValueConstraint(node);
         };
-
-        var getConstrained = function (query, process) {
-
-          $rootScope.updateFieldAutocomplete(desc.schema, query);
-          setTimeout(function () {
-
-            var id = dms.getId(node);
-            var results = $rootScope.autocompleteResultsCache[id]['results'];
-
-            var labels = [];
-            for (var i = 0; i < results.length; i++) {
-              labels[i] = results[i]['label'];
-            }
-            console.log('process lables for query ' + query);
-            process(labels);
-          }, 200);
-        };
-
 
         // build a description of the cell data
-        var getDescriptor = function (node) {
+        var getDescriptor = function (context, node) {
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
@@ -230,8 +187,6 @@ define([
               //   desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
             case 'textfield':
-
-
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
                 desc.strict = true;
@@ -249,36 +204,9 @@ define([
                     for (var i = 0; i < results.length; i++) {
                       labels[i] = results[i]['label'];
                     }
-                    console.log('process lables for query ' + query);
                     process(labels);
                   }, 200);
                 };
-              } else if (isRecommended(node)) {
-                desc.type = 'autocomplete';
-                desc.strict = true;
-                desc.nodeId = dms.getId(node);
-                desc.schema = dms.schemaOf(node);
-                desc.source = function (query, process) {
-
-
-                  ValueRecommenderService.updatePopulatedFields(desc.schema, query);
-                  $rootScope.updateFieldAutocomplete(desc.schema, query);
-
-                  setTimeout(function () {
-
-                    var results = ValueRecommenderService.getValueRecommendationResults(desc.schema);
-                    console.log(results);
-                    var labels = [];
-                    for (var i = 0; i < results.length; i++) {
-                      labels[i] = results[i]['label'];
-                    }
-
-                    console.log(labels);
-                    process(labels);
-                  }, 200);
-                };
-
-
               } else {
                 desc.type = 'text';
               }
@@ -292,11 +220,11 @@ define([
           var colDescriptors = [];
           for (var i in columnHeaderOrder) {
             if (context.isField()) {
-              colDescriptors.push(getDescriptor(node));
+              colDescriptors.push(getDescriptor(context, node));
             } else {
               var key = columnHeaderOrder[i];
               var child = dms.propertiesOf(node)[key];
-              colDescriptors.push(getDescriptor(child));
+              colDescriptors.push(getDescriptor(context, child));
             }
           }
           return colDescriptors;
@@ -503,14 +431,13 @@ define([
 
             $scope.spreadsheetContext.getTable().updateSettings({
               height: spreadsheetContainerHeight,
-              width: spreadsheetContainerWidth
+              width : spreadsheetContainerWidth
             });
           }
         };
 
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
-          //console.log('createSpreadsheet');
 
           $scope.spreadsheetContext = context;
           context.isField = isField;
@@ -563,12 +490,9 @@ define([
 
           // put the spreadsheet into the container
           context.setSpreadsheetContainer(container);
-          //resize($scope);
-
           context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
           context.switchVisibility();
           applyVisibility($scope);
-
 
           // build the handsontable
           var hot = new Handsontable(container, config);
@@ -579,15 +503,10 @@ define([
           var fullScreenHandler = function (event) {
 
             setTimeout(function () {
-              // The event object doesn't carry information about the fullscreen state of the browser,
-              // but it is possible to retrieve it through the fullscreen API
               if (service.isFullscreen($scope)) {
-                console.log('entered fullscreen');
               } else {
-                console.log('exited fullscreen');
                 resize($scope);
               }
-
             }, 200);
           };
 
@@ -597,9 +516,7 @@ define([
           $document[0].addEventListener('fullscreenchange', fullScreenHandler);
         };
 
-        service.isFullscreen = function ($scope) {
-          var elm = $scope.spreadsheetDataScope.container;
-          //console.log('isFullscreen ' + (window.innerWidth == screen.width));
+        service.isFullscreen = function () {
           return window.innerWidth == screen.width;
         };
 
