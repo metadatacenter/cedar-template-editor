@@ -306,7 +306,6 @@ define([
 
                   var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
-.data
                     // log to the console always
                     console.log(errors[i]);
 
