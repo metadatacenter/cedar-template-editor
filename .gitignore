@@ -15,6 +15,7 @@ npm-debug.log
 .DS_Store
 
 keycloak.json
+package-lock.json
 
 app/config/url-service.conf.json
 app/config/controlled-term-data-service.conf.json
