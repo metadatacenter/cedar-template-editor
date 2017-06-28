@@ -8,8 +8,7 @@
 
   <div class="form-group floating-label-wrapper">
     <input type="text" auto-focus
-        class="form-control field-title-definition"
-        id="placeholder-{{$root.schemaOf(field)['@id'].substring($root.schemaOf(field)['@id'].lastIndexOf('/')+1)}}"
+        class="form-control "
         placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
         aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
         ng-model="$root.schemaOf(field)._ui.defaultValue"
