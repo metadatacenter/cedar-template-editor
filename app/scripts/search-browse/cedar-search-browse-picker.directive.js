@@ -39,9 +39,6 @@ define([
           'UISettingsService',
           'QueryParamUtilsService',
           'AuthorizedBackendService',
-          'TemplateInstanceService',
-          'TemplateElementService',
-          'TemplateService',
           'FrontendUrlService',
           'UIProgressService',
           'CONST'
@@ -50,8 +47,9 @@ define([
         function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $translate, CedarUser,
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
-                                                   AuthorizedBackendService, TemplateInstanceService,
-                                                   TemplateElementService, TemplateService, FrontendUrlService, UIProgressService,CONST) {
+                                                   AuthorizedBackendService,
+                                                   FrontendUrlService,
+                                                   UIProgressService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -271,7 +269,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.description': description}),
+                    resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                     },
@@ -281,7 +279,7 @@ define([
                 );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
-                    TemplateElementService.updateTemplateElement(id, {'_ui.description': description}),
+                    resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
                           'GENERIC.Updated');
@@ -292,7 +290,7 @@ define([
                 );
               } else if (nodeType == 'template') {
                 AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, {'_ui.description': description}),
+                    resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
                       $scope.form = response.data;
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
@@ -303,9 +301,8 @@ define([
                     }
                 );
               } else if (nodeType == 'folder') {
-                vm.selectedResource.description = description;
-                resourceService.updateFolder(
-                    vm.selectedResource,
+                AuthorizedBackendService.doCall(
+                    resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
@@ -542,7 +539,7 @@ define([
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
-          };
+          }
 
           function copyToWorkspace(resource) {
             if (!resource) {
@@ -610,7 +607,7 @@ define([
 
             var resource = value || vm.selectedResource;
             if (resource) {
-              if (resource.nodeType === 'folder' ) {
+              if (resource.nodeType === 'folder') {
                 if (action !== 'populate') {
                   goToFolder(resource['@id']);
                 }
@@ -647,9 +644,9 @@ define([
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
-                //case CONST.resourceType.FOLDER:
-                //  vm.showEditFolder(r);
-                //  break;
+                  //case CONST.resourceType.FOLDER:
+                  //  vm.showEditFolder(r);
+                  //  break;
               }
             }
           }
@@ -879,7 +876,7 @@ define([
               vm.params.folderId = folderId;
               init();
             }
-          };
+          }
 
           function isResourceTypeActive(type) {
             return vm.resourceTypes[type];
@@ -969,7 +966,6 @@ define([
             }
             return result;
           }
-
 
 
           function toggleResourceType(type) {
@@ -1211,12 +1207,12 @@ define([
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
             return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
-          }
+          };
 
           // do we have any resources to show?
           vm.hasResources = function () {
             return vm.totalCount > 0;
-          }
+          };
 
 
         }
