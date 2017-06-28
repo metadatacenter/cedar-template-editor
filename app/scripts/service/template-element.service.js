@@ -32,6 +32,6 @@ define([
 
     return service;
 
-  };
+  }
 
 });

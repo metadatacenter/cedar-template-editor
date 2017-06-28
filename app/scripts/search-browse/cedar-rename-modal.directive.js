@@ -27,26 +27,17 @@ define([
 
         cedarRenameModalController.$inject = [
           '$scope',
-          '$uibModal',
           '$timeout',
-          'CedarUser',
           'resourceService',
           'UIMessageService',
-          'AuthorizedBackendService',
-          'TemplateInstanceService',
-          'TemplateElementService',
-          'TemplateService',
-          , 'CONST'
+          'AuthorizedBackendService'
         ];
 
-        function cedarRenameModalController($scope, $uibModal, $timeout, CedarUser,
+        function cedarRenameModalController($scope,
+                                            $timeout,
                                             resourceService,
                                             UIMessageService,
-                                            AuthorizedBackendService,
-                                            TemplateInstanceService,
-                                            TemplateElementService,
-                                            TemplateService,
-                                            CONST) {
+                                            AuthorizedBackendService) {
           var vm = this;
           vm.modalVisible = false;
           vm.renameResource = null;
@@ -62,7 +53,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'schema:name': name}),
+                    resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                       refresh();
@@ -73,7 +64,7 @@ define([
                 );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
-                    TemplateElementService.updateTemplateElement(id, {'_ui.title': name}),
+                    resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
                           'GENERIC.Updated');
@@ -85,7 +76,7 @@ define([
                 );
               } else if (nodeType == 'template') {
                 AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, {'_ui.title': name}),
+                    resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
 
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
@@ -97,16 +88,14 @@ define([
                     }
                 );
               } else if (nodeType == 'folder') {
-                resourceService.updateFolder(
-                    resource,
+                AuthorizedBackendService.doCall(
+                    resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
-
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource.name},
                           'GENERIC.Updated');
                       refresh();
                     },
                     function (response) {
-
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
                     }
                 );
@@ -131,7 +120,7 @@ define([
 
               $timeout(function () {
                 jQuery('#rename-modal input').focus().select();
-              },500);
+              }, 500);
             }
           });
 
