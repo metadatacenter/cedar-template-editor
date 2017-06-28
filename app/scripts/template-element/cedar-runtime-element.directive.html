@@ -121,7 +121,7 @@
         </div>
         <div ng-if="isExpanded(i)">
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
-            <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}">
+            <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key])),  'hidden': isHidden($root.propertiesOf(element)[key])}">
 
               <cedar-runtime-nested-element
                   field="$root.propertiesOf(element)[key]"

@@ -306,7 +306,7 @@ define([
 
                   var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
-
+.data
                     // log to the console always
                     console.log(errors[i]);
 
@@ -456,7 +456,6 @@ define([
 
         $scope.isHidden = function(item) {
           var node = $scope.form.properties[item];
-          console.log('isHidden' + DataManipulationService.isHidden(node));console.log(node);
           return DataManipulationService.isHidden(node);
         };
 
