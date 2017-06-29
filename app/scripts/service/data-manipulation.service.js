@@ -7,11 +7,11 @@ define([
       angular.module('cedar.templateEditor.service.dataManipulationService', [])
           .service('DataManipulationService', DataManipulationService);
 
-      DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
-                                         '$rootScope', "$translate"];
+      DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService','autocompleteService',
+                                         '$rootScope', "$translate", "$sce"];
 
-      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope,
-                                       $translate) {
+      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, autocompleteService, $rootScope,
+                                       $translate, $sce) {
 
         // Base path to generate field ids
         // TODO: fields will be saved as objects on server, they will get their id there
@@ -214,6 +214,11 @@ define([
         // is this richText?
         service.isRichText = function (node) {
           return (service.getInputType(node) === 'richtext');
+        };
+
+        // Used in richtext.html
+        service.getUnescapedContent = function (node) {
+          return $sce.trustAsHtml(service.getContent(node));
         };
 
         // is this an image?
@@ -1205,6 +1210,23 @@ define([
             }
           }
 
+        };
+
+        // Note that this only checks the values if the autocomplete cache has them and the cache
+        // will be empty if the user didn't use autocomplete in this session for this field.
+        service.isValueConformedToConstraint = function (value, location, id, vcst,  index) {
+          var isValid = true;
+          if (value && autocompleteService.autocompleteResultsCache && autocompleteService.autocompleteResultsCache[id]) {
+            var predefinedValues = autocompleteService.autocompleteResultsCache[id].results;
+            var isValid = false;
+
+            angular.forEach(predefinedValues, function (val) {
+              if (!isValid) {
+                isValid = val[location] == value[location];
+              }
+            });
+          }
+          return isValid;
         };
 
 

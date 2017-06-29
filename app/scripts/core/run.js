@@ -8,18 +8,22 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
-  cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
-                                        'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService', 'UIModelService',
-                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermService', 'controlledTermDataService',
+  cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window',  'DataTemplateService',
+                                        'DataManipulationService', 'FieldTypeService', 'UrlService',
+                                        'UIModelService',
+                                        'UserService', 'RichTextConfigService', 'CONST',
+                                        'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
-                                        'ValueRecommenderService', 'DataUtilService', 'TrackingService',
+                                        'ValueRecommenderService',  'TrackingService',
                                         '$httpParamSerializer', '$location'];
 
 
-  function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
-                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService, UIModelService, UserService,
-                                      RichTextConfigService, CONST, ControlledTermService, controlledTermDataService, provisionalClassService,
-                                      CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
+  function cedarTemplateEditorCoreRun($rootScope, $window,  DataTemplateService,
+                                      DataManipulationService, FieldTypeService, UrlService,
+                                      UIModelService, UserService,
+                                      RichTextConfigService, CONST, ControlledTermService,
+                                      provisionalClassService,
+                                      CedarUser, UISettingsService, ValueRecommenderService,
                                       TrackingService, $httpParamSerializer, $location) {
 
     $rootScope.isArray = angular.isArray;
@@ -30,9 +34,6 @@ define([
       handle: ".sortable-handler"
     };
 
-
-
-
     $rootScope.propertiesOf = DataManipulationService.propertiesOf;
     $rootScope.schemaOf = DataManipulationService.schemaOf;
 
@@ -41,273 +42,7 @@ define([
     $rootScope.isEmpty = function (obj) {
       return !obj || Object.keys(obj).length === 0;
     };
-
-    // BioPortal term selection integration code.
-    // TODO: separate the calls, create a service for these
-    $rootScope.isKeyVisible = function (keyCode) {
-      if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(keyCode) == -1 ||
-          keyCode >= 186 && keyCode <= 222 ||
-          [8, 32, 173].indexOf(keyCode) >= 0) {
-        return true;
-      } else {
-        return false;
-      }
-    };
-
-    // Used in field.directive.js and textfield.html
-    $rootScope.hasValueConstraint = function (vcst) {
-      var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-          vcst.valueSets && vcst.valueSets.length > 0 ||
-          vcst.classes && vcst.classes.length > 0 ||
-          vcst.branches && vcst.branches.length > 0);
-      return result;
-    };
-
-    $rootScope.autocompleteResultsCache = {};
-
-    // Used here
-    $rootScope.sortAutocompleteResults = function (field_id) {
-      $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
-        if (a.label && b.label) {
-          var labelA = a.label.toLowerCase();
-          var labelB = b.label.toLowerCase();
-          if (labelA < labelB)
-            return -1;
-          if (labelA > labelB)
-            return 1;
-        }
-        return 0;
-      });
-    };
-
-    // Used here
-    $rootScope.removeAutocompleteResultsForSource = function (field_id, source_uri) {
-      // remove results for this source
-      for (var i = $rootScope.autocompleteResultsCache[field_id].results.length - 1; i >= 0; i--) {
-        if ($rootScope.autocompleteResultsCache[field_id].results[i].sourceUri === source_uri) {
-          $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
-        }
-      }
-    };
-
-    // Used here
-    $rootScope.processAutocompleteClassResults = function (field_id, field_type, source_uri, response) {
-      var i, j, found;
-      // we do a complicated method to find the changed results to reduce flicker :-/
-      for (j = $rootScope.autocompleteResultsCache[field_id].results.length - 1; j >= 0; j--) {
-        if ($rootScope.autocompleteResultsCache[field_id].results[j].sourceUri != source_uri) {
-          // we only care about the ones from this source
-          continue;
-        }
-        found = false;
-        if (angular.isDefined(response.collection)) {
-          for (i = 0; i < response.collection.length; i++) {
-            if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
-              // this option still in the result set -- mark it
-              response.collection[i].found = true;
-              found = true;
-            }
-          }
-        }
-        if (!found) {
-          // need to remove this option
-          $rootScope.autocompleteResultsCache[field_id].results.splice(j, 1);
-        }
-      }
-      if (angular.isDefined(response.collection)) {
-        for (i = 0; i < response.collection.length; i++) {
-          if (!response.collection[i].found) {
-            $rootScope.autocompleteResultsCache[field_id].results.push(
-                {
-                  '@id'      : response.collection[i]['@id'],
-                  'label'    : response.collection[i].prefLabel,
-                  'type'     : field_type,
-                  'sourceUri': source_uri
-                }
-            );
-          }
-        }
-      }
-      if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
-        $rootScope.autocompleteResultsCache[field_id].results.push({
-          'label': $translate.instant('GENERIC.NoResults')
-        });
-      } else {
-        for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
-          if ($rootScope.autocompleteResultsCache[field_id].results[i].label == $translate.instant('GENERIC.NoResults')) {
-            $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
-            break;
-          }
-        }
-        $rootScope.sortAutocompleteResults(field_id);
-      }
-    };
-
-    // Used in textfield.html
-    $rootScope.updateFieldAutocomplete = function (field, term) {
-      // Only populate the field at runtime
-      if (UIUtilService.isRuntime()) {
-        if (term === '') {
-          term = '*';
-        }
-        var results = [];
-        var vcst = $rootScope.schemaOf(field)._valueConstraints;
-        var field_id = $rootScope.schemaOf(field)['@id'];
-
-        if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
-          $rootScope.autocompleteResultsCache[field_id] = {
-            'results': []
-          };
-        }
-
-        if (vcst.classes && vcst.classes.length > 0) {
-          $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
-          angular.forEach(vcst.classes, function (klass) {
-            if (term == '*') {
-              $rootScope.autocompleteResultsCache[field_id].results.push(
-                  {
-                    '@id'      : klass.uri,
-                    'label'    : klass.label,
-                    'type'     : 'Ontology Class',
-                    'sourceUri': 'template'
-                  }
-              );
-            } else {
-              if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
-                $rootScope.autocompleteResultsCache[field_id].results.push(
-                    {
-                      '@id'      : klass.uri,
-                      'label'    : klass.label,
-                      'type'     : 'Ontology Class',
-                      'sourceUri': 'template'
-                    }
-                );
-              }
-            }
-          });
-          if (term !== '*') {
-            if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
-              $rootScope.autocompleteResultsCache[field_id].results.push({
-                'label'    : $translate.instant('GENERIC.NoResults'),
-                'sourceUri': 'template'
-              });
-            }
-          }
-        }
-
-        if (vcst.valueSets && vcst.valueSets.length > 0) {
-          angular.forEach(vcst.valueSets, function (valueSet) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
-            }
-            controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
-                valueSet.uri).then(function (childResponse) {
-                  $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
-                });
-          });
-        }
-
-        if (vcst.ontologies && vcst.ontologies.length > 0) {
-          angular.forEach(vcst.ontologies, function (ontology) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
-            }
-            controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
-              $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
-            });
-          });
-        }
-
-        if (vcst.branches && vcst.branches.length > 0) {
-          angular.forEach(vcst.branches, function (branch) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
-            }
-            controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri,
-                branch.maxDepth).then(
-                function (childResponse) {
-                  $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-                }
-            );
-          });
-        }
-      }
-    };
-
-    // Used here by isValueConformedToConstraint
-    $rootScope.excludedValueConstraint = function (id, vcst) {
-      if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
-        return $rootScope.excludedValues[id];
-      }
-
-      var results = [];
-
-      if (vcst.classes.length > 0) {
-        angular.forEach(vcst.classes, function (klass) {
-          jQuery.merge(results, klass.exclusions || []);
-        });
-      }
-
-      if (vcst.valueSets.length > 0) {
-        angular.forEach(vcst.valueSets, function (klass) {
-          jQuery.merge(results, klass.exclusions || []);
-        });
-      }
-
-      if (vcst.ontologies.length > 0) {
-        angular.forEach(vcst.ontologies, function (klass) {
-          jQuery.merge(results, klass.exclusions || []);
-        });
-      }
-
-      if (vcst.branches.length > 0) {
-        angular.forEach(vcst.branches, function (klass) {
-          jQuery.merge(results, klass.exclusions || []);
-        });
-      }
-
-      $rootScope.excludedValues = $rootScope.excludedValues || {};
-      $rootScope.excludedValues[id] = results;
-
-      return results;
-    };
-
-    // Used in field.directive
-    $rootScope.isValueConformedToConstraint = function (value, id, vcst) {
-      var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
-      var excludedValues = $rootScope.excludedValueConstraint(id, vcst);
-      var isValid = false;
-      var jsonString = JSON.stringify(value);
-
-      angular.forEach(predefinedValues, function (val) {
-        if (!isValid) {
-          // IMPORTANT: this compare only valid if the 2 objects are simple
-          // and all properties are in the same order.
-          isValid = JSON.stringify(val) == jsonString;
-        }
-      });
-
-      isValid = excludedValues.indexOf(value.uri) == -1;
-
-      return isValid;
-    };
-
-    $rootScope.isOntology = function (obj) {
-      return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
-    };
-
-    // Used in controlled-term.directive
-    $rootScope.lengthOfValueConstraint = function (valueConstraint) {
-      return (valueConstraint.classes || []).length +
-          (valueConstraint.valueSets || []).length +
-          (valueConstraint.ontologies || []).length +
-          (valueConstraint.branches || []).length;
-    };
-
-    // Used in richtext.html
-    $rootScope.getUnescapedContent = function (field) {
-      return $sce.trustAsHtml($rootScope.schemaOf(field)._ui._content);
-    };
+    
 
     CedarUser.init();
     // Make it available for everybody through rootScope
@@ -369,11 +104,11 @@ define([
     // keeping track of dirty documents, i.e. with edits or not
     $rootScope.dirty = false;
 
-    $rootScope.setDirty = function(value) {
+    $rootScope.setDirty = function (value) {
       $rootScope.dirty = value;
     };
 
-    $rootScope.isDirty = function() {
+    $rootScope.isDirty = function () {
       return $rootScope.dirty;
     };
 

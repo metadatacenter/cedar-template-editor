@@ -1,11 +1,10 @@
-
 <div ng-init="initializeValueRecommendationField()"
     class="has-constraint "
     ng-class="{'has-selected': modelValueRecommendation[index].valueInfo.value}">
   <ui-select
       ng-model="modelValueRecommendation[index].valueInfo"
-      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); $root.vrs.updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.value)"
-      ng-click="$root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.value)"
+      ng-click="updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
       reset-search-input="false"
       aria-label="getDescription(field)">
@@ -14,10 +13,10 @@
           <!--ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>-->
     </ui-select-match>
     <ui-select-choices
-        ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
-        refresh="updateModelWhenRefresh($select, modelValueRecommendation, index); $root.vrs.updatePopulatedFields(field, $select.search); $root.updateFieldAutocomplete(field, $select.search)"
+        ui-disable-choice="option.value == getNoResultsMsg()"
+        refresh="updateModelWhenRefresh($select, modelValueRecommendation, index); updatePopulatedFields(field, $select.search); updateFieldAutocomplete(field, $select.search)"
         refresh-delay="200"
-        repeat="option in $root.vrs.getValueRecommendationResults(field) | propsFilter: {value: $select.search} | limitTo:100">
+        repeat="option in valueRecommendationResults[getId()] | propsFilter: {value: $select.search} | limitTo:100">
       <div>
         <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;

@@ -4,22 +4,24 @@ define(['angular'], function (angular) {
   angular.module('cedar.templateEditor.service.valueRecommenderService', [])
       .service('ValueRecommenderService', ValueRecommenderService);
 
-  ValueRecommenderService.$inject = ['$rootScope', 'DataManipulationService', '$translate', 'UrlService',
-                                     'UIMessageService', 'AuthorizedBackendService', 'HttpBuilderService'];
+  ValueRecommenderService.$inject = ['DataManipulationService', '$translate', 'UrlService',
+                                     'UIMessageService', 'AuthorizedBackendService', 'HttpBuilderService', 'autocompleteService'];
 
-  function ValueRecommenderService($rootScope, DataManipulationService, $translate, UrlService,
-                                   UIMessageService, AuthorizedBackendService, HttpBuilderService) {
+  function ValueRecommenderService(DataManipulationService, $translate, UrlService,
+                                   UIMessageService, AuthorizedBackendService, HttpBuilderService, autocompleteService) {
 
     var http_default_config = {};
     var isValueRecommendationEnabled = false;
     var hasInstances;
-    var valueRecommendationResults;
-    var populatedFields;
+
+
     var templateId;
     var template;
 
     var service = {
-      serviceId: 'ValueRecommenderService'
+      serviceId: 'ValueRecommenderService',
+      valueRecommendationResults : [],
+      populatedFields: []
     };
 
     /**
@@ -31,8 +33,6 @@ define(['angular'], function (angular) {
 
       DataManipulationService.addPathInfo(template, null);
 
-      valueRecommendationResults = [];
-      populatedFields = [];
       http_default_config = {
         'headers': {
           'Content-Type': 'application/json'
@@ -47,27 +47,19 @@ define(['angular'], function (angular) {
       });
     };
 
-    /**
-     * Getters and Setters
-     */
+
     service.getIsValueRecommendationEnabled = function (field) {
-      if (field._ui.valueRecommendationEnabled && hasInstances) {
-        return true;
-      }
-      else {
-        return false;
-      }
-      //return isValueRecommendationEnabled;
+      return (DataManipulationService.schemaOf(field)._ui.valueRecommendationEnabled && hasInstances);
     };
 
-    service.getValueRecommendationResults = function (field) {
-      var fieldId = service.getFieldId(field);
+    service.getValueRecommendationResults = function (fieldId) {
+      var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
-        if (angular.isUndefined(valueRecommendationResults[fieldId])) {
+        if (angular.isUndefined(service.valueRecommendationResults[fieldId])) {
           return [];
         }
         else {
-          return valueRecommendationResults[fieldId];
+          return service.valueRecommendationResults[fieldId];
         }
       }
       else {
@@ -75,31 +67,28 @@ define(['angular'], function (angular) {
       }
     };
 
-    /**
-     * Service methods.
-     */
+
     service.updatePopulatedFields = function (field, value) {
-      var fieldId = service.getFieldId(field);
+      var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
         if (value) {
-          populatedFields[fieldId] = {
+          service.populatedFields[fieldId] = {
             "path" : field._path,
             "value": value
           }
         }
         else {
-          delete populatedFields[fieldId];
+          delete service.populatedFields[fieldId];
         }
       }
     };
 
     // Returns all populated fields (name and value) except excludedFieldId, which is the field that is being filled out
     service.getRelevantPopulatedFields = function (excludedFieldId) {
-      console.log('getRelevantPopulatedFields');
       var relevantPopulatedFieldsArray = [];
-      if (populatedFields) {
+      if (service.populatedFields) {
         // Shallow copy
-        var relevantPopulatedFields = $.extend({}, populatedFields);
+        var relevantPopulatedFields = $.extend({}, service.populatedFields);
         // Exclude current field
         delete relevantPopulatedFields[excludedFieldId];
         // Get hash values as an array
@@ -111,12 +100,12 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field) {
-      var fieldId = service.getFieldId(field);
+      var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
         var targetFieldPath = field._path;
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
-              var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
+              var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId]['results'];
 
               if (recommendation.recommendedValues) {
                 if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
@@ -142,7 +131,7 @@ define(['angular'], function (angular) {
                   });
                 }
               }
-              valueRecommendationResults[fieldId] = recommendation.recommendedValues;
+              service.valueRecommendationResults[fieldId] = recommendation.recommendedValues;
             });
       }
     }
@@ -162,10 +151,10 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
-      console.log('getRecommendation');
+
       var inputData = {};
-      if (populatedFields.length > 0) {
-        inputData['populatedFields'] = populatedFields;
+      if (service.populatedFields.length > 0) {
+        inputData['populatedFields'] = service.populatedFields;
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'path': targetFieldPath};
@@ -181,24 +170,14 @@ define(['angular'], function (angular) {
       );
     };
 
-    service.getFieldId = function (field) {
-      if (!field && !field.type) {
-        return undefined;
-      }
-      if (field.type == 'array') {
-        return field.items['@id'];
-      }
-      else {
-        return field['@id'];
-      }
-    }
+
 
     /**
      * Messages
      */
     service.getNoResultsMsg = function () {
       return $translate.instant('VALUERECOMMENDER.noResults');
-    }
+    };
 
     return service;
   }

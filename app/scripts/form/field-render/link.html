@@ -6,7 +6,7 @@
   <!-- SINGLE FIELD (NOT A LIST) -->
   <div ng-valid="false" ng-init="setDefaultValueIfEmpty(model)" ng-if="!$root.isArray(model)"
       class="form-group floating-label-wrapper has-feedback">
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))" class="has-no-constraint">
+    <div ng-if="!hasValueConstraint() && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))" class="has-no-constraint">
       <input type="text"
           class="form-control xx"
           ng-change="setDefaultValueIfEmpty(model)"
@@ -41,7 +41,7 @@
       ng-repeat="(index, valueElement) in model">
 
     <!--Regular field-->
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))" class="has-no-constraint">
+    <div ng-if="!hasValueConstraint() && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))" class="has-no-constraint">
       <input type="text"
           class="form-control has-success has-feedback"
           ng-change="setDefaultValueIfEmpty(model)"

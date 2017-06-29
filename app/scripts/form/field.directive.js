@@ -52,6 +52,11 @@ define([
         return dms.isCardinalElement($scope.field);
       };
 
+      // is this multiple cardinality?
+      $scope.hasMin = function () {
+        return $scope.field.hasOwnProperty('minItems');
+      };
+
       $scope.isRequired = function () {
         return dms.isRequired($scope.field);
       };
@@ -66,6 +71,10 @@ define([
 
       $scope.getDescription = function () {
         return dms.getDescription($scope.field);
+      };
+
+      $scope.hasValueConstraint = function () {
+        return dms.hasValueConstraint($scope.field);
       };
 
 
@@ -292,7 +301,7 @@ define([
       //var field = dms.schemaOf($scope.field);
 
       // Checking each field to see if required, will trigger flag for use to see there is required fields
-      if (dms.hasValueConstraint($scope.field) && dms.isRequired($scope.field)) {
+      if ($scope.hasValueConstraint() && dms.isRequired($scope.field)) {
         $scope.$emit('formHasRequiredfield._uis');
       }
 
@@ -514,7 +523,7 @@ define([
           }
           if ($scope.directory == "render") {
             if ($rootScope.schemaOf($scope.field)._ui.inputType == "textfield" &&
-                $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
+                $scope.hasValueConstraint()) {
               // We are populating the template
               if ($scope.isEditData == null || $scope.isEditData == false) {
                 if (isMultiple) {

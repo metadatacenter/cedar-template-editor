@@ -7,12 +7,15 @@ define([
       .directive('constrainedValue', constrainedValue);
 
 
-  constrainedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService"];
+  constrainedValue.$inject = [ "DataManipulationService", "UIUtilService","autocompleteService"];
 
-  function constrainedValue($rootScope, DataManipulationService, UIUtilService) {
+  function constrainedValue( DataManipulationService, UIUtilService, autocompleteService) {
 
 
     var linker = function ($scope, $element, attrs) {
+
+      $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
+      $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
@@ -22,6 +25,10 @@ define([
       // is this field required?
       $scope.isRequired = function () {
         return DataManipulationService.isRequired($scope.field);
+      };
+
+      $scope.getId = function () {
+        return DataManipulationService.getId($scope.field);
       };
 
       if ($scope.hasValueConstraint() && $scope.isRequired()) {
@@ -54,7 +61,7 @@ define([
       $scope.updateModelFromUIControlledField = function (modelValue, index) {
         if (modelValue[index] && modelValue[index].termInfo) {
           // Array
-          if ($rootScope.isArray($scope.model)) {
+          if (angular.isArray($scope.model)) {
             $scope.model[index]['@id'] = modelValue[index].termInfo['@id'];
             $scope.model[index]['_valueLabel'] = modelValue[index].termInfo.label;
           }
@@ -68,7 +75,7 @@ define([
         // Value is undefined
         else {
           // Array
-          if ($rootScope.isArray($scope.model)) {
+          if (angular.isArray($scope.model)) {
             delete $scope.model[index]['@id'];
             delete $scope.model[index]['_valueLabel'];
           }
@@ -81,7 +88,7 @@ define([
       };
 
       $scope.updateUIFromModelControlledField = function () {
-        if ($rootScope.isArray($scope.model)) {
+        if (angular.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {
             $scope.modelValue[i] = {};

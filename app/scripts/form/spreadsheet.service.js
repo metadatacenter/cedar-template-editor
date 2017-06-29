@@ -8,11 +8,11 @@ define([
 
       SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
                                     'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
-                                    'ValueRecommenderService'];
+                                    'ValueRecommenderService', 'autocompleteService'];
 
       function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
                                   AuthorizedBackendService,
-                                  HttpBuilderService, UrlService, ValueRecommenderService) {
+                                  HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -90,8 +90,8 @@ define([
                       if (isConstrained(schema)) {
 
                         // do we have some autocomplete results?
-                        if ($rootScope.autocompleteResultsCache[newId]) {
-                          var results = $rootScope.autocompleteResultsCache[newId]['results'];
+                        if (autocompleteService.autocompleteResultsCache[newId]) {
+                          var results = autocompleteService.autocompleteResultsCache[newId]['results'];
                           if (results) {
                             console.log('looking for value ' + value);
                             loop: for (var i = 0; i < results.length; i++) {
@@ -194,11 +194,11 @@ define([
                 desc.schema = dms.schemaOf(node);
                 desc.source = function (query, process) {
 
-                  $rootScope.updateFieldAutocomplete(desc.schema, query);
+                  autocompleteService.updateFieldAutocomplete(desc.schema, query);
                   setTimeout(function () {
 
                     var id = dms.getId(node);
-                    var results = $rootScope.autocompleteResultsCache[id]['results'];
+                    var results = autocompleteService.autocompleteResultsCache[id]['results'];
 
                     var labels = [];
                     for (var i = 0; i < results.length; i++) {

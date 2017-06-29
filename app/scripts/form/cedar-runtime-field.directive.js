@@ -590,19 +590,21 @@ define([
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
-        var location = getValueLocation();
+        var location = dms.getValueLocation($scope.field);
+        var min = dms.getMinItems($scope.field) || 0;
+        var valueConstraint = dms.getValueConstraint($scope.field);
+        var id = $scope.getId();
+        //var id = $scope.getId() + '-' + $scope.index;
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if (hasValueConstraint() && isRequired()) {
           var allRequiredFieldsAreFilledIn = true;
-          var min = dms.getMinItems($scope.field) || 0;
 
           if (angular.isArray($scope.model)) {
             if ($scope.model.length < min) {
               allRequiredFieldsAreFilledIn = false;
             } else {
               angular.forEach($scope.model, function (valueElement) {
-
 
                 if (!valueElement || !valueElement[location]) {
                   allRequiredFieldsAreFilledIn = false;
@@ -615,7 +617,7 @@ define([
                   if (!hasValue) {
                     allRequiredFieldsAreFilledIn = false;
                   }
-                } else if (angular.isObject(valueElement[location])) {
+                } else if (angular.isObject(valueElement)) {
                   if ($rootScope.isEmpty(valueElement[location])) {
                     allRequiredFieldsAreFilledIn = false;
                   } else if (dms.isDateRange($scope.field)) {
@@ -701,33 +703,35 @@ define([
         }
 
         if (hasValueConstraint()) {
-          var valueConstraint = dms.getValueConstraint($scope.field);
-          var id = $scope.getId() + '-' + $scope.index;
 
           if (angular.isArray($scope.model)) {
-            angular.forEach($scope.model, function (valueElement) {
-              if (angular.isArray(valueElement['@value'])) {
-                angular.forEach(valueElement['@value'], function (ve) {
-                  if (!$rootScope.isValueConformedToConstraint(ve, id, valueConstraint)) {
+            angular.forEach($scope.model, function (valueElement, index) {
+              if (angular.isArray(valueElement)) {
+                angular.forEach(valueElement, function (ve, index) {
+                  if (!dms.isValueConformedToConstraint(ve, location, id, valueConstraint, index )) {
                     allFieldsAreValid = false;
                   }
                 });
-              } else if (angular.isObject(valueElement['@value'])) {
-                if (!$rootScope.isValueConformedToConstraint(valueElement['@value'], id, valueConstraint)) {
-                  allFieldsAreValid = false;
+              } else {
+                if (angular.isObject(valueElement)) {
+                  if (!dms.isValueConformedToConstraint(valueElement, location, id, valueConstraint, index)) {
+                    allFieldsAreValid = false;
+                  }
                 }
               }
             });
           } else {
-            if (angular.isArray($scope.model['@value'])) {
-              angular.forEach($scope.model['@value'], function (ve) {
-                if (!$rootScope.isValueConformedToConstraint(ve, id, valueConstraint)) {
+            if (angular.isArray($scope.model)) {
+              angular.forEach($scope.model, function (ve) {
+                if (!dms.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
                   allFieldsAreValid = false;
                 }
               });
-            } else if (angular.isObject($scope.model['@value'])) {
-              if (!$rootScope.isValueConformedToConstraint($scope.model['@value'], id, valueConstraint)) {
-                allFieldsAreValid = false;
+            } else {
+              if (angular.isObject($scope.model)) {
+                if (!dms.isValueConformedToConstraint($scope.model, location, id, valueConstraint, 0)) {
+                  allFieldsAreValid = false;
+                }
               }
             }
           }
