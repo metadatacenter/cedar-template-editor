@@ -42,7 +42,7 @@ define([
     $rootScope.isEmpty = function (obj) {
       return !obj || Object.keys(obj).length === 0;
     };
-    
+
 
     CedarUser.init();
     // Make it available for everybody through rootScope
@@ -63,8 +63,8 @@ define([
     TrackingService.init();
 
     // Make objects available through rootScope
-    $rootScope.cts = ControlledTermService;
-    $rootScope.vrs = ValueRecommenderService;
+    //$rootScope.cts = ControlledTermService;
+    //$rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
     $rootScope.util = {

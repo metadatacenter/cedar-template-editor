@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.autocompleteService', [])
       .factory('autocompleteService', autocompleteService);
 
-  autocompleteService.$inject = ['$rootScope', '$translate', 'controlledTermDataService'];
+  autocompleteService.$inject = [ '$translate', 'controlledTermDataService', 'DataManipulationService'];
 
-  function autocompleteService($rootScope, $translate, controlledTermDataService) {
+  function autocompleteService( $translate, controlledTermDataService, DataManipulationService) {
     var service = {
       serviceId: "autocompleteService",
       autocompleteResultsCache : {}
@@ -99,8 +99,8 @@ define([
           term = '*';
         }
         var results = [];
-        var vcst = $rootScope.schemaOf(field)._valueConstraints;
-        var field_id = $rootScope.schemaOf(field)['@id'];
+        var vcst = DataManipulationService.getValueConstraint(field);
+        var field_id = DataManipulationService.getId(field);
 
         if (angular.isUndefined(service.autocompleteResultsCache[field_id])) {
           service.autocompleteResultsCache[field_id] = {
@@ -179,6 +179,25 @@ define([
             );
           });
         }
+    };
+
+    // Note that this only checks the values if the autocomplete cache has them and the cache
+    // will be empty if the user didn't use autocomplete in this session for this field.
+    service.isValueConformedToConstraint = function (value, location, id, vcst,  index) {
+
+      var isValid = true;
+      if (value && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
+        var predefinedValues = service.autocompleteResultsCache[id].results;
+        var isValid = false;
+
+        angular.forEach(predefinedValues, function (val) {
+          if (!isValid) {
+            isValid = val[location] == value[location];
+          }
+        });
+      }
+      console.log('isValueConformedToConstraint ' + isValid);
+      return isValid;
     };
 
 

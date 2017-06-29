@@ -7,10 +7,10 @@ define([
       angular.module('cedar.templateEditor.service.dataManipulationService', [])
           .service('DataManipulationService', DataManipulationService);
 
-      DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService','autocompleteService',
+      DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
                                          '$rootScope', "$translate", "$sce"];
 
-      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, autocompleteService, $rootScope,
+      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService,  $rootScope,
                                        $translate, $sce) {
 
         // Base path to generate field ids
@@ -1212,22 +1212,22 @@ define([
 
         };
 
-        // Note that this only checks the values if the autocomplete cache has them and the cache
-        // will be empty if the user didn't use autocomplete in this session for this field.
-        service.isValueConformedToConstraint = function (value, location, id, vcst,  index) {
-          var isValid = true;
-          if (value && autocompleteService.autocompleteResultsCache && autocompleteService.autocompleteResultsCache[id]) {
-            var predefinedValues = autocompleteService.autocompleteResultsCache[id].results;
-            var isValid = false;
-
-            angular.forEach(predefinedValues, function (val) {
-              if (!isValid) {
-                isValid = val[location] == value[location];
-              }
-            });
-          }
-          return isValid;
-        };
+        // // Note that this only checks the values if the autocomplete cache has them and the cache
+        // // will be empty if the user didn't use autocomplete in this session for this field.
+        // service.isValueConformedToConstraint = function (value, location, id, vcst,  index) {
+        //   var isValid = true;
+        //   if (value && autocompleteService.autocompleteResultsCache && autocompleteService.autocompleteResultsCache[id]) {
+        //     var predefinedValues = autocompleteService.autocompleteResultsCache[id].results;
+        //     var isValid = false;
+        //
+        //     angular.forEach(predefinedValues, function (val) {
+        //       if (!isValid) {
+        //         isValid = val[location] == value[location];
+        //       }
+        //     });
+        //   }
+        //   return isValid;
+        // };
 
 
         //
@@ -1235,13 +1235,8 @@ define([
         //
 
         // has recommendations?
-        service.isRecommended = function (node) {
-          return $rootScope.vrs.getIsValueRecommendationEnabled(service.schemaOf(node));
-        };
-
-        // has value constraints?
-        service.isConstrained = function (node) {
-          return service.hasValueConstraint(node) && !service.isRecommended();
+        service.valueRecommendationEnabled = function (node) {
+          return service.schemaOf(node)._ui.valueRecommendationEnabled;
         };
 
         // get the controlled terms list for field types

@@ -10,10 +10,10 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
-                               "DataManipulationService", "UIUtilService"];
+                               "DataManipulationService", "UIUtilService", "autocompleteService", "ValueRecommenderService"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService) {
+                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService, ValueRecommenderService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -376,7 +376,7 @@ define([
 
       // has recommendations?
       $scope.isRecommended = function () {
-        return $rootScope.vrs.getIsValueRecommendationEnabled(dms.schemaOf($scope.field));
+        return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
 
       // has value constraints?
@@ -708,13 +708,13 @@ define([
             angular.forEach($scope.model, function (valueElement, index) {
               if (angular.isArray(valueElement)) {
                 angular.forEach(valueElement, function (ve, index) {
-                  if (!dms.isValueConformedToConstraint(ve, location, id, valueConstraint, index )) {
+                  if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index )) {
                     allFieldsAreValid = false;
                   }
                 });
               } else {
                 if (angular.isObject(valueElement)) {
-                  if (!dms.isValueConformedToConstraint(valueElement, location, id, valueConstraint, index)) {
+                  if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint, index)) {
                     allFieldsAreValid = false;
                   }
                 }
@@ -723,13 +723,13 @@ define([
           } else {
             if (angular.isArray($scope.model)) {
               angular.forEach($scope.model, function (ve) {
-                if (!dms.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
+                if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
                   allFieldsAreValid = false;
                 }
               });
             } else {
               if (angular.isObject($scope.model)) {
-                if (!dms.isValueConformedToConstraint($scope.model, location, id, valueConstraint, 0)) {
+                if (!autocompleteService.isValueConformedToConstraint($scope.model, location, id, valueConstraint, 0)) {
                   allFieldsAreValid = false;
                 }
               }
