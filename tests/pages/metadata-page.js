@@ -145,6 +145,46 @@ var MetadataPage = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
   };
 
+  // make sure the element is multiple instance and has fields in it
+  this.checkMultiple = function() {
+    // open the element
+    var createElement = element(by.css('.elementTotalContent .element  .col-xs-6  .element'));
+    browser.wait(EC.visibilityOf(createElement));
+    browser.wait(EC.elementToBeClickable(createElement));
+    createElement.click();
+
+    // open the first field within the element
+    var createField = element.all(by.css('.elementTotalContent .element  .title.field')).first();
+    browser.wait(EC.visibilityOf(createField));
+    browser.wait(EC.elementToBeClickable(createField));
+    createField.click();
+
+  };
+
+  // add instance to multi-instance element, toggle view to expanded and make sure
+  // it is property expanded
+  this.addInstance = function() {
+
+    // move the mouse to the element title
+    var createElement = element(by.css('.elementTotalContent .element  .col-xs-6  .element'));
+    browser.actions().mouseMove(createElement).perform();
+
+    // click on the add button
+    var createAdd = element(by.css('.elementTotalContent .element  button.add'));
+    browser.wait(EC.visibilityOf(createAdd));
+    browser.wait(EC.elementToBeClickable(createAdd));
+    createAdd.click();
+
+    // click on the expanded view button
+    var createViewToggle = element(by.css('.elementTotalContent .element  button.view-toggle'));
+    browser.wait(EC.visibilityOf(createViewToggle));
+    browser.wait(EC.elementToBeClickable(createViewToggle));
+    createViewToggle.click();
+
+    var createElementList = element.all(by.css('cedar-runtime-element .element.title'));
+    expect(createElementList.count()).toBe(2);
+
+  }
 
 };
 module.exports = new MetadataPage(); 

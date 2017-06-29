@@ -16,6 +16,7 @@ var gulp = require('gulp'),
     Server = require('karma').Server,
     protractor = require('gulp-protractor').protractor,
     replace = require('gulp-replace'),
+    wait = require('gulp-wait'),
     colors = require('colors'),
     Proxy = require('gulp-connect-proxy',
         request = require('sync-request'),
@@ -120,14 +121,19 @@ gulp.task('watch', function (done) {
   done();
 });
 
-// Karma tests
-gulp.task('test', function (done) {
+// Sets up the environment required to run the Karma tests in Travis
+gulp.task('karma-travis-env', gulp.series(['replace-url', 'replace-tracking', 'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
+  done();
+}));
+
+gulp.task('karma-tests', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
-    //action: 'watch',
-    //showStack: true,
-    singleRun : true
-  }, done).start();
+    singleRun: true
+  }, function (exitCode) {
+    done();
+    process.exit(exitCode);
+  }).start();
 });
 
 gulp.task('test-env', function (done) {
@@ -139,7 +145,6 @@ gulp.task('test-env', function (done) {
       .pipe(replace('protractorTestUser2Login', cedarTestUser2Login))
       .pipe(replace('protractorTestUser2Password', cedarTestUser2Password))
       .pipe(replace('protractorTestUser2Name', cedarTestUser2Name))
-      .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
       .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
   done();
@@ -250,7 +255,6 @@ gulp.task('test-form', gulp.series('test-env', function () {
       });
 }));
 
-
 function exitWithError(msg) {
   onError(msg);
   console.log(
@@ -285,7 +289,6 @@ function getFrontendEnvVar(varNameSuffix) {
 // Get environment variables
 var envConfig = {
   'CEDAR_ANALYTICS_KEY'       : null,
-  'CEDAR_EVERYBODY_GROUP_NAME': null,
   'CEDAR_FRONTEND_BEHAVIOR'   : null,
   'CEDAR_FRONTEND_TARGET'     : null,
   'CEDAR_VERSION'             : null,
@@ -298,7 +301,6 @@ console.log(
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP_NAME'];
 var cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
 var cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 var cedarVersion = envConfig['CEDAR_VERSION'];

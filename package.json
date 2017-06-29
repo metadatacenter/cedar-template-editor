@@ -1,6 +1,9 @@
 {
-  "name": "stanford-cedar",
-  "version": "1.0.0",
+  "name": "cedar-medatadata-editor",
+  "version": "1.2.2",
+  "publishConfig": {
+    "registry": "https://nexus.bmir.stanford.edu/content/repositories/npm-cedar/"
+  },
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
@@ -35,6 +38,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
+    "gulp-wait": "0.0.2",
     "jasmine-core": "^2.6.1",
     "jshint-stylish": "^1.0.1",
     "karma": "^0.13.22",

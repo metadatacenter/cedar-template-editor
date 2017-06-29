@@ -22,9 +22,7 @@
           <cedar-template-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
-              labels="$root.schemaOf(form)._ui.propertyLabels"
-              relabel="relabel"
-              delete="removeChild(form.properties[item])"
+              parent-element="form"
               is-edit-data="isEditData">
           </cedar-template-element>
         </div>
@@ -103,10 +101,8 @@
   <!--At build time, the old form-->
   <div class="page build" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
 
-
     <div ng-repeat="item in form._ui.order" class="animate-fade">
       <span ng-if="form.properties[item]">
-
 
         <!--If  field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
@@ -118,40 +114,35 @@
               rename-child-key="renameChildKey"></field-directive>
         </div>
 
-        <!--If  Element with a template root-->
-        <div
-            ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
-          <div class="element-group full"
-              ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+        <!--&lt;!&ndash;If  Element with a template root&ndash;&gt;-->
+        <!--<div-->
+            <!--ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">-->
+          <!--<div class="element-group full"-->
+              <!--ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">-->
 
-            never gets called
-            <cedar-template-element element="form.properties[item]"
-                key="item"
-                model="model[item]"
-                labels="$root.schemaOf(form)._ui.propertyLabels"
-                delete="removeChild(form.properties[item])"
-                nested="false"
-                is-root-element="false"
-                is-edit-data="isEditData">
-            </cedar-template-element>
-          </div>
+            <!--never gets called-->
+            <!--<cedar-template-element element="form.properties[item]"-->
+                <!--key="item"-->
+                <!--model="model[item]"-->
+                <!--labels="$root.schemaOf(form)._ui.propertyLabels"-->
+                <!--delete="removeChild(form.properties[item])"-->
+                <!--nested="false"-->
+                <!--is-root-element="false"-->
+                <!--is-edit-data="isEditData">-->
+            <!--</cedar-template-element>-->
+          <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
-        <!-- if element with element root -->
-
-         <div
-             ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
+        <!-- if element  -->
+         <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
            <div class="element-group full"
                ng-if="$root.schemaOf(form.properties[item])['@id'] == $root.keyOfRootElement">
 
              <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"
-                 labels="$root.schemaOf(form)._ui.propertyLabels"
-                 delete="removeChild(form.properties[item])"
-                 nested="true"
-                 is-root-element="false"
+                 parent-element="form"
                  is-edit-data="isEditData">
              </cedar-template-element>
            </div>
@@ -162,11 +153,7 @@
              <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"
-                 labels="$root.schemaOf(form)._ui.propertyLabels"
-                 relabel="relabel"
-                 delete="removeChild(form.properties[item])"
-                 nested="false"
-                 is-root-element="{{$root.schemaOf(form)['@type'] == undefined }}"
+                 parent-element="form"
                  is-edit-data="isEditData">
              </cedar-template-element>
            </div>
