@@ -22,12 +22,12 @@ define([
 
       $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
 
-      $scope.updateValueRecommendationResults = function(node) {
-        ValueRecommenderService.updateValueRecommendationResults(node);
+      $scope.updateValueRecommendationResults = function(node, index) {
+        ValueRecommenderService.updateValueRecommendationResults(node, index);
       };
 
-      $scope.updateFieldAutocomplete = function(field, term) {
-        autocompleteService.updateFieldAutocomplete(field, term);
+      $scope.updateFieldAutocomplete = function(field, term, index) {
+        autocompleteService.updateFieldAutocomplete(field, term, index);
       };
 
       $scope.getNoResultsMsg = ValueRecommenderService.getNoResultsMsg;

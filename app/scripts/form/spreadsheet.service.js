@@ -52,6 +52,7 @@ define([
 
         // copy table data to source table
         var updateDataModel = function ($scope, $element) {
+          //console.log('updateDataModel');
               var sds = $scope.spreadsheetDataScope;
               for (var row in sds.tableData) {
                 for (var col in sds.tableData[row]) {
@@ -84,27 +85,35 @@ define([
                   } else if (inputType == 'autocomplete') {
                     if (sds.tableData[row][col]) {
                       var value = sds.tableData[row][col];
-                      var newId = sds.columnDescriptors[col].nodeId + '-' + row;
+                      var id = sds.columnDescriptors[col].nodeId;
                       var schema = sds.columnDescriptors[col].schema;
 
                       if (isConstrained(schema)) {
 
+                        console.log('isConstrained ' + row + ' '  + col);
+
+
                         // do we have some autocomplete results?
-                        if (autocompleteService.autocompleteResultsCache[newId]) {
-                          var results = autocompleteService.autocompleteResultsCache[newId]['results'];
+                          var results = autocompleteService.getAutocompleteResultsCache(id, value);
                           if (results) {
-                            console.log('looking for value ' + value);
+                            var found = false;
                             loop: for (var i = 0; i < results.length; i++) {
                               if (value === results[i]['label']) {
 
                                 sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
                                 sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
-                                console.log('found');
+                                found = true;
                                 break loop;
                               }
                             }
+
+                            if (!found) {
+                              console.log('not found ' + value);
+                              delete sds.tableDataSource[row][col]['@id'];
+                              delete sds.tableDataSource[row][col]['_valueLabel'];
+
+                            }
                           }
-                        }
                       }
                     }
                   } else {
@@ -144,7 +153,7 @@ define([
         };
 
         // build a description of the cell data
-        var getDescriptor = function (context, node) {
+        var getDescriptor = function (context, node, $scope) {
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
@@ -192,20 +201,21 @@ define([
                 desc.strict = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
+
                 desc.source = function (query, process) {
 
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
                   setTimeout(function () {
 
                     var id = dms.getId(node);
-                    var results = autocompleteService.autocompleteResultsCache[id]['results'];
+                    var results = autocompleteService.getAutocompleteResults(id, query);
 
                     var labels = [];
                     for (var i = 0; i < results.length; i++) {
                       labels[i] = results[i]['label'];
                     }
                     process(labels);
-                  }, 200);
+                  }, 1000);
                 };
               } else {
                 desc.type = 'text';
@@ -216,15 +226,15 @@ define([
         };
 
         // build the data object descriptor for each column
-        var getColumnDescriptors = function (context, node, columnHeaderOrder) {
+        var getColumnDescriptors = function (context, node, columnHeaderOrder, $scope) {
           var colDescriptors = [];
           for (var i in columnHeaderOrder) {
             if (context.isField()) {
-              colDescriptors.push(getDescriptor(context, node));
+              colDescriptors.push(getDescriptor(context, node, $scope));
             } else {
               var key = columnHeaderOrder[i];
               var child = dms.propertiesOf(node)[key];
-              colDescriptors.push(getDescriptor(context, child));
+              colDescriptors.push(getDescriptor(context, child, $scope));
             }
           }
           return colDescriptors;
@@ -375,25 +385,20 @@ define([
 
           hooks.forEach(function (hook) {
             var checked = '';
-            if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
+            if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
                 hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
               checked = 'checked';
             }
 
-
             hot.addHook(hook, function () {
 
-              if (hook === 'afterSelection') {
-                // onClick for recommended fields
-                //ValueRecommenderService.updateValueRecommendationResults(desc.schema);
-              }
-
-
               if (hook === 'afterChange') {
+                //console.log('afterChange');
                 updateDataModel($scope, $element);
               }
 
               if (hook === 'afterCreateRow') {
+                //console.log('afterCreateRow');
                 $scope.spreadsheetDataScope.addCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);
@@ -402,6 +407,7 @@ define([
               }
 
               if (hook === 'afterRemoveRow') {
+                //console.log('afterRemoveRow');
                 $scope.spreadsheetDataScope.removeCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);
@@ -443,7 +449,7 @@ define([
           context.isField = isField;
 
           var columnHeaderOrder = getColumnHeaderOrder(context, $element);
-          var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder);
+          var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope);
           var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
           var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
           var colHeaders = getColHeaders($element, columnHeaderOrder, isField());

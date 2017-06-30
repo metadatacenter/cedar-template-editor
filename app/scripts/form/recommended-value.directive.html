@@ -4,7 +4,7 @@
   <ui-select
       ng-model="modelValueRecommendation[index].valueInfo"
       ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.value)"
-      ng-click="updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
+      ng-click="updateValueRecommendationResults(field, $select); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
       reset-search-input="false"
       aria-label="getDescription(field)">
@@ -14,7 +14,7 @@
     </ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.value == getNoResultsMsg()"
-        refresh="updateModelWhenRefresh($select, modelValueRecommendation, index); updatePopulatedFields(field, $select.search); updateFieldAutocomplete(field, $select.search)"
+        refresh="updateModelWhenRefresh($select, modelValueRecommendation); updatePopulatedFields(field, $select.search); updateFieldAutocomplete(field, $select.search)"
         refresh-delay="200"
         repeat="option in valueRecommendationResults[getId()] | propsFilter: {value: $select.search} | limitTo:100">
       <div>
