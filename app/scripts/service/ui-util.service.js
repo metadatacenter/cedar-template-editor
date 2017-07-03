@@ -301,6 +301,15 @@ define([
       $rootScope.selectedFieldOrElement = node;
     };
 
+    // set as selected
+    service.setSelected = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      p._tmp.state = "creating";
+
+      $rootScope.selectedFieldOrElement = field;
+    };
+
     // deselect any current selected items, then select this one
     service.canSelect = function (node) {
       var result = true;
