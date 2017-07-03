@@ -45,8 +45,8 @@ define([
           canRead                : canRead,
           canWrite               : canWrite,
           canChangeOwner         : canChangeOwner,
-          canShare               : canShare
-
+          canShare               : canShare,
+          renameNode             : renameNode
         };
         return service;
 
@@ -585,6 +585,20 @@ define([
             }
           }
           return false;
+        }
+
+        function renameNode(id, nodeType, name, description) {
+          var command = {
+            "id"      : id,
+            "nodeType": nodeType
+          };
+          if (name != null) {
+            command["name"] = name;
+          }
+          if (description != null) {
+            command["description"] = description;
+          }
+          return httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
         }
 
       }
