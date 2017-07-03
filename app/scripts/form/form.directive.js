@@ -276,7 +276,6 @@ define([
 
                   var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
-
                     // log to the console always
                     console.log(errors[i]);
 
@@ -320,9 +319,11 @@ define([
         });
 
 
+
         //
         // watches
         //
+        
 
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
@@ -420,6 +421,11 @@ define([
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+        $scope.isHidden = function(item) {
+          var node = $scope.form.properties[item];
+          return DataManipulationService.isHidden(node);
         };
 
         $scope.getPreviousItem = function (index) {

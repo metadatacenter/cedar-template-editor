@@ -553,6 +553,7 @@ var TemplateCreatorPage = function () {
 
   this.clickSave = function (type) {
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
+    browser.executeScript("arguments[0].scrollIntoView();", button.getWebElement());
     browser.wait(EC.elementToBeClickable(button));
     button.click();
   };
@@ -1008,6 +1009,7 @@ var TemplateCreatorPage = function () {
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function() {
     var multiple = element(by.css('.detail-options .element-toggle'));
+    browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
     multiple.click();

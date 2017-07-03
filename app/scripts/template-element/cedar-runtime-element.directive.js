@@ -108,13 +108,15 @@ define([
         return true;
       };
 
-      // scope.isNested = function () {
-      //   return dms.isNested(scope.element);
-      // };
 
-      //
-      // multiple cardinality elements
-      //
+      scope.isHidden = function (node) {
+        return DataManipulationService.isHidden(node);
+      };
+
+      scope.isCardinal = function () {
+        return DataManipulationService.isCardinalElement(scope.element);
+      };
+
 
       // is the model multiple?
       scope.isMultiple = function () {

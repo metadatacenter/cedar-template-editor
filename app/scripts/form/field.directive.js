@@ -20,7 +20,8 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       $scope.errorMessages;
-      var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
+      //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
+      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -45,6 +46,25 @@ define([
 
       $scope.getShortId = function (uri, maxLength) {
         return StringUtilsService.getShortId(uri, maxLength);
+      };
+
+
+      $scope.getHidden = function () {
+        return DataManipulationService.getHidden($scope.field);
+      };
+
+      $scope.allowsHidden = function () {
+        return DataManipulationService.allowsHidden($scope.field);
+      };
+
+      // is this multiple cardinality?
+      $scope.isHidden = function () {
+        return DataManipulationService.isHidden($scope.field);
+      };
+
+      // is this multiple cardinality?
+      $scope.setHidden = function (value) {
+        DataManipulationService.setHidden($scope.field, value);
       };
 
       // is this multiple cardinality?

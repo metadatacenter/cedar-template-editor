@@ -433,6 +433,7 @@
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
     "enterFieldDescription": "Enter Field Description (Help Text)",
+    "enterDefaultvalue": "Enter Default Value",
     "enterElementTitle": "Enter Element Title"
   },
   "AUTHORIZATION-ERROR": {

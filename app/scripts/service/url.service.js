@@ -153,6 +153,10 @@ define([
       return this.resourceBase() + "/command/move-node-to-folder";
     };
 
+    service.renameNode = function () {
+      return this.resourceBase() + "/command/rename-node";
+    };
+
     service.getUsers = function () {
       return this.resourceBase() + "/users";
     };

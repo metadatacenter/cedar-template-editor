@@ -558,6 +558,7 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
+
         if ($scope.isMultipleCardinality()) {
           var valueLocation = getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
@@ -571,6 +572,7 @@ define([
             // activate the new instance
             $scope.setActive($scope.model.length - 1, true);
           }
+
         }
         $scope.pageMinMax();
 
@@ -790,13 +792,33 @@ define([
           }
       );
 
+      $scope.isHidden = function() {
+        return DataManipulationService.isHidden($scope.field);
+      };
+
+      $scope.initValue = function() {
+        if (DataManipulationService.hasDefault($scope.field)) {
+          var location = DataManipulationService.getValueLocation($scope.field);
+          var value = DataManipulationService.getDefault($scope.field);
+          if (angular.isArray($scope.model)) {
+            angular.forEach($scope.model, function (model) {
+              model[location] = model[location] || value;
+            });
+          } else {
+            $scope.model[location] = $scope.model[location] || value;
+          }
+        }
+      };
+
       //
       // initialization
       //
 
       $scope.setValueArray();
 
+
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet);
+
 
 
 
