@@ -306,7 +306,6 @@ define([
 
                   var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
-
                     // log to the console always
                     console.log(errors[i]);
 
@@ -348,6 +347,8 @@ define([
             $scope.validateInstance($scope.model, params[0]);
           }
         });
+
+
 
 
 //
@@ -450,6 +451,11 @@ define([
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+        $scope.isHidden = function(item) {
+          var node = $scope.form.properties[item];
+          return DataManipulationService.isHidden(node);
         };
 
         $scope.getPreviousItem = function (index) {

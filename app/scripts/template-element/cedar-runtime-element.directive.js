@@ -74,6 +74,10 @@ define([
         return true;
       };
 
+      scope.isHidden = function (node) {
+        return DataManipulationService.isHidden(node);
+      };
+
       scope.isCardinal = function () {
         return DataManipulationService.isCardinalElement(scope.element);
       };

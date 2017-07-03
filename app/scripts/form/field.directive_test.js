@@ -69,7 +69,15 @@ define(['app', 'angular'], function (app) {
         });
         checkboxTests();
       });
+
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('textfield');
+        });
+        textfieldTests();
+      });
     });
+
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
     describe('In a template element,', function () {
@@ -80,9 +88,15 @@ define(['app', 'angular'], function (app) {
         });
         checkboxTests();
       });
+
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplateElement('textfield');
+        });
+        textfieldTests();
+      });
     });
 
-    /* SHARED TEST SPEC DEFINITIONS */
 
     // Note that this functions have been defined as 'function declarations', so they are
     // loaded before any code is executed. The alternative would be to declare them as 'function expressions', which are
@@ -93,6 +107,19 @@ define(['app', 'angular'], function (app) {
       var checkBoxSelector = "input[id^='checkbox']";
       var unselectedOptionClass = 'ng-empty';
       var selectedOptionClass = 'ng-not-empty';
+      var hiddenTabSelector = ".detail-options .hidden-tab";
+      var cardinalityTabSelector = ".detail-options .cardinality-tab";
+      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+      var requiredTabSelector = ".detail-options .required-tab";
+
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
 
       it("should have one option by default", function () {
         // Here, the $ symbol enables the use of jQuery's find method. By default Angular uses jqLite, which is limited
@@ -156,11 +183,29 @@ define(['app', 'angular'], function (app) {
 
     };
 
+    function textfieldTests() {
+
+      var hiddenTabSelector = ".detail-options .hidden-tab";
+      var cardinalityTabSelector = ".detail-options .cardinality-tab";
+      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+      var requiredTabSelector = ".detail-options .required-tab";
+
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
+    }
+
     /* SHARED UTILS DEFINITIONS */
 
     // Create a field given the field type (e.g. checkbox) and add it to the template
+    // Note: make sure your field type is loaded in the karma config before using it
     function addFieldToTemplate(fieldType) {
-      var $createTemplateControllerScope = $rootScope.$new(true) // create a new, isolated scope
+      var $createTemplateControllerScope = $rootScope.$new(true); // create a new, isolated scope
       // Initialize the CreateTemplateController
       $controller('CreateTemplateController', {
         $rootScope: $rootScope,
