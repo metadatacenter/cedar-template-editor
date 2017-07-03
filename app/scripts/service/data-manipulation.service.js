@@ -68,7 +68,7 @@ define([
 
         // Function that generates a basic field definition
         service.isStaticField = function (field) {
-          var schema = $rootScope.schemaOf(field);
+          var schema = service.schemaOf(field);
           var type = schema._ui.inputType;
           return FieldTypeService.isStaticField(type);
         };
@@ -127,12 +127,12 @@ define([
 
         // returns the properties of a template, element, or field schema
         service.getProperties = function(schema) {
-          return $rootScope.schemaOf(schema).properties;
+          return service.schemaOf(schema).properties;
         };
 
         // If necessary, updates the field schema according to whether the field is controlled or not
         service.initializeSchema = function (field) {
-          var fieldSchema = $rootScope.schemaOf(field);
+          var fieldSchema = service.schemaOf(field);
           // If regular field
           if (!service.hasValueConstraint(field)) {
             if (fieldSchema.required[0] != "@value") {
@@ -508,6 +508,11 @@ define([
           }
         };
 
+        // Returns the field schema. If the field is defined as an array, this function will return field.items, because the schema is defined at that level.
+        service.schemaOf = function (node) {
+          return service.getFieldSchema(node);
+        };
+
         // is this a nested field?
         service.isNested = function (field) {
           var p = $rootScope.propertiesOf(field);
@@ -573,7 +578,7 @@ define([
 
         // what is the field type?
         service.getInputType = function(field) {
-          return $rootScope.schemaOf(field)._ui.inputType;
+          return service.schemaOf(field)._ui.inputType;
         };
 
         service.defaultMinMax = function (fieldOrElement) {
@@ -599,7 +604,7 @@ define([
 
         // is this field required?
         service.isRequired = function (fieldOrElement) {
-          return $rootScope.schemaOf(fieldOrElement)._valueConstraints.requiredValue;
+          return service.schemaOf(fieldOrElement)._valueConstraints.requiredValue;
         };
 
         // is the previous field static?
@@ -749,7 +754,7 @@ define([
           angular.forEach(properties, function (value, name) {
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
-              if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (service.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 if (path == null) {
                   service.addPathInfo(value, name);
                 }
@@ -920,14 +925,14 @@ define([
         };
 
         service.getId = function (fieldOrElement) {
-          return $rootScope.schemaOf(fieldOrElement)['@id'];
+          return service.schemaOf(fieldOrElement)['@id'];
         };
 
         // what is the icon for this field?
         service.getIconClass = function (fieldOrElement) {
           var result = '';
           var fieldType = '';
-          var schema = $rootScope.schemaOf(fieldOrElement);
+          var schema = service.schemaOf(fieldOrElement);
           if (schema._ui.inputType) {
             fieldType = schema._ui.inputType;
             result = FieldTypeService.getFieldIconClass(fieldType);
@@ -936,15 +941,15 @@ define([
         };
 
         service.getType = function (fieldOrElement) {
-          var schema = $rootScope.schemaOf(fieldOrElement);
+          var schema = service.schemaOf(fieldOrElement);
           return schema['@type'];
         };
 
         // Retrieve appropriate input type
         service.getInputType = function (fieldOrElement) {
-          //return $rootScope.schemaOf($scope.field)._ui.inputType;
+          //return service.schemaOf($scope.field)._ui.inputType;
           var inputType = 'element';
-          var schema = $rootScope.schemaOf(fieldOrElement);
+          var schema = service.schemaOf(fieldOrElement);
 
           if (schema._ui.inputType) {
             inputType = schema._ui.inputType;
@@ -966,8 +971,8 @@ define([
 
         // is this a multiple choice list?
         service.isMultipleChoice = function (fieldOrElement) {
-          if ($rootScope.schemaOf(fieldOrElement)._valueConstraints) {
-            return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+          if (service.schemaOf(fieldOrElement)._valueConstraints) {
+            return service.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
           }
         };
 
@@ -985,26 +990,26 @@ define([
 
         // is this a youTube field?
         service.isYouTube = function (field) {
-          return field && $rootScope.schemaOf(field)._ui.inputType === 'youtube';
+          return field && service.schemaOf(field)._ui.inputType === 'youtube';
         };
 
         // is this richText?
         service.isRichText = function (field) {
-          return field && $rootScope.schemaOf(field)._ui.inputType === 'richtext';
+          return field && service.schemaOf(field)._ui.inputType === 'richtext';
         };
 
         // is this an image?
         service.isImage = function (field) {
-          return field && $rootScope.schemaOf(field)._ui.inputType === 'image';
+          return field && service.schemaOf(field)._ui.inputType === 'image';
         };
 
         service.getContent = function (fieldOrElement) {
-          var schema = $rootScope.schemaOf(fieldOrElement);
+          var schema = service.schemaOf(fieldOrElement);
           return schema._ui._content;
         };
 
         service.getSize = function (fieldOrElement) {
-          var schema = $rootScope.schemaOf(fieldOrElement);
+          var schema = service.schemaOf(fieldOrElement);
           return schema._ui._size;
         };
 
@@ -1026,12 +1031,12 @@ define([
 
         // does this field have a value constraint?
         service.hasValueConstraint = function (fieldOrElement) {
-          return $rootScope.hasValueConstraint($rootScope.schemaOf(fieldOrElement)._valueConstraints);
+          return $rootScope.hasValueConstraint(service.schemaOf(fieldOrElement)._valueConstraints);
         };
 
         // get the value constraint literal values
         service.getLiterals = function (fieldOrElement) {
-          return $rootScope.schemaOf(fieldOrElement)._valueConstraints.literals;
+          return service.schemaOf(fieldOrElement)._valueConstraints.literals;
         };
 
         // checks if the literal has been set to 'selected by default'
@@ -1053,7 +1058,7 @@ define([
             }
           }
           return null;
-        };
+        };service
 
         // service.nextSibling = function (field, parent, parentKey) {
         //   console.log('nextSibling ' )
@@ -1270,7 +1275,7 @@ define([
          */
         service.deleteFieldAddedBranch = function (branch, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.branches.length; i < len; i += 1) {
             if (valueConstraints.branches[i]['uri'] == branch['uri']) {
               valueConstraints.branches.splice(i, 1);
@@ -1286,7 +1291,7 @@ define([
          */
         service.deleteFieldAddedClass = function (ontologyClass, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
             if (valueConstraints.classes[i] == ontologyClass) {
               valueConstraints.classes.splice(i, 1);
@@ -1303,7 +1308,7 @@ define([
          */
         service.deleteFieldAddedOntology = function (ontology, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.ontologies.length; i < len; i += 1) {
             if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
               valueConstraints.ontologies.splice(i, 1);
@@ -1319,7 +1324,7 @@ define([
          */
         service.deleteFieldAddedValueSet = function (valueSet, node) {
 
-          var valueConstraints = $rootScope.schemaOf(node)._valueConstraints;
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.valueSets.length; i < len; i += 1) {
             if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
               valueConstraints.valueSets.splice(i, 1);
@@ -1365,7 +1370,7 @@ define([
 
             var event = service.isElement(field) ? "invalidElementState" : "invalidFieldState";
             $rootScope.$emit(event,
-                ["remove", $rootScope.schemaOf(field)._ui.title, field["@id"]]);
+                ["remove", service.schemaOf(field)._ui.title, field["@id"]]);
           }
 
           $rootScope.$broadcast("deselect", [field, errorMessages]);
@@ -1375,7 +1380,7 @@ define([
 
         var MIN_OPTIONS = 2;
         service.setDefaults = function (field) {
-          var schema = $rootScope.schemaOf(field);
+          var schema = service.schemaOf(field);
 
           // default title
           if (!schema._ui.title || !schema._ui.title.length) {
@@ -1409,7 +1414,7 @@ define([
 
         // look for errors in field or element
         service.checkFieldConditions = function (field) {
-          var schema = $rootScope.schemaOf(field);
+          var schema = service.schemaOf(field);
 
           var unmetConditions = [],
               extraConditionInputs = ['checkbox', 'radio', 'list'];
@@ -1453,7 +1458,7 @@ define([
 
           var props = $rootScope.propertiesOf(form);
           for (var prop in props) {
-            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+            if (service.schemaOf(props[prop])['@id'] === id) {
 
               // only return non-cedar property values
               var property = form.properties['@context'].properties[prop]['enum'][0];
@@ -1471,7 +1476,7 @@ define([
           var id = service.getId(node);
           var props = $rootScope.propertiesOf(form);
           for (var prop in props) {
-            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+            if (service.schemaOf(props[prop])['@id'] === id) {
               form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(prop);
               break;
             }
@@ -1481,7 +1486,7 @@ define([
         // relabel the key with a new value from the propertyLabels
         service.relabel = function (node, key) {
 
-          var schema = $rootScope.schemaOf(node);
+          var schema = service.schemaOf(node);
           var p = $rootScope.propertiesOf(node);
 
           // make sure label is not empty
@@ -1548,7 +1553,7 @@ define([
             if (!DataUtilService.isSpecialKey(key)) {
               if (key == '@value') {
                 if (angular.isArray(model)) {
-                  if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                  if (service.schemaOf(settings)._ui.inputType == "list") {
                     model.splice(0, model.length);
                   } else {
                     for (var i = 0; i < model.length; i++) {
@@ -1576,7 +1581,7 @@ define([
                   angular.forEach(model, function (v, k) {
                     if (k == '@value') {
                       if (angular.isArray(v)) {
-                        if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                        if (service.schemaOf(settings)._ui.inputType == "list") {
                           v.splice(0, v.length);
                         } else {
                           for (var i = 0; i < v.length; i++) {
@@ -1613,7 +1618,7 @@ define([
 
         service.removeChild = function (parent, child) {
           // child must contain the schema level
-          child = $rootScope.schemaOf(child);
+          child = service.schemaOf(child);
 
           var selectedKey;
           var props = $rootScope.propertiesOf(parent);
@@ -1626,11 +1631,11 @@ define([
           if (selectedKey) {
             delete props[selectedKey];
 
-            var idx = $rootScope.schemaOf(parent)._ui.order.indexOf(selectedKey);
-            $rootScope.schemaOf(parent)._ui.order.splice(idx, 1);
+            var idx = service.schemaOf(parent)._ui.order.indexOf(selectedKey);
+            service.schemaOf(parent)._ui.order.splice(idx, 1);
 
             // remove property label for this element
-            delete $rootScope.schemaOf(parent)._ui.propertyLabels[selectedKey];
+            delete service.schemaOf(parent)._ui.propertyLabels[selectedKey];
 
             // Remove it from the top-level 'required' array
             parent = service.removeKeyFromRequired(parent, selectedKey);
@@ -1641,39 +1646,41 @@ define([
 
         // is this field hidden?
         service.hasDefault = function (node) {
-          if (!$rootScope.schemaOf(node)._ui.hasOwnProperty('defaultValue')) {
-            $rootScope.schemaOf(node)._ui.defaultValue = "";
+          var schema = service.schemaOf(node);
+          if (!schema._valueConstraints.hasOwnProperty('defaultValue')) {
+            schema._valueConstraints.defaultValue = "";
           }
-          return $rootScope.schemaOf(node)._ui.defaultValue && $rootScope.schemaOf(node)._ui.defaultValue.length > 0;
+          return schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0;
         };
 
         // get the default value
         service.getDefault = function (node) {
-          if ($rootScope.schemaOf(node)._ui.hasOwnProperty('defaultValue')) {
+          var schema = service.schemaOf(node);
+          if (service.hasDefault(node)) {
           } else {
-            $rootScope.schemaOf(node)._ui.defaultValue = '';
+            schema._valueConstraints.defaultValue = '';
           }
-          return $rootScope.schemaOf(node)._ui.defaultValue;
+          return schema._valueConstraints.defaultValue;
         };
 
         // does this field allow the hidden attribute?
         service.allowsHidden = function (node) {
-          return ($rootScope.schemaOf(node)._ui.inputType === 'textfield');
+          return (service.schemaOf(node)._ui.inputType === 'textfield');
         };
 
         // does this field allow the hidden attribute?
         service.allowsDefault = function (node) {
-          return ($rootScope.schemaOf(node)._ui.inputType === 'textfield');
+          return (service.schemaOf(node)._ui.inputType === 'textfield');
         };
 
         // is this field hidden?
         service.isHidden = function (node) {
-          return $rootScope.schemaOf(node)._ui.isHidden || false;
+          return service.schemaOf(node)._ui.hidden || false;
         };
 
         // toggle the hidden field attribute
         service.setHidden = function (node, value) {
-          $rootScope.schemaOf(node)._ui.isHidden = value;
+          service.schemaOf(node)._ui.hidden = value;
         };
 
 
