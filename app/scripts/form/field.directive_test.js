@@ -60,6 +60,8 @@ define(['app', 'angular'], function (app) {
       });
     });
 
+
+
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
     describe('In a template,', function () {
       /* Checkbox */
@@ -70,12 +72,12 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      describe('a text field', function () {
-        beforeEach(function () {
-          addFieldToTemplate('textfield');
-        });
-        textfieldTests();
-      });
+      // describe('a text field', function () {
+      //   beforeEach(function () {
+      //     addFieldToTemplate('textfield');
+      //   });
+      //   textfieldTests();
+      // });
     });
 
 
@@ -89,12 +91,12 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      describe('a text field', function () {
-        beforeEach(function () {
-          addFieldToTemplateElement('textfield');
-        });
-        textfieldTests();
-      });
+      // describe('a text field', function () {
+      //   beforeEach(function () {
+      //     addFieldToTemplateElement('textfield');
+      //   });
+      //   textfieldTests();
+      // });
     });
 
 
@@ -113,13 +115,13 @@ define(['app', 'angular'], function (app) {
       var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
       var requiredTabSelector = ".detail-options .required-tab";
 
-      it("should show only the correct tabs", function () {
-        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-      });
+      // it("should show only the correct tabs", function () {
+      //   expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      // });
 
       it("should have one option by default", function () {
         // Here, the $ symbol enables the use of jQuery's find method. By default Angular uses jqLite, which is limited
@@ -183,22 +185,22 @@ define(['app', 'angular'], function (app) {
 
     };
 
-    function textfieldTests() {
-
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
-
-      it("should show only the correct tabs", function () {
-        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
-        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
-        expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
-        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-      });
-    }
+    // function textfieldTests() {
+    //
+    //   var hiddenTabSelector = ".detail-options .hidden-tab";
+    //   var cardinalityTabSelector = ".detail-options .cardinality-tab";
+    //   var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+    //   var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+    //   var requiredTabSelector = ".detail-options .required-tab";
+    //
+    //   it("should show only the correct tabs", function () {
+    //     expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+    //     expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
+    //     expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
+    //     expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
+    //     expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+    //   });
+    // }
 
     /* SHARED UTILS DEFINITIONS */
 
