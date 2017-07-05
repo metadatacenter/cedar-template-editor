@@ -115,13 +115,13 @@ define(['app', 'angular'], function (app) {
       var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
       var requiredTabSelector = ".detail-options .required-tab";
 
-      it("should show only the correct tabs", function () {
-        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-      });
+      // it("should show only the correct tabs", function () {
+      //   expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+      //   expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      // });
 
       it("should have one option by default", function () {
         // Here, the $ symbol enables the use of jQuery's find method. By default Angular uses jqLite, which is limited
