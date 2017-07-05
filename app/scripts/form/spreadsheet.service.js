@@ -160,6 +160,10 @@ define([
           desc.cedarType = inputType;
           switch (inputType) {
 
+            // case 'textfield':
+            //   desc.type = 'text';
+            //   break;
+
             case 'date':
               desc.type = 'date';
               desc.dateFormat = 'MM/DD/YYYY';
@@ -442,17 +446,42 @@ define([
           }
         };
 
+        var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
+        //Handsontable.editors.DateEditor = FullscreenDateEditor;
 
-        PasswordEditor.prototype.createElements = function () {
+        FullscreenDateEditor.prototype.init = function () {
+          console.log('FullscreenDateEditor init');
           // Call the original createElements method
-          Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
-          console.log('define passwordEditor');
-
-
-          // Replace textarea with password input
-          Handsontable.dom.empty(this.TEXTAREA_PARENT);
-          this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
+          Handsontable.editors.DateEditor.prototype.init.apply(this, arguments);
         };
+
+        FullscreenDateEditor.prototype.createElements = function () {
+          console.log('FullscreenDateEditor createElements');
+          // Call the original createElements method
+          Handsontable.editors.DateEditor.prototype.createElements.apply(this, arguments);
+
+          $('.htDatepickerHolder').appendTo("#htDatepickerHolder");
+        };
+
+        // var PasswordEditor = Handsontable.editors.TextEditor.prototype.extend();
+        //
+        // PasswordEditor.prototype.createElements = function () {
+        //   console.log('PasswordEditor createElements');
+        //   // Call the original createElements method
+        //   Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
+        //
+        //   // Create password input and update relevant properties
+        //   this.TEXTAREA = document.createElement('input');
+        //   this.TEXTAREA.setAttribute('type', 'password');
+        //   this.TEXTAREA.className = 'handsontableInput';
+        //   this.textareaStyle = this.TEXTAREA.style;
+        //   this.textareaStyle.width = 0;
+        //   this.textareaStyle.height = 0;
+        //
+        //   // Replace textarea with password input
+        //   Handsontable.dom.empty(this.TEXTAREA_PARENT);
+        //   this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
+        // };
 
 
         // build the spreadsheet, stuff it into the dom, and make it visible
@@ -484,6 +513,9 @@ define([
             colHeaders        : colHeaders,
             colWidths         : 247,
             autoColumnSize    : {syncLimit: 300},
+
+
+
 
           };
 
@@ -538,8 +570,13 @@ define([
           $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
           $document[0].addEventListener('fullscreenchange', fullScreenHandler);
 
-          //console.log(Handsontable.editors.DateEditor);
+
+
         };
+
+
+
+
 
         service.isFullscreen = function () {
           return window.innerWidth == screen.width;
