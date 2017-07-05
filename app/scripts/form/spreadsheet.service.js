@@ -442,20 +442,12 @@ define([
           }
         };
 
-        var PasswordEditor = Handsontable.editors.TextEditor.prototype.extend();
 
         PasswordEditor.prototype.createElements = function () {
           // Call the original createElements method
           Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
           console.log('define passwordEditor');
 
-          // Create password input and update relevant properties
-          this.TEXTAREA = document.createElement('input');
-          this.TEXTAREA.setAttribute('type', 'password');
-          this.TEXTAREA.className = 'handsontableInput';
-          this.textareaStyle = this.TEXTAREA.style;
-          this.textareaStyle.width = 0;
-          this.textareaStyle.height = 0;
 
           // Replace textarea with password input
           Handsontable.dom.empty(this.TEXTAREA_PARENT);
@@ -478,7 +470,6 @@ define([
           var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
           var config = {
             data              : tableData,
-            editor: PasswordEditor,
             minSpareRows      : 1,
             autoWrapRow       : true,
             contextMenu       : true,
