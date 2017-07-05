@@ -442,6 +442,27 @@ define([
           }
         };
 
+        var PasswordEditor = Handsontable.editors.TextEditor.prototype.extend();
+
+        PasswordEditor.prototype.createElements = function () {
+          // Call the original createElements method
+          Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
+          console.log('define passwordEditor');
+
+          // Create password input and update relevant properties
+          this.TEXTAREA = document.createElement('input');
+          this.TEXTAREA.setAttribute('type', 'password');
+          this.TEXTAREA.className = 'handsontableInput';
+          this.textareaStyle = this.TEXTAREA.style;
+          this.textareaStyle.width = 0;
+          this.textareaStyle.height = 0;
+
+          // Replace textarea with password input
+          Handsontable.dom.empty(this.TEXTAREA_PARENT);
+          this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
+        };
+
+
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
 
@@ -457,6 +478,7 @@ define([
           var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
           var config = {
             data              : tableData,
+            editor: PasswordEditor,
             minSpareRows      : 1,
             autoWrapRow       : true,
             contextMenu       : true,
@@ -471,6 +493,7 @@ define([
             colHeaders        : colHeaders,
             colWidths         : 247,
             autoColumnSize    : {syncLimit: 300},
+
           };
 
           // detector and container elements
@@ -502,9 +525,12 @@ define([
 
           // build the handsontable
           var hot = new Handsontable(container, config);
+
           registerHooks(hot, $scope, $element, columnHeaderOrder);
           context.setTable(hot);
           resize($scope);
+
+          console.log(Handsontable.editors);
 
           var fullScreenHandler = function (event) {
 
@@ -520,6 +546,8 @@ define([
           $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
           $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
           $document[0].addEventListener('fullscreenchange', fullScreenHandler);
+
+          //console.log(Handsontable.editors.DateEditor);
         };
 
         service.isFullscreen = function () {
@@ -537,7 +565,6 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
-          //console.log('destroySpreadsheet');
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             context.switchVisibility();
