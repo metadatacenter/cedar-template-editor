@@ -315,6 +315,14 @@ define([
           }
         });
 
+        //
+        //
+        // // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        // $scope.$watch('saveButtonDisabled', function (v) {
+        //   console.log('watch saveButtonDisabled');
+        // });
+
+
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('form._ui.title', function (v) {
 
@@ -343,6 +351,7 @@ define([
               $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
             }
           }
+          $scope.toRDF();
         });
 
         // create a copy of the form with the _tmp fields stripped out
@@ -365,11 +374,6 @@ define([
             });
           }
         };
-
-        // keep our rdf display up-to-date
-        $scope.$watch('form', function (v) {
-          $scope.toRDF();
-        });
 
         // cancel the form and go back to the current folder
         $scope.cancelTemplate = function () {
