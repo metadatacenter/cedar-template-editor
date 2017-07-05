@@ -123,6 +123,16 @@ define([
       }
     };
 
+    // set a title and description in the object if there is none
+    service.defaultTitleAndDescription = function (obj) {
+      if (!obj.title || !obj.title.length) {
+        obj.title = $translate.instant("GENERIC.Untitled");
+      }
+      if (!obj.description || !obj.description.length) {
+        obj.description = $translate.instant("GENERIC.Description");
+      }
+    };
+
     service.getDescription = function (node) {
       return service.schemaOf(node)._ui.description;
     };
