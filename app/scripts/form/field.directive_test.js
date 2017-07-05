@@ -60,6 +60,8 @@ define(['app', 'angular'], function (app) {
       });
     });
 
+
+
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
     describe('In a template,', function () {
       /* Checkbox */
