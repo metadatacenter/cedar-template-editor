@@ -52,7 +52,7 @@ define([
 
         // copy table data to source table
         var updateDataModel = function ($scope, $element) {
-          //console.log('updateDataModel');
+              //console.log('updateDataModel');
               var sds = $scope.spreadsheetDataScope;
               for (var row in sds.tableData) {
                 for (var col in sds.tableData[row]) {
@@ -90,30 +90,30 @@ define([
 
                       if (isConstrained(schema)) {
 
-                        console.log('isConstrained ' + row + ' '  + col);
+                        console.log('isConstrained ' + row + ' ' + col);
 
 
                         // do we have some autocomplete results?
-                          var results = autocompleteService.getAutocompleteResultsCache(id, value);
-                          if (results) {
-                            var found = false;
-                            loop: for (var i = 0; i < results.length; i++) {
-                              if (value === results[i]['label']) {
+                        var results = autocompleteService.getAutocompleteResultsCache(id, value);
+                        if (results) {
+                          var found = false;
+                          loop: for (var i = 0; i < results.length; i++) {
+                            if (value === results[i]['label']) {
 
-                                sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                                sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
-                                found = true;
-                                break loop;
-                              }
-                            }
-
-                            if (!found) {
-                              console.log('not found ' + value);
-                              delete sds.tableDataSource[row][col]['@id'];
-                              delete sds.tableDataSource[row][col]['_valueLabel'];
-
+                              sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
+                              sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                              found = true;
+                              break loop;
                             }
                           }
+
+                          if (!found) {
+                            console.log('not found ' + value);
+                            delete sds.tableDataSource[row][col]['@id'];
+                            delete sds.tableDataSource[row][col]['_valueLabel'];
+
+                          }
+                        }
                       }
                     }
                   } else {
@@ -152,6 +152,21 @@ define([
           return dms.hasValueConstraint(node);
         };
 
+        // date editor that also works in fullscreen mode
+        var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
+        FullscreenDateEditor.prototype.open = function () {
+
+          Handsontable.editors.DateEditor.prototype.open.apply(this, arguments);
+
+          // in full screen move the date picker to the container
+          // otherwise append it to the body
+          if (service.isFullscreen()) {
+            $('.htDatepickerHolder').appendTo(".spreadsheetViewContainer");
+          } else {
+            $('.htDatepickerHolder').appendTo(document.body);
+          }
+        };
+
         // build a description of the cell data
         var getDescriptor = function (context, node, $scope) {
           var desc = {};
@@ -160,14 +175,11 @@ define([
           desc.cedarType = inputType;
           switch (inputType) {
 
-            // case 'textfield':
-            //   desc.type = 'text';
-            //   break;
-
             case 'date':
               desc.type = 'date';
               desc.dateFormat = 'MM/DD/YYYY';
               desc.correctFormat = true;
+              desc.editor = FullscreenDateEditor;
               break;
             case 'link':
               desc.allowInvalid = true;
@@ -446,43 +458,6 @@ define([
           }
         };
 
-        var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
-        //Handsontable.editors.DateEditor = FullscreenDateEditor;
-
-        FullscreenDateEditor.prototype.init = function () {
-          console.log('FullscreenDateEditor init');
-          // Call the original createElements method
-          Handsontable.editors.DateEditor.prototype.init.apply(this, arguments);
-        };
-
-        FullscreenDateEditor.prototype.createElements = function () {
-          console.log('FullscreenDateEditor createElements');
-          // Call the original createElements method
-          Handsontable.editors.DateEditor.prototype.createElements.apply(this, arguments);
-
-          $('.htDatepickerHolder').appendTo("#htDatepickerHolder");
-        };
-
-        // var PasswordEditor = Handsontable.editors.TextEditor.prototype.extend();
-        //
-        // PasswordEditor.prototype.createElements = function () {
-        //   console.log('PasswordEditor createElements');
-        //   // Call the original createElements method
-        //   Handsontable.editors.TextEditor.prototype.createElements.apply(this, arguments);
-        //
-        //   // Create password input and update relevant properties
-        //   this.TEXTAREA = document.createElement('input');
-        //   this.TEXTAREA.setAttribute('type', 'password');
-        //   this.TEXTAREA.className = 'handsontableInput';
-        //   this.textareaStyle = this.TEXTAREA.style;
-        //   this.textareaStyle.width = 0;
-        //   this.textareaStyle.height = 0;
-        //
-        //   // Replace textarea with password input
-        //   Handsontable.dom.empty(this.TEXTAREA_PARENT);
-        //   this.TEXTAREA_PARENT.appendChild(this.TEXTAREA);
-        // };
-
 
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
@@ -513,8 +488,6 @@ define([
             colHeaders        : colHeaders,
             colWidths         : 247,
             autoColumnSize    : {syncLimit: 300},
-
-
 
 
           };
@@ -570,16 +543,11 @@ define([
           $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
           $document[0].addEventListener('fullscreenchange', fullScreenHandler);
 
-
-
         };
 
 
-
-
-
         service.isFullscreen = function () {
-          return window.innerWidth == screen.width;
+          return document.mozFullscreenElement || document.webkitFullscreenElement;
         };
 
 
