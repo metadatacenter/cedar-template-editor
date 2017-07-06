@@ -8,7 +8,7 @@ define([
   'lib/angucomplete-alt/angucomplete-alt',
   'lib/angular-animate/angular-animate.min',
   'lib/angular-bootstrap/ui-bootstrap-tpls.min',
-  'lib/ngHandsontable/dist/ngHandsontable.min',
+  // 'lib/ngHandsontable/dist/ngHandsontable.min',
   'lib/ng-tags-input/ng-tags-input.min',
   'lib/angular-route/angular-route.min',
   'lib/angular-sanitize/angular-sanitize.min',
@@ -26,7 +26,7 @@ define([
   'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
   'lib/ng-ckeditor/ng-ckeditor.min',
   'ckeditor',
-  'lib/handsontable/dist/handsontable.full.min',
+  'lib/handsontable/dist/handsontable.full',
   'jquery',
   'lib/jquery-ui/jquery-ui.min',
   'lib/perfnow-polyfill/perfnow-polyfill',
@@ -38,8 +38,8 @@ define([
   'jsonld',
 
   // custom libraries
-  //'cedar/template-editor/handsontable/SpreadsheetContext',
-  //'cedar/template-editor/handsontable/MultiCheckboxEditor',
+  'cedar/template-editor/handsontable/SpreadsheetContext',
+  'cedar/template-editor/handsontable/MultiCheckboxEditor',
 
   // cedar template editor modules
   'cedar/template-editor/core/core.module',

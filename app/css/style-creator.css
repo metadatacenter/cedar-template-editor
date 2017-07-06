@@ -11654,9 +11654,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .toolbar button,
 .template-body form .runtime .toolbar .paging {
-  background-color: #F0F0F0;
+  background-color: transparent;
+}
+.template-body form .runtime .toolbar .cedar-pager {
+  padding-right: 20px;
 }
 .template-body form .runtime .row:hover .toolbar {
+  visibility: visible;
+}
+.template-body form .runtime .row.isActive .toolbar {
   visibility: visible;
 }
 .template-body form .runtime .answer {
@@ -11741,42 +11747,24 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button {
   vertical-align: middle;
   background-color: transparent;
+  color: #616161;
 }
 .template-body form .runtime button.goaway {
   position: absolute;
   top: 0;
   right: 0;
 }
-.template-body form .runtime button.xxx {
-  color: #aaa;
-  font-size: 1.6em;
-  margin-left: -12px;
-  margin-top: -0.5em;
-  -webkit-margin-before: -0.4em;
+.template-body form .runtime button.delete-hidden {
+  color: transparent;
 }
-.template-body form .runtime button.add {
-  color: #ff8c00;
-}
-.template-body form .runtime button.delete {
-  color: #999;
-}
-.template-body form .runtime button.expand-all {
-  color: #999;
+.template-body form .runtime button.remove-hidden {
+  color: transparent;
 }
 .template-body form .runtime button.expand {
   margin-right: 0;
   padding-right: 0;
   margin-left: 0;
   padding-left: 0;
-}
-.template-body form .runtime button.edit {
-  color: #999;
-}
-.template-body form .runtime button.remove {
-  color: #999;
-}
-.template-body form .runtime button.spreadsheet {
-  color: #999;
 }
 .template-body form .runtime button i {
   min-width: 12px;
@@ -11846,12 +11834,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-top: 0px;
   background: transparent;
   min-height: 10px;
-}
-.template-body form .runtime .field-root .add {
-  color: #ff8c00;
-}
-.template-body form .runtime .field-root .question {
-  color: #5795ba;
 }
 .template-body form .runtime .field-root .title {
   color: #666;
@@ -12194,6 +12176,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: inline-block;
   vertical-align: top;
   color: red;
+}
+.spreadsheetViewContainer {
+  overflow: hidden;
 }
 .alert {
   border-radius: 0;

@@ -1,18 +1,18 @@
-<div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
+<div ng-if="model !== undefined" class="item-root element-root" id="{{getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();">
 
   <!-- element header -->
-  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime() && !isNested(element)}">
+  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !isRuntime() && !isNested(element)}">
     <div class="row" >
 
       <!-- left side of header -->
       <div class="col-lg-6 pull-left">
 
         <!-- toggle visibility of element contents -->
-        <a ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch">
+        <a ng-click="switchExpandedState(getDomId(element)); $event.preventDefault();" class="visibilitySwitch">
           <i class="cedar-svg-collapse"></i>
         </a>
-        <a ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch" style="display:none;">
+        <a ng-click="switchExpandedState(getDomId(element)); $event.preventDefault();" class="visibilitySwitch" style="display:none;">
           <i class="cedar-svg-expand"></i>
         </a>
 
@@ -36,7 +36,7 @@
         </p>
 
         <!-- switch to spreadsheet view -->
-        <span ng-if="!isNested()" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
+        <span ng-if="!isNested()" ng-show="$root.isArray(model) && isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
                 uib-tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
                 tooltip-trigger
@@ -52,7 +52,7 @@
          </span>
 
         <!-- cardinality -->
-        <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        <span class="multiple-instance-cardinality" ng-show="!isRuntime() && elementIsMultiInstance(element)">
            {{element.minItems}} .. {{element.maxItems || "N"}}
         </span>
 
@@ -60,7 +60,7 @@
 
       <!-- right side of header -->
       <div class="col-lg-5" >
-        <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        <div class="element-toggles list" ng-if="isRuntime() && elementIsMultiInstance(element)">
 
           <div class="element-toggle"
               ng-class="{active: selectedTab == $index}"
@@ -118,7 +118,7 @@
           ng-class="['element-{{$index}}']">
 
         <div class="remove-element pull-right">
-          <a class="" ng-if="$root.isRuntime()" ng-show="model.length > element.minItems"
+          <a class="" ng-if="isRuntime()" ng-show="model.length > element.minItems"
               ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
@@ -143,7 +143,7 @@
       </div>
 
       <!-- have an array with no elements -->
-      <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0" class="element"
+      <div ng-if="!isRuntime() && $root.isArray(model) && model.length == 0" class="element"
           ng-class="['element-0']">
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
@@ -186,7 +186,7 @@
       </div>
     </div>
 
-    <div class="" ng-if="!$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+    <div class="" ng-if="!isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: showCardinality}"

@@ -14,10 +14,12 @@ define([
     '$document',
     'QueryParamUtilsService',
     'UIMessageService',
-    'UIProgressService'
+    'UIProgressService',
+    'UIUtilService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService, UIProgressService) {
+  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService,
+                            UIMessageService, UIProgressService, UIUtilService) {
 
     var vm = this;
 
@@ -124,6 +126,22 @@ define([
       return (vm.path === "/privacy");
     };
 
+    vm.isRuntime = function() {
+      return UIUtilService.isRuntime();
+    };
+
+    vm.isShowOutput = function() {
+      return UIUtilService.isShowOutput();
+    };
+
+    vm.toggleShowOutput = function() {
+      return UIUtilService.toggleShowOutput();
+    };
+
+    vm.scrollToAnchor = function(hash) {
+      UIUtilService.scrollToAnchor(hash);
+    };
+
     //*********** ENTRY POINT
 
     vm.isPrivacy = function () {
@@ -131,10 +149,10 @@ define([
     };
 
     // clear the modal fade on location change
-    $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+    $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
       // Select open modal(s)
       var $openModalSelector = $(".modal.fade.in");
-      if( ($openModalSelector.data('bs.modal') || {}).isShown == true){
+      if (($openModalSelector.data('bs.modal') || {}).isShown == true) {
         // Close open modal(s)
         $openModalSelector.modal("hide");
         // Prevent page transition

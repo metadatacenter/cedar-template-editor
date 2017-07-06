@@ -209,7 +209,7 @@ define([
 
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
-        DataManipulationService.defaultTitleAndDescription($scope.element._ui);
+        DataManipulationService.defaultSchemaTitleAndDescription($scope.element);
 
         this.disableSaveButton();
         var owner = this;
@@ -318,12 +318,12 @@ define([
 
     // This function watches for changes in the form and defaults the title and description fields
     $scope.$watch('$scope.element', function (v) {
-      if ($scope.element && $rootScope.schemaOf($scope.element)) {
-        if (!$rootScope.schemaOf($scope.element)._ui.title) {
-          $rootScope.schemaOf($scope.element)._ui.title = $translate.instant("VALIDATION.noNameElement");
+      if ($scope.element && DataManipulationService.schemaOf($scope.element)) {
+        if (!DataManipulationService.schemaOf($scope.element)._ui.title) {
+          DataManipulationService.schemaOf($scope.element)._ui.title = $translate.instant("VALIDATION.noNameElement");
         }
-        if (!$rootScope.schemaOf($scope.element)._ui.description) {
-          $rootScope.schemaOf($scope.element)._ui.description = $translate.instant("VALIDATION.noDescriptionElement");
+        if (!DataManipulationService.schemaOf($scope.element)._ui.description) {
+          DataManipulationService.schemaOf($scope.element)._ui.description = $translate.instant("VALIDATION.noDescriptionElement");
         }
       }
     });

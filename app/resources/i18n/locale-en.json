@@ -124,7 +124,9 @@
     "Displaying": "Displaying",
     "Of": "of",
     "CopyOfTitle": "Copy of {{title}}",
-    "Error": "Error"
+    "Error": "Error",
+    "ToggleView": "Toggle View",
+    "FullScreen": "Full Screen"
   },
   "HELP": {
     "createFolder": "Create folder",

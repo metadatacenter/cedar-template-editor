@@ -85,10 +85,10 @@
   <div id="cardinality-options" class="cardinality-options " ng-show="isTabActive('cardinality')" ng-init="xxx()">
 
     <div class="type-toggle date">
-      <div class="d-option" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+      <div class="d-option" ng-class="{active: !hasMin()}" ng-click="clearMinMax();">
         <span translate>GENERIC.No</span>
       </div>
-      <div class="d-option" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+      <div class="d-option" ng-class="{active: hasMin()}" ng-click="defaultMinMax();">
         <span translate>GENERIC.Yes</span>
       </div>
     </div>

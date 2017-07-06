@@ -1,41 +1,40 @@
-<div ng-init="initializeValue(field); initializeValueType(field)">
-  <!--- not active --->
+<div ng-init="initializeValue(); initializeValueType()">
+
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
 
     <!-- Regular field -->
-    <div ng-if="isRegular() && showMultiple('expanded')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isRegular() && isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
 
-    <div ng-if="isRegular() && showMultiple('paged')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isRegular() && !isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
     <!-- Field with values have been constrained using controlled terms -->
-    <div ng-if="isConstrained() && showMultiple('expanded')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isConstrained() && isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isConstrained() && showMultiple('paged')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isConstrained() && !isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
     <!-- Field with value recommendation functionality -->
     <!--TODO: pick _valueLabel or @value depending on the existing field value-->
-    <div ng-if="isRecommended() && showMultiple('expanded')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isRecommended() && isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
-    <div ng-if="isRecommended() && showMultiple('paged')"
-        aria-label="{{getDescription(field)}}"
+    <div ng-if="isRecommended() && !isListView()"
+        aria-label="{{getDescription()}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
   </div>
 
-  <!-- actively being edited -->
   <div ng-if="isActive(index)">
 
     <!-- Regular field -->
@@ -44,7 +43,7 @@
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="{{isActive(index) ? 'enter value' : ''}}"
-          aria-label="{{getDescription(field)}}"
+          aria-label="{{getDescription()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']">
       </input>

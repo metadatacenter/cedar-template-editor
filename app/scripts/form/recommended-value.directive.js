@@ -7,19 +7,43 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "DataManipulationService"];
+  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService"];
 
-  function recommendedValue($rootScope, DataManipulationService) {
+  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
+      $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
+
+      $scope.updatePopulatedFields = function(field, value) {
+        ValueRecommenderService.updatePopulatedFields(field, value);
+      };
+
+      $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
+
+      $scope.updateValueRecommendationResults = function(node, index) {
+        ValueRecommenderService.updateValueRecommendationResults(node, index);
+      };
+
+      $scope.updateFieldAutocomplete = function(field, term, index) {
+        autocompleteService.updateFieldAutocomplete(field, term, index);
+      };
+
+      $scope.getNoResultsMsg = ValueRecommenderService.getNoResultsMsg;
+
       $scope.valueElement = $scope.$parent.valueArray;
       $scope.isFirstRefresh = true;
+
+      $scope.modelValueRecommendation;
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return DataManipulationService.hasValueConstraint($scope.field);
+      };
+
+      $scope.getId = function () {
+        return DataManipulationService.getId($scope.field);
       };
 
       // is this field required?
@@ -35,7 +59,7 @@ define([
       $scope.$watch("model", function () {
 
         $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
+          return (UIUtilService.isEditState($scope.field));
         };
 
         $scope.isNested = function () {
@@ -110,7 +134,7 @@ define([
         else {
           $scope.modelValueRecommendation.push($scope.getModelVR($scope.model, fieldValue));
         }
-      }
+      };
 
       // Generates modelValueRecommendation from a given model
       $scope.getModelVR = function (model, fieldValue) {
@@ -140,7 +164,7 @@ define([
           isControlled = true;
         }
         return isControlled;
-      }
+      };
 
       $scope.clearSearch = function (select) {
         select.search = '';
