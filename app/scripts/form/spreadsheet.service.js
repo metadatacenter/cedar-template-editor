@@ -153,13 +153,14 @@ define([
         };
 
         // date editor that also works in fullscreen mode
+        // in full screen move the date picker to the container
+        // otherwise append it to the body
         var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
+
         FullscreenDateEditor.prototype.open = function () {
 
           Handsontable.editors.DateEditor.prototype.open.apply(this, arguments);
 
-          // in full screen move the date picker to the container
-          // otherwise append it to the body
           if (service.isFullscreen()) {
             $('.htDatepickerHolder').appendTo(".spreadsheetViewContainer");
           } else {
