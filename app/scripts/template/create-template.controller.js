@@ -9,7 +9,7 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "DataManipulationService",
+                                          "TemplateService", "UIMessageService", "UIUtilService", "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
@@ -17,7 +17,7 @@ define([
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, UIMessageService,
-                                        DataManipulationService, controlledTermDataService, StringUtilsService,
+                                        UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
@@ -34,8 +34,6 @@ define([
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
-        //$scope.addedFieldKeys = [];
-        //$scope.addedFields = new Map();
         $scope.viewType = 'popup';
 
         var getTemplate = function () {
@@ -83,11 +81,11 @@ define([
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
 
-        }
+        };
 
         var dontHaveCreatingFieldOrElement = function () {
           return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
-        }
+        };
 
         $scope.isPropertiesEmpty = function () {
           return DataUtilService.isPropertiesEmpty($scope.form);
@@ -100,7 +98,7 @@ define([
             var domId = DataManipulationService.createDomId();
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
-              $rootScope.scrollToDomId(domId);
+              UIUtilService.scrollToDomId(domId);
               $rootScope.$broadcast("form:dirty");
               $scope.toggleMore();
             });
@@ -113,12 +111,11 @@ define([
           $scope.moreIsOpen = !$scope.moreIsOpen;
         };
 
-        $scope.getTitle = function (element) {
-          return $rootScope.schemaOf(element)._ui.title;
+        $scope.getTitle = function (node) {
+          return DataManipulationService.getTitle(node);
         };
 
         $scope.addElementToTemplate = function (element) {
-          console.log('addElementToTemplate');console.log(element);
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
@@ -128,7 +125,7 @@ define([
             StagingService.addElementToForm($scope.form, element["@id"], domId, function (e) {
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
-              $rootScope.scrollToDomId(domId);
+              UIUtilService.scrollToDomId(domId);
 
             });
             $rootScope.$broadcast("form:update", element);
@@ -225,7 +222,7 @@ define([
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
-            DataManipulationService.defaultTitleAndDescription($scope.form._ui);
+            DataManipulationService.defaultSchemaTitleAndDescription($scope.form);
 
             // create a copy of the form and strip out the _tmp fields before saving it
             //var copiedForm = $scope.stripTmpFields();
@@ -290,9 +287,11 @@ define([
 
         // close all the first order elements
         var closeAllElements = function () {
-          angular.forEach($scope.form._ui.order, function (field, index) {
-            if ($rootScope.isElement($rootScope.schemaOf($scope.form.properties[field]))) {
-              $rootScope.toggleElement($scope.form.properties[field]._tmp.domId);
+          angular.forEach($scope.form._ui.order, function (key, index) {
+            var node = $scope.form.properties[key];
+            var schema = DataManipulationService.schemaOf(node);
+            if (DataUtilService.isElement(schema)) {
+              UIUtilService.toggleElement(DataManipulationService.getDomId(node));
             }
           });
         };
@@ -326,6 +325,7 @@ define([
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('form._ui.title', function (v) {
+
           if (!angular.isUndefined($scope.form)) {
             var title = $scope.form._ui.title;
             if (title.length > 0) {
@@ -456,11 +456,11 @@ define([
           var property = args[0];
           var id = args[1];
 
-          var props = $rootScope.propertiesOf($scope.form);
+          var props = DataManipulationService.propertiesOf($scope.form);
 
           var fieldProp;
           for (var prop in props) {
-            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+            if (DataManipulationService.schemaOf(props[prop])['@id'] === id) {
               fieldProp = prop;
               break;
             }

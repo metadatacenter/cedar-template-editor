@@ -1,74 +1,79 @@
-<div class="toolbar">
+<div class="toolbar" >
 
-  <button type="button" class="delete pull-right" ng-click="remove(index);$event.stopPropagation()"
-      ng-if="model.length > field.minItems"
-      uib-tooltip="{{'GENERIC.Remove' | translate}}"
-      tooltip-trigger
-      tooltip-animation="false"
-      tooltip-placement="top"
-      data-toggle="tooltip">
+  <button type="button" class="delete pull-right"
+      ng-if="canDelete()"
+      ng-click="remove(index);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.Remove' | translate}}">
     <i class="fa fa-trash"></i>
   </button>
 
-  <button type="button" class=" expand-all pull-right"
+  <!-- have a second disabled trash so the rest of these do not move around -->
+  <button type="button" class="delete-hidden pull-right"
+      ng-if="!canDelete()"
+      ng-click="$event.stopPropagation()">
+    <i class="fa fa-trash"></i>
+  </button>
+
+  <button type="button" class="expand-all pull-right"
       ng-if="isExpandable()"
-      uib-tooltip="{{'GENERIC.ExpandAll' | translate}}"
-      ng-click="expandAll(index);$event.stopPropagation()">
+      ng-click="expandAll(index);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ExpandAll' | translate}}">
     <i class="fa fa-expand "></i>
   </button>
 
-  <button type="button" class=" remove pull-right"
-      ng-if="isField"
-      uib-tooltip="{{'GENERIC.Close' | translate}}"
-      ng-click="close(index);$event.stopPropagation()">
-    <i class="fa fa-remove "></i>
-  </button>
+  <!--<button type="button" class="remove pull-right"-->
+      <!--ng-if="isField()"-->
+      <!--ng-click="close(index);$event.stopPropagation()"-->
+      <!--uib-tooltip="{{'GENERIC.Close' | translate}}">-->
+    <!--<i class="fa fa-remove "></i>-->
+  <!--</button>-->
 
-  <button ng-if="description(field).length > 0" type="button" class=" question  pull-right"
-      uib-tooltip="{{(description(field) || 'GENERIC.Help') | translate}}"
-      tooltip-trigger
-      tooltip-animation="true"
-      tooltip-placement="top"
-      data-toggle="tooltip">
+  <!--<button type="button" class="remove-hidden pull-right"-->
+      <!--ng-if="!isField()"-->
+      <!--ng-click="$event.stopPropagation()">-->
+    <!--<i class="fa fa-remove "></i>-->
+  <!--</button>-->
+
+  <button type="button" class="question pull-right"
+      ng-click="$event.stopPropagation()"
+      uib-tooltip="{{(getDescription() || 'GENERIC.Help') | translate}}">
     <i class="fa fa-question-circle"></i>
   </button>
 
-  <button type="button" class=" add  pull-right"
+  <button type="button" class="add pull-right"
+      ng-if="canAdd()"
       ng-click="add();$event.stopPropagation()"
-      ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
-      uib-tooltip="{{'GENERIC.Add' | translate}}"
-      tooltip-trigger
-      tooltip-animation="false"
-      tooltip-placement="top"
-      data-toggle="tooltip">
+      uib-tooltip="{{'GENERIC.Add' | translate}}">
     <i class="fa fa-plus-circle"></i>
   </button>
 
-  <button  type="button" class=" copy  pull-right"
+  <button type="button" class="copy pull-right"
+      ng-if="canAdd()"
       ng-click="copy(index);$event.stopPropagation()"
-      ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
-      uib-tooltip="{{'GENERIC.Copy' | translate}}"
-      tooltip-trigger
-      tooltip-animation="false"
-      tooltip-placement="top"
-      data-toggle="tooltip">
+      uib-tooltip="{{'GENERIC.Copy' | translate}}">
     <i class="fa fa-copy"></i>
   </button>
 
-
-  <button ng-if="isMultiple()" type="button" class=" view-toggle pull-right"
-      ng-if="isActive(index)"
-      uib-tooltip="{{cardinality()}}"
-      ng-click="toggle();$event.stopPropagation()">
-
-    <i ng-if="showMultiple('paged')" class="fa fa-sort  fa-rotate-90 "></i>
-    <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
-    <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
+  <button type="button" class="view-toggle pull-right"
+      ng-if="isMultiple()"
+      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
+    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 "></i>
+    <i ng-if="isTabView()" class="fa fa-list-ol "></i>
+    <i ng-if="isListView()" class="fa fa-table "></i>
   </button>
 
+  <button type="button" class="expand-all pull-right"
+      ng-if="isSpreadsheetView()"
+      uib-tooltip="{{'GENERIC.FullScreen' | translate}}"
+      ng-click="fullscreen();$event.stopPropagation()">
+    <i class="fa fa-expand "></i>
+  </button>
 
-  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple() && showMultiple('paged')" values="values" index="index" min="min" max="max" select="select"
-      range="range">
+  <cedar-pager class="cedar-pager pull-right"
+      ng-if="isMultiple() && isTabView()"
+      ng-click="$event.stopPropagation()"
+      values="values" index="index" min="min" max="max" select="select" range="range">
   </cedar-pager>
 
 </div>

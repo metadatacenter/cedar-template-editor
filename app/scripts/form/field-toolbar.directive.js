@@ -7,11 +7,9 @@ define([
       .directive('fieldToolbar', fieldToolbar);
 
 
-  fieldToolbar.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                          "$window", '$timeout'];
+  fieldToolbar.$inject = ['UIUtilService','DataManipulationService', 'DataUtilService'];
 
-  function fieldToolbar($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                        $timeout) {
+  function fieldToolbar(UIUtilService, DataManipulationService, DataUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -26,36 +24,86 @@ define([
         field       : "=",
         model       : '=',
         index       : '=',
+        viewState   : '=',
         remove      : "=",
         add         : "=",
         copy        : "=",
-        close       : "=",
-        isActive    : '=',
         setActive   : '=',
-        isMultiple  : '=',
-        description : '=',
-        toggle      : '=',
-        showMultiple: '=',
-        cardinality : "=",
-        spreadsheet : "=",
+        getLocator  : '=',
         expandAll   : '=',
-        isExpandable: '=',
         values      : '=',
         min         : '=',
         max         : '=',
         select      : '=',
-        range       : '=',
-        isField: '='
-
+        range       : '='
       },
       controller : function ($scope, $element) {
 
       },
       replace    : true,
-      link       : linker
-    };
+      link       : function (scope, element, attrs) {
 
+
+        scope.isField = function () {
+          return !DataUtilService.isElement(DataManipulationService.schemaOf(scope.field));
+        };
+
+        scope.isListView = function () {
+          return UIUtilService.isListView(scope.viewState);
+        };
+
+        scope.isTabView = function () {
+          return UIUtilService.isTabView(scope.viewState);
+        };
+
+        scope.isSpreadsheetView = function () {
+          return UIUtilService.isSpreadsheetView(scope.viewState);
+        };
+
+        scope.toggleView = function () {
+          return UIUtilService.toggleView(scope.viewState);
+        };
+
+        scope.cardinalityString = function() {
+          return UIUtilService.cardinalityString(scope.field);
+        };
+
+        scope.isMultiple = function () {
+          return DataManipulationService.isCardinalElement(scope.field);
+        };
+
+        scope.isExpandable = function () {
+          return UIUtilService.isExpandable(scope.field);
+        };
+
+        // get the field description
+        scope.getDescription = function () {
+          return DataManipulationService.getDescription(scope.field);
+        };
+
+        // has a field description?
+        scope.hasDescription = function () {
+          return DataManipulationService.getDescription(scope.field).length > 0;
+        };
+
+        // can we add more?
+        scope.canAdd = function () {
+          var maxItems = DataManipulationService.getMaxItems(scope.field);
+          return scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+        };
+
+        // can we delete?
+        scope.canDelete = function () {
+          var minItems = DataManipulationService.getMinItems(scope.field);
+          return scope.isMultiple() && scope.model.length > minItems;
+        };
+
+        scope.fullscreen = function () {
+          UIUtilService.fullscreen(scope.getLocator(0));
+        };
+
+
+      }
+    }
   }
-
-})
-;
+});

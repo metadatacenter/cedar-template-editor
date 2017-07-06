@@ -9,9 +9,9 @@
     <ui-select-match allow-clear="true" placeholder="">{{$select.selected.label}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
-        refresh="$root.updateFieldAutocomplete($root.schemaOf(field), $select.search)"
+        refresh="updateFieldAutocomplete(field,$select.search, index)"
         refresh-delay="200"
-        repeat="option in $root.autocompleteResultsCache[$root.schemaOf(field)['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
+        repeat="option in autocompleteResultsCache[getId()][$select.search]['results'] | propsFilter: {label: $select.search} | limitTo:500">
       <div>
         <span class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.label | highlight: $select.search"></span>&nbsp;

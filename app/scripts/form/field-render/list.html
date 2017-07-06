@@ -4,14 +4,14 @@
   <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-init="initializeSelectionField()" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div ng-init="initializeSelectionField()" class="field-list" ng-class="{'required': isRequired()}">
 
     <!--Single selection-->
     <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == false"
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
 
-      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
 
       <select class="form-control"
           multiple="false"
@@ -19,7 +19,7 @@
           field="field"
           title="Please select"
           ng-model="optionsUI.options"
-          ng-disabled="!$root.isRuntime() || preview"
+          ng-disabled="!isRuntime() || preview"
           ng-change="updateModelFromUI(optionsUI)"
           select-picker="">
         <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals"
@@ -32,16 +32,16 @@
     <!--Multiple selection-->
     <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == true"
         class="form-group form-group-narrow validation-pattern"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+        ng-class="{'required': isRequired()}">
 
-      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
 
       <select class="form-control"
           multiple="true"
           field="field"
           title="Please select"
           ng-model="optionsUI.options"
-          ng-disabled="!$root.isRuntime() || preview"
+          ng-disabled="!isRuntime() || preview"
           ng-change="updateModelFromUI(optionsUI)"
           select-picker="">
         <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals"

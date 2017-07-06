@@ -8,7 +8,7 @@
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter value' : ''}}"
-        aria-label="{{getDescription(field)}}"
+        aria-label="{{getDescription()}}"
         ng-required="isRequired()"
         ng-model="valueElement['@value']"></textarea>
 
@@ -18,12 +18,12 @@
 
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
 
-    <div ng-if="showMultiple('expanded')"
+    <div ng-if="isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
     </div>
 
-    <div ng-if="showMultiple('paged')"
+    <div ng-if="isTabView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>

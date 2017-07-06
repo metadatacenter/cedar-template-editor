@@ -12,21 +12,21 @@ define([
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
                            'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
-                           "ValidationService"];
+                           "ValidationService", "UIUtilService"];
 
 
   function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
                          DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
-                         HttpBuilderService, ValidationService) {
+                         HttpBuilderService, ValidationService, UIUtilService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
       scope      : {
-        pageIndex      : '=',
-        form           : '=',
-        isEditData     : "=",
-        model          : '=',
-        path           : '='
+        pageIndex : '=',
+        form      : '=',
+        isEditData: "=",
+        model     : '=',
+        path      : '='
       },
       controller : function ($scope) {
 
@@ -45,12 +45,29 @@ define([
         $scope.metaToRDF = null;
         $scope.metaToRDFError = null;
 
+        var dms = DataManipulationService;
+
+        $scope.isRuntime = function () {
+          return UIUtilService.isRuntime();
+        };
+
+        $scope.isShowOutput = function () {
+          return UIUtilService.isShowOutput();
+        };
+
+        $scope.getShowOutputTab = function () {
+          return UIUtilService.getShowOutputTab();
+        };
+
+        $scope.setShowOutputTab = function (index) {
+          return UIUtilService.setShowOutputTab(index);
+        };
+
         $scope.relabel = function (key) {
           // operates on templates and elements, so use the root scope json which
           // is element or form
-          DataManipulationService.relabel($rootScope.jsonToSave, key);
+          dms.relabel($rootScope.jsonToSave, key);
         };
-
 
         var paginate = function () {
           if ($scope.form) {
@@ -86,64 +103,17 @@ define([
           }
         };
 
-        $scope.removeChild = function (fieldOrElement) {
-
-          DataManipulationService.removeChild($scope.form, fieldOrElement);
-
-          var schema = $rootScope.schemaOf(fieldOrElement);
-          var isElement = $rootScope.isElement(schema);
-          var state = isElement ? 'invalidElementState' : 'invalidFieldState';
-          $scope.$emit(state, ["remove", DataManipulationService.getTitle(fieldOrElement), DataManipulationService.getId(fieldOrElement)]);
+        // remove the child node from the form
+        $scope.removeChild = function (node) {
+          dms.removeChild($scope.form, node);
+          var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
+          $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
         };
 
+        // rename the key of a child in the form
         $scope.renameChildKey = function (child, newKey) {
-          if (!child) {
-            return;
-          }
-
-          var childId = DataManipulationService.idOf(child);
-          if (!childId || /^tmp\-/.test(childId)) {
-            var p = $scope.form.properties;
-            if (p[newKey] && p[newKey] == child) {
-              return;
-            }
-
-            newKey = DataManipulationService.getAcceptableKey(p, newKey);
-            angular.forEach(p, function (value, key) {
-              if (!value) {
-                return;
-              }
-
-              var idOfValue = DataManipulationService.idOf(value);
-              if (idOfValue && idOfValue == childId) {
-                DataManipulationService.renameKeyOfObject(p, key, newKey);
-
-                if (p["@context"] && p["@context"].properties) {
-                  DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
-
-                  if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-
-
-                    //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
-                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey,
-                        p["@context"].properties[newKey].enum[0]);
-                  }
-                }
-
-                if (p["@context"].required) {
-                  var idx = p["@context"].required.indexOf(key);
-                  p["@context"].required[idx] = newKey;
-                }
-
-                // Rename key in the 'order' array
-                $scope.form._ui.order = DataManipulationService.renameItemInArray($scope.form._ui.order, key, newKey);
-
-                // Rename key in the 'required' array
-                $scope.form.required = DataManipulationService.renameItemInArray($scope.form.required, key, newKey);
-              }
-            });
-          }
-        }
+          dms.renameChildKey($scope.form, child, newKey);
+        };
 
         $scope.addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded
@@ -180,7 +150,7 @@ define([
         var startParseForm = function () {
           if ($scope.form) {
             var model;
-            if ($rootScope.isRuntime()) {
+            if (UIUtilService.isRuntime()) {
               if ($scope.isEditData) {
                 model = {};
               } else {
@@ -190,13 +160,13 @@ define([
               model = $scope.model;
             }
 
-            if ($rootScope.isRuntime()) {
+            if (UIUtilService.isRuntime()) {
               $scope.parseForm($scope.form.properties, model);
 
               $rootScope.formModel = model;
               $rootScope.rootElement = $scope.form;
             } else {
-              $rootScope.findChildren($scope.form.properties, model);
+              DataManipulationService.findChildren($scope.form.properties, model);
             }
 
             paginate();
@@ -205,18 +175,18 @@ define([
 
         $scope.deselectAll = function () {
           console.log("deselectAll");
-        }
+        };
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
 
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
             if (name == '@context') {
-              parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
+              parentModel['@context'] = dms.generateInstanceContext(value);
             }
             // Add @type information to template/element instance
             else if (name == '@type') {
-              var type = DataManipulationService.generateInstanceType(value);
+              var type = dms.generateInstanceType(value);
               if (type) {
                 parentModel['@type'] = type;
               }
@@ -224,11 +194,11 @@ define([
 
             if (!DataUtilService.isSpecialKey(name)) {
               // Template Element
-              if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist
-                if (!DataManipulationService.isCardinalElement(value)) {
+                if (!dms.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -240,10 +210,10 @@ define([
                 if (angular.isArray(parentModel[name])) {
                   for (var i = 0; i < min; i++) {
                     // Indication of nested element or nested fields reached, recursively call function
-                    $scope.parseForm($rootScope.propertiesOf(value), parentModel[name][i], name);
+                    $scope.parseForm(dms.propertiesOf(value), parentModel[name][i], name);
                   }
                 } else {
-                  $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
+                  $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
                 }
                 // Template Field
               } else {
@@ -255,9 +225,9 @@ define([
                   // Assign empty field instance model to $scope.model only if it does not exist
                   if (parentModel[name] == undefined) {
                     // Not multiple instance
-                    if (!DataManipulationService.isCardinalElement(value)) {
+                    if (!dms.isCardinalElement(value)) {
                       // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                      if (DataManipulationService.isMultipleChoiceField(value)) {
+                      if (dms.isMultipleChoiceField(value)) {
                         parentModel[name] = [];
                       }
                       // All other fields, including the radio field and the list field with single option
@@ -273,13 +243,13 @@ define([
                       }
                     }
                     // Set default values and types for element fields
-                    DataManipulationService.initializeValue(value, parentModel[name]);
+                    dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
                     if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
                         (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
-                      DataManipulationService.initializeValueType(value, parentModel[name]);
+                      dms.initializeValueType(value, parentModel[name]);
                     }
-                    DataManipulationService.defaultOptionsToModel(value, parentModel[name]);
+                    dms.defaultOptionsToModel(value, parentModel[name]);
                   }
                 }
               }
@@ -350,17 +320,17 @@ define([
 
 
 
+        //
+        // watches
+        //
+        
 
-//
-// watches
-//
-
-// Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
+        // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
         });
 
-// watch the dirty flag on the form
+        // watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
@@ -386,17 +356,17 @@ define([
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
-// Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+        // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
         $scope.$watch('page', function () {
           $scope.addPopover();
         });
 
-// keep our rdf up-to-date
+        // keep our rdf up-to-date
         $scope.$watch('model', function () {
           $scope.toRDF();
         }, true);
 
-// Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
@@ -411,16 +381,16 @@ define([
           $scope.form.requiredFields = true;
         });
 
-//
-//
-//
+        //
+        //
+        //
 
-// create a copy of the form with the _tmp fields stripped out
-        $scope.stripTmpFields = function () {
+        // create a copy of the form with the _tmp fields stripped out
+        $scope.cleanForm = function () {
 
           var copiedForm = jQuery.extend(true, {}, $scope.model);
           if (copiedForm) {
-            DataManipulationService.stripTmps(copiedForm);
+            dms.stripTmps(copiedForm);
           }
           return copiedForm;
         };
@@ -502,17 +472,13 @@ define([
         };
 
         $scope.getType = function (item) {
-          var obj = $scope.form.properties[item];
-          var schema = $rootScope.schemaOf(obj);
-          return schema['@type'];
+          var properties = dms.propertiesOf($scope.form);
+          var node = properties[item];
+          return dms.getType(node);
         };
 
-        $scope.isStaticField = function (field) {
-          if (field) {
-            var schema = $rootScope.schemaOf(field);
-            var type = schema['@type'];
-            return (type === 'https://schema.metadatacenter.org/core/StaticTemplateField');
-          }
+        $scope.isStaticField = function (node) {
+          return dms.isStaticField(node);
         };
 
         $scope.lastIndex = function (path) {
@@ -527,14 +493,14 @@ define([
         };
 
         $scope.getTitle = function () {
-          return DataManipulationService.getTitle($scope.form);
+          return dms.getTitle($scope.form);
         };
 
         $scope.isExpandable = function () {
           return true;
         };
 
-// expand all the elements nested inside the form
+        // expand all the elements nested inside the form
         $scope.expandAll = function () {
 
           // expand the form
@@ -543,15 +509,12 @@ define([
           $timeout(function () {
 
             // expand all the elements inside the form
-            var schema = $rootScope.schemaOf($scope.form);
+            var schema = dms.schemaOf($scope.form);
             var selectedKey;
-            var props = $rootScope.propertiesOf($scope.form);
+            var props = dms.propertiesOf($scope.form);
             angular.forEach(props, function (value, key) {
-              var valueSchema = $rootScope.schemaOf(value);
-              var valueId = valueSchema["@id"];
-              var isElement = $rootScope.isElement(valueSchema);
-              if ($rootScope.isElement(valueSchema)) {
-                $scope.$broadcast("expandAll", [valueId]);
+              if (DataUtilService.isElement(value)) {
+                $scope.$broadcast("expandAll", [dms.getId(value)]);
               }
             });
 
@@ -560,11 +523,11 @@ define([
 
         $scope.uid = 'form';
 
-// find the next sibling to activate
+        // find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
           var index = 0;
-          var order = $rootScope.schemaOf($scope.form)._ui.order;
-          var props = $rootScope.schemaOf($scope.form).properties;
+          var order = dms.schemaOf($scope.form)._ui.order;
+          var props = dms.schemaOf($scope.form).properties;
           var idx = order.indexOf(fieldKey);
 
           idx += 1;
@@ -585,10 +548,7 @@ define([
         };
 
       }
-    }
-        ;
-  }
-  ;
+    };
+  };
 
-})
-;
+});

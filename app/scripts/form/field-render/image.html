@@ -4,19 +4,19 @@
   <div ng-init="fieldTitle='&nbsp;Image';fieldIconClass='cedar-svg-image'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="!$root.isRuntime()" style="padding-top: 10px;">
+  <div ng-if="!isRuntime()" style="padding-top: 10px;">
     <figure>
       <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
           type="image/png" width="100%"/>
-      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+      <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>
   </div>
 
-  <div ng-if="$root.isRuntime()">
+  <div ng-if="isRuntime()">
     <figure>
       <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
           type="image/png" width="100%"/>
-      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+      <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>
   </div>
 

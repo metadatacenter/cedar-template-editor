@@ -32,7 +32,8 @@ define([
   'cedar/template-editor/service/controlled-term-http.service',
   'cedar/template-editor/service/query-param-utils.service',
   'cedar/template-editor/service/frontend-url.service',
-  'cedar/template-editor/service/validation.service'
+  'cedar/template-editor/service/validation.service',
+  'cedar/template-editor/service/local-storage.service'
 
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
