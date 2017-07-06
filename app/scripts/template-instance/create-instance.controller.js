@@ -9,12 +9,12 @@ define([
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "TemplateService", "TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
-                                    QueryParamUtilsService, FrontendUrlService, ValidationService) {
+                                    QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -29,7 +29,7 @@ define([
             $rootScope.documentTitle = $scope.form._ui.title;
 
             // Initialize value recommender service
-            $rootScope.vrs.init($routeParams.templateId, $scope.form);
+            ValueRecommenderService.init($routeParams.templateId, $scope.form);
 
           },
           function (err) {
@@ -56,7 +56,7 @@ define([
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
                   var templateId = instanceResponse.data['schema:isBasedOn'];
-                  $rootScope.vrs.init(templateId, $scope.form);
+                  ValueRecommenderService.init(templateId, $scope.form);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);

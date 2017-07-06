@@ -4,12 +4,13 @@
   <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
+      ng-class="{'required': isRequired()}">
     <input type="text"
         class="form-control has-success has-feedback"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
     <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
@@ -22,11 +23,11 @@
         id="{{getId($index)}}"
         ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         ng-minlength="{{$root.schemaOf(field)._ui.minLength}}"
         ng-maxlength="{{$root.schemaOf(field)._ui.maxLength}}"
         validate-on="blur"
@@ -42,16 +43,16 @@
   <!-- /.form-group -->
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
+  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()"
       class="form-group floating-label-wrapper">
 
 
     <input type="text"
         id="{{getId(0)}}"
         class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="model['@value']"
         ng-disabled="true"
         ng-minlength="{{$root.schemaOf(field)._ui.minLength}}"
@@ -73,11 +74,11 @@
         id="{{getId(0)}}"
         ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-model="model['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
+        ng-disabled="!isRuntime() || preview"
         ng-minlength="{{$root.schemaOf(field)._ui.minLength}}"
         ng-maxlength="{{$root.schemaOf(field)._ui.maxLength}}"
         validate-on="blur"

@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.clientSideValidationService', [])
     .service('ClientSideValidationService', ClientSideValidationService);
 
-  ClientSideValidationService.$inject = ['$translate'];
+  ClientSideValidationService.$inject = ['$translate','DataManipulationService'];
 
-  function ClientSideValidationService($translate) {
+  function ClientSideValidationService($translate, DataManipulationService) {
 
     var service = {
       serviceId: "ClientSideValidationService"
@@ -20,15 +20,21 @@ define([
       var unmetConditions      = [],
       extraConditionInputs = ['checkbox', 'radio', 'list'];
 
+      var schema = DataManipulationService.schemaOf(field);
+      var title = DataManipulationService.getTitle(field);
+      var inputType = DataManipulationService.getInputType(field);
+      var literals = DataManipulationService.getLiterals(field); // field._valueConstraints.literals
+
+
       // Field title is already required, if it's empty create error message
-      if (!field._ui.title.length) {
+      if (!title || !title.length) {
         unmetConditions.push($translate.instant("VALIDATION.fieldTitleEmpty"));
       }
 
       // If field is within multiple choice field types
-      if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
+      if (extraConditionInputs.indexOf(inputType) !== -1) {
         var optionMessage = $translate.instant("VALIDATION.optionEmpty");
-        angular.forEach(field._valueConstraints.literals, function (value, index) {
+        angular.forEach(literals, function (value, index) {
           // If any 'option' title text is left empty, create error message
           if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
             unmetConditions.push(optionMessage);
@@ -36,7 +42,7 @@ define([
         });
       }
       // If field type is 'radio' or 'pick from a list' there must be more than one option created
-      if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
+      if ((inputType == 'radio' || inputType == 'list') && literals && (literals.length <= 1)) {
         unmetConditions.push($translate.instant("VALIDATION.multipleChoiceTooFew"));
       }
       // Return array of error messages
@@ -45,9 +51,11 @@ define([
 
     service.checkFieldCardinalityOptions = function (field) {
       var unmetConditions = [];
+      var minItems = DataManipulationService.getMinItems(field);
+      var maxItems = DataManipulationService.getMaxItems(field);
 
-      if (field.minItems && field.maxItems &&
-          parseInt(field.minItems) > parseInt(field.maxItems)) {
+      if (minItems && maxItems &&
+          parseInt(minItems) > parseInt(maxItems)) {
         unmetConditions.push($translate.instant('VALIDATION.minBiggerThanMax'));
       }
 

@@ -12,7 +12,7 @@ define([
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                             "StringUtilsService", "UIUtilService"];
 
-  function fieldDirective($rootScope, $sce,  $translate, $filter,  SpreadsheetService,
+  function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService,
                           DataManipulationService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
 
@@ -20,7 +20,8 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       $scope.errorMessages;
-      var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
+      //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
+      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -29,9 +30,15 @@ define([
         isopen: false
       };
 
+      var dms = DataManipulationService;
+
       //
       // model and ui support
       //
+
+      $scope.isRuntime = function () {
+        return UIUtilService.isRuntime();
+      };
 
       $scope.getShortText = function (text, maxLength, finalString, emptyString) {
         return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
@@ -41,33 +48,79 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       };
 
+
+      $scope.getHidden = function () {
+        return DataManipulationService.getHidden($scope.field);
+      };
+
+      $scope.allowsHidden = function () {
+        return DataManipulationService.allowsHidden($scope.field);
+      };
+
+      // is this multiple cardinality?
+      $scope.isHidden = function () {
+        return DataManipulationService.isHidden($scope.field);
+      };
+
+      // is this multiple cardinality?
+      $scope.setHidden = function (value) {
+        DataManipulationService.setHidden($scope.field, value);
+      };
+
       // is this multiple cardinality?
       $scope.isMultiple = function () {
-        return $scope.field.minItems != null;
+        return dms.isCardinalElement($scope.field);
+      };
+
+      // is this multiple cardinality?
+      $scope.hasMin = function () {
+        return $scope.field.hasOwnProperty('minItems');
+      };
+
+      $scope.isRequired = function () {
+        return dms.isRequired($scope.field);
+      };
+
+      $scope.getDomId = function (node) {
+        return dms.getDomId(node);
+      };
+
+      $scope.getTitle = function () {
+        return dms.getTitle($scope.field);
+      };
+
+      $scope.getDescription = function () {
+        return dms.getDescription($scope.field);
+      };
+
+      $scope.hasValueConstraint = function () {
+        return dms.hasValueConstraint($scope.field);
+      };
+
+
+      $scope.getLiterals = function () {
+        return dms.getLiterals($scope.field);
       };
 
       // default the cardinality to 1..N
       $scope.defaultMinMax = function () {
-        DataManipulationService.defaultMinMax($scope.field);
+        dms.defaultMinMax($scope.field);
       };
 
       // clear any current cardinality
       $scope.clearMinMax = function () {
-        console.log('clearMinMax');
-        DataManipulationService.clearMinMax($scope.field);
-        console.log($scope.field);
+        dms.clearMinMax($scope.field);
       };
 
       // is this a static field?
       $scope.isStatic = function () {
-        return FieldTypeService.isStaticField(DataManipulationService.getInputType($scope.field));
+        return FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
       $scope.removeChild = function () {
-
-        DataManipulationService.removeChild($scope.parentElement, $scope.field);
+        dms.removeChild($scope.parentElement, $scope.field);
         $scope.$emit("invalidFieldState",
-            ["remove", DataManipulationService.getTitle($scope.field), DataManipulationService.getId($scope.field)]);
+            ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
 
       };
 
@@ -75,14 +128,14 @@ define([
       $scope.canSelect = function (select) {
         var result = select;
         if (select) {
-          result = DataManipulationService.canSelect($scope.field);
+          result = UIUtilService.canSelect($scope.field);
         }
         return result;
       };
 
       // try to deselect this field
       $scope.canDeselect = function (field) {
-        return DataManipulationService.canDeselect(field, $scope.renameChildKey);
+        return UIUtilService.canDeselect(field, $scope.renameChildKey);
       };
 
       $scope.getForm = function () {
@@ -97,7 +150,7 @@ define([
       // does this field allow multiple cardinality?
       $scope.allowsMultiple = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+          return obj.cedarType == dms.getInputType($scope.field);
         });
         return result.length > 0 && result[0].allowsMultiple;
       };
@@ -105,7 +158,7 @@ define([
       // does the field support value recommendation?
       $scope.allowsValueRecommendation = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+          return obj.cedarType == dms.getInputType($scope.field);
         });
         return result.length > 0 && result[0].allowsValueRecommendation;
       };
@@ -113,14 +166,14 @@ define([
       // does the field support using controlled terms
       $scope.hasControlledTerms = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+          return obj.cedarType == dms.getInputType($scope.field);
         });
         return result.length > 0 && result[0].hasControlledTerms;
       };
 
       // Retrieve appropriate field templates
       $scope.getTemplateUrl = function () {
-        return 'scripts/form/field-' + $scope.directory + '/' + DataManipulationService.getInputType(
+        return 'scripts/form/field-' + $scope.directory + '/' + dms.getInputType(
                 $scope.field) + '.html';
       };
 
@@ -144,15 +197,15 @@ define([
       };
 
       $scope.addMoreInput = function () {
-        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+        var maxItems = dms.getMaxItems($scope.field);
+        if ((!maxItems || $scope.model.length < maxItems)) {
           $scope.model.push({'@value': null});
         }
       };
 
       $scope.removeInput = function (index) {
-        console.log('removeInput');
-        var min = $scope.field.minItems || 0;
-        if ($scope.model.length > min) {
+        var minItems = dms.getMinItems($scope.field) || 0;
+        if ($scope.model.length > minItems) {
           $scope.model.splice(index, 1);
         }
       };
@@ -164,29 +217,26 @@ define([
       $scope.modalType;
       // create an id for the controlled terms modal
       $scope.getModalId = function (type) {
-        return UIUtilService.getModalId(DataManipulationService.getId($scope.field), type);
+        return UIUtilService.getModalId(dms.getId($scope.field), type);
       };
 
       // show the controlled terms modal
       $scope.showModal = function (type) {
         if (type) {
           $scope.modalType = type;
-          UIUtilService.showModal(DataManipulationService.getId($scope.field), type);
+          UIUtilService.showModal(dms.getId($scope.field), type);
         }
       };
 
       // show the controlled terms modal
       $scope.hideModal = function () {
         if ($scope.modalType) {
-          UIUtilService.hideModal(DataManipulationService.getId($scope.field), $scope.modalType);
+          UIUtilService.hideModal(dms.getId($scope.field), $scope.modalType);
         }
       };
 
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function () {
-
-        // UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'field');
-        // UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'values');
         $scope.hideModal();
 
         // build the added fields map in this case
@@ -217,11 +267,16 @@ define([
       // update schema title and description if necessary
       $scope.$watch("field", function (newField, oldField) {
 
+
+        // default the title and description if necessary
+        DataManipulationService.defaultTitleAndDescription(newField._ui);
+
+        // set the schema title for the field with autogenerated values
         if (DataManipulationService.getTitle(newField) != DataManipulationService.getTitle(oldField)) {
           var capitalizedTitle = $filter('capitalizeFirst')(DataManipulationService.getTitle(newField));
           DataManipulationService.setSchemaTitle(newField,
               $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle}).trim());
-          DataManipulationService.setSchemaDescription(newField,
+          dms.setSchemaDescription(newField,
               $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle}).trim());
         }
 
@@ -232,7 +287,7 @@ define([
       $scope.$watch("model", function () {
 
         $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
+          return (UIUtilService.isEditState($scope.field));
         };
 
         $scope.isNested = function () {
@@ -241,174 +296,16 @@ define([
         };
 
         $scope.addOption = function () {
-          return (DataManipulationService.addOption($scope.field));
+          return (dms.addOption($scope.field));
         };
 
       }, true);
-
-      // When form submit event is fired, check field for simple validation
-      $scope.$on('submitForm', function (event) {
-
-        // If field is required and is empty, emit failed emptyRequiredField event
-        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf(
-                $scope.field)._valueConstraints.requiredValue) {
-          var allRequiredFieldsAreFilledIn = true;
-          var min = $scope.field.minItems || 0;
-
-          if (angular.isArray($scope.model)) {
-            if ($scope.model.length < min) {
-              allRequiredFieldsAreFilledIn = false;
-            } else {
-              angular.forEach($scope.model, function (valueElement) {
-                if (!valueElement || !valueElement['@value']) {
-                  allRequiredFieldsAreFilledIn = false;
-                } else if (angular.isArray(valueElement['@value'])) {
-                  var hasValue = false;
-                  angular.forEach(valueElement['@value'], function (ve) {
-                    hasValue = hasValue || !!ve;
-                  });
-
-                  if (!hasValue) {
-                    allRequiredFieldsAreFilledIn = false;
-                  }
-                } else if (angular.isObject(valueElement['@value'])) {
-                  if ($rootScope.isEmpty(valueElement['@value'])) {
-                    allRequiredFieldsAreFilledIn = false;
-                  }
-                  // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                  //   if (!valueElement['@value'].start || !valueElement['@value'].end) {
-                  //     allRequiredFieldsAreFilledIn = false;
-                  //   }
-                  // }
-                  else {
-                    // Require at least one checkbox is checked.
-                    var hasValue = false;
-                    angular.forEach(valueElement['@value'], function (value, key) {
-                      hasValue = hasValue || value;
-                    });
-
-                    if (!hasValue) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  }
-                }
-              });
-            }
-          } else {
-            // allRequiredFieldsAreFilledIn = false;
-            if (!$scope.model || !$scope.model['@value']) {
-              allRequiredFieldsAreFilledIn = false;
-            } else if (angular.isArray($scope.model['@value'])) {
-              var hasValue = false;
-              angular.forEach($scope.model['@value'], function (ve) {
-                hasValue = hasValue || !!ve;
-              });
-
-              if (!hasValue) {
-                allRequiredFieldsAreFilledIn = false;
-              }
-            } else if (angular.isObject($scope.model['@value'])) {
-              if ($rootScope.isEmpty($scope.model['@value'])) {
-                allRequiredFieldsAreFilledIn = false;
-              }
-              // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-              //   if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
-              //     allRequiredFieldsAreFilledIn = false;
-              //   }
-              // }
-              else {
-                // Require at least one checkbox is checked.
-                var hasValue = false;
-                angular.forEach($scope.model['@value'], function (value, key) {
-                  hasValue = hasValue || value;
-                });
-
-                if (!hasValue) {
-                  allRequiredFieldsAreFilledIn = false;
-                }
-              }
-            }
-          }
-
-          if (!allRequiredFieldsAreFilledIn) {
-            // add this field instance the the emptyRequiredField array
-            $scope.$emit('emptyRequiredField',
-                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
-          }
-        }
-
-        // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if ($rootScope.schemaOf($scope.field)._valueConstraints &&
-            $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
-          //remove from emptyRequiredField array
-          $scope.$emit('emptyRequiredField',
-              ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
-        }
-
-
-        var allFieldsAreValid = true;
-        if (angular.isArray($scope.model)) {
-          for (var i = 0; i < $scope.model.length; i++) {
-            if (!DataManipulationService.isValidPattern($scope.field, i)) {
-              $scope.model[i]['@value'] = DataManipulationService.getDomValue($scope.field, i);
-              allFieldsAreValid = false;
-            }
-          }
-
-        } else {
-          if (!DataManipulationService.isValidPattern($scope.field, 0)) {
-            $scope.model['@value'] = DataManipulationService.getDomValue($scope.field, 0);
-            allFieldsAreValid = false;
-
-          }
-        }
-
-        if ($rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
-
-          if (angular.isArray($scope.model)) {
-            angular.forEach($scope.model, function (valueElement) {
-              if (angular.isArray(valueElement['@value'])) {
-                angular.forEach(valueElement['@value'], function (ve) {
-                  if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
-                          $rootScope.schemaOf($scope.field)._valueConstraints)) {
-                    allFieldsAreValid = false;
-                  }
-                });
-              } else if (angular.isObject(valueElement['@value'])) {
-                if (!$rootScope.isValueConformedToConstraint(valueElement['@value'], $scope.field["@id"],
-                        $rootScope.schemaOf($scope.field)._valueConstraints)) {
-                  allFieldsAreValid = false;
-                }
-              }
-            });
-          } else {
-            if (angular.isArray($scope.model['@value'])) {
-              angular.forEach($scope.model['@value'], function (ve) {
-                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
-                        $rootScope.schemaOf($scope.field)._valueConstraints)) {
-                  allFieldsAreValid = false;
-                }
-              });
-            } else if (angular.isObject($scope.model['@value'])) {
-              if (!$rootScope.isValueConformedToConstraint($scope.model['@value'], $scope.field["@id"],
-                      $rootScope.schemaOf($scope.field)._valueConstraints)) {
-                allFieldsAreValid = false;
-              }
-            }
-          }
-        }
-
-        $scope.$emit('invalidFieldValues',
-            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.getFieldSchema($scope.field)._ui.title,
-             $scope.uuid]);
-
-      });
 
       // try to deselect the field if it is active
       $scope.$on("saveForm", function () {
         var action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
         $scope.$emit("invalidFieldState",
-            [action, DataManipulationService.getTitle($scope.field), DataManipulationService.getId($scope.field)]);
+            [action, dms.getTitle($scope.field), dms.getId($scope.field)]);
       });
 
       //
@@ -418,7 +315,7 @@ define([
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
-        if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
+        if ((state == "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
@@ -426,23 +323,23 @@ define([
       };
       setDirectory();
 
-      var field = DataManipulationService.getFieldSchema($scope.field);
+      //var field = dms.schemaOf($scope.field);
 
       // Checking each field to see if required, will trigger flag for use to see there is required fields
-      if (field._valueConstraints && field._valueConstraints.requiredValue) {
+      if ($scope.hasValueConstraint() && dms.isRequired($scope.field)) {
         $scope.$emit('formHasRequiredfield._uis');
       }
 
       // Load values when opening an instance
       if ($scope.model) {
-        var fieldValue = DataManipulationService.getValueLocation(field);
+        var fieldValue = dms.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
       var parseField = function () {
-        if (!$rootScope.isRuntime() && $scope.field) {
-          var min = $scope.field.minItems || 0;
-          if (!DataManipulationService.isCardinalElement($scope.field)) {
+        if ($scope.field) {
+          var min = dms.getMinItems($scope.field) || 0;
+          if (!dms.isCardinalElement($scope.field)) {
             $scope.model = {};
           } else {
             $scope.model = [];
@@ -457,50 +354,55 @@ define([
 
       // If selectedByDefault is false, it is removed from the model
       $scope.cleanSelectedByDefault = function (index) {
-        if (field._valueConstraints.literals[index].selectedByDefault == false) {
-          delete field._valueConstraints.literals[index].selectedByDefault;
+        var literals = dms.getLiterals($scope.field);
+        if (literals[index].selectedByDefault == false) {
+          delete literals[index].selectedByDefault;
         }
       }
 
       // Sets the default options for the 'radio' button based on the options selected at the UI
       $scope.radioModelToDefaultOptions = function (index) {
-        for (var i = 0; i < field._valueConstraints.literals.length; i++) {
+        var literals = dms.getLiterals($scope.field);
+        for (var i = 0; i < literals.length; i++) {
           if (i != index) {
-            delete field._valueConstraints.literals[i].selectedByDefault;
+            delete literals[i].selectedByDefault;
           }
         }
       };
 
       // Sets UI selections based on the default options
       $scope.defaultOptionsToUI = function () {
-        if (field._ui.inputType == 'checkbox') {
-          $scope.optionsUI = {};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI[literal.label] = true;
-            }
-            else {
-              $scope.optionsUI[literal.label] = false;
-            }
-          }
-        }
-        else if (field._ui.inputType == 'radio') {
-          $scope.optionsUI = {option: null};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI.option = literal.label;
+        if (dms.isMultiAnswer($scope.field)) {
+          var literals = dms.getLiterals($scope.field);
+          if (dms.isCheckboxType($scope.field)) {
+            $scope.optionsUI = {};
+            for (var i = 0; i < literals.length; i++) {
+              var literal = literals[i];
+              if (literal.selectedByDefault == true) {
+                $scope.optionsUI[literal.label] = true;
+              }
+              else {
+                $scope.optionsUI[literal.label] = false;
+              }
             }
           }
-        }
-        else if (field._ui.inputType == 'list') {
-          // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
-          $scope.optionsUI = {options: []};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI.options.push(literal.label);
+          else if (dms.isRadioType($scope.field)) {
+            $scope.optionsUI = {option: null};
+            for (var i = 0; i < literals.length; i++) {
+              var literal = literals[i];
+              if (literal.selectedByDefault == true) {
+                $scope.optionsUI.option = literal.label;
+              }
+            }
+          }
+          else if (dms.isListType($scope.field)) {
+            // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
+            $scope.optionsUI = {options: []};
+            for (var i = 0; i < literals.length; i++) {
+              var literal = literals[i];
+              if (literal.selectedByDefault == true) {
+                $scope.optionsUI.options.push(literal.label);
+              }
             }
           }
         }
@@ -508,7 +410,8 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
-        if (!$scope.model || !$rootScope.isArray($scope.model)) {
+
+        if (!$scope.model || !angular.isArray($scope.model)) {
           $scope.model = [];
         }
         else {
@@ -516,20 +419,20 @@ define([
           // is dangerous because we have references to the original array
           $scope.model.splice(0, $scope.model.length);
         }
-        if (field._ui.inputType == 'checkbox') {
+        if (dms.isCheckboxType($scope.field)) {
           for (var option in $scope.optionsUI) {
             if ($scope.optionsUI[option] == true) {
               $scope.model.push({'@value': option});
             }
           }
         }
-        else if (field._ui.inputType == 'radio') {
+        else if (dms.isRadioType($scope.field)) {
           // If 'updateModelFromUI' was invoked from the UI (option is not null)
           if ($scope.optionsUI.option != null) {
             $scope.model.push({'@value': $scope.optionsUI.option});
           }
         }
-        else if (field._ui.inputType == 'list') {
+        else if (dms.isListType($scope.field)) {
           // Update model
           for (var i = 0; i < $scope.optionsUI.options.length; i++) {
             $scope.model.push({'@value': $scope.optionsUI.options[i]});
@@ -539,12 +442,12 @@ define([
         if ($scope.model.length == 0) {
           $scope.model.push({'@value': null});
         }
-      }
+      };
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function () {
         // Multiple fields
-        if ($rootScope.isArray($scope.modelValue)) {
+        if (angular.isArray($scope.modelValue)) {
           if ($scope.modelValue.length > 0) {
             angular.forEach($scope.modelValue, function (m, i) {
               if (m && m['@value'] && m['@value']['@id']) {
@@ -573,31 +476,33 @@ define([
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
-        if (field._ui.inputType == 'checkbox') {
+        var inputType = dms.getInputType($scope.field);
+
+        if (inputType == 'checkbox') {
           $scope.optionsUI = {};
           for (var item in $scope.model) {
             var valueLabel = $scope.model[item]['@value'];
             $scope.optionsUI[valueLabel] = true;
           }
         }
-        else if (field._ui.inputType == 'radio') {
+        else if (inputType == 'radio') {
           $scope.optionsUI = {option: null};
           // Note that for this element only one selected option is possible
           if ($scope.model[0]['@value'] != null) {
             $scope.optionsUI.option = $scope.model[0]['@value'];
           }
         }
-        else if (field._ui.inputType == 'list') {
+        else if (inputType == 'list') {
           $scope.optionsUI = {options: []};
           for (var item in $scope.model) {
             var valueLabel = $scope.model[item]['@value'];
             $scope.optionsUI.options.push(valueLabel);
           }
         }
-      }
+      };
 
       $scope.updateUIFromModelControlledField = function () {
-        if ($rootScope.isArray($scope.model)) {
+        if (angular.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {
             $scope.modelValue[i] = {};
@@ -618,23 +523,20 @@ define([
 
       // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function () {
-        if ($scope.directory == "render") {
-          if ((field._ui.inputType == 'checkbox')
-              || (field._ui.inputType == 'radio')
-              || (field._ui.inputType == 'list')) {
-            // If we are populating a template, we need to initialize the model with the default values (if they exist)
-            // Note that $scope.isEditData = false means that we are populating the template
-            if ($scope.isEditData == null || $scope.isEditData == false) {
-              $scope.defaultOptionsToUI();
-              $scope.updateModelFromUI();
-            }
-            // If we are editing an instance we need to load the values stored into the model
-            else {
-              $scope.updateUIFromModel();
-            }
+        var inputType = dms.getInputType($scope.field);
+        if (dms.isMultiAnswer($scope.field)) {
+          // If we are populating a template, we need to initialize the model with the default values (if they exist)
+          // Note that $scope.isEditData = false means that we are populating the template
+          if ($scope.isEditData == null || $scope.isEditData == false) {
+            $scope.defaultOptionsToUI();
+            $scope.updateModelFromUI();
+          }
+          // If we are editing an instance we need to load the values stored into the model
+          else {
+            $scope.updateUIFromModel();
           }
         }
-      }
+      };
 
       // Initializes model for fields constrained using controlled terms
       $scope.initializeControlledField = function () {
@@ -646,7 +548,7 @@ define([
           }
           if ($scope.directory == "render") {
             if ($rootScope.schemaOf($scope.field)._ui.inputType == "textfield" &&
-                $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
+                $scope.hasValueConstraint()) {
               // We are populating the template
               if ($scope.isEditData == null || $scope.isEditData == false) {
                 if (isMultiple) {
@@ -663,11 +565,12 @@ define([
             }
           }
         }
-      }
+      };
 
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
-        if ($rootScope.isRuntime()) {
+        if (UIUtilService.isRuntime()) {
+
           if (!$rootScope.isArray(m)) {
             if (!m) {
               m = {};
@@ -688,45 +591,10 @@ define([
             }
           }
         }
-      }
-
-      // look for errors
-      // $scope.checkFieldConditions = function (field) {
-      //   console.log('checkFieldConditions')
-      //   field = $rootScope.schemaOf(field);
-      //
-      //   var unmetConditions = [],
-      //       extraConditionInputs = ['checkbox', 'radio', 'list'];
-      //
-      //   // Field title is required, if it's empty create error message
-      //   if (!field._ui.title) {
-      //     unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-      //   }
-      //
-      //   // If field is within multiple choice field types
-      //   if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
-      //     var optionMessage = '"Enter Option" input cannot be left empty.';
-      //     angular.forEach(field._valueConstraints.literals, function (value, index) {
-      //       // If any 'option' title text is left empty, create error message
-      //       if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
-      //         unmetConditions.push(optionMessage);
-      //       }
-      //     });
-      //   }
-      //   // If field type is 'radio' or 'pick from a list' there must be more than one option created
-      //   if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
-      //     unmetConditions.push('Multiple Choice fields must have at least two possible options');
-      //   }
-      //   // Return array of error messages
-      //   return unmetConditions;
-      // };
-
-
-
-
+      };
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getValueLocation(field);
+        var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
@@ -744,10 +612,10 @@ define([
       };
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
-        var fieldValue = DataManipulationService.getValueLocation(field);
+        var fieldValue = dms.getValueLocation($scope.field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
-        if ($rootScope.isArray($scope.model)) {
+        if (angular.isArray($scope.model)) {
           angular.forEach(modelvr, function (m, i) {
             if (m && m.valueInfo & m.valueInfo.value) {
               $scope.model[i][fieldValue] = m.valueInfo.value;
@@ -775,7 +643,7 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
-        var fieldValue = DataManipulationService.getValueLocation(field);
+        var fieldValue = dms.getValueLocation($scope.field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -805,14 +673,14 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
-        var fieldValue = DataManipulationService.getValueLocation(field);
+        var fieldValue = dms.getValueLocation($scope.field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
           valueInfo: {'value': null, 'valueUri': null},
-        }
+        };
         select.selected = undefined;
         select.search = "";
-        $scope.model[fieldValue] = DataManipulationService.getDefaultValue(fieldValue);
+        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue);
         delete $scope.model['_valueLabel'];
       };
 
@@ -836,8 +704,8 @@ define([
       };
 
       $scope.removeValueRecommendationField = function (field) {
-        delete field._ui.valueRecommendationEnabled;
-      }
+        dms.removeValueRecommendationField(field);
+      };
 
       /* end of Value Recommendation functionality */
 
@@ -847,15 +715,10 @@ define([
       $scope.addedFields = new Map();
       $scope.addedFieldKeys = [];
 
-
-      /**
-       * build a map with the added field controlled term id as the key and the details for that class as the value
-       */
+      // build a map with the added field controlled term id as the key and the details for that class as the value
       $scope.setAddedFieldMap = function () {
 
-
-        var fields = DataManipulationService.getFieldControlledTerms($scope.field);
-
+        var fields = dms.getFieldControlledTerms($scope.field);
         if (fields) {
 
           // create a new map to avoid any duplicates coming from the modal
@@ -908,13 +771,7 @@ define([
         }
       };
 
-
-      /**
-       * get the class details from the server.
-       * @param item
-       * @param ontologyName
-       * @param className
-       */
+      // get the class details from the server
       var setResponse = function (item, ontologyName, className) {
 
         // Get selected class details from the links.self endpoint provided.
@@ -923,11 +780,7 @@ define([
         });
       };
 
-      /**
-       * get the ontology name from the addedFields map
-       * @param item
-       * @returns {string}
-       */
+      // get the ontology name from the addedFields map
       $scope.getOntologyName = function (item) {
         var result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
@@ -936,11 +789,7 @@ define([
         return result;
       };
 
-      /**
-       * get the class description from the addedFields map
-       * @param item
-       * @returns {string}
-       */
+      // get the class description from the addedFields map
       $scope.getPrefLabel = function (item) {
         var result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
@@ -971,33 +820,32 @@ define([
       };
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
-        DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
-        // adjust the map
+        dms.deleteFieldControlledTerm(itemDataId, $scope.field);
         $scope.setAddedFieldMap();
       };
 
       $scope.parseOntologyCode = function (source) {
-        return DataManipulationService.parseOntologyCode(source);
+        return dms.parseOntologyCode(source);
       };
 
       $scope.parseOntologyName = function (dataItemsId) {
-        return DataManipulationService.parseOntologyName(dataItemsId);
+        return dms.parseOntologyName(dataItemsId);
       };
 
       $scope.deleteFieldAddedBranch = function (branch) {
-        DataManipulationService.deleteFieldAddedBranch(branch, $scope.field);
+        dms.deleteFieldAddedBranch(branch, $scope.field);
       };
 
       $scope.deleteFieldAddedClass = function (ontologyClass) {
-        DataManipulationService.deleteFieldAddedClass(ontologyClass, $scope.field);
+        dms.deleteFieldAddedClass(ontologyClass, $scope.field);
       };
 
       $scope.deleteFieldAddedOntology = function (ontology) {
-        DataManipulationService.deleteFieldAddedOntology(ontology, $scope.field);
+        dms.deleteFieldAddedOntology(ontology, $scope.field);
       };
 
       $scope.deleteFieldAddedValueSet = function (valueSet) {
-        DataManipulationService.deleteFieldAddedValueSet(valueSet, $scope.field);
+        dms.deleteFieldAddedValueSet(valueSet, $scope.field);
       };
 
       $scope.getOntologyCode = function (ontology) {

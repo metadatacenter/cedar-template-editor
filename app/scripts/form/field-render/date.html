@@ -7,9 +7,9 @@
   <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <input type="text"
         class="form-control has-success has-feedback"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
     <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
@@ -25,11 +25,11 @@
             id="{{getId($index)}}"
             ng-change="setDefaultValueIfEmpty(model)"
             class="form-control"
-            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': isRequired()}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="valueElement['@value']"
-            ng-disabled="!$root.isRuntime() || preview"
+            ng-disabled="!isRuntime() || preview"
             validate-on="blur"
             ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
@@ -51,7 +51,7 @@
             <!--placeholder="{{$root.schemaOf(field)._ui.title}} start"-->
             <!--aria-label="Select a start date"-->
             <!--ng-model="valueElement['@value'].start"-->
-            <!--ng-disabled="!$root.isRuntime() || preview"-->
+            <!--ng-disabled="!isRuntime() || preview"-->
             <!--validate-on="blur"-->
             <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
             <!--with-floating-label=""/>-->
@@ -67,7 +67,7 @@
             <!--placeholder="{{$root.schemaOf(field)._ui.title}} end"-->
             <!--aria-label="end date"-->
             <!--ng-model="valueElement['@value'].end"-->
-            <!--ng-disabled="!$root.isRuntime() || preview"-->
+            <!--ng-disabled="!isRuntime() || preview"-->
             <!--validate-on="blur"-->
             <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
             <!--with-floating-label=""/>-->
@@ -83,7 +83,7 @@
 
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
+  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="field field-date">
 
 
     <div class="form-group form-group-narrow date-group floating-label-wrapper">
@@ -91,7 +91,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': isRequired()}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="model['@value']"
@@ -148,11 +148,11 @@
         <input type="text"
             ng-change="setDefaultValueIfEmpty(model)"
             class="form-control"
-            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': isRequired()}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="model['@value']"
-            ng-disabled="!$root.isRuntime() || preview"
+            ng-disabled="!isRuntime() || preview"
             validate-on="blur"
             ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
@@ -174,7 +174,7 @@
             <!--placeholder="{{$root.schemaOf(field)._ui.title}} start"-->
             <!--aria-label="Select a start date"-->
             <!--ng-model="model['@value'].start"-->
-            <!--ng-disabled="!$root.isRuntime() || preview"-->
+            <!--ng-disabled="!isRuntime() || preview"-->
             <!--validate-on="blur"-->
             <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
 
@@ -190,7 +190,7 @@
             <!--placeholder="{{$root.schemaOf(field)._ui.title}} end"-->
             <!--aria-label="Select a end date"-->
             <!--ng-model="model['@value'].end"-->
-            <!--ng-disabled="!$root.isRuntime() || preview"-->
+            <!--ng-disabled="!isRuntime() || preview"-->
             <!--validate-on="blur"-->
             <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
             <!--with-floating-label=""/>-->

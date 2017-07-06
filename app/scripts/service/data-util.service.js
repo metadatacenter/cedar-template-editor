@@ -12,6 +12,7 @@ define([
   function DataUtilService($rootScope) {
 
     var specialKeyPattern = /(^@)|(^_)|(^schema:)|(^pav:)|(^oslc:)/i;
+    var elementType = "https://schema.metadatacenter.org/core/TemplateElement";
 
     var service = {
       serviceId: "DataUtilService"
@@ -33,6 +34,10 @@ define([
     // Return true if the key is of json-ld type '@' or if it corresponds to any of the reserved fields
     service.isSpecialKey = function (key) {
       return specialKeyPattern.test(key);
+    };
+
+    service.isElement = function (value) {
+      return value && value['@type'] && value['@type'] == elementType;
     };
 
     return service;

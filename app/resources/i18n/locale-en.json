@@ -124,7 +124,9 @@
     "Displaying": "Displaying",
     "Of": "of",
     "CopyOfTitle": "Copy of {{title}}",
-    "Error": "Error"
+    "Error": "Error",
+    "ToggleView": "Toggle View",
+    "FullScreen": "Full Screen"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -149,7 +151,7 @@
     "showAsSpreadsheet": "Show as spreadsheet",
     "addMore": "Add more",
     "deleteTerm": "Delete term",
-    "deleteMapping": "Delete mapping",
+    "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
     "addProperty": "Add property"
   },
@@ -431,6 +433,7 @@
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
     "enterFieldDescription": "Enter Field Description (Help Text)",
+    "enterDefaultvalue": "Enter Default Value",
     "enterElementTitle": "Enter Element Title"
   },
   "AUTHORIZATION-ERROR": {

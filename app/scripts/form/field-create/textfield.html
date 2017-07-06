@@ -6,6 +6,15 @@
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
 
+  <div class="form-group floating-label-wrapper">
+    <input type="text" auto-focus
+        class="form-control "
+        placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
+        aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
+        ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
+        with-floating-label>
+  </div><!-- /.form-group -->
+
   <!--<div ng-click=" $event.stopPropagation();" class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>-->
   <div  class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 

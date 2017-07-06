@@ -3,7 +3,7 @@
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At Runtime, the old form-->
-  <div class="page build" ng-if="$root.isRuntime() && !$root.useNewForm" ng-repeat="page in pagesArray">
+  <div class="page build" ng-if="isRuntime() && !$root.useNewForm" ng-repeat="page in pagesArray">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
         <!--If Template field-->
@@ -32,7 +32,7 @@
 
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
-      ng-if="$root.isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
+      ng-if="isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
 
     <div class="row">
       <div class="col-xs-9 ">
@@ -56,7 +56,7 @@
     <ul class="treeview tv">
 
       <li ng-repeat="item in page" class="animate-fade tv"
-          ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"
+          ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
           ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
@@ -99,7 +99,7 @@
   <p ng-if="form.requiredFields" class="required-text">Required</p>
 
   <!--At build time, the old form-->
-  <div class="page build" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
+  <div class="page build" ng-if="!isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
 
     <div ng-repeat="item in form._ui.order" class="animate-fade">
       <span ng-if="form.properties[item]">
@@ -165,7 +165,7 @@
 
 </form>
 
-<div ng-if="form._ui.pages.length > 1 && $root.isRuntime()" class="pagination-container">
+<div ng-if="form._ui.pages.length > 1 && isRuntime()" class="pagination-container">
   <ul class="pagination">
     <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i
         class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
@@ -178,33 +178,29 @@
 
 
 <!-- document preview -->
-<div ng-if="$root.isRuntime()" ng-model="metaToRDF">
-  <div ng-show="$root.showOutput" id="outputJSON" ng-if="stripTmpFields() | json" style="margin-top:40px">
-    <uib-tabset active="$root.showOutputTab">
+<div ng-if="isRuntime() && isShowOutput()" ng-model="metaToRDF">
 
-      <uib-tab index="0" ng-click="$root.showOutputTab=0">
+  <div id="outputJSON"  style="margin-top:40px">
+    <uib-tabset active="getShowOutputTab()">
+
+      <uib-tab index="0" ng-click="setShowOutputTab(0)">
         <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>
-        <pre id='form-json-preview'>{{ stripTmpFields() | json }}</pre>
+        <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
       </uib-tab>
 
-      <uib-tab index="1" ng-click="toRDF();$root.showOutputTab=1">
-        <uib-tab-heading>
-          <div><i class="cedar-svg-rdf"></i> RDF</div>
-        </uib-tab-heading>
-        <div ng-if="metaToRDFError">
-
-        </div>
+      <uib-tab index="1" ng-click="toRDF();setShowOutputTab(1)">
+        <uib-tab-heading><i class="cedar-svg-rdf"></i> RDF</uib-tab-heading>
+        <div ng-if="metaToRDFError"></div>
         <div ng-if="metaToRDF">
           <pre id='form-json-preview-rdf'>{{getRDF()}}</pre>
         </div>
-
         <div ng-if="!metaToRDF">
           <div class="center warning">
             {{getRDFError()}}
           </div>
         </div>
-
       </uib-tab>
+
     </uib-tabset>
   </div>
 </div>

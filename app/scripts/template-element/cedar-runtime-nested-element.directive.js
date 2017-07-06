@@ -97,7 +97,7 @@ define([
       };
 
       scope.getId = function () {
-        return $rootScope.schemaOf(scope.field)['@id'];
+        return DataManipulationService.getId(scope.field);
       };
 
       scope.activateNextSiblingOf = function(fieldKey, parentKey) {
