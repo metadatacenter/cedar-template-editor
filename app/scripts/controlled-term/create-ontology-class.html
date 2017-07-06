@@ -13,7 +13,7 @@
 </div>
 
 <div class="mappings-toggle">
-  <div ng-class="{'mappings-label-enabled': pcc.isValid(), 'mappings-label-disabled': !pcc.isValid()}">Map to existing terms (optional)</div>
+  <div ng-class="{'mappings-label-enabled': pcc.isValid(), 'mappings-label-disabled': !pcc.isValid()}">Link to existing terms (optional)</div>
   <div class="mappings-switch"> <switch name="isMappingExistingClasses"
       id="is-mapping-existing-classes-checkbox"
       ng-model="pcc.isMappingExistingClasses"
@@ -23,11 +23,9 @@
 
 <div class="map-existing-classes" ng-if="pcc.isMappingExistingClasses">
 
-  <p class="mapping-header">List of Mappings</p>
-
   <ng-include src="'scripts/controlled-term/provisional-class-mappings.html'"></ng-include>
 
-  <p class="mappings-instructions">Use the options below to add mappings from the term <span class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span> to existing BioPortal terms</p>
+  <p class="mappings-instructions">Use the options below to link the term <span class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span> to existing BioPortal terms</p>
 
   <controlled-term-search
       search-mode="tsc.searchMode"
@@ -38,29 +36,25 @@
       is-creating-mappings="true"
       is-creating-vs="false"
       tree-visible="false"
-      search-for="classes"
-  >
+      search-for="classes">
   </controlled-term-search>
 
   <div class="create-mapping-actions" ng-if="pcc.pickedOntologyClass">
-    <!-- Select mapping type -->
-    <div class="create-class-select">
-      <select ng-model="pcc.provisionalClassMappingType"
-          ng-options="option.label for option in pcc.provisionalClassMappingTypes"
-          class="form-control select-mapping-type"
-          select-picker="">
-        <option value="">Select a mapping type...</option>
-      </select>
+
+    <!-- Relation type selector -->
+    <div class="relation-type-select">
+      <relation-type-selector selected-relation-type="pcc.provisionalClassMappingType"></relation-type-selector>
     </div>
+
     <!-- Visual representation of mapping -->
-    <p class="mapping-representation-header">Mapping Representation</p>
+    <!--<p class="mapping-representation-header">Mapping Representation</p>-->
 
     <div class="mapping-description">
       <div class="mapping-subject">
         <div class="mapping-label">{{pcc.provisionalClass.prefLabel || '(no label)'}}</div>
       </div>
       <div class="mapping-predicate">
-        <div class="mapping-predicate-label">{{pcc.provisionalClassMappingType.label || '(mapping type)'}}</div>
+        <div class="mapping-predicate-label">{{pcc.provisionalClassMappingType.label || '(relationship type)'}}</div>
       </div>
       <div class="mapping-predicate-arrow"></div>
       <div class="mapping-object">
@@ -71,7 +65,7 @@
     <div class="mapping-tools inline-block btn-create-class">
       <button class="std-button btn btn-create-mapping" ng-disabled="!pcc.provisionalClassMappingType"
           ng-click="pcc.createProvisionalClassMapping(pcc.provisionalClassMappingType, pcc.pickedOntologyClass, pcc.pickedCurrentOntology)">
-        Add Mapping
+        Add Relationship
       </button>
     </div>
   </div>
