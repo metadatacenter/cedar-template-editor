@@ -44,6 +44,8 @@
           <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata" ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel</button>
           <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="doValidation()" translate>Validate</button>
           <button type="button" ng-if="isValidationTemplate('submission')" id="button-submission-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="showAirrSubmissionModal()" translate>Submit</button>
+          <button type="button"   class="btn btn-clear metadata" style="outline:none;"  ng-click="showFlowModal()" >Upload</button>
+
           <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;"  translate>GENERIC.Save</button>
         </div>
         <!-- /.edit-actions -->
@@ -62,4 +64,11 @@
       id="airr-submission-modal" tabindex="-1" role="dialog" aria-labelledby="airrSubmissionModalHeader"
       data-keyboard="true" data-backdrop="static">
   </airr-submission-modal>
+</section>
+
+<section>
+  <flow-modal files="files" instance="" cedar-modal-show modal-visible="flowModalVisible" class="modal fade"
+      id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
+      data-keyboard="true" data-backdrop="static">
+  </flow-modal>
 </section>

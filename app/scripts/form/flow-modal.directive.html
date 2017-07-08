@@ -1,0 +1,48 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+
+    <div class="modal-header" id="flowModalHeader">
+      <button type="button" class="close" ng-click="flowModalVisible=false" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" >Flow Modal</h4>
+    </div>
+
+    <div class="modal-body">
+
+      <div flow-init="{target: '/upload'}"
+          flow-files-submitted="$flow.upload()"
+          flow-file-success="$file.msg = $message"
+          class="flow-upload">
+
+
+        $flow {{$flow}}
+
+        <input type="file" flow-btn/>
+        Input OR Other element as upload button
+        <span class="btn" flow-btn>Upload File</span>
+
+        <table>
+          <tr ng-repeat="file in $flow.files">
+            <td>{{$index+1}}</td>
+            <td>{{file.name}}</td>
+            <td>{{file.msg}}</td>
+          </tr>
+        </table>
+
+    </div>
+
+    <!-- footer closes the dialog -->
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button type="button" ng-click="flowModalVisible=false;"
+            data-dismiss="modal" aria-label="Done"
+            class="btn btn-save confirm" translate>GENERIC.Done
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
