@@ -33,9 +33,52 @@ define([
           var vm = this;
           var vm = $scope;
 
+          $scope.init = function(flow) {
+            //flow.clear();
+          };
+
+          $scope.cancelAll = function(flow) {
+            flow.cancel();
+          };
+
+          $scope.pauseAll = function(flow) {
+            flow.pause();
+          };
+
+          $scope.resumeAll = function(flow) {
+            flow.resume();
+          };
+
+
           // var flow = require('ngFlow');
           // $scope.uploader = {};
           // $scope.uploader.opts = {target: 'another-upload-path.php'};
+
+          $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
+            console.log('flow::fileAdded');
+          });
+
+          $scope.$on('flow::progress', function (event, $flow, flowFile) {
+            console.log('flow::progress');
+          });
+
+          $scope.flowProgress = function(flow) {
+            console.log('flow::progress ');console.log(flow);
+          };
+
+          $scope.flowFileProgress = function(flow, file) {
+            console.log('flow::fileProgress ');console.log(file);
+          };
+
+          //from the 'UploadCtrl as uploadctrl' controller, which has scope on the whole thing
+          $scope.$on('flow::complete', function (event, $flow) {
+            $http.get('/uploading/here').then(function(response){
+              // yay! LET'S GET CREATIVE!
+            });
+            $timeout(function(){
+              $flow.cancel();
+            }, 5000);
+          });
 
 
 

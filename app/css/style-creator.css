@@ -15129,7 +15129,8 @@ table.apiKey td {
 #move-modal .modal-header,
 #copy-modal .modal-header,
 #share-modal .modal-header,
-#airr-submission-modal .modal-header {
+#airr-submission-modal .modal-header,
+#flow-modal .modal-header {
   border-bottom: 0px solid #aaa;
 }
 #rename-modal .modal-content,
@@ -15137,7 +15138,8 @@ table.apiKey td {
 #move-modal .modal-content,
 #copy-modal .modal-content,
 #share-modal .modal-content,
-#airr-submission-modal .modal-content {
+#airr-submission-modal .modal-content,
+#flow-modal .modal-content {
   border-radius: 0;
   border: 0;
   max-width: 400px;
@@ -15149,7 +15151,8 @@ table.apiKey td {
 #move-modal .modal-content .arrow-click,
 #copy-modal .modal-content .arrow-click,
 #share-modal .modal-content .arrow-click,
-#airr-submission-modal .modal-content .arrow-click {
+#airr-submission-modal .modal-content .arrow-click,
+#flow-modal .modal-content .arrow-click {
   cursor: pointer;
   font-size: 18px;
   color: #9E9E9E;
@@ -15159,7 +15162,8 @@ table.apiKey td {
 #move-modal .modal-content input,
 #copy-modal .modal-content input,
 #share-modal .modal-content input,
-#airr-submission-modal .modal-content input {
+#airr-submission-modal .modal-content input,
+#flow-modal .modal-content input {
   padding: 5px;
   width: 100%;
   outline: none;
@@ -15169,7 +15173,8 @@ table.apiKey td {
 #move-modal .modal-content .modal-body,
 #copy-modal .modal-content .modal-body,
 #share-modal .modal-content .modal-body,
-#airr-submission-modal .modal-content .modal-body {
+#airr-submission-modal .modal-content .modal-body,
+#flow-modal .modal-content .modal-body {
   max-height: 300px;
   overflow-y: auto;
   border-top: 1px solid #d2d2d2;
@@ -15179,7 +15184,8 @@ table.apiKey td {
 #move-modal .modal-content .modal-body .box-row,
 #copy-modal .modal-content .modal-body .box-row,
 #share-modal .modal-content .modal-body .box-row,
-#airr-submission-modal .modal-content .modal-body .box-row {
+#airr-submission-modal .modal-content .modal-body .box-row,
+#flow-modal .modal-content .modal-body .box-row {
   padding: 5px;
 }
 #rename-modal .modal-content .modal-body .box-row .disabled,
@@ -15187,7 +15193,8 @@ table.apiKey td {
 #move-modal .modal-content .modal-body .box-row .disabled,
 #copy-modal .modal-content .modal-body .box-row .disabled,
 #share-modal .modal-content .modal-body .box-row .disabled,
-#airr-submission-modal .modal-content .modal-body .box-row .disabled {
+#airr-submission-modal .modal-content .modal-body .box-row .disabled,
+#flow-modal .modal-content .modal-body .box-row .disabled {
   background: #9E9E9E;
 }
 #rename-modal .modal-content .modal-body .box-row.selected,
@@ -15195,16 +15202,52 @@ table.apiKey td {
 #move-modal .modal-content .modal-body .box-row.selected,
 #copy-modal .modal-content .modal-body .box-row.selected,
 #share-modal .modal-content .modal-body .box-row.selected,
-#airr-submission-modal .modal-content .modal-body .box-row.selected {
+#airr-submission-modal .modal-content .modal-body .box-row.selected,
+#flow-modal .modal-content .modal-body .box-row.selected {
   background: #5795ba;
   color: #fff;
+}
+#rename-modal .modal-content .modal-body .drop-btn,
+#new-folder-modal .modal-content .modal-body .drop-btn,
+#move-modal .modal-content .modal-body .drop-btn,
+#copy-modal .modal-content .modal-body .drop-btn,
+#share-modal .modal-content .modal-body .drop-btn,
+#airr-submission-modal .modal-content .modal-body .drop-btn,
+#flow-modal .modal-content .modal-body .drop-btn {
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  background-color: #5795ba;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+#rename-modal .modal-content .modal-body .drop-btn:focus,
+#new-folder-modal .modal-content .modal-body .drop-btn:focus,
+#move-modal .modal-content .modal-body .drop-btn:focus,
+#copy-modal .modal-content .modal-body .drop-btn:focus,
+#share-modal .modal-content .modal-body .drop-btn:focus,
+#airr-submission-modal .modal-content .modal-body .drop-btn:focus,
+#flow-modal .modal-content .modal-body .drop-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+#rename-modal .modal-content .modal-body .drop-zone,
+#new-folder-modal .modal-content .modal-body .drop-zone,
+#move-modal .modal-content .modal-body .drop-zone,
+#copy-modal .modal-content .modal-body .drop-zone,
+#share-modal .modal-content .modal-body .drop-zone,
+#airr-submission-modal .modal-content .modal-body .drop-zone,
+#flow-modal .modal-content .modal-body .drop-zone {
+  border: 3px dashed #ccc;
+  padding: 20px;
 }
 #rename-modal .modal-content .modal-body .inline-editing button,
 #new-folder-modal .modal-content .modal-body .inline-editing button,
 #move-modal .modal-content .modal-body .inline-editing button,
 #copy-modal .modal-content .modal-body .inline-editing button,
 #share-modal .modal-content .modal-body .inline-editing button,
-#airr-submission-modal .modal-content .modal-body .inline-editing button {
+#airr-submission-modal .modal-content .modal-body .inline-editing button,
+#flow-modal .modal-content .modal-body .inline-editing button {
   margin: 10px 0;
 }
 #rename-modal .modal-content .modal-body .inline-editing input.borderless,
@@ -15212,7 +15255,8 @@ table.apiKey td {
 #move-modal .modal-content .modal-body .inline-editing input.borderless,
 #copy-modal .modal-content .modal-body .inline-editing input.borderless,
 #share-modal .modal-content .modal-body .inline-editing input.borderless,
-#airr-submission-modal .modal-content .modal-body .inline-editing input.borderless {
+#airr-submission-modal .modal-content .modal-body .inline-editing input.borderless,
+#flow-modal .modal-content .modal-body .inline-editing input.borderless {
   border: 0px solid #fff;
 }
 #rename-modal .modal-content .modal-body table.details,
@@ -15220,7 +15264,8 @@ table.apiKey td {
 #move-modal .modal-content .modal-body table.details,
 #copy-modal .modal-content .modal-body table.details,
 #share-modal .modal-content .modal-body table.details,
-#airr-submission-modal .modal-content .modal-body table.details {
+#airr-submission-modal .modal-content .modal-body table.details,
+#flow-modal .modal-content .modal-body table.details {
   padding: 0;
   margin: 0;
   font-size: 13px;
@@ -15230,7 +15275,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .favorite,
 #copy-modal .modal-content .actions .favorite,
 #share-modal .modal-content .actions .favorite,
-#airr-submission-modal .modal-content .actions .favorite {
+#airr-submission-modal .modal-content .actions .favorite,
+#flow-modal .modal-content .actions .favorite {
   float: left;
   padding-top: 17px;
   cursor: pointer;
@@ -15240,7 +15286,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .favorite span,
 #copy-modal .modal-content .actions .favorite span,
 #share-modal .modal-content .actions .favorite span,
-#airr-submission-modal .modal-content .actions .favorite span {
+#airr-submission-modal .modal-content .actions .favorite span,
+#flow-modal .modal-content .actions .favorite span {
   text-transform: uppercase;
   vertical-align: middle;
 }
@@ -15249,7 +15296,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .favorite i,
 #copy-modal .modal-content .actions .favorite i,
 #share-modal .modal-content .actions .favorite i,
-#airr-submission-modal .modal-content .actions .favorite i {
+#airr-submission-modal .modal-content .actions .favorite i,
+#flow-modal .modal-content .actions .favorite i {
   padding-right: 10px;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
@@ -15260,7 +15308,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .favorite.true i,
 #copy-modal .modal-content .actions .favorite.true i,
 #share-modal .modal-content .actions .favorite.true i,
-#airr-submission-modal .modal-content .actions .favorite.true i {
+#airr-submission-modal .modal-content .actions .favorite.true i,
+#flow-modal .modal-content .actions .favorite.true i {
   color: #5795ba;
 }
 #rename-modal .modal-content .actions .clear-save,
@@ -15268,7 +15317,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .clear-save,
 #copy-modal .modal-content .actions .clear-save,
 #share-modal .modal-content .actions .clear-save,
-#airr-submission-modal .modal-content .actions .clear-save {
+#airr-submission-modal .modal-content .actions .clear-save,
+#flow-modal .modal-content .actions .clear-save {
   float: right;
 }
 #rename-modal .modal-content .actions .clear-save .btn,
@@ -15276,7 +15326,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .clear-save .btn,
 #copy-modal .modal-content .actions .clear-save .btn,
 #share-modal .modal-content .actions .clear-save .btn,
-#airr-submission-modal .modal-content .actions .clear-save .btn {
+#airr-submission-modal .modal-content .actions .clear-save .btn,
+#flow-modal .modal-content .actions .clear-save .btn {
   text-transform: uppercase;
   padding: 10px 20px;
   border: none;
@@ -15288,7 +15339,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .clear-save .btn:focus,
 #copy-modal .modal-content .actions .clear-save .btn:focus,
 #share-modal .modal-content .actions .clear-save .btn:focus,
-#airr-submission-modal .modal-content .actions .clear-save .btn:focus {
+#airr-submission-modal .modal-content .actions .clear-save .btn:focus,
+#flow-modal .modal-content .actions .clear-save .btn:focus {
   outline: none;
   box-shadow: none;
 }
@@ -15297,7 +15349,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .clear-save .btn.btn-clear,
 #copy-modal .modal-content .actions .clear-save .btn.btn-clear,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear,
-#airr-submission-modal .modal-content .actions .clear-save .btn.btn-clear {
+#airr-submission-modal .modal-content .actions .clear-save .btn.btn-clear,
+#flow-modal .modal-content .actions .clear-save .btn.btn-clear {
   color: #5795ba;
   background-color: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -15309,12 +15362,14 @@ table.apiKey td {
 #copy-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #airr-submission-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#flow-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #rename-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #new-folder-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #move-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #copy-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
-#airr-submission-modal .modal-content .actions .clear-save .btn.btn-clear:focus {
+#airr-submission-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#flow-modal .modal-content .actions .clear-save .btn.btn-clear:focus {
   color: #2f7dab;
 }
 #rename-modal .modal-content .actions .clear-save .btn.btn-save,
@@ -15322,7 +15377,8 @@ table.apiKey td {
 #move-modal .modal-content .actions .clear-save .btn.btn-save,
 #copy-modal .modal-content .actions .clear-save .btn.btn-save,
 #share-modal .modal-content .actions .clear-save .btn.btn-save,
-#airr-submission-modal .modal-content .actions .clear-save .btn.btn-save {
+#airr-submission-modal .modal-content .actions .clear-save .btn.btn-save,
+#flow-modal .modal-content .actions .clear-save .btn.btn-save {
   color: #ffffff;
   background-color: #5795ba;
   font-size: 16px;
@@ -15333,13 +15389,19 @@ table.apiKey td {
 #copy-modal .modal-content .actions .clear-save .btn.btn-save:hover,
 #share-modal .modal-content .actions .clear-save .btn.btn-save:hover,
 #airr-submission-modal .modal-content .actions .clear-save .btn.btn-save:hover,
+#flow-modal .modal-content .actions .clear-save .btn.btn-save:hover,
 #rename-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #new-folder-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #move-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #copy-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #share-modal .modal-content .actions .clear-save .btn.btn-save:focus,
-#airr-submission-modal .modal-content .actions .clear-save .btn.btn-save:focus {
+#airr-submission-modal .modal-content .actions .clear-save .btn.btn-save:focus,
+#flow-modal .modal-content .actions .clear-save .btn.btn-save:focus {
   background-color: #2f7dab;
+}
+#flow-modal .modal-content {
+  max-width: 100%;
+  max-height: 100%;
 }
 #move-modal .modal-content .modal-body,
 #copy-modal .modal-content .modal-body {

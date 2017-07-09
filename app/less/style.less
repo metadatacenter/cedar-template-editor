@@ -6804,7 +6804,7 @@ table.apiKey {
   background: #ccc;
 }
 
-#rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal {
+#rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal {
 
   .modal-header {
     border-bottom: 0px solid #aaa;
@@ -6841,6 +6841,24 @@ table.apiKey {
           color: #fff;
         }
 
+      }
+      .drop-btn {
+        text-transform: uppercase;
+        padding: 10px 20px;
+        border: none;
+        background-color: @brand-primary;
+        .link-transition;
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+
+      }
+
+      .drop-zone {
+        border:3px dashed #ccc;
+        padding:20px;
       }
       .inline-editing {
         button {
@@ -6924,6 +6942,17 @@ table.apiKey {
     }
   }
 
+}
+
+#flow-modal {
+  .modal-content {
+    max-width: 100%;
+    max-height: 100%;
+
+    .modal-body {
+     
+    }
+  }
 }
 
 #move-modal, #copy-modal {

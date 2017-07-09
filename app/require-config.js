@@ -21,7 +21,8 @@ require.config({
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
     'jsonld': 'bower_components/jsonld/js/jsonld',
-    'ngFlow': 'bower_components/ng-flow/dist/ng-flow-standalone'
+    'ngFlow': 'bower_components/ng-flow/dist/ng-flow-standalone',
+    'flow': 'bower_components/flow.js/dist/flow'
 
   },
   shim    : {
@@ -46,6 +47,7 @@ require.config({
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
     'ngFlow'                                                                             : ['angular'],
+    'flow'                                                                             : ['angular'],
 
 
 

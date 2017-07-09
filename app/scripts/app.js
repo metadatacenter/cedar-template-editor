@@ -87,7 +87,7 @@ define([
   ])
       .config(['flowFactoryProvider', function (flowFactoryProvider) {
         flowFactoryProvider.defaults = {
-          target: 'upload.php',
+          target: 'https://httpbin.org/post',
           permanentErrors: [404, 500, 501],
           maxChunkRetries: 1,
           chunkRetryInterval: 5000,
