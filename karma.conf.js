@@ -42,8 +42,6 @@ module.exports = function (config) {
       'scripts/form/field.directive.html',
       'scripts/form/field-create/checkbox.html',
       'scripts/form/field-render/checkbox.html',
-      'scripts/form/field-create/textfield.html',
-      'scripts/form/field-render/textfield.html',
       'scripts/form/partials/*.html',
       'scripts/controlled-term/class-list.directive.html',
       'scripts/controlled-term/controlled-term.directive.html',
