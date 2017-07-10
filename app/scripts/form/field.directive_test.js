@@ -72,7 +72,7 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      describe('a text field', function () {
+      xdescribe('a text field', function () {
         beforeEach(function () {
           addFieldToTemplate('textfield');
         });
@@ -91,7 +91,7 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      describe('a text field', function () {
+      xdescribe('a text field', function () {
         beforeEach(function () {
           addFieldToTemplateElement('textfield');
         });
