@@ -1,86 +1,84 @@
 <div class="modal-dialog">
-  <div class="modal-content">
+  <div class="modal-content" flow-init="{target: '/upload.php'}"
+      flow-file-progress="flowFileProgress( $flow, $file )"
+      flow-progress="flowProgress( $flow )"
+      flow-files-submitted="$flow.upload()"
+      flow-file-success="$file.msg = $message"
+      ng-init="init($flow)">
 
     <div class="modal-header" id="flowModalHeader">
       <button type="button" class="close" ng-click="flowModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title">Flow Modal</h4>
+      <h4 class="modal-title">Upload to Repository</h4>
     </div>
 
     <div class="modal-body">
+      <div class="row">
 
-      <div flow-init="{target: '/upload.php'}"
-          flow-file-progress="flowFileProgress( $flow, $file )"
-          flow-progress="flowProgress( $flow )"
-          flow-files-submitted="$flow.upload()"
-          flow-file-success="$file.msg = $message"
-          ng-init="init($flow)"
-          class="flow-upload">
-
-        <div class="row">
-
-          <div class="col-sm-4">
-
-
-            <div class="drop-zone"
-                flow-drag-enter="style={border:'3px dashed #666'}"
-                flow-drag-leave="style={}"
-                ng-style="style" class="alert" flow-drop>
-              Drag And Drop your files here
-            </div>
-
-            <div style="margin:20px auto;"><span class="btn drop-btn" flow-btn>Select</span></div>
-
+        <div class="col-sm-4">
+          <h5 class="modal-title" style="margin-bottom:5px">Select Files</h5>
+          <div class="drop-zone"
+              flow-drag-enter="style={border:'3px dashed #666'}"
+              flow-drag-leave="style={}"
+              ng-style="style" class="alert" flow-drop>
+            Drag And Drop your files here
           </div>
+          <div style="width:100%;text-align:center"><span class="btn drop-btn" flow-btn>Select</span></div>
+        </div>
 
-          <div class="col-sm-8" style="max-height:200px;overflow:auto">
-            <div class="row" ng-repeat="file in $flow.files">
+        <div class="col-sm-8">
+          <h5 class="modal-title" style="margin-bottom:5px">Upload Progress</h5>
+          <div style="margin-right:10px">
+            <div class="row" style="max-height:200px;height:200px;overflow:auto;border-left:1px solid #ccc">
 
               <div class="col-sm-12">
-                <form class="form-inline">
-                  <div class="progress" style="margin-bottom: 0px !important;">
-                    <div class="progress-bar"
-                        ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
-                        style="min-width: 5%; width: {{file.progress()*100}}%;" value="{{file.progress()*100}}"
-                        role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
-                        aria-valuemax="100">
-                      <strong ng-show="!file.error" style="color: #5C5C5C"> {{file.name}} </strong> <strong
-                        ng-show="file.error">Ooops...</strong>
+                <div ng-repeat="file in $flow.files">
+
+                  <form class="form-inline">
+                    <div class="progress" style="margin-bottom: 5px !important;">
+                      <div class="progress-bar"
+                          ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
+                          style="min-width: 5%; width: {{file.progress()*100}}%;" value="{{file.progress()*100}}"
+                          role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
+                          aria-valuemax="100">
+                        <strong ng-show="!file.error" style="color: #5C5C5C;float:left;padding-left:10px">
+                          {{file.name}} </strong> <strong
+                          ng-show="file.error">Ooops...</strong>
+                      </div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
-            </div>
-          </div>
 
-        </div>
-
-        <!-- footer closes the dialog -->
-        <div class="modal-footer actions">
-          <div class="row">
-            <div class="col-sm-12">
-              <button type="button" ng-click="flowModalVisible=false;"
-                  data-dismiss="modal" aria-label="Done"
-                  class="btn btn-save confirm" translate>GENERIC.Done
-              </button>
-              <button type="button" ng-click="cancelAll($flow)"
-                   aria-label="Done"
-                  class="btn btn-save confirm" translate>Cancel
-              </button>
-              <button type="button" ng-click="pauseAll($flow)"
-                  aria-label="Done"
-                  class="btn btn-save confirm">Pause
-              </button>
-              <button type="button" ng-click="resumeAll($flow)"
-                  aria-label="Done"
-                  class="btn btn-save confirm">Resume
-              </button>
             </div>
           </div>
         </div>
-
       </div>
     </div>
+
+    <!-- footer closes the dialog -->
+    <div class="modal-footer actions">
+      <div class="row">
+        <div class="col-sm-12 clear-save">
+          <button type="button" class="btn btn-pause" ng-click="pauseAll($flow)" aria-label="Done">Pause</button>
+          <button type="button" ng-click="resumeAll($flow)"
+              aria-label="Done"
+              class="btn btn-resume">Resume
+          </button>
+          <button type="button" ng-click="cancelAll($flow)"
+              aria-label="Done"
+              class="btn btn-save cancel" translate>Cancel
+          </button>
+          <button type="button" ng-click="flowModalVisible=false;"
+              data-dismiss="modal" aria-label="Done"
+              class="btn btn-save done" translate>GENERIC.Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
 
 
 

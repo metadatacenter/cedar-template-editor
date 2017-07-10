@@ -60,6 +60,11 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+@button-pause: #f0ad4e;
+@button-pause-hover: #DD9F48;
+@button-resume: #5cb85c;
+@button-resume-hover: #50A050;
+@button-cancel: #9E9E9E;
 
 /* Definine local mixins */
 .activ-grotesk-regular {
@@ -2829,7 +2834,7 @@ section.dashboard-elements {
       background-color: transparent;
     }
     .cedar-pager {
-      padding-right:20px;
+      padding-right: 20px;
     }
   }
 
@@ -2936,7 +2941,7 @@ section.dashboard-elements {
       right: 0;
     }
 
-    &.delete-hidden{
+    &.delete-hidden {
       color: transparent;
     }
     &.remove-hidden {
@@ -3037,8 +3042,6 @@ section.dashboard-elements {
     margin-top: 0px;
     background: transparent;
     min-height: 10px;
-
-
 
     .title {
       color: #666;
@@ -3403,7 +3406,7 @@ section.dashboard-elements {
 }
 
 .spreadsheetViewContainer {
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .alert {
@@ -6809,6 +6812,34 @@ table.apiKey {
   .modal-header {
     border-bottom: 0px solid #aaa;
   }
+  .modal-footer {
+    button {
+      background-color: @brand-primary;
+      color: white;
+      &:hover {
+        outline: none;
+        box-shadow: none;
+        background-color: @brand-primary-hover;
+        color: white;
+      }
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+      &.btn-pause {
+        background-color: @button-pause;
+        &:hover {
+          background-color: @button-pause-hover;
+        }
+      }
+      &.btn-resume {
+        background-color: @button-resume;
+        &:hover {
+          background-color: @button-resume-hover;
+        }
+      }
+    }
+  }
   .modal-content {
     border-radius: 0;
     border: 0;
@@ -6845,20 +6876,21 @@ table.apiKey {
       .drop-btn {
         text-transform: uppercase;
         padding: 10px 20px;
+        margin: 10px 35px;
         border: none;
-        background-color: @brand-primary;
+        background-color: @med-gray;
+        color: @white;
         .link-transition;
 
         &:focus {
           outline: none;
           box-shadow: none;
         }
-
       }
-
       .drop-zone {
-        border:3px dashed #ccc;
-        padding:20px;
+        border: 3px dashed #ccc;
+        padding: 40px 20px;
+        text-align: center;
       }
       .inline-editing {
         button {
@@ -6867,79 +6899,14 @@ table.apiKey {
         input.borderless {
           border: 0px solid #fff;
         }
-
       }
       table.details {
         padding: 0;
         margin: 0;
         font-size: 13px;
       }
-
     }
 
-    .actions {
-
-      .favorite {
-        float: left;
-        padding-top: 17px;
-        cursor: pointer;
-
-        span {
-          text-transform: uppercase;
-          vertical-align: middle;
-        }
-
-        i {
-          padding-right: 10px;
-          .link-transition;
-          color: rgba(51, 51, 51, 0.43);
-        }
-
-        &.true {
-          i {
-            color: @brand-primary;
-          }
-        }
-      }
-
-      .clear-save {
-        float: right;
-
-        .btn {
-          text-transform: uppercase;
-          padding: 10px 20px;
-          border: none;
-          .link-transition;
-
-          &:focus {
-            outline: none;
-            box-shadow: none;
-          }
-
-          &.btn-clear {
-            color: @brand-primary;
-            background-color: transparent;
-            .activ-grotesk-bold;
-
-            &:hover,
-            &:focus {
-              color: @brand-primary-hover;
-            }
-          }
-
-          &.btn-save {
-            color: @white;
-            background-color: @brand-primary;
-            font-size: 16px;
-
-            &:hover,
-            &:focus {
-              background-color: @brand-primary-hover;
-            }
-          }
-        }
-      }
-    }
   }
 
 }
@@ -6950,7 +6917,7 @@ table.apiKey {
     max-height: 100%;
 
     .modal-body {
-     
+
     }
   }
 }

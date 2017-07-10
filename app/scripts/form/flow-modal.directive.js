@@ -34,7 +34,6 @@ define([
           var vm = $scope;
 
           $scope.init = function(flow) {
-            //flow.clear();
           };
 
           $scope.cancelAll = function(flow) {
@@ -48,7 +47,6 @@ define([
           $scope.resumeAll = function(flow) {
             flow.resume();
           };
-
 
           // var flow = require('ngFlow');
           // $scope.uploader = {};
@@ -72,15 +70,12 @@ define([
 
           //from the 'UploadCtrl as uploadctrl' controller, which has scope on the whole thing
           $scope.$on('flow::complete', function (event, $flow) {
-            $http.get('/uploading/here').then(function(response){
-              // yay! LET'S GET CREATIVE!
-            });
+            console.log('flow::complete');
             $timeout(function(){
+              console.log('cancel');
               $flow.cancel();
             }, 5000);
           });
-
-
 
           vm.url = "https://httpbin.org/post";
           //vm.url =  UrlService.airrSubmission();

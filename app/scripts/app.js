@@ -89,6 +89,7 @@ define([
         flowFactoryProvider.defaults = {
           target: 'https://httpbin.org/post',
           permanentErrors: [404, 500, 501],
+          testChunks:true,
           maxChunkRetries: 1,
           chunkRetryInterval: 5000,
           simultaneousUploads: 4,
