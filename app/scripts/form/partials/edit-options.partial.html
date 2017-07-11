@@ -3,7 +3,7 @@
     <div class="toggle-options col-lg-12 pull-right">
 
       <div class="save-options"  ng-if="isEditState()">
-        <div class="trash" style="margin-right: 0;" ng-click="delete(); $event.stopPropagation();" title="Delete field">
+        <div class="trash" style="margin-right: 0;" ng-click="ckDelete(); $event.stopPropagation();" title="Delete field">
           <i class="fa fa-times-circle"></i>
         </div>
       </div>
@@ -13,7 +13,7 @@
         <!--</button>-->
       <!--</div>-->
       <div class="save-options" ng-if="!isEditState()">
-        <div class="trash" style="margin-right: 0;" ng-click="delete(); $event.stopPropagation();" title="Delete field">
+        <div class="trash" style="margin-right: 0;" ng-click="ckDelete(); $event.stopPropagation();" title="Delete field">
           <i class="fa fa-times-circle"></i>
         </div>
       </div>
