@@ -4,23 +4,23 @@
 
 require.config({
   paths   : {
-    'angular'     : 'bower_components/angular/angular.min',
-    'angularMocks': 'bower_components/angular-mocks/angular-mocks',
-    'jquery'      : 'bower_components/jquery/jquery.min',
-    'moment'      : 'bower_components/moment/min/moment.min',
+    'angular'     : '../node_modules/angular/angular.min',
+    'angularMocks': '../node_modules/angular-mocks/angular-mocks',
+    'jquery'      : '../node_modules/jquery/jquery.min',
+    'moment'      : '../node_modules/moment/min/moment.min',
 
-    'lib'     : 'bower_components',
+    'lib'     : '../node_modules',
     '3rdparty': 'third_party_components',
 
     // requirejs plugins
-    'text': 'bower_components/requirejs-plugins/lib/text',
-    'json': 'bower_components/requirejs-plugins/src/json',
+    'text': '../node_modules/requirejs-plugins/lib/text',
+    'json': '../node_modules/requirejs-plugins/src/json',
 
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
 
-    'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld': 'bower_components/jsonld/js/jsonld'
+    'ckeditor': '../node_modules/ng-ckeditor/libs/ckeditor/ckeditor',
+    'jsonld': '../node_modules/jsonld/js/jsonld'
   },
   shim    : {
     'angular'                                                                            : {
@@ -67,7 +67,7 @@ require.config({
   },
   priority: [
     'jquery',
-    'angular',
+    'angular'
   ],
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
@@ -78,7 +78,7 @@ require.config({
 // do not load the full app here.
 // maybe we will be redirected to Keycloak for authentication
 require([
-  'angular',
+  'angular'
 ], function (angular) {
   var $html = angular.element(document.getElementsByTagName('html')[0]);
   angular.element().ready(function () {
@@ -87,7 +87,7 @@ require([
       //console.log("continueWithAngularApp");
       require([
         'angular',
-        'app',
+        'app'
       ], function (angular, app) {
         angular.bootstrap(document, ['cedar.templateEditor']);
 

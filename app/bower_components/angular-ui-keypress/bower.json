@@ -1,8 +1,0 @@
-{
-  "name": "angular-ui-keypress",
-  "version": "",
-  "main": "./keypress.js",
-  "dependencies": {
-    "angular": ">= 1.0.2"
-  }
-}
