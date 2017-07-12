@@ -477,6 +477,7 @@ describe('template-creator', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log('delete ' + resource.title + ' for user ' + resource.username);
           workspacePage.login(resource.username, resource.password);
 
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
