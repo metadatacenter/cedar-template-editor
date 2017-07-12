@@ -90,9 +90,6 @@ define([
 
                       if (isConstrained(schema)) {
 
-                        console.log('isConstrained ' + row + ' ' + col);
-
-
                         // do we have some autocomplete results?
                         var results = autocompleteService.getAutocompleteResultsCache(id, value);
                         if (results) {
@@ -225,7 +222,7 @@ define([
                   setTimeout(function () {
 
                     var id = dms.getId(node);
-                    var results = autocompleteService.getAutocompleteResults(id, query);
+                    var results = autocompleteService.getAutocompleteResults(id, query || '*');
 
                     var labels = [];
                     for (var i = 0; i < results.length; i++) {
@@ -527,7 +524,6 @@ define([
           context.setTable(hot);
           resize($scope);
 
-          console.log(Handsontable.editors);
 
           var fullScreenHandler = function (event) {
 

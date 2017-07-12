@@ -89,6 +89,7 @@ define([
       };
 
       $scope.updateUIFromModelControlledField = function () {
+        console.log('updateUIFromModelControlledField');
         if (angular.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {
