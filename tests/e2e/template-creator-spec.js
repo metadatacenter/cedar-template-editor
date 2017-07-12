@@ -472,7 +472,7 @@ describe('template-creator', function () {
   }
   });
 
-  describe('remove created resources', function () {
+  xdescribe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
