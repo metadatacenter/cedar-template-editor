@@ -81,7 +81,9 @@ define([
                       value[key] = true;
                     }
                     sds.tableDataSource[row][col]['@value'] = value;
-
+                  } else if (cedarType === 'link') {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                    sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
                   } else if (inputType == 'autocomplete') {
                     if (sds.tableData[row][col]) {
                       var value = sds.tableData[row][col];
@@ -105,7 +107,6 @@ define([
                           }
 
                           if (!found) {
-                            console.log('not found ' + value);
                             delete sds.tableDataSource[row][col]['@id'];
                             delete sds.tableDataSource[row][col]['_valueLabel'];
 

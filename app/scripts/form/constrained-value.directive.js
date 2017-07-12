@@ -59,7 +59,6 @@ define([
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function (modelValue, index) {
-        console.log('updateModelFromUIControlledField');
         if (modelValue[index] && modelValue[index].termInfo) {
           // Array
           if (angular.isArray($scope.model)) {
@@ -89,7 +88,6 @@ define([
       };
 
       $scope.updateUIFromModelControlledField = function () {
-        console.log('updateUIFromModelControlledField');
         if (angular.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {

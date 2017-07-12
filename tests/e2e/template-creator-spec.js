@@ -107,17 +107,6 @@ describe('template-creator', function () {
       "staticField"              : false,
       "allowsMultiple"           : false,
       "allowsValueRecommendation": false
-    },
-    {
-      "cedarType"                : "phone-number",
-      "iconClass"                : "cedar-svg-phone",
-      "allowedInElement"         : true,
-      "label"                    : "Phone Number",
-      "primaryField"             : false,
-      "hasControlledTerms"       : false,
-      "staticField"              : false,
-      "allowsMultiple"           : true,
-      "allowsValueRecommendation": false
     }
   ];
 
@@ -128,8 +117,8 @@ describe('template-creator', function () {
   var description = fieldType.label + ' description';
 
   // TODO including the element will perform all tests on element builder as well as template builder
-  //var pageTypes = ['template', 'element'];
-  var pageTypes = ['template'];
+  var pageTypes = ['template', 'element'];
+  //var pageTypes = ['template'];
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -199,9 +188,8 @@ describe('template-creator', function () {
 
 
               // delete the field
-              // TODO the removeFieldButton in the templatePage is not working, but locally it is ok
               browser.actions().mouseMove(field).perform();
-              var removeFieldButton = element(by.css('.field-root  [ng-click="delete(); $event.stopPropagation();"]'));
+              var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
               browser.wait(EC.visibilityOf(removeFieldButton));
               browser.wait(EC.elementToBeClickable(removeFieldButton));
               removeFieldButton.click();
