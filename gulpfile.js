@@ -279,7 +279,6 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({

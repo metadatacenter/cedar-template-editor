@@ -364,6 +364,7 @@ describe('template-creator', function () {
       });
 
       it("should have cancel button present and active", function () {
+        console.log("should have cancel button present and active");
 
         templatePage.createPage(pageType);
 
@@ -384,6 +385,7 @@ describe('template-creator', function () {
       });
 
       it("should not change the " + pageType + " when cleared and cancelled", function () {
+        console.log("should not change the " + pageType + " when cleared and cancelled");
 
         // create the resource
         templatePage.createPage(pageType);
@@ -417,6 +419,7 @@ describe('template-creator', function () {
       });
 
       it("should have clear displayed if " + pageType + " is dirty", function () {
+        console.log("should have clear displayed if " + pageType + " is dirty");
 
         templatePage.createPage(pageType);
 
@@ -436,6 +439,7 @@ describe('template-creator', function () {
       });
 
       it("should should restore the " + pageType + " when clear is clicked and confirmed", function () {
+        console.log("should should restore the " + pageType + " when clear is clicked and confirmed");
 
         templatePage.createPage(pageType);
 
