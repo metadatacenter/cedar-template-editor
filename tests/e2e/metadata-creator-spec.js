@@ -161,7 +161,7 @@ describe('metadata-creator', function () {
     });
   });
 
-  describe('remove all created resources', function () {
+  xdescribe('remove all created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
