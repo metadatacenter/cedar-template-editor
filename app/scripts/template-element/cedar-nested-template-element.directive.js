@@ -17,7 +17,8 @@ define([
         key           : "=",
         field         : '=',
         model         : '=',
-        parentElement: '=',
+        parentElement : '=',
+        delete   : '=',
         ngDisabled    : "=",
         renameChildKey: "=",
         isEditData:     "=",
@@ -66,9 +67,9 @@ define([
 
         var template;
         if (getNested(scope.field)) {
-          template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <field-directive nested="true" field="field" model="model"  preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" ></field-directive></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-template-element parent-element="parentElement"   key="key" model="model" element="field" ></cedar-template-element></div>';
+          template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <field-directive parent-element="parentElement"  delete="delete" nested="true" field="field" model="model"  preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" ></field-directive></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-template-element delete="delete" parent-element="parentElement"   key="key" model="model" element="field" ></cedar-template-element></div>';
         } else {
-          template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <field-directive nested="false" field="field" model="model"  preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" ></field-directive></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-template-element parent-element="parentElement"   key="key" model="model" element="field" ></cedar-template-element></div>';
+          template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <field-directive parent-element="parentElement"  delete="delete" nested="false" field="field" model="model"  preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" ></field-directive></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-template-element delete="delete" parent-element="parentElement"   key="key" model="model" element="field" ></cedar-template-element></div>';
         }
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);

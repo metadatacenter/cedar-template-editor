@@ -81,7 +81,9 @@ define([
                       value[key] = true;
                     }
                     sds.tableDataSource[row][col]['@value'] = value;
-
+                  } else if (cedarType === 'link') {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                    sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
                   } else if (inputType == 'autocomplete') {
                     if (sds.tableData[row][col]) {
                       var value = sds.tableData[row][col];
@@ -89,9 +91,6 @@ define([
                       var schema = sds.columnDescriptors[col].schema;
 
                       if (isConstrained(schema)) {
-
-                        console.log('isConstrained ' + row + ' ' + col);
-
 
                         // do we have some autocomplete results?
                         var results = autocompleteService.getAutocompleteResultsCache(id, value);
@@ -108,7 +107,6 @@ define([
                           }
 
                           if (!found) {
-                            console.log('not found ' + value);
                             delete sds.tableDataSource[row][col]['@id'];
                             delete sds.tableDataSource[row][col]['_valueLabel'];
 
@@ -225,7 +223,7 @@ define([
                   setTimeout(function () {
 
                     var id = dms.getId(node);
-                    var results = autocompleteService.getAutocompleteResults(id, query);
+                    var results = autocompleteService.getAutocompleteResults(id, query || '*');
 
                     var labels = [];
                     for (var i = 0; i < results.length; i++) {
@@ -527,7 +525,6 @@ define([
           context.setTable(hot);
           resize($scope);
 
-          console.log(Handsontable.editors);
 
           var fullScreenHandler = function (event) {
 
