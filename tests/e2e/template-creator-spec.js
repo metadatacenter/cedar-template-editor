@@ -117,8 +117,8 @@ describe('template-creator', function () {
   var description = fieldType.label + ' description';
 
   // TODO including the element will perform all tests on element builder as well as template builder
-  var pageTypes = ['template', 'element'];
-  //var pageTypes = ['template'];
+  //var pageTypes = ['template', 'element'];
+  var pageTypes = ['template'];
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -140,6 +140,7 @@ describe('template-creator', function () {
   });
 
   it("should be on the workspace page", function () {
+    console.log("should be on the workspace page");
     workspacePage.onWorkspace();
     workspacePage.hasLogo();
   });
@@ -151,6 +152,7 @@ describe('template-creator', function () {
     (function (pageType) {
 
       it("should create the sample " + pageType, function () {
+        console.log("should create the sample " + pageType);
         templateOrElement = workspacePage.createTitle(pageType);
         sampleDescription = workspacePage.createDescription(pageType);
         workspacePage.createResource(pageType, templateOrElement, sampleDescription);
@@ -158,12 +160,14 @@ describe('template-creator', function () {
       });
 
       it("should have editable title and description", function () {
+        console.log("should have editable title and description");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isTitle(pageType, templateOrElement);
         templatePage.isDescription(pageType, sampleDescription);
       });
 
       it("should return to workspace by clicking back arrow", function () {
+        console.log("should return to workspace by clicking back arrow");
         templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
       });
@@ -181,6 +185,7 @@ describe('template-creator', function () {
 
 
             it("should add and delete a " + type + " in " + pageType , function () {
+              console.log("should add and delete a " + type + " in " + pageType);
 
               templatePage.createPage(pageType);
               templatePage.addField(type, isMore, title, description);
@@ -202,6 +207,7 @@ describe('template-creator', function () {
             });
 
             it("should select and deselect a " + type + " in " + pageType, function () {
+              console.log("should select and deselect a " + type + " in " + pageType);
 
               var firstField;
               var lastField;
@@ -247,6 +253,7 @@ describe('template-creator', function () {
       }
 
       it("should show " + pageType + " header ", function () {
+        console.log("should show " + pageType + " header ");
 
         templatePage.createPage(pageType);
         browser.wait(EC.visibilityOf(templatePage.topNavigation()));
@@ -260,6 +267,7 @@ describe('template-creator', function () {
       });
 
       it("should show and hide the JSON preview ", function () {
+        console.log("should show and hide the JSON preview ");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.showJson();
         templatePage.hideJson();
@@ -268,6 +276,7 @@ describe('template-creator', function () {
       });
 
       it("should hang on to the sample template json " + pageType, function () {
+        console.log("should hang on to the sample template json " + pageType);
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.showJson();
 
@@ -307,7 +316,7 @@ describe('template-creator', function () {
       });
 
       it("should have the correct json for a clean " + pageType, function () {
-
+        console.log("should have the correct json for a clean " + pageType);
         templatePage.createPage(pageType);
 
         // add two fields
@@ -481,7 +490,7 @@ describe('template-creator', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          console.log('delete ' + resource.title + ' for user ' + resource.username);
+          console.log('should delete resource from the user workspace ' + resource.title + ' for user ' + resource.username);
           workspacePage.login(resource.username, resource.password);
 
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
