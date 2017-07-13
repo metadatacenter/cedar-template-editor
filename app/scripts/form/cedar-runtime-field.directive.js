@@ -558,15 +558,13 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-
         if ($scope.isMultipleCardinality()) {
           var valueLocation = getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
           if ((!maxItems || $scope.model.length < maxItems)) {
-
             // add another instance in the model
             var obj = {};
-            obj[valueLocation] = dms.getDefaultValue(valueLocation);
+            obj[valueLocation] = dms.getDefaultValue(valueLocation, $scope.field);
             $scope.model.push(obj);
 
             // activate the new instance

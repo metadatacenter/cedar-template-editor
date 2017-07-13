@@ -682,7 +682,7 @@ define([
         };
         select.selected = undefined;
         select.search = "";
-        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue);
+        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
         delete $scope.model['_valueLabel'];
       };
 
