@@ -1193,13 +1193,18 @@ define([
 
     // does this field have a value constraint?
     service.hasValueConstraint = function (node) {
-      var vcst = service.schemaOf(node)._valueConstraints;
-      var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-          vcst.valueSets && vcst.valueSets.length > 0 ||
-          vcst.classes && vcst.classes.length > 0 ||
-          vcst.branches && vcst.branches.length > 0);
+      var result = false;
 
-      return typeof result !== 'undefined';
+      var vcst = service.schemaOf(node)._valueConstraints;
+      if (vcst) {
+        var hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
+        var hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
+        var hasClasses = vcst.classes && vcst.classes.length > 0;
+        var hasBranches = vcst.branches && vcst.branches.length > 0;
+        result = hasOntologies || hasValueSets || hasClasses || hasBranches;
+      }
+
+      return result;
     };
 
     // does this field have a value constraint?
