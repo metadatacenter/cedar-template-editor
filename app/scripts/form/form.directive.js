@@ -243,7 +243,7 @@ define([
                         parentModel[name].push(obj);
                       }
                     }
-                    // Set default values and types for element fields
+                    // Set default values and types for fields
                     dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
                     if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
