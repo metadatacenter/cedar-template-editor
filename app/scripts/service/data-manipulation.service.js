@@ -537,10 +537,42 @@ define([
       return service.schemaOf(node)['_ui']['propertyLabels'];
     };
 
-    // relabel the key with a new value from the propertyLabels
-    service.relabel = function (node, key) {
-      console.log('relabel ' + key);
+    // Relabel the field key with the field title
+    service.relabelField = function (schema, key, newTitle) {
+      /* Generate the new key */
+      var fieldKey = service.getFieldName(newTitle);
+      var properties = service.propertiesOf(schema);
+      var newKey = service.getAcceptableKey(properties, fieldKey);
 
+      // Rename the key at the schema.properties level
+      service.renameKeyOfObject(properties, key, newKey);
+
+      /* Rename the key in the @context */
+      if (properties["@context"] && properties["@context"].properties) {
+        service.renameKeyOfObject(properties["@context"].properties, key, newKey);
+        // update enum only if it is using one of our made up property URIs
+        var prop = properties["@context"].properties[newKey];
+        if (prop && prop.enum) {
+          if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
+            prop.enum[0] = service.getEnumOf(newKey);
+          }
+        }
+      }
+
+      if (properties["@context"].required) {
+        var idx = properties["@context"].required.indexOf(key);
+        properties["@context"].required[idx] = newKey;
+      }
+
+      // Rename the key in the 'order' array
+      schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+
+      // Rename key in the 'required' array
+      schema.required = service.renameItemInArray(schema.required, key, newKey);
+    };
+
+    // Relabel the element key with a new value from the propertyLabels
+    service.relabel = function (node, key) {
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
@@ -979,15 +1011,22 @@ define([
       return location;
     };
 
-    // Transform string to obtain JSON field name
-    service.getFieldName = function (string) {
-      // Using Camel case format
-      return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+    // Generates a nice field name
+    service.getFieldName = function (rawFieldName) {
+      var niceFieldName = rawFieldName;
+
+      // To Camel Case
+      niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
         return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
       }).replace(/\s+/g, '');
 
-      //// Using underscore format
-      //return string
+      // Keep only alphanumeric characters
+      niceFieldName = niceFieldName.replace(/\W/g, '')
+
+      return niceFieldName;
+
+      // Using underscore format
+      //return rawFieldName
       //  .replace(/'|"|(|)/g, '')
       //  .replace(/ +/g, "_")
       //  .toLowerCase();

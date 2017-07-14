@@ -212,6 +212,10 @@ define([
         }
       };
 
+      $scope.relabelField = function(newTitle) {
+        DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
+      }
+
       //
       // controlled terms modal
       //
@@ -854,11 +858,6 @@ define([
         var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
       };
 
-
-
-
-
-
       /* end of controlled terms functionality */
 
     };
@@ -867,8 +866,9 @@ define([
       templateUrl: 'scripts/form/field.directive.html',
       restrict   : 'EA',
       scope      : {
+        fieldKey      : '=',
         field         : '=',
-        parentElement: '=',
+        parentElement : '=',
         model         : '=',
         renameChildKey: "=",
         preview       : "=",
