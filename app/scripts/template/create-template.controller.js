@@ -80,7 +80,6 @@ define([
 
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
-
         };
 
         var dontHaveCreatingFieldOrElement = function () {
@@ -173,7 +172,6 @@ define([
         };
 
         $scope.saveTemplate = function () {
-
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             UIMessageService.conditionalOrConfirmedExecution(
@@ -210,14 +208,15 @@ define([
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
 
-          //// If Template Name is blank, produce error message
-          //if (!$scope.form._ui.title.length) {
-          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
-          //}
-          //// If Template Description is blank, produce error message
-          //if (!$scope.form._ui.description.length) {
+          // If Template Name is blank, produce error message
+          if (!$scope.form._ui.title.length) {
+           $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+            owner.enableSaveButton();
+          }
+          // If Template Description is blank, produce error message
+          // if (!$scope.form._ui.description.length) {
           //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          //}
+          // }
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {

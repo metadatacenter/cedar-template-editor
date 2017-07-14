@@ -204,6 +204,11 @@ define([
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
 
+      // If Element Name is blank, produce error message
+      if (!$scope.element._ui.title.length) {
+        $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
+      }
+
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
 
