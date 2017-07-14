@@ -794,11 +794,16 @@ define([
       return model;
     };
 
-    // This function initializes the @value field (in the model) to null if it has not been initialized yet. Note that
+    // This function initializes the @value field (in the model) to null if it has not been initialized yet.
+    // For text fields, it may also set it to a default value set by the user when creating the template. Note that
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
+
       var fieldValue = service.getValueLocation(field);
       if (fieldValue == "@value") {
+
+        var defaultValue = service.getDefaultValue(fieldValue, field);
+
         // Not an array
         if (!$rootScope.isArray(model)) {
           if (!model) {
@@ -809,12 +814,12 @@ define([
             // If undefined value or empty string
             if ((angular.isUndefined(
                     model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
-              model[fieldValue] = null;
+              model[fieldValue] = defaultValue;
             }
           }
           // Value field has not been defined
           else {
-            model[fieldValue] = null;
+            model[fieldValue] = defaultValue;
           }
         }
         // An array
@@ -822,7 +827,7 @@ define([
           // Length is 0
           if (model.length == 0) {
             model.push({});
-            model[0][fieldValue] = null;
+            model[0][fieldValue] = defaultValue;
           }
           // If length > 0
           else {
@@ -834,9 +839,16 @@ define([
       }
     };
 
-    service.getDefaultValue = function (fieldValue) {
+    service.getDefaultValue = function (fieldValue, field) {
       if (fieldValue == "@value") {
-        return null;
+        // If the template contains a user-defined default value, we use it as the default value for the field
+        if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
+          return service.getUserDefinedDefaultValue(field);
+        }
+        // Otherwise, we return the default value, which is 'null'
+        else {
+          return null;
+        }
       }
       // Otherwise don't return anything because the @id field can't be initialized to null
     };
@@ -1193,13 +1205,18 @@ define([
 
     // does this field have a value constraint?
     service.hasValueConstraint = function (node) {
-      var vcst = service.schemaOf(node)._valueConstraints;
-      var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-          vcst.valueSets && vcst.valueSets.length > 0 ||
-          vcst.classes && vcst.classes.length > 0 ||
-          vcst.branches && vcst.branches.length > 0);
+      var result = false;
 
-      return typeof result !== 'undefined';
+      var vcst = service.schemaOf(node)._valueConstraints;
+      if (vcst) {
+        var hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
+        var hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
+        var hasClasses = vcst.classes && vcst.classes.length > 0;
+        var hasBranches = vcst.branches && vcst.branches.length > 0;
+        result = hasOntologies || hasValueSets || hasClasses || hasBranches;
+      }
+
+      return result;
     };
 
     // does this field have a value constraint?
@@ -1609,23 +1626,23 @@ define([
       });
     };
 
-
-    service.hasDefault = function (node) {
-      var schema = service.schemaOf(node);
-      if (!schema._valueConstraints.hasOwnProperty('defaultValue')) {
-        schema._valueConstraints.defaultValue = "";
+    service.hasUserDefinedDefaultValue = function (field) {
+      var schema = service.schemaOf(field);
+      if (schema._valueConstraints && schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0) {
+        return true;
       }
-      return schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0;
+      else {
+        return false;
+      }
     };
 
-    // get the default value
-    service.getDefault = function (node) {
-      var schema = service.schemaOf(node);
-      if (service.hasDefault(node)) {
-      } else {
-        schema._valueConstraints.defaultValue = '';
+    service.getUserDefinedDefaultValue = function (field) {
+      if (service.hasUserDefinedDefaultValue(field)) {
+        return service.schemaOf(field)._valueConstraints.defaultValue;
       }
-      return schema._valueConstraints.defaultValue;
+      else {
+        return null;
+      }
     };
 
     // does this field allow the hidden attribute?
@@ -1647,7 +1664,6 @@ define([
     service.setHidden = function (node, value) {
       service.schemaOf(node)._ui.hidden = value;
     };
-
 
     return service;
   };

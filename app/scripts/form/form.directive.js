@@ -105,6 +105,7 @@ define([
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
+          console.log('removeChild  from form ' + DataManipulationService.getTitle(node));
           dms.removeChild($scope.form, node);
           var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
           $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
@@ -242,7 +243,7 @@ define([
                         parentModel[name].push(obj);
                       }
                     }
-                    // Set default values and types for element fields
+                    // Set default values and types for fields
                     dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
                     if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||

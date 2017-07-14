@@ -93,7 +93,7 @@
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
-              <div class="trash" ng-click="removeChild()" title="Delete element">
+              <div class="trash" ng-click="removeChild(element)" title="Delete element">
                 <i class="fa fa-times-circle"></i>
               </div>
             </div>
@@ -131,7 +131,7 @@
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
                   parent-element="element"
-
+                  delete="delete"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   is-root-element="false"
@@ -154,7 +154,7 @@
                   model="m[key]"
                   parent-element="element"
                   preview="preview"
-
+                  delete="delete"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   is-root-element="false"
@@ -175,7 +175,7 @@
                 field="$root.propertiesOf(element)[key]"
                 model="model[key]"
                 parent-element="element"
-
+                delete="removeChild"
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
                 is-root-element="false"

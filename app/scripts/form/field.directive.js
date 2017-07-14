@@ -117,11 +117,13 @@ define([
         return FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
-      $scope.removeChild = function () {
-        dms.removeChild($scope.parentElement, $scope.field);
-        $scope.$emit("invalidFieldState",
-            ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
-
+      // check for delete;  we should have a parentElement
+      $scope.ckDelete = function () {
+        if ($scope.parentElement) {
+          DataManipulationService.removeChild($scope.parentElement, $scope.field);
+          $scope.$emit("invalidElementState",
+              ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+        }
       };
 
       // try to select this field
@@ -680,7 +682,7 @@ define([
         };
         select.selected = undefined;
         select.search = "";
-        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue);
+        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
         delete $scope.model['_valueLabel'];
       };
 
@@ -853,6 +855,10 @@ define([
       };
 
 
+
+
+
+
       /* end of controlled terms functionality */
 
     };
@@ -862,6 +868,7 @@ define([
       restrict   : 'EA',
       scope      : {
         field         : '=',
+        parentElement: '=',
         model         : '=',
         renameChildKey: "=",
         preview       : "=",

@@ -381,7 +381,7 @@ define(['app', 'angular'], function (app) {
 
 
           // Compile element directive
-          cedarTemplateElementDirective = "<cedar-template-element  key='key' element='element' model='model'  parent-element='parentElement' > </cedar-template-element>";
+          cedarTemplateElementDirective = "<cedar-template-element  delete='delete' key='key' element='element' model='model'  parent-element='parentElement' > </cedar-template-element>";
           $cedarTemplateElementScope.key = 'test';
           $cedarTemplateElementScope.parentElement = $createTemplateControllerScope.form;
           $cedarTemplateElementScope.element = clonedElement;

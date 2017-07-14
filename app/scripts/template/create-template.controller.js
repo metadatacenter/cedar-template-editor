@@ -209,6 +209,7 @@ define([
           // First check to make sure Template Name, Template Description are not blank
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
+
           //// If Template Name is blank, produce error message
           //if (!$scope.form._ui.title.length) {
           //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
