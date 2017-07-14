@@ -979,15 +979,22 @@ define([
       return location;
     };
 
-    // Transform string to obtain JSON field name
-    service.getFieldName = function (string) {
-      // Using Camel case format
-      return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+    // Generates a nice field name
+    service.getFieldName = function (rawFieldName) {
+      var niceFieldName = rawFieldName;
+
+      // To Camel Case
+      niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
         return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
       }).replace(/\s+/g, '');
 
-      //// Using underscore format
-      //return string
+      // Keep only alphanumeric characters
+      niceFieldName = niceFieldName.replace(/\W/g, '')
+
+      return niceFieldName;
+
+      // Using underscore format
+      //return rawFieldName
       //  .replace(/'|"|(|)/g, '')
       //  .replace(/ +/g, "_")
       //  .toLowerCase();
