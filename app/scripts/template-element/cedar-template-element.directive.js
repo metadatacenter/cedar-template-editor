@@ -61,9 +61,6 @@ define([
         DataManipulationService.relabel(scope.parentElement, key);
       };
 
-
-
-
       scope.isEditState = function () {
         return UIUtilService.isEditState(scope.element);
       };
@@ -89,7 +86,6 @@ define([
 
         return result;
       };
-
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 

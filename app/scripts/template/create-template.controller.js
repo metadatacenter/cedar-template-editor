@@ -104,7 +104,6 @@ define([
           }
         };
 
-
         $scope.moreIsOpen = false;
         $scope.toggleMore = function () {
           $scope.moreIsOpen = !$scope.moreIsOpen;
@@ -200,7 +199,6 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
-
           this.disableSaveButton();
           var owner = this;
 
@@ -224,12 +222,11 @@ define([
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
             DataManipulationService.defaultSchemaTitleAndDescription($scope.form);
 
-            // create a copy of the form and strip out the _tmp fields before saving it
-            //var copiedForm = $scope.stripTmpFields();
-
-            // Save template
+            // Saving the template for the first time
             if ($routeParams.id == undefined) {
+
               DataManipulationService.stripTmps($scope.form);
+
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
@@ -254,11 +251,11 @@ define([
                   }
               );
             }
-            // Update template
+            // Updating an existing template
             else {
               var id = $scope.form['@id'];
               DataManipulationService.stripTmps($scope.form);
-              //--//delete $scope.form['@id'];
+
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
@@ -298,6 +295,7 @@ define([
 
         $scope.invalidFieldStates = {};
         $scope.invalidElementStates = {};
+
         $scope.$on('invalidFieldState', function (event, args) {
           if (args[0] == 'add') {
             $scope.invalidFieldStates[args[2]] = args[1];
@@ -306,6 +304,7 @@ define([
             delete $scope.invalidFieldStates[args[2]];
           }
         });
+
         $scope.$on('invalidElementState', function (event, args) {
           if (args[0] == 'add') {
             $scope.invalidElementStates[args[2]] = args[1];
