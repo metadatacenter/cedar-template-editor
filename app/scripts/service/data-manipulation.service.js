@@ -1172,6 +1172,18 @@ define([
       return templateOrElement;
     };
 
+    service.removeKeyFromContext = function(schema, key) {
+      if (schema.properties["@context"] && schema.properties["@context"].properties) {
+        delete schema.properties["@context"].properties[key];
+      }
+      if (schema.properties["@context"].required) {
+        var index = schema.properties["@context"].required.indexOf(key);
+        if (index >= 0) {
+          schema.properties["@context"].required.splice(index, 1);
+        }
+      }
+    };
+
     // Rename an array item
     service.renameItemInArray = function (array, name, newName) {
       var index = array.indexOf(name);
@@ -1181,62 +1193,45 @@ define([
       return array;
     };
 
-
     // rename the key of a child in the form
     service.renameChildKey = function (parent, child, newKey) {
       if (!child) {
         return;
-
       }
-
       var parentSchema = service.schemaOf(parent);
-
       var childId = service.idOf(child);
       if (!childId || /^tmp\-/.test(childId)) {
         var p = service.propertiesOf(parent);
         if (p[newKey] && p[newKey] == child) {
           return;
         }
-
-
         newKey = service.getAcceptableKey(p, newKey);
         angular.forEach(p, function (value, key) {
           if (!value) {
             return;
           }
-
           var idOfValue = service.idOf(value);
           if (idOfValue && idOfValue == childId) {
             service.renameKeyOfObject(p, key, newKey);
-
             if (p["@context"] && p["@context"].properties) {
               service.renameKeyOfObject(p["@context"].properties, key, newKey);
-
               if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-
-
-
-                //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
                 p["@context"].properties[newKey].enum[0] = service.getPropertyOf(newKey,
                     p["@context"].properties[newKey].enum[0]);
               }
             }
-
             if (p["@context"].required) {
               var idx = p["@context"].required.indexOf(key);
               p["@context"].required[idx] = newKey;
             }
-
             // Rename key in the 'order' array
             parentSchema._ui.order = service.renameItemInArray(parentSchema._ui.order, key, newKey);
-
             // Rename key in the 'required' array
             parentSchema.required = service.renameItemInArray(parentSchema.required, key, newKey);
           }
         });
       }
     };
-
 
     //
     // value constraints
@@ -1544,11 +1539,7 @@ define([
     };
 
     service.removeChild = function (parent, child) {
-      // child must contain the schema level
-
       var id = service.getId(child);
-
-
       var selectedKey;
       var props = service.propertiesOf(parent);
       angular.forEach(props, function (value, key) {
@@ -1558,23 +1549,26 @@ define([
       });
 
       if (selectedKey) {
+        // Remove the key
         delete props[selectedKey];
 
-
+        // Remove it from the order array
         var idx = service.getOrder(parent).indexOf(selectedKey);
         service.getOrder(parent).splice(idx, 1);
 
-        // remove property label for this element
-        delete service.getPropertyLabels(parent)[selectedKey];
-
+        // Remove the property label (for elements)
+        if (service.getPropertyLabels(parent)[selectedKey]) {
+          delete service.getPropertyLabels(parent)[selectedKey];
+        }
 
         // Remove it from the top-level 'required' array
-        parent = service.removeKeyFromRequired(parent, selectedKey);
+        service.removeKeyFromRequired(parent, selectedKey);
 
+        // Remove it from the context
+        service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
       }
       return selectedKey;
     };
-
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {

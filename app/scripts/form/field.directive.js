@@ -119,6 +119,7 @@ define([
 
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
+        console.log('deleting field: ' + dms.getId($scope.field));
         if ($scope.parentElement) {
           DataManipulationService.removeChild($scope.parentElement, $scope.field);
           $scope.$emit("invalidElementState",
