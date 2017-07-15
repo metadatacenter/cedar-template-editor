@@ -86,7 +86,7 @@ define([
      * Scope functions.
      */
 
-     function addProperty(property) {
+    function addProperty(property) {
       if (vm.filterSelection === 'properties') {
         var id = DataManipulationService.getId(vm.field);
 
@@ -126,8 +126,6 @@ define([
     function closeDialog() {
 
     }
-
-
 
 
     function addClass(selection, ontology) {
@@ -191,7 +189,7 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
-      if (!action ||  action == 'add_class') {
+      if (!action || action == 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
       else if (action == 'add_children') {
@@ -552,7 +550,6 @@ define([
     );
 
 
-
     $scope.$on(
         'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
         function (event, args) {
@@ -671,15 +668,25 @@ define([
             vm.stageValueConstraintAction = 'add_class';
           }
           else {
-            if (value.type == "OntologyClass" || value.type == "Value") {
-                vm.stageValueConstraintAction = 'add_class';
+            if (value.type == "OntologyClass") {
+              if (value.hasChildren) {
+                vm.stageBranchValueConstraint(value);
+              }
+              else {
+                vm.stageOntologyClassValueConstraint(value);
+              }
+            }
+            else if (value.type == "Value") {
               vm.stageOntologyClassValueConstraint(value);
             }
             else if (value.type == "ValueSet") {
               vm.stageValueConstraintAction = 'add_entire_value_set';
             }
           }
-        });
+          // The 'true' parameter below ensures that the selectedClass is watched 'by value'. That means that if any of
+          // its parameters changes, the watcher will be called. This is important because the hasChildren parameter
+          // is not immediately updated. By
+        }, true);
 
     // If the selected property changes, the constraints need to be updated
     $scope.$watch(function () {
