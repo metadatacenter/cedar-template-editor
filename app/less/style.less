@@ -4407,6 +4407,10 @@ p.instructions {
     margin: auto;
   }
 
+  div.relation-type-select {
+    text-align: center;
+  }
+
   div.map-existing-classes {
     border: 1px solid @gray3;
     padding: 20px;
@@ -6813,29 +6817,79 @@ table.apiKey {
     border-bottom: 0px solid #aaa;
   }
   .modal-footer {
-    button {
-      background-color: @brand-primary;
-      color: white;
-      &:hover {
-        outline: none;
-        box-shadow: none;
-        background-color: @brand-primary-hover;
-        color: white;
-      }
-      &:focus {
-        outline: none;
-        box-shadow: none;
-      }
-      &.btn-pause {
-        background-color: @button-pause;
-        &:hover {
-          background-color: @button-pause-hover;
+    &.actions {
+
+
+      .favorite {
+        float: left;
+        padding-top: 17px;
+        cursor: pointer;
+
+        span {
+          text-transform: uppercase;
+          vertical-align: middle;
+        }
+
+        i {
+          padding-right: 10px;
+          .link-transition;
+          color: rgba(51, 51, 51, 0.43);
+        }
+
+        &.true {
+          i {
+            color: @brand-primary;
+          }
         }
       }
-      &.btn-resume {
-        background-color: @button-resume;
-        &:hover {
-          background-color: @button-resume-hover;
+
+      .clear-save {
+        float: right;
+
+        .btn {
+          text-transform: uppercase;
+          padding: 10px 20px;
+          border: none;
+          .link-transition;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
+            &:focus {
+              color: @brand-primary-hover;
+            }
+          }
+
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
+            font-size: 16px;
+
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
+            }
+          }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
+            }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
+            }
+          }
         }
       }
     }
@@ -6905,18 +6959,23 @@ table.apiKey {
         margin: 0;
         font-size: 13px;
       }
+
+      .progress-zone {
+        max-height:200px;
+        height:100%;
+        overflow:auto;
+        border-left:1px solid #ccc
+      }
     }
 
+
+
   }
 
 }
 
-#flow-modal {
-  .modal-content {
-    max-width: 100%;
-    max-height: 100%;
-  }
-}
+
+
 
 #move-modal, #copy-modal {
   .modal-content {
@@ -6936,6 +6995,29 @@ table.apiKey {
         a, a:hover {
           color: @brand-primary;;
         }
+      }
+    }
+  }
+}
+
+#flow-modal {
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 600px;
+    width: 600px;
+    .modal-content {
+      max-width: 600px;
+      width: 600px;
+      margin: 0 auto;
+      .modal-body {
+        max-height:400px;
+        height:400px;
+        overflow:hidden;
       }
     }
   }
