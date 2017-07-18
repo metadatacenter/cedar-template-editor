@@ -44,7 +44,6 @@ define([
           $scope.instanceName;
           $scope.offset = 0;
           $scope.resources = [];
-          $scope.loadingInstances;
           $scope.mode = 'ImmPort';
 
           $scope.setMode = function (mode) {
@@ -53,25 +52,29 @@ define([
           };
 
 
-          // locations
-          $scope.selected = undefined;
-          $scope.getLocation = function (val) {
-            return $http.get('//maps.googleapis.com/maps/api/geocode/json', {
-              params: {
-                address: val,
-                sensor : false
+          // workspaces
+          $scope.selectedWorkspace = undefined;
+          $scope.loadingWorkspace;
+          $scope.workspaces = ['Test Environment for CEDAR', 'cedaruser_cedaruser_Workspace'];
+          $scope.dummyWorkspaceResponse =  {
+            "success": true,
+            "workspaces": [
+              {
+                "workspaceID": "100001",
+                "workspaceName": "Test Environment for CEDAR"
+              },
+              {
+                "workspaceID": "5733",
+                "workspaceName": "cedaruser_cedaruser_Workspace"
               }
-            }).then(function (response) {
-              return response.data.results.map(function (item) {
-                return item.formatted_address;
-              });
-
-            });
+            ]
           };
+
 
 
           // instances
           $scope.selectedInstance = undefined;
+          $scope.loadingInstances;
           $scope.instances = function (term) {
 
             var limit = UISettingsService.getRequestLimit();

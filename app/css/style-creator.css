@@ -15395,10 +15395,9 @@ table.apiKey td {
 #share-modal .modal-content .modal-body .progress-zone,
 #airr-submission-modal .modal-content .modal-body .progress-zone,
 #flow-modal .modal-content .modal-body .progress-zone {
-  max-height: 200px;
-  height: 100%;
+  max-height: 250px;
+  height: 250px;
   overflow: auto;
-  border-left: 1px solid #ccc;
 }
 #move-modal .modal-content .modal-body,
 #copy-modal .modal-content .modal-body {

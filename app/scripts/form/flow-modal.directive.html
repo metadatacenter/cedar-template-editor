@@ -10,7 +10,7 @@
     <div class="modal-header" id="flowModalHeader">
       <button type="button" class="close" ng-click="flowModalVisible=false;" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title">Submission</h4>
+      <h4 class="modal-title">Submit to Repository</h4>
     </div>
 
     <div class="modal-body">
@@ -27,7 +27,13 @@
 
             <div style="padding:0 20px">
               <label for="immport-workspace">Select Workspace</label>
-              <input type="text" id="immport-workspace"/>
+              <input id="immport-workspace" type="text" ng-model="selectedWorkspace" placeholder="enter workspace name"
+                  uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
+                   class="form-control">
+              <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
+              <div ng-if="noWorkspaces">
+                <i class="glyphicon glyphicon-remove"></i> No Results Found
+              </div>
             </div>
 
             <div class="radio radio-primary" style="padding:20px">
@@ -46,14 +52,12 @@
         </uib-tab>
         <uib-tab index="1" heading="Submission">
 
-          <div class="row">
-            <div class="col-sm-5">
+          <div class="row" style="margin-top:20px">
+            <div class="col-sm-5" style="border-right:1px solid #ccc">
               <div class="row" style="padding:10px 0;height:100px;">
 
                 <h5 style="margin-left:20px">Metadata</h5>
-                <div class="col-sm-10">
-
-
+                <div class="col-sm-10" >
                     <input type="text" ng-model="selectedInstance" placeholder="enter name"
                         uib-typeahead="instance for instance in instances($viewValue)"
                         typeahead-loading="loadingInstances" typeahead-no-results="noInstances" class="form-control">
@@ -61,7 +65,6 @@
                     <div ng-if="noInstances">
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
                     </div>
-
                 </div>
                   <span ng-if="!loadingInstances && !noInstances && selectedInstance" ng-click="insertItems($flow, selectedInstance)"><i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
               </div>
@@ -72,16 +75,14 @@
                       flow-drag-enter="style={border:'3px dashed #666'}"
                       flow-drag-leave="style={}"
                       ng-style="style" class="alert" flow-drop>
-                    Drag And Drop your files here
+                    Drag And drop your data files here
                   </div>
-
-
                 </div>
               </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-7" >
 
-              <div style="margin-right:10px;margin-top:20px;">
+              <div style="margin-right:10px;margin-top:16px;">
                 <div class="row progress-zone" >
 
                   <div class="col-sm-12">
@@ -104,9 +105,6 @@
                   </div>
                 </div>
               </div>
-
-
-
             </div>
           </div>
 
