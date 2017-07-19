@@ -72,11 +72,13 @@ define([
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.showFlowModal = showFlowModal;
           vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
+          vm.flowModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -1142,6 +1144,12 @@ define([
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
+          }
+
+
+          function showFlowModal() {
+            vm.flowModalVisible = true;
+            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible]);
           }
 
           // open the share modal

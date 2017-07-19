@@ -15,6 +15,7 @@ define([
   'cedar/template-editor/search-browse/cedar-new-folder-modal.directive',
   'cedar/template-editor/search-browse/cedar-live-search.directive',
   'cedar/template-editor/form/auto-focus.directive',
+  'cedar/template-editor/form/flow-modal.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.dashboard', [
     'cedar.templateEditor.dashboard.routes',
@@ -30,5 +31,6 @@ define([
     'cedar.templateEditor.searchBrowse.cedarNewFolderModalDirective',
     'cedar.templateEditor.searchBrowse.cedarLiveSearchDirective',
     'cedar.templateEditor.form.autoFocusDirective',
+    'cedar.templateEditor.form.flowModal'
   ]);
 });

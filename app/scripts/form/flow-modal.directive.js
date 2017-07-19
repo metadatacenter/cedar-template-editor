@@ -13,9 +13,7 @@ define([
 
         var directive = {
           bindToController: {
-            modalVisible: '=',
-            files       : '=',
-            instance    : '='
+            modalVisible: '='
           },
           controller      : flowModalController,
           controllerAs    : 'flowCntl',
@@ -46,25 +44,14 @@ define([
         //    2.2. clean up css for typeahead inputs, maybe first change typeahead to ui-select
         //    2.3. fix progress button css
         // 3. change they way the queue gets cleaned after submission is complete
-        // 4. invoke the dialog from a workspace menu item
-        // 5. why doesn't the close x work?
         //
 
 
         function flowModalController($scope, $rootScope, $timeout, QueryParamUtilsService, UISettingsService,
                                      UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService) {
-          var vm = this;
-          var vm = $scope;
 
-          vm.url = "https://httpbin.org/post";
-          //vm.url =  UrlService.airrSubmission();
-          // var config = {
-          //   headers: {
-          //     "Content-Type": undefined
-          //   }
-          // };
+          $scope.url = "https://httpbin.org/post";
           $scope.flow;
-
 
           // $scope.flow = require('ngFlow');
           // $scope.uploader = {};
@@ -74,9 +61,6 @@ define([
             $scope.flow = flow;
           };
 
-
-          $scope.instanceName;
-          $scope.resources = [];
 
           //
           // tabs
@@ -112,6 +96,7 @@ define([
           //
           $scope.selectedInstance = undefined;
           $scope.loadingInstances;
+          $scope.resources = [];
           $scope.instances = function (term) {
 
             var limit = UISettingsService.getRequestLimit();
@@ -127,7 +112,6 @@ define([
                   offset       : offset
                 },
                 function (response) {
-
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
@@ -219,7 +203,6 @@ define([
               $flow.cancel();
             }, 5000);
           });
-
 
           // modal open or closed
           $scope.$on('flowModalVisible', function (event, params) {

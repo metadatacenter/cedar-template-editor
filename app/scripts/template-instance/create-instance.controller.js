@@ -262,12 +262,12 @@ define([
       $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
     };
 
-    // open the airr submission modal
-    $scope.flowModalVisible = false;
-    $scope.showFlowModal = function () {
-      $scope.flowModalVisible = true;
-      $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
-    };
+    // // open the airr submission modal
+    // $scope.flowModalVisible = false;
+    // $scope.showFlowModal = function () {
+    //   $scope.flowModalVisible = true;
+    //   $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
+    // };
 
   };
 
