@@ -265,7 +265,6 @@ define([
     // open the airr submission modal
     $scope.flowModalVisible = false;
     $scope.showFlowModal = function () {
-      console.log('flowModalVisible');
       $scope.flowModalVisible = true;
       $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
     };

@@ -20,9 +20,9 @@
           <div style="padding:20px">
 
             <div class="radio radio-primary" style="padding:20px">
-              <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="mode"
-                  ng-click="setMode('Immport');" value="ImmPort">
-              <label for="flow-immport">ImmPort</label>
+              <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="selectedMode"
+                  ng-click="setMode(0);" value="0">
+              <label for="flow-immport">{{modes[0]}}</label>
             </div>
 
             <div style="padding:0 20px">
@@ -38,14 +38,14 @@
 
             <div class="radio radio-primary" style="padding:20px">
               <input type="radio" class="select" id="flow-airr" name="flow-repo" ng-model="mode"
-                  ng-click="setMode('AIRR');" value="AIRR">
-              <label for="flow-airr">AIRR</label>
+                  ng-click="setMode(1);" value="1">
+              <label for="flow-airr">{{modes[1]}}</label>
             </div>
 
             <div class="radio radio-primary" style="padding:20px">
               <input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"
-                  ng-click="setMode('LINCS');" value="LINCS">
-              <label for="flow-lincs">LINCS</label>
+                  ng-click="setMode(2);" value="2">
+              <label for="flow-lincs">{{modes[2]}}</label>
             </div>
           </div>
 
@@ -86,6 +86,7 @@
                 <div class="row progress-zone" >
 
                   <div class="col-sm-12">
+                    <div ng-if="$flow.files.length==0" style="height:250px;background:#f8f8f8"></div>
                     <div ng-repeat="file in $flow.files">
 
                       <form class="form-inline">

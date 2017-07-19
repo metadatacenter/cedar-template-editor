@@ -15398,6 +15398,16 @@ table.apiKey td {
   max-height: 250px;
   height: 250px;
   overflow: auto;
+  white-space: nowrap;
+}
+#rename-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#new-folder-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#move-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#copy-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#share-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#airr-submission-modal .modal-content .modal-body .progress-zone .progress-bar-success,
+#flow-modal .modal-content .modal-body .progress-zone .progress-bar-success {
+  background-color: rgba(87, 149, 186, 0.35);
 }
 #move-modal .modal-content .modal-body,
 #copy-modal .modal-content .modal-body {
