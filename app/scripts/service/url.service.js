@@ -198,7 +198,15 @@ define([
     };
 
     service.airrSubmission = function () {
-      return submissionService + '/command/submit-airr';
+      return submissionService + '/command/upload-airr-to-cedar';
+    };
+
+    service.immportSubmission = function () {
+      return 'https://httpbin.org/post';
+    };
+
+    service.lincsSubmission = function () {
+      return 'https://httpbin.org/post';
     };
 
     service.airrValidation = function () {

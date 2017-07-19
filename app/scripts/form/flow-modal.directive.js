@@ -31,7 +31,8 @@ define([
           'UIMessageService',
           'resourceService',
           'TemplateInstanceService',
-          'AuthorizedBackendService'
+          'AuthorizedBackendService',
+          'UrlService'
         ];
 
 
@@ -48,25 +49,35 @@ define([
 
 
         function flowModalController($scope, $rootScope, $timeout, QueryParamUtilsService, UISettingsService,
-                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService) {
+                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService, UrlService) {
 
-          $scope.url = "https://httpbin.org/post";
+
+          //
+          // init
+          //
           $scope.flow;
-
-          // $scope.flow = require('ngFlow');
-          // $scope.uploader = {};
-          // $scope.uploader.opts = {target: 'another-upload-path.php'};
-
           $scope.init = function (flow) {
             $scope.flow = flow;
           };
-
 
           //
           // tabs
           //
           $scope.modes = ['ImmPort', 'AIRR', 'LINCS'];
           $scope.selectedMode = 0;
+
+          $scope.getTarget = function () {
+            var result;
+            if ($scope.modes[$scope.selectedMode] === 'ImmPort') {
+              result = UrlService.immportSubmission();
+            } else if ($scope.modes[$scope.selectedMode] === 'AIRR') {
+              result = UrlService.airrSubmission();
+            } else if ($scope.modes[$scope.selectedMode] === 'LINCS') {
+              result = UrlService.lincsSubmission();
+            }
+            return result;
+          };
+
           $scope.setMode = function (mode) {
             $scope.selectedMode = mode;
           };
@@ -152,11 +163,15 @@ define([
             }
           };
 
-          // start the upload
+          //
+          // flow of control
+          //
           $scope.startUpload = function (flow) {
-            var fileCount = flow.files.length;
-            var uid = Math.random().toString().replace('.', '');
-            flow.opts.query = {submissionId: uid, numberOfFiles: fileCount};
+
+            flow.opts.target = $scope.getTarget();
+            flow.opts.query = {submissionId: Math.random().toString().replace('.', ''), numberOfFiles: flow.files.length};
+            flow.opts.headers = AuthorizedBackendService.getConfig().headers;
+
             flow.upload();
           };
 
