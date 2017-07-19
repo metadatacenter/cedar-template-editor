@@ -5,7 +5,7 @@ define([
       'angular'
 
     ], function (angular) {
-      angular.module('cedar.templateEditor.form.flowModal', []).directive('flowModal', flowModal);
+      angular.module('cedar.templateEditor.searchBrowse.flowModal', []).directive('flowModal', flowModal);
 
 
       /* new folder modal  */
@@ -18,7 +18,7 @@ define([
           controller      : flowModalController,
           controllerAs    : 'flowCntl',
           restrict        : 'E',
-          templateUrl     : 'scripts/form/flow-modal.directive.html',
+          templateUrl     : 'scripts/search-browse/flow-modal.directive.html',
         };
         return directive;
 
