@@ -28,7 +28,7 @@
               <label for="immport-workspace">Select Workspace</label>
               <input id="immport-workspace" type="text" ng-model="selectedWorkspace" placeholder="enter workspace name"
                   uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
-                   class="form-control">
+                   class="form-control typeahead">
               <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
               <div ng-if="noWorkspaces">
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -59,7 +59,7 @@
                 <div class="col-sm-10" >
                     <input type="text" ng-model="selectedInstance" placeholder="enter name"
                         uib-typeahead="instance for instance in instances($viewValue)"
-                        typeahead-loading="loadingInstances" typeahead-no-results="noInstances" class="form-control">
+                        typeahead-loading="loadingInstances" typeahead-no-results="noInstances" class="form-control typeahead">
                     <i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>
                     <div ng-if="noInstances">
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -112,12 +112,11 @@
             <div class="col-sm-5"  >
               <div style="width:100%;text-align:center;"><span class="btn drop-btn" flow-btn>Select</span></div>
             </div>
-            <div class="col-sm-7">
-              <div style="width:100%;">
-                <button type="button" ng-click="startUpload($flow)" aria-label="Submit" class="btn btn-save done " style="float:right;margin:14px 2px 0 2px" translate>Submit</button>
-                <button type="button" ng-click="pauseAll($flow)" aria-label="Done" class="btn btn-pause "  style="float:left;margin:14px 2px 0 2px" translate>Pause</button>
-                <button type="button" ng-click="resumeAll($flow)" aria-label="Resume" class="btn btn-resume " style="float:left;margin:14px 2px 0 2px"  translate>Resume</button>
-                <button type="button" ng-click="cancelAll($flow)" aria-label="Clear" class="btn btn-save cancel "  style="float:left;margin:14px 2px 0 2px"  translate>Clear</button>
+            <div class="col-sm-7 actions">
+              <div style="width:100%;margin-top:15px">
+                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause" class="btn btn-clear "   translate>GENERIC.Pause</button>
+                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume" class="btn btn-clear "   translate>GENERIC.Resume</button>
+                <button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear" class="btn btn-clear "    translate>GENERIC.Clear</button>
               </div>
             </div>
           </div>
@@ -131,10 +130,13 @@
     <div class="modal-footer actions">
       <div class="row">
         <div class="col-sm-12 clear-save">
+
           <button type="button" ng-click="flowModalVisible=false;"
               data-dismiss="modal" aria-label="Done"
-              class="btn btn-save done" translate>GENERIC.Done
+              class="btn btn-clear done" translate>GENERIC.Done
           </button>
+          <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit" class="btn btn-save "  translate>GENERIC.Submit</button>
+
         </div>
       </div>
     </div>

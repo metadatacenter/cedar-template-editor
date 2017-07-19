@@ -15409,6 +15409,138 @@ table.apiKey td {
 #flow-modal .modal-content .modal-body .progress-zone .progress-bar-success {
   background-color: rgba(87, 149, 186, 0.35);
 }
+#rename-modal .modal-content .modal-body .typeahead,
+#new-folder-modal .modal-content .modal-body .typeahead,
+#move-modal .modal-content .modal-body .typeahead,
+#copy-modal .modal-content .modal-body .typeahead,
+#share-modal .modal-content .modal-body .typeahead,
+#airr-submission-modal .modal-content .modal-body .typeahead,
+#flow-modal .modal-content .modal-body .typeahead {
+  border-radius: 0;
+  box-shadow: unset;
+  color: #000;
+}
+#rename-modal .modal-content .modal-body .typeahead:focus,
+#new-folder-modal .modal-content .modal-body .typeahead:focus,
+#move-modal .modal-content .modal-body .typeahead:focus,
+#copy-modal .modal-content .modal-body .typeahead:focus,
+#share-modal .modal-content .modal-body .typeahead:focus,
+#airr-submission-modal .modal-content .modal-body .typeahead:focus,
+#flow-modal .modal-content .modal-body .typeahead:focus {
+  border: 1px solid #ccc;
+}
+#rename-modal .modal-content .modal-body .actions .btn,
+#new-folder-modal .modal-content .modal-body .actions .btn,
+#move-modal .modal-content .modal-body .actions .btn,
+#copy-modal .modal-content .modal-body .actions .btn,
+#share-modal .modal-content .modal-body .actions .btn,
+#airr-submission-modal .modal-content .modal-body .actions .btn,
+#flow-modal .modal-content .modal-body .actions .btn {
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: none;
+  transition: all 0.3s 0.1s;
+}
+#rename-modal .modal-content .modal-body .actions .btn:focus,
+#new-folder-modal .modal-content .modal-body .actions .btn:focus,
+#move-modal .modal-content .modal-body .actions .btn:focus,
+#copy-modal .modal-content .modal-body .actions .btn:focus,
+#share-modal .modal-content .modal-body .actions .btn:focus,
+#airr-submission-modal .modal-content .modal-body .actions .btn:focus,
+#flow-modal .modal-content .modal-body .actions .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-clear,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-clear,
+#move-modal .modal-content .modal-body .actions .btn.btn-clear,
+#copy-modal .modal-content .modal-body .actions .btn.btn-clear,
+#share-modal .modal-content .modal-body .actions .btn.btn-clear,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-clear,
+#flow-modal .modal-content .modal-body .actions .btn.btn-clear {
+  color: #5795ba;
+  background-color: transparent;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#move-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#copy-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#share-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#flow-modal .modal-content .modal-body .actions .btn.btn-clear:hover,
+#rename-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#move-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#copy-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#share-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-clear:focus,
+#flow-modal .modal-content .modal-body .actions .btn.btn-clear:focus {
+  color: #2f7dab;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-save,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-save,
+#move-modal .modal-content .modal-body .actions .btn.btn-save,
+#copy-modal .modal-content .modal-body .actions .btn.btn-save,
+#share-modal .modal-content .modal-body .actions .btn.btn-save,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-save,
+#flow-modal .modal-content .modal-body .actions .btn.btn-save {
+  color: #ffffff;
+  background-color: #5795ba;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#move-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#copy-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#share-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#flow-modal .modal-content .modal-body .actions .btn.btn-save:hover,
+#rename-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#move-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#copy-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#share-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-save:focus,
+#flow-modal .modal-content .modal-body .actions .btn.btn-save:focus {
+  background-color: #2f7dab;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-pause,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-pause,
+#move-modal .modal-content .modal-body .actions .btn.btn-pause,
+#copy-modal .modal-content .modal-body .actions .btn.btn-pause,
+#share-modal .modal-content .modal-body .actions .btn.btn-pause,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-pause,
+#flow-modal .modal-content .modal-body .actions .btn.btn-pause {
+  background-color: #f0ad4e;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#move-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#copy-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#share-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-pause:hover,
+#flow-modal .modal-content .modal-body .actions .btn.btn-pause:hover {
+  background-color: #DD9F48;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-resume,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-resume,
+#move-modal .modal-content .modal-body .actions .btn.btn-resume,
+#copy-modal .modal-content .modal-body .actions .btn.btn-resume,
+#share-modal .modal-content .modal-body .actions .btn.btn-resume,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-resume,
+#flow-modal .modal-content .modal-body .actions .btn.btn-resume {
+  background-color: #5cb85c;
+}
+#rename-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#new-folder-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#move-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#copy-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#share-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#airr-submission-modal .modal-content .modal-body .actions .btn.btn-resume:hover,
+#flow-modal .modal-content .modal-body .actions .btn.btn-resume:hover {
+  background-color: #50A050;
+}
 #move-modal .modal-content .modal-body,
 #copy-modal .modal-content .modal-body {
   height: 300px;

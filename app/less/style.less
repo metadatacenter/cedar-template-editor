@@ -6819,7 +6819,6 @@ table.apiKey {
   .modal-footer {
     &.actions {
 
-
       .favorite {
         float: left;
         padding-top: 17px;
@@ -6960,16 +6959,73 @@ table.apiKey {
         font-size: 13px;
       }
       .progress-zone {
-        max-height:250px;
-        height:250px;
-        overflow:auto;
+        max-height: 250px;
+        height: 250px;
+        overflow: auto;
         white-space: nowrap;
         .progress-bar-success {
-          background-color:@brand-primary-disabled;
+          background-color: @brand-primary-disabled;
         }
 
       }
+      .typeahead {
+        border-radius: 0;
+        box-shadow: unset;
+        color: #000;
+        &:focus {
+          border: 1px solid #ccc;
+        }
+      }
 
+      .actions {
+          .btn {
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border: none;
+            .link-transition;
+
+            &:focus {
+              outline: none;
+              box-shadow: none;
+            }
+
+            &.btn-clear {
+              color: @brand-primary;
+              background-color: transparent;
+              .activ-grotesk-bold;
+
+              &:hover,
+              &:focus {
+                color: @brand-primary-hover;
+              }
+            }
+
+            &.btn-save {
+              color: @white;
+              background-color: @brand-primary;
+
+
+              &:hover,
+              &:focus {
+                background-color: @brand-primary-hover;
+              }
+            }
+            &.btn-pause {
+              background-color: @button-pause;
+              &:hover {
+                background-color: @button-pause-hover;
+              }
+            }
+            &.btn-resume {
+              background-color: @button-resume;
+              &:hover {
+                background-color: @button-resume-hover;
+              }
+            }
+
+
+        }
+      }
     }
   }
 }
@@ -7012,9 +7068,9 @@ table.apiKey {
       width: 600px;
       margin: 0 auto;
       .modal-body {
-        max-height:400px;
-        height:400px;
-        overflow:hidden;
+        max-height: 400px;
+        height: 400px;
+        overflow: hidden;
       }
     }
   }

@@ -42,9 +42,6 @@ define([
         //    1.1. change the way scope.flow is initialized
         // 2. clean up css
         //    2.1. change tabs to wizard
-        //    2.2. clean up css for typeahead inputs, maybe first change typeahead to ui-select
-        //    2.3. fix progress button css
-        // 3. change they way the queue gets cleaned after submission is complete
         //
 
 
@@ -56,6 +53,9 @@ define([
           // init
           //
           $scope.flow;
+          $scope.submitted = false;
+          $scope.paused = false;
+          $scope.complete = false;
           $scope.init = function (flow) {
             $scope.flow = flow;
           };
@@ -173,47 +173,64 @@ define([
             flow.opts.headers = AuthorizedBackendService.getConfig().headers;
 
             flow.upload();
+            $scope.submitted = true;
+          };
+
+          $scope.canClear = function (flow) {
+            return flow.files.length > 0;
+          };
+
+          $scope.canPause = function (flow) {
+            return flow.files.length > 0  && flow.isUploading();
+          };
+
+          $scope.canResume = function (flow) {
+            return $scope.paused;
+          };
+
+
+          $scope.canSubmit = function (flow) {
+            return !$scope.complete && !$scope.submitted &&  flow.files.length > 0;
           };
 
           $scope.cancelAll = function (flow) {
+            $scope.paused = false;
+            $scope.submitted = false;
+            $scope.complete = false;
             flow.cancel();
           };
 
           $scope.pauseAll = function (flow) {
+            $scope.paused = true;
             flow.pause();
           };
 
           $scope.resumeAll = function (flow) {
+            $scope.paused = false;
             flow.resume();
           };
 
           $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
-            console.log('flow::fileAdded');
           });
 
           $scope.$on('flow::progress', function (event, $flow, flowFile) {
-            console.log('flow::progress');
           });
 
           $scope.flowProgress = function (flow) {
-            console.log('flowProgress ');
           };
 
           $scope.flowFileProgress = function (flow, file) {
-            console.log('flowFileProgress ');
           };
 
-          $scope.$on('flow::complete', function (event, $flow, flowFile) {
-            console.log('flow::complete');
-          });
-
           $scope.$on('flow::uploadStart', function (event, $flow, flowFile) {
-            console.log('flow::complete');
+            $scope.submitted = true;
+
           });
 
           // TODO not seeing this event coming through
           $scope.$on('flow::complete', function (event, $flow) {
             console.log('flow::complete');
+            $scope.complete = true;
             $timeout(function () {
               $flow.cancel();
             }, 5000);
@@ -225,7 +242,12 @@ define([
             if (params && params[0]) {
               $timeout(function () {
                 // modal just opened
-                $scope.flow.cancel();
+                if (!$scope.flow.isUploading()  || $scope.paused) {
+                  $scope.flow.cancel();
+                  $scope.submitted = false;
+                  $scope.complete = false;
+                  $scope.paused = false;
+                }
                 jQuery('#flow-modal input').focus().select();
               }, 0);
             }
