@@ -38,10 +38,8 @@ define([
 
         // TODO
         //
-        // 1. fix the way the code is loaded and configed from app.cs.  it should be loaded here instead
-        //    1.1. change the way scope.flow is initialized
-        // 2. clean up css
-        //    2.1. change tabs to wizard
+        // 1. fix the way the code is loaded and configed from app.cs.
+        // 2. change tabs to wizard
         //
 
 
@@ -105,7 +103,9 @@ define([
           //
           // metadata instances
           //
-          $scope.selectedInstance = undefined;
+
+          $scope.xx = {};       // xx or something like it is required because of Angular's ng-model, scope and dot notation
+          $scope.xx.selectedInstance = undefined;
           $scope.loadingInstances;
           $scope.resources = [];
           $scope.instances = function (term) {
@@ -152,6 +152,9 @@ define([
                         var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)], {type: 'application/json'});
                         blob.name = name + '.json';
                         flow.addFile(blob);
+
+                        $scope.xx.selectedInstance = '';
+
                       }, 0);
 
                     },
@@ -190,7 +193,8 @@ define([
 
 
           $scope.canSubmit = function (flow) {
-            return !$scope.complete && !$scope.submitted &&  flow.files.length > 0;
+            var validRepo = ($scope.selectedWorkspace && $scope.selectedMode ==0) || ($scope.selectedMod != 0);
+            return validRepo && !$scope.complete && !$scope.submitted &&  flow.files.length > 0;
           };
 
           $scope.cancelAll = function (flow) {

@@ -15,7 +15,7 @@
     <div class="modal-body">
 
       <uib-tabset active="active">
-        <uib-tab index="0" heading="Repository">
+        <uib-tab index="0" heading="Select Repository">
           <div style="padding:20px">
 
             <div class="radio radio-primary" style="padding:20px">
@@ -25,10 +25,10 @@
             </div>
 
             <div style="padding:0 20px">
-              <label for="immport-workspace">Select Workspace</label>
+              <label for="immport-workspace">Workspace</label>
               <input id="immport-workspace" type="text" ng-model="selectedWorkspace" placeholder="enter workspace name"
                   uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
-                   class="form-control typeahead">
+                   class="form-control typeahead" style="width:250px">
               <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
               <div ng-if="noWorkspaces">
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -49,7 +49,7 @@
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="Submission">
+        <uib-tab index="1" heading="Upload Files">
 
           <div class="row" style="margin-top:20px">
             <div class="col-sm-5" style="border-right:1px solid #ccc">
@@ -57,15 +57,20 @@
 
                 <h5 style="margin-left:20px">Metadata</h5>
                 <div class="col-sm-10" >
-                    <input type="text" ng-model="selectedInstance" placeholder="enter name"
+                    <input type="text"
+                        ng-model="xx.selectedInstance"
+                        placeholder="enter name"
                         uib-typeahead="instance for instance in instances($viewValue)"
-                        typeahead-loading="loadingInstances" typeahead-no-results="noInstances" class="form-control typeahead">
+                        typeahead-loading="loadingInstances"
+                        typeahead-no-results="noInstances"
+                        class="form-control typeahead"
+                        typeahead-on-select="">
                     <i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>
                     <div ng-if="noInstances">
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
                     </div>
                 </div>
-                  <span ng-if="!loadingInstances && !noInstances && selectedInstance" ng-click="insertItems($flow, selectedInstance)"><i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
+                  <span ng-if="!loadingInstances && !noInstances && xx.selectedInstance" ng-click="insertItems($flow, xx.selectedInstance)"><i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
               </div>
               <div class="row">
                 <h5 style="margin-left:20px">Data</h5>
@@ -81,7 +86,7 @@
             </div>
             <div class="col-sm-7" >
 
-              <div style="margin-right:10px;margin-top:16px;">
+              <div style="margin-right:10px;margin-top:10px;">
                 <div class="row progress-zone" >
 
                   <div class="col-sm-12">
