@@ -990,10 +990,11 @@ define([
     service.getValueLocation = function (field) {
       // usually it is in  @value
       var fieldValue = "@value";
-      // but these two put it @id
-      if (service.hasValueConstraint(field) || service.isLinkType(field)) {
+      // but these three put it @id
+      if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
         fieldValue = "@id";
       }
+      console.log('getValueLocation ' + fieldValue + ' ' + service.getFieldControlledTerms(field));
       return fieldValue;
     };
 
@@ -1002,7 +1003,7 @@ define([
       // the printable value is usually in @value
       var location = "@value";
       // but a link puts it in @id
-      if (service.isLinkType(field)) {
+      if (service.isLinkType(field) || service.getFieldControlledTerms(field)) {
         location = "@id";
         // and the constraint puts it _valueLabel
       } else if (service.hasValueConstraint(field)) {

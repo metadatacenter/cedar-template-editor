@@ -5,7 +5,7 @@
     <!-- Regular field -->
     <div ng-if="isRegular() && isListView()"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
+        class="isInactive ">{{valueArray[index]['@value']}} &nbsp; </div>
 
     <div ng-if="isRegular() && !isListView()"
         aria-label="{{getDescription()}}"
@@ -19,7 +19,7 @@
 
     <div ng-if="isConstrained() && !isListView()"
         aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+        class="isInactive "> {{getValueString(valueArray)}} &nbsp; </span>
     </div>
 
     <!-- Field with value recommendation functionality -->
@@ -38,7 +38,7 @@
   <div ng-if="isActive(index)">
 
     <!-- Regular field -->
-    <div ng-if="isRegular()" class="form-group has-success has-feedback">
+    <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
       <input type="text"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
@@ -49,6 +49,20 @@
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
+    <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
+      <input type="text"
+          class="form-control select"
+          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+          placeholder="{{isActive(index) ? 'enter value' : ''}}"
+          aria-label="{{getDescription()}}"
+          ng-required="isRequired()"
+          ng-model="valueElement['@id']"
+          ng-pattern="urlRegex">
+      </input>
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
+
+
 
     <!-- Field with values have been constrained using controlled terms -->
     <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
