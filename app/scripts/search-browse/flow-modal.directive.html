@@ -70,7 +70,7 @@
 
                   <h5 class="header" > Metadata <i class="fa fa-tags "></i></h5>
                   <div class="col-sm-10">
-                    <input type="text"
+                    <input type="text" ng-disabled="!canInsert()"
                         ng-model="xx.selectedInstance"
                         placeholder="search"
                         uib-typeahead="instance for instance in instances($viewValue)"
@@ -83,14 +83,14 @@
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
                     </span>
                   </div>
-                  <span ng-if="!loadingInstances && !noInstances && xx.selectedInstance"
+                  <span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && xx.selectedInstance"
                       ng-click="insertItems($flow, xx.selectedInstance)">
                     <i class="fa fa-plus-circle btn-add" ></i></span>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="actions">
-                      <div><span class="btn btn-clear" flow-btn>Select</span></div>
+                      <div><span class="btn btn-clear" flow-btn ng-disabled="!canInsert()">Select</span></div>
                       Select files to upload
                     </div>
                   </div>

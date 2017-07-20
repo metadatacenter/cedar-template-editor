@@ -92,8 +92,7 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "numeric",
@@ -104,8 +103,7 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "phone-number",
@@ -116,8 +114,7 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "section-break",
@@ -128,8 +125,7 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "richtext",
@@ -140,8 +136,7 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "image",
@@ -152,8 +147,7 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   },
   {
     "cedarType": "youtube",
@@ -164,7 +158,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "allowsValueRecommendation": false
   }
 ]

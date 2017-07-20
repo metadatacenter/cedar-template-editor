@@ -141,31 +141,34 @@ define([
 
           // load and add the instances to the flow queue
           $scope.insertItems = function (flow, name) {
-            for (var i = 0; i < $scope.resources.length; i++) {
-              if ($scope.resources[i].name === name) {
+            if (!$scope.submitted) {
+              for (var i = 0; i < $scope.resources.length; i++) {
+                if ($scope.resources[i].name === name) {
 
-                // get this instance
-                var instanceId = $scope.resources[i]['@id'];
-                AuthorizedBackendService.doCall(
-                    TemplateInstanceService.getTemplateInstance(instanceId),
-                    function (instanceResponse) {
+                  // get this instance
+                  var instanceId = $scope.resources[i]['@id'];
+                  AuthorizedBackendService.doCall(
+                      TemplateInstanceService.getTemplateInstance(instanceId),
+                      function (instanceResponse) {
 
-                      // this needs a timeout or flow vomits
-                      $timeout(function () {
-                        var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)], {type: 'application/json'});
-                        blob.name = name + '.json';
-                        $scope.metadataFiles.push(blob.name);
-                        flow.addFile(blob);
+                        // this needs a timeout or flow vomits
+                        $timeout(function () {
+                          var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)],
+                              {type: 'application/json'});
+                          blob.name = name + '.json';
+                          $scope.metadataFiles.push(blob.name);
+                          flow.addFile(blob);
 
-                        $scope.xx.selectedInstance = '';
+                          $scope.xx.selectedInstance = '';
 
-                      }, 0);
+                        }, 0);
 
-                    },
-                    function (instanceErr) {
-                      UIMessageService.showBackendError('SERVER.INSTANCE.load.error', instanceErr);
-                    }
-                );
+                      },
+                      function (instanceErr) {
+                        UIMessageService.showBackendError('SERVER.INSTANCE.load.error', instanceErr);
+                      }
+                  );
+                }
               }
             }
           };
@@ -195,6 +198,10 @@ define([
             return $scope.paused;
           };
 
+          $scope.canInsert = function (flow) {
+            return !$scope.submitted;
+          };
+
 
           $scope.canSubmit = function (flow) {
             var validRepo = ($scope.selectedWorkspace && $scope.selectedMode ==0) || ($scope.selectedMod != 0);
@@ -205,6 +212,8 @@ define([
             $scope.paused = false;
             $scope.submitted = false;
             $scope.complete = false;
+            $scope.metadataFiles = [];
+            $scope.resources = [];
             flow.cancel();
           };
 
@@ -251,12 +260,8 @@ define([
               $timeout(function () {
                 // modal just opened
                 if (!$scope.flow.isUploading()  || $scope.paused) {
-                  $scope.flow.cancel();
-                  $scope.submitted = false;
-                  $scope.complete = false;
-                  $scope.paused = false;
-                  $scope.metadataFiles = [];
-                  $scope.resources = [];
+                  $scope.cancelAll($scope.flow);
+
                 }
                 jQuery('#flow-modal input').focus().select();
               }, 0);
