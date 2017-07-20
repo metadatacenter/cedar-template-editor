@@ -15323,6 +15323,17 @@ table.apiKey td {
   background: #5795ba;
   color: #fff;
 }
+#rename-modal .modal-content .modal-body label.sm,
+#new-folder-modal .modal-content .modal-body label.sm,
+#move-modal .modal-content .modal-body label.sm,
+#copy-modal .modal-content .modal-body label.sm,
+#share-modal .modal-content .modal-body label.sm,
+#airr-submission-modal .modal-content .modal-body label.sm,
+#flow-modal .modal-content .modal-body label.sm {
+  font-size: .9em;
+  color: #5795ba;
+  font-weight: normal;
+}
 #rename-modal .modal-content .modal-body .drop-btn,
 #new-folder-modal .modal-content .modal-body .drop-btn,
 #move-modal .modal-content .modal-body .drop-btn,
@@ -15355,7 +15366,7 @@ table.apiKey td {
 #share-modal .modal-content .modal-body .drop-zone,
 #airr-submission-modal .modal-content .modal-body .drop-zone,
 #flow-modal .modal-content .modal-body .drop-zone {
-  border: 3px dashed #ccc;
+  border: 3px dashed #ddd;
   padding: 40px 20px;
   text-align: center;
 }
@@ -15395,10 +15406,21 @@ table.apiKey td {
 #share-modal .modal-content .modal-body .progress-zone,
 #airr-submission-modal .modal-content .modal-body .progress-zone,
 #flow-modal .modal-content .modal-body .progress-zone {
-  max-height: 250px;
-  height: 250px;
+  max-height: 235px;
+  height: 235px;
   overflow: auto;
+  margin-right: 5px;
   white-space: nowrap;
+}
+#rename-modal .modal-content .modal-body .progress-zone .empty,
+#new-folder-modal .modal-content .modal-body .progress-zone .empty,
+#move-modal .modal-content .modal-body .progress-zone .empty,
+#copy-modal .modal-content .modal-body .progress-zone .empty,
+#share-modal .modal-content .modal-body .progress-zone .empty,
+#airr-submission-modal .modal-content .modal-body .progress-zone .empty,
+#flow-modal .modal-content .modal-body .progress-zone .empty {
+  height: 235px;
+  background: #f8f8f8;
 }
 #rename-modal .modal-content .modal-body .progress-zone .progress-bar-success,
 #new-folder-modal .modal-content .modal-body .progress-zone .progress-bar-success,
@@ -15578,8 +15600,8 @@ table.apiKey td {
   margin: 0 auto;
 }
 #flow-modal .modal-dialog .modal-content .modal-body {
-  max-height: 400px;
-  height: 400px;
+  max-height: 350px;
+  height: 350px;
   overflow: hidden;
 }
 @media (max-width: 768px) {

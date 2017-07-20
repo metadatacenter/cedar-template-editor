@@ -15,82 +15,85 @@
     <div class="modal-body">
 
       <uib-tabset active="active">
-        <uib-tab index="0" heading="Select Repository">
-          <div style="padding:20px">
+        <uib-tab index="0" heading="Repository">
+          <div style="margin: 30px auto;width: 400px;">
 
-            <div class="radio radio-primary" style="padding:20px">
+            <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="selectedMode"
                   ng-click="setMode(0);" value="0">
-              <label for="flow-immport">{{modes[0]}}</label>
+              <label for="flow-immport"><ng-bind-html ng-bind-html="modes[0]"/></label>
             </div>
 
-            <div style="padding:0 20px">
-              <label for="immport-workspace">Workspace</label>
-              <input id="immport-workspace" type="text" ng-model="selectedWorkspace" placeholder="enter workspace name"
+            <div style="padding:0 0 0 40px">
+              <label class="sm" for="immport-workspace">Workspace<i style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
+              <input ng-disabled="selectedMode != 0"
+                  id="immport-workspace"
+                  type="text"
+                  ng-model="selectedWorkspace"
+                  placeholder="search"
                   uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
-                   class="form-control typeahead" style="width:250px">
+                   class="form-control typeahead"
+                  style="width:250px">
               <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
               <div ng-if="noWorkspaces">
                 <i class="glyphicon glyphicon-remove"></i> No Results Found
               </div>
             </div>
 
-            <div class="radio radio-primary" style="padding:20px">
+            <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-airr" name="flow-repo" ng-model="mode"
                   ng-click="setMode(1);" value="1">
-              <label for="flow-airr">{{modes[1]}}</label>
+              <label for="flow-airr"><ng-bind-html ng-bind-html="modes[1]"/></label>
             </div>
 
-            <div class="radio radio-primary" style="padding:20px">
+            <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"
                   ng-click="setMode(2);" value="2">
-              <label for="flow-lincs">{{modes[2]}}</label>
+              <label for="flow-lincs"><ng-bind-html ng-bind-html="modes[2]"/></label>
             </div>
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="Upload Files">
+        <uib-tab index="1" heading="File Upload">
 
           <div class="row" style="margin-top:20px">
-            <div class="col-sm-5" style="border-right:1px solid #ccc">
-              <div class="row" style="padding:10px 0;height:100px;">
+            <div class="col-sm-5" >
+              <div class="row" style="height:80px;">
 
-                <h5 style="margin-left:20px">Metadata</h5>
+                <h5 style="margin-left:20px;margin-top:0;color:#6A8B92"> Metadata <i class="fa fa-tags " ></i></h5>
                 <div class="col-sm-10" >
                     <input type="text"
                         ng-model="xx.selectedInstance"
-                        placeholder="enter name"
+                        placeholder="search"
                         uib-typeahead="instance for instance in instances($viewValue)"
                         typeahead-loading="loadingInstances"
                         typeahead-no-results="noInstances"
                         class="form-control typeahead"
                         typeahead-on-select="">
                     <i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>
-                    <div ng-if="noInstances">
+                    <span ng-if="noInstances">
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
-                    </div>
+                    </span>
                 </div>
-                  <span ng-if="!loadingInstances && !noInstances && xx.selectedInstance" ng-click="insertItems($flow, xx.selectedInstance)"><i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
+                  <span ng-if="!loadingInstances && !noInstances && xx.selectedInstance"
+                      ng-click="insertItems($flow, xx.selectedInstance)">
+                    <i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
               </div>
               <div class="row">
-                <h5 style="margin-left:20px">Data</h5>
                 <div class="col-sm-12">
-                  <div class="drop-zone"
-                      flow-drag-enter="style={border:'3px dashed #666'}"
-                      flow-drag-leave="style={}"
-                      ng-style="style" class="alert" flow-drop>
-                    Drag And drop your data files here
+                  <div class="actions"  >
+                    <div><span class="btn btn-clear" flow-btn>Select</span></div>
+                    Select files to upload
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-sm-7" >
-
-              <div style="margin-right:10px;margin-top:10px;">
-                <div class="row progress-zone" >
-
+                <div class="row progress-zone" style="border-left:1px solid #ddd" flow-drag-enter=""
+                    flow-drag-leave="style={}"
+                    ng-style="style" class="alert" flow-drop>
                   <div class="col-sm-12">
-                    <div ng-if="$flow.files.length==0" style="height:250px;background:#f8f8f8"></div>
+                    <div ng-if="$flow.files.length==0" class="empty"></div>
                     <div ng-repeat="file in $flow.files">
 
                       <form class="form-inline">
@@ -109,16 +112,15 @@
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
 
           <div class="row" >
-            <div class="col-sm-5"  >
-              <div style="width:100%;text-align:center;"><span class="btn drop-btn" flow-btn>Select</span></div>
+            <div class="col-sm-5 actions"  >
+              <!--<div style="width:100%;text-align:center;"><span class="btn btn-clear" flow-btn>Select</span></div>-->
             </div>
             <div class="col-sm-7 actions">
-              <div style="width:100%;margin-top:15px">
+              <div style="width:100%;">
                 <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause" class="btn btn-clear "   translate>GENERIC.Pause</button>
                 <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume" class="btn btn-clear "   translate>GENERIC.Resume</button>
                 <button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear" class="btn btn-clear "    translate>GENERIC.Clear</button>

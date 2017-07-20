@@ -39,7 +39,6 @@ define([
         // TODO
         //
         // 1. fix the way the code is loaded and configed from app.cs.
-        // 2. change tabs to wizard
         //
 
 
@@ -61,16 +60,18 @@ define([
           //
           // tabs
           //
-          $scope.modes = ['ImmPort', 'AIRR', 'LINCS'];
+          $scope.modes = ['<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
+                          '<strong>AIRR</strong> - Adaptive Immune Receptor Repertoire',
+                          '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
           $scope.selectedMode = 0;
 
           $scope.getTarget = function () {
             var result;
-            if ($scope.modes[$scope.selectedMode] === 'ImmPort') {
+            if ($scope.selectedMode === 0) {
               result = UrlService.immportSubmission();
-            } else if ($scope.modes[$scope.selectedMode] === 'AIRR') {
+            } else if ($scope.selectedMode === 1) {
               result = UrlService.airrSubmission();
-            } else if ($scope.modes[$scope.selectedMode] === 'LINCS') {
+            } else if ($scope.selectedMode === 2) {
               result = UrlService.lincsSubmission();
             }
             return result;

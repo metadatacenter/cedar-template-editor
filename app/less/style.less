@@ -6926,6 +6926,11 @@ table.apiKey {
         }
 
       }
+      label.sm {
+        font-size:.9em;
+        color:@brand-primary;
+        font-weight:normal;
+      }
       .drop-btn {
         text-transform: uppercase;
         padding: 10px 20px;
@@ -6941,7 +6946,7 @@ table.apiKey {
         }
       }
       .drop-zone {
-        border: 3px dashed #ccc;
+        border: 3px dashed #ddd;
         padding: 40px 20px;
         text-align: center;
       }
@@ -6959,10 +6964,14 @@ table.apiKey {
         font-size: 13px;
       }
       .progress-zone {
-        max-height: 250px;
-        height: 250px;
+        max-height: 235px;
+        height: 235px;
         overflow: auto;
+        margin-right:5px;
         white-space: nowrap;
+        .empty {
+          height:235px;background:#f8f8f8;
+        }
         .progress-bar-success {
           background-color: @brand-primary-disabled;
         }
@@ -7068,8 +7077,8 @@ table.apiKey {
       width: 600px;
       margin: 0 auto;
       .modal-body {
-        max-height: 400px;
-        height: 400px;
+        max-height: 350px;
+        height: 350px;
         overflow: hidden;
       }
     }
