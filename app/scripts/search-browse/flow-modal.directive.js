@@ -38,7 +38,8 @@ define([
 
         // TODO
         //
-        // 1. fix the way the code is loaded and configed from app.cs.
+        // 1. fix the way the code is loaded and configured from app.cs.
+        // 2. use real ImmPort workspaces
         //
 
 
@@ -233,13 +234,13 @@ define([
           });
 
           // TODO not seeing this event coming through
-          $scope.$on('flow::complete', function (event, $flow) {
-            console.log('flow::complete');
-            $scope.complete = true;
-            $timeout(function () {
-              $flow.cancel();
-            }, 5000);
-          });
+          // $scope.$on('flow::complete', function (event, $flow) {
+          //   console.log('flow::complete');
+          //   $scope.complete = true;
+          //   $timeout(function () {
+          //     $flow.cancel();
+          //   }, 5000);
+          // });
 
           // modal open or closed
           $scope.$on('flowModalVisible', function (event, params) {

@@ -6969,12 +6969,20 @@ table.apiKey {
         overflow: auto;
         margin-right:5px;
         white-space: nowrap;
+        border-left:1px solid #ddd;
         .empty {
           height:235px;background:#f8f8f8;
+        }
+        .progress {
+          margin-bottom: 5px !important;
+        }
+        .progress-bar .error {
+          color: #5C5C5C;float:left;padding-left:10px
         }
         .progress-bar-success {
           background-color: @brand-primary-disabled;
         }
+
 
       }
       .typeahead {
@@ -6985,7 +6993,6 @@ table.apiKey {
           border: 1px solid #ccc;
         }
       }
-
       .actions {
           .btn {
             text-transform: uppercase;
@@ -7080,6 +7087,23 @@ table.apiKey {
         max-height: 350px;
         height: 350px;
         overflow: hidden;
+
+        .tab-content .tab-pane .repository {
+          margin: 30px auto;
+          width: 400px;
+        }
+        .tab-content .tab-pane  .fileUpload {
+          margin-top:20px;
+          .metadata {
+            height:100px;
+            .header {
+              margin-left:20px;margin-top:0;color:#6A8B92;
+            }
+            .btn-add {
+              font-size: 28px;padding: 4px 0;color: #FF5722;
+            }
+          }
+        }
       }
     }
   }

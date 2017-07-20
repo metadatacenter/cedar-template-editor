@@ -2,11 +2,7 @@
 <div class="">
   <div class="detail-options">
     <div class="element-toggles list table-style">
-      <!--<div ng-if="hasControlledTerms()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
-          <!--ng-class="{active: isTabActive('field')}"-->
-          <!--ng-click="setTab('field');  $event.stopPropagation();">-->
-        <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field Type</span>-->
-      <!--</div>-->
+
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
@@ -30,6 +26,11 @@
           ng-class="{active: isTabActive('hidden')}"
           ng-click="setTab('hidden');  $event.stopPropagation();">
         <span>Hidden</span>
+      </div>
+      <div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"
+          ng-class="{active: isTabActive('field')}"
+          ng-click="setTab('field');  $event.stopPropagation();">
+        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>
       </div>
     </div>
   </div>
@@ -102,11 +103,11 @@
   <!-- Field tab -->
   <div ng-show="isTabActive('field')">
     <class-list field="field" view-type="viewType"></class-list>
-    <div class="center search">
+    <div class="center search" >
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
-      <button type="button" class="std-button btn search-ontologies-button"
-          ng-click="showModal('field');$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
+      <button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"
+          ng-click="getInstanceType(); showModal('field');$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
         GENERIC.Search
       </button>
     </div>

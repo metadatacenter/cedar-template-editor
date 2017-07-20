@@ -15411,6 +15411,7 @@ table.apiKey td {
   overflow: auto;
   margin-right: 5px;
   white-space: nowrap;
+  border-left: 1px solid #ddd;
 }
 #rename-modal .modal-content .modal-body .progress-zone .empty,
 #new-folder-modal .modal-content .modal-body .progress-zone .empty,
@@ -15421,6 +15422,26 @@ table.apiKey td {
 #flow-modal .modal-content .modal-body .progress-zone .empty {
   height: 235px;
   background: #f8f8f8;
+}
+#rename-modal .modal-content .modal-body .progress-zone .progress,
+#new-folder-modal .modal-content .modal-body .progress-zone .progress,
+#move-modal .modal-content .modal-body .progress-zone .progress,
+#copy-modal .modal-content .modal-body .progress-zone .progress,
+#share-modal .modal-content .modal-body .progress-zone .progress,
+#airr-submission-modal .modal-content .modal-body .progress-zone .progress,
+#flow-modal .modal-content .modal-body .progress-zone .progress {
+  margin-bottom: 5px !important;
+}
+#rename-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#new-folder-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#move-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#copy-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#share-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#airr-submission-modal .modal-content .modal-body .progress-zone .progress-bar .error,
+#flow-modal .modal-content .modal-body .progress-zone .progress-bar .error {
+  color: #5C5C5C;
+  float: left;
+  padding-left: 10px;
 }
 #rename-modal .modal-content .modal-body .progress-zone .progress-bar-success,
 #new-folder-modal .modal-content .modal-body .progress-zone .progress-bar-success,
@@ -15603,6 +15624,26 @@ table.apiKey td {
   max-height: 350px;
   height: 350px;
   overflow: hidden;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .repository {
+  margin: 30px auto;
+  width: 400px;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload {
+  margin-top: 20px;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .metadata {
+  height: 100px;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .metadata .header {
+  margin-left: 20px;
+  margin-top: 0;
+  color: #6A8B92;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .metadata .btn-add {
+  font-size: 28px;
+  padding: 4px 0;
+  color: #FF5722;
 }
 @media (max-width: 768px) {
   #airr-submission-modal .modal-content {

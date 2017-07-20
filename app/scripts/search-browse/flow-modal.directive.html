@@ -1,6 +1,6 @@
 <div class="modal-dialog">
 
-  <div class="modal-content" flow-init="{target: 'https://httpbin.org/post'}"
+  <div class="modal-content" flow-init="{target: getTarget()}"
       flow-file-progress="flowFileProgress( $flow, $file )"
       flow-progress="flowProgress( $flow )"
       flow-file-success="$file.msg = $message"
@@ -8,7 +8,8 @@
     <!--flow-files-submitted="$flow.upload()"-->
 
     <div class="modal-header" id="flowModalHeader">
-      <button type="button" class="close"  data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
       <h4 class="modal-title">Submit to Repository</h4>
     </div>
 
@@ -16,23 +17,26 @@
 
       <uib-tabset active="active">
         <uib-tab index="0" heading="Repository">
-          <div style="margin: 30px auto;width: 400px;">
+          <div class="repository">
 
             <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="selectedMode"
                   ng-click="setMode(0);" value="0">
-              <label for="flow-immport"><ng-bind-html ng-bind-html="modes[0]"/></label>
+              <label for="flow-immport">
+                <ng-bind-html ng-bind-html="modes[0]"/>
+              </label>
             </div>
 
             <div style="padding:0 0 0 40px">
-              <label class="sm" for="immport-workspace">Workspace<i style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
+              <label class="sm" for="immport-workspace">Workspace<i
+                  style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
               <input ng-disabled="selectedMode != 0"
                   id="immport-workspace"
                   type="text"
                   ng-model="selectedWorkspace"
                   placeholder="search"
                   uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
-                   class="form-control typeahead"
+                  class="form-control typeahead"
                   style="width:250px">
               <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
               <div ng-if="noWorkspaces">
@@ -43,25 +47,29 @@
             <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-airr" name="flow-repo" ng-model="mode"
                   ng-click="setMode(1);" value="1">
-              <label for="flow-airr"><ng-bind-html ng-bind-html="modes[1]"/></label>
+              <label for="flow-airr">
+                <ng-bind-html ng-bind-html="modes[1]"/>
+              </label>
             </div>
 
             <div class="radio radio-primary" style="padding:10px">
               <input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"
                   ng-click="setMode(2);" value="2">
-              <label for="flow-lincs"><ng-bind-html ng-bind-html="modes[2]"/></label>
+              <label for="flow-lincs">
+                <ng-bind-html ng-bind-html="modes[2]"/>
+              </label>
             </div>
           </div>
 
         </uib-tab>
         <uib-tab index="1" heading="File Upload">
+          <div class="fileUpload">
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="row metadata" >
 
-          <div class="row" style="margin-top:20px">
-            <div class="col-sm-5" >
-              <div class="row" style="height:80px;">
-
-                <h5 style="margin-left:20px;margin-top:0;color:#6A8B92"> Metadata <i class="fa fa-tags " ></i></h5>
-                <div class="col-sm-10" >
+                  <h5 class="header" > Metadata <i class="fa fa-tags "></i></h5>
+                  <div class="col-sm-10">
                     <input type="text"
                         ng-model="xx.selectedInstance"
                         placeholder="search"
@@ -74,22 +82,22 @@
                     <span ng-if="noInstances">
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
                     </span>
-                </div>
+                  </div>
                   <span ng-if="!loadingInstances && !noInstances && xx.selectedInstance"
                       ng-click="insertItems($flow, xx.selectedInstance)">
-                    <i class="fa fa-plus-circle" style="font-size: 28px;padding: 4px 0;color: #FF5722;"></i></span>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="actions"  >
-                    <div><span class="btn btn-clear" flow-btn>Select</span></div>
-                    Select files to upload
+                    <i class="fa fa-plus-circle btn-add" ></i></span>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="actions">
+                      <div><span class="btn btn-clear" flow-btn>Select</span></div>
+                      Select files to upload
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-7" >
-                <div class="row progress-zone" style="border-left:1px solid #ddd" flow-drag-enter=""
+              <div class="col-sm-7">
+                <div class="row progress-zone"  flow-drag-enter="style={}"
                     flow-drag-leave="style={}"
                     ng-style="style" class="alert" flow-drop>
                   <div class="col-sm-12">
@@ -97,13 +105,13 @@
                     <div ng-repeat="file in $flow.files">
 
                       <form class="form-inline">
-                        <div class="progress" style="margin-bottom: 5px !important;">
+                        <div class="progress" >
                           <div class="progress-bar"
                               ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
                               style="min-width: 5%; width: {{file.progress()*100}}%;" value="{{file.progress()*100}}"
                               role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
                               aria-valuemax="100">
-                            <strong ng-show="!file.error" style="color: #5C5C5C;float:left;padding-left:10px">
+                            <strong ng-show="!file.error" class="error" >
                               {{file.name}} </strong> <strong
                               ng-show="file.error">Ooops...</strong>
                           </div>
@@ -112,18 +120,25 @@
                     </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
 
-          <div class="row" >
-            <div class="col-sm-5 actions"  >
+          <div class="row">
+            <div class="col-sm-5 actions">
               <!--<div style="width:100%;text-align:center;"><span class="btn btn-clear" flow-btn>Select</span></div>-->
             </div>
             <div class="col-sm-7 actions">
-              <div style="width:100%;">
-                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause" class="btn btn-clear "   translate>GENERIC.Pause</button>
-                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume" class="btn btn-clear "   translate>GENERIC.Resume</button>
-                <button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear" class="btn btn-clear "    translate>GENERIC.Clear</button>
+              <div >
+                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause"
+                    class="btn btn-clear " translate>GENERIC.Pause
+                </button>
+                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume"
+                    class="btn btn-clear " translate>GENERIC.Resume
+                </button>
+                <button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear"
+                    class="btn btn-clear " translate>GENERIC.Clear
+                </button>
               </div>
             </div>
           </div>
@@ -142,7 +157,9 @@
               data-dismiss="modal" aria-label="Done"
               class="btn btn-clear done" translate>GENERIC.Done
           </button>
-          <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit" class="btn btn-save "  translate>GENERIC.Submit</button>
+          <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit"
+              class="btn btn-save " translate>GENERIC.Submit
+          </button>
 
         </div>
       </div>
