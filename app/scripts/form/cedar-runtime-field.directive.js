@@ -498,7 +498,6 @@ define([
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
 
-exit()
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
           var valueLocation = $scope.getValueLocation();

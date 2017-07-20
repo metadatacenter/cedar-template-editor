@@ -994,7 +994,6 @@ define([
       if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
         fieldValue = "@id";
       }
-      console.log('getValueLocation ' + fieldValue + ' ' + service.getFieldControlledTerms(field));
       return fieldValue;
     };
 

@@ -248,7 +248,6 @@ define([
     };
 
     $scope.doValidation = function () {
-      console.log('doValidation');
       var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
