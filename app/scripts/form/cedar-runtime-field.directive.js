@@ -408,7 +408,6 @@ define([
       // initializes the value @type field if it has not been initialized yet
       $scope.initializeValueType = function () {
         dms.initializeValueType($scope.field, $scope.model);
-        console.log('initializeValueType');console.log($scope.model);
       };
 
       // initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
@@ -426,7 +425,6 @@ define([
           $scope.updateUIFromModel();
         }
         $scope.hasBeenInitialized = true;
-        console.log('initializeValue');console.log($scope.model);
       };
 
       // uncheck radio buttons
@@ -449,7 +447,6 @@ define([
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
 
-        console.log('updateModelFromUI ' + fieldValue + ' ' + inputType);
 
         if ($scope.isMultiAnswer()) {
           // Reset model
@@ -501,8 +498,7 @@ define([
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
 
-        console.log('updateUIFromModel ' + $scope.getValueLocation() );
-
+exit()
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
           var valueLocation = $scope.getValueLocation();
