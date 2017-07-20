@@ -110,6 +110,7 @@ define([
           $scope.xx.selectedInstance = undefined;
           $scope.loadingInstances;
           $scope.resources = [];
+          $scope.metadataFiles = [];
           $scope.instances = function (term) {
 
             var limit = UISettingsService.getRequestLimit();
@@ -153,6 +154,7 @@ define([
                       $timeout(function () {
                         var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)], {type: 'application/json'});
                         blob.name = name + '.json';
+                        $scope.metadataFiles.push(blob.name);
                         flow.addFile(blob);
 
                         $scope.xx.selectedInstance = '';
@@ -174,7 +176,7 @@ define([
           $scope.startUpload = function (flow) {
 
             flow.opts.target = $scope.getTarget();
-            flow.opts.query = {submissionId: Math.random().toString().replace('.', ''), numberOfFiles: flow.files.length};
+            flow.opts.query = {submissionId: Math.random().toString().replace('.', ''), numberOfFiles: flow.files.length, metadataFiles: $scope.metadataFiles.join(", ")};
             flow.opts.headers = AuthorizedBackendService.getConfig().headers;
 
             flow.upload();
@@ -253,6 +255,8 @@ define([
                   $scope.submitted = false;
                   $scope.complete = false;
                   $scope.paused = false;
+                  $scope.metadataFiles = [];
+                  $scope.resources = [];
                 }
                 jQuery('#flow-modal input').focus().select();
               }, 0);
