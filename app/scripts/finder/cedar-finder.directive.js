@@ -63,7 +63,6 @@ define([
           vm.pathInfo = [];
           vm.selectedPathInfo = [];
 
-          //vm.params = $location.search();
           vm.params = {};
           vm.params.folderId = QueryParamUtilsService.getFolderId();
           vm.params.search = $location.search().search;

@@ -19,34 +19,19 @@ module.exports = function (config) {
       // to load angular more than once.' message
       'bower_components/angular/angular.js',
 
-      // config files
       {pattern: 'config/**/*.json', included: false},
-      //{pattern: 'config/*.json', included: false},
       {pattern: 'resources/**/*.json', included: false},
-      // custom libraries
-      //{ pattern: 'cedar/scripts/**/*.js', included: false },
-      // third party libraries
       {pattern: 'third_party_components/**/*.js', included: false},
-
       {pattern: 'scripts/**/*.js', included: false},
       {pattern: 'scripts/app.js', included: false},
+      {pattern: 'scripts/**/*.html', included: true},
+      {pattern: 'img/**/*.png', included: false},
+
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',
-      // RequireJS config for Karma tests
-      'test-require-config.js',
+      'test-require-config.js'
 
-      // templates
-      'scripts/form/file-upload.directive.html',
-      'scripts/template-element/cedar-template-element.directive.html',
-      'scripts/form/form.directive.html',
-      'scripts/form/field.directive.html',
-      'scripts/form/field-create/checkbox.html',
-      'scripts/form/field-render/checkbox.html',
-      'scripts/form/partials/*.html',
-      'scripts/controlled-term/class-list.directive.html',
-      'scripts/controlled-term/controlled-term.directive.html',
-      'scripts/controlled-term/property-list.directive.html',
-      'scripts/dashboard/dashboard.html'
+
     ],
 
     // list of files to exclude
