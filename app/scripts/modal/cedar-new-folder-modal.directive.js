@@ -4,7 +4,7 @@ define([
       'angular',
       'cedar/template-editor/service/cedar-user',
     ], function (angular) {
-      angular.module('cedar.templateEditor.searchBrowse.cedarNewFolderModalDirective', [
+      angular.module('cedar.templateEditor.modal.cedarNewFolderModalDirective', [
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarNewFolderModal', cedarNewFolderModalDirective);
 
@@ -21,7 +21,7 @@ define([
           controller      : cedarNewFolderModalController,
           controllerAs    : 'folder',
           restrict        : 'E',
-          templateUrl     : 'scripts/search-browse/cedar-new-folder-modal.directive.html'
+          templateUrl     : 'scripts/modal/cedar-new-folder-modal.directive.html'
         };
 
         return directive;
