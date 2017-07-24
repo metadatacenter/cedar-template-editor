@@ -113,14 +113,16 @@
       </div>
     </div>
 
-    <!-- finder modal -->
-    <cedar-finder class="modal finder-modal fade" tabindex="-1" id="finder-modal" role="dialog" data-keyboard="true"
-        data-backdrop="static" select-resource-callback="selectElementFromPicker"
-        pick-resource-callback="pickElementFromPicker"
-        mode="'modal'">
-    </cedar-finder>
+    <section>
+      <cedar-finder id="finder-modal" cedar-modal-show modal-visible="finderModalVisible" class="modal fade"
+          tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"
+          data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
+          pick-resource-callback="pickElementFromPicker" >
+      </cedar-finder>
+    </section>
 
-    <!-- controlled terms modal for fields -->
+
+    <section>
     <div class="modal fade controlled-terms-modal" id="control-options-template-field" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content" style="overflow:auto">
@@ -136,7 +138,8 @@
         </div>
       </div>
     </div>
-
+    </section>
   </div>
+
 
 </div>

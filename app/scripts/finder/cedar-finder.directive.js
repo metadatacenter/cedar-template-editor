@@ -14,14 +14,13 @@ define([
 
         var directive = {
           bindToController: {
+            modalVisible  : '=',
             selectResourceCallback: '=',
-            pickResourceCallback  : '=',
-            mode                  : '='
+            pickResourceCallback  : '='
           },
           controller      : cedarFinderController,
           controllerAs    : 'finder',
           restrict        : 'E',
-          scope           : {},
           templateUrl     : 'scripts/finder/cedar-finder.directive.html'
         };
 
@@ -43,8 +42,11 @@ define([
         function cedarFinderController($location, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,
                                        QueryParamUtilsService, CONST) {
-          var vm = this;
 
+
+          $scope.id = 'finder-modal';
+
+          var vm = this;
           vm.breadcrumbName = breadcrumbName;
           vm.currentPath = "";
           vm.currentFolderId = "";
@@ -61,7 +63,6 @@ define([
           vm.pathInfo = [];
           vm.selectedPathInfo = [];
 
-          //vm.params = $location.search();
           vm.params = {};
           vm.params.folderId = QueryParamUtilsService.getFolderId();
           vm.params.search = $location.search().search;
@@ -88,10 +89,10 @@ define([
           vm.isElement = isElement;
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
-          vm.finderModalId = 'finder-modal';
+
           vm.search = search;
           vm.openResource = openResource;
-          vm.hideFinder = hideFinder;
+
           vm.hasFolders = hasFolders;
           vm.getFolders = getFolders;
           vm.hasElements = hasElements;
@@ -277,12 +278,14 @@ define([
             if (vm.params.search) {
               vm.isSearching = true;
               doSearch(vm.params.search);
-            } else if (vm.params.folderId) {
-              goToFolder(vm.params.folderId);
             } else {
-              goToFolder(CedarUser.getHomeFolderId());
+              vm.isSearching = false;
+              if (vm.params.folderId) {
+                goToFolder(vm.params.folderId);
+              } else {
+                goToFolder(CedarUser.getHomeFolderId());
+              }
             }
-
           }
 
           function breadcrumbName(folderName) {
@@ -327,7 +330,8 @@ define([
               if (typeof vm.pickResourceCallback === 'function') {
                 vm.pickResourceCallback(r);
               }
-              hideFinder();
+
+              $scope.hideModal($scope.id);
             }
           }
 
@@ -374,16 +378,15 @@ define([
           }
 
           function getResourceIconClass(resource) {
-            var result = "";
+            var result = '';
             if (resource) {
-              result += resource.nodeType + " ";
 
               switch (resource.nodeType) {
                 case CONST.resourceType.FOLDER:
                   result += "fa-folder";
                   break;
                 case CONST.resourceType.TEMPLATE:
-                  result += "fa-file-text";
+                  result += " fa-file-text";
                   break;
                 case CONST.resourceType.INSTANCE:
                   result += "fa-tag";
@@ -394,10 +397,8 @@ define([
                 case CONST.resourceType.FIELD:
                   result += "fa-file-code-o";
                   break;
-                  result += "fa-sitemap";
-                  break;
-
               }
+              result +=  ' ' + resource.nodeType;
             }
             return result;
           }
@@ -474,8 +475,6 @@ define([
            * Watch functions.
            */
 
-          $scope.$on('$routeUpdate', function () {
-          });
 
           $scope.$on('search-finder', function (event, searchTerm) {
             vm.params.search = searchTerm;
@@ -490,6 +489,15 @@ define([
             vm.searchTerm = searchTerm;
             $rootScope.$broadcast('search-finder', vm.searchTerm || '');
           };
+
+          // modal open and close
+          $scope.$on('finderModalVisible', function (event, params) {
+              vm.modalVisible = true;
+              vm.finderResource = null;
+              vm.params.search = null;
+              vm.params.folderId = null;
+              vm.selectedResource = null;
+          });
 
 
           /**
@@ -582,14 +590,7 @@ define([
             UISettingsService.saveInfo(CedarUser.toggleInfo());
           }
 
-          function hideFinder() {
-            jQuery("#" + vm.finderModalId).modal('hide');
-            vm.finderResource = null;
-            vm.params.search = null;
-            vm.params.folderId = null;
-            vm.selectedResource = null;
-            //init();
-          }
+
 
           function getFolders() {
             var result = [];
