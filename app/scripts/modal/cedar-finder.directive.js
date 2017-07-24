@@ -4,7 +4,7 @@ define([
       'angular',
       'cedar/template-editor/service/cedar-user',
     ], function (angular) {
-      angular.module('cedar.templateEditor.finder.cedarFinderDirective', [
+      angular.module('cedar.templateEditor.modal.cedarFinderDirective', [
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarFinder', cedarFinderDirective);
 
@@ -21,7 +21,7 @@ define([
           controller      : cedarFinderController,
           controllerAs    : 'finder',
           restrict        : 'E',
-          templateUrl     : 'scripts/finder/cedar-finder.directive.html'
+          templateUrl     : 'scripts/modal/cedar-finder.directive.html'
         };
 
         return directive;

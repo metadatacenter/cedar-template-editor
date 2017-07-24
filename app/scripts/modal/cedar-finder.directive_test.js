@@ -49,7 +49,7 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('my.templates'));
     // Load other modules
     beforeEach(module(app.name));
-    beforeEach(module('cedar.templateEditor.finder.cedarFinderDirective'));
+    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective'));
     beforeEach(module('cedar.templateEditor.service.uIMessageService'));
     beforeEach(module('cedar.templateEditor.service.resourceService'));
     beforeEach(module('cedar.templateEditor.service.uISettingsService'));
@@ -72,7 +72,7 @@ define(['app', 'angular'], function (app) {
         return cedarUser;
       });
     }));
-    beforeEach(module('cedar.templateEditor.finder.cedarFinderDirective', function($provide){
+    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective', function($provide){
       $provide.factory('cedarInfiniteScrollDirective', function(){ return {}; });
     }));
 
