@@ -1,5 +1,4 @@
 <div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}">
-
   <ui-select
       ng-change="updateModelFromUIControlledField(modelValue, index)"
       ng-model="modelValue[index].termInfo"
@@ -11,7 +10,7 @@
         ui-disable-choice="option.label == 'No Results...'"
         refresh="updateFieldAutocomplete(field,$select.search, index)"
         refresh-delay="200"
-        repeat="option in autocompleteResultsCache[getId()][$select.search]['results'] | propsFilter: {label: $select.search} | limitTo:500">
+        repeat="option in autocompleteResultsCache[getId()][$select.search || '*']['results'] | propsFilter: {label: $select.search} | limitTo:500">
       <div>
         <span class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.label | highlight: $select.search"></span>&nbsp;

@@ -61,9 +61,6 @@ define([
         DataManipulationService.relabel(scope.parentElement, key);
       };
 
-
-
-
       scope.isEditState = function () {
         return UIUtilService.isEditState(scope.element);
       };
@@ -89,7 +86,6 @@ define([
 
         return result;
       };
-
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -264,11 +260,47 @@ define([
         UIUtilService.toggleElement(domId);
       };
 
+      // scope.removeChild = function (fieldOrElement) {
+      //   //var childId = DataManipulationService.getId(node);
+      //   //var elementId = DataManipulationService.getId(scope.element);
+      //   //var parent = (childId === elementId) ? scope.parentElement : scope.element;
+      //
+      //   console.log('removeChild');console.log(DataManipulationService.getTitle(fieldOrElement));console.log(DataManipulationService.getTitle(scope.parentElement));
+      //
+      //
+      //   // fieldOrElement must contain the schema level
+      //   var schema = $rootScope.schemaOf(fieldOrElement);
+      //
+      //   var selectedKey;
+      //   var props = $rootScope.propertiesOf(scope.element);
+      //   angular.forEach(props, function (value, key) {
+      //     if (value["@id"] == schema["@id"]) {
+      //       selectedKey = key;
+      //     }
+      //   });
+      //
+      //   if (selectedKey) {
+      //     delete props[selectedKey];
+      //
+      //     var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
+      //     $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
+      //
+      //     if ($rootScope.isElement(schema)) {
+      //       scope.$emit("invalidElementState",
+      //           ["remove", $rootScope.schemaOf(schema)._ui.title, schema["@id"]]);
+      //     } else {
+      //       scope.$emit("invalidFieldState",
+      //           ["remove", $rootScope.schemaOf(schema)._ui.title, schema["@id"]]);
+      //     }
+      //   }
+      // };
 
-      scope.removeChild = function () {
 
+      scope.removeChild = function (node) {
+        console.log('removeChild from parent '   + DataManipulationService.getId(scope.parentElement) + ' ' + DataManipulationService.getId(node));
+        console.log(scope.parentElement );
 
-        DataManipulationService.removeChild(scope.parentElement, scope.element);
+        DataManipulationService.removeChild(scope.parentElement, node);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);
 

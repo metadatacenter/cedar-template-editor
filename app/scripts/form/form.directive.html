@@ -10,7 +10,7 @@
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
-          <field-directive field="form.properties[item]" model="model[item]"
+          <field-directive parent-element="form" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"
               is-edit-data="isEditData"></field-directive>
@@ -23,6 +23,7 @@
               key="item"
               model="model[item]"
               parent-element="form"
+              delete="removeChild"
               is-edit-data="isEditData">
           </cedar-template-element>
         </div>
@@ -107,9 +108,8 @@
         <!--If  field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
-
             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
-          <field-directive nested="false" field="form.properties[item]" model="model[item]"
+          <field-directive parent-element="form" nested="false" field-key="item" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
@@ -143,6 +143,7 @@
                  key="item"
                  model="model[item]"
                  parent-element="form"
+                 delete="removeChild"
                  is-edit-data="isEditData">
              </cedar-template-element>
            </div>
@@ -154,6 +155,7 @@
                  key="item"
                  model="model[item]"
                  parent-element="form"
+                 delete="removeChild"
                  is-edit-data="isEditData">
              </cedar-template-element>
            </div>
