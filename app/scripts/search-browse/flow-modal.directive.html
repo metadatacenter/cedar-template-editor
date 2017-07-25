@@ -33,7 +33,7 @@
               <input ng-disabled="selectedMode != 0"
                   id="immport-workspace"
                   type="text"
-                  ng-model="selectedWorkspace"
+                  ng-model="model.selectedWorkspace"
                   placeholder="search"
                   uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
                   class="form-control typeahead"
@@ -71,7 +71,7 @@
                   <h5 class="header" > Metadata <i class="fa fa-tags "></i></h5>
                   <div class="col-sm-10">
                     <input type="text" ng-disabled="!canInsert()"
-                        ng-model="xx.selectedInstance"
+                        ng-model="model.selectedInstance"
                         placeholder="search"
                         uib-typeahead="instance for instance in instances($viewValue)"
                         typeahead-loading="loadingInstances"
@@ -83,8 +83,8 @@
                       <i class="glyphicon glyphicon-remove"></i> No Results Found
                     </span>
                   </div>
-                  <span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && xx.selectedInstance"
-                      ng-click="insertItems($flow, xx.selectedInstance)">
+                  <span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"
+                      ng-click="insertItems($flow, model.selectedInstance)">
                     <i class="fa fa-plus-circle btn-add" ></i></span>
                 </div>
                 <div class="row">

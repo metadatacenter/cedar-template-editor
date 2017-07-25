@@ -1734,7 +1734,6 @@ angular.module('flow.init', ['flow.provider'])
     }
   }])
   .directive('flowInit', [function() {
-    console.log('flowInt');
     return {
       scope: true,
       controller: 'flowCtrl'

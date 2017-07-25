@@ -32,7 +32,8 @@ define([
           'resourceService',
           'TemplateInstanceService',
           'AuthorizedBackendService',
-          'UrlService'
+          'UrlService',
+          'SubmissionService'
         ];
 
 
@@ -44,8 +45,8 @@ define([
 
 
         function flowModalController($scope, $rootScope, $timeout, QueryParamUtilsService, UISettingsService,
-                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService, UrlService) {
-
+                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService, UrlService,
+                                     SubmissionService) {
 
           //
           // init
@@ -54,8 +55,10 @@ define([
           $scope.submitted = false;
           $scope.paused = false;
           $scope.complete = false;
+
           $scope.init = function (flow) {
             $scope.flow = flow;
+            $scope.getWorkspaces();
           };
 
           //
@@ -85,32 +88,47 @@ define([
           //
           // workspaces
           //
-          $scope.selectedWorkspace = undefined;
           $scope.loadingWorkspace;
-          $scope.workspaces = ['Test Environment for CEDAR', 'cedaruser_cedaruser_Workspace'];
-          $scope.dummyWorkspaceResponse = {
-            "success"   : true,
-            "workspaces": [
-              {
-                "workspaceID"  : "100001",
-                "workspaceName": "Test Environment for CEDAR"
-              },
-              {
-                "workspaceID"  : "5733",
-                "workspaceName": "cedaruser_cedaruser_Workspace"
-              }
-            ]
+          $scope.workspaces;
+          $scope.workspaceIds
+
+          $scope.getWorkspaces = function () {
+
+            SubmissionService.getWorkspaces(
+                function (response) {
+                  // keep the ids in the id map
+                  $scope.workspaceIds = response.workspaces.map(function (item) {
+                    return item.workspaceID;
+                  });
+                  // give the name map back to the typeahead directive
+                  $scope.workspaces =  response.workspaces.map(function (item) {
+                    return item.workspaceName;
+                  });
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.WORKSPACE.error', error);
+                }
+            );
+          };
+
+          $scope.getSelectedWorkspaceId = function() {
+            if ($scope.model.selectedWorkspace) {
+              var index = $scope.workspaces.indexOf($scope.model.selectedWorkspace);
+              return $scope.workspaceIds[index];
+            }
           };
 
           //
           // metadata instances
           //
 
-          $scope.xx = {};       // xx or something like it is required because of Angular's ng-model, scope and dot notation
-          $scope.xx.selectedInstance = undefined;
+          $scope.model = {};       // model or something like it is required because of Angular's ng-model, scope and dot notation
+          $scope.model.selectedInstance = undefined;
+          $scope.model.selectedWorkspace = undefined;
           $scope.loadingInstances;
           $scope.resources = [];
           $scope.metadataFiles = [];
+
           $scope.instances = function (term) {
 
             var limit = UISettingsService.getRequestLimit();
@@ -129,6 +147,8 @@ define([
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
+
+
                   return $scope.resources.map(function (item) {
                     return item.name;
                   });
@@ -159,7 +179,7 @@ define([
                           $scope.metadataFiles.push(blob.name);
                           flow.addFile(blob);
 
-                          $scope.xx.selectedInstance = '';
+                          $scope.model.selectedInstance = '';
 
                         }, 0);
 
@@ -179,7 +199,11 @@ define([
           $scope.startUpload = function (flow) {
 
             flow.opts.target = $scope.getTarget();
-            flow.opts.query = {submissionId: Math.random().toString().replace('.', ''), numberOfFiles: flow.files.length, metadataFiles: $scope.metadataFiles.join(", ")};
+            flow.opts.query = {
+              submissionId: Math.random().toString().replace('.', ''),
+              numberOfFiles: flow.files.length,
+              metadataFiles: $scope.metadataFiles.join(", "),
+              workspaceId: $scope.getSelectedWorkspaceId()};
             flow.opts.headers = AuthorizedBackendService.getConfig().headers;
 
             flow.upload();
@@ -204,7 +228,7 @@ define([
 
 
           $scope.canSubmit = function (flow) {
-            var validRepo = ($scope.selectedWorkspace && $scope.selectedMode ==0) || ($scope.selectedMod != 0);
+            var validRepo = ($scope.model.selectedWorkspace && $scope.selectedMode ==0) || ($scope.selectedMod != 0);
             return validRepo && !$scope.complete && !$scope.submitted &&  flow.files.length > 0;
           };
 

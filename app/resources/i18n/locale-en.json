@@ -160,6 +160,9 @@
     "repoSubmission": "Submit to repository"
   },
   "SERVER": {
+    "WORKSPACE": {
+      "error": "There was an error while executing the workspace request!<br /><br />VIEW TECHNICAL DETAILS!"
+    },
     "FOLDER": {
       "create": {
         "success": "The folder <b>{{title}}</b> has been created.",

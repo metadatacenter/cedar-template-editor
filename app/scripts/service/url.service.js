@@ -189,6 +189,10 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
+    service.immportWorkspaces = function () {
+      return submissionService + '/command/immport-workspaces';
+    };
+
     service.lincsValidation = function () {
       return submissionService + '/command/validate-lincs';
     };
