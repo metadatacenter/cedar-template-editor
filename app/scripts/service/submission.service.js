@@ -39,7 +39,7 @@ define([
       // });
 
       return AuthorizedBackendService.doCall(
-          HttpBuilderService.post(url),
+          HttpBuilderService.get(url),
           function (response) {
             successCallback(response.data);
           },
