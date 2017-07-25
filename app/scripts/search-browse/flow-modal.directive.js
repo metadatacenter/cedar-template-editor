@@ -58,7 +58,7 @@ define([
 
           $scope.init = function (flow) {
             $scope.flow = flow;
-            $scope.getWorkspaces();
+            //$scope.getWorkspaces();
           };
 
           //
@@ -283,6 +283,9 @@ define([
             if (params && params[0]) {
               $timeout(function () {
                 // modal just opened
+                if (!$scope.workspaces) {
+                  $scope.getWorkspaces();
+                }
                 if (!$scope.flow.isUploading()  || $scope.paused) {
                   $scope.cancelAll($scope.flow);
 

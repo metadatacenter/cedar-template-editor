@@ -206,7 +206,7 @@ define([
     };
 
     service.immportSubmission = function () {
-      return 'https://httpbin.org/post';
+      return submissionService +  '/command/immport-submit';
     };
 
     service.lincsSubmission = function () {
