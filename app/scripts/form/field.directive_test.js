@@ -72,12 +72,12 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      // describe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplate('textfield');
-      //   });
-      //   textfieldTests();
-      // });
+      xdescribe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('textfield');
+        });
+        textfieldTests();
+      });
     });
 
 
@@ -91,12 +91,12 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-      // describe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplateElement('textfield');
-      //   });
-      //   textfieldTests();
-      // });
+      xdescribe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplateElement('textfield');
+        });
+        textfieldTests();
+      });
     });
 
 
@@ -185,22 +185,22 @@ define(['app', 'angular'], function (app) {
 
     };
 
-    // function textfieldTests() {
-    //
-    //   var hiddenTabSelector = ".detail-options .hidden-tab";
-    //   var cardinalityTabSelector = ".detail-options .cardinality-tab";
-    //   var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-    //   var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-    //   var requiredTabSelector = ".detail-options .required-tab";
-    //
-    //   it("should show only the correct tabs", function () {
-    //     expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
-    //     expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
-    //     expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
-    //     expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
-    //     expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-    //   });
-    // }
+    function textfieldTests() {
+
+      var hiddenTabSelector = ".detail-options .hidden-tab";
+      var cardinalityTabSelector = ".detail-options .cardinality-tab";
+      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+      var requiredTabSelector = ".detail-options .required-tab";
+
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
+    }
 
     /* SHARED UTILS DEFINITIONS */
 

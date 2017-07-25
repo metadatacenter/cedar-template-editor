@@ -133,9 +133,8 @@ define([
 
     // Used in textfield.html
     service.updateFieldAutocomplete = function (field, term) {
-      if (term === '') {
-        term = '*';
-      }
+
+      var query = term || '*';
       var results = [];
       var vcst = DataManipulationService.getValueConstraint(field);
       var id = DataManipulationService.getId(field);
@@ -144,22 +143,22 @@ define([
       // initialize the results array
       if (angular.isUndefined(service.autocompleteResultsCache[id])) {
         service.autocompleteResultsCache[id] = [];
-        service.autocompleteResultsCache[id][term] = {
+        service.autocompleteResultsCache[id][query] = {
           'results': []
         };
       }
-      if (angular.isUndefined(service.autocompleteResultsCache[id][term])) {
-        service.autocompleteResultsCache[id][term] = {
+      if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
+        service.autocompleteResultsCache[id][query] = {
           'results': []
         };
       }
 
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {
-        service.removeAutocompleteResultsForSource(id, term, 'template');
+        service.removeAutocompleteResultsForSource(id, query, 'template');
         angular.forEach(vcst.classes, function (klass) {
-          if (term == '*') {
-            service.autocompleteResultsCache[id][term].results.push(
+          if (query == '*') {
+            service.autocompleteResultsCache[id][query].results.push(
                 {
                   '@id'      : klass.uri,
                   'label'    : klass.label,
@@ -168,8 +167,8 @@ define([
                 }
             );
           } else {
-            if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
-              service.autocompleteResultsCache[id][term].results.push(
+            if (klass && klass.label && klass.label.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+              service.autocompleteResultsCache[id][query].results.push(
                   {
                     '@id'      : klass.uri,
                     'label'    : klass.label,
@@ -180,9 +179,9 @@ define([
             }
           }
         });
-        if (term !== '*') {
-          if (service.autocompleteResultsCache[id][term].results.length === 0) {
-            service.autocompleteResultsCache[id][term].results.push({
+        if (query !== '*') {
+          if (service.autocompleteResultsCache[id][query].results.length === 0) {
+            service.autocompleteResultsCache[id][query].results.push({
               'label'    : $translate.instant('GENERIC.NoResults'),
               'sourceUri': 'template'
             });
@@ -192,172 +191,40 @@ define([
 
       if (vcst.valueSets && vcst.valueSets.length > 0) {
         angular.forEach(vcst.valueSets, function (valueSet) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, valueSet.uri);
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
           }
-          controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+          controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
               valueSet.uri).then(function (childResponse) {
-            service.processAutocompleteClassResults(id, term, 'Value Set Class', valueSet.uri, childResponse);
+            service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
           });
         });
       }
 
       if (vcst.ontologies && vcst.ontologies.length > 0) {
         angular.forEach(vcst.ontologies, function (ontology) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, ontology.uri);
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, ontology.uri);
           }
-          controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
-            service.processAutocompleteClassResults(id, term, 'Ontology Class', ontology.uri, childResponse);
+          controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(function (childResponse) {
+            service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
           });
         });
       }
 
       if (vcst.branches && vcst.branches.length > 0) {
         angular.forEach(vcst.branches, function (branch) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, branch.uri);
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, branch.uri);
           }
-          controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri,
+          controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
               branch.maxDepth).then(
               function (childResponse) {
-                service.processAutocompleteClassResults(id, term, 'Ontology Class', branch.uri, childResponse);
+                service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
               }
           );
         });
       }
-    };
-
-    // Used in textfield.html
-    service.updateFieldAutocompleteNew = function (field, term) {
-      console.log('updateFieldAutocomplete ' + term);
-      if (term === '') {
-        term = '*';
-      }
-      var results = [];
-      var vcst = DataManipulationService.getValueConstraint(field);
-      var id = DataManipulationService.getId(field);
-      service.initResults(id, term);
-
-      // are we searching for classes?
-      if (vcst.classes && vcst.classes.length > 0) {
-        console.log('vcst.classes');
-        service.removeAutocompleteResultsForSource(id, term, 'template');
-        angular.forEach(vcst.classes, function (klass) {
-          if (term == '*') {
-            service.autocompleteResultsCache[id][term].results.push(
-                {
-                  '@id'      : klass.uri,
-                  'label'    : klass.label,
-                  'type'     : 'Ontology Class',
-                  'sourceUri': 'template'
-                }
-            );
-          } else {
-            if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
-              service.autocompleteResultsCache[id][term].results.push(
-                  {
-                    '@id'      : klass.uri,
-                    'label'    : klass.label,
-                    'type'     : 'Ontology Class',
-                    'sourceUri': 'template'
-                  }
-              );
-            }
-          }
-        });
-        if (term !== '*') {
-          if (service.autocompleteResultsCache[id][term].results.length === 0) {
-            service.autocompleteResultsCache[id][term].results.push({
-              'label'    : $translate.instant('GENERIC.NoResults'),
-              'sourceUri': 'template'
-            });
-          }
-        }
-      }
-
-      var requests = [];
-      var responses = [];
-
-      // build your requests
-      if (vcst.valueSets && vcst.valueSets.length > 0) {
-        console.log('vcst valueSets');
-        angular.forEach(vcst.valueSets, function (valueSet) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, valueSet.uri);
-          }
-          var request = controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
-              valueSet.uri).then(function (childResponse) {
-            var response = {
-              id: id,
-              term: term,
-              type: 'Value Set Class',
-              uri: valueSet.uri,
-              response: childResponse
-            };
-            responses.push(response);
-          });
-          requests.push(request);
-        });
-      }
-
-      if (vcst.ontologies && vcst.ontologies.length > 0) {
-        console.log('vcst ontologies');
-        angular.forEach(vcst.ontologies, function (ontology) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, ontology.uri);
-          }
-          var request = controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(
-              function (childResponse) {
-                var response = {
-                  id: id,
-                  term: term,
-                  type: 'Ontology Class',
-                  uri: ontology.uri,
-                  response: childResponse
-                };
-                responses.push(response);
-              });
-          console.log(typeof request);
-          console.log(request);
-          requests.push(request);
-
-        });
-      }
-
-      if (vcst.branches && vcst.branches.length > 0) {
-        angular.forEach(vcst.branches, function (branch) {
-          if (term == '*') {
-            service.removeAutocompleteResultsForSource(id, term, branch.uri);
-          }
-          var request = controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri,
-              branch.maxDepth).then(
-              function (childResponse) {
-                var response = {
-                  id: id,
-                  term: term,
-                  type: 'Ontology Class',
-                  uri: branch.uri,
-                  response: childResponse
-                };
-                responses.push(response);
-              });
-          requests.push(request);
-        });
-      }
-
-      console.log(requests);
-
-      jQuery.when.apply(jQuery, requests).then(function() {
-        console.log(responses);
-        for (var response in responses) {
-          service.processAutocompleteClassResults(response.id, response.term, response.type, response.uri, response.response);
-        }
-      }, function(e) {
-        console.log("My ajax failed");
-      });
-
-
     };
 
 

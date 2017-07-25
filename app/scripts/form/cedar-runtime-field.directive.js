@@ -65,7 +65,7 @@ define([
 
       // Retrieve appropriate field template file
       $scope.getFieldUrl = function () {
-        return 'scripts/form/runtime-field' + '/' + getInputType() + '.html';
+        return 'scripts/form/runtime-field' + '/' + $scope.getInputType() + '.html';
       };
 
       // is the field multiple cardinality?
@@ -345,32 +345,32 @@ define([
       //
 
       // does this field have a value constraint?
-      var hasValueConstraint = function () {
+      $scope.hasValueConstraint = function () {
         return dms.hasValueConstraint($scope.field);
       };
 
       // is this field required?
-      var isRequired = function () {
+      $scope.isRequired = function () {
         return dms.isRequired($scope.field);
       };
 
       // is this a checkbox, radio or list question?
-      var isMultiAnswer = function () {
+      $scope.isMultiAnswer = function () {
         return dms.isMultiAnswer($scope.field);
       };
 
       // is this a checkbox, radio or list question?
-      var isMultipleChoice = function () {
+      $scope.isMultipleChoice = function () {
         return dms.isMultipleChoice($scope.field);
       };
 
       // is this a checkbox, radio or list question?
-      var getInputType = function () {
+      $scope.getInputType = function () {
         return dms.getInputType($scope.field);
       };
 
       // is this a checkbox, radio or list question?
-      var getValueLocation = function () {
+      $scope.getValueLocation = function () {
         return dms.getValueLocation($scope.field);
       };
 
@@ -392,7 +392,7 @@ define([
       // an array of values for multi-instance fields
       $scope.setValueArray = function () {
         $scope.valueArray = [];
-        if (isMultiAnswer()) {
+        if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
         } else if ($scope.model instanceof Array) {
           $scope.valueArray = $scope.model;
@@ -444,10 +444,10 @@ define([
 
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
-        var fieldValue = getValueLocation();
-        var inputType = getInputType();
+        var fieldValue = $scope.getValueLocation();
+        var inputType = $scope.getInputType();
 
-        if (isMultiAnswer()) {
+        if ($scope.isMultiAnswer()) {
           // Reset model
           $scope.model = dms.initializeModel($scope.field, $scope.model, true);
 
@@ -474,7 +474,7 @@ define([
           }
           else if (inputType == 'list') {
             // Multiple-choice list
-            if (isMultipleChoice()) {
+            if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
                 var newValue = {};
                 newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
@@ -496,9 +496,9 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-        if (isMultiAnswer()) {
+        if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
-          var valueLocation = getValueLocation();
+          var valueLocation = $scope.getValueLocation();
 
           if (dms.isCheckboxType($scope.field)) {
             for (var i = 0; i < $scope.model.length; i++) {
@@ -514,7 +514,7 @@ define([
           }
           else if (dms.isListType($scope.field)) {
             // Multi-choice list
-            if (isMultipleChoice()) {
+            if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
                 $scope.optionsUI.listMultiSelect.push($scope.model[i][valueLocation]);
@@ -533,7 +533,7 @@ define([
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
       $scope.checkForEmpty = function () {
-        var location = getValueLocation();
+        var location = $scope.getValueLocation();
         var obj = $scope.valueArray[$scope.index];
         if (!obj[location] || obj[location].length === 0) {
           delete obj[location];
@@ -542,7 +542,7 @@ define([
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
-        var valueLocation = getValueLocation();
+        var valueLocation = $scope.getValueLocation();
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
@@ -558,15 +558,13 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-
         if ($scope.isMultipleCardinality()) {
-          var valueLocation = getValueLocation();
+          var valueLocation = $scope.getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
           if ((!maxItems || $scope.model.length < maxItems)) {
-
             // add another instance in the model
             var obj = {};
-            obj[valueLocation] = dms.getDefaultValue(valueLocation);
+            obj[valueLocation] = dms.getDefaultValue(valueLocation, $scope.field);
             $scope.model.push(obj);
 
             // activate the new instance
@@ -599,7 +597,7 @@ define([
         //var id = $scope.getId() + '-' + $scope.index;
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if (hasValueConstraint() && isRequired()) {
+        if ($scope.hasValueConstraint() && $scope.isRequired()) {
           var allRequiredFieldsAreFilledIn = true;
 
           if (angular.isArray($scope.model)) {
@@ -682,7 +680,7 @@ define([
         }
 
         // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if (hasValueConstraint() && isRequired() && allRequiredFieldsAreFilledIn) {
+        if ($scope.hasValueConstraint() && $scope.isRequired() && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
           $scope.$emit('emptyRequiredField',
               ['remove', $scope.getTitle(), $scope.uuid]);
@@ -704,7 +702,7 @@ define([
           }
         }
 
-        if (hasValueConstraint()) {
+        if ($scope.hasValueConstraint()) {
 
           if (angular.isArray($scope.model)) {
             angular.forEach($scope.model, function (valueElement, index) {

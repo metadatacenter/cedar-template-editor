@@ -99,13 +99,16 @@ define(['angular'], function (angular) {
       return relevantPopulatedFieldsArray;
     };
 
-    service.updateValueRecommendationResults = function (field, index) {
+    service.updateValueRecommendationResults = function (field, term) {
+      console.log('updateValueRecommendationResults');
+      var query = term || '*';
       var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
         var targetFieldPath = field._path;
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
-              var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][index]['results'];
+              console.log(autocompleteService.autocompleteResultsCache[fieldId]);
+              var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][query]['results'];
 
               if (recommendation.recommendedValues) {
                 if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {

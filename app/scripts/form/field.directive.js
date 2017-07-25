@@ -117,11 +117,13 @@ define([
         return FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
-      $scope.removeChild = function () {
-        dms.removeChild($scope.parentElement, $scope.field);
-        $scope.$emit("invalidFieldState",
-            ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
-
+      // check for delete;  we should have a parentElement
+      $scope.ckDelete = function () {
+        if ($scope.parentElement) {
+          DataManipulationService.removeChild($scope.parentElement, $scope.field);
+          $scope.$emit("invalidElementState",
+              ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+        }
       };
 
       // try to select this field
@@ -222,6 +224,10 @@ define([
           $scope.model.splice(index, 1);
         }
       };
+
+      $scope.relabelField = function(newTitle) {
+        DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
+      }
 
       //
       // controlled terms modal
@@ -693,7 +699,7 @@ define([
         };
         select.selected = undefined;
         select.search = "";
-        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue);
+        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
         delete $scope.model['_valueLabel'];
       };
 
@@ -865,7 +871,6 @@ define([
         var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
       };
 
-
       /* end of controlled terms functionality */
 
     };
@@ -874,7 +879,9 @@ define([
       templateUrl: 'scripts/form/field.directive.html',
       restrict   : 'EA',
       scope      : {
+        fieldKey      : '=',
         field         : '=',
+        parentElement : '=',
         model         : '=',
         renameChildKey: "=",
         preview       : "=",

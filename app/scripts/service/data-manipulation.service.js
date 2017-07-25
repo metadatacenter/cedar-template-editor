@@ -537,10 +537,42 @@ define([
       return service.schemaOf(node)['_ui']['propertyLabels'];
     };
 
-    // relabel the key with a new value from the propertyLabels
-    service.relabel = function (node, key) {
-      console.log('relabel ' + key);
+    // Relabel the field key with the field title
+    service.relabelField = function (schema, key, newTitle) {
+      /* Generate the new key */
+      var fieldKey = service.getFieldName(newTitle);
+      var properties = service.propertiesOf(schema);
+      var newKey = service.getAcceptableKey(properties, fieldKey);
 
+      // Rename the key at the schema.properties level
+      service.renameKeyOfObject(properties, key, newKey);
+
+      /* Rename the key in the @context */
+      if (properties["@context"] && properties["@context"].properties) {
+        service.renameKeyOfObject(properties["@context"].properties, key, newKey);
+        // update enum only if it is using one of our made up property URIs
+        var prop = properties["@context"].properties[newKey];
+        if (prop && prop.enum) {
+          if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
+            prop.enum[0] = service.getEnumOf(newKey);
+          }
+        }
+      }
+
+      if (properties["@context"].required) {
+        var idx = properties["@context"].required.indexOf(key);
+        properties["@context"].required[idx] = newKey;
+      }
+
+      // Rename the key in the 'order' array
+      schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+
+      // Rename key in the 'required' array
+      schema.required = service.renameItemInArray(schema.required, key, newKey);
+    };
+
+    // Relabel the element key with a new value from the propertyLabels
+    service.relabel = function (node, key) {
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
@@ -794,11 +826,16 @@ define([
       return model;
     };
 
-    // This function initializes the @value field (in the model) to null if it has not been initialized yet. Note that
+    // This function initializes the @value field (in the model) to null if it has not been initialized yet.
+    // For text fields, it may also set it to a default value set by the user when creating the template. Note that
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
+
       var fieldValue = service.getValueLocation(field);
       if (fieldValue == "@value") {
+
+        var defaultValue = service.getDefaultValue(fieldValue, field);
+
         // Not an array
         if (!$rootScope.isArray(model)) {
           if (!model) {
@@ -809,12 +846,12 @@ define([
             // If undefined value or empty string
             if ((angular.isUndefined(
                     model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
-              model[fieldValue] = null;
+              model[fieldValue] = defaultValue;
             }
           }
           // Value field has not been defined
           else {
-            model[fieldValue] = null;
+            model[fieldValue] = defaultValue;
           }
         }
         // An array
@@ -822,7 +859,7 @@ define([
           // Length is 0
           if (model.length == 0) {
             model.push({});
-            model[0][fieldValue] = null;
+            model[0][fieldValue] = defaultValue;
           }
           // If length > 0
           else {
@@ -834,9 +871,16 @@ define([
       }
     };
 
-    service.getDefaultValue = function (fieldValue) {
+    service.getDefaultValue = function (fieldValue, field) {
       if (fieldValue == "@value") {
-        return null;
+        // If the template contains a user-defined default value, we use it as the default value for the field
+        if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
+          return service.getUserDefinedDefaultValue(field);
+        }
+        // Otherwise, we return the default value, which is 'null'
+        else {
+          return null;
+        }
       }
       // Otherwise don't return anything because the @id field can't be initialized to null
     };
@@ -967,15 +1011,22 @@ define([
       return location;
     };
 
-    // Transform string to obtain JSON field name
-    service.getFieldName = function (string) {
-      // Using Camel case format
-      return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+    // Generates a nice field name
+    service.getFieldName = function (rawFieldName) {
+      var niceFieldName = rawFieldName;
+
+      // To Camel Case
+      niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
         return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
       }).replace(/\s+/g, '');
 
-      //// Using underscore format
-      //return string
+      // Keep only alphanumeric characters
+      niceFieldName = niceFieldName.replace(/\W/g, '')
+
+      return niceFieldName;
+
+      // Using underscore format
+      //return rawFieldName
       //  .replace(/'|"|(|)/g, '')
       //  .replace(/ +/g, "_")
       //  .toLowerCase();
@@ -1121,6 +1172,18 @@ define([
       return templateOrElement;
     };
 
+    service.removeKeyFromContext = function(schema, key) {
+      if (schema.properties["@context"] && schema.properties["@context"].properties) {
+        delete schema.properties["@context"].properties[key];
+      }
+      if (schema.properties["@context"].required) {
+        var index = schema.properties["@context"].required.indexOf(key);
+        if (index >= 0) {
+          schema.properties["@context"].required.splice(index, 1);
+        }
+      }
+    };
+
     // Rename an array item
     service.renameItemInArray = function (array, name, newName) {
       var index = array.indexOf(name);
@@ -1130,55 +1193,39 @@ define([
       return array;
     };
 
-
     // rename the key of a child in the form
     service.renameChildKey = function (parent, child, newKey) {
       if (!child) {
         return;
-
       }
-
       var parentSchema = service.schemaOf(parent);
-
       var childId = service.idOf(child);
       if (!childId || /^tmp\-/.test(childId)) {
         var p = service.propertiesOf(parent);
         if (p[newKey] && p[newKey] == child) {
           return;
         }
-
-
         newKey = service.getAcceptableKey(p, newKey);
         angular.forEach(p, function (value, key) {
           if (!value) {
             return;
           }
-
           var idOfValue = service.idOf(value);
           if (idOfValue && idOfValue == childId) {
             service.renameKeyOfObject(p, key, newKey);
-
             if (p["@context"] && p["@context"].properties) {
               service.renameKeyOfObject(p["@context"].properties, key, newKey);
-
               if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-
-
-
-                //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
                 p["@context"].properties[newKey].enum[0] = service.getPropertyOf(newKey,
                     p["@context"].properties[newKey].enum[0]);
               }
             }
-
             if (p["@context"].required) {
               var idx = p["@context"].required.indexOf(key);
               p["@context"].required[idx] = newKey;
             }
-
             // Rename key in the 'order' array
             parentSchema._ui.order = service.renameItemInArray(parentSchema._ui.order, key, newKey);
-
             // Rename key in the 'required' array
             parentSchema.required = service.renameItemInArray(parentSchema.required, key, newKey);
           }
@@ -1186,20 +1233,24 @@ define([
       }
     };
 
-
     //
     // value constraints
     //
 
     // does this field have a value constraint?
     service.hasValueConstraint = function (node) {
-      var vcst = service.schemaOf(node)._valueConstraints;
-      var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-          vcst.valueSets && vcst.valueSets.length > 0 ||
-          vcst.classes && vcst.classes.length > 0 ||
-          vcst.branches && vcst.branches.length > 0);
+      var result = false;
 
-      return typeof result !== 'undefined';
+      var vcst = service.schemaOf(node)._valueConstraints;
+      if (vcst) {
+        var hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
+        var hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
+        var hasClasses = vcst.classes && vcst.classes.length > 0;
+        var hasBranches = vcst.branches && vcst.branches.length > 0;
+        result = hasOntologies || hasValueSets || hasClasses || hasBranches;
+      }
+
+      return result;
     };
 
     // does this field have a value constraint?
@@ -1488,11 +1539,7 @@ define([
     };
 
     service.removeChild = function (parent, child) {
-      // child must contain the schema level
-
       var id = service.getId(child);
-
-
       var selectedKey;
       var props = service.propertiesOf(parent);
       angular.forEach(props, function (value, key) {
@@ -1502,23 +1549,26 @@ define([
       });
 
       if (selectedKey) {
+        // Remove the key
         delete props[selectedKey];
 
-
+        // Remove it from the order array
         var idx = service.getOrder(parent).indexOf(selectedKey);
         service.getOrder(parent).splice(idx, 1);
 
-        // remove property label for this element
-        delete service.getPropertyLabels(parent)[selectedKey];
-
+        // Remove the property label (for elements)
+        if (service.getPropertyLabels(parent)[selectedKey]) {
+          delete service.getPropertyLabels(parent)[selectedKey];
+        }
 
         // Remove it from the top-level 'required' array
-        parent = service.removeKeyFromRequired(parent, selectedKey);
+        service.removeKeyFromRequired(parent, selectedKey);
 
+        // Remove it from the context
+        service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
       }
       return selectedKey;
     };
-
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {
@@ -1609,23 +1659,23 @@ define([
       });
     };
 
-
-    service.hasDefault = function (node) {
-      var schema = service.schemaOf(node);
-      if (!schema._valueConstraints.hasOwnProperty('defaultValue')) {
-        schema._valueConstraints.defaultValue = "";
+    service.hasUserDefinedDefaultValue = function (field) {
+      var schema = service.schemaOf(field);
+      if (schema._valueConstraints && schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0) {
+        return true;
       }
-      return schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0;
+      else {
+        return false;
+      }
     };
 
-    // get the default value
-    service.getDefault = function (node) {
-      var schema = service.schemaOf(node);
-      if (service.hasDefault(node)) {
-      } else {
-        schema._valueConstraints.defaultValue = '';
+    service.getUserDefinedDefaultValue = function (field) {
+      if (service.hasUserDefinedDefaultValue(field)) {
+        return service.schemaOf(field)._valueConstraints.defaultValue;
       }
-      return schema._valueConstraints.defaultValue;
+      else {
+        return null;
+      }
     };
 
     // does this field allow the hidden attribute?
@@ -1647,7 +1697,6 @@ define([
     service.setHidden = function (node, value) {
       service.schemaOf(node)._ui.hidden = value;
     };
-
 
     return service;
   };
