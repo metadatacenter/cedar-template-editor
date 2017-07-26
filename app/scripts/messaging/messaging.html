@@ -27,7 +27,7 @@
             </tr>
             <tr>
               <td>Subject:</td>
-              <td ng-class="{unread: message.status == 'UNREAD'}">{{message.subject}}</td>
+              <td ng-class="{unread: message.readStatus == 'UNREAD'}">{{message.subject}}</td>
             </tr>
             <tr>
               <td>Body:</td>
@@ -35,7 +35,7 @@
             </tr>
             <tr>
               <td>Status:</td>
-              <td>{{message.status}}</td>
+              <td>{{message.readStatus}}</td>
             </tr>
           </table>
         </div>
