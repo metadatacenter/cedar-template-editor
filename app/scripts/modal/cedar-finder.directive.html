@@ -46,12 +46,12 @@
                 <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                     class="fa fa-sort  inline "></i></button>
                 <ul class="dropdown-menu dropdown-menu-left">
-                  <li><a ng-click="finder.setSortByName()"><i class="fa fa-check"
+                  <li class="sort-by-name"><a ng-click="finder.setSortByName()"><i class="fa fa-check"
                       ng-class="finder.sortName()"></i><span
                       translate="DASHBOARD.sort.name"></span></a></li>
-                  <li><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
+                  <li class="sort-by-created"><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
                       ng-class="finder.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                  <li><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
+                  <li class="sort-by-updated"><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
                       ng-class="finder.sortUpdated()"></i><span
                       translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
                   </li>

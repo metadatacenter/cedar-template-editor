@@ -12,8 +12,6 @@ define(['app', 'angular'], function (app) {
     var resourceService;
     var UISettingsService;
     var QueryParamUtilsService;
-    //var CedarUser;
-
 
     var appData = {
       CedarUserProfile: {
@@ -87,7 +85,6 @@ define(['app', 'angular'], function (app) {
           resourceService = _resourceService_;
           UISettingsService = _UISettingsService_;
           QueryParamUtilsService = _QueryParamUtilsService_;
-
         }));
 
     beforeEach(function () {
@@ -115,9 +112,7 @@ define(['app', 'angular'], function (app) {
         request.send(null);
         return [request.status, request.response, {}];
       });
-
     });
-
 
     describe('In a template,', function () {
       describe('a finder widget', function () {
@@ -125,7 +120,15 @@ define(['app', 'angular'], function (app) {
         var $finderScope;
         var finderDirective;
         var finderSelector = ".subm";
-        var finderSearch = '#finder-search-form input'
+        var searchInput = '#finder-search-form input';
+        var finderSearch = '#finder-search-form input';
+        var modalHeader = '#finderModalHeader';
+        var gridView = '#finderModalHeader .fa-th';
+        var listView = '#finderModalHeader .fa-list-ul';
+        var sortButton = '#finderModalHeader .fa-sort';
+        var sortByName = '.sort-by-name';
+        var sortByCreated = 'sort-by-created';
+        var sortByUpdated = '.sort-by-updated';
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
@@ -135,31 +138,41 @@ define(['app', 'angular'], function (app) {
           $finderScope.$digest();
         });
 
-        xit('should return uiPreferences on load', function () {
-          var CedarUser = $controller('CedarUser', { $finderScope: $finderScope });
-          console.log('cedarUser ' + $finderScope.CedarUser);
-          expect($finderScope.CedarUser.getUIPreferences()).toEqual(appData.CedarUserProfile.uiPreferences);
+        it("should have buttons defined by default", function () {
+          var elm = finderDirective[0];
+          expect(elm.querySelector(modalHeader)).toBeDefined();
+          expect(elm.querySelector(searchInput)).toBeDefined();
+          expect(elm.querySelector(sortButton)).toBeDefined();
         });
 
-        it("should have an submit button defined by default", function () {
+        it("should open the sort dropdown when clicked", function () {
           var elm = finderDirective[0];
-          expect(elm.querySelector(finderSelector)).toBeDefined();
-          expect(elm.querySelector(finderSearch)).toBeDefined();
+          elm.querySelectorAll(sortButton)[0].click();
+          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
+          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
+          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
         });
 
-
-        it("should have an search input field defined by default", function () {
+        it("should show grid or list view", function () {
           var elm = finderDirective[0];
-          expect(elm.querySelector(finderSearch)).toBeDefined();
+          if (elm.querySelector('#finder-modal .tool.list-view')) {
+            expect(elm.querySelector('.populate-form-boxes .grid-view')).toBeDefined();
+          } else {
+            expect(elm.querySelector('.populate-form-boxes .list-view')).toBeDefined();
+          }
+        });
 
-         var inputElm = elm.querySelector(finderSearch);
+        it("should show folder breadcrumbs", function () {
+          var elm = finderDirective[0];
+          expect(elm.querySelector('.breadcrumbs-sb')).toBeDefined();
 
-          var e = jQuery.Event('keydown');
-          e.which = 65;
-          // TODO this fails
-          //inputElm.trigger(e);
+          elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs')[0].click();
+          //elm.querySelector('.populate-form-boxes .box-row.selected')[0].click();
 
-
+          // if (elm.querySelector('#finder-modal .tool.gridt-view')) {
+          //   elm.querySelector('.populate-form-boxes .list-view')[0].click();
+          //
+          // }
         });
 
       });

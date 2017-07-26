@@ -2,7 +2,7 @@
 
 define([
       'angular',
-      'cedar/template-editor/service/cedar-user',
+      'cedar/template-editor/service/cedar-user'
     ], function (angular) {
       angular.module('cedar.templateEditor.modal.cedarFinderDirective', [
         'cedar.templateEditor.service.cedarUser'
@@ -14,7 +14,7 @@ define([
 
         var directive = {
           bindToController: {
-            modalVisible  : '=',
+            modalVisible          : '=',
             selectResourceCallback: '=',
             pickResourceCallback  : '='
           },
@@ -43,22 +43,14 @@ define([
                                        UIMessageService, UISettingsService,
                                        QueryParamUtilsService, CONST) {
 
-
-          $scope.id = 'finder-modal';
-
           var vm = this;
-          vm.breadcrumbName = breadcrumbName;
+          vm.id = 'finder-modal';
+
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
           vm.totalCount = null;
-          vm.doSearch = doSearch;
-          vm.getFolderContentsById = getFolderContentsById;
-          vm.getResourceIconClass = getResourceIconClass;
-          vm.getResourceTypeClass = getResourceTypeClass;
-          vm.goToResource = goToResource;
-          vm.goToFolder = goToFolder;
-          vm.isResourceTypeActive = isResourceTypeActive;
+
           vm.isSearching = false;
           vm.pathInfo = [];
           vm.selectedPathInfo = [];
@@ -69,10 +61,22 @@ define([
 
           vm.resources = [];
           vm.selectedResource = null;
+
+
+          /*
+           * public functions
+           */
+
+          vm.breadcrumbName = breadcrumbName;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
+          vm.doSearch = doSearch;
 
-
+          vm.getResourceIconClass = getResourceIconClass;
+          vm.getResourceTypeClass = getResourceTypeClass;
+          vm.goToResource = goToResource;
+          vm.goToFolder = goToFolder;
+          vm.isResourceTypeActive = isResourceTypeActive;
 
           vm.setSortByName = setSortByName;
           vm.setSortByCreated = setSortByCreated;
@@ -98,151 +102,11 @@ define([
           vm.hasElements = hasElements;
           vm.getElements = getElements;
 
-          vm.selectResource = function (resource) {
-
-            if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
-              vm.getResourceDetails(resource);
-            }
-            if (typeof vm.selectResourceCallback === 'function') {
-              vm.selectResourceCallback(resource);
-            }
-          };
-
-          vm.isResourceSelected = function (resource) {
-            if (resource == null || vm.selectedResource == null) {
-              return false;
-            } else {
-              return vm.selectedResource['@id'] == resource['@id'];
-            }
-          };
-
-
-
-          vm.getResourceDetails = function (resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
-            }
-            var id = resource['@id'];
-            resourceService.getResourceDetail(
-                resource,
-                function (response) {
-                  vm.selectedResource = response;
-
-                  // get path info for this resource
-                  //getPathInfo(response.parentFolderId);
-
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          };
-
-          // callback to load more resources for the current folder or search
-          vm.loadMore = function () {
-
-            if (vm.isSearching) {
-              vm.searchMore();
-            } else {
-
-              var limit = UISettingsService.getRequestLimit();
-              vm.offset += limit;
-              var offset = vm.offset;
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
-
-              // are there more?
-              if (offset < vm.totalCount) {
-
-                if (resourceTypes.length > 0) {
-                  return resourceService.getResources(
-                      {
-                        folderId     : folderId,
-                        resourceTypes: resourceTypes,
-                        sort         : sortField(),
-                        limit        : limit,
-                        offset       : offset
-                      },
-                      function (response) {
-                        vm.resources = vm.resources.concat(response.resources);
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                      }
-                  );
-                } else {
-                  vm.resources = [];
-                }
-              }
-            }
-          };
-
-          // callback to load more resources for the current folder
-          vm.searchMore = function () {
-
-            var limit = UISettingsService.getRequestLimit();
-            //vm.offset += limit;
-            var offset = vm.offset;
-            offset += limit;
-            var term = vm.searchTerm;
-            var resourceTypes = activeResourceTypes();
-
-            // Temporary fix to load more results if the totalCount can't be computed by the backend
-            if (vm.totalCount == -1) {
-              // Search for more results
-              vm.totalCount = Number.MAX_VALUE;
-            }
-            else if (vm.totalCount == 0) {
-              // No more results available. Stop searching
-              vm.totalCount = -2;
-            }
-
-            // are there more?
-            if (offset < vm.totalCount) {
-              return resourceService.searchResources(term,
-                  {
-                    resourceTypes: resourceTypes,
-                    sort         : sortField(),
-                    limit        : limit,
-                    offset       : offset
-                  },
-                  function (response) {
-                    vm.resources = vm.resources.concat(response.resources);
-                    vm.totalCount = response.totalCount;
-                    vm.offset = offset;
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                  }
-              );
-            }
-          };
-
-          function getPathInfo(folderId) {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
-            vm.offset = 0;
-            var offset = vm.offset;
-
-            if (resourceTypes.length > 0) {
-              return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
-                  function (response) {
-                    //vm.currentFolderId = folderId;
-                    //vm.resources = response.resources;
-                    vm.selectedPathInfo = response.pathInfo;
-                    vm.totalCount = response.totalCount;
-                    //vm.selectedPathInfo.pop();
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                  }
-              );
-            } else {
-              //vm.resources = [];
-            }
-          }
-
+          vm.selectResource = selectResource;
+          vm.isResourceSelected = isResourceSelected;
+          vm.getResourceDetails = getResourceDetails;
+          vm.loadMore = loadMore;
+          vm.searchMore = searchMore;
 
           //*********** ENTRY POINT
 
@@ -295,6 +159,30 @@ define([
             return folderName;
           }
 
+          function getPathInfo(folderId) {
+            var resourceTypes = activeResourceTypes();
+            var limit = UISettingsService.getRequestLimit();
+            vm.offset = 0;
+            var offset = vm.offset;
+
+            if (resourceTypes.length > 0) {
+              return resourceService.getResources(
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  function (response) {
+                    //vm.currentFolderId = folderId;
+                    //vm.resources = response.resources;
+                    vm.selectedPathInfo = response.pathInfo;
+                    vm.totalCount = response.totalCount;
+                    //vm.selectedPathInfo.pop();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  }
+              );
+            } else {
+              //vm.resources = [];
+            }
+          }
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
@@ -331,7 +219,7 @@ define([
                 vm.pickResourceCallback(r);
               }
 
-              $scope.hideModal($scope.id);
+              $scope.hideModal(vm.id);
             }
           }
 
@@ -398,7 +286,7 @@ define([
                   result += "fa-file-code-o";
                   break;
               }
-              result +=  ' ' + resource.nodeType;
+              result += ' ' + resource.nodeType;
             }
             return result;
           }
@@ -453,7 +341,6 @@ define([
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
           }
 
-
           function goToFolder(folderId) {
             vm.params.search = null;
             vm.selectedResource = null;
@@ -468,7 +355,123 @@ define([
             return vm.resourceTypes[type];
           }
 
+          function selectResource(resource) {
 
+            if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
+              vm.getResourceDetails(resource);
+            }
+            if (typeof vm.selectResourceCallback === 'function') {
+              vm.selectResourceCallback(resource);
+            }
+          };
+
+          function isResourceSelected(resource) {
+            if (resource == null || vm.selectedResource == null) {
+              return false;
+            } else {
+              return vm.selectedResource['@id'] == resource['@id'];
+            }
+          };
+
+          function getResourceDetails(resource) {
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
+            }
+            var id = resource['@id'];
+            resourceService.getResourceDetail(
+                resource,
+                function (response) {
+                  vm.selectedResource = response;
+
+                  // get path info for this resource
+                  //getPathInfo(response.parentFolderId);
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
+
+          // callback to load more resources for the current folder or search
+          function loadMore() {
+
+            if (vm.isSearching) {
+              vm.searchMore();
+            } else {
+
+              var limit = UISettingsService.getRequestLimit();
+              vm.offset += limit;
+              var offset = vm.offset;
+              var folderId = vm.currentFolderId;
+              var resourceTypes = activeResourceTypes();
+
+              // are there more?
+              if (offset < vm.totalCount) {
+
+                if (resourceTypes.length > 0) {
+                  return resourceService.getResources(
+                      {
+                        folderId     : folderId,
+                        resourceTypes: resourceTypes,
+                        sort         : sortField(),
+                        limit        : limit,
+                        offset       : offset
+                      },
+                      function (response) {
+                        vm.resources = vm.resources.concat(response.resources);
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                      }
+                  );
+                } else {
+                  vm.resources = [];
+                }
+              }
+            }
+          };
+
+          // callback to load more resources for the current folder
+          function searchMore() {
+
+            var limit = UISettingsService.getRequestLimit();
+            //vm.offset += limit;
+            var offset = vm.offset;
+            offset += limit;
+            var term = vm.searchTerm;
+            var resourceTypes = activeResourceTypes();
+
+            // Temporary fix to load more results if the totalCount can't be computed by the backend
+            if (vm.totalCount == -1) {
+              // Search for more results
+              vm.totalCount = Number.MAX_VALUE;
+            }
+            else if (vm.totalCount == 0) {
+              // No more results available. Stop searching
+              vm.totalCount = -2;
+            }
+
+            // are there more?
+            if (offset < vm.totalCount) {
+              return resourceService.searchResources(term,
+                  {
+                    resourceTypes: resourceTypes,
+                    sort         : sortField(),
+                    limit        : limit,
+                    offset       : offset
+                  },
+                  function (response) {
+                    vm.resources = vm.resources.concat(response.resources);
+                    vm.totalCount = response.totalCount;
+                    vm.offset = offset;
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
+            }
+          };
 
 
           /**
@@ -490,13 +493,13 @@ define([
             $rootScope.$broadcast('search-finder', vm.searchTerm || '');
           };
 
-          // modal open and close
+          // modal open
           $scope.$on('finderModalVisible', function (event, params) {
-              vm.modalVisible = true;
-              vm.finderResource = null;
-              vm.params.search = null;
-              vm.params.folderId = null;
-              vm.selectedResource = null;
+            vm.modalVisible = true;
+            vm.finderResource = null;
+            vm.params.search = null;
+            vm.params.folderId = null;
+            vm.selectedResource = null;
           });
 
 
@@ -579,18 +582,6 @@ define([
           function toggleView() {
             UISettingsService.saveView(CedarUser.toggleView());
           }
-
-          // is the info panel open or closed
-          function isInfoOpen() {
-            return CedarUser.isInfoOpen();
-          }
-
-          // toggle the state of the info panel
-          function toggleInfo() {
-            UISettingsService.saveInfo(CedarUser.toggleInfo());
-          }
-
-
 
           function getFolders() {
             var result = [];
