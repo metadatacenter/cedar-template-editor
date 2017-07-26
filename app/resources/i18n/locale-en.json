@@ -153,7 +153,8 @@
     "deleteTerm": "Delete term",
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
-    "addProperty": "Add property"
+    "addProperty": "Add property",
+    "unreadMessageCount": "You have unread messages!"
   },
   "SERVER": {
     "FOLDER": {

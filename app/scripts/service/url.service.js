@@ -18,6 +18,7 @@ define([
     var schemaService = null;
     var groupService = null;
     var submissionService = null;
+    var messagingService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -31,6 +32,7 @@ define([
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
       submissionService = config.submissionRestAPI;
+      messagingService = config.messagingRestAPI;
     };
 
     service.base = function () {
@@ -95,6 +97,10 @@ define([
 
     service.groupBase = function () {
       return groupService;
+    };
+
+    service.messagingBase = function () {
+      return messagingService;
     };
 
     service.getValueRecommendation = function () {
@@ -187,6 +193,10 @@ define([
 
     service.getGroupMembers = function (id) {
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
+    };
+
+    service.messagingSummary = function (id) {
+      return this.messagingBase() + '/summary';
     };
 
     service.lincsValidation = function () {

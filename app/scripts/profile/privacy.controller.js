@@ -10,8 +10,6 @@ define([
 
   function PrivacyController($rootScope, $scope, UrlService, HeaderService, UserService, CONST) {
 
-    console.log('privacy controller');
-
     $rootScope.pageTitle = 'Privacy';
 
     // Inject constants
@@ -22,9 +20,9 @@ define([
 
     $scope.getTokenValidity = function () {
       return UserService.getTokenValiditySeconds();
-    }
+    };
 
     $scope.urlService = UrlService;
-  };
+  }
 
 });

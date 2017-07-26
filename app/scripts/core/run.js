@@ -8,23 +8,20 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
-  cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window',  'DataTemplateService',
+  cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService',
-                                        'UIModelService',
-                                        'UserService', 'RichTextConfigService', 'CONST',
-                                        'controlledTermDataService',
+                                        'UserService', 'RichTextConfigService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
-                                        'ValueRecommenderService',  'TrackingService',
+                                        'TrackingService', 'MessagingService',
                                         '$httpParamSerializer', '$location'];
 
 
-  function cedarTemplateEditorCoreRun($rootScope, $window,  DataTemplateService,
+  function cedarTemplateEditorCoreRun($rootScope, $window, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService,
-                                      UIModelService, UserService,
-                                      RichTextConfigService, CONST, ControlledTermService,
-                                      provisionalClassService,
-                                      CedarUser, UISettingsService, ValueRecommenderService,
-                                      TrackingService, $httpParamSerializer, $location) {
+                                      UserService, RichTextConfigService,
+                                      provisionalClassService, CedarUser, UISettingsService,
+                                      TrackingService, MessagingService,
+                                      $httpParamSerializer, $location) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -61,6 +58,7 @@ define([
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
+    MessagingService.init();
 
     // Make objects available through rootScope
     //$rootScope.cts = ControlledTermService;
@@ -115,7 +113,6 @@ define([
     // use the new form and hide the old form
     $rootScope.useNewForm = true;
 
-
-  };
+  }
 
 });

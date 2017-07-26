@@ -92,6 +92,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('groupServerUrl', 'https://group.' + cedarHost))
       .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
       .pipe(replace('submissionServerUrl', 'https://submission.' + cedarHost))
+      .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });

@@ -11,9 +11,7 @@ define([
         "TEMPLATE": "TEMPLATE",
         "ELEMENT": "ELEMENT",
         "RUNTIME": "RUNTIME",
-        "ROLESELECTOR": "ROLESELECTOR",
         "DASHBOARD": "DASHBOARD",
-        "DASHBOARDLIST": "DASHBOARDLIST",
         "PROFILE": "PROFILE",
         "PRIVACY" : "PRIVACY",
         "METADATA": "METADATA"

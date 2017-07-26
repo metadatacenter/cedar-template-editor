@@ -50,6 +50,7 @@ define([
   'cedar/template-editor/template-element/template-element.module',
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
+  'cedar/template-editor/messaging/messaging.module',
 
   // search browse
   //'cedar/template-editor/search-browse/search-browse.module',
@@ -80,6 +81,7 @@ define([
     'cedar.templateEditor.template',
     'cedar.templateEditor.templateElement',
     'cedar.templateEditor.templateInstance',
-    'cedar.templateEditor.profile'
+    'cedar.templateEditor.profile',
+    'cedar.templateEditor.messaging'
   ]);
 });

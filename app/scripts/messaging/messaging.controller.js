@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.profile.profileController', [])
-      .controller('ProfileController', ProfileController);
+  angular.module('cedar.templateEditor.messaging.messagingController', [])
+      .controller('MessagingController', MessagingController);
 
-  ProfileController.$inject = ["$rootScope", "$scope", "UrlService", "HeaderService", "UserService", "CONST"];
+  MessagingController.$inject = ["$rootScope", "$scope", "UrlService", "HeaderService", "UserService", "CONST"];
 
-  function ProfileController($rootScope, $scope, UrlService, HeaderService, UserService, CONST) {
+  function MessagingController($rootScope, $scope, UrlService, HeaderService, UserService, CONST) {
 
     $rootScope.pageTitle = 'Profile';
 
@@ -20,9 +20,9 @@ define([
 
     $scope.getTokenValidity = function () {
       return UserService.getTokenValiditySeconds();
-    };
+    }
 
     $scope.urlService = UrlService;
-  }
+  };
 
 });
