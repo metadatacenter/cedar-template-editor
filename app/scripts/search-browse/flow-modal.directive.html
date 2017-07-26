@@ -20,7 +20,7 @@
           <div class="repository">
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="selectedMode"
+              <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="model.selectedMode"
                   ng-click="setMode(0);" value="0">
               <label for="flow-immport">
                 <ng-bind-html ng-bind-html="modes[0]"/>
@@ -30,7 +30,7 @@
             <div style="padding:0 0 0 40px">
               <label class="sm" for="immport-workspace">Workspace<i
                   style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
-              <input ng-disabled="selectedMode != 0"
+              <input ng-disabled="model.selectedMode != 0"
                   id="immport-workspace"
                   type="text"
                   ng-model="model.selectedWorkspace"

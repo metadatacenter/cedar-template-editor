@@ -68,22 +68,22 @@ define([
           $scope.modes = ['<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
                           '<strong>AIRR</strong> - Adaptive Immune Receptor Repertoire',
                           '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
-          $scope.selectedMode = 0;
+
 
           $scope.getTarget = function () {
             var result;
-            if ($scope.selectedMode === 0) {
+            if ($scope.model.selectedMode === 0) {
               result = UrlService.immportSubmission();
-            } else if ($scope.selectedMode === 1) {
+            } else if ($scope.model.selectedMode === 1) {
               result = UrlService.airrSubmission();
-            } else if ($scope.selectedMode === 2) {
+            } else if ($scope.model.selectedMode === 2) {
               result = UrlService.lincsSubmission();
             }
             return result;
           };
 
           $scope.setMode = function (mode) {
-            $scope.selectedMode = mode;
+            $scope.model.selectedMode = mode;
           };
 
           //
@@ -91,7 +91,7 @@ define([
           //
           $scope.loadingWorkspace;
           $scope.workspaces;
-          $scope.workspaceIds
+          $scope.workspaceIds;
 
           $scope.getWorkspaces = function () {
 
@@ -123,9 +123,11 @@ define([
           // metadata instances
           //
 
-          $scope.model = {};       // model or something like it is required because of Angular's ng-model, scope and dot notation
-          $scope.model.selectedInstance = undefined;
-          $scope.model.selectedWorkspace = undefined;
+          $scope.model = {
+            selectedInstance: undefined,
+            selectedWorkspace: undefined,
+            selectedMode:0
+          };
           $scope.loadingInstances;
           $scope.resources = [];
           $scope.metadataFiles = [];
@@ -199,9 +201,10 @@ define([
           //
           $scope.startUpload = function (flow) {
 
+            flow.opts.target = $scope.getTarget();
+
             // set the parameters for the upload
             flow.opts.query = {
-              target       : $scope.getTarget(),
               submissionId : Math.random().toString().replace('.', ''),
               numberOfFiles: flow.files.length,
               metadataFiles: $scope.metadataFiles.join(", "),
@@ -234,7 +237,7 @@ define([
 
 
           $scope.canSubmit = function (flow) {
-            var validRepo = ($scope.model.selectedWorkspace && $scope.selectedMode == 0) || ($scope.selectedMod != 0);
+            var validRepo = ($scope.model.selectedWorkspace && $scope.model.selectedMode == 0) || ($scope.model.selectedMod != 0);
             return validRepo && !$scope.complete && !$scope.submitted && flow.files.length > 0;
           };
 
