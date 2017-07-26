@@ -1,75 +1,45 @@
-<h1>Messaging</h1>
 <div id="profile" class="container-fluid">
   <div class="col-xs-8 col-xs-offset-2">
     <div class="content">
 
       <div class="row">
-        <div class="col-xs-3 text-right title" translate>UUID</div>
-        <div class="col-xs-9">{{$root.cedarUser.getUserId()}}</div>
+        <div class="col-xs-12"><h2>Messages</h2></div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>Email</div>
-        <div class="col-xs-9">{{$root.cedarUser.getEmail()}}</div>
-      </div>
-
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>First name</div>
-        <div class="col-xs-9">{{$root.cedarUser.getFirstName()}}</div>
-      </div>
-
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Last name</div>
-        <div class="col-xs-9">{{$root.cedarUser.getLastName()}}</div>
-      </div>
-
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Home folder id:</div>
-        <div class="col-xs-9">{{$root.cedarUser.getHomeFolderId()}}</div>
-      </div>
-
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Encoded home folder id:</div>
-        <div class="col-xs-9">{{$root.cedarUser.getHomeFolderIdEncoded()}}</div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>API Keys</div>
-        <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-          <ul class="profile">
-            <li ng-repeat="apiKey in $root.cedarUser.getApiKeys()">
-
-              <table class="apiKey">
-                <tr>
-                  <td>Service name:</td>
-                  <td>{{apiKey.serviceName}}</td>
-                </tr>
-                <tr>
-                  <td>Description:</td>
-                  <td>{{apiKey.description}}</td>
-                </tr>
-                <tr>
-                  <td>Enabled:</td>
-                  <td>{{apiKey.enabled}}</td>
-                </tr>
-                <tr>
-                  <td>Key:</td>
-                  <td>{{apiKey.key}}</td>
-                </tr>
-                <tr>
-                  <td colspan="2"><h4>Usage from REST client</h4>
-                    Set the <b>Authorization</b> header in the REST calls to:<br/>
-                    <pre>apiKey {{apiKey.key}}</pre>
-                  </td>
-                </tr>
-              </table>
-            </li>
-          </ul>
+      <div class="row" ng-repeat="message in userMessages.messages">
+        <div class="col-xs-3 text-right title">{{message.creationDate}}</div>
+        <div class="col-xs-9">
+          <table class="message">
+            <tr>
+              <td>From:</td>
+              <td>
+                <p ng-if="message.from.screenName">
+                  {{message.from.screenName}}
+                </p>
+                <p ng-if="message.from.processId">
+                  {{'messaging.from.process.' + message.from.processId | translate}}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>Date:</td>
+              <td>{{message.creationDate}}</td>
+            </tr>
+            <tr>
+              <td>Subject:</td>
+              <td ng-class="{unread: message.status == 'UNREAD'}">{{message.subject}}</td>
+            </tr>
+            <tr>
+              <td>Body:</td>
+              <td><p style="white-space: pre;">{{message.body}}</p></td>
+            </tr>
+            <tr>
+              <td>Status:</td>
+              <td>{{message.status}}</td>
+            </tr>
+          </table>
         </div>
       </div>
-
-
-
 
       <!-- /.row -->
     </div>

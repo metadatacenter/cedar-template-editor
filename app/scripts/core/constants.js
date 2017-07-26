@@ -14,7 +14,8 @@ define([
         "DASHBOARD": "DASHBOARD",
         "PROFILE": "PROFILE",
         "PRIVACY" : "PRIVACY",
-        "METADATA": "METADATA"
+        "METADATA": "METADATA",
+        "MESSAGING": "MESSAGING"
       },
       "stagingObject": {
         "NONE": null,

@@ -39,6 +39,19 @@ define([
       );
     };
 
+    service.loadMessages = function (callback) {
+      var url = UrlService.messagingMessages();
+      AuthorizedBackendService.doCall(
+          HttpBuilderService.get(url),
+          function (response) {
+            callback(response.data);
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
+          }
+      );
+    };
+
     return service;
   }
 

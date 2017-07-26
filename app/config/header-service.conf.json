@@ -23,5 +23,8 @@
   },
   "PRIVACY": {
     "enabled": false
+  },
+  "MESSAGING": {
+    "enabled": false
   }
 }

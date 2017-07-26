@@ -6,23 +6,24 @@ define([
   angular.module('cedar.templateEditor.messaging.messagingController', [])
       .controller('MessagingController', MessagingController);
 
-  MessagingController.$inject = ["$rootScope", "$scope", "UrlService", "HeaderService", "UserService", "CONST"];
+  MessagingController.$inject = ["$rootScope", "$scope", "MessagingService", "HeaderService", "CONST"];
 
-  function MessagingController($rootScope, $scope, UrlService, HeaderService, UserService, CONST) {
+  function MessagingController($rootScope, $scope, MessagingService, HeaderService, CONST) {
 
-    $rootScope.pageTitle = 'Profile';
+    $rootScope.pageTitle = 'Messaging';
 
     // Inject constants
     $scope.CONST = CONST;
 
-    var pageId = CONST.pageId.PROFILE;
+    var pageId = CONST.pageId.MESSAGING;
     HeaderService.configure(pageId);
 
-    $scope.getTokenValidity = function () {
-      return UserService.getTokenValiditySeconds();
-    }
+    MessagingService.loadMessages(function (userMessages) {
+      console.log("messages loaded:");
+      console.log(userMessages);
+      $scope.userMessages = userMessages;
+    });
 
-    $scope.urlService = UrlService;
-  };
+  }
 
 });

@@ -195,8 +195,12 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
-    service.messagingSummary = function (id) {
+    service.messagingSummary = function () {
       return this.messagingBase() + '/summary';
+    };
+
+    service.messagingMessages = function () {
+      return this.messagingBase() + '/messages';
     };
 
     service.lincsValidation = function () {
@@ -307,7 +311,8 @@ define([
     };
 
     service.getPropertyTree = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId) + '/tree';
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(
+          propertyId) + '/tree';
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {

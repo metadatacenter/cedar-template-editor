@@ -468,5 +468,14 @@
     "systemFolder": "The selected folder is a system folder.",
     "nonEmptyFolder": "The selected folder is not empty.",
     "templateReferencedInInstances": "The template is used by {{referenceCount}} instance(s)."
+  },
+  "messaging": {
+    "from": {
+      "process": {
+        "submission": {
+          "AIRR": "AIRR Submission Process"
+        }
+      }
+    }
   }
 }
