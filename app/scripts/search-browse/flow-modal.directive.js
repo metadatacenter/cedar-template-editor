@@ -45,7 +45,8 @@ define([
 
 
         function flowModalController($scope, $rootScope, $timeout, QueryParamUtilsService, UISettingsService,
-                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService, UrlService,
+                                     UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService,
+                                     UrlService,
                                      SubmissionService) {
 
           //
@@ -101,7 +102,7 @@ define([
                     return item.workspaceID;
                   });
                   // give the name map back to the typeahead directive
-                  $scope.workspaces =  response.workspaces.map(function (item) {
+                  $scope.workspaces = response.workspaces.map(function (item) {
                     return item.workspaceName;
                   });
                 },
@@ -111,7 +112,7 @@ define([
             );
           };
 
-          $scope.getSelectedWorkspaceId = function() {
+          $scope.getSelectedWorkspaceId = function () {
             if ($scope.model.selectedWorkspace) {
               var index = $scope.workspaces.indexOf($scope.model.selectedWorkspace);
               return $scope.workspaceIds[index];
@@ -198,14 +199,19 @@ define([
           //
           $scope.startUpload = function (flow) {
 
-            flow.opts.target = $scope.getTarget();
+            // set the parameters for the upload
             flow.opts.query = {
-              submissionId: Math.random().toString().replace('.', ''),
+              target       : $scope.getTarget(),
+              submissionId : Math.random().toString().replace('.', ''),
               numberOfFiles: flow.files.length,
               metadataFiles: $scope.metadataFiles.join(", "),
-              workspaceId: $scope.getSelectedWorkspaceId()};
+              workspaceId  : $scope.getSelectedWorkspaceId()
+            };
+
+            // add our bearer token
             flow.opts.headers = AuthorizedBackendService.getConfig().headers;
 
+            // start the upload
             flow.upload();
             $scope.submitted = true;
           };
@@ -215,7 +221,7 @@ define([
           };
 
           $scope.canPause = function (flow) {
-            return flow.files.length > 0  && flow.isUploading();
+            return flow.files.length > 0 && flow.isUploading();
           };
 
           $scope.canResume = function (flow) {
@@ -228,8 +234,8 @@ define([
 
 
           $scope.canSubmit = function (flow) {
-            var validRepo = ($scope.model.selectedWorkspace && $scope.selectedMode ==0) || ($scope.selectedMod != 0);
-            return validRepo && !$scope.complete && !$scope.submitted &&  flow.files.length > 0;
+            var validRepo = ($scope.model.selectedWorkspace && $scope.selectedMode == 0) || ($scope.selectedMod != 0);
+            return validRepo && !$scope.complete && !$scope.submitted && flow.files.length > 0;
           };
 
           $scope.cancelAll = function (flow) {
@@ -286,7 +292,7 @@ define([
                 if (!$scope.workspaces) {
                   $scope.getWorkspaces();
                 }
-                if (!$scope.flow.isUploading()  || $scope.paused) {
+                if (!$scope.flow.isUploading() || $scope.paused) {
                   $scope.cancelAll($scope.flow);
 
                 }

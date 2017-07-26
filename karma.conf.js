@@ -46,7 +46,11 @@ module.exports = function (config) {
       'scripts/controlled-term/class-list.directive.html',
       'scripts/controlled-term/controlled-term.directive.html',
       'scripts/controlled-term/property-list.directive.html',
-      'scripts/dashboard/dashboard.html'
+      'scripts/dashboard/dashboard.html',
+
+      // flow
+      'bower_components/flow.js/dist/flow.js',
+      'bower_components/ng-flow/dist/ng-flow-standalone.js'
     ],
 
     // list of files to exclude
