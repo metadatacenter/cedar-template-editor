@@ -19,19 +19,17 @@ module.exports = function (config) {
       // to load angular more than once.' message
       'bower_components/angular/angular.js',
 
-      // config files
       {pattern: 'config/**/*.json', included: false},
-      //{pattern: 'config/*.json', included: false},
       {pattern: 'resources/**/*.json', included: false},
-      // custom libraries
-      //{ pattern: 'cedar/scripts/**/*.js', included: false },
-      // third party libraries
       {pattern: 'third_party_components/**/*.js', included: false},
-
       {pattern: 'scripts/**/*.js', included: false},
       {pattern: 'scripts/app.js', included: false},
+      {pattern: 'scripts/**/*.html', included: true},
+      {pattern: 'img/**/*.png', included: false},
+
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',
+
       // RequireJS config for Karma tests
       'test-require-config.js',
 
@@ -51,6 +49,7 @@ module.exports = function (config) {
       // flow
       'bower_components/flow.js/dist/flow.js',
       'bower_components/ng-flow/dist/ng-flow-standalone.js'
+
     ],
 
     // list of files to exclude

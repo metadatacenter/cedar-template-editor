@@ -297,7 +297,6 @@ define([
 
 
       scope.removeChild = function (node) {
-
         DataManipulationService.removeChild(scope.parentElement, node);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);

@@ -132,11 +132,9 @@ define([
     $scope.moreIsOpen = false;
     $scope.toggleMore = function() {
       $scope.moreIsOpen = !$scope.moreIsOpen;
-      console.log('toggleMore ' + $scope.moreIsOpen);
     };
 
     $scope.addElementToElement = function (element) {
-      console.log('addElementToElement');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         DataManipulationService.createDomIds(element);
@@ -386,26 +384,33 @@ define([
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
+    //
     // finder
-    $scope.elementFind = function () {
-      jQuery("body").trigger("click");
-      jQuery("#" + $scope.finderModalId).modal("show");
-    };
+    //
 
-    $scope.addElementFromFinder = function () {
-      if ($scope.finderResource) {
-        $scope.addElementToTemplate($scope.finderResource);
-      }
-      $scope.hideFinder();
-    };
-
-    $scope.showFinder = function () {
-      $scope.finderResource = null;
+    $scope.showFinderModal = function () {
+      // open and activate the modal
+      $scope.finderModalVisible = true;
+      $scope.$broadcast('finderModalVisible');
     };
 
     $scope.hideFinder = function () {
-      jQuery("#" + $scope.finderModalId).modal('hide');
+      jQuery("#finder-modal").modal('hide')
     };
+
+
+    // $scope.addElementFromFinder = function () {
+    //   if ($scope.finderResource) {
+    //     $scope.addElementToTemplate($scope.finderResource);
+    //   }
+    //   $scope.hideFinder();
+    // };
+    //
+    // $scope.showFinder = function () {
+    //   $scope.finderResource = null;
+    // };
+
+
 
     $scope.enableSaveButton = function () {
       $timeout(function () {
