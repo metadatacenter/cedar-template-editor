@@ -67,7 +67,10 @@
     "FillOutTemplate": "Fill Out Template",
     "AddElement": "Add Element",
     "AddField": "Add Field",
+    "Pause": "Pause",
+    "Resume": "Resume",
     "Clear": "Clear",
+    "Submit": "Submit",
     "Done": "Done",
     "SaveTemplate": "Save Template",
     "FillOutATemplate": "Fill Out a Template",
@@ -109,7 +112,7 @@
     "canWrite": "can write",
     "isOwner": "owner",
     "midnight": "12:00 AM",
-    "Submit": "or Ctrl-Enter",
+    "OrCtrlEnter": "or Ctrl-Enter",
     "Show": "Show",
     "Hide": "Hide",
     "Template": "Template",
@@ -154,9 +157,13 @@
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
     "addProperty": "Add property",
-    "unreadMessageCount": "You have unread messages!"
+    "unreadMessageCount": "You have unread messages!",
+    "repoSubmission": "Submit to repository"
   },
   "SERVER": {
+    "WORKSPACE": {
+      "error": "There was an error while executing the workspace request!<br /><br />VIEW TECHNICAL DETAILS!"
+    },
     "FOLDER": {
       "create": {
         "success": "The folder <b>{{title}}</b> has been created.",

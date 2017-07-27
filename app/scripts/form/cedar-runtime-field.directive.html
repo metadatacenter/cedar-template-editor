@@ -100,7 +100,7 @@
                 <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                   <div ng-include="getFieldUrl()"></div>
                   <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                  <label class="submit-info" translate>GENERIC.Submit</label>
+                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
                 </form>
               </div>
             </div>
@@ -155,7 +155,7 @@
               <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
                 <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info" translate>GENERIC.Submit</label>
+                <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
               </form>
             </div>
           </div>

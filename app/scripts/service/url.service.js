@@ -203,6 +203,10 @@ define([
       return this.messagingBase() + '/messages';
     };
 
+    service.immportWorkspaces = function () {
+      return submissionService + '/command/immport-workspaces';
+    };
+
     service.lincsValidation = function () {
       return submissionService + '/command/validate-lincs';
     };
@@ -212,7 +216,15 @@ define([
     };
 
     service.airrSubmission = function () {
-      return submissionService + '/command/submit-airr';
+      return submissionService + '/command/upload-airr-to-cedar';
+    };
+
+    service.immportSubmission = function () {
+      return submissionService + '/command/immport-submit';
+    };
+
+    service.lincsSubmission = function () {
+      return 'https://httpbin.org/post';
     };
 
     service.airrValidation = function () {

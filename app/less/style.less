@@ -60,6 +60,11 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+@button-pause: #f0ad4e;
+@button-pause-hover: #DD9F48;
+@button-resume: #5cb85c;
+@button-resume-hover: #50A050;
+@button-cancel: #9E9E9E;
 
 /* Definine local mixins */
 .activ-grotesk-regular {
@@ -2829,7 +2834,7 @@ section.dashboard-elements {
       background-color: transparent;
     }
     .cedar-pager {
-      padding-right:20px;
+      padding-right: 20px;
     }
   }
 
@@ -2936,7 +2941,7 @@ section.dashboard-elements {
       right: 0;
     }
 
-    &.delete-hidden{
+    &.delete-hidden {
       color: transparent;
     }
     &.remove-hidden {
@@ -3037,8 +3042,6 @@ section.dashboard-elements {
     margin-top: 0px;
     background: transparent;
     min-height: 10px;
-
-
 
     .title {
       color: #666;
@@ -3403,7 +3406,7 @@ section.dashboard-elements {
 }
 
 .spreadsheetViewContainer {
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .alert {
@@ -6308,62 +6311,15 @@ table.apiKey {
   background: #ccc;
 }
 
-#rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #finder-modal {
+
+#rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
+
 
   .modal-header {
     border-bottom: 0px solid #aaa;
   }
-  .modal-content {
-    border-radius: 0;
-    border: 0;
-    max-width: 400px;
-    margin: 0 auto;
-    border-top: 1px solid #ccc;
-
-    .arrow-click {
-      cursor: pointer;
-      font-size: 18px;
-      color: #9E9E9E;
-    }
-    input {
-      padding: 5px;
-      width: 100%;
-      outline: none;
-    }
-    .modal-body {
-      max-height: 300px;
-      overflow-y: auto;
-      border-top: 1px solid #d2d2d2;
-      .box-row {
-        padding: 5px;
-
-        .disabled {
-          background: @med-gray;
-        }
-        &.selected {
-          background: @brand-primary;
-          color: #fff;
-        }
-
-      }
-      .inline-editing {
-        button {
-          margin: 10px 0;
-        }
-        input.borderless {
-          border: 0px solid #fff;
-        }
-
-      }
-      table.details {
-        padding: 0;
-        margin: 0;
-        font-size: 13px;
-      }
-
-    }
-
-    .actions {
+  .modal-footer {
+    &.actions {
 
       .favorite {
         float: left;
@@ -6423,13 +6379,175 @@ table.apiKey {
               background-color: @brand-primary-hover;
             }
           }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
+            }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
+            }
+          }
         }
       }
     }
   }
-  .modal-footer {
-  }
 
+  .modal-content {
+    border-radius: 0;
+    border: 0;
+    max-width: 400px;
+    margin: 0 auto;
+    border-top: 1px solid #ccc;
+
+    .arrow-click {
+      cursor: pointer;
+      font-size: 18px;
+      color: #9E9E9E;
+    }
+    input {
+      padding: 5px;
+      width: 100%;
+      outline: none;
+    }
+    .modal-body {
+      max-height: 300px;
+      overflow-y: auto;
+      border-top: 1px solid #d2d2d2;
+      .box-row {
+        padding: 5px;
+
+        .disabled {
+          background: @med-gray;
+        }
+        &.selected {
+          background: @brand-primary;
+          color: #fff;
+        }
+
+      }
+      label.sm {
+        font-size:.9em;
+        color:@brand-primary;
+        font-weight:normal;
+      }
+      .drop-btn {
+        text-transform: uppercase;
+        padding: 10px 20px;
+        margin: 10px 35px;
+        border: none;
+        background-color: @med-gray;
+        color: @white;
+        .link-transition;
+
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+      .drop-zone {
+        border: 3px dashed #ddd;
+        padding: 40px 20px;
+        text-align: center;
+      }
+      .inline-editing {
+        button {
+          margin: 10px 0;
+        }
+        input.borderless {
+          border: 0px solid #fff;
+        }
+      }
+      table.details {
+        padding: 0;
+        margin: 0;
+        font-size: 13px;
+      }
+      .progress-zone {
+        max-height: 235px;
+        height: 235px;
+        overflow: auto;
+        margin-right:5px;
+        white-space: nowrap;
+        border-left:1px solid #ddd;
+        .empty {
+          height:235px;background:#f8f8f8;
+        }
+        .progress {
+          margin-bottom: 5px !important;
+        }
+        .progress-bar .error {
+          color: #5C5C5C;float:left;padding-left:10px
+        }
+        .progress-bar-success {
+          background-color: @brand-primary-disabled;
+        }
+
+
+      }
+      .typeahead {
+        border-radius: 0;
+        box-shadow: unset;
+        color: #000;
+        &:focus {
+          border: 1px solid #ccc;
+        }
+      }
+      .actions {
+          .btn {
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border: none;
+            .link-transition;
+
+            &:focus {
+              outline: none;
+              box-shadow: none;
+            }
+
+            &.btn-clear {
+              color: @brand-primary;
+              background-color: transparent;
+              .activ-grotesk-bold;
+
+              &:hover,
+              &:focus {
+                color: @brand-primary-hover;
+              }
+            }
+
+            &.btn-save {
+              color: @white;
+              background-color: @brand-primary;
+
+
+              &:hover,
+              &:focus {
+                background-color: @brand-primary-hover;
+              }
+            }
+            &.btn-pause {
+              background-color: @button-pause;
+              &:hover {
+                background-color: @button-pause-hover;
+              }
+            }
+            &.btn-resume {
+              background-color: @button-resume;
+              &:hover {
+                background-color: @button-resume-hover;
+              }
+            }
+
+
+
+        }
+      }
+    }
+  }
 }
 
 #finder-modal {
@@ -6877,6 +6995,46 @@ table.apiKey {
         }
         a, a:hover {
           color: @brand-primary;;
+        }
+      }
+    }
+  }
+}
+
+#flow-modal {
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 600px;
+    width: 600px;
+    .modal-content {
+      max-width: 600px;
+      width: 600px;
+      margin: 0 auto;
+      .modal-body {
+        max-height: 350px;
+        height: 350px;
+        overflow: hidden;
+
+        .tab-content .tab-pane .repository {
+          margin: 30px auto;
+          width: 400px;
+        }
+        .tab-content .tab-pane  .fileUpload {
+          margin-top:20px;
+          .metadata {
+            height:100px;
+            .header {
+              margin-left:20px;margin-top:0;color:#6A8B92;
+            }
+            .btn-add {
+              font-size: 28px;padding: 4px 0;color: #FF5722;
+            }
+          }
         }
       }
     }

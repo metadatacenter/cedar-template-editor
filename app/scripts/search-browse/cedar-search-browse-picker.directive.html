@@ -32,13 +32,19 @@
         <li ng-show="dc.hasUnreadMessages()" id="messaging-number">
           <button type="button"
               uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+              ng-click="dc.openMessaging()">
+            ({{dc.getUnreadMessageCount()}})
+          </button>
+        </li>
+
+        <li ng-if="dc.onDashboard()" class="repoSubmission">
+          <button type="button"
+              uib-tooltip='{{"HELP.repoSubmission" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.openMessaging()">
-            ({{dc.getUnreadMessageCount()}})
-          </button>
+              ng-click="dc.showFlowModal()"><i class="fa fa-upload"></i></button>
         </li>
 
         <li ng-if="dc.onDashboard() " class="more-options">
@@ -646,6 +652,13 @@
       tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
       data-keyboard="true" data-backdrop="static" share-resource="resource">
   </cedar-share-modal>
+</section>
+
+<section>
+<flow-modal  cedar-modal-show modal-visible="dc.flowModalVisible" class="modal fade"
+    id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
+    data-keyboard="true" data-backdrop="static">
+</flow-modal>
 </section>
 
 <!--<section>-->

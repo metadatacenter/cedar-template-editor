@@ -36,6 +36,7 @@ define([
   'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
   'lib/ngprogress/build/ngprogress.min',
   'jsonld',
+  'flow',
 
   // custom libraries
   'cedar/template-editor/handsontable/SpreadsheetContext',
@@ -57,7 +58,7 @@ define([
 
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
-], function (angular, jsonld) {
+], function (angular, jsonld, flow) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
     'ui.keypress',
@@ -73,6 +74,7 @@ define([
     'angulartics',
     'angulartics.google.analytics',
     'ngProgress',
+    'flow',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',
@@ -82,6 +84,23 @@ define([
     'cedar.templateEditor.templateElement',
     'cedar.templateEditor.templateInstance',
     'cedar.templateEditor.profile',
-    'cedar.templateEditor.messaging'
-  ]);
+    'cedar.templateEditor.messaging',
+    'cedar.templateEditor.profile'
+  ])
+      .config(['flowFactoryProvider', function (flowFactoryProvider) {
+        flowFactoryProvider.defaults = {
+          target: 'https://httpbin.org/post',
+          permanentErrors: [404, 500, 501],
+          testChunks:false,
+          maxChunkRetries: 1,
+          chunkRetryInterval: 5000,
+          simultaneousUploads: 4,
+          singleFile: false
+        };
+        flowFactoryProvider.on('catchAll', function (event) {
+          //console.log('catchAll', arguments);
+        });
+        // Can be used with different implementations of Flow.js
+        // flowFactoryProvider.factory = fustyFlowFactory;
+      }]);
 });
