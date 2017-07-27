@@ -113,6 +113,7 @@ define([
           getPreferences();
           init();
 
+
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
             vm.resourceTypes = {

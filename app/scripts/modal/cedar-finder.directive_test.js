@@ -42,7 +42,6 @@ define(['app', 'angular'], function (app) {
       }
     };
 
-
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
     // Load other modules
@@ -53,25 +52,47 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.service.uISettingsService'));
     beforeEach(module('cedar.templateEditor.service.queryParamUtilsService'));
     // we need to register our alternative version of CedarUser, before we call inject.
-    beforeEach(angular.mock.module(function($provide) {
+    beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
         var cedarUser = {
-          init : function() {return true},
-          setAuthProfile: function() {return true},
-          setCedarProfile: function() {return true},
-          getUIPreferences: function() {return appData.CedarUserProfile.uiPreferences},
-          getHomeFolderId: function() {return null},
-          isSortByName:function() {return false},
-          isSortByCreated:function() {return true},
-          isSortByUpdated:function() {return false},
-          isListView:function() {return true},
-          isGridView:function() {return false}
+          init            : function () {
+            return true
+          },
+          setAuthProfile  : function () {
+            return true
+          },
+          setCedarProfile : function () {
+            return true
+          },
+          getUIPreferences: function () {
+            return appData.CedarUserProfile.uiPreferences
+          },
+          getHomeFolderId : function () {
+            return null
+          },
+          isSortByName    : function () {
+            return false
+          },
+          isSortByCreated : function () {
+            return true
+          },
+          isSortByUpdated : function () {
+            return false
+          },
+          isListView      : function () {
+            return true
+          },
+          isGridView      : function () {
+            return false
+          }
         };
         return cedarUser;
       });
     }));
-    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective', function($provide){
-      $provide.factory('cedarInfiniteScrollDirective', function(){ return {}; });
+    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective', function ($provide) {
+      $provide.factory('cedarInfiniteScrollDirective', function () {
+        return {};
+      });
     }));
 
     beforeEach(inject(
@@ -129,6 +150,8 @@ define(['app', 'angular'], function (app) {
         var sortByName = '.sort-by-name';
         var sortByCreated = 'sort-by-created';
         var sortByUpdated = '.sort-by-updated';
+        var hiddenRemove = '#finder-search-input a.clear-search.ng-hide';
+        var inputNotEmpty = '#finder-search-input.ng-not-empty';
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
@@ -162,17 +185,50 @@ define(['app', 'angular'], function (app) {
           }
         });
 
-        it("should show folder breadcrumbs", function () {
+        it("should handle breadcrumb and search interaction", function () {
           var elm = finderDirective[0];
           expect(elm.querySelector('.breadcrumbs-sb')).toBeDefined();
 
+          // click on the first breadcrumb 'All'
           elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs')[0].click();
-          //elm.querySelector('.populate-form-boxes .box-row.selected')[0].click();
+          $finderScope.$digest();
 
-          // if (elm.querySelector('#finder-modal .tool.gridt-view')) {
-          //   elm.querySelector('.populate-form-boxes .list-view')[0].click();
+          // var enterKey = jQuery.Event("keydown", {
+          //   keyCode: 13
+          // });
           //
-          // }
+          // elm.trigger(enterKey);
+
+          // enter 'test' into the search field
+          //expect(elm.querySelector(hiddenRemove)).toBeDefined();
+          console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
+          elm.querySelector(searchInput).value = 'test';
+          $finderScope.$digest();
+
+          //console.log('inputNotEmpty ' + elm.querySelector(inputNotEmpty));
+          //console.log('hiddenRemove ' + elm.querySelector(hiddenRemove));
+
+
+          elm.querySelectorAll('#finder-search-form a.do-search')[0].click();
+          $finderScope.$digest();
+          console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
+
+          // expect the remove x to appear and the breadcrumbs to disappear
+          expect(elm.querySelector(hiddenRemove).length === 0).toBeTruthy();
+          //console.log(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs'));
+          expect(elm.querySelector('#finder-search-form a.ng-hide .fa-remove').length == 0).toBeTruthy();
+
+          // console.log(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs'));
+          // expect(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs').length > 0).toBeTruthy();
+          //
+          // // click remove and make sure the search input is now empty
+          // elm.querySelectorAll('#finder-search-form .fa-remove')[0].click();
+          //
+          // // expect search to be cleared and the breadcrumbs to return
+          // expect(elm.querySelector(searchInput).value === '').toBeTruthy();
+          // //console.log(elm.querySelectorAll('.breadcrumbs-sb .ng-hide .breadcrumbs'));
+          // expect(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs').length === 0).toBeFalsy();
+          // //console.log(elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs'));
         });
 
       });
