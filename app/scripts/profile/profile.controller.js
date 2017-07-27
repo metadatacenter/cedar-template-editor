@@ -20,9 +20,9 @@ define([
 
     $scope.getTokenValidity = function () {
       return UserService.getTokenValiditySeconds();
-    }
+    };
 
     $scope.urlService = UrlService;
-  };
+  }
 
 });

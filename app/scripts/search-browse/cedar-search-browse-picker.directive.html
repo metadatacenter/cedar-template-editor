@@ -29,6 +29,13 @@
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
+        <li ng-show="dc.hasUnreadMessages()" id="messaging-number">
+          <button type="button"
+              uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+              ng-click="dc.openMessaging()">
+            ({{dc.getUnreadMessageCount()}})
+          </button>
+        </li>
 
         <li ng-if="dc.onDashboard()" class="repoSubmission">
           <button type="button"

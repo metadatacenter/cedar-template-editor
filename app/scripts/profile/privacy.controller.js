@@ -6,11 +6,9 @@ define([
   angular.module('cedar.templateEditor.profile.privacyController', [])
       .controller('PrivacyController', PrivacyController);
 
-  PrivacyController.$inject = ["$rootScope", "$scope", "UrlService", "HeaderService", "UserService", "CONST"];
+  PrivacyController.$inject = ["$rootScope", "$scope", "HeaderService", "CONST"];
 
-  function PrivacyController($rootScope, $scope, UrlService, HeaderService, UserService, CONST) {
-
-    console.log('privacy controller');
+  function PrivacyController($rootScope, $scope, HeaderService, CONST) {
 
     $rootScope.pageTitle = 'Privacy';
 
@@ -20,11 +18,6 @@ define([
     var pageId = CONST.pageId.PRIVACY;
     HeaderService.configure(pageId);
 
-    $scope.getTokenValidity = function () {
-      return UserService.getTokenValiditySeconds();
-    }
-
-    $scope.urlService = UrlService;
-  };
+  }
 
 });

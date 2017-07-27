@@ -49,6 +49,10 @@ define([
       return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
     };
 
+    service.getMessaging = function () {
+      return '/messaging';
+    };
+
     return service;
   }
 

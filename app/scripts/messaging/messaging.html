@@ -1,0 +1,48 @@
+<div id="profile" class="container-fluid">
+  <div class="col-xs-8 col-xs-offset-2">
+    <div class="content">
+
+      <div class="row">
+        <div class="col-xs-12"><h2>Messages</h2></div>
+      </div>
+
+      <div class="row" ng-repeat="message in userMessages.messages">
+        <div class="col-xs-3 text-right title">{{message.creationDate}}</div>
+        <div class="col-xs-9">
+          <table class="message">
+            <tr>
+              <td>From:</td>
+              <td>
+                <p ng-if="message.from.screenName">
+                  {{message.from.screenName}}
+                </p>
+                <p ng-if="message.from.processId">
+                  {{'messaging.from.process.' + message.from.processId | translate}}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>Date:</td>
+              <td>{{message.creationDate}}</td>
+            </tr>
+            <tr>
+              <td>Subject:</td>
+              <td ng-class="{unread: message.readStatus == 'UNREAD'}">{{message.subject}}</td>
+            </tr>
+            <tr>
+              <td>Body:</td>
+              <td><p style="white-space: pre;">{{message.body}}</p></td>
+            </tr>
+            <tr>
+              <td>Status:</td>
+              <td>{{message.readStatus}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- /.row -->
+    </div>
+    <!-- /.container -->
+  </div>
+</div>

@@ -18,6 +18,7 @@ define([
     var schemaService = null;
     var groupService = null;
     var submissionService = null;
+    var messagingService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -31,6 +32,7 @@ define([
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
       submissionService = config.submissionRestAPI;
+      messagingService = config.messagingRestAPI;
     };
 
     service.base = function () {
@@ -95,6 +97,10 @@ define([
 
     service.groupBase = function () {
       return groupService;
+    };
+
+    service.messagingBase = function () {
+      return messagingService;
     };
 
     service.getValueRecommendation = function () {
@@ -189,6 +195,14 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
+    service.messagingSummary = function () {
+      return this.messagingBase() + '/summary';
+    };
+
+    service.messagingMessages = function () {
+      return this.messagingBase() + '/messages';
+    };
+
     service.immportWorkspaces = function () {
       return submissionService + '/command/immport-workspaces';
     };
@@ -206,7 +220,7 @@ define([
     };
 
     service.immportSubmission = function () {
-      return submissionService +  '/command/immport-submit';
+      return submissionService + '/command/immport-submit';
     };
 
     service.lincsSubmission = function () {
@@ -309,7 +323,8 @@ define([
     };
 
     service.getPropertyTree = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId) + '/tree';
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(
+          propertyId) + '/tree';
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {

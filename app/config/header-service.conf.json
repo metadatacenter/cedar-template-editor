@@ -1,15 +1,9 @@
 {
   "_comment": "Offset between the mini header appearing and making the left menu stick",
   "stickyThreshold": 0,
-  "scrollSelector" : ".template-container.scrollable-content",
+  "scrollSelector": ".template-container.scrollable-content",
   "_comment": "Settings for different pages",
-  "ROLESELECTOR": {
-    "enabled": false
-  },
   "DASHBOARD": {
-    "enabled": false
-  },
-  "DASHBOARDLIST": {
     "enabled": false
   },
   "ELEMENT": {
@@ -25,6 +19,12 @@
     "scrollLimit": 140
   },
   "PROFILE": {
+    "enabled": false
+  },
+  "PRIVACY": {
+    "enabled": false
+  },
+  "MESSAGING": {
     "enabled": false
   }
 }

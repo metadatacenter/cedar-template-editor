@@ -7439,10 +7439,20 @@ textarea.curlSample {
   }
 }
 
-
-
-
-
-
-
-
+table.message {
+  border-collapse: collapse;
+  border: 1px solid #eeeeee;
+  width:600px;
+  tr {
+    border-bottom: 1px solid #eeeeee;
+  }
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
+    margin: 0px;
+    &.unread {
+      font-weight: bold;
+    }
+  }
+}

@@ -157,6 +157,7 @@
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
     "addProperty": "Add property",
+    "unreadMessageCount": "You have unread messages!",
     "repoSubmission": "Submit to repository"
   },
   "SERVER": {
@@ -474,5 +475,14 @@
     "systemFolder": "The selected folder is a system folder.",
     "nonEmptyFolder": "The selected folder is not empty.",
     "templateReferencedInInstances": "The template is used by {{referenceCount}} instance(s)."
+  },
+  "messaging": {
+    "from": {
+      "process": {
+        "submission": {
+          "AIRR": "AIRR Submission Process"
+        }
+      }
+    }
   }
 }
