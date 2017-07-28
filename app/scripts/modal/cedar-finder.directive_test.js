@@ -150,8 +150,7 @@ define(['app', 'angular'], function (app) {
         var sortByName = '.sort-by-name';
         var sortByCreated = 'sort-by-created';
         var sortByUpdated = '.sort-by-updated';
-        var hiddenRemove = '#finder-search-input a.clear-search.ng-hide';
-        var inputNotEmpty = '#finder-search-input.ng-not-empty';
+        var remove = 'a.clear-search';
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
@@ -192,57 +191,23 @@ define(['app', 'angular'], function (app) {
           // click on the first breadcrumb 'All'
           elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs')[0].click();
 
-          // click on the search input field
-          elm.querySelectorAll(finderSearch)[0].click();
-
-
-
-
-          // var searchElm = elm.querySelector(finderSearch);
-          // var e = new KeyboardEvent("keyup", {bubbles : true, cancelable : true, key : "Q", char : "Q", shiftKey : true});
-          // elm.querySelector(searchInput).dispatchEvent(e);
-          //
-          //
-          var e = jQuery.Event('keydown');
-          e.which = 65;
-          jQuery(searchInput).trigger(e);
-
-
-
-          jQuery(finderSearch).val('test');
-          console.log(jQuery(finderSearch).val());
-
-
           // enter 'test' into the search field
-          //expect(elm.querySelector(hiddenRemove)).toBeDefined();
-          //console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
-          //elm.querySelector(searchInput).value = 'test';
-          //$finderScope.$digest();
+          elm.querySelectorAll(finderSearch)[0].click();
+          elm.querySelector(searchInput).setAttribute('value', 'some text');
+          $finderScope.$digest();
 
-          //console.log('inputNotEmpty ' + elm.querySelector(inputNotEmpty));
-          //console.log('hiddenRemove ' + elm.querySelector(hiddenRemove));
-
-
-          //elm.querySelectorAll('#finder-search-form a.do-search')[0].click();
-          //$finderScope.$digest();
-          //console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
 
           // expect the remove x to appear and the breadcrumbs to disappear
-          expect(elm.querySelector(hiddenRemove).length === 0).toBeTruthy();
-          //console.log(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs'));
-          expect(elm.querySelector('#finder-search-form a.ng-hide .fa-remove').length == 0).toBeTruthy();
+          console.log('val',elm.querySelector(searchInput).getAttribute('value'));
+          expect(elm.querySelector(remove)).toBeDefined();
+          elm.querySelector(remove).click();
+          $finderScope.$digest();
 
-          // console.log(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs'));
-          // expect(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs').length > 0).toBeTruthy();
-          //
-          // // click remove and make sure the search input is now empty
-          // elm.querySelectorAll('#finder-search-form .fa-remove')[0].click();
-          //
-          // // expect search to be cleared and the breadcrumbs to return
-          // expect(elm.querySelector(searchInput).value === '').toBeTruthy();
-          // //console.log(elm.querySelectorAll('.breadcrumbs-sb .ng-hide .breadcrumbs'));
-          // expect(elm.querySelectorAll('.breadcrumbs-sb a.ng-hide .breadcrumbs').length === 0).toBeFalsy();
-          // //console.log(elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs'));
+
+          // expect search to be cleared and the breadcrumbs to return
+          console.log('val',elm.querySelector(searchInput).getAttribute('value'));
+          expect(elm.querySelector(searchInput).getAttribute('value') === '').toBeTruthy();
+
         });
 
       });
