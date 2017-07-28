@@ -7,14 +7,15 @@ define([
   angular.module('cedar.templateEditor.service.messagingService', [])
       .service('MessagingService', MessagingService);
 
-  MessagingService.$inject = ['$interval', 'HttpBuilderService', 'UrlService', 'AuthorizedBackendService',
+  MessagingService.$inject = ['$interval', '$timeout', 'HttpBuilderService', 'UrlService', 'AuthorizedBackendService',
                               'UIMessageService'];
 
-  function MessagingService($interval, HttpBuilderService, UrlService, AuthorizedBackendService,
+  function MessagingService($interval, $timeout, HttpBuilderService, UrlService, AuthorizedBackendService,
                             UIMessageService) {
 
     var delay = null;
     var unreadCount = 0;
+    var notNotifiedCount = 0;
 
     var service = {
       serviceId: "MessagingService"
@@ -31,10 +32,13 @@ define([
           HttpBuilderService.get(url),
           function (response) {
             service.unreadCount = response.data.unread;
+            service.notNotifiedCount = response.data.notnotified;
+            if (service.notNotifiedCount > 0) {
+              service.readAndNotify();
+            }
           },
           function (error) {
             console.log("The messaging server is not responding!");
-            //UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
           }
       );
     };
@@ -50,6 +54,44 @@ define([
             UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
           }
       );
+    };
+
+    service.readAndNotify = function (callback) {
+      var url = UrlService.messagingNotNotifiedMessages();
+      AuthorizedBackendService.doCall(
+          HttpBuilderService.get(url),
+          function (response) {
+            service.showNotifications(response.data);
+          },
+          function (error) {
+            console.log("The messaging server is not responding!");
+          }
+      );
+    };
+
+    service.showNotifications = function (data) {
+      var messages = data.messages;
+      messages.forEach(function (msg) {
+        UIMessageService.flashMessageNotification(msg);
+        service.markMessageAsNotified(msg);
+      });
+    };
+
+    service.markMessageAsNotified = function (msg) {
+      var url = UrlService.messagingPatchMessage(msg['id']);
+      var patch = {
+        'notificationStatus': 'notified'
+      };
+      AuthorizedBackendService.doCall(
+          HttpBuilderService.patchMerge(url, patch),
+          function (response) {
+            // do nothing
+          },
+          function (error) {
+            console.log("The messaging server is not responding!");
+          }
+      );
+
     };
 
     return service;

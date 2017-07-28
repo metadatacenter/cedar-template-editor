@@ -14761,7 +14761,8 @@ table.apiKey td {
 #flow-modal .modal-footer.actions .favorite i,
 #finder-modal .modal-footer.actions .favorite i {
   padding-right: 10px;
-  transition: all 0.3s 0.1s;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
 #rename-modal .modal-footer.actions .favorite.true i,
@@ -14795,7 +14796,8 @@ table.apiKey td {
   text-transform: uppercase;
   padding: 10px 20px;
   border: none;
-  transition: all 0.3s 0.1s;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
 }
 #rename-modal .modal-footer.actions .clear-save .btn:focus,
 #new-folder-modal .modal-footer.actions .clear-save .btn:focus,
@@ -15016,7 +15018,8 @@ table.apiKey td {
   border: none;
   background-color: #9E9E9E;
   color: #ffffff;
-  transition: all 0.3s 0.1s;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
 }
 #rename-modal .modal-content .modal-body .drop-btn:focus,
 #new-folder-modal .modal-content .modal-body .drop-btn:focus,
@@ -15099,19 +15102,6 @@ table.apiKey td {
   height: 235px;
   background: #f8f8f8;
 }
-<<<<<<< HEAD
-#rename-modal .modal-content .actions .favorite i,
-#new-folder-modal .modal-content .actions .favorite i,
-#move-modal .modal-content .actions .favorite i,
-#copy-modal .modal-content .actions .favorite i,
-#share-modal .modal-content .actions .favorite i,
-#airr-submission-modal .modal-content .actions .favorite i,
-#finder-modal .modal-content .actions .favorite i {
-  padding-right: 10px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
-  color: rgba(51, 51, 51, 0.43);
-=======
 #rename-modal .modal-content .modal-body .progress-zone .progress,
 #new-folder-modal .modal-content .modal-body .progress-zone .progress,
 #move-modal .modal-content .modal-body .progress-zone .progress,
@@ -15133,7 +15123,6 @@ table.apiKey td {
   color: #5C5C5C;
   float: left;
   padding-left: 10px;
->>>>>>> site-visit-2017
 }
 #rename-modal .modal-content .modal-body .progress-zone .progress-bar-success,
 #new-folder-modal .modal-content .modal-body .progress-zone .progress-bar-success,

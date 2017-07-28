@@ -39,6 +39,15 @@ define([
       return this.method("PUT", url, data);
     };
 
+    service.patch = function (url, data) {
+      return this.method("PATCH", url, data);
+    };
+
+    service.patchMerge = function (url, data) {
+      var m = this.method("PATCH", url, data);
+      m.headers = {"Content-Type": "application/merge-patch+json"};
+      return m;
+    };
 
     return service;
   };

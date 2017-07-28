@@ -203,6 +203,14 @@ define([
       return this.messagingBase() + '/messages';
     };
 
+    service.messagingNotNotifiedMessages = function () {
+      return this.messagingMessages() + "?notification_status=notnotified";
+    };
+
+    service.messagingPatchMessage = function (id) {
+      return this.messagingMessages() + "/" + encodeURIComponent(id);
+    };
+
     service.immportWorkspaces = function () {
       return submissionService + '/command/immport-workspaces';
     };
