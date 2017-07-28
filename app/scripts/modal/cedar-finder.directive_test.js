@@ -142,7 +142,7 @@ define(['app', 'angular'], function (app) {
         var finderDirective;
         var finderSelector = ".subm";
         var searchInput = '#finder-search-form input';
-        var finderSearch = '#finder-search-form input';
+        var finderSearch = '#finder-search-input';
         var modalHeader = '#finderModalHeader';
         var gridView = '#finderModalHeader .fa-th';
         var listView = '#finderModalHeader .fa-list-ul';
@@ -191,27 +191,41 @@ define(['app', 'angular'], function (app) {
 
           // click on the first breadcrumb 'All'
           elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs')[0].click();
-          $finderScope.$digest();
 
-          // var enterKey = jQuery.Event("keydown", {
-          //   keyCode: 13
-          // });
+          // click on the search input field
+          elm.querySelectorAll(finderSearch)[0].click();
+
+
+
+
+          // var searchElm = elm.querySelector(finderSearch);
+          // var e = new KeyboardEvent("keyup", {bubbles : true, cancelable : true, key : "Q", char : "Q", shiftKey : true});
+          // elm.querySelector(searchInput).dispatchEvent(e);
           //
-          // elm.trigger(enterKey);
+          //
+          var e = jQuery.Event('keydown');
+          e.which = 65;
+          jQuery(searchInput).trigger(e);
+
+
+
+          jQuery(finderSearch).val('test');
+          console.log(jQuery(finderSearch).val());
+
 
           // enter 'test' into the search field
           //expect(elm.querySelector(hiddenRemove)).toBeDefined();
-          console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
-          elm.querySelector(searchInput).value = 'test';
-          $finderScope.$digest();
+          //console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
+          //elm.querySelector(searchInput).value = 'test';
+          //$finderScope.$digest();
 
           //console.log('inputNotEmpty ' + elm.querySelector(inputNotEmpty));
           //console.log('hiddenRemove ' + elm.querySelector(hiddenRemove));
 
 
-          elm.querySelectorAll('#finder-search-form a.do-search')[0].click();
-          $finderScope.$digest();
-          console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
+          //elm.querySelectorAll('#finder-search-form a.do-search')[0].click();
+          //$finderScope.$digest();
+          //console.log('#finder-search-input ');console.log(elm.querySelector('#finder-search-input'));
 
           // expect the remove x to appear and the breadcrumbs to disappear
           expect(elm.querySelector(hiddenRemove).length === 0).toBeTruthy();
