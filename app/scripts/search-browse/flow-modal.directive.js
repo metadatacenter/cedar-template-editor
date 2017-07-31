@@ -196,6 +196,14 @@ define([
             }
           };
 
+          // load and add the instances to the flow queue
+          $scope.removeItem = function (flow, file) {
+              var index = flow.files.indexOf(file);
+              if (index > -1) {
+                flow.files.splice(index,1);
+              }
+          };
+
           //
           // flow of control
           //

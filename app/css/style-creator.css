@@ -15629,6 +15629,14 @@ table.apiKey td {
 #flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload {
   margin-top: 20px;
 }
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .clear-item {
+  padding-left: 0px;
+  color: #aaa;
+}
+#flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .clear-item button {
+  background: transparent;
+  padding-top: 0;
+}
 #flow-modal .modal-dialog .modal-content .modal-body .tab-content .tab-pane .fileUpload .metadata {
   height: 100px;
 }

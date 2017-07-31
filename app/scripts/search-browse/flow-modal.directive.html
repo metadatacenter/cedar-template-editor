@@ -53,22 +53,22 @@
             </div>
 
             <!--<div class="radio radio-primary" style="padding:10px">-->
-              <!--<input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"-->
-                  <!--ng-click="setMode(2);" value="2">-->
-              <!--<label for="flow-lincs">-->
-                <!--<ng-bind-html ng-bind-html="modes[2]"/>-->
-              <!--</label>-->
+            <!--<input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"-->
+            <!--ng-click="setMode(2);" value="2">-->
+            <!--<label for="flow-lincs">-->
+            <!--<ng-bind-html ng-bind-html="modes[2]"/>-->
+            <!--</label>-->
             <!--</div>-->
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="File Upload">
+        <uib-tab index="1" heading="Upload">
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
-                <div class="row metadata" >
+                <div class="row metadata">
 
-                  <h5 class="header" > Metadata <i class="fa fa-tags "></i></h5>
+                  <h5 class="header"> Metadata <i class="fa fa-tags "></i></h5>
                   <div class="col-sm-10">
                     <input type="text" ng-disabled="!canInsert()"
                         ng-model="model.selectedInstance"
@@ -85,7 +85,7 @@
                   </div>
                   <span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"
                       ng-click="insertItems($flow, model.selectedInstance)">
-                    <i class="fa fa-plus-circle btn-add" ></i></span>
+                    <i class="fa fa-plus-circle btn-add"></i></span>
                 </div>
                 <div class="row">
                   <div class="col-sm-12">
@@ -97,28 +97,44 @@
                 </div>
               </div>
               <div class="col-sm-7">
-                <div class="row progress-zone"  flow-drag-enter="style={}"
+                <div class="row progress-zone" flow-drag-enter="style={}"
                     flow-drag-leave="style={}"
                     ng-style="style" class="alert" flow-drop>
                   <div class="col-sm-12">
+
+
                     <div ng-if="$flow.files.length==0" class="empty"></div>
                     <div ng-repeat="file in $flow.files">
 
-                      <form class="form-inline">
-                        <div class="progress" >
-                          <div class="progress-bar"
-                              ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
-                              style="min-width: 5%; width: {{file.progress()*100}}%;" value="{{file.progress()*100}}"
-                              role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
-                              aria-valuemax="100">
-                            <strong ng-show="!file.error" class="error" >
-                              {{file.name}} </strong> <strong
-                              ng-show="file.error">Ooops...</strong>
-                          </div>
+                      <div class="row">
+                        <div class="col-sm-11">
+
+                          <form class="form-inline">
+                            <div class="progress">
+                              <div class="progress-bar"
+                                  ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
+                                  style="min-width: 5%; width: {{file.progress()*100}}%;"
+                                  value="{{file.progress()*100}}"
+                                  role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
+                                  aria-valuemax="100">
+                                <strong ng-show="!file.error" class="error">
+                                  {{file.name}} </strong> <strong
+                                  ng-show="file.error">Ooops...</strong>
+                              </div>
+
+                            </div>
+                          </form>
+
                         </div>
-                      </form>
+                        <div class="col-sm-1 clear-item" >
+                          <button type="button"  ng-click="removeItem($flow, file)" aria-label="Close"><i class="fa fa-remove"></i></button>
+                        </div>
+                      </div>
                     </div>
+
+
                   </div>
+
                 </div>
               </div>
             </div>
@@ -129,7 +145,7 @@
               <!--<div style="width:100%;text-align:center;"><span class="btn btn-clear" flow-btn>Select</span></div>-->
             </div>
             <div class="col-sm-7 actions">
-              <div >
+              <div>
                 <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause"
                     class="btn btn-clear " translate>GENERIC.Pause
                 </button>
