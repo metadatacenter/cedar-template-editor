@@ -24,8 +24,8 @@ define([
 
     service.flashMessageNotification = function (message) {
       toasty['info']({
-        title: message.subject + ":" + message.creationDate,
-        msg  : message.body
+        title: message.subject,
+        msg  : ""
       });
     };
 
