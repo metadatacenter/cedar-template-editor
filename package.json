@@ -21,6 +21,7 @@
   "license": "ISC",
   "devDependencies": {
     "bower": "^1.7.7",
+    "chai": "^4.1.0",
     "colors": "^1.1.2",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "github:gulpjs/gulp#4.0",
@@ -42,6 +43,7 @@
     "jasmine-core": "^2.6.1",
     "jshint-stylish": "^1.0.1",
     "karma": "^0.13.22",
+    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.3",
     "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.8",
