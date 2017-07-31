@@ -480,7 +480,8 @@
     "from": {
       "process": {
         "submission": {
-          "AIRR": "AIRR Submission Process"
+          "AIRR": "AIRR Submission Process",
+          "IMMPORT": "ImmPort Submission Process"
         }
       }
     }
