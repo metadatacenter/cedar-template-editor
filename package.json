@@ -52,8 +52,6 @@
     "karma-spec-reporter": "0.0.31",
     "protractor": "5.1.1",
     "requirejs": "^2.1.0",
-    "selenium-standalone": "^5.11.2",
-    "selenium-webdriver": "^2.53.1",
     "sync-request": "^2.1.0"
   },
   "dependencies": {
