@@ -577,6 +577,7 @@ define([
       var p = service.propertiesOf(node);
 
       // make sure label is not empty
+      schema._ui.propertyLabels = schema._ui.propertyLabels || [];
       if (schema._ui.propertyLabels[key].length == 0) {
         schema._ui.propertyLabels[key] = 'default';
       }

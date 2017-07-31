@@ -14,6 +14,7 @@ branches:
   - develop
   - master
   - testing/permissions
+  - site-visit-2017
 notifications:
   slack:
     on_success: change
@@ -26,7 +27,7 @@ install:
 - npm install
 - npm install -g 'gulpjs/gulp.git#4.0'
 - npm install -g protractor
-- webdriver-manager update
+- webdriver-manager update 
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:

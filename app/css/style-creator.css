@@ -3372,11 +3372,8 @@ tbody.collapse.in {
   position: relative;
   height: 0;
   overflow: hidden;
-  -webkit-transition-property: height, visibility;
   transition-property: height, visibility;
-  -webkit-transition-duration: 0.35s;
   transition-duration: 0.35s;
-  -webkit-transition-timing-function: ease;
   transition-timing-function: ease;
 }
 .caret {
@@ -5000,7 +4997,6 @@ a.thumbnail.active {
 }
 .progress-striped .progress-bar,
 .progress-bar-striped {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 40px 40px;
 }
@@ -5013,28 +5009,24 @@ a.thumbnail.active {
   background-color: #5cb85c;
 }
 .progress-striped .progress-bar-success {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-info {
   background-color: #5bc0de;
 }
 .progress-striped .progress-bar-info {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-warning {
   background-color: #f0ad4e;
 }
 .progress-striped .progress-bar-warning {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .progress-bar-danger {
   background-color: #d9534f;
 }
 .progress-striped .progress-bar-danger {
-  background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .media {
@@ -5681,7 +5673,7 @@ button.close {
   -webkit-transform: translate(0, -25%);
   -ms-transform: translate(0, -25%);
   transform: translate(0, -25%);
-  -webkit-transition: -webkit-transform 0.3s ease-out;
+  transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
 }
 .modal.in .modal-dialog {
@@ -6026,7 +6018,7 @@ button.close {
 }
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
-    -webkit-transition: -webkit-transform 0.6s ease-in-out;
+    transition: -webkit-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -6097,7 +6089,6 @@ button.close {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 .carousel-control.left {
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
@@ -6105,7 +6096,6 @@ button.close {
 .carousel-control.right {
   left: auto;
   right: 0;
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
@@ -8444,7 +8434,7 @@ button.close {
   -webkit-transform: scale(0, 0);
   -ms-transform: scale(0, 0);
   transform: scale(0, 0);
-  -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+  transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
   transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
 }
 .radio input[type="radio"] {
@@ -9108,8 +9098,7 @@ button.close {
   font-weight: 400;
 }
 .link-transition {
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 /*
 ================================================
@@ -9128,8 +9117,7 @@ body {
   overflow: hidden;
 }
 a {
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   cursor: pointer;
 }
 a:hover,
@@ -9137,8 +9125,7 @@ a:focus {
   text-decoration: none;
 }
 i {
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .btn {
   border-radius: 0;
@@ -9212,8 +9199,7 @@ button {
   margin-top: 21px;
   margin-right: 0;
   background-color: #2e5365;
-  -webkit-transition: background-color 0.3s ease-in 0.1s;
-          transition: background-color 0.3s ease-in 0.1s;
+  transition: background-color 0.3s ease-in 0.1s;
 }
 .navbar .navbar-toggle:hover,
 .navbar .navbar-toggle:focus {
@@ -9966,7 +9952,6 @@ button {
   color: #9E9E9E;
 }
 .all-items-view .row-offcanvas {
-  -webkit-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out;
   overflow: hidden;
 }
@@ -10614,8 +10599,7 @@ body.search-browse-modal a.navbar-brand {
   display: inline-block;
   vertical-align: middle;
   margin: 0px 10px 0px 11px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   cursor: pointer;
   text-align: left;
 }
@@ -10711,8 +10695,7 @@ body.search-browse-modal a.navbar-brand {
   pointer-events: none;
   left: 12px;
   top: 7px;
-  -webkit-transition: 0.2s ease all;
-          transition: 0.2s ease all;
+  transition: 0.2s ease all;
   opacity: 0;
   z-index: 2;
 }
@@ -10933,8 +10916,7 @@ section.dashboard-elements .btn-create-new {
   margin-bottom: 20px;
   max-width: 255px;
   position: relative;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 section.dashboard-elements .btn-create-new:hover {
   background-color: #2f7dab;
@@ -11029,8 +11011,7 @@ section.dashboard-elements .dash-header .breadcrumbs {
   color: #5795ba;
   cursor: pointer;
   text-transform: uppercase;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 section.dashboard-elements .dash-header .see-all:hover,
 section.dashboard-elements .dash-header .back:hover,
@@ -11137,8 +11118,7 @@ section.dashboard-elements .margin-reset-row .template-item .back-panel {
   display: table;
   z-index: 1;
   opacity: 0;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 section.dashboard-elements .margin-reset-row .template-item .back-panel p.description {
   color: #ffffff;
@@ -11172,8 +11152,8 @@ section.dashboard-elements .margin-reset-row .template-item .back-panel .edit-op
   display: inline-block;
   margin: 0 5px;
   cursor: pointer;
-  -webkit-transition: -webkit-transform 0.3s 0s;
-          transition: transform 0.3s 0s;
+  transition: -webkit-transform 0.3s 0s;
+  transition: transform 0.3s 0s;
 }
 section.dashboard-elements .margin-reset-row .template-item .back-panel .edit-options span i:before {
   font-size: 14px;
@@ -11213,8 +11193,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-top: 16px;
   font-size: 14px;
   color: #000000;
-  -webkit-transition: border-color 0.3s linear;
-          transition: border-color 0.3s linear;
+  transition: border-color 0.3s linear;
   background: #fff;
 }
 .template-body form .build .form-group .form-control.empty ~ .floating-label,
@@ -11348,8 +11327,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: middle;
   text-transform: uppercase;
   padding: 18px 30px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .template-body form .build .form-group .additional-options .btn-file:hover,
 #element_control_term .form-group .additional-options .btn-file:hover {
@@ -11510,8 +11488,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-bottom: 5px solid;
   border-color: #ddd;
   cursor: pointer;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .template-body form .build .type-toggle .d-option span,
 #element_control_term .type-toggle .d-option span {
@@ -11906,8 +11883,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   box-shadow: none;
   font-size: 16px;
   color: #000000;
-  -webkit-transition: border-color 0.3s linear;
-          transition: border-color 0.3s linear;
+  transition: border-color 0.3s linear;
   height: 40px;
 }
 .template-body form .runtime .form-group .bootstrap-select,
@@ -12014,8 +11990,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: middle;
   text-transform: uppercase;
   padding: 18px 30px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .template-body form .runtime .form-group .additional-options .btn-file:hover,
 .template-body form .runtime .input-group .additional-options .btn-file:hover {
@@ -12148,8 +12123,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-bottom: 5px solid;
   border-color: #ddd;
   cursor: pointer;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .template-body form .runtime .type-toggle .d-option span {
   text-transform: uppercase;
@@ -12205,8 +12179,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   padding: 18px 0;
   width: 32.6%;
   border: none;
@@ -12422,8 +12395,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: inline-block;
   vertical-align: middle;
   margin: 0 10px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   cursor: pointer;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add i,
@@ -12490,8 +12462,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   text-transform: uppercase;
   padding: 12px 30px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   color: #ffffff;
   background-color: #5795ba;
   font-size: 14px;
@@ -12745,8 +12716,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   text-transform: uppercase;
   padding: 4px 10px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   color: #ffffff;
   background: #5795ba;
   font-size: 18px;
@@ -13195,14 +13165,12 @@ p.instructions {
 .options-wrapper .multiple-container .add-another {
   text-transform: uppercase;
   cursor: pointer;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .options-wrapper .multiple-container .add-another i {
   padding-right: 10px;
   color: #5795ba;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .options-wrapper .multiple-container .add-another:hover {
   color: #2f7dab;
@@ -13260,8 +13228,7 @@ p.instructions {
 }
 .element-actions .favorite i {
   padding-right: 10px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
 .element-actions .favorite.true i {
@@ -13277,8 +13244,7 @@ p.instructions {
   text-transform: uppercase;
   padding: 25px 40px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .element-actions .clear-save .btn:focus {
   outline: none;
@@ -13324,8 +13290,7 @@ p.instructions {
 }
 .template-actions .favorite i {
   padding-right: 10px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
 .template-actions .favorite.true i {
@@ -13341,8 +13306,7 @@ p.instructions {
   text-transform: uppercase;
   padding: 25px 40px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 .template-actions .clear-save .btn:focus {
   outline: none;
@@ -13397,8 +13361,8 @@ p.instructions {
   width: 15px;
   height: 10px;
   border: none;
-  -webkit-transition: -webkit-transform 0.3s 0s;
-          transition: transform 0.3s 0s;
+  transition: -webkit-transform 0.3s 0s;
+  transition: transform 0.3s 0s;
   -webkit-transform: rotate(0deg);
       -ms-transform: rotate(0deg);
           transform: rotate(0deg);
@@ -13441,7 +13405,6 @@ p.instructions {
   height: 4em;
   border-radius: 50%;
   background: #5594bc;
-  background: -webkit-linear-gradient(left, #5795ba 10%, #eaf2f2 42%);
   background: linear-gradient(to right, #5795ba 10%, #eaf2f2 42%);
   position: relative;
   -webkit-animation: load3 1.4s infinite linear;
@@ -13501,8 +13464,7 @@ p.instructions {
 /* The base CSS styles for the animation property */
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {
-  -webkit-transition: 0.5s ease-in all;
-          transition: 0.5s ease-in all;
+  transition: 0.5s ease-in all;
 }
 /* The starting CSS styles for the enter animation */
 .animate-fade.ng-enter,
@@ -13515,8 +13477,7 @@ p.instructions {
   opacity: 1;
 }
 .empty-text {
-  -webkit-transition: 0.5s ease-in all;
-          transition: 0.5s ease-in all;
+  transition: 0.5s ease-in all;
   opacity: 1;
   height: auto;
   padding: 150px 0;
@@ -13533,8 +13494,7 @@ p.instructions {
 */
 .sidebar-inner {
   padding-top: 0px;
-  -webkit-transition: padding-top 0.3s ease-in;
-          transition: padding-top 0.3s ease-in;
+  transition: padding-top 0.3s ease-in;
 }
 .sidebar-inner.sticky {
   position: fixed;
@@ -13568,8 +13528,7 @@ p.instructions {
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
   cursor: pointer;
   border: none;
 }
@@ -13620,8 +13579,7 @@ p.instructions {
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
   cursor: pointer;
   border: none;
 }
@@ -13664,8 +13622,7 @@ p.instructions {
   margin: -3px -5px;
   vertical-align: top;
   color: #999999;
-  -webkit-transition: all 0s 0s;
-          transition: all 0s 0s;
+  transition: all 0s 0s;
 }
 .fields-checkbox .field-checkbox,
 .fields-radio .field-radio,
@@ -13686,8 +13643,7 @@ p.instructions {
   padding: 0 20px 0;
   border-bottom: 5px solid #DDD;
   border-color: #DDD;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
 }
 .element-toggles .element-toggle.active,
 .element-toggles-values .element-toggle.active {
@@ -13711,8 +13667,7 @@ p.instructions {
   padding: 0 20px 0;
   border-bottom: 5px solid #DDD;
   border-color: #DDD;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
   width: 150px;
   padding: 6px;
   margin: 0px;
@@ -13744,8 +13699,7 @@ p.instructions {
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
   background-color: #5795ba;
   border: none;
 }
@@ -14093,8 +14047,7 @@ p.instructions {
 .is-creating-class .field-create-class,
 .is-creating-value-set .field-create-class {
   width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
 }
 .is-creating-class .field-ontologies,
 .is-creating-value-set .field-ontologies,
@@ -14105,8 +14058,7 @@ p.instructions {
 .is-creating-class .values-create-class,
 .is-creating-value-set .values-create-class {
   width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
+  transition: width 1s ease-in-out;
 }
 .is-creating-class .values-browse,
 .is-creating-value-set .values-browse,
@@ -14761,8 +14713,7 @@ table.apiKey td {
 #flow-modal .modal-footer.actions .favorite i,
 #finder-modal .modal-footer.actions .favorite i {
   padding-right: 10px;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
 #rename-modal .modal-footer.actions .favorite.true i,
@@ -14796,8 +14747,7 @@ table.apiKey td {
   text-transform: uppercase;
   padding: 10px 20px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 #rename-modal .modal-footer.actions .clear-save .btn:focus,
 #new-folder-modal .modal-footer.actions .clear-save .btn:focus,
@@ -15018,8 +14968,7 @@ table.apiKey td {
   border: none;
   background-color: #9E9E9E;
   color: #ffffff;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 #rename-modal .modal-content .modal-body .drop-btn:focus,
 #new-folder-modal .modal-content .modal-body .drop-btn:focus,
@@ -15167,8 +15116,7 @@ table.apiKey td {
   text-transform: uppercase;
   padding: 5px 10px;
   border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
 }
 #rename-modal .modal-content .modal-body .actions .btn:focus,
 #new-folder-modal .modal-content .modal-body .actions .btn:focus,
@@ -15895,7 +15843,6 @@ table.apiKey td {
   display: inline-block;
   vertical-align: middle;
   margin: 0 10px;
-  -webkit-transition: all 0.3s 0.1s;
   transition: all 0.3s 0.1s;
   cursor: pointer;
   padding: 0px 1px 1px 2px;
@@ -16266,8 +16213,7 @@ table.message td.unread {
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
+  transition: all 0.3s ease 0.1s;
   cursor: pointer;
   border: none;
   background-color: #5795ba;
@@ -16424,8 +16370,7 @@ body {
 /* The base CSS styles for the animation property */
 .animate-fade.ng-hide-add,
 .animate-fade.ng-hide-remove {
-  -webkit-transition: 0.5s linear all;
-          transition: 0.5s linear all;
+  transition: 0.5s linear all;
 }
 /* The starting CSS styles for the enter animation */
 .animate-fade.ng-hide-add,
@@ -16736,7 +16681,6 @@ body.modal-open {
 }
 .custom-tags-input[disabled] .tags .tag-item {
   opacity: 0.65;
-  background: -webkit-linear-gradient(top, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
   background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
 }
 .custom-tags-input[disabled] .tags .tag-item .remove-button {
