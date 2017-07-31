@@ -26,7 +26,7 @@ install:
 - npm install
 - npm install -g 'gulpjs/gulp.git#4.0'
 - npm install -g protractor
-- statuswebdriver-manager update --versions.chrome=2.29
+- webdriver-manager update --versions.chrome=2.29
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:
