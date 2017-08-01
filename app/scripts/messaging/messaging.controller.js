@@ -19,9 +19,12 @@ define([
     HeaderService.configure(pageId);
 
     MessagingService.loadMessages(function (userMessages) {
-      console.log("messages loaded:");
-      console.log(userMessages);
+      //console.log("messages loaded:");
+      //console.log(userMessages);
       $scope.userMessages = userMessages;
+      if (userMessages.unread > 0) {
+        MessagingService.markAllMessagesAsRead();
+      }
     });
 
   }

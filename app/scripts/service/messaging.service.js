@@ -23,6 +23,7 @@ define([
 
     service.init = function () {
       delay = config.delay;
+      this.messagingBeat();
       $interval(this.messagingBeat, delay);
     };
 
@@ -34,6 +35,7 @@ define([
             service.unreadCount = response.data.unread;
             service.notNotifiedCount = response.data.notnotified;
             if (service.notNotifiedCount > 0) {
+              //console.log("notNotifiedCount > 0");
               service.readAndNotify();
             }
           },
@@ -56,11 +58,26 @@ define([
       );
     };
 
+    service.markAllMessagesAsRead = function() {
+      var url = UrlService.messagingMarkAllMessagesAsRead();
+      AuthorizedBackendService.doCall(
+          HttpBuilderService.post(url),
+          function (response) {
+            // do nothing
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
+          }
+      );
+    };
+
     service.readAndNotify = function (callback) {
       var url = UrlService.messagingNotNotifiedMessages();
       AuthorizedBackendService.doCall(
           HttpBuilderService.get(url),
           function (response) {
+            //console.log("readAndNotify response:");
+            //console.log(response.data);
             service.showNotifications(response.data);
           },
           function (error) {
@@ -72,7 +89,10 @@ define([
     service.showNotifications = function (data) {
       var messages = data.messages;
       messages.forEach(function (msg) {
+        //console.log("flush");
         UIMessageService.flashMessageNotification(msg);
+        //console.log("markMessageAsNotified:");
+        //console.log(msg)
         service.markMessageAsNotified(msg);
       });
     };
@@ -82,10 +102,12 @@ define([
       var patch = {
         'notificationStatus': 'notified'
       };
+      //console.log("url to patch:" + url);
       AuthorizedBackendService.doCall(
           HttpBuilderService.patchMerge(url, patch),
           function (response) {
             // do nothing
+            //console.log("PATCHED");
           },
           function (error) {
             console.log("The messaging server is not responding!");
