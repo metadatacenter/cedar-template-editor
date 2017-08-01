@@ -49,8 +49,8 @@ define([
       return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
     };
 
-    service.getMessaging = function () {
-      return '/messaging';
+    service.getMessaging = function (folderId) {
+      return '/messaging?folderId=' + encodeURIComponent(folderId);
     };
 
     return service;
