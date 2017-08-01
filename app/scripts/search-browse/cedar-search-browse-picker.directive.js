@@ -905,7 +905,7 @@ define([
           }
 
           function openMessaging() {
-            $location.url(FrontendUrlService.getMessaging());
+            $location.url(FrontendUrlService.getMessaging(vm.getFolderId()));
           }
 
           function filterShowing() {
