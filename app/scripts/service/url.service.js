@@ -211,6 +211,10 @@ define([
       return this.messagingMessages() + "/" + encodeURIComponent(id);
     };
 
+    service.messagingMarkAllMessagesAsRead = function() {
+      return this.messagingBase() + '/command/mark-all-as-read';
+    };
+
     service.immportWorkspaces = function () {
       return submissionService + '/command/immport-workspaces';
     };

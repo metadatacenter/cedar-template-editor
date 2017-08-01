@@ -18,12 +18,12 @@ define([
     var pageId = CONST.pageId.MESSAGING;
     HeaderService.configure(pageId);
 
-    $scope.toLocalDate = function(utcDate) {
+    $scope.toLocalDate = function (utcDate) {
 
 
-      var y = utcDate.substring(0,4);
-      var m = utcDate.substring(5,7);
-      var d = utcDate.substring(9,10);
+      var y = utcDate.substring(0, 4);
+      var m = utcDate.substring(5, 7);
+      var d = utcDate.substring(9, 10);
       var h = 0;
       var m = 0;
       var s = 0;
@@ -34,15 +34,17 @@ define([
       var dateStr = date.toDateString();
 
 
-
       return utcDate;
     };
 
     MessagingService.loadMessages(function (userMessages) {
+      //console.log("messages loaded:");
+      //console.log(userMessages);
       $scope.userMessages = userMessages;
+      if (userMessages.unread > 0) {
+        MessagingService.markAllMessagesAsRead();
+      }
     });
-
-
 
   }
 
