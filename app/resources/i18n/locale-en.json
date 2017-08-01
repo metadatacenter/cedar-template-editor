@@ -157,7 +157,7 @@
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
     "addProperty": "Add property",
-    "unreadMessageCount": "You have unread messages!",
+    "unreadMessageCount": "You have unread messages",
     "repoSubmission": "Submit to repository"
   },
   "SERVER": {

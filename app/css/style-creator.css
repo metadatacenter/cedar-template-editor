@@ -15964,6 +15964,24 @@ table.apiKey td {
 #profile .content ul.profile li {
   padding: 0 0 5px 0;
 }
+#messaging-number {
+  max-height: 20px;
+  margin: 0;
+  padding: 0;
+}
+#messaging-number button {
+  margin: 0;
+  padding: 0 5px;
+  background: #FF5722;
+  border-radius: 10px;
+  max-height: 20px;
+  width: auto;
+  font-size: .9em;
+}
+#messaging-number button .plus {
+  position: relative;
+  top: -2px;
+}
 textarea.curlSample {
   width: 650px;
   height: 100px;

@@ -6287,8 +6287,6 @@ table.apiKey {
 
 /* finder */
 
-
-
 .template-container {
   height: 100%;
   width: 100%;
@@ -6311,9 +6309,7 @@ table.apiKey {
   background: #ccc;
 }
 
-
 #rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
-
 
   .modal-header {
     border-bottom: 0px solid #aaa;
@@ -6430,9 +6426,9 @@ table.apiKey {
 
       }
       label.sm {
-        font-size:.9em;
-        color:@brand-primary;
-        font-weight:normal;
+        font-size: .9em;
+        color: @brand-primary;
+        font-weight: normal;
       }
       .drop-btn {
         text-transform: uppercase;
@@ -6470,22 +6466,24 @@ table.apiKey {
         max-height: 235px;
         height: 235px;
         overflow: auto;
-        margin-right:5px;
+        margin-right: 5px;
         white-space: nowrap;
-        border-left:1px solid #ddd;
+        border-left: 1px solid #ddd;
         .empty {
-          height:235px;background:#f8f8f8;
+          height: 235px;
+          background: #f8f8f8;
         }
         .progress {
           margin-bottom: 5px !important;
         }
         .progress-bar .error {
-          color: #5C5C5C;float:left;padding-left:10px
+          color: #5C5C5C;
+          float: left;
+          padding-left: 10px
         }
         .progress-bar-success {
           background-color: @brand-primary-disabled;
         }
-
 
       }
       .typeahead {
@@ -6497,52 +6495,49 @@ table.apiKey {
         }
       }
       .actions {
-          .btn {
-            text-transform: uppercase;
-            padding: 5px 10px;
-            border: none;
-            .link-transition;
+        .btn {
+          text-transform: uppercase;
+          padding: 5px 10px;
+          border: none;
+          .link-transition;
 
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
             &:focus {
-              outline: none;
-              box-shadow: none;
+              color: @brand-primary-hover;
             }
+          }
 
-            &.btn-clear {
-              color: @brand-primary;
-              background-color: transparent;
-              .activ-grotesk-bold;
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
 
-              &:hover,
-              &:focus {
-                color: @brand-primary-hover;
-              }
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
             }
-
-            &.btn-save {
-              color: @white;
-              background-color: @brand-primary;
-
-
-              &:hover,
-              &:focus {
-                background-color: @brand-primary-hover;
-              }
+          }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
             }
-            &.btn-pause {
-              background-color: @button-pause;
-              &:hover {
-                background-color: @button-pause-hover;
-              }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
             }
-            &.btn-resume {
-              background-color: @button-resume;
-              &:hover {
-                background-color: @button-resume-hover;
-              }
-            }
-
-
+          }
 
         }
       }
@@ -6574,11 +6569,11 @@ table.apiKey {
           font-size: 16px;
           margin-top: 12px;
           padding-right: 50px;
-          border-radius:0;
-          outline:none;
-          box-shadow:none;
+          border-radius: 0;
+          outline: none;
+          box-shadow: none;
           &:focus {
-            border-color:#ccc;
+            border-color: #ccc;
           }
         }
         .do-search {
@@ -6837,8 +6832,7 @@ table.apiKey {
               cursor: pointer;
               width: 100%;
               white-space: nowrap;
-              overflow:hidden;
-
+              overflow: hidden;
 
               .cell {
                 display: inline-block;
@@ -6860,7 +6854,7 @@ table.apiKey {
               }
 
               .resource {
-                width:auto;
+                width: auto;
 
               }
               .type {
@@ -7024,23 +7018,27 @@ table.apiKey {
           margin: 30px auto;
           width: 400px;
         }
-        .tab-content .tab-pane  .fileUpload {
-          margin-top:20px;
+        .tab-content .tab-pane .fileUpload {
+          margin-top: 20px;
           .clear-item {
-            padding-left:0px;
-            color:#aaa;
+            padding-left: 0px;
+            color: #aaa;
             button {
-              background:transparent;
-              padding-top:0;
+              background: transparent;
+              padding-top: 0;
             }
           }
           .metadata {
-            height:100px;
+            height: 100px;
             .header {
-              margin-left:20px;margin-top:0;color:#6A8B92;
+              margin-left: 20px;
+              margin-top: 0;
+              color: #6A8B92;
             }
             .btn-add {
-              font-size: 28px;padding: 4px 0;color: #FF5722;
+              font-size: 28px;
+              padding: 4px 0;
+              color: #FF5722;
             }
           }
         }
@@ -7413,6 +7411,25 @@ table.apiKey {
 #workspace-toolbar {
 }
 
+#messaging-number {
+  max-height: 20px;
+  margin: 0;
+  padding: 0;
+  button {
+    margin: 0;
+    padding: 0 5px;
+    background: @primary-accent;
+    border-radius: 10px;
+    max-height: 20px;
+    width: auto;
+    font-size: .9em;
+    .plus {
+      position: relative;
+      top: -2px;
+    }
+  }
+}
+
 textarea.curlSample {
   width: 650px;
   height: 100px;
@@ -7451,7 +7468,7 @@ table.message {
   background-color: @white;
   border-collapse: collapse;
   border: 0px solid @graybg;
-  width:600px;
+  width: 600px;
   tr {
     border-bottom: 1px solid @graybg;
   }

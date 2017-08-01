@@ -29,11 +29,10 @@
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
-        <li ng-show="dc.hasUnreadMessages()" id="messaging-number">
-          <button type="button"
+        <li ng-show="dc.hasUnreadMessages()" id="messaging-number" >
+          <button  type="button"
               uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
-              ng-click="dc.openMessaging()">
-            ({{dc.getUnreadMessageCount()}})
+              ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus" >+</span>
           </button>
         </li>
 
