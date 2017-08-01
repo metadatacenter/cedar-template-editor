@@ -1,41 +1,67 @@
 <div id="profile" class="container-fluid">
-  <div class="col-xs-8 col-xs-offset-2">
+  <div class="col-xs-6 col-xs-offset-3">
     <div class="content">
 
       <div class="row">
         <div class="col-xs-12"><h2>Messages</h2></div>
       </div>
 
-      <div class="row" ng-repeat="message in userMessages.messages">
-        <div class="col-xs-3 text-right title">{{message.creationDate}}</div>
-        <div class="col-xs-9">
-          <table class="message">
-            <tr>
-              <td>From:</td>
-              <td>
-                <p ng-if="message.from.screenName">
-                  {{message.from.screenName}}
-                </p>
-                <p ng-if="message.from.processId">
-                  {{'messaging.from.process.' + message.from.processId | translate}}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td>Date:</td>
-              <td>{{message.creationDate}}</td>
-            </tr>
-            <tr>
-              <td>Subject:</td>
-              <td ng-class="{unread: message.readStatus == 'unread'}">{{message.subject}}</td>
-            </tr>
-            <tr>
-              <td>Body:</td>
-              <td><p style="white-space: pre;">{{message.body}}</p></td>
-            </tr>
-          </table>
+      <div class="row" ng-repeat="message in userMessages.messages" style="background:white;margin:5px 0">
+
+        <div class="col-xs-12">
+          <div ng-if="message.from.screenName">
+            <span style="">{{message.from.screenName}}</span>
+            <span style="float:right">{{message.creationDate}}</span>
+          </div>
+          <div ng-if="message.from.processId">
+            <span>{{'messaging.from.process.' + message.from.processId | translate}}</span>
+            <span style="float:right">{{toLocalDate(message.creationDate)}}</span>
+          </div>
+
+          <div ng-if="message.readStatus == 'unread'">
+            <span style="font-weight: bold;">{{message.subject}}</span>
+          </div>
+          <div ng-if="message.readStatus == 'read'">
+            <span>{{message.subject}}</span>
+          </div>
+          <div>
+            <p style="white-space: pre;max-height:200px;overflow-y:auto;border:1px solid #ccc;margin:5px 0;padding:10px">{{message.body}}</p>
+          </div>
+
         </div>
       </div>
+
+
+      <!--<div class="row" ng-repeat="message in userMessages.messages">-->
+        <!--<div class="col-xs-3 text-right title">{{message.creationDate}}</div>-->
+        <!--<div class="col-xs-9">-->
+          <!--<table class="message">-->
+            <!--<tr>-->
+              <!--<td>From:</td>-->
+              <!--<td>-->
+                <!--<p ng-if="message.from.screenName">-->
+                  <!--{{message.from.screenName}}-->
+                <!--</p>-->
+                <!--<p ng-if="message.from.processId">-->
+                  <!--{{'messaging.from.process.' + message.from.processId | translate}}-->
+                <!--</p>-->
+              <!--</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>Date:</td>-->
+              <!--<td>{{message.creationDate}}</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>Subject:</td>-->
+              <!--<td ng-class="{unread: message.readStatus == 'unread'}">{{message.subject}}</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td>Body:</td>-->
+              <!--<td><p style="white-space: pre;">{{message.body}}</p></td>-->
+            <!--</tr>-->
+          <!--</table>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <!-- /.row -->
     </div>

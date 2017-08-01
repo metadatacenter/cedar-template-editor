@@ -28,6 +28,7 @@ define([
     };
 
     service.messagingBeat = function () {
+
       var url = UrlService.messagingSummary();
       AuthorizedBackendService.doCall(
           HttpBuilderService.get(url),
@@ -46,6 +47,7 @@ define([
     };
 
     service.loadMessages = function (callback) {
+      console.log('loadMesssages');
       var url = UrlService.messagingMessages();
       AuthorizedBackendService.doCall(
           HttpBuilderService.get(url),
@@ -72,6 +74,7 @@ define([
     };
 
     service.readAndNotify = function (callback) {
+      console.log('readAndNotify');
       var url = UrlService.messagingNotNotifiedMessages();
       AuthorizedBackendService.doCall(
           HttpBuilderService.get(url),
@@ -87,6 +90,7 @@ define([
     };
 
     service.showNotifications = function (data) {
+      console.log('showNotifications');
       var messages = data.messages;
       messages.forEach(function (msg) {
         //console.log("flush");
@@ -98,6 +102,7 @@ define([
     };
 
     service.markMessageAsNotified = function (msg) {
+      console.log('markMessageAsNotified');
       var url = UrlService.messagingPatchMessage(msg['id']);
       var patch = {
         'notificationStatus': 'notified'
