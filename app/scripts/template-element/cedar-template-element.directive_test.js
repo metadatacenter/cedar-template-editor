@@ -407,12 +407,18 @@ define(['app', 'angular'], function (app) {
 
           // check an object's value for a key
           function hasValue(obj, key, value) {
+            console.log(obj);
             return obj.hasOwnProperty(key) && obj[key] === value;
           }
 
           // does it have the new value in the property labels?
           var test = [];
           test.push($cedarTemplateElementScope.parentElement["_ui"]["propertyLabels"]);
+
+          console.log(test.some(function (propertyLabels) {
+            return hasValue(propertyLabels, key, value);
+          }));
+
           expect(test.some(function (propertyLabels) {
             return hasValue(propertyLabels, key, value);
           })).toEqual(true);
