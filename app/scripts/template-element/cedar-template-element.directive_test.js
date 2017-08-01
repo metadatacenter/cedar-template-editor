@@ -91,6 +91,33 @@ define(['app', 'angular'], function (app) {
             return [request.status, request.response, {}];
           });
 
+      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(
+          function (method, url, data) {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
+            request.send(null);
+            return [request.status, request.response, {}];
+          });
+
+
+      $httpBackend.whenGET(
+          'https://messaging.staging.metadatacenter.net/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
+
+      $httpBackend.whenGET(
+          'https://messaging.metadatacenter.orgx/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
+
       $httpBackend.whenGET(
           'https://resource.metadatacenter.orgx/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb').respond(
           function (method, url, data) {
@@ -219,8 +246,6 @@ define(['app', 'angular'], function (app) {
             var newElement = angular.fromJson(data);
             return [200, data, {}];
           });
-
-
     });
 
 
@@ -407,17 +432,12 @@ define(['app', 'angular'], function (app) {
 
           // check an object's value for a key
           function hasValue(obj, key, value) {
-            console.log(obj);
             return obj.hasOwnProperty(key) && obj[key] === value;
           }
 
           // does it have the new value in the property labels?
           var test = [];
           test.push($cedarTemplateElementScope.parentElement["_ui"]["propertyLabels"]);
-
-          console.log(test.some(function (propertyLabels) {
-            return hasValue(propertyLabels, key, value);
-          }));
 
           expect(test.some(function (propertyLabels) {
             return hasValue(propertyLabels, key, value);
@@ -501,7 +521,8 @@ define(['app', 'angular'], function (app) {
             $cedarTemplateElementScope.$apply(function () {
 
               // make sure the parent has removed the child
-              expect(DataManipulationService.removeChild($cedarTemplateElementScope.parentElement, $cedarTemplateElementScope.element) == null).toBe(true);
+              expect(DataManipulationService.removeChild($cedarTemplateElementScope.parentElement,
+                      $cedarTemplateElementScope.element) == null).toBe(true);
 
               // TODO doesn't update dom to show the deleted element
               // var nameAfter = elm.querySelector('p.element-name-label input');
@@ -519,4 +540,5 @@ define(['app', 'angular'], function (app) {
 
 
   });
-});
+})
+;
