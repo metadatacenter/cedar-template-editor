@@ -7,6 +7,7 @@
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
+    "start": "webpack src/app.js dist/bundle.js",
     "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Firefox --single-run",
     "protractor": "node_modules/protractor/bin/protractor protractor.config.js",
     "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update",
@@ -57,7 +58,8 @@
     "requirejs": "^2.1.0",
     "selenium-standalone": "^6.6.0",
     "selenium-webdriver": "^3.5.0",
-    "sync-request": "^2.1.0"
+    "sync-request": "^2.1.0",
+    "webpack": "^3.5.1"
   },
   "dependencies": {
     "angular-animate": "^1.6.3",

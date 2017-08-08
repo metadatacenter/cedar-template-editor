@@ -4,7 +4,7 @@
 
 define([
   // angular modules
-  'angular',
+  'app/bower_components/angular/angular',
   'lib/angucomplete-alt/angucomplete-alt',
   'lib/angular-animate/angular-animate.min',
   'lib/angular-bootstrap/ui-bootstrap-tpls.min',

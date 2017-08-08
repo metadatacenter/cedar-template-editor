@@ -16,7 +16,7 @@ require.config({
     'text': 'bower_components/requirejs-plugins/lib/text',
     'json': 'bower_components/requirejs-plugins/src/json',
 
-    'app'                  : 'scripts/app',
+    'app'                  : '../src/app',
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
