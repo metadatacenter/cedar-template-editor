@@ -2,7 +2,7 @@
 
 define(['app', 'angular'], function (app) {
 
-  describe('cedar-finder.directive_test.js:', function () {
+  describe('cedar-move-modal.directive_test.js:', function () {
 
     var $rootScope;
     var $compile;
@@ -12,7 +12,7 @@ define(['app', 'angular'], function (app) {
     var resourceService;
     var UISettingsService;
     var QueryParamUtilsService;
-
+    var $timeout;
     var appData = {
       CedarUserProfile: {
         uiPreferences: {
@@ -46,7 +46,7 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('my.templates'));
     // Load other modules
     beforeEach(module(app.name));
-    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective'));
+    beforeEach(module('cedar.templateEditor.modal.cedarMoveModalDirective'));
     beforeEach(module('cedar.templateEditor.service.uIMessageService'));
     beforeEach(module('cedar.templateEditor.service.resourceService'));
     beforeEach(module('cedar.templateEditor.service.uISettingsService'));
@@ -89,14 +89,14 @@ define(['app', 'angular'], function (app) {
         return cedarUser;
       });
     }));
-    beforeEach(module('cedar.templateEditor.modal.cedarFinderDirective', function ($provide) {
+    beforeEach(module('cedar.templateEditor.modal.cedarMoveModalDirective', function ($provide) {
       $provide.factory('cedarInfiniteScrollDirective', function () {
         return {};
       });
     }));
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_,_$timeout_,
                   _UIMessageService_, _resourceService_, _UISettingsService_, _QueryParamUtilsService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
@@ -106,6 +106,7 @@ define(['app', 'angular'], function (app) {
           resourceService = _resourceService_;
           UISettingsService = _UISettingsService_;
           QueryParamUtilsService = _QueryParamUtilsService_;
+          $timeout = _$timeout_;
         }));
 
     beforeEach(function () {
@@ -133,82 +134,45 @@ define(['app', 'angular'], function (app) {
         request.send(null);
         return [request.status, request.response, {}];
       });
+      $httpBackend.whenGET('img/close_modal.png').respond(function (method, url, data) {
+        var request = new XMLHttpRequest();
+        request.open('GET', 'img/close_modal.png', false);
+        request.send(null);
+        return [request.status, request.response, {}];
+      });
     });
 
     describe('In a template,', function () {
-      describe('a finder widget', function () {
+      describe('a move modal ', function () {
 
-        var $finderScope;
-        var finderDirective;
-        var finderSelector = ".subm";
-        var searchInput = '#finder-search-form input';
-        var finderSearch = '#finder-search-input';
-        var modalHeader = '#finderModalHeader';
-        var gridView = '#finderModalHeader .fa-th';
-        var listView = '#finderModalHeader .fa-list-ul';
-        var sortButton = '#finderModalHeader .fa-sort';
-        var sortByName = '.sort-by-name';
-        var sortByCreated = 'sort-by-created';
-        var sortByUpdated = '.sort-by-updated';
-        var remove = 'a.clear-search';
+        var $moveScope;
+        var moveDirective;
+        var moveButton = "#move-modal .modal-footer .clear-save button";
+        var xGoAway = "#move-modal #move-modal-header.modal-header .button.close";
+        var moveTitle = "#move-modal #move-modal-header .modal-title";
+
+
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
-          $finderScope = $rootScope.$new();
-          finderDirective = '<cedar-finder  modal-visible="finderModalVisible"   select-resource-callback="" pick-resource-callback="" ></cedar-finder>';
-          finderDirective = $compile(finderDirective)($finderScope);
-          $finderScope.$digest();
+          $moveScope = $rootScope.$new();
+          moveDirective = '<cedar-move-modal  modal-visible="moveModalVisible" ></cedar-move-modal>';
+          moveDirective = $compile(moveDirective)($moveScope);
+          $moveScope.$digest();
         });
 
-        it("should have buttons defined by default", function () {
-          var elm = finderDirective[0];
-          expect(elm.querySelector(modalHeader)).toBeDefined();
-          expect(elm.querySelector(searchInput)).toBeDefined();
-          expect(elm.querySelector(sortButton)).toBeDefined();
+        it("should have a move button and close x ", function () {
+          var elm = moveDirective[0];
+          expect(elm.querySelector(moveButton)).toBeDefined();
+          expect(elm.querySelector(xGoAway)).toBeDefined();
         });
 
-        it("should open the sort dropdown when clicked", function () {
-          var elm = finderDirective[0];
-          elm.querySelectorAll(sortButton)[0].click();
-          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
-          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
-          expect(elm.querySelector('#finderModalHeader .dropdown.open .sort-by-name')).toBeDefined();
+        it("should have a header with the current folder name ", function () {
+          var elm = moveDirective[0];
+          expect(elm.querySelector(moveTitle)).toBeDefined();
+          console.log(elm.querySelector(moveTitle));
         });
 
-        it("should show grid or list view", function () {
-          var elm = finderDirective[0];
-          if (elm.querySelector('#finder-modal .tool.list-view')) {
-            expect(elm.querySelector('.populate-form-boxes .grid-view')).toBeDefined();
-          } else {
-            expect(elm.querySelector('.populate-form-boxes .list-view')).toBeDefined();
-          }
-        });
-
-        it("should handle breadcrumb and search interaction", function () {
-          var elm = finderDirective[0];
-          expect(elm.querySelector('.breadcrumbs-sb')).toBeDefined();
-
-          // click on the first breadcrumb 'All'
-          elm.querySelectorAll('.breadcrumbs-sb .breadcrumbs')[0].click();
-
-          // enter 'test' into the search field
-          elm.querySelectorAll(finderSearch)[0].click();
-          elm.querySelector(searchInput).setAttribute('value', 'some text');
-          $finderScope.$digest();
-
-
-          // // expect the remove x to appear and the breadcrumbs to disappear
-          // console.log('val',elm.querySelector(searchInput).getAttribute('value'));
-          // expect(elm.querySelector(remove)).toBeDefined();
-          // elm.querySelector(remove).click();
-          // $finderScope.$digest();
-          //
-          //
-          // // expect search to be cleared and the breadcrumbs to return
-          // console.log('val',elm.querySelector(searchInput).getAttribute('value'));
-          // expect(elm.querySelector(searchInput).getAttribute('value') === '').toBeTruthy();
-
-        });
 
       });
     });

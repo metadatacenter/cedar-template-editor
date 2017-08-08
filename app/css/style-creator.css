@@ -15284,40 +15284,6 @@ table.apiKey td {
   color: #5795ba;
 }
 @media (max-width: 768px) {
-  #airr-submission-modal .modal-content {
-    width: calc(100% - 10px);
-    max-width: calc(100% - 10px);
-  }
-}
-#airr-submission-modal .modal-dialog {
-  max-width: 400px;
-  width: 400px;
-}
-#airr-submission-modal .modal-dialog .modal-content {
-  max-width: 400px;
-  width: 400px;
-  margin: 0 auto;
-}
-#airr-submission-modal .modal-dialog .modal-content .modal-body {
-  max-height: 300px;
-  overflow-y: scroll;
-}
-#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row {
-  margin-top: 10px;
-}
-#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .asset-upload {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-  width: 180px;
-  height: 180px;
-  border: 3px dashed #ccc;
-  background: #eee;
-}
-#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .upload-result {
-  min-height: 30px;
-}
-@media (max-width: 768px) {
   #share-modal .modal-content {
     width: calc(100% - 10px);
     max-width: calc(100% - 10px);

@@ -248,19 +248,13 @@ define([
     };
 
     $scope.doValidation = function () {
-      console.log('doValidation');
       var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
       }
     };
 
-    // open the airr submission modal
-    $scope.airrSubmissionModalVisible = false;
-    $scope.showAirrSubmissionModal = function () {
-      $scope.airrSubmissionModalVisible = true;
-      $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
-    };
+
 
   };
 

@@ -357,6 +357,7 @@ define([
           }
 
           function selectResource(resource) {
+            console.log('selectResource');
 
             if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
               vm.getResourceDetails(resource);
@@ -384,7 +385,7 @@ define([
                 function (response) {
                   vm.selectedResource = response;
 
-                  // get path info for this resource
+                  // TODO get path info for this resource
                   //getPathInfo(response.parentFolderId);
 
                 },

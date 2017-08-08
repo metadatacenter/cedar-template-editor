@@ -402,8 +402,7 @@
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
       "validationErrors": "Validation errors:"
-    },
-    "AIRRsubmission": "AIRR Submisssion"
+    }
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
