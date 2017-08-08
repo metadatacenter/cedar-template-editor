@@ -17,7 +17,7 @@ function NoauthUserHandler() {
   };
 
   this.getParsedToken = function () {
-    console.log('NoauthUserHandler:getParsedToken');
+    //console.log('NoauthUserHandler:getParsedToken');
     return {
       "name": "Unauthenticated User",
       "sub": "111-2222-33333",

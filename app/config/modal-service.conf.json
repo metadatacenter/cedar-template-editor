@@ -1,0 +1,31 @@
+[
+  {
+    "modalName": "finder",
+    "modalId": "finder-modal"
+  },
+  {
+    "modalName": "move",
+    "modalId": "move-modal"
+  },
+  {
+    "modalName": "new-folder",
+    "modalId": "new-folder-modal"
+  },
+  {
+    "modalName": "rename",
+    "modalId": "rename-modal"
+  },
+  {
+    "modalName": "share",
+    "modalId": "share-modal"
+  },
+  {
+    "modalName": "copy",
+    "modalId": "copy-modal"
+  },
+  {
+    "modalName": "upload",
+    "modalId": "upload-modal"
+  }
+]
+

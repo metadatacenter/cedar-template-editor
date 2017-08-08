@@ -4,7 +4,7 @@ define([
       'angular',
       'cedar/template-editor/service/cedar-user',
     ], function (angular) {
-      angular.module('cedar.templateEditor.searchBrowse.cedarRenameModalDirective', [
+      angular.module('cedar.templateEditor.modal.cedarRenameModalDirective', [
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarRenameModal', cedarRenameModalDirective);
 
@@ -20,7 +20,7 @@ define([
           controller      : cedarRenameModalController,
           controllerAs    : 'rename',
           restrict        : 'E',
-          templateUrl     : 'scripts/search-browse/cedar-rename-modal.directive.html'
+          templateUrl     : 'scripts/modal/cedar-rename-modal.directive.html'
         };
 
         return directive;

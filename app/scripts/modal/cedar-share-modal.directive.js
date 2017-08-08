@@ -4,7 +4,7 @@ define([
       'angular',
       'cedar/template-editor/service/cedar-user',
     ], function (angular) {
-      angular.module('cedar.templateEditor.searchBrowse.cedarShareModalDirective', [
+      angular.module('cedar.templateEditor.modal.cedarShareModalDirective', [
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarShareModal', cedarShareModalDirective);
 
@@ -25,7 +25,7 @@ define([
           controller      : cedarShareModalController,
           controllerAs    : 'share',
           restrict        : 'E',
-          templateUrl     : 'scripts/search-browse/cedar-share-modal.directive.html'
+          templateUrl     : 'scripts/modal/cedar-share-modal.directive.html'
         };
 
         return directive;

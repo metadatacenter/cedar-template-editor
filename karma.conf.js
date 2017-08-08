@@ -18,6 +18,10 @@ module.exports = function (config) {
       // This line is required to load html templates using the html2js preprocessor, but it generates a 'WARNING: Tried
       // to load angular more than once.' message
       'bower_components/angular/angular.js',
+      'bower_components/jquery/jquery.js',
+      // 'bower_components/jquery-ui/jquery-ui.js',
+      // 'bower_components/angular-ui/build/angular-ui.js',
+      // 'bower_components/angular-ui-bootstrap/angular-ui-bootstrap.js',
 
       {pattern: 'config/**/*.json', included: false},
       {pattern: 'resources/**/*.json', included: false},

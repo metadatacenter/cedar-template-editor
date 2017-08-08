@@ -46,12 +46,12 @@
                 <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                     class="fa fa-sort  inline "></i></button>
                 <ul class="dropdown-menu dropdown-menu-left">
-                  <li><a ng-click="finder.setSortByName()"><i class="fa fa-check"
+                  <li class="sort-by-name"><a ng-click="finder.setSortByName()"><i class="fa fa-check"
                       ng-class="finder.sortName()"></i><span
                       translate="DASHBOARD.sort.name"></span></a></li>
-                  <li><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
+                  <li class="sort-by-created"><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
                       ng-class="finder.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                  <li><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
+                  <li class="sort-by-updated"><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
                       ng-class="finder.sortUpdated()"></i><span
                       translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
                   </li>
@@ -234,16 +234,16 @@
     <div class="modal-footer" >
       <div class="row">
         <div class="col-lg-8 breadcrumbs-sb ">
-          <p ng-show="!finder.isSearching">
-          <span ng-repeat="folder in finder.pathInfo">
+          <p ng-show="!finder.isSearching" >
+          <span ng-repeat="folder in finder.pathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])"
-                  class="breadcrumbs">{{finder.breadcrumbName(folder.displayName)}}</a> /
+                  class="breadcrumbs browsing">{{finder.breadcrumbName(folder.displayName)}}</a> /
             </span>
-            <a class="breadcrumbs">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
+            <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
           </p>
 
-          <p ng-show="finder.isSearching && finder.hasSelection()">
-          <span ng-repeat="folder in finder.selectedPathInfo">
+          <p ng-show="finder.isSearching && finder.hasSelection()" >
+          <span ng-repeat="folder in finder.selectedPathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])" ng-model="folder"
                   class="breadcrumbs">{{finder.breadcrumbName(folder.displayName)}}</a> <span ng-show="!$last">/</span>
             </span>
