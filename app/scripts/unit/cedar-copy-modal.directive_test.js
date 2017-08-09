@@ -90,6 +90,9 @@ define(['app', 'angular'], function (app) {
           getSort         : function () {
             return appData.CedarUserProfile.uiPreferences.folderView.sortBy;
           },
+          hasPermission   : function () {
+            return true;
+          }
         };
         return cedarUser;
       });
