@@ -254,12 +254,7 @@ define([
       }
     };
 
-    // open the airr submission modal
-    $scope.airrSubmissionModalVisible = false;
-    $scope.showAirrSubmissionModal = function () {
-      $scope.airrSubmissionModalVisible = true;
-      $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
-    };
+
 
     // // open the airr submission modal
     // $scope.flowModalVisible = false;

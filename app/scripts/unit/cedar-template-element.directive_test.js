@@ -100,17 +100,14 @@ define(['app', 'angular'], function (app) {
           });
 
 
-      $httpBackend.whenGET(
-          'https://messaging.staging.metadatacenter.net/summary').respond(
+      $httpBackend.whenGET('https://messaging.staging.metadatacenter.net/summary').respond(
           function (method, url, data) {
             var data = {"total": 7, "unread": 1, "notnotified": 0};
             var newElement = angular.fromJson(data);
             return [200, data, {}];
           });
 
-
-      $httpBackend.whenGET(
-          'https://messaging.metadatacenter.orgx/summary').respond(
+      $httpBackend.whenGET('https://messaging.metadatacenter.orgx/summary').respond(
           function (method, url, data) {
             var data = {"total": 7, "unread": 1, "notnotified": 0};
             var newElement = angular.fromJson(data);

@@ -4,52 +4,52 @@ define([
       'angular',
       'cedar/template-editor/service/cedar-user',
     ], function (angular) {
-      angular.module('cedar.templateEditor.searchBrowse.cedarMoveModalDirective', [
+      angular.module('cedar.templateEditor.modal.cedarCopyModalDirective', [
         'cedar.templateEditor.service.cedarUser'
-      ]).directive('cedarMoveModal', cedarMoveModalDirective);
+      ]).directive('cedarCopyModal', cedarCopyModalDirective);
 
-      cedarMoveModalDirective.$inject = ['CedarUser'];
+      cedarCopyModalDirective.$inject = ['CedarUser'];
 
-      function cedarMoveModalDirective(CedarUser) {
+      function cedarCopyModalDirective(CedarUser) {
 
         var directive = {
           bindToController: {
-            moveResource: '=',
+            copyResource: '=',
             modalVisible: '='
           },
-          controller      : cedarMoveModalController,
-          controllerAs    : 'move',
+          controller      : cedarCopyModalController,
+          controllerAs    : 'copyto',
           restrict        : 'E',
-          templateUrl     : 'scripts/search-browse/cedar-move-modal.directive.html'
+          templateUrl     : 'scripts/modal/cedar-copy-modal.directive.html'
         };
 
         return directive;
 
-        cedarMoveModalController.$inject = [
+        cedarCopyModalController.$inject = [
           '$scope',
           '$uibModal',
           'CedarUser',
           '$timeout',
+          '$translate',
           'resourceService',
           'UIMessageService',
           'CONST'
         ];
 
-        function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
+        function cedarCopyModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
                                           UIMessageService,
                                           CONST) {
           var vm = this;
 
-
-          // move to...
+          // copy to...
           vm.openParent = openParent;
           vm.currentTitle = currentTitle;
           vm.parentTitle = parentTitle;
           vm.selectCurrent = selectCurrent;
           vm.selectDestination = selectDestination;
           vm.isDestinationSelected = isDestinationSelected;
-          vm.moveDisabled = moveDisabled;
+          vm.copyDisabled = copyDisabled;
           vm.updateResource = updateResource;
           vm.openDestination = openDestination;
           vm.getResourceIconClass = getResourceIconClass;
@@ -103,34 +103,42 @@ define([
             if (vm.selectedDestination) {
               var folderId = vm.selectedDestination['@id'];
 
-              if (vm.moveResource) {
-                var resource = vm.moveResource;
+              if (vm.copyResource) {
+                var resource = vm.copyResource;
+                var newTitle = resource.name;
+                var sameFolder = vm.currentFolderId === folderId;
+                if (sameFolder) {
+                  newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
+                }
 
-                resourceService.moveResource(
+                resourceService.copyResource(
                     resource,
                     folderId,
+                    newTitle,
                     function (response) {
 
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
-                          'GENERIC.Moved');
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.copyToResource.success', {"title": resource.name},
+                          'GENERIC.Copied');
 
-                      refresh();
+                      if (sameFolder) {
+                        refresh();
+                      }
+
                     },
                     function (response) {
-                      UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
+                      UIMessageService.showBackendError('SERVER.RESOURCE.copyToResource.error', response);
                     }
                 );
-
               }
             }
           }
 
           function refresh() {
-            $scope.$broadcast('refreshWorkspace');
+            $scope.$broadcast('refreshWorkspace', [vm.copyResource]);
           }
 
           function currentTitle() {
-            return vm.currentDestination ? vm.currentDestination.displayName : 'none';
+            return vm.currentDestination ? vm.currentDestination.displayName : '';
           }
 
           function selectDestination(resource) {
@@ -150,7 +158,7 @@ define([
             }
           }
 
-          function moveDisabled() {
+          function copyDisabled() {
             return vm.selectedDestination == null;
           }
 
@@ -171,23 +179,25 @@ define([
           }
 
           function getDestinationById(folderId) {
-            var resourceTypes = activeResourceTypes();
-            if (resourceTypes.length > 0) {
-              return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
-                  function (response) {
-                    vm.currentDestinationID = folderId;
-                    vm.destinationResources = response.resources;
-                    vm.destinationPathInfo = response.pathInfo;
-                    vm.destinationPath = vm.destinationPathInfo.pop();
-                    vm.selectCurrent();
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                  }
-              );
-            } else {
-              vm.destinationResources = [];
+            if (folderId) {
+              var resourceTypes = activeResourceTypes();
+              if (resourceTypes.length > 0) {
+                return resourceService.getResources(
+                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
+                    function (response) {
+                      vm.currentDestinationID = folderId;
+                      vm.destinationResources = response.resources;
+                      vm.destinationPathInfo = response.pathInfo;
+                      vm.destinationPath = vm.destinationPathInfo.pop();
+                      vm.selectCurrent();
+                    },
+                    function (error) {
+                      UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                    }
+                );
+              } else {
+                vm.destinationResources = [];
+              }
             }
           }
 
@@ -226,7 +236,6 @@ define([
                   break;
                   result += "fa-sitemap";
                   break;
-
               }
             }
             return result;
@@ -241,7 +250,7 @@ define([
           }
 
           // modal open or closed
-          $scope.$on('moveModalVisible', function (event, params) {
+          $scope.$on('copyModalVisible', function (event, params) {
 
             var visible = params[0];
             var resource = params[1];
@@ -252,7 +261,7 @@ define([
 
             if (visible && resource) {
               vm.modalVisible = visible;
-              vm.moveResource = resource;
+              vm.copyResource = resource;
               vm.currentPath = currentPath;
               vm.currentFolderId = currentFolderId;
               vm.currentDestination = vm.currentPath;
