@@ -28,6 +28,7 @@ define([
           getResourceDetail      : getResourceDetail,
           getResources           : getResources,
           searchResources        : searchResources,
+          getSearchResourcesPromise: getSearchResourcesPromise,
           sharedWithMeResources  : sharedWithMeResources,
           updateFolder           : updateFolder,
           copyResourceToWorkspace: copyResourceToWorkspace,
@@ -275,6 +276,7 @@ define([
           );
         }
 
+        // return the search results
         function searchResources(searchTerm, options, successCallback, errorCallback) {
           if (options == null) {
             options = {};
@@ -303,6 +305,34 @@ define([
               errorCallback
           );
         }
+
+        // return the promise instead of the result
+        function getSearchResourcesPromise(searchTerm, options, successCallback, errorCallback) {
+          if (options == null) {
+            options = {};
+          }
+          this.searchTerm = searchTerm;
+          var params = {};
+          var baseUrl = urlService.search();
+
+          if (searchTerm == 'null') {
+            searchTerm = '';
+          }
+
+          if (searchTerm) {
+            params['q'] = searchTerm;
+          }
+
+          addCommonParameters(params, options);
+
+          var url = $rootScope.util.buildUrl(baseUrl, params);
+
+          return authorizedBackendService.getHttpPromise(httpBuilderService.get(url)).then(function (response) {
+            return successCallback(response);
+          }).catch(function (err) {
+            return errorCallback(err);
+          });
+        };
 
         function sharedWithMeResources(options, successCallback, errorCallback) {
           if (options == null) {

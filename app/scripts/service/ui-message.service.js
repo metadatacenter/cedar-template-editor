@@ -22,6 +22,13 @@ define([
       this.flash('warning', messageKey, messageParameters, title);
     };
 
+    service.flashMessageNotification = function (message) {
+      toasty['info']({
+        title: message.subject,
+        msg  : ""
+      });
+    };
+
     service.flash = function (type, messageKey, messageParameters, titleKey) {
       toasty[type]({
         title: $translate.instant(titleKey),

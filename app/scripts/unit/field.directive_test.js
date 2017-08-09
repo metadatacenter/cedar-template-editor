@@ -2,7 +2,7 @@
 
 define(['app', 'angular'], function (app) {
 
-  describe('field.directive_test.js:', function () {
+  xdescribe('field.directive_test.js:', function () {
 
     var $rootScope;
     var $compile;
@@ -63,40 +63,40 @@ define(['app', 'angular'], function (app) {
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
-    describe('In a template,', function () {
+    xdescribe('In a template,', function () {
       /* Checkbox */
-      describe('a checkbox field', function () {
+      xdescribe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplate('checkbox');
         });
         checkboxTests();
       });
 
-      xdescribe('a text field', function () {
-        beforeEach(function () {
-          addFieldToTemplate('textfield');
-        });
-        textfieldTests();
-      });
+      // xdescribe('a text field', function () {
+      //   beforeEach(function () {
+      //     addFieldToTemplate('textfield');
+      //   });
+      //   textfieldTests();
+      // });
     });
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
-    describe('In a template element,', function () {
+    xdescribe('In a template element,', function () {
       /* Checkbox */
-      describe('a checkbox field', function () {
+      xdescribe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplateElement('checkbox');
         });
         checkboxTests();
       });
 
-      xdescribe('a text field', function () {
-        beforeEach(function () {
-          addFieldToTemplateElement('textfield');
-        });
-        textfieldTests();
-      });
+      // xdescribe('a text field', function () {
+      //   beforeEach(function () {
+      //     addFieldToTemplateElement('textfield');
+      //   });
+      //   textfieldTests();
+      // });
     });
 
 

@@ -149,6 +149,21 @@ define(['app', 'angular'], function (app) {
         request.send(null);
         return [request.status, request.response, {}];
       });
+
+      $httpBackend.whenGET('https://messaging.staging.metadatacenter.net/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
+      $httpBackend.whenGET('https://messaging.metadatacenter.orgx/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
       var url1 =  UrlService.base()  + '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F22e37611-192e-4faa-aa6d-4b1dcad3b898/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS';
       $httpBackend.whenGET(url1).respond(
           function (method, url1, data) {

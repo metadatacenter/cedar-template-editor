@@ -2,10 +2,10 @@
   "resourceRestAPI": "resourceServerUrl",
   "userRestAPI": "userServerUrl",
   "terminologyRestAPI": "terminologyServerUrl",
-  "resourceRestAPI": "resourceServerUrl",
   "valueRecommenderRestAPI": "valueRecommenderServerUrl",
   "schemaRestAPI": "schemaServerUrl",
   "groupRestAPI": "groupServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/",
-  "submissionRestAPI": "submissionServerUrl"
+  "submissionRestAPI": "submissionServerUrl",
+  "messagingRestAPI": "messagingServerUrl"
 }

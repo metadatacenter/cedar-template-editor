@@ -33,8 +33,26 @@ module.exports = function (config) {
 
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',
-      'test-require-config.js'
 
+      // RequireJS config for Karma tests
+      'test-require-config.js',
+
+      // templates
+      'scripts/form/file-upload.directive.html',
+      'scripts/template-element/cedar-template-element.directive.html',
+      'scripts/form/form.directive.html',
+      'scripts/form/field.directive.html',
+      'scripts/form/field-create/checkbox.html',
+      'scripts/form/field-render/checkbox.html',
+      'scripts/form/partials/*.html',
+      'scripts/controlled-term/class-list.directive.html',
+      'scripts/controlled-term/controlled-term.directive.html',
+      'scripts/controlled-term/property-list.directive.html',
+      'scripts/dashboard/dashboard.html',
+
+      // flow
+      'bower_components/flow.js/dist/flow.js',
+      'bower_components/ng-flow/dist/ng-flow-standalone.js'
 
     ],
 

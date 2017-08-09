@@ -18,6 +18,7 @@ define([
     var schemaService = null;
     var groupService = null;
     var submissionService = null;
+    var messagingService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -31,6 +32,7 @@ define([
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
       submissionService = config.submissionRestAPI;
+      messagingService = config.messagingRestAPI;
     };
 
     service.base = function () {
@@ -95,6 +97,10 @@ define([
 
     service.groupBase = function () {
       return groupService;
+    };
+
+    service.messagingBase = function () {
+      return messagingService;
     };
 
     service.getValueRecommendation = function () {
@@ -189,6 +195,30 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
+    service.messagingSummary = function () {
+      return this.messagingBase() + '/summary';
+    };
+
+    service.messagingMessages = function () {
+      return this.messagingBase() + '/messages';
+    };
+
+    service.messagingNotNotifiedMessages = function () {
+      return this.messagingMessages() + "?notification_status=notnotified";
+    };
+
+    service.messagingPatchMessage = function (id) {
+      return this.messagingMessages() + "/" + encodeURIComponent(id);
+    };
+
+    service.messagingMarkAllMessagesAsRead = function() {
+      return this.messagingBase() + '/command/mark-all-as-read';
+    };
+
+    service.immportWorkspaces = function () {
+      return submissionService + '/command/immport-workspaces';
+    };
+
     service.lincsValidation = function () {
       return submissionService + '/command/validate-lincs';
     };
@@ -198,7 +228,15 @@ define([
     };
 
     service.airrSubmission = function () {
-      return submissionService + '/command/submit-airr';
+      return submissionService + '/command/upload-airr-to-cedar';
+    };
+
+    service.immportSubmission = function () {
+      return submissionService + '/command/immport-submit';
+    };
+
+    service.lincsSubmission = function () {
+      return 'https://httpbin.org/post';
     };
 
     service.airrValidation = function () {
@@ -297,7 +335,8 @@ define([
     };
 
     service.getPropertyTree = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId) + '/tree';
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(
+          propertyId) + '/tree';
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {

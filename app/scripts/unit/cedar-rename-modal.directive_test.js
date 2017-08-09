@@ -140,6 +140,21 @@ define(['app', 'angular'], function (app) {
         request.send(null);
         return [request.status, request.response, {}];
       });
+
+      $httpBackend.whenGET('https://messaging.staging.metadatacenter.net/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
+      $httpBackend.whenGET('https://messaging.metadatacenter.orgx/summary').respond(
+          function (method, url, data) {
+            var data = {"total": 7, "unread": 1, "notnotified": 0};
+            var newElement = angular.fromJson(data);
+            return [200, data, {}];
+          });
+
     });
 
     describe('In a template,', function () {

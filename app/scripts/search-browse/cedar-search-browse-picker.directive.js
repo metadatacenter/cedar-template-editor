@@ -41,7 +41,8 @@ define([
           'AuthorizedBackendService',
           'FrontendUrlService',
           'UIProgressService',
-          'CONST'
+          'CONST',
+          'MessagingService'
         ];
 
         function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $translate, CedarUser,
@@ -49,7 +50,7 @@ define([
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService,
                                                    FrontendUrlService,
-                                                   UIProgressService, CONST) {
+                                                   UIProgressService, CONST, MessagingService) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -72,11 +73,13 @@ define([
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.showFlowModal = showFlowModal;
           vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
+          vm.flowModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -106,6 +109,9 @@ define([
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
+          vm.hasUnreadMessages = hasUnreadMessages;
+          vm.getUnreadMessageCount = getUnreadMessageCount;
+          vm.openMessaging = openMessaging;
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -890,6 +896,18 @@ define([
             return vm.mode == 'dashboard';
           }
 
+          function hasUnreadMessages() {
+            return MessagingService.unreadCount > 0;
+          }
+
+          function getUnreadMessageCount() {
+            return MessagingService.unreadCount;
+          }
+
+          function openMessaging() {
+            $location.url(FrontendUrlService.getMessaging(vm.getFolderId()));
+          }
+
           function filterShowing() {
             return vm.showFilters && onDashboard();
           }
@@ -1142,6 +1160,12 @@ define([
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
+          }
+
+
+          function showFlowModal() {
+            vm.flowModalVisible = true;
+            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible]);
           }
 
           // open the share modal

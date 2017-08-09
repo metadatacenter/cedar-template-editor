@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular','flow'
+], function (angular, flow) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
@@ -255,6 +255,13 @@ define([
     };
 
 
+
+    // // open the airr submission modal
+    // $scope.flowModalVisible = false;
+    // $scope.showFlowModal = function () {
+    //   $scope.flowModalVisible = true;
+    //   $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
+    // };
 
   };
 

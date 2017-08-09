@@ -14,18 +14,26 @@ define([
       serviceId: "AuthorizedBackendService"
     };
 
-    service.getConfig = function () {
+    service.getConfig = function (httpConfigObject) {
       var token = UserService.getToken();
-      return {
+      var config = {
         "headers": {
           "Authorization": token == null ? "" : "Bearer " + token,
-          "CEDAR-Debug" : true
+          "CEDAR-Debug"  : true
         }
       };
+      if (httpConfigObject != null) {
+        if (httpConfigObject.hasOwnProperty("headers")) {
+          for (var key in httpConfigObject.headers) {
+            config.headers[key] = httpConfigObject.headers[key];
+          }
+        }
+      }
+      return config;
     };
 
     service.getHttpPromise = function (httpConfigObject) {
-      var hco = angular.extend({}, httpConfigObject, this.getConfig());
+      var hco = angular.extend({}, httpConfigObject, this.getConfig(httpConfigObject));
       return $http(hco);
     };
 
