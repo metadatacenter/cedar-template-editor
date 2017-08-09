@@ -467,7 +467,8 @@
     "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
     "templateNotDeleted": "The template was not deleted!",
     "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
-    "folderCopyNotAllowed": "Copying folders is not allowed"
+    "folderCopyNotAllowed": "Copying folders is not allowed",
+    "permissionMissing": "You do not have enough permissions to perform this action!<br />Please request the <b>{{permissionName}}</b> permission."
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",

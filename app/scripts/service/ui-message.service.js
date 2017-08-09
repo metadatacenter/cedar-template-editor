@@ -85,6 +85,7 @@ define([
             showCancelButton  : false,
             confirmButtonText : $translate.instant(confirmTextKey),
             closeOnConfirm    : true,
+            closeOnCancel     : false,
             customClass       : 'cedarSWAL',
             confirmButtonColor: null,
             html              : true

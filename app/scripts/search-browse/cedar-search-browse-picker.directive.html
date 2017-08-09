@@ -38,6 +38,7 @@
 
         <li ng-if="dc.onDashboard()" class="repoSubmission">
           <button type="button"
+              ng-disabled="!$root.cedarUser.hasPermission('permission_post_submission_create')"
               uib-tooltip='{{"HELP.repoSubmission" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
