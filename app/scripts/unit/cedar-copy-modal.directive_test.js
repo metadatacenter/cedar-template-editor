@@ -357,7 +357,7 @@ define(['app', 'angular'], function (app) {
 
           $httpBackend.flush();
         });
-
+ 
         it("should have a copy button ", function () {
           var elm = copyDirective[0];
           expect(elm.querySelector(copyButton)).toBeDefined();

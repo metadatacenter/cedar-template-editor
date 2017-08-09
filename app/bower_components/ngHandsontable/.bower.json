@@ -40,6 +40,6 @@
     "commit": "4fa1b290cc4c0fd61a0bd74264cef38c176d7a74"
   },
   "_source": "https://github.com/handsontable/ngHandsontable.git",
-  "_target": "~0.7.0",
+  "_target": "0.7.0",
   "_originalSource": "ngHandsontable"
 }
