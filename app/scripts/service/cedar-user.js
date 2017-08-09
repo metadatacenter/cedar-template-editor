@@ -79,8 +79,7 @@ define([
     };
 
     service.hasPermission = function (permissionName) {
-      return true;
-      //return getAppData().cedarUserProfile.permissions.indexOf(permissionName) !== -1;
+      return getAppData().cedarUserProfile.permissions.indexOf(permissionName) !== -1;
     };
 
     service.getHomeFolderId = function () {
