@@ -134,6 +134,8 @@ define([
         else {
           $scope.modelValueRecommendation.push($scope.getModelVR($scope.model, fieldValue));
         }
+        console.log('modelValueRecommendation')
+        console.log($scope.modelValueRecommendation)
       };
 
       // Generates modelValueRecommendation from a given model
@@ -175,10 +177,13 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr, index) {
+        console.log('Updating model when refresh')
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
             // If the user entered a new value
+            console.log(index)
+            console.log(modelvr)
             if (select.search != modelvr[index].valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {

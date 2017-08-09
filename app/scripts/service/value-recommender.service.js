@@ -154,10 +154,13 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
+      console.log('populated fields')
+      console.log(populatedFields)
+      console.log(service.populatedFields)
 
       var inputData = {};
-      if (service.populatedFields.length > 0) {
-        inputData['populatedFields'] = service.populatedFields;
+      if (populatedFields.length > 0) {
+        inputData['populatedFields'] = populatedFields;
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'path': targetFieldPath};
