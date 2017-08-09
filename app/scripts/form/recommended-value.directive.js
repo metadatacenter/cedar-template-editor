@@ -121,6 +121,7 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
+        console.log('Initializing value recommendation field')
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
