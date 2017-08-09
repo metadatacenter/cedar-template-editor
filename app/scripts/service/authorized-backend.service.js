@@ -54,7 +54,7 @@ define([
       var suggestedAction = errorResponse.data.suggestedAction;
       console.log("suggestedAction:" + suggestedAction);
 
-      if (suggestedAction == "logout") {
+      if (suggestedAction == "logout" || suggestedAction == "provideAuthorizationHeader") {
         this.notifyAndLogout();
         return true;
       } else if (suggestedAction == "requestRole") {
