@@ -1003,7 +1003,7 @@ define([
       // the printable value is usually in @value
       var location = "@value";
       // but a link puts it in @id
-      if (service.isLinkType(field) || service.getFieldControlledTerms(field)) {
+      if (service.isLinkType(field)) {
         location = "@id";
         // and the constraint puts it _valueLabel
       } else if (service.hasValueConstraint(field)) {
