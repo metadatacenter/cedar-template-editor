@@ -999,7 +999,7 @@ define([
     };
 
     // where is the value that we show the user?
-    service.getValueLabelLocation = function (field) {
+    service.getValueLabelLocation = function (field, valueNode) {
       // the printable value is usually in @value
       var location = "@value";
       // but a link puts it in @id
@@ -1008,6 +1008,12 @@ define([
         // and the constraint puts it _valueLabel
       } else if (service.hasValueConstraint(field)) {
         location = "_valueLabel";
+        // The following condition allows the Metadata Editor to work with instances of the BioSample template. These
+        // instances were automatically generated from GEO data. According to the BioSample template, the optional attribute
+        // element must contain Name and Value attributes with plain text values. However, we automatically generated
+        // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
+      } else if (valueNode.length > 0 && valueNode[0]._valueLabel) {
+        location = "_valueLabel"
       }
       return location;
     };
