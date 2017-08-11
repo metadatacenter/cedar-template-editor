@@ -113,7 +113,7 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement) {
-        var location = dms.getValueLabelLocation($scope.field);
+        var location = dms.getValueLabelLocation($scope.field, valueElement);
         var result = '';
         if (valueElement) {
           for (var i = 0; i < valueElement.length; i++) {
