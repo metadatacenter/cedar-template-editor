@@ -5,6 +5,8 @@
            placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
            aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
            ng-model="$root.schemaOf(field)._ui.title"
+           ng-model-options="{ debounce: 1000 }"
+           ng-change="relabelField($root.schemaOf(field)._ui.title)"
            with-floating-label>
 </div><!-- /.form-group -->
 <div class="form-group floating-label-wrapper">

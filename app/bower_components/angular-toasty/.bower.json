@@ -30,8 +30,7 @@
     "tag": "v1.0.4",
     "commit": "3dab633f65541b2ba8c113d28eca743016b08c30"
   },
-  "_source": "git://github.com/Salakar/angular-toasty.git",
-  "_target": "~1.0.4",
-  "_originalSource": "angular-toasty",
-  "_direct": true
+  "_source": "https://github.com/Salakar/angular-toasty.git",
+  "_target": "1.0.4",
+  "_originalSource": "angular-toasty"
 }

@@ -18,20 +18,22 @@ module.exports = function (config) {
       // This line is required to load html templates using the html2js preprocessor, but it generates a 'WARNING: Tried
       // to load angular more than once.' message
       'bower_components/angular/angular.js',
+      'bower_components/jquery/jquery.js',
+      // 'bower_components/jquery-ui/jquery-ui.js',
+      // 'bower_components/angular-ui/build/angular-ui.js',
+      // 'bower_components/angular-ui-bootstrap/angular-ui-bootstrap.js',
 
-      // config files
       {pattern: 'config/**/*.json', included: false},
-      //{pattern: 'config/*.json', included: false},
       {pattern: 'resources/**/*.json', included: false},
-      // custom libraries
-      //{ pattern: 'cedar/scripts/**/*.js', included: false },
-      // third party libraries
       {pattern: 'third_party_components/**/*.js', included: false},
-
       {pattern: 'scripts/**/*.js', included: false},
       {pattern: 'scripts/app.js', included: false},
+      {pattern: 'scripts/**/*.html', included: true},
+      {pattern: 'img/**/*.png', included: false},
+
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',
+
       // RequireJS config for Karma tests
       'test-require-config.js',
 
@@ -46,7 +48,12 @@ module.exports = function (config) {
       'scripts/controlled-term/class-list.directive.html',
       'scripts/controlled-term/controlled-term.directive.html',
       'scripts/controlled-term/property-list.directive.html',
-      'scripts/dashboard/dashboard.html'
+      'scripts/dashboard/dashboard.html',
+
+      // flow
+      'bower_components/flow.js/dist/flow.js',
+      'bower_components/ng-flow/dist/ng-flow-standalone.js'
+
     ],
 
     // list of files to exclude
@@ -93,7 +100,7 @@ module.exports = function (config) {
     singleRun: false,
 
     //  Custom launcher for Travis-CI
-     customLaunchers: {
+    customLaunchers: {
       chromeTravisCI: {
         base: 'Chrome',
         flags: ['--no-sandbox']

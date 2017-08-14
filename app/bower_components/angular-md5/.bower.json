@@ -43,6 +43,6 @@
     "commit": "f0c5d61f92a807b4d3a0b2be98890d8948e03fe7"
   },
   "_source": "https://github.com/gdi2290/angular-md5.git",
-  "_target": "^0.1.10",
+  "_target": "0.1.10",
   "_originalSource": "angular-md5"
 }

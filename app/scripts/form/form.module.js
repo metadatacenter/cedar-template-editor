@@ -13,7 +13,7 @@ define([
   'cedar/template-editor/form/no-image.directive',
   'cedar/template-editor/form/right-click.directive',
   'cedar/template-editor/form/cedar-runtime-field.directive',
-  'cedar/template-editor/finder/cedar-finder.directive',
+  'cedar/template-editor/modal/cedar-finder.directive',
   'cedar/template-editor/form/auto-focus.directive',
   'cedar/template-editor/form/constrained-value.directive',
   'cedar/template-editor/form/recommended-value.directive',
@@ -21,9 +21,7 @@ define([
   'cedar/template-editor/form/field-toolbar.directive',
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
-  'cedar/template-editor/form/airr-submission-modal.directive',
-  'cedar/template-editor/form/file-upload.directive',
-  'cedar/template-editor/form/field-create/cardinality-selector.directive',
+  'cedar/template-editor/form/field-create/cardinality-selector.directive'
 
 
 ], function(angular) {
@@ -39,7 +37,7 @@ define([
     'cedar.templateEditor.form.noImageDirective',
     'cedar.templateEditor.form.rightClickDirective',
     'cedar.templateEditor.form.cedarRuntimeField',
-    'cedar.templateEditor.finder.cedarFinderDirective',
+    'cedar.templateEditor.modal.cedarFinderDirective',
     'cedar.templateEditor.form.autoFocusDirective',
     'cedar.templateEditor.form.constrainedValue',
     'cedar.templateEditor.form.recommendedValue',
@@ -47,8 +45,6 @@ define([
     'cedar.templateEditor.form.fieldToolbar',
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
-    'cedar.templateEditor.form.airrSubmissionModal',
-    'cedar.templateEditor.form.fileUpload',
     'cedar.templateEditor.form.fieldCreate.cardinalitySelector'
 
   ]);

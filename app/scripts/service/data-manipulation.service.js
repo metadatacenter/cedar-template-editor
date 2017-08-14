@@ -537,15 +537,48 @@ define([
       return service.schemaOf(node)['_ui']['propertyLabels'];
     };
 
-    // relabel the key with a new value from the propertyLabels
-    service.relabel = function (node, key) {
-      console.log('relabel ' + key);
+    // Relabel the field key with the field title
+    service.relabelField = function (schema, key, newTitle) {
+      /* Generate the new key */
+      var fieldKey = service.getFieldName(newTitle);
+      var properties = service.propertiesOf(schema);
+      var newKey = service.getAcceptableKey(properties, fieldKey);
 
+      // Rename the key at the schema.properties level
+      service.renameKeyOfObject(properties, key, newKey);
+
+      /* Rename the key in the @context */
+      if (properties["@context"] && properties["@context"].properties) {
+        service.renameKeyOfObject(properties["@context"].properties, key, newKey);
+        // update enum only if it is using one of our made up property URIs
+        var prop = properties["@context"].properties[newKey];
+        if (prop && prop.enum) {
+          if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
+            prop.enum[0] = service.getEnumOf(newKey);
+          }
+        }
+      }
+
+      if (properties["@context"].required) {
+        var idx = properties["@context"].required.indexOf(key);
+        properties["@context"].required[idx] = newKey;
+      }
+
+      // Rename the key in the 'order' array
+      schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+
+      // Rename key in the 'required' array
+      schema.required = service.renameItemInArray(schema.required, key, newKey);
+    };
+
+    // Relabel the element key with a new value from the propertyLabels
+    service.relabel = function (node, key) {
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
       // make sure label is not empty
-      if (schema._ui.propertyLabels[key].length == 0) {
+      schema._ui.propertyLabels = schema._ui.propertyLabels || [];
+      if (!schema._ui.propertyLabels[key] || schema._ui.propertyLabels[key].length == 0) {
         schema._ui.propertyLabels[key] = 'default';
       }
 
@@ -958,15 +991,15 @@ define([
     service.getValueLocation = function (field) {
       // usually it is in  @value
       var fieldValue = "@value";
-      // but these two put it @id
-      if (service.hasValueConstraint(field) || service.isLinkType(field)) {
+      // but these three put it @id
+      if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
         fieldValue = "@id";
       }
       return fieldValue;
     };
 
     // where is the value that we show the user?
-    service.getValueLabelLocation = function (field) {
+    service.getValueLabelLocation = function (field, valueNode) {
       // the printable value is usually in @value
       var location = "@value";
       // but a link puts it in @id
@@ -975,19 +1008,38 @@ define([
         // and the constraint puts it _valueLabel
       } else if (service.hasValueConstraint(field)) {
         location = "_valueLabel";
+        // The following condition allows the Metadata Editor to work with instances of the BioSample template. These
+        // instances were automatically generated from GEO data. According to the BioSample template, the optional attribute
+        // element must contain Name and Value attributes with plain text values. However, we automatically generated
+        // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
+      } else if (valueNode.length > 0 && valueNode[0]._valueLabel) {
+        location = "_valueLabel"
       }
       return location;
     };
 
-    // Transform string to obtain JSON field name
-    service.getFieldName = function (string) {
-      // Using Camel case format
-      return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-        return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-      }).replace(/\s+/g, '');
+    // Generates a nice field name
+    service.getFieldName = function (rawFieldName) {
+      var niceFieldName = rawFieldName;
 
-      //// Using underscore format
-      //return string
+      if (niceFieldName) {
+
+        // To Camel Case
+        niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+          return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+        }).replace(/\s+/g, '');
+
+        // Keep only alphanumeric characters
+        niceFieldName = niceFieldName.replace(/\W/g, '');
+      } else {
+        console.log("undefined rawFieldName");
+      }
+
+
+      return niceFieldName;
+
+      // Using underscore format
+      //return rawFieldName
       //  .replace(/'|"|(|)/g, '')
       //  .replace(/ +/g, "_")
       //  .toLowerCase();
@@ -1133,6 +1185,18 @@ define([
       return templateOrElement;
     };
 
+    service.removeKeyFromContext = function(schema, key) {
+      if (schema.properties["@context"] && schema.properties["@context"].properties) {
+        delete schema.properties["@context"].properties[key];
+      }
+      if (schema.properties["@context"].required) {
+        var index = schema.properties["@context"].required.indexOf(key);
+        if (index >= 0) {
+          schema.properties["@context"].required.splice(index, 1);
+        }
+      }
+    };
+
     // Rename an array item
     service.renameItemInArray = function (array, name, newName) {
       var index = array.indexOf(name);
@@ -1142,62 +1206,45 @@ define([
       return array;
     };
 
-
     // rename the key of a child in the form
     service.renameChildKey = function (parent, child, newKey) {
       if (!child) {
         return;
-
       }
-
       var parentSchema = service.schemaOf(parent);
-
       var childId = service.idOf(child);
       if (!childId || /^tmp\-/.test(childId)) {
         var p = service.propertiesOf(parent);
         if (p[newKey] && p[newKey] == child) {
           return;
         }
-
-
         newKey = service.getAcceptableKey(p, newKey);
         angular.forEach(p, function (value, key) {
           if (!value) {
             return;
           }
-
           var idOfValue = service.idOf(value);
           if (idOfValue && idOfValue == childId) {
             service.renameKeyOfObject(p, key, newKey);
-
             if (p["@context"] && p["@context"].properties) {
               service.renameKeyOfObject(p["@context"].properties, key, newKey);
-
               if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-
-
-
-                //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
                 p["@context"].properties[newKey].enum[0] = service.getPropertyOf(newKey,
                     p["@context"].properties[newKey].enum[0]);
               }
             }
-
             if (p["@context"].required) {
               var idx = p["@context"].required.indexOf(key);
               p["@context"].required[idx] = newKey;
             }
-
             // Rename key in the 'order' array
             parentSchema._ui.order = service.renameItemInArray(parentSchema._ui.order, key, newKey);
-
             // Rename key in the 'required' array
             parentSchema.required = service.renameItemInArray(parentSchema.required, key, newKey);
           }
         });
       }
     };
-
 
     //
     // value constraints
@@ -1505,11 +1552,7 @@ define([
     };
 
     service.removeChild = function (parent, child) {
-      // child must contain the schema level
-
       var id = service.getId(child);
-
-
       var selectedKey;
       var props = service.propertiesOf(parent);
       angular.forEach(props, function (value, key) {
@@ -1519,23 +1562,26 @@ define([
       });
 
       if (selectedKey) {
+        // Remove the key
         delete props[selectedKey];
 
-
+        // Remove it from the order array
         var idx = service.getOrder(parent).indexOf(selectedKey);
         service.getOrder(parent).splice(idx, 1);
 
-        // remove property label for this element
-        delete service.getPropertyLabels(parent)[selectedKey];
-
+        // Remove the property label (for elements)
+        if (service.getPropertyLabels(parent)[selectedKey]) {
+          delete service.getPropertyLabels(parent)[selectedKey];
+        }
 
         // Remove it from the top-level 'required' array
-        parent = service.removeKeyFromRequired(parent, selectedKey);
+        service.removeKeyFromRequired(parent, selectedKey);
 
+        // Remove it from the context
+        service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
       }
       return selectedKey;
     };
-
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {

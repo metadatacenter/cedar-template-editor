@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.trackingService', [])
       .service('TrackingService', TrackingService);
 
-  TrackingService.$inject = ["$analytics","$location"];
+  TrackingService.$inject = ["$analytics", "$location"];
 
-  function TrackingService($analytics,$location) {
+  function TrackingService($analytics, $location) {
 
     var analyticsKey = null;
     var isTracking = null;
@@ -27,16 +27,16 @@ define([
       }
     };
 
-    service.eventTrack = function(eventName, eventParameters) {
+    service.eventTrack = function (eventName, eventParameters) {
       $analytics.eventTrack(eventName, eventParameters);
     };
 
-    service.pageTrack = function() {
+    service.pageTrack = function () {
       $analytics.eventTrack("pageLoad", {'url': $location.absUrl()});
       $analytics.pageTrack($location.absUrl());
     };
 
     return service;
-  };
+  }
 
 });

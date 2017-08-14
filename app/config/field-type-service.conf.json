@@ -8,7 +8,8 @@
     "hasControlledTerms": true,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": true
+    "allowsValueRecommendation": true,
+    "hasInstanceTerm": true
   },
   {
     "cedarType": "link",
@@ -19,7 +20,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true
   },
   {
     "cedarType": "textarea",
@@ -30,7 +32,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "radio",
@@ -41,7 +44,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "checkbox",
@@ -52,7 +56,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "date",
@@ -63,7 +68,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "email",
@@ -74,7 +80,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "list",
@@ -85,7 +92,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "numeric",
@@ -96,7 +104,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "phone-number",
@@ -107,7 +116,8 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "section-break",
@@ -118,7 +128,8 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "richtext",
@@ -129,7 +140,8 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "image",
@@ -140,7 +152,8 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "youtube",
@@ -151,6 +164,7 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   }
 ]

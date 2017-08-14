@@ -105,7 +105,6 @@ define([
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
-          console.log('removeChild  from form ' + DataManipulationService.getTitle(node));
           dms.removeChild($scope.form, node);
           var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
           $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);

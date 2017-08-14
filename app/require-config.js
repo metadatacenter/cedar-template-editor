@@ -20,7 +20,10 @@ require.config({
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld': 'bower_components/jsonld/js/jsonld'
+    'jsonld': 'bower_components/jsonld/js/jsonld',
+    'ngFlow': 'bower_components/ng-flow/dist/ng-flow-standalone',
+    'flow': 'bower_components/flow.js/dist/flow'
+
   },
   shim    : {
     'angular'                                                                            : {
@@ -43,6 +46,9 @@ require.config({
     'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
+    'ngFlow'                                                                             : ['angular'],
+    'flow'                                                                             : ['angular'],
+
 
 
     '3rdparty/angular-fitvids/angular-fitvids': {
@@ -78,7 +84,7 @@ require.config({
 // do not load the full app here.
 // maybe we will be redirected to Keycloak for authentication
 require([
-  'angular',
+  'angular'
 ], function (angular) {
   var $html = angular.element(document.getElementsByTagName('html')[0]);
   angular.element().ready(function () {
@@ -88,7 +94,8 @@ require([
       require([
         'angular',
         'app',
-      ], function (angular, app) {
+        'ngFlow'
+      ], function (angular, app, ngFlow) {
         angular.bootstrap(document, ['cedar.templateEditor']);
 
         // Set the ng-app class for Angular Protractor tests

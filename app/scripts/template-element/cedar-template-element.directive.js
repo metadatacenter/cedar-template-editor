@@ -61,9 +61,6 @@ define([
         DataManipulationService.relabel(scope.parentElement, key);
       };
 
-
-
-
       scope.isEditState = function () {
         return UIUtilService.isEditState(scope.element);
       };
@@ -89,7 +86,6 @@ define([
 
         return result;
       };
-
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -301,9 +297,6 @@ define([
 
 
       scope.removeChild = function (node) {
-        console.log('removeChild from parent '   + DataManipulationService.getId(scope.parentElement) + ' ' + DataManipulationService.getId(node));
-        console.log(scope.parentElement );
-
         DataManipulationService.removeChild(scope.parentElement, node);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);

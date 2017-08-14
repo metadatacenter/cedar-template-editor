@@ -113,7 +113,7 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement) {
-        var location = dms.getValueLabelLocation($scope.field);
+        var location = dms.getValueLabelLocation($scope.field, valueElement);
         var result = '';
         if (valueElement) {
           for (var i = 0; i < valueElement.length; i++) {
@@ -447,6 +447,7 @@ define([
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
 
+
         if ($scope.isMultiAnswer()) {
           // Reset model
           $scope.model = dms.initializeModel($scope.field, $scope.model, true);
@@ -496,6 +497,7 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
+
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
           var valueLocation = $scope.getValueLocation();

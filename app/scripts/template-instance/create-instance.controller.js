@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular','flow'
+], function (angular, flow) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
@@ -248,19 +248,20 @@ define([
     };
 
     $scope.doValidation = function () {
-      console.log('doValidation');
       var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
       }
     };
 
-    // open the airr submission modal
-    $scope.airrSubmissionModalVisible = false;
-    $scope.showAirrSubmissionModal = function () {
-      $scope.airrSubmissionModalVisible = true;
-      $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
-    };
+
+
+    // // open the airr submission modal
+    // $scope.flowModalVisible = false;
+    // $scope.showFlowModal = function () {
+    //   $scope.flowModalVisible = true;
+    //   $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
+    // };
 
   };
 

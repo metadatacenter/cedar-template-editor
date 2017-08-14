@@ -1,7 +1,7 @@
 <div class="controlled-terms controlled-term-options">
 
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'properties'">
-    
+
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
@@ -92,7 +92,6 @@
 
     <div ng-if="(ctdc.selectedClass || ctdc.currentOntology) && !ctdc.isLoadingClassDetails && !ctdc.isLoadingOntologyDetails">
       <div class="class-actions">
-        <!--<div class="element-toggles list table-style">-->
         <div class="element-toggles">
           <!--Add Term-->
           <div ng-if="ctdc.selectedClass.type == 'OntologyClass' || ctdc.selectedClass.type == 'Value'"
@@ -101,7 +100,7 @@
               ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedClass)">
             <span>Term</span>
           </div>
-          <!--Add Children-->
+          <!--Add Branch-->
           <div ng-if="ctdc.selectedClass.type == 'OntologyClass' && ctdc.selectedClass.hasChildren"
               class="element-toggle-add-values"
               ng-class="{active: ctdc.stageValueConstraintAction == 'add_children'}"
@@ -144,6 +143,22 @@
               <th>UI Label</th>
               <td><input type="textfield" class="form-control"
                   ng-model="ctdc.stagedOntologyClassValueConstraints[0].label"/></td>
+            </tr>
+          </table>
+        </div>
+
+        <!--Add Branch (content)-->
+        <div
+            ng-if="ctdc.stageValueConstraintAction == 'add_children' && ctdc.stagedBranchesValueConstraints.length > 0">
+          <table class="table table-values-info">
+            <tr>
+              <th>Term Id</th>
+              <td>{{ctdc.stagedBranchesValueConstraints[0].uri}}</td>
+            </tr>
+            <tr>
+              <th>Term Name</th>
+              <td>{{ctdc.stagedBranchesValueConstraints[0].name}}
+              </td>
             </tr>
           </table>
         </div>
@@ -193,21 +208,6 @@
           </table>
         </div>
 
-        <!--Add Children (content)-->
-        <div
-            ng-if="ctdc.stageValueConstraintAction == 'add_children' && ctdc.stagedBranchesValueConstraints.length > 0">
-          <table class="table table-values-info">
-            <tr>
-              <th>Term Id</th>
-              <td>{{ctdc.stagedOntologyClassValueConstraints[0].uri}}</td>
-            </tr>
-            <tr>
-              <th>Term Name</th>
-              <td>{{ctdc.stagedOntologyClassValueConstraints[0].prefLabel}}
-              </td>
-            </tr>
-          </table>
-        </div>
       </div>
 
       <!--Class Actions-->

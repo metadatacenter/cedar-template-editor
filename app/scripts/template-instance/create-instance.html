@@ -43,7 +43,6 @@
           </div>
           <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata" ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel</button>
           <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="doValidation()" translate>Validate</button>
-          <button type="button" ng-if="isValidationTemplate('submission')" id="button-submission-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="showAirrSubmissionModal()" translate>Submit</button>
           <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;"  translate>GENERIC.Save</button>
         </div>
         <!-- /.edit-actions -->
@@ -55,11 +54,3 @@
   <!-- /.container -->
 </div> <!-- /.template-body -->
   </section>
-
-<!-- add folder modal -->
-<section>
-  <airr-submission-modal files="files" instance="" cedar-modal-show modal-visible="airrSubmissionModalVisible" class="modal fade"
-      id="airr-submission-modal" tabindex="-1" role="dialog" aria-labelledby="airrSubmissionModalHeader"
-      data-keyboard="true" data-backdrop="static">
-  </airr-submission-modal>
-</section>

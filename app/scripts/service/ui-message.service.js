@@ -22,6 +22,13 @@ define([
       this.flash('warning', messageKey, messageParameters, title);
     };
 
+    service.flashMessageNotification = function (message) {
+      toasty['info']({
+        title: message.subject,
+        msg  : ""
+      });
+    };
+
     service.flash = function (type, messageKey, messageParameters, titleKey) {
       toasty[type]({
         title: $translate.instant(titleKey),
@@ -78,6 +85,7 @@ define([
             showCancelButton  : false,
             confirmButtonText : $translate.instant(confirmTextKey),
             closeOnConfirm    : true,
+            closeOnCancel     : false,
             customClass       : 'cedarSWAL',
             confirmButtonColor: null,
             html              : true

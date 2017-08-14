@@ -132,11 +132,9 @@ define([
     $scope.moreIsOpen = false;
     $scope.toggleMore = function() {
       $scope.moreIsOpen = !$scope.moreIsOpen;
-      console.log('toggleMore ' + $scope.moreIsOpen);
     };
 
     $scope.addElementToElement = function (element) {
-      console.log('addElementToElement');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         DataManipulationService.createDomIds(element);
@@ -203,6 +201,11 @@ define([
       // First check to make sure Element Name, Element Description are not blank
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
+
+      // If Element Name is blank, produce error message
+      if (!$scope.element._ui.title.length) {
+        $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
+      }
 
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
@@ -381,26 +384,33 @@ define([
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
+    //
     // finder
-    $scope.elementFind = function () {
-      jQuery("body").trigger("click");
-      jQuery("#" + $scope.finderModalId).modal("show");
-    };
+    //
 
-    $scope.addElementFromFinder = function () {
-      if ($scope.finderResource) {
-        $scope.addElementToTemplate($scope.finderResource);
-      }
-      $scope.hideFinder();
-    };
-
-    $scope.showFinder = function () {
-      $scope.finderResource = null;
+    $scope.showFinderModal = function () {
+      // open and activate the modal
+      $scope.finderModalVisible = true;
+      $scope.$broadcast('finderModalVisible');
     };
 
     $scope.hideFinder = function () {
-      jQuery("#" + $scope.finderModalId).modal('hide');
+      jQuery("#finder-modal").modal('hide')
     };
+
+
+    // $scope.addElementFromFinder = function () {
+    //   if ($scope.finderResource) {
+    //     $scope.addElementToTemplate($scope.finderResource);
+    //   }
+    //   $scope.hideFinder();
+    // };
+    //
+    // $scope.showFinder = function () {
+    //   $scope.finderResource = null;
+    // };
+
+
 
     $scope.enableSaveButton = function () {
       $timeout(function () {

@@ -21,7 +21,7 @@ define([
 
       $scope.errorMessages;
       //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
-      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden"];
+      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden","field"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -173,6 +173,19 @@ define([
         return result.length > 0 && result[0].hasControlledTerms;
       };
 
+      // does the field support using instance type term
+      $scope.hasInstanceType = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == dms.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].hasInstanceTerm;
+      };
+
+      // does the field support using instance type term
+      $scope.getInstanceType = function () {
+       return dms.getFieldControlledTerms($scope.field);
+      };
+
       // Retrieve appropriate field templates
       $scope.getTemplateUrl = function () {
         return 'scripts/form/field-' + $scope.directory + '/' + dms.getInputType(
@@ -211,6 +224,10 @@ define([
           $scope.model.splice(index, 1);
         }
       };
+
+      $scope.relabelField = function(newTitle) {
+        DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
+      }
 
       //
       // controlled terms modal
@@ -854,11 +871,6 @@ define([
         var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
       };
 
-
-
-
-
-
       /* end of controlled terms functionality */
 
     };
@@ -867,8 +879,9 @@ define([
       templateUrl: 'scripts/form/field.directive.html',
       restrict   : 'EA',
       scope      : {
+        fieldKey      : '=',
         field         : '=',
-        parentElement: '=',
+        parentElement : '=',
         model         : '=',
         renameChildKey: "=",
         preview       : "=",

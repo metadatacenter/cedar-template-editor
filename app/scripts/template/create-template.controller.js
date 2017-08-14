@@ -80,7 +80,6 @@ define([
 
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
-
         };
 
         var dontHaveCreatingFieldOrElement = function () {
@@ -104,7 +103,6 @@ define([
             });
           }
         };
-
 
         $scope.moreIsOpen = false;
         $scope.toggleMore = function () {
@@ -173,7 +171,6 @@ define([
         };
 
         $scope.saveTemplate = function () {
-
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             UIMessageService.conditionalOrConfirmedExecution(
@@ -202,7 +199,6 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
-
           this.disableSaveButton();
           var owner = this;
 
@@ -210,14 +206,15 @@ define([
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
 
-          //// If Template Name is blank, produce error message
-          //if (!$scope.form._ui.title.length) {
-          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
-          //}
-          //// If Template Description is blank, produce error message
-          //if (!$scope.form._ui.description.length) {
+          // If Template Name is blank, produce error message
+          if (!$scope.form._ui.title.length) {
+           $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+            owner.enableSaveButton();
+          }
+          // If Template Description is blank, produce error message
+          // if (!$scope.form._ui.description.length) {
           //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          //}
+          // }
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
@@ -225,12 +222,11 @@ define([
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
             DataManipulationService.defaultSchemaTitleAndDescription($scope.form);
 
-            // create a copy of the form and strip out the _tmp fields before saving it
-            //var copiedForm = $scope.stripTmpFields();
-
-            // Save template
+            // Saving the template for the first time
             if ($routeParams.id == undefined) {
+
               DataManipulationService.stripTmps($scope.form);
+
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
@@ -255,11 +251,11 @@ define([
                   }
               );
             }
-            // Update template
+            // Updating an existing template
             else {
               var id = $scope.form['@id'];
               DataManipulationService.stripTmps($scope.form);
-              //--//delete $scope.form['@id'];
+
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
@@ -299,6 +295,7 @@ define([
 
         $scope.invalidFieldStates = {};
         $scope.invalidElementStates = {};
+
         $scope.$on('invalidFieldState', function (event, args) {
           if (args[0] == 'add') {
             $scope.invalidFieldStates[args[2]] = args[1];
@@ -307,6 +304,7 @@ define([
             delete $scope.invalidFieldStates[args[2]];
           }
         });
+
         $scope.$on('invalidElementState', function (event, args) {
           if (args[0] == 'add') {
             $scope.invalidElementStates[args[2]] = args[1];
@@ -411,26 +409,21 @@ define([
           jQuery("#" + $scope.searchBrowseModalId).modal('hide')
         };
 
+        //
         // finder
-        $scope.elementFind = function () {
-          jQuery("body").trigger("click");
-          jQuery("#" + $scope.finderModalId).modal("show");
-        };
+        //
 
-        $scope.addElementFromFinder = function () {
-          if ($scope.finderResource) {
-            $scope.addElementToTemplate($scope.finderResource);
-          }
-          $scope.hideFinder();
-        };
-
-        $scope.showFinder = function () {
-          $scope.finderResource = null;
+        $scope.showFinderModal = function () {
+          // open and activate the modal
+          $scope.finderModalVisible = true;
+          $scope.$broadcast('finderModalVisible');
         };
 
         $scope.hideFinder = function () {
-          jQuery("#" + $scope.finderModalId).modal('hide')
+          jQuery("#finder-modal").modal('hide');
         };
+
+
 
         $scope.enableSaveButton = function () {
           $timeout(function () {

@@ -67,7 +67,10 @@
     "FillOutTemplate": "Fill Out Template",
     "AddElement": "Add Element",
     "AddField": "Add Field",
+    "Pause": "Pause",
+    "Resume": "Resume",
     "Clear": "Clear",
+    "Submit": "Submit",
     "Done": "Done",
     "SaveTemplate": "Save Template",
     "FillOutATemplate": "Fill Out a Template",
@@ -109,7 +112,7 @@
     "canWrite": "can write",
     "isOwner": "owner",
     "midnight": "12:00 AM",
-    "Submit": "or Ctrl-Enter",
+    "OrCtrlEnter": "or Ctrl-Enter",
     "Show": "Show",
     "Hide": "Hide",
     "Template": "Template",
@@ -153,9 +156,14 @@
     "deleteTerm": "Delete term",
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
-    "addProperty": "Add property"
+    "addProperty": "Add property",
+    "unreadMessageCount": "You have unread messages",
+    "repoSubmission": "Submit to repository"
   },
   "SERVER": {
+    "WORKSPACE": {
+      "error": "There was an error while executing the workspace request!<br /><br />VIEW TECHNICAL DETAILS!"
+    },
     "FOLDER": {
       "create": {
         "success": "The folder <b>{{title}}</b> has been created.",
@@ -402,8 +410,7 @@
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
       "validationErrors": "Validation errors:"
-    },
-    "AIRRsubmission": "AIRR Submisssion"
+    }
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
@@ -460,12 +467,23 @@
     "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
     "templateNotDeleted": "The template was not deleted!",
     "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
-    "folderCopyNotAllowed": "Copying folders is not allowed"
+    "folderCopyNotAllowed": "Copying folders is not allowed",
+    "permissionMissing": "You do not have enough permissions to perform this action!<br />Please request the <b>{{permissionName}}</b> permission."
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
     "systemFolder": "The selected folder is a system folder.",
     "nonEmptyFolder": "The selected folder is not empty.",
     "templateReferencedInInstances": "The template is used by {{referenceCount}} instance(s)."
+  },
+  "messaging": {
+    "from": {
+      "process": {
+        "submission": {
+          "AIRR": "AIRR Submission Process",
+          "IMMPORT": "ImmPort Submission Process"
+        }
+      }
+    }
   }
 }
