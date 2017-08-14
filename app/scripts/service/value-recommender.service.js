@@ -11,7 +11,6 @@ define(['angular'], function (angular) {
                                    UIMessageService, AuthorizedBackendService, HttpBuilderService, autocompleteService) {
 
     var http_default_config = {};
-    var isValueRecommendationEnabled = false;
     var hasInstances;
 
 
@@ -23,11 +22,14 @@ define(['angular'], function (angular) {
       valueRecommendationResults : [],
       populatedFields: []
     };
+    console.log('POPULATED FIELDS')
+    console.log(service.populatedFields);
 
     /**
      * Initialize service
      */
     service.init = function (templId, templ) {
+
       templateId = templId;
       template = templ;
 
@@ -41,12 +43,15 @@ define(['angular'], function (angular) {
       // Set isValueRecommendationEnabled using the templateId
       service.hasInstances(templateId).then(function (results) {
         hasInstances = results;
-        //isValueRecommendationEnabled = results;
         //if (results == true)
         //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
       });
-    };
 
+      // Clear valueRecommendationResults and populatedFields
+      service.valueRecommendationResults = [];
+      service.populatedFields = [];
+
+    };
 
     service.getIsValueRecommendationEnabled = function (field) {
       return (DataManipulationService.schemaOf(field)._ui.valueRecommendationEnabled && hasInstances);
@@ -154,10 +159,13 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
+      console.log('populated fields')
+      console.log(populatedFields)
+      console.log(service.populatedFields)
 
       var inputData = {};
-      if (service.populatedFields.length > 0) {
-        inputData['populatedFields'] = service.populatedFields;
+      if (populatedFields.length > 0) {
+        inputData['populatedFields'] = populatedFields;
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'path': targetFieldPath};
