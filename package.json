@@ -2,7 +2,7 @@
   "name": "cedar-template-editor",
   "version": "1.4.1-SNAPSHOT",
   "publishConfig": {
-    "registry": "https://nexus.bmir.stanford.edu/content/repositories/npm-cedar/"
+    "registry": "https://nexus.bmir.stanford.edu/repositories/npm-cedar/"
   },
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
