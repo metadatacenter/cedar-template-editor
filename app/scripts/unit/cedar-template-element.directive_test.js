@@ -167,12 +167,6 @@ define(['app', 'angular'], function (app) {
                       ]
                     }
                   },
-                  "patternProperties"   : {
-                    "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
-                      "type"  : "string",
-                      "format": "uri"
-                    }
-                  },
                   "required"            : [],
                   "additionalProperties": false
                 },
@@ -321,12 +315,6 @@ define(['app', 'angular'], function (app) {
                     "enum"  : [
                       "http://open-services.net/ns/core#"
                     ]
-                  }
-                },
-                "patternProperties"   : {
-                  "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
-                    "type"  : "string",
-                    "format": "uri"
                   }
                 },
                 "required"            : [],
