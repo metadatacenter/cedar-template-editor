@@ -424,9 +424,9 @@ define([
         delete node._tmp;
       }
 
-      var p = service.propertiesOf(node);
-      if (p && p.hasOwnProperty("_tmp")) {
-        delete p._tmp;
+      var schema = service.schemaOf(node);
+      if (schema && schema.hasOwnProperty("_tmp")) {
+        delete schema._tmp;
       }
 
     };
@@ -471,23 +471,23 @@ define([
 
     // is this a nested field?
     service.isNested = function (field) {
-      var p = service.propertiesOf(field);
-      p._tmp = p._tmp || {};
-      return (p._tmp.nested || false);
+      var schema = service.schemaOf(field);
+      schema._tmp = schema._tmp || {};
+      return (schema._tmp.nested || false);
     };
 
     // set the _tmp.state
     service.setTmpState = function (node, value) {
-      var p = service.propertiesOf(node);
-      p._tmp = p._tmp || {};
-      p._tmp.state = value;
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      schema._tmp.state = value;
     };
 
     // check the _tmp.state
     service.isTmpState = function (node, value) {
-      var p = service.propertiesOf(node);
-      p._tmp = p._tmp || {};
-      return (p._tmp.state == value);
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      return (schema._tmp.state == value);
     };
 
     //
@@ -1350,13 +1350,17 @@ define([
 
     // get the controlled terms list for field types
     service.getFieldControlledTerms = function (node) {
-
-      var properties = service.propertiesOf(node);
-      if (properties['@type'].oneOf && properties['@type'].oneOf[1]) {
-        return properties['@type'].oneOf[1].items['enum'];
-      }
-      else {
+      if (service.isStaticField(node)) { // static fields
         return null;
+      }
+      else { // regular fields
+        var properties = service.propertiesOf(node);
+        if (properties['@type'] && properties['@type'].oneOf && properties['@type'].oneOf[1]) {
+          return properties['@type'].oneOf[1].items['enum'];
+        }
+        else {
+          return null;
+        }
       }
     };
 

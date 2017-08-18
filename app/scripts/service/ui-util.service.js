@@ -229,10 +229,13 @@ define([
     };
 
     service.getYouTubeEmbedFrame = function (field) {
-
       var width = 560;
       var height = 315;
-      var content = DataManipulationService.getContent(field).replace(/<(?:.|\n)*?>/gm, '');
+      var content = DataManipulationService.getContent(field);
+      if (content) {
+        content = content.replace(/<(?:.|\n)*?>/gm, '');
+      }
+      
       var size = DataManipulationService.getSize(field);
 
       if (size && size.width && Number.isInteger(size.width)) {
@@ -243,9 +246,10 @@ define([
       }
 
       // if I say trust as html, then better make sure it is safe first
-      return $sce.trustAsHtml(
-          '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
-
+      if (content) {
+        return $sce.trustAsHtml(
+            '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+      }
     };
 
     service.console = function (txt, label) {
@@ -303,10 +307,9 @@ define([
 
     // set as selected
     service.setSelected = function (field) {
-      var p = $rootScope.propertiesOf(field);
-      p._tmp = p._tmp || {};
-      p._tmp.state = "creating";
-
+      var schema = DataManipulationService.schemaOf(field);
+      schema._tmp = schema._tmp || {};
+      schema._tmp.state = "creating";
       $rootScope.selectedFieldOrElement = field;
     };
 
@@ -337,7 +340,6 @@ define([
 
       // don't continue with errors
       if (errorMessages.length == 0) {
-        //delete DataManipulationService.propertiesOf(node)._tmp;
         DataManipulationService.stripTmpIfPresent(node);
 
         if (renameChildKey) {
