@@ -22,8 +22,6 @@ define(['angular'], function (angular) {
       valueRecommendationResults : [],
       populatedFields: []
     };
-    console.log('POPULATED FIELDS')
-    console.log(service.populatedFields);
 
     /**
      * Initialize service
@@ -105,14 +103,13 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field, term) {
-      console.log('updateValueRecommendationResults');
       var query = term || '*';
       var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
         var targetFieldPath = field._path;
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
-              console.log(autocompleteService.autocompleteResultsCache[fieldId]);
+
               var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][query]['results'];
 
               if (recommendation.recommendedValues) {
@@ -159,9 +156,6 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
-      console.log('populated fields')
-      console.log(populatedFields)
-      console.log(service.populatedFields)
 
       var inputData = {};
       if (populatedFields.length > 0) {

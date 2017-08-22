@@ -259,6 +259,9 @@ define([
       // Adding corresponding property type to @context (only if the field is not static)
       if (!FieldTypeService.isStaticField(fieldType)) {
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
+        if (!element.properties["@context"].required) {
+          element.properties["@context"].required = []
+        }
         element.properties["@context"].required.push(fieldName);
       }
       // Evaluate cardinality

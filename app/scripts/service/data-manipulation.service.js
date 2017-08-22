@@ -424,9 +424,9 @@ define([
         delete node._tmp;
       }
 
-      var p = service.propertiesOf(node);
-      if (p && p.hasOwnProperty("_tmp")) {
-        delete p._tmp;
+      var schema = service.schemaOf(node);
+      if (schema && schema.hasOwnProperty("_tmp")) {
+        delete schema._tmp;
       }
 
     };
@@ -471,23 +471,23 @@ define([
 
     // is this a nested field?
     service.isNested = function (field) {
-      var p = service.propertiesOf(field);
-      p._tmp = p._tmp || {};
-      return (p._tmp.nested || false);
+      var schema = service.schemaOf(field);
+      schema._tmp = schema._tmp || {};
+      return (schema._tmp.nested || false);
     };
 
     // set the _tmp.state
     service.setTmpState = function (node, value) {
-      var p = service.propertiesOf(node);
-      p._tmp = p._tmp || {};
-      p._tmp.state = value;
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      schema._tmp.state = value;
     };
 
     // check the _tmp.state
     service.isTmpState = function (node, value) {
-      var p = service.propertiesOf(node);
-      p._tmp = p._tmp || {};
-      return (p._tmp.state == value);
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      return (schema._tmp.state == value);
     };
 
     //
@@ -1178,7 +1178,8 @@ define([
       if (index > -1) {
         templateOrElement.required.splice(index, 1);
       }
-      // If the required field is empty, delete it. Empty 'required' fields are not valid in JSON schema
+      // If the required field is empty, delete it. Note that empty 'required' seem to be valid in JSON Schema, however
+      // (http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.17)
       if (templateOrElement.required.length == 0) {
         delete templateOrElement.required;
       }
@@ -1193,6 +1194,11 @@ define([
         var index = schema.properties["@context"].required.indexOf(key);
         if (index >= 0) {
           schema.properties["@context"].required.splice(index, 1);
+        }
+        // If the required field is empty, delete it. Note that empty 'required' seem to be valid in JSON Schema, however
+        // (http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.17)
+        if (schema.properties["@context"].required.length == 0) {
+          delete schema.properties["@context"].required;
         }
       }
     };
@@ -1344,13 +1350,17 @@ define([
 
     // get the controlled terms list for field types
     service.getFieldControlledTerms = function (node) {
-
-      var properties = service.propertiesOf(node);
-      if (properties['@type'].oneOf && properties['@type'].oneOf[1]) {
-        return properties['@type'].oneOf[1].items['enum'];
-      }
-      else {
+      if (service.isStaticField(node)) { // static fields
         return null;
+      }
+      else { // regular fields
+        var properties = service.propertiesOf(node);
+        if (properties['@type'] && properties['@type'].oneOf && properties['@type'].oneOf[1]) {
+          return properties['@type'].oneOf[1].items['enum'];
+        }
+        else {
+          return null;
+        }
       }
     };
 
@@ -1579,6 +1589,7 @@ define([
 
         // Remove it from the context
         service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
+
       }
       return selectedKey;
     };

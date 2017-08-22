@@ -140,12 +140,6 @@
           }
         }
       },
-      "patternProperties": {
-        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
-          "type": "string",
-          "format": "uri"
-        }
-      },
       "required": [
         "xsd",
         "pav",

@@ -332,8 +332,8 @@ define([
       //
 
       var setDirectory = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        var state = p._tmp && p._tmp.state || "completed";
+        var schema = dms.schemaOf($scope.field);
+        var state = schema._tmp && schema._tmp.state || "completed";
         if ((state == "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
           $scope.directory = "create";
         } else {
