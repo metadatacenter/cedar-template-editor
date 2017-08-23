@@ -560,6 +560,10 @@ define([
         return DataManipulationService.isMultipleChoice(field);
       };
 
+      $scope.isMultiAnswer = function(field) {
+        return DataManipulationService.isMultiAnswer(field);
+      };
+
       $scope.setMultipleChoice = function(field, multipleChoice) {
         DataManipulationService.setMultipleChoice(field, multipleChoice);
       };

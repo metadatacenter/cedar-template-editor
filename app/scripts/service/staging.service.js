@@ -249,13 +249,24 @@ define([
       var field = DataManipulationService.generateField(fieldType);
       UIUtilService.setSelected(field);
 
-      var optionInputs = ["radio", "checkbox", "list"];
-      if (optionInputs.indexOf(fieldType) > -1) {
-        field._valueConstraints.literals = [
-          {
-            "label": ""
-          }
-        ];
+      // is it a checkbox, list, or radio field?
+      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+          field.items._valueConstraints.multipleChoice = true;
+          field.items._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+        }
+        else { // single choice field (radio or single-choice list)
+          field._valueConstraints.multipleChoice = false;
+          field._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+        }
       }
 
       // Converting title for irregular character handling

@@ -220,13 +220,21 @@ define([
       return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
     };
 
+
     // is this a multiple choice list?
     service.isMultipleChoice = function (node) {
-      if (service.schemaOf(node).items) {
-        return service.schemaOf(node).items._valueConstraints.multipleChoice;
-      }
-      else {
+      if (service.schemaOf(node)._valueConstraints) {
         return service.schemaOf(node)._valueConstraints.multipleChoice;
+      }
+    };
+
+    // is this a multiple choice list?
+    service.isMultipleChoice = function (node) {
+      if (service.schemaOf(node)._valueConstraints) {
+        return service.schemaOf(node)._valueConstraints.multipleChoice;
+      }
+      else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
+        return service.schemaOf(node).items._valueConstraints.multipleChoice;
       }
     };
 
@@ -407,9 +415,6 @@ define([
 
     // sets the multiple choice option to true or false
     service.setMultipleChoice = function(node, newMultipleChoiceValue) {
-      console.log('setting multi choice');
-      console.log(node);
-      console.log(newMultipleChoiceValue);
       if (newMultipleChoiceValue == true) { // set multipleChoice to true
         if (node.items) {
           node.items._valueConstraints.multipleChoice = true;
@@ -697,10 +702,6 @@ define([
     // Function that generates a basic field definition
     service.generateField = function (inputType) {
       var valueType = ["string", "null"];
-
-      if (service.isMultiAnswerInputType(inputType)) {
-        valueType = ["array", "null"];
-      }
 
       var field;
       if (FieldTypeService.isStaticField(inputType)) {
