@@ -213,12 +213,19 @@ define([
     // is this a checkbox, radio or list question?
     service.isMultiAnswer = function (node) {
       var inputType = service.getInputType(node);
+      return service.isMultiAnswerInputType(inputType);
+    };
+
+    service.isMultiAnswerInputType = function (inputType) {
       return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
     };
 
     // is this a multiple choice list?
     service.isMultipleChoice = function (node) {
-      if (service.schemaOf(node)._valueConstraints) {
+      if (service.schemaOf(node).items) {
+        return service.schemaOf(node).items._valueConstraints.multipleChoice;
+      }
+      else {
         return service.schemaOf(node)._valueConstraints.multipleChoice;
       }
     };
@@ -396,6 +403,34 @@ define([
           }
         }
       });
+    };
+
+    // sets the multiple choice option to true or false
+    service.setMultipleChoice = function(node, newMultipleChoiceValue) {
+      console.log('setting multi choice');
+      console.log(node);
+      console.log(newMultipleChoiceValue);
+      if (newMultipleChoiceValue == true) { // set multipleChoice to true
+        if (node.items) {
+          node.items._valueConstraints.multipleChoice = true;
+        }
+        else {
+          node.minItems = 1;
+          node._valueConstraints.multipleChoice = true;
+          service.cardinalizeField(node);
+        }
+      }
+      else { // set multipleChoice to false
+        if (node.items) {
+          console.log('and im here')
+          delete node.minItems;
+          node.items._valueConstraints.multipleChoice = false;
+          service.uncardinalizeField(node);
+        }
+        else {
+          node._valueConstraints.multipleChoice = false;
+        }
+      }
     };
 
     //
@@ -663,9 +698,8 @@ define([
     service.generateField = function (inputType) {
       var valueType = ["string", "null"];
 
-      if ((inputType == "checkbox") || (inputType == "list") || (inputType == "radio")) {
+      if (service.isMultiAnswerInputType(inputType)) {
         valueType = ["array", "null"];
-
       }
 
       var field;
@@ -695,6 +729,11 @@ define([
         }
         delete field.properties['@type'];
         field.properties['@type'] = valueAtType;
+      }
+
+      if (inputType == "checkbox") {
+        field.minItems = 1;
+        service.cardinalizeField(field);
       }
 
       return field;
@@ -1012,7 +1051,7 @@ define([
         // instances were automatically generated from GEO data. According to the BioSample template, the optional attribute
         // element must contain Name and Value attributes with plain text values. However, we automatically generated
         // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
-      } else if (valueNode.length > 0 && valueNode[0]._valueLabel) {
+      } else if (valueNode && valueNode.length > 0 && valueNode[0]._valueLabel) {
         location = "_valueLabel"
       }
       return location;
