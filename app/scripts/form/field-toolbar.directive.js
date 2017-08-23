@@ -69,7 +69,8 @@ define([
         };
 
         scope.isMultiple = function () {
-          return DataManipulationService.isCardinalElement(scope.field);
+          // We consider that checkboxes and multi-choice lists are not 'multiple'
+          return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
         };
 
         scope.isExpandable = function () {

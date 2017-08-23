@@ -491,12 +491,11 @@ define([
             $scope.model['@value'] = null;
           }
         }
-      }
+      };
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
         var inputType = dms.getInputType($scope.field);
-
         if (inputType == 'checkbox') {
           $scope.optionsUI = {};
           for (var item in $scope.model) {
@@ -538,7 +537,7 @@ define([
             label: $scope.model._valueLabel
           };
         }
-      }
+      };
 
       // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function () {
@@ -555,6 +554,18 @@ define([
             $scope.updateUIFromModel();
           }
         }
+      };
+
+      $scope.isMultipleChoice = function(field) {
+        return DataManipulationService.isMultipleChoice(field);
+      };
+
+      $scope.isMultiAnswer = function(field) {
+        return DataManipulationService.isMultiAnswer(field);
+      };
+
+      $scope.setMultipleChoice = function(field, multipleChoice) {
+        DataManipulationService.setMultipleChoice(field, multipleChoice);
       };
 
       // Initializes model for fields constrained using controlled terms
@@ -589,7 +600,6 @@ define([
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
         if (UIUtilService.isRuntime()) {
-
           if (!$rootScope.isArray(m)) {
             if (!m) {
               m = {};
@@ -619,7 +629,7 @@ define([
           if ($scope.model['_valueLabel']) {
             $scope.modelValueRecommendation.valueInfo = {
               'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model[fieldValue],
+              'valueUri': $scope.model[fieldValue]
             };
           }
           else {

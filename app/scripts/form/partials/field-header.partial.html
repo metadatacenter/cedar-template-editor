@@ -13,8 +13,7 @@
 
       <!-- cardinality -->
       <span  class="multiple-instance-cardinality"
-          ng-show="$parent.field.hasOwnProperty('minItems')">
-
+          ng-show="$parent.field.hasOwnProperty('minItems') && !isMultiAnswer($parent.field)">
            {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
        </span>
 

@@ -553,7 +553,7 @@ define([
       scope.pageMinMax();
 
       scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet);
-      console.log(scope.viewState);
+      //console.log(scope.viewState);
     }
   };
 });
