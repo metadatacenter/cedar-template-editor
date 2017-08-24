@@ -49,6 +49,7 @@ module.exports = function (config) {
       'scripts/controlled-term/controlled-term.directive.html',
       'scripts/controlled-term/property-list.directive.html',
       'scripts/dashboard/dashboard.html',
+      'scripts/unit/http.js',
 
       // flow
       'bower_components/flow.js/dist/flow.js',

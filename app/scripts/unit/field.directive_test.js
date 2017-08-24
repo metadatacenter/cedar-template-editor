@@ -51,13 +51,11 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      // returns the appropriate file content when requested
-      $httpBackend.whenGET('resources/i18n/locale-en.json').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'resources/i18n/locale-en.json', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
+      http.init($httpBackend);
+      http.getFile('resources/i18n/locale-en.json');
+      http.getFile('config/url-service.conf.json?v=undefined');
+      http.getFile('img/plus.png');
+      http.getFile('img/close_modal.png');
     });
 
 
