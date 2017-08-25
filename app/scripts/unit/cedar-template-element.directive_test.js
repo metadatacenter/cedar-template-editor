@@ -80,11 +80,11 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      http.init($httpBackend);
-      http.getFile('resources/i18n/locale-en.json');
-      http.getFile('scripts/form/field-create/cardinality-selector.directive.html');
-      http.getUrl(UrlService.base(), 'messaging', '/summary');
-      http.getUrl(UrlService.base(), 'resource', '/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb');
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('scripts/form/field-create/cardinality-selector.directive.html');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.getUrl(UrlService.base(), 'resource', '/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb');
     });
 
 

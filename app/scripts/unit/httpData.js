@@ -1,6 +1,6 @@
 'use strict';
 
-var http = {
+var httpData = {
 
       httpBackend: null,
 
@@ -24,7 +24,6 @@ var http = {
         this.httpBackend.whenGET(url).respond(
             function (method, url, data) {
               var newElement = angular.fromJson(result);
-              //console.log('getUrl',url,result);
               return [200, result, {}];
             });
       },

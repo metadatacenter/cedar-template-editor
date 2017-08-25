@@ -49,7 +49,7 @@ module.exports = function (config) {
       'scripts/controlled-term/controlled-term.directive.html',
       'scripts/controlled-term/property-list.directive.html',
       'scripts/dashboard/dashboard.html',
-      'scripts/unit/http.js',
+      'scripts/unit/httpData.js',
       'scripts/unit/applicationData.js',
       'scripts/unit/cedarUserData.js',
 

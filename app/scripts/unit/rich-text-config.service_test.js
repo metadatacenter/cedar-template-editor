@@ -25,10 +25,10 @@
         }));
 
     beforeEach(function () {
-      http.init($httpBackend);
-      http.getFile('config/src/rich-text-config-service.conf.json');
-      http.getFile('resources/i18n/locale-en.json');
-      http.getFile('config/url-service.conf.json?v=undefined');
+      httpData.init($httpBackend);
+      httpData.getFile('config/src/rich-text-config-service.conf.json');
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
     });
 
    var config = {

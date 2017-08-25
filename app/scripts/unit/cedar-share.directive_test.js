@@ -64,12 +64,12 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      http.init($httpBackend);
-      http.getFile('resources/i18n/locale-en.json');
-      http.getFile('config/url-service.conf.json?v=undefined');
-      http.getFile('img/plus.png');
-      http.getFile('img/close_modal.png');
-      http.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
+      httpData.getFile('img/plus.png');
+      httpData.getFile('img/close_modal.png');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
     describe('In a template,', function () {

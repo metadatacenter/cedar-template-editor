@@ -64,14 +64,14 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      http.init($httpBackend);
-      http.getFile('resources/i18n/locale-en.json');
-      http.getFile('config/url-service.conf.json?v=undefined');
-      http.getFile('img/plus.png');
-      http.getFile('img/close_modal.png');
-      http.getUrl(UrlService.base(), 'messaging', '/summary');
-      http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
-      http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=element,folder&sort=createdOnTS');
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
+      httpData.getFile('img/plus.png');
+      httpData.getFile('img/close_modal.png');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=element,folder&sort=createdOnTS');
      });
 
     describe('In a template,', function () {
@@ -153,7 +153,7 @@ define(['app', 'angular'], function (app) {
           var elm = finderDirective[0];
           expect(elm.querySelectorAll(notSearching).length).toBe(0);
 
-          //console.log('breadcrumbs',elm.querySelectorAll(breadcrumbs));
+          // TODO data is not present
           //expect(elm.querySelectorAll(element).length).toBe(10);
 
           // enter 'test' into the search field
