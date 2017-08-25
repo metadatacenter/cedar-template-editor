@@ -50,6 +50,8 @@ module.exports = function (config) {
       'scripts/controlled-term/property-list.directive.html',
       'scripts/dashboard/dashboard.html',
       'scripts/unit/http.js',
+      'scripts/unit/applicationData.js',
+      'scripts/unit/cedarUserData.js',
 
       // flow
       'bower_components/flow.js/dist/flow.js',

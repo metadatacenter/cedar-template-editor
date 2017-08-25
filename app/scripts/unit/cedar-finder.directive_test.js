@@ -8,40 +8,24 @@ define(['app', 'angular'], function (app) {
     var $compile;
     var $controller;
     var $httpBackend;
+    var $templateCache;
+    var $timeout;
+    var CedarUser;
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
+
+    var DataManipulationService;
+    var StagingService;
+    var TemplateElementService;
+    var DataUtilService;
+    var SpreadsheetService;
+    var UIUtilService;
+    var UrlService;
     var UIMessageService;
     var resourceService;
-    var UrlService;
     var UISettingsService;
+    var resourceService;
     var QueryParamUtilsService;
-    var $timeout;
-    var appData = {
-      CedarUserProfile: {
-        uiPreferences: {
-          folderView         : {
-            currentFolderId: null,
-            sortBy         : "createdOnTS",
-            sortDirection  : "asc",
-            viewMode       : "grid"
-          },
-          infoPanel          : {
-            opened: false
-          },
-          metadataEditor     : {
-            metadataJsonViewer: false,
-            templateViewer    : false
-          },
-          resourceTypeFilters: {
-            template: false,
-            element : false,
-            field   : false,
-            instance: false
-          },
-          templateEditor     : {
-            templateViewer: false
-          }
-        }
-      }
-    };
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -55,41 +39,6 @@ define(['app', 'angular'], function (app) {
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
-        var cedarUser = {
-          init            : function () {
-            return true
-          },
-          setAuthProfile  : function () {
-            return true
-          },
-          setCedarProfile : function () {
-            return true
-          },
-          getUIPreferences: function () {
-            return appData.CedarUserProfile.uiPreferences
-          },
-          getHomeFolderId : function () {
-            return 'https://repo.metadatacenter.orgx/folders/f55c5f4b-1ee6-4839-8836-fcb7509cecfe'
-          },
-          isSortByName    : function () {
-            return false
-          },
-          isSortByCreated : function () {
-            return true
-          },
-          isSortByUpdated : function () {
-            return false
-          },
-          isListView      : function () {
-            return true
-          },
-          isGridView      : function () {
-            return false
-          },
-          getSort : function () {
-            return "createdOnTS";
-          }
-        };
         return cedarUser;
       });
     }));
@@ -122,6 +71,7 @@ define(['app', 'angular'], function (app) {
       http.getFile('img/close_modal.png');
       http.getUrl(UrlService.base(), 'messaging', '/summary');
       http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
+      http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=element,folder&sort=createdOnTS');
      });
 
     describe('In a template,', function () {
@@ -143,6 +93,7 @@ define(['app', 'angular'], function (app) {
         var searching = '.modal-footer div.breadcrumbs-sb  p.searching.ng-hide ';
         var notSearching = '.modal-footer div.breadcrumbs-sb  p.not-searching.ng-hide ';
         var breadcrumbs = '.modal-footer .breadcrumbs-sb';
+        var element = '.modal-body .populate-form-boxes .form-box-container';
 
 
         beforeEach(function () {
@@ -202,6 +153,9 @@ define(['app', 'angular'], function (app) {
           var elm = finderDirective[0];
           expect(elm.querySelectorAll(notSearching).length).toBe(0);
 
+          //console.log('breadcrumbs',elm.querySelectorAll(breadcrumbs));
+          //expect(elm.querySelectorAll(element).length).toBe(10);
+
           // enter 'test' into the search field
           var searchElement = angular.element(elm.querySelectorAll(finderSearch)[0]);
           searchElement.triggerHandler('click');
@@ -210,7 +164,7 @@ define(['app', 'angular'], function (app) {
           $timeout.flush();
           expect(searchElement.val() === value).toBeTruthy();
 
-          // TODO this should be true but it is not
+          // TODO this should be true but it is not, breadcrumbs don't hide after search
           //expect(elm.querySelectorAll(notSearching).length).toBe(1);
 
           // expect the remove x to appear

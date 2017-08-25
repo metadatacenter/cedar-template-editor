@@ -17,6 +17,8 @@ define(['app', 'angular'], function (app) {
     var compiledDirective;
     var fieldId;
 
+    var appData = applicationData.getConfig();
+
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
     // Load other modules

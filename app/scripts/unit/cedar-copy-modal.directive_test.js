@@ -8,41 +8,18 @@ define(['app', 'angular'], function (app) {
     var $compile;
     var $controller;
     var $httpBackend;
+    var $templateCache;
+    var $timeout;
+    var CedarUser;
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
+
     var UIMessageService;
     var resourceService;
     var UISettingsService;
     var UrlService;
     var QueryParamUtilsService;
-    var $timeout;
-    var CedarUser;
-    var appData = {
-      CedarUserProfile: {
-        uiPreferences: {
-          folderView         : {
-            currentFolderId: null,
-            sortBy         : "createdOnTS",
-            sortDirection  : "asc",
-            viewMode       : "grid"
-          },
-          infoPanel          : {
-            opened: false
-          },
-          metadataEditor     : {
-            metadataJsonViewer: false,
-            templateViewer    : false
-          },
-          resourceTypeFilters: {
-            template: false,
-            element : false,
-            field   : false,
-            instance: false
-          },
-          templateEditor     : {
-            templateViewer: false
-          }
-        }
-      }
-    };
+
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -56,44 +33,6 @@ define(['app', 'angular'], function (app) {
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
-        var cedarUser = {
-          init            : function () {
-            return true
-          },
-          setAuthProfile  : function () {
-            return true
-          },
-          setCedarProfile : function () {
-            return true
-          },
-          getUIPreferences: function () {
-            return appData.CedarUserProfile.uiPreferences
-          },
-          getHomeFolderId : function () {
-            return null
-          },
-          isSortByName    : function () {
-            return false
-          },
-          isSortByCreated : function () {
-            return true
-          },
-          isSortByUpdated : function () {
-            return false
-          },
-          isListView      : function () {
-            return true
-          },
-          isGridView      : function () {
-            return false
-          },
-          getSort         : function () {
-            return appData.CedarUserProfile.uiPreferences.folderView.sortBy;
-          },
-          hasPermission   : function () {
-            return true;
-          }
-        };
         return cedarUser;
       });
     }));
@@ -127,6 +66,7 @@ define(['app', 'angular'], function (app) {
       http.getFile('img/plus.png');
       http.getFile('img/close_modal.png');
       http.getUrl(UrlService.base(), 'messaging', '/summary');
+      http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
       http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F22e37611-192e-4faa-aa6d-4b1dcad3b898/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
       http.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
     });

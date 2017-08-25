@@ -14,34 +14,8 @@ define(['app', 'angular'], function (app) {
     var UISettingsService;
     var QueryParamUtilsService;
     var $timeout;
-    var appData = {
-      CedarUserProfile: {
-        uiPreferences: {
-          folderView         : {
-            currentFolderId: null,
-            sortBy         : "createdOnTS",
-            sortDirection  : "asc",
-            viewMode       : "grid"
-          },
-          infoPanel          : {
-            opened: false
-          },
-          metadataEditor     : {
-            metadataJsonViewer: false,
-            templateViewer    : false
-          },
-          resourceTypeFilters: {
-            template: false,
-            element : false,
-            field   : false,
-            instance: false
-          },
-          templateEditor     : {
-            templateViewer: false
-          }
-        }
-      }
-    };
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -55,38 +29,6 @@ define(['app', 'angular'], function (app) {
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
-        var cedarUser = {
-          init            : function () {
-            return true
-          },
-          setAuthProfile  : function () {
-            return true
-          },
-          setCedarProfile : function () {
-            return true
-          },
-          getUIPreferences: function () {
-            return appData.CedarUserProfile.uiPreferences
-          },
-          getHomeFolderId : function () {
-            return null
-          },
-          isSortByName    : function () {
-            return false
-          },
-          isSortByCreated : function () {
-            return true
-          },
-          isSortByUpdated : function () {
-            return false
-          },
-          isListView      : function () {
-            return true
-          },
-          isGridView      : function () {
-            return false
-          }
-        };
         return cedarUser;
       });
     }));

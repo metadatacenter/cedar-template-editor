@@ -6,10 +6,14 @@ define(['app', 'angular'], function (app) {
 
     var $rootScope;
     var $compile;
-    var $controller; // responsible for instantiating controllers
+    var $controller;
     var $httpBackend;
     var $templateCache;
     var $timeout;
+    var CedarUser;
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
+
     var DataManipulationService;
     var StagingService;
     var TemplateElementService;
@@ -17,6 +21,11 @@ define(['app', 'angular'], function (app) {
     var SpreadsheetService;
     var UIUtilService;
     var UrlService;
+    var UIMessageService;
+    var resourceService;
+    var UISettingsService;
+    var resourceService;
+    var QueryParamUtilsService;
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -33,6 +42,11 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.form.spreadsheetService'));
     beforeEach(module('cedar.templateEditor.service.uIUtilService'));
     beforeEach(module('cedar.templateEditor.service.templateElementService'));
+    beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('CedarUser', function mockCedarUser() {
+        return cedarUser;
+      });
+    }));
 
 
     // Mock the controlledTermDirectiveControlled because we don't need it for these tests
