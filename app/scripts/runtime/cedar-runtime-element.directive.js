@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.templateElement.cedarRuntimeElement', [])
+  angular.module('cedar.templateEditor.runtime.cedarRuntimeElement', [])
       .directive('cedarRuntimeElement', cedarRuntimeElement);
 
   cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'UIUtilService', 'DataManipulationService',
@@ -27,7 +27,7 @@ define([
         path         : '=',
         uid          : '='
       },
-      templateUrl: 'scripts/template-element/cedar-runtime-element.directive.html',
+      templateUrl: 'scripts/runtime/cedar-runtime-element.directive.html',
       link       : linker
     };
 

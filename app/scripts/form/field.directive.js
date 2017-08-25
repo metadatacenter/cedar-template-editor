@@ -8,12 +8,10 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
-                            "SpreadsheetService",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                             "StringUtilsService", "UIUtilService"];
 
-  function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService,
-                          DataManipulationService,
+  function fieldDirective($rootScope, $sce, $translate, $filter, DataManipulationService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
 
 
@@ -190,10 +188,6 @@ define([
       $scope.getTemplateUrl = function () {
         return 'scripts/form/field-' + $scope.directory + '/' + dms.getInputType(
                 $scope.field) + '.html';
-      };
-
-      $scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
       $scope.getYouTubeEmbedFrame = function (field) {

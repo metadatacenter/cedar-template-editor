@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.fieldToolbar', [])
+  angular.module('cedar.templateEditor.runtime.fieldToolbar', [])
       .directive('fieldToolbar', fieldToolbar);
 
 
@@ -18,7 +18,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/field-toolbar.directive.html',
+      templateUrl: 'scripts/runtime/field-toolbar.directive.html',
       restrict   : 'EA',
       scope      : {
         field       : "=",

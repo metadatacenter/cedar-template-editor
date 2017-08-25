@@ -3,16 +3,14 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.cedarRuntimeField', [])
-      .directive('cedarRuntimeField', cedarRuntimeField);
+  angular.module('cedar.templateEditor.runtime.fieldDirective', [])
+      .directive('fieldDirective', fieldDirective);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                               "$window", '$timeout',
-                               "SpreadsheetService",
-                               "DataManipulationService", "UIUtilService", "autocompleteService", "ValueRecommenderService"];
+  fieldDirective.$inject = ["$rootScope",  "$document", "$translate",  "$window", '$timeout',
+                               "SpreadsheetService","DataManipulationService", "UIUtilService", "autocompleteService", "ValueRecommenderService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
+  function fieldDirective($rootScope, $document, $translate,  $window,
                              $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService, ValueRecommenderService) {
 
 
@@ -65,7 +63,7 @@ define([
 
       // Retrieve appropriate field template file
       $scope.getFieldUrl = function () {
-        return 'scripts/form/runtime-field' + '/' + $scope.getInputType() + '.html';
+        return 'scripts/runtime/runtime-field' + '/' + $scope.getInputType() + '.html';
       };
 
       // is the field multiple cardinality?
@@ -825,7 +823,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/cedar-runtime-field.directive.html',
+      templateUrl: 'scripts/runtime/field.directive.html',
       restrict   : 'EA',
       scope      : {
         field         : '=',

@@ -1,0 +1,112 @@
+<form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1) + '-' + path}}"
+    ng-class="{'validate': checkSubmission}" novalidate>
+  <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
+
+
+  <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}" ng-repeat="page in pagesArray">
+
+    <div class="row">
+      <div class="col-xs-9 ">
+        <div ng-click="toggleExpanded()">
+          <span class="title form">
+              <button type="button" class="expand form-title" >
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
+              </button>
+              {{$root.schemaOf(form)._ui.title}}</span>
+        </div>
+      </div>
+
+      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
+        <field-toolbar field="form"
+            close="close" is-active="isActive"
+            expand-all="expandAll" is-expandable="isExpandable">
+        </field-toolbar>
+      </div>
+    </div>
+
+    <ul class="treeview tv">
+
+      <li ng-repeat="item in page" class="animate-fade tv"
+          ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
+          ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+
+        <!--If field-->
+        <div ng-if="isField(item)" class="field-instance">
+
+          <field-directive
+              nested="false" field="form.properties[item]" model="model[item]"
+              delete="removeChild(form.properties[item]);"
+              rename-child-key="renameChildKey"
+              is-edit-data="isEditData"
+              path="0"
+              uid="item"
+              parent-key="'form'"
+              field-key="item"
+              previous="form.properties[page[$index-1]]"></field-directive>
+        </div>
+
+        <!--If element-->
+        <div ng-if="isElement(item)" class=" element-group full">
+          <cedar-runtime-element nested="false" element="form.properties[item]"
+              key="item"
+              parent-key="'form'"
+              field-key="item"
+              model="model[item]"
+              labels="form._ui.propertyLabels"
+              relabel="relabel"
+              delete="removeChild(form.properties[item])"
+              is-edit-data="isEditData"
+              path="0"
+
+              uid="uid+'-'+item">
+          </cedar-runtime-element>
+        </div>
+
+      </li>
+    </ul>
+
+
+  </div>
+  <p ng-if="form.requiredFields" class="required-text">Required</p>
+
+</form>
+
+<div ng-if="form._ui.pages.length > 1 " class="pagination-container">
+  <ul class="pagination">
+    <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i
+        class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
+    <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a
+        ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
+    <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next"><span translate>GENERIC.Next</span><i
+        class="fa fa-lg fa-angle-right"></i></span></a></li>
+  </ul>
+</div><!-- /.pagination-container -->
+
+
+<!-- document preview -->
+<div ng-if="isShowOutput()" ng-model="metaToRDF">
+
+  <div id="outputJSON"  style="margin-top:40px">
+    <uib-tabset active="getShowOutputTab">
+
+      <uib-tab index="0" ng-click="setShowOutputTab(0)">
+        <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>
+        <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
+      </uib-tab>
+
+      <uib-tab index="1" ng-click="toRDF();setShowOutputTab(1)">
+        <uib-tab-heading><i class="cedar-svg-rdf"></i> RDF</uib-tab-heading>
+        <div ng-if="metaToRDFError"></div>
+        <div ng-if="metaToRDF">
+          <pre id='form-json-preview-rdf'>{{getRDF()}}</pre>
+        </div>
+        <div ng-if="!metaToRDF">
+          <div class="center warning">
+            {{getRDFError()}}
+          </div>
+        </div>
+      </uib-tab>
+
+    </uib-tabset>
+  </div>
+</div>

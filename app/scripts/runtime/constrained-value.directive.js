@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.constrainedValue', [])
+  angular.module('cedar.templateEditor.runtime.constrainedValue', [])
       .directive('constrainedValue', constrainedValue);
 
 
@@ -113,7 +113,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/constrained-value.directive.html',
+      templateUrl: 'scripts/runtime/constrained-value.directive.html',
       restrict   : 'EA',
       scope      : {
         field  : '=',

@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.templateElement.cedarRuntimeNestedElementDirective', [])
+  angular.module('cedar.templateEditor.runtime.cedarRuntimeNestedElementDirective', [])
       .directive('cedarRuntimeNestedElement', cedarRuntimeNestedElementDirective);
 
   cedarRuntimeNestedElementDirective.$inject = ["$rootScope", "$compile", 'DataUtilService', 'DataManipulationService'];

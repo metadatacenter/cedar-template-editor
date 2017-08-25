@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.recommendedValue', [])
+  angular.module('cedar.templateEditor.runtime.recommendedValue', [])
       .directive('recommendedValue', recommendedValue);
 
 
@@ -219,7 +219,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/recommended-value.directive.html',
+      templateUrl: 'scripts/runtime/recommended-value.directive.html',
       restrict   : 'EA',
       scope      : {
         field: '=',
