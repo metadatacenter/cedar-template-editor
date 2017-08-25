@@ -3,8 +3,6 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
