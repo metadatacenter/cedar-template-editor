@@ -148,7 +148,7 @@ define([
                       model[k] = {};
                     }
                   }
-                  else if (k == '_valueLabel') {
+                  else if (k == 'rdfs:label') {
                     delete model[k];
                   }
                   else if (k !== '@type') {

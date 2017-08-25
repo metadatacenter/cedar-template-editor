@@ -63,12 +63,12 @@ define([
           // Array
           if (angular.isArray($scope.model)) {
             $scope.model[index]['@id'] = modelValue[index].termInfo['@id'];
-            $scope.model[index]['_valueLabel'] = modelValue[index].termInfo.label;
+            $scope.model[index]['rdfs:label'] = modelValue[index].termInfo.label;
           }
           // Single object
           else {
             $scope.model['@id'] = modelValue[index].termInfo['@id'];
-            $scope.model['_valueLabel'] = modelValue[index].termInfo.label;
+            $scope.model['rdfs:label'] = modelValue[index].termInfo.label;
           }
 
         }
@@ -77,12 +77,12 @@ define([
           // Array
           if (angular.isArray($scope.model)) {
             delete $scope.model[index]['@id'];
-            delete $scope.model[index]['_valueLabel'];
+            delete $scope.model[index]['rdfs:label'];
           }
           // Single object
           else {
             delete $scope.model['@id'];
-            delete $scope.model['_valueLabel'];
+            delete $scope.model['rdfs:label'];
           }
         }
       };
@@ -94,7 +94,7 @@ define([
             $scope.modelValue[i] = {};
             $scope.modelValue[i]['termInfo'] = {
               '@id': m['termInfo'],
-              label: m._valueLabel
+              label: m['rdfs:label']
             };
           });
         }
@@ -103,7 +103,7 @@ define([
           $scope.modelValue[0] = {};
           $scope.modelValue[0]['termInfo'] = {
             '@id': $scope.model['termInfo'],
-            label: $scope.model._valueLabel
+            label: $scope.model['rdfs:label']
           };
         }
       };

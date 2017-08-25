@@ -1,4 +1,4 @@
-<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}">
+<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['rdfs:label'])}">
   <ui-select
       ng-change="updateModelFromUIControlledField(modelValue, index)"
       ng-model="modelValue[index].termInfo"

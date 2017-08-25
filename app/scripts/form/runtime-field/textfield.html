@@ -15,7 +15,7 @@
     <!-- Field with values have been constrained using controlled terms -->
     <div ng-if="isConstrained() && isListView()"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
+        class="isInactive ">{{valueArray[index]['rdfs:label']}} &nbsp;</div>
 
     <div ng-if="isConstrained() && !isListView()"
         aria-label="{{getDescription()}}"
@@ -23,10 +23,10 @@
     </div>
 
     <!-- Field with value recommendation functionality -->
-    <!--TODO: pick _valueLabel or @value depending on the existing field value-->
+    <!--TODO: pick rdfs:label or @value depending on the existing field value-->
     <div ng-if="isRecommended() && isListView()"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
+        class="isInactive ">{{valueArray[index]['rdfs:label']}} &nbsp;</div>
 
     <div ng-if="isRecommended() && !isListView()"
         aria-label="{{getDescription()}}"

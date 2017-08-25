@@ -472,7 +472,7 @@ define([
               if (m && m['@value'] && m['@value']['@id']) {
                 $scope.model[i] = {
                   "@value"   : m['@value']['@id'],
-                  _valueLabel: m['@value'].label
+                  "rdfs:label" : m['@value'].label
                 };
               }
             });
@@ -486,7 +486,7 @@ define([
         else {
           if ($scope.modelValue && $scope.modelValue['@value'] && $scope.modelValue['@value']["@id"]) {
             $scope.model['@value'] = $scope.modelValue['@value']["@id"];
-            $scope.model._valueLabel = $scope.modelValue['@value'].label;
+            $scope.model['rdfs:label'] = $scope.modelValue['@value'].label;
           } else {
             $scope.model['@value'] = null;
           }
@@ -526,7 +526,7 @@ define([
             $scope.modelValue[i] = {};
             $scope.modelValue[i]['@value'] = {
               '@id': m['@value'],
-              label: m._valueLabel
+              label: m['rdfs:label']
             };
           });
         }
@@ -534,7 +534,7 @@ define([
           $scope.modelValue = {};
           $scope.modelValue['@value'] = {
             '@id': $scope.model['@value'],
-            label: $scope.model._valueLabel
+            label: $scope.model['rdfs:label']
           };
         }
       };
@@ -626,9 +626,9 @@ define([
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
-          if ($scope.model['_valueLabel']) {
+          if ($scope.model['rdfs:label']) {
             $scope.modelValueRecommendation.valueInfo = {
-              'value'   : $scope.model._valueLabel,
+              'value'   : $scope.model['rdfs:label'],
               'valueUri': $scope.model[fieldValue]
             };
           }
@@ -649,7 +649,7 @@ define([
             if (m && m.valueInfo & m.valueInfo.value) {
               $scope.model[i][fieldValue] = m.valueInfo.value;
               if (m.valueInfo.valueUri) {
-                $scope.model[i]['_valueLabel'] = m.valueInfo.valueUri;
+                $scope.model[i]['rdfs:label'] = m.valueInfo.valueUri;
               }
             } else {
               delete $scope.model[i][fieldValue];
@@ -658,11 +658,11 @@ define([
         } else {
           if (modelvr.valueInfo.valueUri) {
             $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
-            $scope.model['_valueLabel'] = modelvr.valueInfo.value;
+            $scope.model['rdfs:label'] = modelvr.valueInfo.value;
           }
           else {
             $scope.model[fieldValue] = modelvr.valueInfo.value;
-            delete $scope.model['_valueLabel'];
+            delete $scope.model['rdfs:label'];
           }
         }
       };
@@ -689,7 +689,7 @@ define([
                   modelValue = select.search;
                 }
                 $scope.model[fieldValue] = modelValue;
-                delete $scope.model['_valueLabel'];
+                delete $scope.model['rdfs:label'];
                 $scope.modelValueRecommendation.valueInfo.value = modelValue;
               }
             }
@@ -710,7 +710,7 @@ define([
         select.selected = undefined;
         select.search = "";
         $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
-        delete $scope.model['_valueLabel'];
+        delete $scope.model['rdfs:label'];
       };
 
       $scope.calculateUIScore = function (score) {

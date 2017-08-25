@@ -27,11 +27,9 @@ define([
       idBasePath = config.idBasePath;
     };
 
-
     //
     // basics
     //
-
 
     service.getFieldProperties = function (field) {
       if (field) {
@@ -390,7 +388,6 @@ define([
         delete field.items;
         delete field.maxItems;
 
-
         return true;
       } else {
         return false;
@@ -427,7 +424,6 @@ define([
       }
       else { // set multipleChoice to false
         if (node.items) {
-          console.log('and im here')
           delete node.minItems;
           node.items._valueConstraints.multipleChoice = false;
           service.uncardinalizeField(node);
@@ -1045,15 +1041,15 @@ define([
       // but a link puts it in @id
       if (service.isLinkType(field)) {
         location = "@id";
-        // and the constraint puts it _valueLabel
+        // and the constraint puts it rdfs:label
       } else if (service.hasValueConstraint(field)) {
-        location = "_valueLabel";
+        location = "rdfs:label";
         // The following condition allows the Metadata Editor to work with instances of the BioSample template. These
         // instances were automatically generated from GEO data. According to the BioSample template, the optional attribute
         // element must contain Name and Value attributes with plain text values. However, we automatically generated
         // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
-      } else if (valueNode && valueNode.length > 0 && valueNode[0]._valueLabel) {
-        location = "_valueLabel"
+      } else if (valueNode && valueNode.length > 0 && valueNode[0]['rdfs:label']) {
+        location = "rdfs:label"
       }
       return location;
     };

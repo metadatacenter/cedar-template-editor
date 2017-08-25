@@ -79,13 +79,13 @@ define([
             // Array
             if ($rootScope.isArray($scope.model)) {
               $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model[index]['_valueLabel'] = modelvr[index].valueInfo.value;
+              $scope.model[index]['rdfs:label'] = modelvr[index].valueInfo.value;
               delete $scope.model[index]['@value'];
             }
             // Single object
             else {
               $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model['_valueLabel'] = modelvr[index].valueInfo.value;
+              $scope.model['rdfs:label'] = modelvr[index].valueInfo.value;
               delete $scope.model['@value'];
             }
           }
@@ -94,12 +94,12 @@ define([
             // Array
             if ($rootScope.isArray($scope.model)) {
               $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
-              delete $scope.model[index]['_valueLabel'];
+              delete $scope.model[index]['rdfs:label'];
             }
             // Single object
             else {
               $scope.model['@value'] = modelvr[index].valueInfo.value;
-              delete $scope.model['_valueLabel'];
+              delete $scope.model['rdfs:label'];
             }
           }
         }
@@ -109,13 +109,13 @@ define([
           if ($rootScope.isArray($scope.model)) {
             delete $scope.model[index]['@id'];
             delete $scope.model[index]['@value'];
-            delete $scope.model[index]['_valueLabel'];
+            delete $scope.model[index]['rdfs:label'];
           }
           // Single object
           else {
             delete $scope.model['@id'];
             delete $scope.model['@value'];
-            delete $scope.model['_valueLabel'];
+            delete $scope.model['rdfs:label'];
           }
         }
       };
@@ -145,7 +145,7 @@ define([
         if ($scope.isControlledValue(model)) {
           return {
             'valueInfo': {
-              'value'   : model._valueLabel,
+              'value'   : model['rdfs:label'],
               'valueUri': model[fieldValue]
             }
           };
@@ -160,7 +160,7 @@ define([
 
       $scope.isControlledValue = function(model) {
         var isControlled = false;
-        if (model['_valueLabel']) {
+        if (model['rdfs:label']) {
           isControlled = true;
         }
         else if (model['@type'] && model['@type'] == '@id') {
