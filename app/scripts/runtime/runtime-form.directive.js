@@ -6,15 +6,18 @@ define([
   angular.module('cedar.templateEditor.runtime.runtimeFormDirective', [])
       .directive('runtimeFormDirective', runtimeFormDirective);
 
-  runtimeFormDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
-                           'FieldTypeService', 'DataUtilService', 'SubmissionService',
-                           'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
-                           "ValidationService", "UIUtilService"];
+  runtimeFormDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http',
+                                  'DataManipulationService',
+                                  'FieldTypeService', 'DataUtilService', 'SubmissionService',
+                                  'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
+                                  "ValidationService", "UIUtilService"];
 
 
-  function runtimeFormDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
-                         HttpBuilderService, ValidationService, UIUtilService) {
+  function runtimeFormDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService,
+                                FieldTypeService,
+                                DataUtilService, SubmissionService, UIMessageService, UrlService,
+                                AuthorizedBackendService,
+                                HttpBuilderService, ValidationService, UIUtilService) {
     return {
       templateUrl: 'scripts/runtime/runtime-form.directive.html',
       restrict   : 'E',
@@ -27,6 +30,8 @@ define([
       },
       controller : function ($scope) {
 
+        console.log('$scope.form', $scope.form);
+
         $scope.directiveName = 'form';
         $scope.forms = {};
         $scope.model = $scope.model || {};
@@ -36,6 +41,7 @@ define([
         $scope.currentPage = [],
             $scope.pageIndex = 0,
             $scope.pagesArray = [];
+        $scope.page = [];
 
         $scope.expanded = true;
 
@@ -66,39 +72,7 @@ define([
           dms.relabel($rootScope.jsonToSave, key);
         };
 
-        var paginate = function () {
-          if ($scope.form) {
 
-            var orderArray = [];
-            var dimension = 0;
-
-            $scope.form._ui = $scope.form._ui || {};
-            $scope.form._ui.order = $scope.form._ui.order || [];
-
-            // This code is to allow render previous templates (Before inline_edit). We can remove this later
-            if (!$scope.form._ui.order.length) {
-              angular.forEach($scope.form.properties, function (value, key) {
-                if (value.properties || value.items && value.items.properties) {
-                  $scope.form._ui.order.push(key);
-                }
-              });
-            }
-
-            angular.forEach($scope.form._ui.order, function (field, index) {
-              // If item added is of type Page Break, jump into next page array for storage of following fields
-              if ($scope.form.properties[field].properties &&
-                  $scope.form.properties[field]._ui &&
-                  $scope.form.properties[field]._ui.inputType == 'page-break') {
-                dimension++;
-              }
-              // Push field key into page array
-              orderArray[dimension] = orderArray[dimension] || [];
-              orderArray[dimension].push(field);
-            });
-
-            $scope.pagesArray = orderArray;
-          }
-        };
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
@@ -117,6 +91,10 @@ define([
           $timeout(function () {
             angular.element('[data-toggle="popover"]').popover();
           }, 1000);
+        };
+
+        $scope.deselectAll = function () {
+          console.log("deselectAll");
         };
 
         $document.on('click', function (e) {
@@ -145,113 +123,152 @@ define([
         };
 
         var startParseForm = function () {
+          console.log('startParseForm', $scope.form);
+
+          var model;
+
+          if ($scope.isEditData) {
+            model = {};
+          } else {
+            model = $scope.model;
+          }
+
+          $scope.parseForm($scope.form.properties, model);
+
+          $rootScope.formModel = model;
+          $rootScope.rootElement = $scope.form;
+
+          paginate();
+
+        };
+
+        var paginate = function () {
           if ($scope.form) {
-            var model;
-            if (UIUtilService.isRuntime()) {
-              if ($scope.isEditData) {
-                model = {};
-              } else {
-                model = $scope.model;
-              }
-            } else {
-              model = $scope.model;
+
+            var orderArray = [];
+            var dimension = 0;
+
+            $scope.form._ui = $scope.form._ui || {};
+            $scope.form._ui.order = $scope.form._ui.order || [];
+
+            // This code is to allow render previous templates (Before inline_edit). We can remove this later
+            if (!$scope.form._ui.order.length) {
+              angular.forEach($scope.form.properties, function (value, key) {
+                if (value.properties || value.items && value.items.properties) {
+                  $scope.form._ui.order.push(key);
+                }
+              });
             }
 
-            if (UIUtilService.isRuntime()) {
-              $scope.parseForm($scope.form.properties, model);
+            angular.forEach($scope.form._ui.order, function (field, index) {
+              // If item added is of type Page Break, jump into next page array for storage of following fields
+              // if ($scope.form.properties[field].properties &&
+              //     $scope.form.properties[field]._ui &&
+              //     $scope.form.properties[field]._ui.inputType == 'page-break') {
+              //   dimension++;
+              // }
+              // Push field key into page array
+              orderArray[dimension] = orderArray[dimension] || [];
+              orderArray[dimension].push(field);
+            });
 
-              $rootScope.formModel = model;
-              $rootScope.rootElement = $scope.form;
-            } else {
-              DataManipulationService.findChildren($scope.form.properties, model);
-            }
-
-            paginate();
+            $scope.pagesArray = orderArray;
+            $scope.page = orderArray;
           }
         };
 
-        $scope.deselectAll = function () {
-          console.log("deselectAll");
-        };
+
+
+        $scope.parseFormCount = 0;
+        $scope.parseFormMax = 4;
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
+          console.log('parseForm', iterator);
+          $scope.parseFormCount++;
+          if ($scope.parseFormCount < $scope.parseFormMax) {
 
-          angular.forEach(iterator, function (value, name) {
-            // Add @context information to instance
-            if (name == '@context') {
-              parentModel['@context'] = dms.generateInstanceContext(value);
-            }
-            // Add @type information to template/element instance
-            else if (name == '@type') {
-              var type = dms.generateInstanceType(value);
-              if (type) {
-                parentModel['@type'] = type;
+            angular.forEach(iterator, function (value, name) {
+              // Add @context information to instance
+              if (name == '@context') {
+                parentModel['@context'] = dms.generateInstanceContext(value);
               }
-            }
-
-            if (!DataUtilService.isSpecialKey(name)) {
-              // Template Element
-              if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
-                var min = value.minItems || 0;
-
-                // Handle position and nesting within $scope.model if it does not exist
-                if (!dms.isCardinalElement(value)) {
-                  parentModel[name] = {};
-                } else {
-                  parentModel[name] = [];
-                  for (var i = 0; i < min; i++) {
-                    parentModel[name].push({});
-                  }
+              // Add @type information to template/element instance
+              else if (name == '@type') {
+                var type = dms.generateInstanceType(value);
+                if (type) {
+                  parentModel['@type'] = type;
                 }
+              }
 
-                if (angular.isArray(parentModel[name])) {
-                  for (var i = 0; i < min; i++) {
-                    // Indication of nested element or nested fields reached, recursively call function
-                    $scope.parseForm(dms.propertiesOf(value), parentModel[name][i], name);
-                  }
+              if (!DataUtilService.isSpecialKey(name)) {
+
+                // Template Element
+                if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+                  // TODO ignore elements
+                  console.log('ignore nested elements');
+                  // var min = value.minItems || 0;
+                  //
+                  // // Handle position and nesting within $scope.model if it does not exist
+                  // if (!dms.isCardinalElement(value)) {
+                  //   parentModel[name] = {};
+                  // } else {
+                  //   parentModel[name] = [];
+                  //   for (var i = 0; i < min; i++) {
+                  //     parentModel[name].push({});
+                  //   }
+                  // }
+                  //
+                  // if (angular.isArray(parentModel[name])) {
+                  //   for (var i = 0; i < min; i++) {
+                  //     // Indication of nested element or nested fields reached, recursively call function
+                  //     $scope.parseForm(dms.propertiesOf(value), parentModel[name][i], name);
+                  //   }
+                  // } else {
+                  //   $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
+                  // }
+                  // Template Field
                 } else {
-                  $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
-                }
-                // Template Field
-              } else {
-                // Not a Static Field
-                if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
+                  // Not a Static Field
 
-                  var min = value.minItems || 0;
+                  if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
-                  // Assign empty field instance model to $scope.model only if it does not exist
-                  if (parentModel[name] == undefined) {
-                    // Not multiple instance
-                    if (!dms.isCardinalElement(value)) {
-                      // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                      if (dms.isMultipleChoiceField(value)) {
+                    var min = value.minItems || 0;
+
+                    // Assign empty field instance model to $scope.model only if it does not exist
+                    if (parentModel[name] == undefined) {
+                      // Not multiple instance
+                      if (!dms.isCardinalElement(value)) {
+                        // Multiple choice fields (checkbox and multi-choice list) store an array of values
+                        if (dms.isMultipleChoiceField(value)) {
+                          parentModel[name] = [];
+                        }
+                        // All other fields, including the radio field and the list field with single option
+                        else {
+                          parentModel[name] = {};
+                        }
+                        // Multiple instance
+                      } else {
                         parentModel[name] = [];
+                        for (var i = 0; i < min; i++) {
+                          var obj = {};
+                          parentModel[name].push(obj);
+                        }
                       }
-                      // All other fields, including the radio field and the list field with single option
-                      else {
-                        parentModel[name] = {};
+                      // Set default values and types for fields
+                      dms.initializeValue(value, parentModel[name]);
+                      // Initialize value type for those fields that have it
+                      if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
+                          (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
+                        dms.initializeValueType(value, parentModel[name]);
                       }
-                      // Multiple instance
-                    } else {
-                      parentModel[name] = [];
-                      for (var i = 0; i < min; i++) {
-                        var obj = {};
-                        parentModel[name].push(obj);
-                      }
+                      dms.defaultOptionsToModel(value, parentModel[name]);
                     }
-                    // Set default values and types for fields
-                    dms.initializeValue(value, parentModel[name]);
-                    // Initialize value type for those fields that have it
-                    if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
-                        (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
-                      dms.initializeValueType(value, parentModel[name]);
-                    }
-                    dms.defaultOptionsToModel(value, parentModel[name]);
                   }
                 }
               }
-            }
-          });
+            });
+
+          } else {console.log('error:max parse form')}
         };
 
         //
@@ -316,16 +333,19 @@ define([
         });
 
 
-
         //
         // watches
         //
-        
+
 
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
-          startParseForm();
+          if ($scope.isRuntime() && $scope.form && $scope.form.properties) {
+            console.log('watch form.properties');
+            startParseForm();
+          }
         });
+
 
         // watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
@@ -420,7 +440,7 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
-        $scope.isHidden = function(item) {
+        $scope.isHidden = function (item) {
           var node = $scope.form.properties[item];
           return DataManipulationService.isHidden(node);
         };

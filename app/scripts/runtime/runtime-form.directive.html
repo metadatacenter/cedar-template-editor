@@ -2,8 +2,8 @@
     ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
-
-  <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}" ng-repeat="page in pagesArray">
+runtime-form  {{pagesArray}} {{page}} {{pageIndex}} {{$parent.$index}}
+  <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}" >
 
     <div class="row">
       <div class="col-xs-9 ">
@@ -28,12 +28,15 @@
 
       <li ng-repeat="item in page" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
-          ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+          ng-if=" isExpanded() && (isField(item) || isElement(item))">
+
+        item {{item}}
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
+          runtime-field
 
-          <field-directive
+          <cedar-runtime-field
               nested="false" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]);"
               rename-child-key="renameChildKey"
@@ -42,7 +45,7 @@
               uid="item"
               parent-key="'form'"
               field-key="item"
-              previous="form.properties[page[$index-1]]"></field-directive>
+              previous="form.properties[page[$index-1]]"></cedar-runtime-field>
         </div>
 
         <!--If element-->

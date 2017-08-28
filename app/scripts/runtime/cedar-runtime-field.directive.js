@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.cedarRuntimeField', [])
+  angular.module('cedar.templateEditor.runtime.cedarRuntimeField', [])
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
@@ -38,6 +38,8 @@ define([
       //
       // model access
       //
+
+      console.log('cedar-runtime-field',$scope.field);
 
       // get the field title
       $scope.getTitle = function () {
@@ -825,7 +827,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/cedar-runtime-field.directive.html',
+      templateUrl: 'scripts/runtime/cedar-runtime-field.directive.html',
       restrict   : 'EA',
       scope      : {
         field         : '=',

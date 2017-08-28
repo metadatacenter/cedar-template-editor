@@ -43,6 +43,8 @@ define([
       replace    : true,
       link       : function (scope, element, attrs) {
 
+        console.log('field-toolbar', scope.field);
+
 
         scope.isField = function () {
           return !DataUtilService.isElement(DataManipulationService.schemaOf(scope.field));

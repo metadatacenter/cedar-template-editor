@@ -16,6 +16,8 @@ define([
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
 
+    $scope.form = null;
+
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
       AuthorizedBackendService.doCall(
@@ -27,10 +29,7 @@ define([
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
-
-            // Initialize value recommender service
             ValueRecommenderService.init($routeParams.templateId, $scope.form);
-
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -54,7 +53,6 @@ define([
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
                   $rootScope.jsonToSave = $scope.form;
-                  // Initialize value recommender service
                   var templateId = instanceResponse.data['schema:isBasedOn'];
                   ValueRecommenderService.init(templateId, $scope.form);
                 },
