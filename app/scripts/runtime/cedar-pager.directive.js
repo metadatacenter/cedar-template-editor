@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.cedarPager', [])
+  angular.module('cedar.templateEditor.runtime.cedarPager', [])
       .directive('cedarPager', cedarPager);
 
 
@@ -34,7 +34,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/cedar-pager.directive.html',
+      templateUrl: 'scripts/runtime/cedar-pager.directive.html',
       restrict   : 'EA',
       scope      : {
         values: '=',

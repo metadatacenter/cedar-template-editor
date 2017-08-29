@@ -16,7 +16,6 @@ define(['app', 'angular'], function (app) {
     var StagingService;
     var TemplateElementService;
     var DataUtilService;
-    var SpreadsheetService;
     var UIUtilService;
 
 
@@ -37,7 +36,6 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.service.stagingService'));
     beforeEach(module('cedar.templateEditor.service.dataManipulationService'));
     beforeEach(module('cedar.templateEditor.service.dataUtilService'));
-    beforeEach(module('cedar.templateEditor.form.spreadsheetService'));
     beforeEach(module('cedar.templateEditor.service.uIUtilService'));
     beforeEach(module('cedar.templateEditor.service.templateElementService'));
 
@@ -55,7 +53,7 @@ define(['app', 'angular'], function (app) {
 
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
-                  _StagingService_, _DataManipulationService_, _DataUtilService_, _SpreadsheetService_, _UIUtilService_,
+                  _StagingService_, _DataManipulationService_, _DataUtilService_,  _UIUtilService_,
                   _TemplateElementService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
@@ -67,7 +65,6 @@ define(['app', 'angular'], function (app) {
           StagingService = _StagingService_;
           DataManipulationService = _DataManipulationService_;
           DataUtilService = _DataUtilService_;
-          SpreadsheetService = _SpreadsheetService_;
           UIUtilService = _UIUtilService_;
           TemplateElementService = _TemplateElementService_;
 

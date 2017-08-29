@@ -18,6 +18,7 @@ define([
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
+      console.log('getTemplate');
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate($routeParams.templateId),
           function (response) {
@@ -25,11 +26,11 @@ define([
             $scope.form = response.data;
             $rootScope.jsonToSave = $scope.form;
             $rootScope.rootElement = $scope.form;
-            HeaderService.dataContainer.currentObjectScope = $scope.form;
+            //HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
 
             // Initialize value recommender service
-            ValueRecommenderService.init($routeParams.templateId, $scope.form);
+            //ValueRecommenderService.init($routeParams.templateId, $scope.form);
 
           },
           function (err) {
@@ -41,6 +42,7 @@ define([
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
+      console.log('getInstance');
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
@@ -48,6 +50,7 @@ define([
             $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            console.log('getTemplate');
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
@@ -153,6 +156,8 @@ define([
 
     //*********** ENTRY POINT
 
+    console.log('createInstance entry point ' , $location, $routeParams.templateId);
+
     $rootScope.showSearch = false;
 
     // set Page Title variable when this controller is active
@@ -174,6 +179,7 @@ define([
 
     // Create new instance
     if (!angular.isUndefined($routeParams.templateId)) {
+      console.log('$routeParams.templateId undefined')
       $scope.getTemplate();
     }
 

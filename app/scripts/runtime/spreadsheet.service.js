@@ -3,7 +3,7 @@
 define([
       'angular'
     ], function (angular) {
-      angular.module('cedar.templateEditor.form.spreadsheetService', [])
+      angular.module('cedar.templateEditor.runtime.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
       SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',

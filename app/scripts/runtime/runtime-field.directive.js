@@ -3,16 +3,16 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.cedarRuntimeField', [])
-      .directive('cedarRuntimeField', cedarRuntimeField);
+  angular.module('cedar.templateEditor.runtime.runtimeFieldDirective', [])
+      .directive('runtimeFieldDirective', runtimeFieldDirective);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
+  runtimeFieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "UIUtilService", "autocompleteService", "ValueRecommenderService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
+  function runtimeFieldDirective($rootScope, $sce, $document, $translate, $filter, $location, $window,
                              $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService, ValueRecommenderService) {
 
 
@@ -567,6 +567,7 @@ define([
             // add another instance in the model
             var obj = {};
             obj[valueLocation] = dms.getDefaultValue(valueLocation, $scope.field);
+            console.log('scope.model.push',$scope.model,obj);
             $scope.model.push(obj);
 
             // activate the new instance
@@ -825,7 +826,7 @@ define([
     };
 
     return {
-      templateUrl: 'scripts/form/cedar-runtime-field.directive.html',
+      templateUrl: 'scripts/runtime/runtime-field.directive.html',
       restrict   : 'EA',
       scope      : {
         field         : '=',
@@ -835,7 +836,6 @@ define([
         delete        : '&',
         ngDisabled    : "=",
         path          : '=',
-        previous      : '=',
         uid           : '=',
         fieldKey      : '=',
         parentKey     : '='
