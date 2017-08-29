@@ -350,7 +350,8 @@ define([
                 DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                 if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                  var randomPropertyName = DataManipulationService.generateGUID();
+                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(randomPropertyName);
                 }
               }
 
