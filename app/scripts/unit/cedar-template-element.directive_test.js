@@ -403,7 +403,7 @@ define(['app', 'angular'], function (app) {
 
         it("should accept and retain new property value ", function () {
           var value = 'some text';
-          var key = 'someText';
+          var key = 'some text';
 
           // should have an element-name-label
           var elm = compiledDirective[0];
