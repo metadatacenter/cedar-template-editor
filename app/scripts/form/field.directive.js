@@ -97,7 +97,6 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-
       $scope.getLiterals = function () {
         return dms.getLiterals($scope.field);
       };
