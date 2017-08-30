@@ -1060,29 +1060,7 @@ define([
 
     // Generates a nice field name
     service.getFieldName = function (rawFieldName) {
-      var niceFieldName = rawFieldName;
-
-      if (niceFieldName) {
-
-        // To Camel Case
-        niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-          return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-        }).replace(/\s+/g, '');
-
-        // Keep only alphanumeric characters
-        niceFieldName = niceFieldName.replace(/\W/g, '');
-      } else {
-        console.log("undefined rawFieldName");
-      }
-
-
-      return niceFieldName;
-
-      // Using underscore format
-      //return rawFieldName
-      //  .replace(/'|"|(|)/g, '')
-      //  .replace(/ +/g, "_")
-      //  .toLowerCase();
+      return DataUtilService.removeSpecialChars(rawFieldName);
     };
 
     service.getEnumOf = function (propertyName) {

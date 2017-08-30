@@ -256,7 +256,6 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-
         $scope.setHeight = function () {
 
           // apply any changes first before examining dom elements
