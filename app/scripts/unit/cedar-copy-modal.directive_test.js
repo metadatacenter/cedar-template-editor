@@ -76,7 +76,7 @@ define(['app', 'angular'], function (app) {
 
         var $copyScope;
         var copyDirective;
-        var copyButton = "#copy-modal .modal-footer .clear-save button";
+        var copyButton = "#copy-modal .modal-footer .clear-save button.confirm";
         var xGoAway = "#copy-modal #copy-modal-header.modal-header .button.close";
         var copyTitle = "#copy-modal #copyModalHeader .modal-title a";
         var BackToParent = "#copy-modal #copyModalHeader .arrow-click";
@@ -111,11 +111,6 @@ define(['app', 'angular'], function (app) {
 
           $httpBackend.flush();
         });
- 
-        it("should have a copy button ", function () {
-          var elm = copyDirective[0];
-          expect(elm.querySelector(copyButton)).toBeDefined();
-        });
 
 
         // TODO folder title is not showing in copyTitleElement
@@ -123,6 +118,7 @@ define(['app', 'angular'], function (app) {
           var elm = copyDirective[0];
           expect(elm.querySelector(xGoAway)).toBeDefined();
           expect(elm.querySelector(BackToParent)).toBeDefined();
+          expect(elm.querySelector(copyButton)).toBeDefined();
 
           expect(elm.querySelector(copyTitle)).toBeDefined();
           var copyTitleElement = angular.element(elm.querySelectorAll(copyTitle)[0]);
