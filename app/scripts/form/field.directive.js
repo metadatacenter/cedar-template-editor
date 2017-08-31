@@ -97,7 +97,6 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-
       $scope.getLiterals = function () {
         return dms.getLiterals($scope.field);
       };
@@ -332,8 +331,8 @@ define([
       //
 
       var setDirectory = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        var state = p._tmp && p._tmp.state || "completed";
+        var schema = dms.schemaOf($scope.field);
+        var state = schema._tmp && schema._tmp.state || "completed";
         if ((state == "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
           $scope.directory = "create";
         } else {
@@ -472,7 +471,7 @@ define([
               if (m && m['@value'] && m['@value']['@id']) {
                 $scope.model[i] = {
                   "@value"   : m['@value']['@id'],
-                  _valueLabel: m['@value'].label
+                  "rdfs:label" : m['@value'].label
                 };
               }
             });
@@ -486,17 +485,16 @@ define([
         else {
           if ($scope.modelValue && $scope.modelValue['@value'] && $scope.modelValue['@value']["@id"]) {
             $scope.model['@value'] = $scope.modelValue['@value']["@id"];
-            $scope.model._valueLabel = $scope.modelValue['@value'].label;
+            $scope.model['rdfs:label'] = $scope.modelValue['@value'].label;
           } else {
             $scope.model['@value'] = null;
           }
         }
-      }
+      };
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
         var inputType = dms.getInputType($scope.field);
-
         if (inputType == 'checkbox') {
           $scope.optionsUI = {};
           for (var item in $scope.model) {
@@ -527,7 +525,7 @@ define([
             $scope.modelValue[i] = {};
             $scope.modelValue[i]['@value'] = {
               '@id': m['@value'],
-              label: m._valueLabel
+              label: m['rdfs:label']
             };
           });
         }
@@ -535,10 +533,10 @@ define([
           $scope.modelValue = {};
           $scope.modelValue['@value'] = {
             '@id': $scope.model['@value'],
-            label: $scope.model._valueLabel
+            label: $scope.model['rdfs:label']
           };
         }
-      }
+      };
 
       // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function () {
@@ -555,6 +553,18 @@ define([
             $scope.updateUIFromModel();
           }
         }
+      };
+
+      $scope.isMultipleChoice = function(field) {
+        return DataManipulationService.isMultipleChoice(field);
+      };
+
+      $scope.isMultiAnswer = function(field) {
+        return DataManipulationService.isMultiAnswer(field);
+      };
+
+      $scope.setMultipleChoice = function(field, multipleChoice) {
+        DataManipulationService.setMultipleChoice(field, multipleChoice);
       };
 
       // Initializes model for fields constrained using controlled terms
@@ -589,7 +599,6 @@ define([
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
         if (UIUtilService.isRuntime()) {
-
           if (!$rootScope.isArray(m)) {
             if (!m) {
               m = {};
@@ -616,10 +625,10 @@ define([
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
-          if ($scope.model['_valueLabel']) {
+          if ($scope.model['rdfs:label']) {
             $scope.modelValueRecommendation.valueInfo = {
-              'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model[fieldValue],
+              'value'   : $scope.model['rdfs:label'],
+              'valueUri': $scope.model[fieldValue]
             };
           }
           else {
@@ -639,7 +648,7 @@ define([
             if (m && m.valueInfo & m.valueInfo.value) {
               $scope.model[i][fieldValue] = m.valueInfo.value;
               if (m.valueInfo.valueUri) {
-                $scope.model[i]['_valueLabel'] = m.valueInfo.valueUri;
+                $scope.model[i]['rdfs:label'] = m.valueInfo.valueUri;
               }
             } else {
               delete $scope.model[i][fieldValue];
@@ -648,11 +657,11 @@ define([
         } else {
           if (modelvr.valueInfo.valueUri) {
             $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
-            $scope.model['_valueLabel'] = modelvr.valueInfo.value;
+            $scope.model['rdfs:label'] = modelvr.valueInfo.value;
           }
           else {
             $scope.model[fieldValue] = modelvr.valueInfo.value;
-            delete $scope.model['_valueLabel'];
+            delete $scope.model['rdfs:label'];
           }
         }
       };
@@ -679,7 +688,7 @@ define([
                   modelValue = select.search;
                 }
                 $scope.model[fieldValue] = modelValue;
-                delete $scope.model['_valueLabel'];
+                delete $scope.model['rdfs:label'];
                 $scope.modelValueRecommendation.valueInfo.value = modelValue;
               }
             }
@@ -700,7 +709,7 @@ define([
         select.selected = undefined;
         select.search = "";
         $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
-        delete $scope.model['_valueLabel'];
+        delete $scope.model['rdfs:label'];
       };
 
       $scope.calculateUIScore = function (score) {

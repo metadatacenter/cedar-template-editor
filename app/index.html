@@ -50,10 +50,9 @@
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                     class="form-control search-input"
                     id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" />
-                <a class="clear clear-search " ng-show="hc.searchTerm" ng-click="hc.search('')">
+                <a class="clear clear-search" ng-show="hc.searchTerm" ng-click="hc.search('')">
                   <span class="fa fa-remove"></span></a>
                 <a class="clear do-search " ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search "></i></a>
-
               </div>
             </form>
           </div>

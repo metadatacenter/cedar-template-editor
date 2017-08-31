@@ -37,12 +37,6 @@ define([
 
       scope.nestElement = function () {
 
-        //var setNested = function (node,value) {
-        //  var p = $rootScope.propertiesOf(node);
-        //  p._tmp = p._tmp || {};
-        //  p._tmp.nested = value;
-        //};
-
        var getId = function (node) {
           var id;
           if (node.items) {

@@ -11,7 +11,6 @@ define(['angular'], function (angular) {
                                    UIMessageService, AuthorizedBackendService, HttpBuilderService, autocompleteService) {
 
     var http_default_config = {};
-    var isValueRecommendationEnabled = false;
     var hasInstances;
 
 
@@ -28,6 +27,7 @@ define(['angular'], function (angular) {
      * Initialize service
      */
     service.init = function (templId, templ) {
+
       templateId = templId;
       template = templ;
 
@@ -41,12 +41,15 @@ define(['angular'], function (angular) {
       // Set isValueRecommendationEnabled using the templateId
       service.hasInstances(templateId).then(function (results) {
         hasInstances = results;
-        //isValueRecommendationEnabled = results;
         //if (results == true)
         //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
       });
-    };
 
+      // Clear valueRecommendationResults and populatedFields
+      service.valueRecommendationResults = [];
+      service.populatedFields = [];
+
+    };
 
     service.getIsValueRecommendationEnabled = function (field) {
       return (DataManipulationService.schemaOf(field)._ui.valueRecommendationEnabled && hasInstances);
@@ -100,14 +103,13 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field, term) {
-      console.log('updateValueRecommendationResults');
       var query = term || '*';
       var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
         var targetFieldPath = field._path;
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
-              console.log(autocompleteService.autocompleteResultsCache[fieldId]);
+
               var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][query]['results'];
 
               if (recommendation.recommendedValues) {
@@ -156,8 +158,8 @@ define(['angular'], function (angular) {
     service.getRecommendation = function (targetFieldPath, populatedFields) {
 
       var inputData = {};
-      if (service.populatedFields.length > 0) {
-        inputData['populatedFields'] = service.populatedFields;
+      if (populatedFields.length > 0) {
+        inputData['populatedFields'] = populatedFields;
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'path': targetFieldPath};

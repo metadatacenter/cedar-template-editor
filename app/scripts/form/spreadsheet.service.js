@@ -100,7 +100,7 @@ define([
                             if (value === results[i]['label']) {
 
                               sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                              sds.tableDataSource[row][col]['_valueLabel'] = results[i]['label'];
+                              sds.tableDataSource[row][col]['rdfs:label'] = results[i]['label'];
                               found = true;
                               break loop;
                             }
@@ -108,7 +108,7 @@ define([
 
                           if (!found) {
                             delete sds.tableDataSource[row][col]['@id'];
-                            delete sds.tableDataSource[row][col]['_valueLabel'];
+                            delete sds.tableDataSource[row][col]['rdfs:label'];
 
                           }
                         }
@@ -266,7 +266,7 @@ define([
           } else if (cedarType == 'deepObject') {
             rowData.push(columnDescriptor.cedarLabel);
           } else {
-            rowData.push(cellDataObject._valueLabel || cellDataObject['@value']);
+            rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
           }
         };
 

@@ -7,13 +7,15 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService", "UIUtilService",
-                            "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout", "AuthorizedBackendService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
+                            "UIUtilService",
+                            "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
+                            "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,UIUtilService,
-                          ClientSideValidationService,
-                          UIMessageService, FieldTypeService, $timeout, AuthorizedBackendService, CONST) {
+  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService, UIUtilService,
+                          ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
+                          AuthorizedBackendService, CONST) {
 
     var service = {
       serviceId        : "StagingService",
@@ -116,18 +118,23 @@ define([
       var field = DataManipulationService.generateField(fieldType);
       UIUtilService.setSelected(field);
 
-      var optionInputs = ["radio", "checkbox", "list"];
-      if (optionInputs.indexOf(fieldType) > -1) {
-        field._valueConstraints.literals = [
-          {
-            "label": ""
-          }
-        ];
-        if (fieldType == 'radio') {
-          field._valueConstraints.multipleChoice = false;
+      // is it a checkbox, list, or radio field?
+      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+          field.items._valueConstraints.multipleChoice = true;
+          field.items._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
         }
-        else if (fieldType == 'checkbox') {
-          field._valueConstraints.multipleChoice = true;
+        else { // single choice field (radio or single-choice list)
+          field._valueConstraints.multipleChoice = false;
+          field._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
         }
       }
 
@@ -136,7 +143,9 @@ define([
 
       // Adding corresponding property type to @context (only if the field is not static)
       if (!FieldTypeService.isStaticField(fieldType)) {
-        form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
+        var randomPropertyName = DataManipulationService.generateGUID();
+        form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
+            randomPropertyName);
         form.properties["@context"].required.push(fieldName);
       }
 
@@ -175,7 +184,9 @@ define([
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
             // Adding corresponding property type to @context
-            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
+            var randomPropertyName = DataManipulationService.generateGUID();
+            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
+                randomPropertyName);
             form.properties["@context"].required.push(elName);
 
             // Evaluate cardinality
@@ -207,36 +218,38 @@ define([
 
     service.addClonedElementToForm = function (form, elementId, clonedElement, divId, callback) {
 
-            UIUtilService.setSelected(clonedElement);
+      UIUtilService.setSelected(clonedElement);
 
-            // Converting title for irregular character handling
-            var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
-            elName = DataManipulationService.getAcceptableKey(form.properties, elName);
+      // Converting title for irregular character handling
+      var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
+      elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
-            // Adding corresponding property type to @context
-            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
-            form.properties["@context"].required.push(elName);
+      // Adding corresponding property type to @context
+      var randomPropertyName = DataManipulationService.generateGUID();
+      form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
+          randomPropertyName);
+      form.properties["@context"].required.push(elName);
 
-            // Evaluate cardinality
-            DataManipulationService.cardinalizeField(clonedElement);
+      // Evaluate cardinality
+      DataManipulationService.cardinalizeField(clonedElement);
 
-            // Add field to the element.properties object
-            form.properties[elName] = clonedElement;
+      // Add field to the element.properties object
+      form.properties[elName] = clonedElement;
 
-            // Add element to the form.required array
-            form = DataManipulationService.addKeyToRequired(form, elName);
+      // Add element to the form.required array
+      form = DataManipulationService.addKeyToRequired(form, elName);
 
-            form._ui.order = form._ui.order || [];
-            form._ui.order.push(elName);
+      form._ui.order = form._ui.order || [];
+      form._ui.order.push(elName);
 
-            form._ui.propertyLabels = form._ui.propertyLabels || {};
-            form._ui.propertyLabels[elName] = elName;
+      form._ui.propertyLabels = form._ui.propertyLabels || {};
+      form._ui.propertyLabels[elName] = elName;
 
 
-            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
-            callback(clonedElement);
+      DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+      callback(clonedElement);
 
-            return clonedElement;
+      return clonedElement;
 
     };
 
@@ -244,13 +257,24 @@ define([
       var field = DataManipulationService.generateField(fieldType);
       UIUtilService.setSelected(field);
 
-      var optionInputs = ["radio", "checkbox", "list"];
-      if (optionInputs.indexOf(fieldType) > -1) {
-        field._valueConstraints.literals = [
-          {
-            "label": ""
-          }
-        ];
+      // is it a checkbox, list, or radio field?
+      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+          field.items._valueConstraints.multipleChoice = true;
+          field.items._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+        }
+        else { // single choice field (radio or single-choice list)
+          field._valueConstraints.multipleChoice = false;
+          field._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+        }
       }
 
       // Converting title for irregular character handling
@@ -258,7 +282,12 @@ define([
 
       // Adding corresponding property type to @context (only if the field is not static)
       if (!FieldTypeService.isStaticField(fieldType)) {
-        element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
+        var randomPropertyName = DataManipulationService.generateGUID();
+        element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
+            randomPropertyName);
+        if (!element.properties["@context"].required) {
+          element.properties["@context"].required = []
+        }
         element.properties["@context"].required.push(fieldName);
       }
       // Evaluate cardinality
@@ -288,8 +317,12 @@ define([
 
             var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
-
-            element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
+            var randomPropertyName = DataManipulationService.generateGUID();
+            element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
+                randomPropertyName);
+            if (!element.properties["@context"].required) {
+              element.properties["@context"].required = [];
+            }
             element.properties["@context"].required.push(elName);
 
             // Evaluate cardinality
@@ -306,41 +339,13 @@ define([
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
 
-           DataManipulationService.createDomIds(element);
+            DataManipulationService.createDomIds(element);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
           }
       );
-    }
-
-    // Add newly configured field to the the $scope.form or $scope.element
-    // service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
-    //   // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    //   $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
-    //   $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
-    //       ClientSideValidationService.checkFieldCardinalityOptions(field));
-    //
-    //   if ($scope.stagingErrorMessages.length == 0) {
-    //     // Converting title for irregular character handling
-    //     var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
-    //     // Adding corresponding property type to @context
-    //     targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-    //         fieldName);
-    //     targetObject.properties["@context"].required.push(fieldName);
-    //     targetObject.required.push(fieldName);
-    //
-    //     // Evaluate cardinality
-    //     DataManipulationService.cardinalizeField(field);
-    //
-    //     // Adding field to the element.properties object
-    //     targetObject.properties[fieldName] = field;
-    //
-    //     // Lastly, remove this field from the $scope.staging object
-    //     $scope.staging = {};
-    //     this.moveIntoPlace();
-    //   }
-    // };
+    };
 
     return service;
   };

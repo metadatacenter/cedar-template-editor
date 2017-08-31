@@ -7,6 +7,12 @@
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
     "pav:createdOn": {
       "@type": "xsd:dateTime"
     },
@@ -36,10 +42,6 @@
         "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
         "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] }
       },
-      "patternProperties": {
-        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"}
-      },
-      "required" : [],
       "additionalProperties": false
     },
     "@id": {

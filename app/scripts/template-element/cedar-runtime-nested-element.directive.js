@@ -57,15 +57,15 @@ define([
       };
 
       var getNestedValue = function (node) {
-        var p = $rootScope.propertiesOf(node);
-        p._tmp = p._tmp || {};
-        return p._tmp.nested || false;
+        var schema = DataManipulationService.schemaOf(node);
+        schema._tmp = schema._tmp || {};
+        return schema._tmp.nested || false;
       };
 
       var setNestedValue = function (node, value) {
-        var p = $rootScope.propertiesOf(node);
-        p._tmp = p._tmp || {};
-        p._tmp.nested = value;
+        var schema = DataManipulationService.schemaOf(node);
+        schema._tmp = schema._tmp || {};
+        schema._tmp.nested = value;
       };
 
       var setNested = function (node) {

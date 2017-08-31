@@ -3,7 +3,6 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
@@ -52,7 +51,7 @@
     "@value": {
       "type" : ["string", "null"]
     },
-    "_valueLabel": {
+    "rdfs:label": {
       "type" : ["string", "null"]
     },
     "pav:createdOn": {

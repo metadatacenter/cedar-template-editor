@@ -1,27 +1,23 @@
 <div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
 
-  <!-- header row -->
   <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
-  <div class="type-toggle list" ng-init="$root.schemaOf(field)._valueConstraints.multipleChoice = false">
-    <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = false"
-        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == false}">
+  <div class="type-toggle list" >
+    <div class="single-date d-option" ng-click="setMultipleChoice(field, false)"
+        ng-class="{active: !isMultipleChoice(field)}">
       <span>Single Select</span>
     </div>
-    <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = true"
-        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == true}">
+    <div class="date-range d-option" ng-click="setMultipleChoice(field, true)"
+        ng-class="{active: isMultipleChoice(field)}">
       <span>Multi-Select</span>
     </div>
   </div>
-  <!-- /.date-type-toggle -->
 
   <div class="form-group">
     <div class="form-group floating-label-wrapper"></div>
-    <!-- /.form-group -->
     <div class="options-wrapper">
       <div ng-init="initializeSelectionField()" class="multiple-container">
         <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
@@ -35,17 +31,12 @@
                   ng-model="getLiterals()[index].selectedByDefault">
               <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
             </div>
-            <!-- /.checkbox -->
-          </div><!-- /.form-group -->
+          </div>
         </span>
-
         <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
-      <!-- /.multiple-container -->
     </div>
-    <!-- /.options-wrapper -->
   </div>
-  <!-- /.form-group -->
 
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
-</div><!-- /.input-type-container -->
+</div>
