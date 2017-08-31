@@ -5,6 +5,7 @@
     var richTextConfigService;
     var $rootScope;
     var $httpBackend;
+    var UrlService;
 
 
     beforeEach(module('my.templates'));
@@ -15,21 +16,19 @@
 
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _UrlService_,_$templateCache_,
                   _RichTextConfigService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $httpBackend = _$httpBackend_;
+          UrlService = _UrlService_;
           richTextConfigService = _RichTextConfigService_;
         }));
 
     beforeEach(function () {
-      // returns the appropriate file content when requested
-      $httpBackend.whenGET('config/src/rich-text-config-service.conf.json').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'config/src/rich-text-config-service.conf.json', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
+      httpData.init($httpBackend);
+      httpData.getFile('config/src/rich-text-config-service.conf.json');
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
     });
 
    var config = {

@@ -234,7 +234,7 @@
     <div class="modal-footer actions" >
       <div class="row">
         <div class="col-lg-8 breadcrumbs-sb ">
-          <p ng-show="!finder.isSearching" >
+          <p ng-show="!finder.isSearching" class="not-searching">
           <span ng-repeat="folder in finder.pathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])"
                   class="breadcrumbs browsing">{{finder.breadcrumbName(folder.displayName)}}</a> /
@@ -242,7 +242,7 @@
             <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
           </p>
 
-          <p ng-show="finder.isSearching && finder.hasSelection()" >
+          <p ng-show="finder.isSearching && finder.hasSelection()" class="searching">
           <span ng-repeat="folder in finder.selectedPathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])" ng-model="folder"
                   class="breadcrumbs">{{finder.breadcrumbName(folder.displayName)}}</a> <span ng-show="!$last">/</span>

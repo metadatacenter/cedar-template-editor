@@ -6,11 +6,13 @@ define(['app', 'angular'], function (app) {
 
     var $rootScope;
     var $compile;
-    var $controller; // responsible for instantiating controllers
+    var $controller;
     var $httpBackend;
     var $templateCache;
     var $timeout;
-
+    var CedarUser;
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
 
     var DataManipulationService;
     var StagingService;
@@ -18,12 +20,12 @@ define(['app', 'angular'], function (app) {
     var DataUtilService;
     var SpreadsheetService;
     var UIUtilService;
-
-
-    var createdTemplate;
-    var createdModel;
-    var createdTemplateElement;
-
+    var UrlService;
+    var UIMessageService;
+    var resourceService;
+    var UISettingsService;
+    var resourceService;
+    var QueryParamUtilsService;
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -40,6 +42,11 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.form.spreadsheetService'));
     beforeEach(module('cedar.templateEditor.service.uIUtilService'));
     beforeEach(module('cedar.templateEditor.service.templateElementService'));
+    beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('CedarUser', function mockCedarUser() {
+        return cedarUser;
+      });
+    }));
 
 
     // Mock the controlledTermDirectiveControlled because we don't need it for these tests
@@ -52,11 +59,10 @@ define(['app', 'angular'], function (app) {
           });
     });
 
-
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _StagingService_, _DataManipulationService_, _DataUtilService_, _SpreadsheetService_, _UIUtilService_,
-                  _TemplateElementService_) {
+                  _TemplateElementService_,_UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
           $controller = _$controller_;
@@ -70,173 +76,17 @@ define(['app', 'angular'], function (app) {
           SpreadsheetService = _SpreadsheetService_;
           UIUtilService = _UIUtilService_;
           TemplateElementService = _TemplateElementService_;
-
+          UrlService = _UrlService_;
         }));
 
     beforeEach(function () {
-      // returns the appropriate file content when requested
-      $httpBackend.whenGET('resources/i18n/locale-en.json').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'resources/i18n/locale-en.json', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
 
-      // TODO this should not be required
-      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(
-          function (method, url, data) {
-            var request = new XMLHttpRequest();
-            request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
-            request.send(null);
-            return [request.status, request.response, {}];
-          });
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('scripts/form/field-create/cardinality-selector.directive.html');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.getUrl(UrlService.base(), 'resource', '/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb');
 
-      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(
-          function (method, url, data) {
-            var request = new XMLHttpRequest();
-            request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
-            request.send(null);
-            return [request.status, request.response, {}];
-          });
-
-
-      $httpBackend.whenGET('https://messaging.staging.metadatacenter.net/summary').respond(
-          function (method, url, data) {
-            var data = {"total": 7, "unread": 1, "notnotified": 0};
-            var newElement = angular.fromJson(data);
-            return [200, data, {}];
-          });
-
-      $httpBackend.whenGET('https://messaging.metadatacenter.orgx/summary').respond(
-          function (method, url, data) {
-            var data = {"total": 7, "unread": 1, "notnotified": 0};
-            var newElement = angular.fromJson(data);
-            return [200, data, {}];
-          });
-
-
-      $httpBackend.whenGET(
-          'https://resource.metadatacenter.orgx/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb').respond(
-          function (method, url, data) {
-            var data = {
-              "@id"                 : "https://repo.metadatacenter.orgx/template-elements/7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb",
-              "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
-              "@context"            : {
-                "xsd"              : "http://www.w3.org/2001/XMLSchema#",
-                "pav"              : "http://purl.org/pav/",
-                "oslc"             : "http://open-services.net/ns/core#",
-                "schema"           : "http://schema.org/",
-                "pav:createdOn"    : {
-                  "@type": "xsd:dateTime"
-                },
-                "pav:createdBy"    : {
-                  "@type": "@id"
-                },
-                "pav:lastUpdatedOn": {
-                  "@type": "xsd:dateTime"
-                },
-                "oslc:modifiedBy"  : {
-                  "@type": "@id"
-                }
-              },
-              "type"                : "object",
-              "title"               : "Test element schema",
-              "description"         : "Test element schema autogenerated by the CEDAR Template Editor 1.0.7-SNAPSHOT",
-              "_ui"                 : {
-                "title"         : "test",
-                "description"   : "Description",
-                "order"         : [],
-                "propertyLabels": {}
-              },
-              "properties"          : {
-                "@context"         : {
-                  "type"                : "object",
-                  "properties"          : {
-                    "pav" : {
-                      "type"  : "string",
-                      "format": "uri",
-                      "enum"  : [
-                        "http://purl.org/pav/"
-                      ]
-                    },
-                    "oslc": {
-                      "type"  : "string",
-                      "format": "uri",
-                      "enum"  : [
-                        "http://open-services.net/ns/core#"
-                      ]
-                    }
-                  },
-                  "required"            : [],
-                  "additionalProperties": false
-                },
-                "@id"              : {
-                  "type"  : [
-                    "string",
-                    "null"
-                  ],
-                  "format": "uri"
-                },
-                "@type"            : {
-                  "oneOf": [
-                    {
-                      "type"  : "string",
-                      "format": "uri"
-                    },
-                    {
-                      "type"       : "array",
-                      "minItems"   : 1,
-                      "items"      : {
-                        "type"  : "string",
-                        "format": "uri"
-                      },
-                      "uniqueItems": true
-                    }
-                  ]
-                },
-                "pav:createdOn"    : {
-                  "type"  : [
-                    "string",
-                    "null"
-                  ],
-                  "format": "date-time"
-                },
-                "pav:createdBy"    : {
-                  "type"  : [
-                    "string",
-                    "null"
-                  ],
-                  "format": "uri"
-                },
-                "pav:lastUpdatedOn": {
-                  "type"  : [
-                    "string",
-                    "null"
-                  ],
-                  "format": "date-time"
-                },
-                "oslc:modifiedBy"  : {
-                  "type"  : [
-                    "string",
-                    "null"
-                  ],
-                  "format": "uri"
-                }
-              },
-              "required"            : [
-                "@context"
-              ],
-              "pav:createdOn"       : "2017-05-30T14:15:52-0700",
-              "pav:createdBy"       : "https://metadatacenter.org/users/287aef81-b87c-4278-9c40-5f3d464c5b30",
-              "pav:lastUpdatedOn"   : "2017-05-30T14:15:52-0700",
-              "oslc:modifiedBy"     : "https://metadatacenter.org/users/287aef81-b87c-4278-9c40-5f3d464c5b30",
-              "schema:schemaVersion": "1.1.0",
-              "additionalProperties": false,
-              "$schema"             : "http://json-schema.org/draft-04/schema#"
-            };
-            var newElement = angular.fromJson(data);
-            return [200, data, {}];
-          });
     });
 
 
