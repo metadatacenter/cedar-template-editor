@@ -7,12 +7,6 @@
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
-    "schema:name": {
-      "@type": "xsd:string"
-    },
-    "schema:description": {
-      "@type": "xsd:string"
-    },
     "pav:createdOn": {
       "@type": "xsd:dateTime"
     },
