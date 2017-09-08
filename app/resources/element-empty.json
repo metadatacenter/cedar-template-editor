@@ -7,12 +7,6 @@
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
-    "schema:name": {
-      "@type": "xsd:string"
-    },
-    "schema:description": {
-      "@type": "xsd:string"
-    },
     "pav:createdOn": {
       "@type": "xsd:dateTime"
     },
@@ -38,10 +32,7 @@
   "properties": {
     "@context": {
       "type": "object",
-      "properties": {
-        "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
-        "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] }
-      },
+      "properties": {},
       "additionalProperties": false
     },
     "@id": {
@@ -64,25 +55,9 @@
           "uniqueItems": true
         }
       ]
-    },
-    "pav:createdOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "pav:createdBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
-    },
-    "pav:lastUpdatedOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "oslc:modifiedBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
     }
   },
-  "required": [ "@context" ],
+  "required": [ "@context", "@id" ],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,

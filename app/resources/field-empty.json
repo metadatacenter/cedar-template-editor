@@ -53,22 +53,6 @@
     },
     "rdfs:label": {
       "type" : ["string", "null"]
-    },
-    "pav:createdOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "pav:createdBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
-    },
-    "pav:lastUpdatedOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "oslc:modifiedBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
     }
   },
   "required": [
