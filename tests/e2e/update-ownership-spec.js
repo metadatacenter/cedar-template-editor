@@ -5,7 +5,7 @@ var testConfig = require('../config/test-env.js');
 var ShareModal = require('../modals/share-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-describe('update-name', function () {
+describe('update-ownership', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -29,12 +29,14 @@ describe('update-name', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log('update-ownership should delete resource from the user workspace');
     workspacePage.onWorkspace();
   });
 
   describe('in info panel', function () {
 
     it("should give ownership of a folder owned by current user to another user", function () {
+      console.log('update-ownership should give ownership of a folder owned by current user to another user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Owned');
@@ -58,6 +60,7 @@ describe('update-name', function () {
 
 
     it("should fail to change ownership of a folder shared as readable with current user", function () {
+      console.log('update-ownership should fail to change ownership of a folder shared as readable with current user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -77,6 +80,7 @@ describe('update-name', function () {
 
 
     it("should fail to change ownership of a folder shared as writable with current user", function () {
+      console.log('update-ownership should fail to change ownership of a folder shared as writable with current user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -99,6 +103,7 @@ describe('update-name', function () {
 
 
     it("should fail to change ownership of a folder shared as readable with Everybody group", function () {
+      console.log('update-ownership should fail to change ownership of a folder shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -119,6 +124,7 @@ describe('update-name', function () {
 
 
     it("should fail to change ownership of a folder shared as writable with Everybody group", function () {
+      console.log('update-ownership should fail to change ownership of a folder shared as writable with Everybody group');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -143,6 +149,7 @@ describe('update-name', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
+      console.log('update-ownership should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);

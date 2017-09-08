@@ -33,12 +33,14 @@ describe('update-name', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log('update-name should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('in info panel', function () {
 
     it("should fail to update name of a resource shared as readable with Everybody group", function () {
+      console.log('update-name should fail to update name of a resource shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -57,6 +59,7 @@ describe('update-name', function () {
 
 
     it("should fail to update name of a resource shared as readable with a user", function () {
+      console.log('update-name should fail to update name of a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Readable');
@@ -75,6 +78,7 @@ describe('update-name', function () {
 
 
     it("should update name of a resource shared as writable with Everybody group", function () {
+      console.log('update-name should update name of a resource shared as writable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Writable');
@@ -98,6 +102,7 @@ describe('update-name', function () {
 
 
     it("should update name of a resource shared as writable with a user", function () {
+      console.log('update-name should update name of a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -122,6 +127,7 @@ describe('update-name', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
+      console.log('update-name should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);

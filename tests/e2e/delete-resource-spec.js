@@ -29,12 +29,14 @@ describe('delete-resource', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log('should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('via more-options button', function () {
 
     it("should fail to delete a resource shared as readable with Everybody", function () {
+      console.log('should fail to delete a resource shared as readable with Everybody');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -53,6 +55,7 @@ describe('delete-resource', function () {
     });
 
     it("should delete a resource shared as writable with Everybody", function () {
+      console.log('should delete a resource shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -67,6 +70,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to delete a resource shared as readable with a user", function () {
+      console.log('should fail to delete a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -85,6 +89,7 @@ describe('delete-resource', function () {
     });
 
     it("should delete a resource shared as writable with a user", function () {
+      console.log('should delete a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -102,6 +107,7 @@ describe('delete-resource', function () {
   describe('via right-click', function () {
 
     it("should fail to delete a resource shared as readable with Everybody", function () {
+      console.log('should fail to delete a resource shared as readable with Everybody');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -119,6 +125,7 @@ describe('delete-resource', function () {
     });
 
     it("should delete a resource shared as writable with Everybody", function () {
+      console.log('should delete a resource shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -135,6 +142,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to delete a resource shared as readable with a user", function () {
+      console.log('should fail to delete a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -152,6 +160,7 @@ describe('delete-resource', function () {
     });
 
     it("should delete a resource shared as writable with a user", function () {
+      console.log('should delete a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -171,6 +180,7 @@ describe('delete-resource', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
+      console.log('should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);
