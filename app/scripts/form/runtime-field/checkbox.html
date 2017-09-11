@@ -7,7 +7,7 @@
           id="checkbox-{{uuid}}-{{index}}-{{i}}"
           ng-model="optionsUI[value.label]"
           ng-change="updateModelFromUI(field); $event.stopPropagation();"
-          ng-true-value="'{{value.label}}'"
+          ng-true-value="'{{value.label.replace('\'', '\\\'')}}'"
           ng-false-value="{{ null }}"/>
 
       <label for="checkbox-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i].label}}</label>
