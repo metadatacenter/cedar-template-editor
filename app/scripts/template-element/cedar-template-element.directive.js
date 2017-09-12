@@ -343,12 +343,12 @@ define([
       };
 
       scope.$on('saveForm', function (event) {
-        console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
+        //console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
 
-        if (scope.isFirstLevel()) {
-          var schema = DataManipulationService.schemaOf($rootScope.jsonToSave);
-          DataManipulationService.relabel(schema, scope.key, scope.labels[scope.key]);
-        }
+        // if (scope.isFirstLevel()) {
+        //   var schema = DataManipulationService.schemaOf($rootScope.jsonToSave);
+        //   DataManipulationService.relabel(schema, scope.key, scope.labels[scope.key]);
+        // }
 
         if (scope.isEditState() && !scope.canDeselect(scope.element)) {
 

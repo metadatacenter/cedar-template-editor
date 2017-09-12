@@ -333,11 +333,11 @@ define([
 
       // try to deselect the field if it is active
       $scope.$on("saveForm", function () {
-        console.log('on saveForm', $scope.isFirstLevel());
+        //console.log('on saveForm', $scope.isFirstLevel());
         //update keys to new titles if necessary
-        if ($scope.isFirstLevel()) {
-          $scope.relabelField($scope.getTitle());
-        }
+        // if ($scope.isFirstLevel()) {
+        //   $scope.relabelField($scope.getTitle());
+        // }
 
         var action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
         $scope.$emit("invalidFieldState",
