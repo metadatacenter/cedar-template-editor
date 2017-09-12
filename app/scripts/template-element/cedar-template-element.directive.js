@@ -343,9 +343,11 @@ define([
       };
 
       scope.$on('saveForm', function (event) {
+        console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
 
         if (scope.isFirstLevel()) {
-          DataManipulationService.relabel(scope.parentElement, scope.key, scope.labels[scope.key]);
+          var schema = DataManipulationService.schemaOf($rootScope.jsonToSave);
+          DataManipulationService.relabel(schema, scope.key, scope.labels[scope.key]);
         }
 
         if (scope.isEditState() && !scope.canDeselect(scope.element)) {

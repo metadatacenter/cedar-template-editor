@@ -577,9 +577,11 @@ define([
     // Relabel the field key with the field title
     service.relabelField = function (schema, key, newTitle) {
 
+
       // get the new key
       var properties = service.propertiesOf(schema);
       var newKey = service.getAcceptableKey(properties, service.getFieldName(newTitle));
+      console.log('relabelFIeld',schema, key, newKey);
 
       // Rename the key at the schema.properties level
       service.renameKeyOfObject(properties, key, newKey);
@@ -601,7 +603,8 @@ define([
     };
 
     // Relabel the element key with a new value from the propertyLabels
-    service.relabel = function (node, key, label) {
+    service.relabel = function (node, key) {
+
 
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
@@ -609,6 +612,7 @@ define([
       var newLabel = schema._ui.propertyLabels[key] || 'default';
       var newKey = service.getFieldName(newLabel);
       newKey = service.getAcceptableKey(p, newKey);
+      console.log('relable', key, newKey);
 
       // update propertyLabels
       delete schema._ui.propertyLabels[key];

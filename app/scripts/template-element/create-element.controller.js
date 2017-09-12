@@ -104,6 +104,7 @@ define([
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
+      console.log('broadcast saveForm');
       $scope.$broadcast('saveForm');
     }
 
