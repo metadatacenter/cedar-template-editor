@@ -104,7 +104,10 @@ define([
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
+      console.log('broadcast saveForm');
       $scope.$broadcast('saveForm');
+
+      DataManipulationService.updateKeys($scope.form);
     }
 
     var dontHaveCreatingFieldOrElement = function () {
@@ -220,6 +223,7 @@ define([
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
           DataManipulationService.stripTmps($scope.element);
+          DataManipulationService.updateKeys($scope.element);
 
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
@@ -249,6 +253,7 @@ define([
         else {
           var id = $scope.element['@id'];
           DataManipulationService.stripTmps($scope.element);
+          DataManipulationService.updateKeys($scope.element);
 
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
@@ -347,6 +352,7 @@ define([
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         DataManipulationService.stripTmps(copiedForm);
+        DataManipulationService.updateKeys(copiedForm);
       }
       return copiedForm;
     };

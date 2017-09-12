@@ -80,6 +80,8 @@ define([
 
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
+
+          DataManipulationService.updateKeys($scope.form);
         };
 
         var dontHaveCreatingFieldOrElement = function () {
@@ -226,6 +228,7 @@ define([
             if ($routeParams.id == undefined) {
 
               DataManipulationService.stripTmps($scope.form);
+              DataManipulationService.updateKeys($scope.form);
 
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
@@ -255,6 +258,7 @@ define([
             else {
               var id = $scope.form['@id'];
               DataManipulationService.stripTmps($scope.form);
+              DataManipulationService.updateKeys($scope.form);
 
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
@@ -358,6 +362,7 @@ define([
           var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
           if (copiedForm) {
             DataManipulationService.stripTmps(copiedForm);
+            DataManipulationService.updateKeys(copiedForm);
           }
           return copiedForm;
         };

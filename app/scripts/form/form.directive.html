@@ -114,43 +114,9 @@
               rename-child-key="renameChildKey"></field-directive>
         </div>
 
-        <!--&lt;!&ndash;If  Element with a template root&ndash;&gt;-->
-        <!--<div-->
-            <!--ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">-->
-          <!--<div class="element-group full"-->
-              <!--ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">-->
-
-            <!--never gets called-->
-            <!--<cedar-template-element element="form.properties[item]"-->
-                <!--key="item"-->
-                <!--model="model[item]"-->
-                <!--labels="$root.schemaOf(form)._ui.propertyLabels"-->
-                <!--delete="removeChild(form.properties[item])"-->
-                <!--nested="false"-->
-                <!--is-root-element="false"-->
-                <!--is-edit-data="isEditData">-->
-            <!--</cedar-template-element>-->
-          <!--</div>-->
-
-        <!--</div>-->
-
         <!-- if element  -->
          <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
-           <div class="element-group full"
-               ng-if="$root.schemaOf(form.properties[item])['@id'] == $root.keyOfRootElement">
-
-             <cedar-template-element element="form.properties[item]"
-                 key="item"
-                 model="model[item]"
-                 parent-element="form"
-                 delete="removeChild"
-                 is-edit-data="isEditData">
-             </cedar-template-element>
-           </div>
-
-           <div class="element-group full"
-               ng-if="$root.schemaOf(form.properties[item])['@id'] !== $root.keyOfRootElement">
-
+           <div class="element-group full">
              <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"
@@ -160,7 +126,6 @@
              </cedar-template-element>
            </div>
          </div>
-
       </span>
     </div>
   </div>
