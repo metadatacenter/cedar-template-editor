@@ -6,7 +6,6 @@
       aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
       ng-model="$root.schemaOf(field)._ui.title"
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
-      ng-change="relabelField($root.schemaOf(field)._ui.title)"
       with-floating-label>
   <!-- The following code can be used to validate the field title -->
   <!--validate-on="blur"-->

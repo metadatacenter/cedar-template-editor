@@ -226,7 +226,7 @@ define([
 
       $scope.relabelField = function(newTitle) {
         DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
-      }
+      };
 
       //
       // controlled terms modal
@@ -237,6 +237,12 @@ define([
       $scope.getModalId = function (type) {
         return UIUtilService.getModalId(dms.getId($scope.field), type);
       };
+
+      $scope.getId = function () {
+        return dms.getId($scope.field);
+      };
+
+
 
       // show the controlled terms modal
       $scope.showModal = function (type) {
@@ -273,6 +279,7 @@ define([
 
       // watch for this field's deselect
       $scope.$on('deselect', function (event, args) {
+
         var field = args[0];
         var errors = args[1];
 
@@ -319,8 +326,17 @@ define([
 
       }, true);
 
+      $scope.isFirstLevel = function () {
+        return ($scope.$parent.directiveName === 'form');
+      };
+
       // try to deselect the field if it is active
       $scope.$on("saveForm", function () {
+        //update keys to new titles if necessary
+        if ($scope.isFirstLevel()) {
+          $scope.relabelField($scope.getTitle());
+        }
+
         var action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
         $scope.$emit("invalidFieldState",
             [action, dms.getTitle($scope.field), dms.getId($scope.field)]);
