@@ -74,7 +74,8 @@ define([
             newElement.maxItems = 1;
             $scope.staging[newElement['@id']] = newElement;
             $timeout(function () {
-              var fieldName = DataManipulationService.getFieldName(newElement._ui.title);
+              var title = DataManipulationService.getTitle(newElement);
+              var fieldName = DataManipulationService.getFieldName(title);
               $scope.previewForm.properties = {};
               $scope.previewForm.properties[fieldName] = newElement;
             });
@@ -179,7 +180,7 @@ define([
             UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
-            var title = clonedElement._ui.title;
+            var title = DataManipulationService.getTitle(clonedElement);
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
@@ -221,7 +222,8 @@ define([
       UIUtilService.setSelected(clonedElement);
 
       // Converting title for irregular character handling
-      var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
+      var title = DataManipulationService.getTitle(clonedElement);
+      var elName = DataManipulationService.getFieldName(title);
       elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
       // Adding corresponding property type to @context
@@ -315,7 +317,8 @@ define([
             var el = response.data;
             UIUtilService.setSelected(el);
 
-            var elName = DataManipulationService.getFieldName(el._ui.title);
+            var title = DataManipulationService.getTitle(el);
+            var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
             var randomPropertyName = DataManipulationService.generateGUID();
             element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(

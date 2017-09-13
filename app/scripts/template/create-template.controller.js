@@ -28,6 +28,8 @@ define([
         $rootScope.searchBrowseModalId = "search-browse-modal";
         $rootScope.finderModalId = "finder-modal";
 
+        var dms = DataManipulationService;
+
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
         StagingService.configure(pageId);
@@ -209,7 +211,8 @@ define([
           $scope.templateSuccessMessages = [];
 
           // If Template Name is blank, produce error message
-          if (!$scope.form._ui.title.length) {
+          var title = dms.getTitle($scope.form);
+          if (!title.length) {
            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
           }
@@ -238,7 +241,8 @@ define([
                         response.headers("CEDAR-Validation-Report"));
 
                     // confirm message
-                    UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
+                    var title = dms.getTitle(response.data);
+                    UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": title},
                         'GENERIC.Created');
 
                     // Reload page with template id
@@ -271,8 +275,9 @@ define([
                     DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
 
+                    var title = dms.getTitle(response.data);
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                        {"title": response.data._ui.title}, 'GENERIC.Updated');
+                        {"title": title}, 'GENERIC.Updated');
                     owner.enableSaveButton();
 
                     $scope.$broadcast('form:clean');
@@ -320,25 +325,25 @@ define([
 
         //
         //
-        // // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        // // This function watches for changes in the title field and autogenerates the schema title and description fields
         // $scope.$watch('saveButtonDisabled', function (v) {
         //   console.log('watch saveButtonDisabled');
         // });
 
 
-        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-        $scope.$watch('form._ui.title', function (v) {
+        // This function watches for changes in the title field and autogenerates the schema title and description fields
+        $scope.$watch('form["schema:name"]', function (v) {
 
           if (!angular.isUndefined($scope.form)) {
-            var title = $scope.form._ui.title;
+            var title = dms.getTitle($scope.form);
             if (title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
                   {title: capitalizedTitle, version: window.cedarVersion});
             } else {
-              $scope.form._ui.title = "";
-              $scope.form._ui.description = "";
+              dms.setTitle($scope, "");
+              dms.setDescription($scope.form, "");
             }
             $rootScope.documentTitle = title;
           }
@@ -346,12 +351,12 @@ define([
 
         // This function watches for changes in the form and defaults the title and description fields
         $scope.$watch('form', function (v) {
-          if ($scope.form && $rootScope.schemaOf($scope.form)) {
-            if (!$rootScope.schemaOf($scope.form)._ui.title) {
-              $rootScope.schemaOf($scope.form)._ui.title = $translate.instant("VALIDATION.noNameField");
+          if (dms.schemaOf($scope.form)) {
+            if (!dms.getTitle($scope.form)) {
+              dms.setTitle($scope.form, $translate.instant("VALIDATION.noNameField"));
             }
-            if (!$rootScope.schemaOf($scope.form)._ui.description) {
-              $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+            if (!dms.getDescription($scope.form)) {
+              dms.setDescription($scope.form, $translate.instant("VALIDATION.noDescriptionField"));
             }
           }
           $scope.toRDF();
