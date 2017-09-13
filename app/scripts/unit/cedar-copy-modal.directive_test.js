@@ -114,7 +114,7 @@ define(['app', 'angular'], function (app) {
 
 
         // TODO folder title is not showing in copyTitleElement
-        it("should have header with the current folder name, back arrow and and go away x  ", function () {
+        xit("should have header with the current folder name, back arrow and and go away x  ", function () {
           var elm = copyDirective[0];
           expect(elm.querySelector(xGoAway)).toBeDefined();
           expect(elm.querySelector(BackToParent)).toBeDefined();
