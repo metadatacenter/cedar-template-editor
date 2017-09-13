@@ -8,7 +8,7 @@ define([
 
   UserService.$inject = ['CedarUser', 'HttpBuilderService', 'UrlService'];
 
-  function UserService(CedarUser, HttpBuilderService, UrlService) {
+  function UserService(CedarUser, HttpBuilderService, UrlService) { 
 
     var userHandler = null;
 

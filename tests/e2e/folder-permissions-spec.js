@@ -38,12 +38,14 @@ describe('folder-permissions', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log('folder-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('moving folders', function () {
 
     it("should move a folder owned by current user to a writable folder", function () {
+      console.log('folder-permissions moving folders should move a folder owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
@@ -63,6 +65,7 @@ describe('folder-permissions', function () {
     });
 
     it("should move a folder owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions moving folders should move a folder owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // share folder with user 2
@@ -87,6 +90,7 @@ describe('folder-permissions', function () {
     });
 
     it("should move a writable folder not owned by current user to a writable folder", function () {
+      console.log('folder-permissions moving folders should move a writable folder not owned by current user to a writable folder');
       // login as user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -117,6 +121,7 @@ describe('folder-permissions', function () {
     });
 
     it("should move a writable folder not owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions moving folders should move a writable folder not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target shared folders
@@ -143,6 +148,7 @@ describe('folder-permissions', function () {
     });
 
     it("should move an unwritable folder not owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions moving folders should move an unwritable folder not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source and target shared folders
@@ -176,6 +182,7 @@ describe('folder-permissions', function () {
   xdescribe('copy folders', function () {
 
     it("should copy a folder owned by current user to a writable folder", function () {
+      console.log('folder-permissions copy folders should copy a folder owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
@@ -194,6 +201,7 @@ describe('folder-permissions', function () {
     });
 
     it("should copy a folder owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions copy folders should copy a folder owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create a folder to share with another user
@@ -218,6 +226,7 @@ describe('folder-permissions', function () {
     });
 
     it("should copy a writable folder not owned by current user to a writable folder", function () {
+      console.log('folder-permissions copy folders should copy a writable folder not owned by current user to a writable folder');
       // logout current user and login as the user with whom the folder was shared
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -248,6 +257,7 @@ describe('folder-permissions', function () {
     });
 
     it("should copy a writable folder not owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions copy folders should copy a writable folder not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target shared folders
@@ -274,6 +284,7 @@ describe('folder-permissions', function () {
     });
 
     it("should copy an unwritable folder not owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions copy folders should copy an unwritable folder not owned by current user to an unwritable folder');
       // create source and target shared folders
       var sourceFolder = workspacePage.createFolder('Source');
       var targetFolder = workspacePage.createFolder('Target');
@@ -303,6 +314,7 @@ describe('folder-permissions', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
+      console.log('folder permissions remove created resources should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);

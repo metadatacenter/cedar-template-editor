@@ -27,11 +27,9 @@ define([
       idBasePath = config.idBasePath;
     };
 
-
     //
     // basics
     //
-
 
     service.getFieldProperties = function (field) {
       if (field) {
@@ -213,13 +211,28 @@ define([
     // is this a checkbox, radio or list question?
     service.isMultiAnswer = function (node) {
       var inputType = service.getInputType(node);
+      return service.isMultiAnswerInputType(inputType);
+    };
+
+    service.isMultiAnswerInputType = function (inputType) {
       return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+    };
+
+
+    // is this a multiple choice list?
+    service.isMultipleChoice = function (node) {
+      if (service.schemaOf(node)._valueConstraints) {
+        return service.schemaOf(node)._valueConstraints.multipleChoice;
+      }
     };
 
     // is this a multiple choice list?
     service.isMultipleChoice = function (node) {
       if (service.schemaOf(node)._valueConstraints) {
         return service.schemaOf(node)._valueConstraints.multipleChoice;
+      }
+      else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
+        return service.schemaOf(node).items._valueConstraints.multipleChoice;
       }
     };
 
@@ -375,7 +388,6 @@ define([
         delete field.items;
         delete field.maxItems;
 
-
         return true;
       } else {
         return false;
@@ -396,6 +408,61 @@ define([
           }
         }
       });
+    };
+
+    // sets the multiple choice option to true or false
+    service.setMultipleChoice = function (node, newMultipleChoiceValue) {
+      if (newMultipleChoiceValue == true) { // set multipleChoice to true
+        if (node.items) {
+          node.items._valueConstraints.multipleChoice = true;
+        }
+        else {
+          node.minItems = 1;
+          node._valueConstraints.multipleChoice = true;
+          service.cardinalizeField(node);
+        }
+      }
+      else { // set multipleChoice to false
+        if (node.items) {
+          delete node.minItems;
+          node.items._valueConstraints.multipleChoice = false;
+          service.uncardinalizeField(node);
+        }
+        else {
+          node._valueConstraints.multipleChoice = false;
+        }
+      }
+    };
+
+
+    // update the key values to reflect the property names or titles
+    // this does not look at nested fields and elements, just top level
+    service.updateKeys = function (node) {
+      service.updateKey(node, node);
+
+      if (node.type == 'array') {
+        node = node.items;
+      }
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.updateKey(key, value, node);
+        }
+      });
+    };
+
+    service.updateKey = function (key,  node, parent) {
+      if (parent && node && (node['@id'] != parent['@id'])) {
+
+        var title = service.getTitle(node);
+        var labels = service.getPropertyLabels(parent);
+        if (DataUtilService.isElement(node)) {
+          labels[key] = labels[key] || title;
+        } else {
+          labels[key] = title || labels[key];
+        }
+        service.relabel(parent, key, labels[key]);
+      }
     };
 
     //
@@ -527,7 +594,8 @@ define([
       var props = service.propertiesOf(form);
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
-          form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(prop);
+          var randomPropertyName = service.generateGUID();
+          form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
           break;
         }
       }
@@ -539,94 +607,51 @@ define([
 
     // Relabel the field key with the field title
     service.relabelField = function (schema, key, newTitle) {
-      /* Generate the new key */
-      var fieldKey = service.getFieldName(newTitle);
+
+      // get the new key
       var properties = service.propertiesOf(schema);
-      var newKey = service.getAcceptableKey(properties, fieldKey);
+      var newKey = service.getAcceptableKey(properties,  service.getFieldName(newTitle), key);
 
       // Rename the key at the schema.properties level
       service.renameKeyOfObject(properties, key, newKey);
 
-      /* Rename the key in the @context */
+      // Rename the key in the @context
       if (properties["@context"] && properties["@context"].properties) {
         service.renameKeyOfObject(properties["@context"].properties, key, newKey);
-        // update enum only if it is using one of our made up property URIs
-        var prop = properties["@context"].properties[newKey];
-        if (prop && prop.enum) {
-          if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
-            prop.enum[0] = service.getEnumOf(newKey);
-          }
-        }
       }
-
-      if (properties["@context"].required) {
+      if (properties["@context"] && properties["@context"].required) {
         var idx = properties["@context"].required.indexOf(key);
         properties["@context"].required[idx] = newKey;
       }
 
       // Rename the key in the 'order' array
-      schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+      if (schema._ui.order) {
+        schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+      }
 
       // Rename key in the 'required' array
-      schema.required = service.renameItemInArray(schema.required, key, newKey);
+      if (schema.required) {
+        schema.required = service.renameItemInArray(schema.required, key, newKey);
+      }
     };
 
     // Relabel the element key with a new value from the propertyLabels
     service.relabel = function (node, key) {
+
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
-      // make sure label is not empty
-      schema._ui.propertyLabels = schema._ui.propertyLabels || [];
-      if (!schema._ui.propertyLabels[key] || schema._ui.propertyLabels[key].length == 0) {
-        schema._ui.propertyLabels[key] = 'default';
-      }
-
-      var newLabel = schema._ui.propertyLabels[key];
+      var newLabel = schema._ui.propertyLabels[key] || 'default';
       var newKey = service.getFieldName(newLabel);
-      newKey = service.getAcceptableKey(p, newKey);
+      newKey = service.getAcceptableKey(p, newKey, key);
 
       // update propertyLabels
       delete schema._ui.propertyLabels[key];
       schema._ui.propertyLabels[newKey] = newLabel;
 
-      var child = p[key];
-      var childId = service.idOf(child);
-
       angular.forEach(p, function (value, k) {
-        if (!value) {
-          return;
-        }
-
-        //var idOfValue = service.idOf(value);
-        //if (idOfValue && idOfValue == childId) {
-        if (key == k) {
-
-          service.renameKeyOfObject(p, key, newKey);
-
-          if (p["@context"] && p["@context"].properties) {
-            service.renameKeyOfObject(p["@context"].properties, key, newKey);
-
-            // update enum only if it is using one of our made up property URIs
-            var prop = p["@context"].properties[newKey];
-            if (prop && prop.enum) {
-              if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
-                prop.enum[0] = service.getEnumOf(newKey);
-              }
-            }
-          }
-
-          if (p["@context"].required) {
-            var idx = p["@context"].required.indexOf(key);
-            p["@context"].required[idx] = newKey;
-          }
-
-          // Rename key in the 'order' array
-          schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
-
-          // Rename key in the 'required' array
-          schema.required = service.renameItemInArray(schema.required, key, newKey);
-
+        if (value && key == k) {
+          service.relabelField(schema, key, newKey);
         }
       });
     };
@@ -663,11 +688,6 @@ define([
     service.generateField = function (inputType) {
       var valueType = ["string", "null"];
 
-      if ((inputType == "checkbox") || (inputType == "list") || (inputType == "radio")) {
-        valueType = ["array", "null"];
-
-      }
-
       var field;
       if (FieldTypeService.isStaticField(inputType)) {
         field = DataTemplateService.getStaticField(this.generateTempGUID());
@@ -695,6 +715,11 @@ define([
         }
         delete field.properties['@type'];
         field.properties['@type'] = valueAtType;
+      }
+
+      if (inputType == "checkbox") {
+        field.minItems = 1;
+        service.cardinalizeField(field);
       }
 
       return field;
@@ -1005,55 +1030,33 @@ define([
       // but a link puts it in @id
       if (service.isLinkType(field)) {
         location = "@id";
-        // and the constraint puts it _valueLabel
+        // and the constraint puts it rdfs:label
       } else if (service.hasValueConstraint(field)) {
-        location = "_valueLabel";
+        location = "rdfs:label";
         // The following condition allows the Metadata Editor to work with instances of the BioSample template. These
         // instances were automatically generated from GEO data. According to the BioSample template, the optional attribute
         // element must contain Name and Value attributes with plain text values. However, we automatically generated
         // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
-      } else if (valueNode.length > 0 && valueNode[0]._valueLabel) {
-        location = "_valueLabel"
+      } else if (valueNode && valueNode.length > 0 && valueNode[0]['rdfs:label']) {
+        location = "rdfs:label"
       }
       return location;
     };
 
     // Generates a nice field name
     service.getFieldName = function (rawFieldName) {
-      var niceFieldName = rawFieldName;
-
-      if (niceFieldName) {
-
-        // To Camel Case
-        niceFieldName = niceFieldName.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-          return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-        }).replace(/\s+/g, '');
-
-        // Keep only alphanumeric characters
-        niceFieldName = niceFieldName.replace(/\W/g, '');
-      } else {
-        console.log("undefined rawFieldName");
-      }
-
-
-      return niceFieldName;
-
-      // Using underscore format
-      //return rawFieldName
-      //  .replace(/'|"|(|)/g, '')
-      //  .replace(/ +/g, "_")
-      //  .toLowerCase();
+      return DataUtilService.removeSpecialChars(rawFieldName);
     };
 
-    service.getEnumOf = function (fieldName) {
-      return UrlService.schemaProperty(fieldName);
+    service.getEnumOf = function (propertyName) {
+      return UrlService.schemaProperty(propertyName);
     };
 
     // don't modify the property unless it contains the Cedar schema base url
     // a user might have defined a specific property for this field
-    service.getPropertyOf = function (fieldName, property) {
+    service.getPropertyOf = function (propertyId, property) {
       if (property.indexOf(UrlService.schemaBase()) > -1) {
-        return UrlService.schemaProperty(fieldName);
+        return UrlService.schemaProperty(propertyId);
       } else {
         return property;
       }
@@ -1066,20 +1069,27 @@ define([
       return c;
     };
 
-    service.getAcceptableKey = function (obj, suggestedKey) {
+    service.getAcceptableKey = function (obj, suggestedKey, currentKey) {
       if (!obj || typeof(obj) != "object") {
         return;
       }
 
       var key = suggestedKey;
-      if (obj[key]) {
-        var idx = 1;
-        while (obj["" + key + idx]) {
-          idx += 1;
-        }
+      // if (currentKey === suggestedKey) {
+      //   key = currentKey;
+      //
+      // } else {
 
-        key = "" + key + idx;
-      }
+
+        if (obj[key]) {
+          var idx = 1;
+          while (obj["" + key + idx]) {
+            idx += 1;
+          }
+
+          key = "" + key + idx;
+        }
+      // }
 
       return key;
     };
@@ -1186,7 +1196,7 @@ define([
       return templateOrElement;
     };
 
-    service.removeKeyFromContext = function(schema, key) {
+    service.removeKeyFromContext = function (schema, key) {
       if (schema.properties["@context"] && schema.properties["@context"].properties) {
         delete schema.properties["@context"].properties[key];
       }
@@ -1235,7 +1245,8 @@ define([
             if (p["@context"] && p["@context"].properties) {
               service.renameKeyOfObject(p["@context"].properties, key, newKey);
               if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                p["@context"].properties[newKey].enum[0] = service.getPropertyOf(newKey,
+                var propertyId = service.generateGUID();
+                p["@context"].properties[newKey].enum[0] = service.getPropertyOf(propertyId,
                     p["@context"].properties[newKey].enum[0]);
               }
             }

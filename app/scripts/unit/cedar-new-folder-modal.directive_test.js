@@ -9,38 +9,13 @@ define(['app', 'angular'], function (app) {
     var $controller;
     var $httpBackend;
     var UIMessageService;
+    var UrlService;
     var resourceService;
     var UISettingsService;
     var QueryParamUtilsService;
     var $timeout;
-    var appData = {
-      CedarUserProfile: {
-        uiPreferences: {
-          folderView         : {
-            currentFolderId: null,
-            sortBy         : "createdOnTS",
-            sortDirection  : "asc",
-            viewMode       : "grid"
-          },
-          infoPanel          : {
-            opened: false
-          },
-          metadataEditor     : {
-            metadataJsonViewer: false,
-            templateViewer    : false
-          },
-          resourceTypeFilters: {
-            template: false,
-            element : false,
-            field   : false,
-            instance: false
-          },
-          templateEditor     : {
-            templateViewer: false
-          }
-        }
-      }
-    };
+    var appData = applicationData.getConfig();
+    var cedarUser = cedarUserData.getConfig(appData);
 
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
@@ -54,38 +29,6 @@ define(['app', 'angular'], function (app) {
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
-        var cedarUser = {
-          init            : function () {
-            return true
-          },
-          setAuthProfile  : function () {
-            return true
-          },
-          setCedarProfile : function () {
-            return true
-          },
-          getUIPreferences: function () {
-            return appData.CedarUserProfile.uiPreferences
-          },
-          getHomeFolderId : function () {
-            return null
-          },
-          isSortByName    : function () {
-            return false
-          },
-          isSortByCreated : function () {
-            return true
-          },
-          isSortByUpdated : function () {
-            return false
-          },
-          isListView      : function () {
-            return true
-          },
-          isGridView      : function () {
-            return false
-          }
-        };
         return cedarUser;
       });
     }));
@@ -97,12 +40,13 @@ define(['app', 'angular'], function (app) {
 
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_,_$timeout_,
-                  _UIMessageService_, _resourceService_, _UISettingsService_, _QueryParamUtilsService_) {
+                  _UIMessageService_,  _UrlService_,_resourceService_, _UISettingsService_, _QueryParamUtilsService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
           $controller = _$controller_;
           $httpBackend = _$httpBackend_;
           UIMessageService = _UIMessageService_;
+          UrlService = _UrlService_;
           resourceService = _resourceService_;
           UISettingsService = _UISettingsService_;
           QueryParamUtilsService = _QueryParamUtilsService_;
@@ -110,51 +54,12 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      $httpBackend.whenGET('resources/i18n/locale-en.json').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'resources/i18n/locale-en.json', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
-      $httpBackend.whenGET('config/url-service.conf.json?v=undefined').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'config/url-service.conf.json?v=undefined', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
-      $httpBackend.whenGET('img/plus.png').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'img/plus.png', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
-      $httpBackend.whenGET('img/close_modal.png').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'img/close_modal.png', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
-      $httpBackend.whenGET('img/close_modal.png').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'img/close_modal.png', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
-
-      $httpBackend.whenGET('https://messaging.staging.metadatacenter.net/summary').respond(
-          function (method, url, data) {
-            var data = {"total": 7, "unread": 1, "notnotified": 0};
-            var newElement = angular.fromJson(data);
-            return [200, data, {}];
-          });
-
-      $httpBackend.whenGET('https://messaging.metadatacenter.orgx/summary').respond(
-          function (method, url, data) {
-            var data = {"total": 7, "unread": 1, "notnotified": 0};
-            var newElement = angular.fromJson(data);
-            return [200, data, {}];
-          });
-
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
+      httpData.getFile('img/plus.png');
+      httpData.getFile('img/close_modal.png');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
     describe('In a template,', function () {

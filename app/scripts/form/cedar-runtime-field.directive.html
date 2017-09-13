@@ -76,7 +76,6 @@
 
           <div class="col-sm-9 answer" ng-if="isActive(index)">
             <div class="row tools">
-
               <field-toolbar class="col-xs-12" values="valueArray" min="pageMin"
                   max="pageMax" select="selectPage"
                   range="pageRange" model="model" field="field" index="index"
@@ -95,6 +94,7 @@
             </div>
 
             <div ng-repeat="(i, valueElement) in valueArray">
+
               <div ng-if="i===index">
 
                 <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">

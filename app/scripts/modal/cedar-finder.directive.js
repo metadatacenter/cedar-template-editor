@@ -357,7 +357,6 @@ define([
           }
 
           function selectResource(resource) {
-            console.log('selectResource');
 
             if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
               vm.getResourceDetails(resource);

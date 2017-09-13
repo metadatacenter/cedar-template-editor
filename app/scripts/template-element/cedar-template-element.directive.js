@@ -57,9 +57,7 @@ define([
         return scope.nested == 'true';
       };
 
-      scope.relabel = function (key) {
-        DataManipulationService.relabel(scope.parentElement, key);
-      };
+
 
       scope.isEditState = function () {
         return UIUtilService.isEditState(scope.element);
@@ -148,7 +146,7 @@ define([
                       model[k] = {};
                     }
                   }
-                  else if (k == '_valueLabel') {
+                  else if (k == 'rdfs:label') {
                     delete model[k];
                   }
                   else if (k !== '@type') {
@@ -260,42 +258,6 @@ define([
         UIUtilService.toggleElement(domId);
       };
 
-      // scope.removeChild = function (fieldOrElement) {
-      //   //var childId = DataManipulationService.getId(node);
-      //   //var elementId = DataManipulationService.getId(scope.element);
-      //   //var parent = (childId === elementId) ? scope.parentElement : scope.element;
-      //
-      //   console.log('removeChild');console.log(DataManipulationService.getTitle(fieldOrElement));console.log(DataManipulationService.getTitle(scope.parentElement));
-      //
-      //
-      //   // fieldOrElement must contain the schema level
-      //   var schema = $rootScope.schemaOf(fieldOrElement);
-      //
-      //   var selectedKey;
-      //   var props = $rootScope.propertiesOf(scope.element);
-      //   angular.forEach(props, function (value, key) {
-      //     if (value["@id"] == schema["@id"]) {
-      //       selectedKey = key;
-      //     }
-      //   });
-      //
-      //   if (selectedKey) {
-      //     delete props[selectedKey];
-      //
-      //     var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
-      //     $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
-      //
-      //     if ($rootScope.isElement(schema)) {
-      //       scope.$emit("invalidElementState",
-      //           ["remove", $rootScope.schemaOf(schema)._ui.title, schema["@id"]]);
-      //     } else {
-      //       scope.$emit("invalidFieldState",
-      //           ["remove", $rootScope.schemaOf(schema)._ui.title, schema["@id"]]);
-      //     }
-      //   }
-      // };
-
-
       scope.removeChild = function (node) {
         DataManipulationService.removeChild(scope.parentElement, node);
         scope.$emit("invalidElementState",
@@ -350,7 +312,8 @@ define([
                 DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                 if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                  var randomPropertyName = DataManipulationService.generateGUID();
+                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(randomPropertyName);
                 }
               }
 
@@ -380,6 +343,13 @@ define([
       };
 
       scope.$on('saveForm', function (event) {
+        //console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
+
+        // if (scope.isFirstLevel()) {
+        //   var schema = DataManipulationService.schemaOf($rootScope.jsonToSave);
+        //   DataManipulationService.relabel(schema, scope.key, scope.labels[scope.key]);
+        // }
+
         if (scope.isEditState() && !scope.canDeselect(scope.element)) {
 
           scope.$emit("invalidElementState",

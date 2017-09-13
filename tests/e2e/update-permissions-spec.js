@@ -29,12 +29,14 @@ describe('update-permissions', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log('update-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('with permissions', function () {
 
     it("should fail to change permissions of a folder shared as readable with current user", function () {
+      console.log('update-permissions should fail to change permissions of a folder shared as readable with current user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -54,6 +56,7 @@ describe('update-permissions', function () {
     });
 
     it("should be able to change permissions of a folder shared as writable with current user", function () {
+      console.log('update-permissions should be able to change permissions of a folder shared as writable with current user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -73,6 +76,7 @@ describe('update-permissions', function () {
     });
 
     it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
+      console.log('update-permissions should fail to change permissions of a folder shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -92,6 +96,7 @@ describe('update-permissions', function () {
     });
 
     it("should be able to change permissions of a folder shared as writable with Everybody group", function () {
+      console.log('update-permissions should be able to change permissions of a folder shared as writable with Everybody group');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -114,6 +119,7 @@ describe('update-permissions', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
+      console.log('update-permissions should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);

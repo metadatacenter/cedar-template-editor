@@ -256,7 +256,6 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-
         $scope.setHeight = function () {
 
           // apply any changes first before examining dom elements
@@ -299,8 +298,8 @@ define([
 
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
-          // is there a next one to set active
-          if ($scope.isMultipleCardinality()) {
+          // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
+          if ($scope.isMultipleCardinality() && !DataManipulationService.isMultipleChoiceField($scope.field)) {
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {

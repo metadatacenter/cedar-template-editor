@@ -22,17 +22,20 @@ describe('clean-up', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
+    console.log("clean-up should be on the workspace");
     workspacePage.onWorkspace();
   });
 
   // reset user selections to defaults
   it('should default user selections for user 2', function () {
+    console.log("clean-up should default user selections for user 2");
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
     workspacePage.initPreferences();
   });
 
   // reset user selections to defaults
   it('should default user selections for user 1', function () {
+    console.log("clean-up should default user selections for user 1");
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     workspacePage.initPreferences();
   });

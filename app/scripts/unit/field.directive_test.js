@@ -17,6 +17,8 @@ define(['app', 'angular'], function (app) {
     var compiledDirective;
     var fieldId;
 
+    var appData = applicationData.getConfig();
+
     // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
     // Load other modules
@@ -51,13 +53,11 @@ define(['app', 'angular'], function (app) {
         }));
 
     beforeEach(function () {
-      // returns the appropriate file content when requested
-      $httpBackend.whenGET('resources/i18n/locale-en.json').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'resources/i18n/locale-en.json', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
+      httpData.init($httpBackend);
+      httpData.getFile('resources/i18n/locale-en.json');
+      httpData.getFile('config/url-service.conf.json?v=undefined');
+      httpData.getFile('img/plus.png');
+      httpData.getFile('img/close_modal.png');
     });
 
 
