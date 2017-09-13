@@ -900,6 +900,8 @@ define([
 
       /* end of controlled terms functionality */
 
+      $scope.fieldSchema = dms.schemaOf($scope.field);
+
     };
 
     return {

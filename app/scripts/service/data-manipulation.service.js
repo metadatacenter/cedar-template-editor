@@ -108,14 +108,19 @@ define([
 
     // node title and description
     service.getTitle = function (node) {
-      return service.schemaOf(node)['schema:name'];
+      return service.schemaOf(node)._ui.title;
+      //return service.schemaOf(node)['schema:name'];
     };
 
     service.setTitle = function (node, value) {
+      service.schemaOf(node)._ui.title = value;
       service.schemaOf(node)['schema:name'] = value;
     };
 
     service.defaultTitle = function (node) {
+      if (service.schemaOf(node)._ui.title.length == 0) {
+        service.schemaOf(node)._ui.title = $translate.instant("GENERIC.Untitled");
+      }
       if (service.schemaOf(node)['schema:name'].length == 0) {
         service.schemaOf(node)['schema:name'] = $translate.instant("GENERIC.Untitled");
       }
@@ -134,10 +139,12 @@ define([
     };
 
     service.getDescription = function (node) {
-      return service.schemaOf(node)['schema:description'];
+      return service.schemaOf(node)._ui.description;
+      //return service.schemaOf(node)['schema:description'];
     };
 
     service.setDescription = function (node, value) {
+      service.schemaOf(node)._ui.description = value;
       service.schemaOf(node)['schema:description'] = value;
     };
 
