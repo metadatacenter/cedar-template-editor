@@ -7,7 +7,7 @@
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
-    "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Firefox --single-run",
+    "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Chrome --single-run",
     "protractor": "node_modules/protractor/bin/protractor protractor.config.js",
     "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update",
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
