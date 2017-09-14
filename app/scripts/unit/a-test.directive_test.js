@@ -114,7 +114,7 @@ define(['app', 'angular'], function (app) {
 
 
 
-        it("should have header with the current folder name, back arrow and and go away x  ", function () {
+        it("TODO dummy test required so first test does not fail  ", function () {
           var elm = copyDirective[0];
           expect(true).toBeTruthy();
 
