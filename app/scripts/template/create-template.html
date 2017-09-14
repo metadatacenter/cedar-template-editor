@@ -10,7 +10,7 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text" class="form-control" id="template-name" placeholder="Template Name"
-                    aria-label="Template Name" ng-model="form._ui.title" with-floating-label>
+                    aria-label="Template Name" ng-model="form['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
@@ -20,13 +20,13 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="template-description" placeholder="Template Description"
-                    aria-label="Template Description" ng-model="form._ui.description" with-floating-label>
+                    aria-label="Template Description" ng-model="form['schema:description']" with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-template-field'); $root.finalTitle=form._ui.title">
+            ng-click="showModal('control-options-template-field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">

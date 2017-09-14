@@ -10,7 +10,7 @@
                 <input auto-focus type="text" class="form-control" id="element-name"
                     placeholder="{{'GENERIC.ElementName' | translate}}"
                     aria-label="{{'GENERIC.ElementName' | translate}}"
-                    ng-model="element._ui.title" with-floating-label>
+                    ng-model="elementSchema['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
@@ -21,14 +21,14 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-description"
                     placeholder="{{'GENERIC.ElementDescription' | translate}}"
-                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="element._ui.description"
+                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="elementSchema['schema:description']"
                     with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-element-field');$root.finalTitle = $root.schemaOf(element)._ui.title">
+            ng-click="showModal('control-options-element-field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">

@@ -83,7 +83,7 @@ define([
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
 
-          DataManipulationService.updateKeys($scope.form);
+          //DataManipulationService.updateKeys($scope.form);
         };
 
         var dontHaveCreatingFieldOrElement = function () {
@@ -216,10 +216,6 @@ define([
            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
           }
-          // If Template Description is blank, produce error message
-          // if (!$scope.form._ui.description.length) {
-          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          // }
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
@@ -323,33 +319,25 @@ define([
           }
         });
 
-        //
-        //
-        // // This function watches for changes in the title field and autogenerates the schema title and description fields
-        // $scope.$watch('saveButtonDisabled', function (v) {
-        //   console.log('watch saveButtonDisabled');
-        // });
-
-
-        // This function watches for changes in the title field and autogenerates the schema title and description fields
+        // watch for changes in the title field and generate the schema title and description fields
         $scope.$watch('form["schema:name"]', function (v) {
 
           if (!angular.isUndefined($scope.form)) {
             var title = dms.getTitle($scope.form);
-            if (title.length > 0) {
+            if (title && title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
                   {title: capitalizedTitle, version: window.cedarVersion});
             } else {
-              dms.setTitle($scope, "");
+              dms.setTitle($scope.form, "");
               dms.setDescription($scope.form, "");
             }
             $rootScope.documentTitle = title;
           }
         });
 
-        // This function watches for changes in the form and defaults the title and description fields
+        // watch for changes in the form and defaults the title and description fields
         $scope.$watch('form', function (v) {
           if (dms.schemaOf($scope.form)) {
             if (!dms.getTitle($scope.form)) {

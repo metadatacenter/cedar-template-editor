@@ -72,6 +72,8 @@ define([
               $rootScope.documentTitle = dms.getTitle($scope.form);
               dms.createDomIds($scope.element);
 
+              $scope.elementSchema = dms.schemaOf($scope.element);
+
               $scope.$broadcast('form:clean');
             },
             function (err) {
@@ -97,6 +99,8 @@ define([
         $rootScope.jsonToSave = $scope.element;
         dms.createDomIds($scope.element);
 
+        $scope.elementSchema = dms.schemaOf($scope.element);
+
         $scope.$broadcast('form:clean');
       }
     };
@@ -105,15 +109,14 @@ define([
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
-      console.log('broadcast saveForm');
       $scope.$broadcast('saveForm');
 
-      dms.updateKeys($scope.form);
-    }
+      //dms.updateKeys($scope.form);
+    };
 
     var dontHaveCreatingFieldOrElement = function () {
       return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
-    }
+    };
 
     // *** proxied functions
     // Return true if element.properties object only contains default values
@@ -168,6 +171,7 @@ define([
 
     $scope.doReset = function () {
       $scope.element = angular.copy($scope.resetElement);
+      $scope.elementSchema = dms.schemaOf($scope.element);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $scope.$broadcast('form:reset');
     };
@@ -308,10 +312,10 @@ define([
     });
 
     // This function watches for changes in the title field and autogenerates the schema title and description fields
-    $scope.$watch('element[schema:name]', function (v) {
+    $scope.$watch('element["schema:name"]', function (v) {
       if (!angular.isUndefined($scope.element)) {
         var title = dms.getTitle($scope.element);
-        if (title.length > 0) {
+        if (title && title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.element.title = $translate.instant(
               "GENERATEDVALUE.elementTitle",
@@ -354,6 +358,7 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
+      console.log('stripTmpFields');
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
@@ -444,7 +449,7 @@ define([
 
     // update the property for a field in the element
     $scope.$on("property:propertyAdded", function (event, args) {
-      console.log('property:propertyAdded');
+
       var property = args[0];   // property value
       var id = args[1];         // field id
 

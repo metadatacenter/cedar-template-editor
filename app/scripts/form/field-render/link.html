@@ -32,7 +32,7 @@
         aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
-    <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+    <span class="floating-label">{{getTitle()}}</span>
   </div>
 
   <!-- LIST OF TEXT FIELDS (Minimum cardinality > 0) -->
@@ -53,7 +53,7 @@
           with-floating-label=""/>
       <span class="input-indicator-icons form-control-feedback"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
-      <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+      <span class="floating-label">{{getTitle()}}</span>
     </div>
 
   </div>

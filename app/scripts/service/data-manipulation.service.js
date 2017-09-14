@@ -108,21 +108,26 @@ define([
 
     // node title and description
     service.getTitle = function (node) {
-      return service.schemaOf(node)._ui.title;
-      //return service.schemaOf(node)['schema:name'];
+      if (service.schemaOf(node)) {
+        return service.schemaOf(node)['schema:name'];
+      }
+    };
+
+    service.hasTitle = function (node) {
+      return service.schemaOf(node).hasOwnProperty('schema:name') && service.schemaOf(node)['schema:name'].length > 0;
     };
 
     service.setTitle = function (node, value) {
-      service.schemaOf(node)._ui.title = value;
-      service.schemaOf(node)['schema:name'] = value;
+      var schema = service.schemaOf(node);
+      if (schema) {
+        service.schemaOf(node)['schema:name'] = value;
+        service.schemaOf(node)._ui.title = value;
+      }
     };
 
     service.defaultTitle = function (node) {
-      if (service.schemaOf(node)._ui.title.length == 0) {
-        service.schemaOf(node)._ui.title = $translate.instant("GENERIC.Untitled");
-      }
-      if (service.schemaOf(node)['schema:name'].length == 0) {
-        service.schemaOf(node)['schema:name'] = $translate.instant("GENERIC.Untitled");
+      if (!service.hasTitle(node)) {
+        service.setTitle(node, $translate.instant("GENERIC.Untitled"));
       }
     };
 
@@ -139,13 +144,22 @@ define([
     };
 
     service.getDescription = function (node) {
-      return service.schemaOf(node)._ui.description;
-      //return service.schemaOf(node)['schema:description'];
+      if (service.schemaOf(node)) {
+        return service.schemaOf(node)['schema:description'];
+      }
+    };
+
+    service.hasDescription = function (node) {
+      return service.schemaOf(node).hasOwnProperty('schema:description') && service.schemaOf(
+              node)['schema:description'].length > 0;
     };
 
     service.setDescription = function (node, value) {
-      service.schemaOf(node)._ui.description = value;
-      service.schemaOf(node)['schema:description'] = value;
+      var schema = service.schemaOf(node)
+      if (schema) {
+        service.schemaOf(node)['schema:description'] = value;
+        service.schemaOf(node)._ui.description = value;
+      }
     };
 
     // schema title and description
@@ -333,8 +347,7 @@ define([
           '@type'               : field['@type'],
           '@context'            : field['@context'],
           'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
-          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
-              {title: field['schema:name'], version: window.cedarVersion}),
+          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",{title: field['schema:name'], version: window.cedarVersion}),
           '_ui'                 : field._ui,
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
@@ -344,7 +357,9 @@ define([
           'pav:createdBy'       : field['pav:createdBy'],
           'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
           'oslc:modifiedBy'     : field['oslc:modifiedBy'],
-          'schema:schemaVersion': field['schema:schemaVersion']
+          'schema:schemaVersion': field['schema:schemaVersion'],
+          'schema:name'         : field['schema:name'],
+          'schema:description'  : field['schema:description']
         };
         field.type = 'array';
 
@@ -364,6 +379,8 @@ define([
         delete field['pav:lastUpdatedOn'];
         delete field['oslc:modifiedBy'];
         delete field['schema:schemaVersion'];
+        delete field['schema:name'];
+        delete field['schema:description'];
 
         return true;
       } else {
@@ -391,6 +408,8 @@ define([
         field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
         field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
         field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
+        field['schema:name'] = field.items['schema:name'];
+        field['schema:description'] = field.items['schema:description'];
 
         delete field.items;
         delete field.maxItems;
@@ -458,7 +477,7 @@ define([
       });
     };
 
-    service.updateKey = function (key,  node, parent) {
+    service.updateKey = function (key, node, parent) {
       if (parent && node && (node['@id'] != parent['@id'])) {
 
         var title = service.getTitle(node);
@@ -617,7 +636,7 @@ define([
 
       // get the new key
       var properties = service.propertiesOf(schema);
-      var newKey = service.getAcceptableKey(properties,  service.getFieldName(newTitle), key);
+      var newKey = service.getAcceptableKey(properties, service.getFieldName(newTitle), key);
 
       // Rename the key at the schema.properties level
       service.renameKeyOfObject(properties, key, newKey);
@@ -1052,7 +1071,9 @@ define([
 
     // Generates a nice field name
     service.getFieldName = function (rawFieldName) {
-      return DataUtilService.removeSpecialChars(rawFieldName);
+      if (rawFieldName && rawFieldName.length > 0) {
+        return DataUtilService.removeSpecialChars(rawFieldName);
+      }
     };
 
     service.getEnumOf = function (propertyName) {
@@ -1088,14 +1109,14 @@ define([
       // } else {
 
 
-        if (obj[key]) {
-          var idx = 1;
-          while (obj["" + key + idx]) {
-            idx += 1;
-          }
-
-          key = "" + key + idx;
+      if (obj[key]) {
+        var idx = 1;
+        while (obj["" + key + idx]) {
+          idx += 1;
         }
+
+        key = "" + key + idx;
+      }
       // }
 
       return key;

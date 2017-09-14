@@ -338,7 +338,6 @@ define([
             element = DataManipulationService.addKeyToRequired(element, elName);
 
             element._ui.order.push(elName);
-
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
 
