@@ -33,10 +33,9 @@ jobs:
 #  -  stage: e2e tests
 #  -  before_script: gulp karma-travis-env # sets up the environment to run the karma tests
 #  -  script: gulp test-form # This task will run as part of the e2e tests stage
-#  wrapper:
-    - before_script: gulp karma-travis-env
+#    - before_script: gulp karma-travis-env
 #    - provider: script
-    - script: gulp test-form
+    - script: gulp e2e-sequential
 #    - provider: script
 #    - script: gulp karma-tests
 env:

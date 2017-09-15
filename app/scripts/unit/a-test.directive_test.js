@@ -19,6 +19,22 @@ define(['app', 'angular'], function (app) {
     var UISettingsService;
     var UrlService;
     var QueryParamUtilsService;
+    var UserService;
+
+    NoauthUserHandler.getParsedToken = function () {
+      return {
+        "name": "Unauthenticated User",
+        "sub": "111-2222-33333",
+        "email": "user@domain.edu",
+        "realm_access": {
+          "roles": [
+            "virtual role 1",
+            "virtual role 2",
+            "virtual role 3"
+          ]
+        }
+      }
+    };
 
 
     // Load the module that contains the templates that were loaded with html2js
@@ -36,16 +52,16 @@ define(['app', 'angular'], function (app) {
         return cedarUser;
       });
     }));
-    beforeEach(module('cedar.templateEditor.modal.cedarCopyModalDirective', function ($provide) {
-      $provide.factory('cedarInfiniteScrollDirective', function () {
-        return {};
-      });
-    }));
+    // beforeEach(module('cedar.templateEditor.modal.cedarCopyModalDirective', function ($provide) {
+    //   $provide.factory('cedarInfiniteScrollDirective', function () {
+    //     return {};
+    //   });
+    // }));
 
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$timeout_,
                   _UIMessageService_, _UrlService_, _resourceService_, _UISettingsService_, _QueryParamUtilsService_,
-                  _CedarUser_) {
+                  _CedarUser, UserService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
           $controller = _$controller_;
@@ -57,65 +73,36 @@ define(['app', 'angular'], function (app) {
           QueryParamUtilsService = _QueryParamUtilsService_;
           $timeout = _$timeout_;
           CedarUser = _CedarUser_;
+          UserService = _UserService_;
         }));
 
     beforeEach(function () {
-      httpData.init($httpBackend);
-      httpData.getFile('resources/i18n/locale-en.json');
-      httpData.getFile('config/url-service.conf.json?v=undefined');
-      httpData.getFile('img/plus.png');
-      httpData.getFile('img/close_modal.png');
-      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F22e37611-192e-4faa-aa6d-4b1dcad3b898/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
+      // httpData.init($httpBackend);
+      // httpData.getFile('resources/i18n/locale-en.json');
+      // httpData.getFile('config/url-service.conf.json?v=undefined');
+      // httpData.getFile('img/plus.png');
+      // httpData.getFile('img/close_modal.png');
+      // httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      // httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
+      // httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F22e37611-192e-4faa-aa6d-4b1dcad3b898/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
+      // httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=500&offset=0&resource_types=template,element,instance,folder&sort=-createdOnTS');
     });
 
     describe('In a template,', function () {
       describe('an initial test ', function () {
 
         var $copyScope;
-        var copyDirective;
-        var copyButton = "#copy-modal .modal-footer .clear-save button.confirm";
-        var xGoAway = "#copy-modal #copy-modal-header.modal-header .button.close";
-        var copyTitle = "#copy-modal #copyModalHeader .modal-title a";
-        var BackToParent = "#copy-modal #copyModalHeader .arrow-click";
-        var $parentScope;
 
         beforeEach(function () {
-          // create a new, isolated scope and a new directive
           $copyScope = $rootScope.$new();
-
-          var copyModalVisible = false;
-          var resourceTypes = {"template": true, "element": true, "instance": true};
-          var currentFolderId = 'https://repo.metadatacenter.orgx/folders/f55c5f4b-1ee6-4839-8836-fcb7509cecfe';
-          var currentPath = '';
-          var resource = {
-            "nodeType": "template",
-            "createdOnTS": 1502146462,
-            "lastUpdatedOnTS": 1502146462,
-            "name": "test",
-            "description": "Description",
-            "displayName": "test",
-          };
-
-          copyDirective = '<cedar-copy-modal  modal-visible="copyModalVisible" class="modal fade" id="copy-modal"tabindex="-1" role="dialog" aria-labelledby="copyModalHeader" data-keyboard="true" data-backdrop="static" copy-resource="resource"> </cedar-copy-modal>';
-          copyDirective = $compile(copyDirective)($copyScope);
-          $copyScope.$digest();
-
-          copyModalVisible = true;
-          $rootScope.$broadcast('copyModalVisible',
-              [copyModalVisible, resource, currentPath, currentFolderId,
-               resourceTypes,
-               CedarUser.getSort()]);
-
-          $httpBackend.flush();
+          UserService.init();
+          UserService.injectUserHandler(NoauthUserHandler);
         });
 
 
         it("should begin with a truthy test ", function () {
-          var elm = copyDirective[0];
-          expect(true).toBeTruthy();
+          expect(true).toBeTruthy()
+
         });
 
       });
