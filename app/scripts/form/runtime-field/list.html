@@ -9,7 +9,7 @@
       close-on-select="true"
       ng-model="optionsUI.listSingleSelect"
       ng-change="updateModelFromUI()">
-    <ui-select-match placeholder="Select colors...">{{$select.selected.label}}</ui-select-match>
+    <ui-select-match placeholder="Select option...">{{$select.selected.label}}</ui-select-match>
     <ui-select-choices repeat="option in getLiterals()">
       {{option.label}}
     </ui-select-choices>
@@ -24,7 +24,7 @@
       close-on-select="false"
       ng-change="updateModelFromUI()"
       ng-model="optionsUI.listMultiSelect">
-    <ui-select-match placeholder="Select or search a country in the list...">{{$item.label}}</ui-select-match>
+    <ui-select-match placeholder="Select options...">{{$item.label}}</ui-select-match>
     <ui-select-choices repeat="option in getLiterals()">
       {{option.label}}
     </ui-select-choices>
