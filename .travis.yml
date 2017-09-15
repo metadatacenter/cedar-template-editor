@@ -32,9 +32,9 @@ jobs:
   include:
   - stage: karma
   - before_script: gulp karma-travis-env # sets up the environment to run the karma tests
-  - script: gulp karma-tests
-  - stage: e2e
+#  - stage: e2e
   - script: gulp e2e-sequential # This task will run as part of the e2e tests stage
+  - script: gulp karma-tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
