@@ -30,11 +30,15 @@ install:
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:
-#  -  stage: unit tests
-#  -  script: gulp karma-tests
-  -  stage: e2e tests
-  -  before_script: gulp karma-travis-env # sets up the environment to run the karma tests
-  -  script: gulp e2e-sequential # This task will run as part of the e2e tests stage
+#  -  stage: e2e tests
+#  -  before_script: gulp karma-travis-env # sets up the environment to run the karma tests
+#  -  script: gulp test-form # This task will run as part of the e2e tests stage
+  wrapper:
+    - before_script: gulp karma-travis-env
+    - provider: script
+    - script: gulp karma-tests
+    - provider: script
+    - script: gulp test-form
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
