@@ -36,9 +36,9 @@ jobs:
   wrapper:
     - before_script: gulp karma-travis-env
     - provider: script
-    - script: gulp karma-tests
-    - provider: script
     - script: gulp test-form
+    - provider: script
+    - script: gulp karma-tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
