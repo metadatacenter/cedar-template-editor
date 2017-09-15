@@ -33,9 +33,9 @@ jobs:
 #  - stage: unit tests (Karma)
 #    script: gulp karma-tests
 #   stage: karma and e2e tests (permissions)
-#    before_script: gulp karma-travis-env # sets up the environment to run the karma tests
+    before_script: gulp karma-travis-env # sets up the environment to run the karma tests
 #    script: gulp karma-tests
-    script: gulp test-form # This task will run as part of the e2e tests stage  
+    script: gulp test-form # This task will run as part of the e2e tests stage
 
 #  - script: gulp test-form
 #  - stage: e2e tests (workspace)
