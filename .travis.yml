@@ -13,6 +13,7 @@ branches:
   only:
   - develop
   - master
+  - feature/issue-562
 notifications:
   slack:
     on_success: change
@@ -29,16 +30,14 @@ install:
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:
-#  - stage: unit tests (Karma)
-#    script: gulp karma-tests
-  - stage: karma and e2e tests (permissions)
-    before_script: gulp karma-travis-env # sets up the environment to run the karma tests
-    script: gulp karma-tests
-  - script: gulp test-permissions # This task will run as part of the e2e tests stage
-
-#  - script: gulp test-form
-#  - stage: e2e tests (workspace)
-#    script: gulp test-workspace
+#  -  stage: e2e tests
+#  -  before_script: gulp karma-travis-env # sets up the environment to run the karma tests
+#  -  script: gulp test-form # This task will run as part of the e2e tests stage
+#    - before_script: gulp karma-travis-env
+#    - provider: script
+    - script: gulp e2e-sequential
+#    - provider: script
+#    - script: gulp karma-tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
