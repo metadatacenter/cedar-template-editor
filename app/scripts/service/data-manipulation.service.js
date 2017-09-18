@@ -121,7 +121,7 @@ define([
       var schema = service.schemaOf(node);
       if (schema) {
         service.schemaOf(node)['schema:name'] = value;
-        service.schemaOf(node)._ui.title = value;
+        //service.schemaOf(node)._ui.title = value;
       }
     };
 
@@ -158,7 +158,7 @@ define([
       var schema = service.schemaOf(node)
       if (schema) {
         service.schemaOf(node)['schema:description'] = value;
-        service.schemaOf(node)._ui.description = value;
+        //service.schemaOf(node)._ui.description = value;
       }
     };
 
