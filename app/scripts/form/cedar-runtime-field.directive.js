@@ -482,14 +482,13 @@ define([
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
                 var newValue = {};
-                newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i].label;
+                newValue[fieldValue] = $scope.optionsUI.listSingleSelect ? $scope.optionsUI.listMultiSelect[i].label : null;
                 $scope.model.push(newValue);
               }
             }
             // Single-choice list
             else {
-              var newValue = {};
-              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect.label;
+              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect ? $scope.optionsUI.listSingleSelect.label : null;
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
