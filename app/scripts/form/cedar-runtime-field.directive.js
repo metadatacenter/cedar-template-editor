@@ -35,12 +35,6 @@ define([
       var dms = DataManipulationService;
 
 
-
-      $scope.multipleDemo = {};
-      $scope.multipleDemo.colors = ['Red','Green'];
-      $scope.multipleDemo.availableColors = ['Red','Green','Blue','Yellow','Magenta','Maroon','Umbra','Turquoise'];
-
-
       //
       // model access
       //
@@ -270,7 +264,7 @@ define([
           var window = angular.element($window);
           var windowHeight = $(window).height();
           var target = jQuery("#" + locator);
-          if (target) {
+          if (target && target.offset()) {
 
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);
@@ -284,9 +278,12 @@ define([
               var e = jQuery("#" + locator + ' ' + tag);
               if (e.length) {
                 e[0].focus();
-                if (!e.is('select')) {
+                if (typeof e[0].select == 'function') {
                   e[0].select();
                 }
+                // if (!e.is('select')) {
+                //   e[0].select();
+                // }
               }
             }
           }
@@ -484,12 +481,15 @@ define([
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
-                $scope.model.push({'@value':$scope.optionsUI.listMultiSelect[i].label});
+                var newValue = {};
+                newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i].label;
+                $scope.model.push(newValue);
               }
             }
             // Single-choice list
             else {
-              $scope.model = {'@value':$scope.optionsUI.listSingleSelect[0].label};
+              var newValue = {};
+              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect.label;
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -519,18 +519,27 @@ define([
             }
           }
           else if (dms.isListType($scope.field)) {
+            // Multi-choice list
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
-                var v = $scope.model[i][valueLocation];
-                if (v) {
-                  $scope.optionsUI.listMultiSelect.push({"label":$scope.model[i][valueLocation]});
-                }
-
+                var value = {};
+                value.label = $scope.model[i][valueLocation];
+                $scope.optionsUI.listMultiSelect.push(value);
               }
-            } else {
+            }
+            // Single-choice list
+            else {
+              // For this field type only one selected option is possible
               if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = {"label":$scope.model[0][valueLocation]};
+                var value = {};
+                value.label = $scope.model[0][valueLocation];
+                $scope.optionsUI.listSingleSelect = value;
+
+              } else {
+                var value = {};
+                value.label = $scope.model[valueLocation];
+                $scope.optionsUI.listSingleSelect = value;
               }
             }
           }

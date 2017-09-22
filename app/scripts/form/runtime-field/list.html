@@ -9,7 +9,7 @@
       close-on-select="true"
       ng-model="optionsUI.listSingleSelect"
       ng-change="updateModelFromUI()">
-    <ui-select-match placeholder="Select option...">{{$select.selected.label}}</ui-select-match>
+    <ui-select-match allow-clear="true" placeholder="Select option...">{{$select.selected.label}}</ui-select-match>
     <ui-select-choices repeat="option in getLiterals()">
       {{option.label}}
     </ui-select-choices>
