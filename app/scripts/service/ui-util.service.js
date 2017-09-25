@@ -104,7 +104,7 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
-        //viewState.selected = 'spreadsheet';
+        viewState.selected = 'spreadsheet';
       }
       return viewState;
     };

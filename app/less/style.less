@@ -2731,7 +2731,7 @@ section.dashboard-elements {
 
     li.tv {
       margin: 0;
-      padding: 0 0 0 12px;
+      padding: 3px 0 0 12px;
       position: relative;
       border-left: 1px solid @med-gray;
     }
@@ -2906,7 +2906,7 @@ section.dashboard-elements {
   .title {
     text-align: left;
     display: table-cell;
-    vertical-align: middle;
+    vertical-align: top;
     height: 35px;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
@@ -2950,8 +2950,14 @@ section.dashboard-elements {
     &.expand {
       margin-right: 0;
       padding-right: 0;
-      margin-left: 0;
+      margin-left: -.2em;
       padding-left: 0;
+      .fa-caret-down {
+      }
+      .fa-caret-right {
+        transform: translate(0px, -1px);
+
+      }
     }
     i {
       min-width: 12px;

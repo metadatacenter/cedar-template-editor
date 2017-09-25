@@ -1,6 +1,6 @@
 <div ng-if="model !== undefined" class="item-root element-root">
 
-  {{parentElement}}
+  <!--{{parentElement}}-->
 
   <div class="elementTotalContent">
 
@@ -9,11 +9,13 @@
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
         <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
           <div class="col-xs-6" ng-click="toggleExpanded(i);addElement()">
-            <div class="element title" ng-class="{'isInactive' : isInactive(0)}">
-              <button type="button" class="expand">
-                <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
-              </button>
-              {{getPropertyLabel()}}
+            <div class="element title" style="height:100%" ng-class="{'isInactive' : isInactive(0)}">
+              <div style="display:table-cell">
+                <button type="button" class="expand">
+                  <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
+                </button>
+              </div>
+              <div style="display:table-cell">{{getPropertyLabel()}}</div>
             </div>
           </div>
         </div>
@@ -23,11 +25,11 @@
     <!-- a spreadsheet list of elements -->
     <div ng-if="isSpreadsheetView() && valueArray.length > 0">
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
-        <div class="row " style="cursor:pointer"  ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
+        <div class="row " style="cursor:pointer" ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
 
           <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
-            <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
+            <div class="element title" style="height:100%" ng-class="{'isInactive' : isInactive(index)}">
               <button type="button" class="expand">
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
@@ -43,7 +45,7 @@
               field="element" model="valueArray" index="index" view-state="viewState"
               remove="removeElement" add="addRow" copy="copyElement" is-active="isActive" set-active="setActive"
               spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-              expand-all="expandAll"   select="selectPage"
+              expand-all="expandAll" select="selectPage"
               get-locator="getLocator">
           </field-toolbar>
 
@@ -65,29 +67,30 @@
 
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
-          <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
+          <div class="element title"    style="vertical-align:top;width:10px" ng-class="{'isInactive' : isInactive(index)}">
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
-
+          </div>
+          <div class="element title" >
             {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
           </div>
 
         </div>
 
-        <field-toolbar ng-click="toggleExpanded(index)" class="col-xs-6" style="min-height:30px;min-width:30px;"
+        <field-toolbar  class="col-xs-6" ng-click="toggleExpanded(index)" style="min-height:30px;min-width:30px;"
             ng-if="isExpanded(index)" values="valueArray" index="index"
             min="pageMin" max="pageMax" range="pageRange"
             field="element" model="valueArray" index="index" view-state="viewState"
             remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
             spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-            expand-all="expandAll"  is-field="false" select="selectPage" get-locator="getLocator">
+            expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
         </field-toolbar>
 
       </div>
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
-        
+
         <li class="tv"
 
             ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
@@ -121,7 +124,7 @@
     <div ng-if="isListView()" ng-repeat="(i, valueElement) in valueArray">
       <div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
-        <div class="row"  ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
+        <div class="row" ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
           <div class="col-sm-8 ">
 
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">
@@ -139,29 +142,30 @@
         <div ng-if="isExpanded(i)">
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
 
-            <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key])),  'hidden': isHidden($root.propertiesOf(element)[key])}">
+          <li class="tv" ng-if="$root.propertiesOf(element)[key]"
+              ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key])),  'hidden': isHidden($root.propertiesOf(element)[key])}">
 
 
-              <cedar-runtime-nested-element
-                  field="getChildNode(key)"
-                  model="valueElement[key]"
-                  labels="getPropertyLabels()"
-                  relabel="relabel"
-                  remove-child="removeChild"
-                  rename-child-key="renameChildKey"
-                  is-edit-data="isEditData"
-                  path="path+'-'+i"
-                  parent-key="fieldKey"
-                  field-key="key"
-                  uid="uid+'-'+key">
-              </cedar-runtime-nested-element>
-            </li>
-          </ul>
-        </div>
+            <cedar-runtime-nested-element
+                field="getChildNode(key)"
+                model="valueElement[key]"
+                labels="getPropertyLabels()"
+                relabel="relabel"
+                remove-child="removeChild"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                path="path+'-'+i"
+                parent-key="fieldKey"
+                field-key="key"
+                uid="uid+'-'+key">
+            </cedar-runtime-nested-element>
+          </li>
+        </ul>
       </div>
     </div>
-
   </div>
+
+</div>
 </div>
 
 

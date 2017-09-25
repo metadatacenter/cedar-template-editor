@@ -36,13 +36,14 @@
       ng-if="isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
 
     <div class="row">
-      <div class="col-xs-9 ">
-        <div ng-click="toggleExpanded()">
-          <span class="title form">
-              <button type="button" class="expand form-title" >
+      <div class="col-xs-9 " style="height:100%">
+        <div ng-click="toggleExpanded()"   style="display:inline-table">
+          <div class="title form " style="display:table-row">
+              <button type="button" class="expand form-title  "style="display:table-cell;text-align: left;width: 16px;padding-left:2px">
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
               </button>
-              {{$root.schemaOf(form)._ui.title}}</span>
+              <div style="display:table-cell">{{$root.schemaOf(form)._ui.title}}</div>
+          </div>
         </div>
       </div>
 
