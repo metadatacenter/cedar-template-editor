@@ -7,12 +7,12 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "TemplateService", "TemplateInstanceService",
+                                      "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
                                       "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
-                                    HeaderService, TemplateService, TemplateInstanceService,
+                                    HeaderService, TemplateService, resourceService,TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
 
@@ -38,6 +38,32 @@ define([
       );
     };
 
+    $scope.details;
+
+
+    // can we write to this template?  if no details, then new element
+    $scope.canWrite = function () {
+      var result = true;
+      if ($scope.details) {
+        result = resourceService.canWrite($scope.details)
+      }
+      return result;
+    };
+
+    var getDetails = function (id) {
+      console.log('getDetails',id);
+      resourceService.getResourceDetailFromId(
+          id, CONST.resourceType.INSTANCE,
+          function (response) {
+            $scope.details = response;
+            console.log('getDetails',response);
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.' + 'INSTANCE' + '.load.error', error);
+          }
+      );
+    };
+
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
@@ -48,6 +74,8 @@ define([
             $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            getDetails($scope.instance['@id']);
+
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {

@@ -26,6 +26,7 @@ define([
           deleteResource         : deleteResource,
           getFacets              : getFacets,
           getResourceDetail      : getResourceDetail,
+          getResourceDetailFromId:getResourceDetailFromId,
           getResources           : getResources,
           searchResources        : searchResources,
           getSearchResourcesPromise: getSearchResourcesPromise,
@@ -220,6 +221,32 @@ define([
            },
            errorCallback
            );*/
+        }
+
+        function getResourceDetailFromId(id, nodeType, successCallback, errorCallback) {
+          var url;
+
+          switch (nodeType) {
+            case CONST.resourceType.FOLDER:
+              url = urlService.folders() + '/' + encodeURIComponent(id);
+              break;
+            case CONST.resourceType.ELEMENT:
+              url = urlService.getTemplateElement(id) + '/details';
+              break;
+            case CONST.resourceType.TEMPLATE:
+              url = urlService.getTemplate(id) + '/details';
+              break;
+            case CONST.resourceType.INSTANCE:
+              url = urlService.getTemplateInstance(id) + '/details';
+              break;
+          }
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
         }
 
         function getResourceDetail(resource, successCallback, errorCallback) {
