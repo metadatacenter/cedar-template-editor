@@ -45,6 +45,11 @@ define([
 
     $scope.saveButtonDisabled = false;
 
+    $scope.setClean = function() {
+      $rootScope.$broadcast('form:clean');
+      $rootScope.setDirty(false);
+    };
+
     var getElement = function () {
       $scope.form = {};
       // Load existing element if $routeParams.id parameter is supplied
@@ -71,7 +76,7 @@ define([
               $rootScope.documentTitle = $scope.form._ui.title;
               DataManipulationService.createDomIds($scope.element);
 
-              $scope.$broadcast('form:clean');
+              $scope.setClean();
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -96,7 +101,7 @@ define([
         $rootScope.jsonToSave = $scope.element;
         DataManipulationService.createDomIds($scope.element);
 
-        $scope.$broadcast('form:clean');
+        $scope.setClean();
       }
     };
     getElement();
@@ -104,8 +109,7 @@ define([
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
-      console.log('broadcast saveForm');
-      $scope.$broadcast('saveForm');
+      $rootScope.$broadcast('saveForm');
 
       DataManipulationService.updateKeys($scope.form);
     }
@@ -125,7 +129,7 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
-        $scope.$broadcast("form:dirty");
+        $rootScope.$broadcast("form:dirty");
         $scope.toggleMore();
       }
       $scope.showMenuPopover = false;
@@ -142,7 +146,7 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         DataManipulationService.createDomIds(element);
         StagingService.addElementToElement($scope.element, element["@id"]);
-        $scope.$broadcast("form:update");
+        $rootScope.$broadcast("form:update");
       }
     };
 
@@ -167,8 +171,7 @@ define([
 
     $scope.doReset = function () {
       $scope.element = angular.copy($scope.resetElement);
-      // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-      $scope.$broadcast('form:reset');
+      $rootScope.$broadcast('form:reset');
     };
 
     $scope.logValidation = function (validationStatus, validationReport) {
@@ -242,7 +245,7 @@ define([
                 DataManipulationService.createDomIds(response.data);
                 $location.path(FrontendUrlService.getElementEdit(newId));
 
-                $scope.$broadcast('form:clean');
+                $scope.setClean();
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
@@ -270,7 +273,7 @@ define([
                     'GENERIC.Updated');
 
                 owner.enableSaveButton();
-                $scope.$broadcast('form.clean');
+                $scope.setClean();
 
               },
               function (err) {
@@ -398,7 +401,7 @@ define([
     $scope.showFinderModal = function () {
       // open and activate the modal
       $scope.finderModalVisible = true;
-      $scope.$broadcast('finderModalVisible');
+      $rootScope.$broadcast('finderModalVisible');
     };
 
     $scope.hideFinder = function () {

@@ -270,7 +270,7 @@ define([
           var window = angular.element($window);
           var windowHeight = $(window).height();
           var target = jQuery("#" + locator);
-          if (target) {
+          if (target && target.offset()) {
 
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);

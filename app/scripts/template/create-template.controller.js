@@ -51,7 +51,7 @@ define([
                   $rootScope.jsonToSave = $scope.form;
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
-                  $scope.$broadcast('form:clean');
+                  $rootScope.$broadcast('form:clean');
 
 
                 },
@@ -68,7 +68,7 @@ define([
             $rootScope.jsonToSave = $scope.form;
             DataManipulationService.createDomIds($scope.form);
             //$scope.getType();
-            $scope.$broadcast('form:clean');
+            $rootScope.$broadcast('form:clean');
           }
         };
         getTemplate();
@@ -169,7 +169,7 @@ define([
           });
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-          $scope.$broadcast('form:reset');
+          $rootScope.$broadcast('form:reset');
         };
 
         $scope.saveTemplate = function () {
@@ -247,7 +247,7 @@ define([
                     var newId = response.data['@id'];
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -276,7 +276,7 @@ define([
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
                     owner.enableSaveButton();
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
