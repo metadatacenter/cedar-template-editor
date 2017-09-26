@@ -809,7 +809,7 @@ define([
       var fieldSchema = service.schemaOf(field);
       // If regular field
       if (!service.hasValueConstraint(field)) {
-        if (fieldSchema.required[0] != "@value") {
+        if (!fieldSchema.required || fieldSchema.required[0] != "@value") {
           fieldSchema.required = [];
           fieldSchema.required.push("@value")
         }
@@ -824,15 +824,12 @@ define([
       }
       // If controlled field
       else {
-        if (fieldSchema.required[0] != "@id") {
-          fieldSchema.required = [];
-          fieldSchema.required.push("@id")
-        }
+        // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
+        delete field.required;
+
         if (angular.isUndefined(fieldSchema.properties["@id"])) {
           var idField = {};
-          idField.type = [];
-          idField.type.push("string");
-          idField.type.push("null");
+          idField.type = "string";
           idField.format = "uri";
           fieldSchema.properties["@id"] = idField;
           delete fieldSchema.properties["@value"];
