@@ -32,7 +32,7 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
     $scope.viewType = 'popup';
-    $scope.details;
+    $scope.details = {};
 
     $scope.showCreateEditForm = true;
 
@@ -53,11 +53,7 @@ define([
 
     // can we write to this element?  if there are no details then it is a new element
     $scope.canWrite = function () {
-      var result = true;
-      if ($scope.details) {
-        result = resourceService.canWrite($scope.details)
-      }
-      return result;
+      return resourceService.canWrite($scope.details);
     };
 
     var getDetails = function (id) {

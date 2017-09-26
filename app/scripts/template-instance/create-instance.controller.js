@@ -38,7 +38,7 @@ define([
       );
     };
 
-    $scope.details;
+    $scope.details = {};
 
 
     // can we write to this template?  if no details, then new element

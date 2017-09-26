@@ -35,16 +35,12 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
-        $scope.details;
+        $scope.details = {};
 
 
         // can we write to this template?  if no details, then new element
         $scope.canWrite = function () {
-          var result = true;
-          if ($scope.details) {
-            result = resourceService.canWrite($scope.details)
-          }
-          return result;
+          return resourceService.canWrite($scope.details);
         };
 
         var getDetails = function (id) {
