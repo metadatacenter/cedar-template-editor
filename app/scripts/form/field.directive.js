@@ -934,7 +934,7 @@ define([
           }, 1000);
         };
 
-        addPopover($scope);
+        //addPopover($scope);
 
       },
       replace    : true,
