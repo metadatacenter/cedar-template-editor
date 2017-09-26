@@ -167,7 +167,6 @@ define([
 
     $scope.doReset = function () {
       $scope.element = angular.copy($scope.resetElement);
-      // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $scope.$broadcast('form:reset');
     };
 
