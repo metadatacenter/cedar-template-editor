@@ -208,14 +208,15 @@ define([
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
 
-          // If Template Name is blank, produce error message
-          if (!$scope.form._ui.title.length) {
-           $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
-            owner.enableSaveButton();
-          }
-          // If Template Description is blank, produce error message
+          // default the title and description
+          DataManipulationService.defaultTitleAndDescription($scope.form._ui);
+          // if (!$scope.form._ui.title.length) {
+          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+          //   owner.enableSaveButton();
+          // }
           // if (!$scope.form._ui.description.length) {
           //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
+          //  owner.enableSaveButton();
           // }
 
           // If there are no Template level error messages
