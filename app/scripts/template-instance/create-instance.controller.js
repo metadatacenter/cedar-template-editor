@@ -42,10 +42,10 @@ define([
     $scope.cannotWrite;
 
 
-    // can we write to this template?  if no details, then new element
     $scope.canWrite = function () {
-      $scope.cannotWrite  = $scope.details && !resourceService.canWrite($scope.details);
-      return !$scope.cannotWrite;
+      var result = !$scope.details || resourceService.canWrite($scope.details);
+      $scope.cannotWrite  =!result;
+      return result;
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
@@ -64,6 +64,7 @@ define([
           id, CONST.resourceType.INSTANCE,
           function (response) {
             $scope.details = response;
+            $scope.canWrite();
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'INSTANCE' + '.load.error', error);
