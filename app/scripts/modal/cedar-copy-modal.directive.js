@@ -163,8 +163,6 @@ define([
             }
           }
 
-
-
           function copyDisabled() {
             return vm.selectedDestination == null;
           }
@@ -292,6 +290,7 @@ define([
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
               vm.offset = 0;
+              // TODO scroll to top
               getDestinationById(vm.currentFolderId);
             }
           });
