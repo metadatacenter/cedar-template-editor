@@ -109,8 +109,8 @@ describe('metadata-creator', function () {
       // return to workspace
       templatePage.topNavBackArrow().click();
       //TODO confirm should not be required but it is here
-      sweetAlertModal.confirm();
-      sweetAlertModal.isHidden();
+      //sweetAlertModal.confirm();
+      //sweetAlertModal.isHidden();
       workspacePage.onWorkspace();
     });
 

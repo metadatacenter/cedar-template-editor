@@ -7,12 +7,12 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "TemplateService", "TemplateInstanceService",
+                                      "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
                                       "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
-                                    HeaderService, TemplateService, TemplateInstanceService,
+                                    HeaderService, TemplateService, resourceService,TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
 
@@ -38,6 +38,39 @@ define([
       );
     };
 
+    $scope.details;
+    $scope.cannotWrite;
+
+
+    // can we write to this template?  if no details, then new element
+    $scope.canWrite = function () {
+      $scope.cannotWrite  = $scope.details && !resourceService.canWrite($scope.details);
+      return !$scope.cannotWrite;
+    };
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('cannotWrite', function () {
+      $rootScope.setLocked($scope.cannotWrite);
+    });
+
+
+    // // can we write to this template?  if no details, then new element
+    // $scope.canWrite = function () {
+    //   return resourceService.canWrite($scope.details)
+    // };
+
+    var getDetails = function (id) {
+      resourceService.getResourceDetailFromId(
+          id, CONST.resourceType.INSTANCE,
+          function (response) {
+            $scope.details = response;
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.' + 'INSTANCE' + '.load.error', error);
+          }
+      );
+    };
+
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
@@ -48,6 +81,8 @@ define([
             $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            getDetails($scope.instance['@id']);
+
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {

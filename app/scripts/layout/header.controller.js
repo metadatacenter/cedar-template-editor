@@ -27,10 +27,8 @@ define([
 
     vm.confirmBack = function () {
 
-      if (!$rootScope.isDirty()) {
-
+      if ($rootScope.isLocked() || !$rootScope.isDirty()) {
         vm.goToDashboardOrBack();
-
       } else {
 
         UIMessageService.confirmedExecution(

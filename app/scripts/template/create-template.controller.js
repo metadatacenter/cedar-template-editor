@@ -9,14 +9,14 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "UIUtilService", "DataManipulationService",
+                                          "TemplateService", "resourceService","UIMessageService", "UIUtilService", "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
-                                        FieldTypeService, TemplateService, UIMessageService,
+                                        FieldTypeService, TemplateService, resourceService, UIMessageService,
                                         UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
@@ -35,6 +35,28 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
+        $scope.details;
+        $scope.cannotWrite;
+
+
+
+        // can we write to this template?  if no details, then new element
+        $scope.canWrite = function () {
+          $scope.cannotWrite  = $scope.details && !resourceService.canWrite($scope.details);
+          return !$scope.cannotWrite;
+        };
+
+        var getDetails = function (id) {
+          resourceService.getResourceDetailFromId(
+              id, CONST.resourceType.TEMPLATE,
+              function (response) {
+                $scope.details = response;
+              },
+              function (error) {
+                UIMessageService.showBackendError('SERVER.' + 'TEMPLATE' + '.load.error', error);
+              }
+          );
+        };
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -52,6 +74,7 @@ define([
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
                   $rootScope.$broadcast('form:clean');
+                  getDetails($scope.form["@id"]);
 
 
                 },
@@ -69,9 +92,14 @@ define([
             DataManipulationService.createDomIds($scope.form);
             //$scope.getType();
             $rootScope.$broadcast('form:clean');
+
           }
         };
+
+
         getTemplate();
+
+
 
         var populateCreatingFieldOrElement = function () {
           $scope.invalidFieldStates = {};
@@ -325,6 +353,12 @@ define([
         // $scope.$watch('saveButtonDisabled', function (v) {
         //   console.log('watch saveButtonDisabled');
         // });
+
+
+        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        $scope.$watch('cannotWrite', function () {
+          $rootScope.setLocked($scope.cannotWrite);
+        });
 
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields

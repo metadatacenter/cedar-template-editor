@@ -8,14 +8,14 @@ define([
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                     "FieldTypeService", "TemplateElementService", "UIMessageService",
+                                     "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
                                      "DataManipulationService", "DataUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
+                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
     $rootScope.showSearch = true;
@@ -32,6 +32,15 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
     $scope.viewType = 'popup';
+    $scope.details;
+    $scope.cannotWrite;
+
+
+    // can we write to this template?  if no details, then new element
+    $scope.canWrite = function () {
+      $scope.cannotWrite  = $scope.details && !resourceService.canWrite($scope.details);
+      return !$scope.cannotWrite;
+    };
 
     $scope.showCreateEditForm = true;
 
@@ -48,6 +57,23 @@ define([
     $scope.setClean = function() {
       $rootScope.$broadcast('form:clean');
       $rootScope.setDirty(false);
+    };
+
+    // // can we write to this element?  if there are no details then it is a new element
+    // $scope.canWrite = function () {
+    //   return !$scope.details || resourceService.canWrite($scope.details);
+    // };
+
+    var getDetails = function (id) {
+      resourceService.getResourceDetailFromId(
+          id, CONST.resourceType.ELEMENT,
+          function (response) {
+            $scope.details = response;
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
+          }
+      );
     };
 
     var getElement = function () {
@@ -77,6 +103,8 @@ define([
               DataManipulationService.createDomIds($scope.element);
 
               $scope.setClean();
+              getDetails(key);
+
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -102,6 +130,7 @@ define([
         DataManipulationService.createDomIds($scope.element);
 
         $scope.setClean();
+
       }
     };
     getElement();
@@ -304,6 +333,12 @@ define([
       if (args[0] == 'remove') {
         delete $scope.invalidElementStates[args[2]];
       }
+    });
+
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('cannotWrite', function () {
+      $rootScope.setLocked($scope.cannotWrite);
     });
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
