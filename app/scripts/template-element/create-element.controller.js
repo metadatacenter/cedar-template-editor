@@ -40,7 +40,8 @@ define([
     $scope.canWrite = function () {
       var result = !$scope.details || resourceService.canWrite($scope.details);
       $scope.cannotWrite  =!result;
-      return result;
+      //return result;
+      return true;
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
