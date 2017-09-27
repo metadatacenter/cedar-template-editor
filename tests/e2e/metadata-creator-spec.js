@@ -111,7 +111,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
+    xit("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
       console.log("metadata-creator should add the element to the template and make the element multiple with min cardinality 0, max unlimited");
       workspacePage.editResource(template, 'template');
       templatePage.openFinder();
@@ -127,7 +127,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should populate the sample template", function () {
+    xit("should populate the sample template", function () {
       console.log("metadata-creator should populate the sample template");
       workspacePage.populateResource(template, 'template');
 
@@ -135,7 +135,7 @@ describe('metadata-creator', function () {
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should open metadata with open menu", function () {
+    xit("should open metadata with open menu", function () {
       console.log("metadata-creator should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
@@ -145,7 +145,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
+    xit("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
       console.log("metadata-creator should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
@@ -169,7 +169,7 @@ describe('metadata-creator', function () {
     });
   });
 
-  describe('remove all created resources', function () {
+  xdescribe('remove all created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("metadata-creator should delete " + resources.length + " resources from the user workspace");
