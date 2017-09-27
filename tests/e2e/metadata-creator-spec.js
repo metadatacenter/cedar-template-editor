@@ -108,13 +108,10 @@ describe('metadata-creator', function () {
 
       // return to workspace
       templatePage.topNavBackArrow().click();
-      //TODO confirm should not be required but it is here
-      //sweetAlertModal.confirm();
-      //sweetAlertModal.isHidden();
       workspacePage.onWorkspace();
     });
 
-    it("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
+    xit("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
       console.log("metadata-creator create metadata should add the element to the template and make the element multiple with min cardinality 0, max unlimited");
       workspacePage.editResource(template, 'template');
       templatePage.openFinder();
@@ -130,7 +127,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should populate the sample template", function () {
+    xit("should populate the sample template", function () {
       console.log("metadata-creator create metadata should populate the sample template");
       workspacePage.populateResource(template, 'template');
 
@@ -138,7 +135,7 @@ describe('metadata-creator', function () {
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should open metadata with open menu", function () {
+    xit("should open metadata with open menu", function () {
       console.log("metadata-creator create metadata should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
@@ -148,7 +145,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
+    xit("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
       console.log("metadata-creator create metadata should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
