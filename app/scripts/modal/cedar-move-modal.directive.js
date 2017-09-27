@@ -32,13 +32,13 @@ define([
           '$timeout',
           'resourceService',
           'UIMessageService',
-          'UISettingsService',
+          'UISettingsService','$anchorScroll',
           'CONST'
         ];
 
         function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
                                           resourceService,
-                                          UIMessageService,UISettingsService,
+                                          UIMessageService,UISettingsService, $anchorScroll,
                                           CONST) {
           var vm = this;
 
@@ -280,6 +280,9 @@ define([
               vm.selectedDestination = null;
               vm.offset = 0;
               // TODO scroll to top
+              console.log('anchorScroll');
+              $anchorScroll();
+
 
               getDestinationById(vm.currentFolderId);
             }
