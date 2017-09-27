@@ -4,7 +4,7 @@
 
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
-      ng-if="isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
+      ng-if="isRuntime()" ng-repeat="page in pagesArray">
 
     <div class="row">
       <div class="col-xs-9 ">

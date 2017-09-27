@@ -99,19 +99,22 @@ define([
       }
     };
 
-    // keeping track of dirty documents, i.e. with edits or not
+    // keeping track of dirty and locked documents
     $rootScope.dirty = false;
-
+    $rootScope.locked = false;
     $rootScope.setDirty = function (value) {
       $rootScope.dirty = value;
     };
-
     $rootScope.isDirty = function () {
       return $rootScope.dirty;
     };
+    $rootScope.setLocked = function (value) {
+      $rootScope.locked = value;
+    };
+    $rootScope.isLocked = function () {
+      return $rootScope.locked;
+    };
 
-    // use the new form and hide the old form
-    $rootScope.useNewForm = true;
 
   }
 

@@ -35,12 +35,15 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
-        $scope.details = {};
+        $scope.details;
+        $scope.cannotWrite;
+
 
 
         // can we write to this template?  if no details, then new element
         $scope.canWrite = function () {
-          return resourceService.canWrite($scope.details);
+          $scope.cannotWrite  = $scope.details && !resourceService.canWrite($scope.details);
+          return !$scope.cannotWrite;
         };
 
         var getDetails = function (id) {
@@ -350,6 +353,12 @@ define([
         // $scope.$watch('saveButtonDisabled', function (v) {
         //   console.log('watch saveButtonDisabled');
         // });
+
+
+        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        $scope.$watch('cannotWrite', function () {
+          $rootScope.setLocked($scope.cannotWrite);
+        });
 
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields

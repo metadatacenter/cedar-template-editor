@@ -249,7 +249,6 @@ define([
           };
 
           vm.canWrite = function () {
-            console.log('canWrite', vm.getSelectedNode());
             return resourceService.canWrite(vm.getSelectedNode());
           };
 
@@ -594,10 +593,6 @@ define([
             );
           }
 
-
-          function useNewForm() {
-            return $rootScope.useNewForm;
-          }
 
           function launchInstance(resource) {
 
