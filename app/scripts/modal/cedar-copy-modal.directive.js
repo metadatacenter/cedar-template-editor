@@ -187,8 +187,7 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
-              var limit = UISettingsService.getRequestLimit();
-              vm.offset += limit;
+              vm.offset += UISettingsService.getRequestLimit();
               var offset = vm.offset;
               var folderId = vm.currentFolderId;
               var resourceTypes = activeResourceTypes();
@@ -202,19 +201,16 @@ define([
           function getDestinationById(folderId) {
             if (folderId) {
               var limit = UISettingsService.getRequestLimit();
-              vm.offset += limit;
               var offset = vm.offset;
               var resourceTypes = activeResourceTypes();
               if (resourceTypes.length > 0) {
                 return resourceService.getResources(
                     {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                     function (response) {
+                      vm.totalCount = response.totalCount;
                       vm.currentDestinationID = folderId;
-                      //vm.destinationResources = response.resources;
                       vm.destinationResources = vm.destinationResources.concat(response.resources);
                       vm.destinationPathInfo = response.pathInfo;
-                      console.log('vm.destinationPathInfo',vm.destinationPathInfo);
-                      vm.totalCount = vm.destinationPathInfo.totalCount;
                       vm.destinationPath = vm.destinationPathInfo.pop();
                       vm.selectCurrent();
                     },
