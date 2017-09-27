@@ -594,10 +594,6 @@ define([
           }
 
 
-          function useNewForm() {
-            return $rootScope.useNewForm;
-          }
-
           function launchInstance(resource) {
 
             if (!resource) {
@@ -621,13 +617,13 @@ define([
                 if (resource.nodeType === 'template' && action === 'populate') {
                   launchInstance(resource);
                 } else {
-                  editResource(resource);
+                  editResource(resource, vm.canNotWrite);
                 }
               }
             }
           }
 
-          function editResource(value) {
+          function editResource(value, canNotWrite) {
 
             var resource = value || vm.selectedResource;
             if (resource) {

@@ -130,7 +130,7 @@ describe('update-description', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('update-description should delete resource from the user workspace');
+      console.log('update-description should delete " + resources.length + " resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);

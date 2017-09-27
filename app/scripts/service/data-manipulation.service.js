@@ -722,6 +722,19 @@ define([
         service.cardinalizeField(field);
       }
 
+      // The value of the link field is a URI, and note that @id cannot be null
+      if (inputType == "link") {
+        // Define the @id field
+        var idField = {};
+        idField.type = "string";
+        idField.format = "uri";
+        field.properties["@id"] = idField;
+        delete field.properties["@value"];
+
+        // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
+        delete field.required
+      }
+
       return field;
     };
 
@@ -786,19 +799,17 @@ define([
       return "xsd:decimal";
     };
 
-
     // returns the properties of a template, element, or field schema
     service.getProperties = function (node) {
       return service.schemaOf(node).properties;
     };
-
 
     // If necessary, updates the field schema according to whether the field is controlled or not
     service.initializeSchema = function (field) {
       var fieldSchema = service.schemaOf(field);
       // If regular field
       if (!service.hasValueConstraint(field)) {
-        if (fieldSchema.required[0] != "@value") {
+        if (!fieldSchema.required || fieldSchema.required[0] != "@value") {
           fieldSchema.required = [];
           fieldSchema.required.push("@value")
         }
@@ -813,15 +824,12 @@ define([
       }
       // If controlled field
       else {
-        if (fieldSchema.required[0] != "@id") {
-          fieldSchema.required = [];
-          fieldSchema.required.push("@id")
-        }
+        // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
+        delete field.required;
+
         if (angular.isUndefined(fieldSchema.properties["@id"])) {
           var idField = {};
-          idField.type = [];
-          idField.type.push("string");
-          idField.type.push("null");
+          idField.type = "string";
           idField.format = "uri";
           fieldSchema.properties["@id"] = idField;
           delete fieldSchema.properties["@value"];
