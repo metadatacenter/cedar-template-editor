@@ -33,12 +33,13 @@ define([
           '$translate',
           'resourceService',
           'UIMessageService',
+          'UISettingsService',
           'CONST'
         ];
 
         function cedarCopyModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
-                                          UIMessageService,
+                                          UIMessageService,UISettingsService,
                                           CONST) {
           var vm = this;
 
@@ -53,6 +54,7 @@ define([
           vm.updateResource = updateResource;
           vm.openDestination = openDestination;
           vm.getResourceIconClass = getResourceIconClass;
+          vm.loadMore = loadMore;
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
           vm.selectedDestination = null;
@@ -63,6 +65,8 @@ define([
           vm.destinationPath = null;
           vm.resourceTypes = null;
           vm.sortOptionField = null;
+          vm.offset = 0;
+          vm.totalCount = null;
 
           function canWrite() {
             return hasPermission('write');
@@ -152,11 +156,14 @@ define([
           function openDestination(resource) {
             if (resource) {
               var id = resource['@id'];
+              vm.offset = 0;
               getDestinationById(id);
               vm.selectedDestination = resource;
               vm.currentDestination = resource;
             }
           }
+
+
 
           function copyDisabled() {
             return vm.selectedDestination == null;
@@ -178,16 +185,36 @@ define([
             }
           }
 
+          // callback to load more resources for the current folder or search
+          function loadMore() {
+              var limit = UISettingsService.getRequestLimit();
+              vm.offset += limit;
+              var offset = vm.offset;
+              var folderId = vm.currentFolderId;
+              var resourceTypes = activeResourceTypes();
+
+              // are there more?
+              if (offset < vm.totalCount) {
+                getDestinationById(folderId);
+              }
+          };
+
           function getDestinationById(folderId) {
             if (folderId) {
+              var limit = UISettingsService.getRequestLimit();
+              vm.offset += limit;
+              var offset = vm.offset;
               var resourceTypes = activeResourceTypes();
               if (resourceTypes.length > 0) {
                 return resourceService.getResources(
-                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
+                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                     function (response) {
                       vm.currentDestinationID = folderId;
-                      vm.destinationResources = response.resources;
+                      //vm.destinationResources = response.resources;
+                      vm.destinationResources = vm.destinationResources.concat(response.resources);
                       vm.destinationPathInfo = response.pathInfo;
+                      console.log('vm.destinationPathInfo',vm.destinationPathInfo);
+                      vm.totalCount = vm.destinationPathInfo.totalCount;
                       vm.destinationPath = vm.destinationPathInfo.pop();
                       vm.selectCurrent();
                     },
@@ -268,6 +295,7 @@ define([
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
+              vm.offset = 0;
               getDestinationById(vm.currentFolderId);
             }
           });

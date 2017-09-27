@@ -13,7 +13,7 @@ describe('workspace-sidebar', function () {
 
 
   it("should show the details sidebar", function () {
-    console.log("should show the details sidebar");
+    console.log("workspace-sidebar should show the details sidebar");
     page.onWorkspace();
     page.isInfoPanelOpen().then(function(result) {
       if(result) {
@@ -27,7 +27,7 @@ describe('workspace-sidebar', function () {
 
 
   it('should show the user name in the title', function () {
-    console.log("should show the user name in the title");
+    console.log("workspace-sidebar should show the user name in the title");
     page.onWorkspace();
     page.openInfoPanel(); // ensure that info panel is open
     expect(page.createDetailsPanelTitle().getText()).toBe(page.createBreadcrumbUserName().getText());
@@ -35,7 +35,7 @@ describe('workspace-sidebar', function () {
 
 
   it("should show folder name on the title of the sidebar", function () {
-    console.log("should show folder name on the title of the sidebar");
+    console.log("workspace-sidebar should show folder name on the title of the sidebar");
     page.onWorkspace();
     page.openInfoPanel(); // ensure that info panel is open
     folder = page.createFolder('TestSidebar');
@@ -47,7 +47,7 @@ describe('workspace-sidebar', function () {
 
 
   it("should hide the details sidebar", function () {
-    console.log("should hide the details sidebar");
+    console.log("workspace-sidebar should hide the details sidebar");
     page.onWorkspace();
     page.closeInfoPanel();
     expect(page.createDetailsPanel().isPresent()).toBe(false);
@@ -55,7 +55,7 @@ describe('workspace-sidebar', function () {
 
 
   it("should delete the test folder created", function () {
-    console.log("should delete the test folder created");
+    console.log("workspace-sidebar should delete the test folder created");
     page.deleteResource(folder, 'folder');
   });
 
