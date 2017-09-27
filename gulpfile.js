@@ -232,6 +232,18 @@ gulp.task('resource-permissions', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('create-folders', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/create-folders-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
