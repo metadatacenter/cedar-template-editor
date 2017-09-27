@@ -118,8 +118,8 @@ describe('update-permissions', function () {
 
   describe('remove created resources', function () {
 
-    it('should delete resource from the user workspace', function () {
-      console.log('update-permissions should delete resource from the user workspace');
+    it('should delete " + resources.length + " resource from the user workspace', function () {
+      console.log('update-permissions should delete " + resources.length + " resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           workspacePage.login(resource.username, resource.password);
