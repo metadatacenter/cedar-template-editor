@@ -134,20 +134,20 @@ describe('metadata-creator', function () {
       workspacePage.onElement();
     });
 
-    it("should should return to the workspace", function () {
+    xit("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
 
 
-    // xit("should should confirm", function () {
-    //   console.log("metadata-creator should confirm");
-    //   sweetAlertModal.confirm();
-    //   sweetAlertModal.isHidden();
-    // });
+    xit("should should confirm", function () {
+      console.log("metadata-creator should confirm");
+      sweetAlertModal.confirm();
+      sweetAlertModal.isHidden();
+    });
 
 
-    it("should should be on the workspace", function () {
+    xit("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
       workspacePage.onWorkspace();
     });
