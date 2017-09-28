@@ -255,6 +255,7 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should delete " + resources.length + " resources from the user workspace");
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("metadata-creator should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();

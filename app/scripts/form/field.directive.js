@@ -118,6 +118,7 @@ define([
 
 
       $scope.setDirty = function() {
+        console.log('setDirty');
           $rootScope.$broadcast("form:dirty");
       };
 

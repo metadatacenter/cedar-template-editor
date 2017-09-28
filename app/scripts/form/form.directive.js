@@ -332,7 +332,9 @@ define([
 
         // watch the dirty flag on the form and pass it up to root
         $scope.$watch('forms.templateForm.$dirty', function () {
+          console.log('watch forms.templateForm.$dirty',$scope.forms.templateForm.$dirty);
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          console.log($rootScope.isDirty());
         });
 
         $scope.$on("form:clean", function () {
@@ -342,6 +344,7 @@ define([
 
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
+          console.log('on form:dirty',$scope.forms.templateForm.$dirty);
         });
 
         $scope.$on("form:update", function () {
