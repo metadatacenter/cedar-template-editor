@@ -137,7 +137,7 @@ describe('metadata-creator', function () {
     });
 
 
-    it("should should be on the workspace", function () {
+    xit("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
       workspacePage.onWorkspace();
     });
