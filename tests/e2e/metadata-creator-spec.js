@@ -139,9 +139,16 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
+    });
 
-      // return to workspace
+    it("should return to the workspace", function () {
+      console.log("metadata-creator should return to the workspace");
       metadataPage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
+    });
+
+    it("should still be on the workspace", function () {
+      console.log("metadata-creator should still be on the workspace");
       workspacePage.onWorkspace();
     });
 
