@@ -97,16 +97,22 @@ describe('metadata-creator', function () {
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    // TODO failing
     it("should add some fields to the element", function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.addField('textfield', false, 'two', 'two');
+    });
+
+
+    it("should should save the element", function () {
+      console.log("metadata-creator should save the element");
       templatePage.clickSave('element');
       toastyModal.isSuccess();
+    });
 
-      // return to workspace
+    it("should should return to the workspace", function () {
+      console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
