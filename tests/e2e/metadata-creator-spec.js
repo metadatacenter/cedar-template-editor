@@ -104,6 +104,10 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'two', 'two');
     });
 
+    it("should be dirty", function () {
+      console.log("metadata-creator should should be dirty");
+      templatePage.isDirty('textfield', false, 'one', 'one');
+    });
 
     it("should should save the element", function () {
       console.log("metadata-creator should save the element");
@@ -119,6 +123,14 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
+
+
+    it("should should confirm", function () {
+      console.log("metadata-creator should confirm");
+      sweetAlertModal.confirm();
+      sweetAlertModal.isHidden();
+    });
+
 
     it("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
