@@ -101,9 +101,11 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
+      //templatePage.addField('textfield', false, 'two', 'two');
     });
 
-    it("should be dirty", function () {
+    // TODO should be dirty
+    xit("should be dirty", function () {
       console.log("metadata-creator should should be dirty");
       templatePage.isDirty();
     });
@@ -118,6 +120,12 @@ describe('metadata-creator', function () {
       toastyModal.isSuccess();
     });
 
+    // TODO should be clean
+    xit("should be clean", function () {
+      console.log("metadata-creator should should be clean");
+      templatePage.isClean();
+    });
+
     it("should be on element creator page", function () {
       console.log("metadata-creator should be on element creator page");
       workspacePage.onElement();
@@ -128,11 +136,6 @@ describe('metadata-creator', function () {
       templatePage.topNavBackArrow().click();
     });
 
-    xit("should should confirm", function () {
-      console.log("metadata-creator should confirm");
-      sweetAlertModal.confirm();
-      sweetAlertModal.isHidden();
-    });
 
     it("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
@@ -152,7 +155,8 @@ describe('metadata-creator', function () {
       templatePage.setMultiple();
     });
 
-    it("should should be dirty", function () {
+    // TODO should be dirty
+    xit("should should be dirty", function () {
       console.log('should should be dirty');
       templatePage.isDirty();
     });
@@ -220,7 +224,6 @@ describe('metadata-creator', function () {
       console.log("should check multiple");
       // make sure the element is multi-instance and is clickable
       metadataPage.checkMultiple();
-
     });
 
     it("should add instance", function () {
@@ -228,9 +231,21 @@ describe('metadata-creator', function () {
       metadataPage.addInstance();
     });
 
+    // TODO should be dirty
+    xit("should should be dirty", function () {
+      console.log('should should be dirty');
+      //metadataPage.isDirty();
+    });
+
     it("should return to the workspace", function () {
       console.log("should return to the workspace");
       metadataPage.topNavBackArrow().click();
+    });
+
+    xit("should require confirmation", function () {
+      console.log("metadata-creator should require confirmation");
+      //sweetAlertModal.confirm();
+      //sweetAlertModal.isHidden();
     });
 
     it("should be on the workspace", function () {
