@@ -129,6 +129,11 @@ describe('metadata-creator', function () {
       templatePage.topNavBackArrow().click();
     });
 
+    it("should be on element creator page", function () {
+      console.log("metadata-creator should be on element creator page");
+      workspacePage.onElement();
+    });
+
 
     // xit("should should confirm", function () {
     //   console.log("metadata-creator should confirm");
