@@ -104,9 +104,9 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'two', 'two');
     });
 
-    it("should be dirty", function () {
+    xit("should be dirty", function () {
       console.log("metadata-creator should should be dirty");
-      templatePage.isDirty('textfield', false, 'one', 'one');
+      templatePage.isDirty();
     });
 
     it("should should save the element", function () {
