@@ -110,6 +110,7 @@ define(['app', 'angular'], function (app) {
                CedarUser.getSort()]);
 
           $httpBackend.flush();
+
         });
 
 

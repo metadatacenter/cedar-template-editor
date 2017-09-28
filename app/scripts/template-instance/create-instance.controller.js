@@ -26,7 +26,7 @@ define([
             $rootScope.jsonToSave = $scope.form;
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
-            $rootScope.documentTitle = $scope.form._ui.title;
+            $rootScope.documentTitle = $scope.form['schema:name'];
 
             // Initialize value recommender service
             ValueRecommenderService.init($routeParams.templateId, $scope.form);
@@ -134,8 +134,8 @@ define([
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
         // Create fields that will store information used by the UI
-        $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
-        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant(
+        $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant(
                 "GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(

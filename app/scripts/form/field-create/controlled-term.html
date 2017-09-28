@@ -1,13 +1,19 @@
 <div id="controlled-term-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
   <p class="type-label"><i class="cedar-svg-controll-term"></i>Controlled Term</p>
   <div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.schemaOf(field)._ui.title"  with-floating-label>
-	</div><!-- /.form-group -->
+    <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Field Title" aria-label="Field Title" ng-model="field['schema:name']"
+        with-floating-label>
+  </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Value Source" aria-label="Value Source" ng-model="$root.schemaOf(field)._ui.value_source"  with-floating-label>
-	</div><!-- /.form-group -->
-	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Controlled Term ID" aria-label="Controlled Term ID" ng-model="$root.schemaOf(field)._ui.controlled_term_id"  with-floating-label>
-	</div><!-- /.form-group -->
-	<div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+    <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Value Source" aria-label="Value Source" ng-model="$root.schemaOf(field)._ui.value_source"
+        with-floating-label>
+  </div><!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
+    <input type="text" class="form-control" id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Controlled Term ID" aria-label="Controlled Term ID"
+        ng-model="$root.schemaOf(field)._ui.controlled_term_id" with-floating-label>
+  </div><!-- /.form-group -->
+  <div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
 </div><!-- /.input-type-container -->

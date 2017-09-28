@@ -18,8 +18,9 @@ define([
                                    TemplateElementService, resourceService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
-    $rootScope.showSearch = true;
+    var dms = DataManipulationService;
 
+    $rootScope.showSearch = true;
     $rootScope.searchBrowseModalId = "search-browse-modal";
     $rootScope.finderModalId = "finder-modal";
 
@@ -106,8 +107,10 @@ define([
               $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 
               $rootScope.jsonToSave = $scope.element;
-              $rootScope.documentTitle = $scope.form._ui.title;
-              DataManipulationService.createDomIds($scope.element);
+              $rootScope.documentTitle = dms.getTitle($scope.form);
+              dms.createDomIds($scope.element);
+
+              $scope.elementSchema = dms.schemaOf($scope.element);
 
               $scope.setClean();
               getDetails(key);
@@ -122,7 +125,7 @@ define([
         $scope.element = DataTemplateService.getElement();
         HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-        var key = $scope.element["@id"] || DataManipulationService.generateGUID();
+        var key = $scope.element["@id"] || dms.generateGUID();
         $rootScope.keyOfRootElement = key;
         $rootScope.rootElement = $scope.form;
         $scope.form.properties = $scope.form.properties || {};
@@ -134,7 +137,9 @@ define([
         $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 
         $rootScope.jsonToSave = $scope.element;
-        DataManipulationService.createDomIds($scope.element);
+        dms.createDomIds($scope.element);
+
+        $scope.elementSchema = dms.schemaOf($scope.element);
 
         $scope.setClean();
 
@@ -146,13 +151,12 @@ define([
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
       $rootScope.$broadcast('saveForm');
-
-      DataManipulationService.updateKeys($scope.form);
-    }
+      //dms.updateKeys($scope.form);
+    };
 
     var dontHaveCreatingFieldOrElement = function () {
       return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
-    }
+    };
 
     // *** proxied functions
     // Return true if element.properties object only contains default values
@@ -180,7 +184,7 @@ define([
     $scope.addElementToElement = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        DataManipulationService.createDomIds(element);
+        dms.createDomIds(element);
         StagingService.addElementToElement($scope.element, element["@id"]);
         $rootScope.$broadcast("form:update");
       }
@@ -207,7 +211,10 @@ define([
 
     $scope.doReset = function () {
       $scope.element = angular.copy($scope.resetElement);
+      $scope.elementSchema = dms.schemaOf($scope.element);
+      // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $rootScope.$broadcast('form:reset');
+
     };
 
     $scope.logValidation = function (validationStatus, validationReport) {
@@ -244,41 +251,48 @@ define([
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
 
-      DataManipulationService.defaultTitleAndDescription($scope.element._ui);
+
       // // If Element Name is blank, produce error message
-      // if (!$scope.element._ui.title.length) {
+      // var title = dms.getTitle($scope.element);
+      // if (!title.length) {
       //   $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
       // }
+
+      DataManipulationService.defaultTitleAndDescription($scope.element._ui);
+
 
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
 
         // If maxItems is N, then remove maxItems
-        DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
-        DataManipulationService.defaultSchemaTitleAndDescription($scope.element);
+        dms.removeUnnecessaryMaxItems($scope.element.properties);
+        dms.defaultSchemaTitleAndDescription($scope.element);
 
         this.disableSaveButton();
         var owner = this;
 
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
-          DataManipulationService.stripTmps($scope.element);
-          DataManipulationService.updateKeys($scope.element);
+          dms.stripTmps($scope.element);
+          dms.updateKeys($scope.element);
 
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
 
+
+
                 $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                     response.headers("CEDAR-Validation-Report"));
 
                 // confirm message
+                var title = dms.getTitle(response.data);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
-                    {"title": response.data._ui.title},
+                    {"title": title},
                     'GENERIC.Created');
                 // Reload page with element id
                 var newId = response.data['@id'];
-                DataManipulationService.createDomIds(response.data);
+                dms.createDomIds(response.data);
                 $location.path(FrontendUrlService.getElementEdit(newId));
 
                 $scope.setClean();
@@ -292,8 +306,8 @@ define([
         // Update element
         else {
           var id = $scope.element['@id'];
-          DataManipulationService.stripTmps($scope.element);
-          DataManipulationService.updateKeys($scope.element);
+          dms.stripTmps($scope.element);
+          dms.updateKeys($scope.element);
 
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
@@ -302,7 +316,7 @@ define([
                 $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                     response.headers("CEDAR-Validation-Report"));
 
-                DataManipulationService.createDomIds(response.data);
+                dms.createDomIds(response.data);
                 angular.extend($scope.element, response.data);
                 $rootScope.jsonToSave = $scope.element;
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
@@ -343,13 +357,11 @@ define([
     });
 
 
-
-
-    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('element._ui.title', function (v) {
+    // This function watches for changes in the title field and autogenerates the schema title and description fields
+    $scope.$watch('element["schema:name"]', function (v) {
       if (!angular.isUndefined($scope.element)) {
-        var title = $scope.element._ui.title;
-        if (title.length > 0) {
+        var title = dms.getTitle($scope.element);
+        if (title && title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.element.title = $translate.instant(
               "GENERATEDVALUE.elementTitle",
@@ -369,12 +381,12 @@ define([
 
     // This function watches for changes in the form and defaults the title and description fields
     $scope.$watch('$scope.element', function (v) {
-      if ($scope.element && DataManipulationService.schemaOf($scope.element)) {
-        if (!DataManipulationService.schemaOf($scope.element)._ui.title) {
-          DataManipulationService.schemaOf($scope.element)._ui.title = $translate.instant("VALIDATION.noNameElement");
+      if (dms.schemaOf($scope.element)) {
+        if (!dms.getTitle($scope.element)) {
+          dms.setTitle($scope.element, $translate.instant("VALIDATION.noNameElement"));
         }
-        if (!DataManipulationService.schemaOf($scope.element)._ui.description) {
-          DataManipulationService.schemaOf($scope.element)._ui.description = $translate.instant("VALIDATION.noDescriptionElement");
+        if (!dms.getDescription($scope.element)) {
+          dms.setDescription($scope.element, $translate.instant("VALIDATION.noDescriptionElement"));
         }
       }
     });
@@ -392,10 +404,11 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
+      console.log('stripTmpFields');
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
-        DataManipulationService.stripTmps(copiedForm);
-        DataManipulationService.updateKeys(copiedForm);
+        dms.stripTmps(copiedForm);
+        dms.updateKeys(copiedForm);
       }
       return copiedForm;
     };
@@ -482,7 +495,7 @@ define([
 
     // update the property for a field in the element
     $scope.$on("property:propertyAdded", function (event, args) {
-      console.log('property:propertyAdded');
+
       var property = args[0];   // property value
       var id = args[1];         // field id
 

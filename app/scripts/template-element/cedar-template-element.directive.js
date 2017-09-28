@@ -31,26 +31,30 @@ define([
 
     function linker(scope, element, attrs) {
 
+
+      var dms = DataManipulationService;
+
       scope.directiveName = 'cedarTemplateElement';
+      scope.elementSchema = dms.schemaOf(scope.element);
 
       scope.isFirstLevel = function () {
         return (scope.$parent.directiveName === 'form');
       };
 
       scope.isRoot = function () {
-        return (DataManipulationService.getId(scope.element) === $rootScope.keyOfRootElement);
+        return (dms.getId(scope.element) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
-        return DataManipulationService.getTitle(scope.element);
+        return dms.getTitle(scope.element);
       };
 
       scope.getId = function () {
-        return DataManipulationService.getId(scope.element);
+        return dms.getId(scope.element);
       };
 
       scope.getDomId = function (node) {
-        return DataManipulationService.getDomId(node);
+        return dms.getDomId(node);
       };
 
       scope.isNested = function () {
@@ -85,7 +89,7 @@ define([
         return result;
       };
 
-      scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
+      scope.elementId = dms.idOf(scope.element) || dms.generateGUID();
 
       var resetElement = function (el, settings) {
         angular.forEach(el, function (model, key) {
@@ -95,7 +99,7 @@ define([
           if (!DataUtilService.isSpecialKey(key)) {
             if (key == '@value') {
               if (angular.isArray(model)) {
-                if (DataManipulationService.schemaOf(settings)._ui.inputType == "list") {
+                if (dms.schemaOf(settings)._ui.inputType == "list") {
                   model.splice(0, model.length);
                 } else {
                   for (var i = 0; i < model.length; i++) {
@@ -123,7 +127,7 @@ define([
                 angular.forEach(model, function (v, k) {
                   if (k == '@value') {
                     if (angular.isArray(v)) {
-                      if (DataManipulationService.schemaOf(settings)._ui.inputType == "list") {
+                      if (dms.schemaOf(settings)._ui.inputType == "list") {
                         v.splice(0, v.length);
                       } else {
                         for (var i = 0; i < v.length; i++) {
@@ -163,7 +167,7 @@ define([
 
       var setLabels = function() {
         if (scope.parentElement) {
-          scope.labels = DataManipulationService.getPropertyLabels(scope.parentElement);
+          scope.labels = dms.getPropertyLabels(scope.parentElement);
         }
       };
 
@@ -171,10 +175,10 @@ define([
         if (!UIUtilService.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
-              DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), m);
+              dms.findChildren(dms.propertiesOf(scope.element), m);
             });
           } else {
-            DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
+            dms.findChildren(dms.propertiesOf(scope.element), scope.model);
           }
         }
       };
@@ -193,7 +197,7 @@ define([
       }
 
       if (!scope.state) {
-        if (scope.element && DataManipulationService.schemaOf(scope.element)._ui && DataManipulationService.getTitle(scope.element)) {
+        if (scope.element && dms.schemaOf(scope.element)._ui && dms.getTitle(scope.element)) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -228,10 +232,10 @@ define([
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
-                  DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), m);
+                  dms.findChildren(dms.propertiesOf(scope.element), m);
                 });
               } else {
-                DataManipulationService.findChildren(DataManipulationService.propertiesOf(scope.element), scope.model);
+                dms.findChildren(dms.propertiesOf(scope.element), scope.model);
               }
               resetElement(seed, scope.element);
             }
@@ -259,7 +263,7 @@ define([
       };
 
       scope.removeChild = function (node) {
-        DataManipulationService.removeChild(scope.parentElement, node);
+        dms.removeChild(scope.parentElement, node);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);
 
@@ -269,7 +273,7 @@ define([
       scope.showCardinality = false;
 
       scope.isCardinal = function () {
-        return DataManipulationService.isCardinalElement(scope.element);
+        return dms.isCardinalElement(scope.element);
       };
 
       // try to deselect this element
@@ -290,30 +294,30 @@ define([
           return;
         }
 
-        var childId = DataManipulationService.idOf(child);
+        var childId = dms.idOf(child);
 
         if (!childId || /^tmp\-/.test(childId)) {
-          var p = DataManipulationService.propertiesOf(scope.element);
+          var p = dms.propertiesOf(scope.element);
           if (p[newKey] && p[newKey] == child) {
             return;
           }
 
-          newKey = DataManipulationService.getAcceptableKey(p, newKey);
+          newKey = dms.getAcceptableKey(p, newKey);
           angular.forEach(p, function (value, key) {
             if (!value) {
               return;
             }
 
-            var idOfValue = DataManipulationService.idOf(value);
+            var idOfValue = dms.idOf(value);
             if (idOfValue && idOfValue == childId) {
-              DataManipulationService.renameKeyOfObject(p, key, newKey);
+              dms.renameKeyOfObject(p, key, newKey);
 
               if (p["@context"] && p["@context"].properties) {
-                DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
+                dms.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                 if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                  var randomPropertyName = DataManipulationService.generateGUID();
-                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(randomPropertyName);
+                  var randomPropertyName = dms.generateGUID();
+                  p["@context"].properties[newKey].enum[0] = dms.getEnumOf(randomPropertyName);
                 }
               }
 
@@ -323,10 +327,10 @@ define([
               }
 
               // Rename key in the 'order' array
-              scope.element._ui.order = DataManipulationService.renameItemInArray(scope.element._ui.order, key, newKey);
+              scope.element._ui.order = dms.renameItemInArray(scope.element._ui.order, key, newKey);
 
               // Rename key in the 'required' array
-              scope.element.required = DataManipulationService.renameItemInArray(scope.element.required, key, newKey);
+              scope.element.required = dms.renameItemInArray(scope.element.required, key, newKey);
             }
           });
         }
@@ -339,15 +343,15 @@ define([
       };
 
       scope.elementIsMultiInstance = function (node) {
-        return DataManipulationService.elementIsMultiInstance(node);
+        return dms.elementIsMultiInstance(node);
       };
 
       scope.$on('saveForm', function (event) {
         //console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
 
         // if (scope.isFirstLevel()) {
-        //   var schema = DataManipulationService.schemaOf($rootScope.jsonToSave);
-        //   DataManipulationService.relabel(schema, scope.key, scope.labels[scope.key]);
+        //   var schema = dms.schemaOf($rootScope.jsonToSave);
+        //   dms.relabel(schema, scope.key, scope.labels[scope.key]);
         // }
 
         if (scope.isEditState() && !scope.canDeselect(scope.element)) {
