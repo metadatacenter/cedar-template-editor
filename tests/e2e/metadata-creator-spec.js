@@ -119,17 +119,22 @@ describe('metadata-creator', function () {
       toastyModal.isSuccess();
     });
 
+    it("should be on metadata", function () {
+      console.log("metadata-creator should be on metadata");
+      workspacePage.onMetadata();
+    });
+
     it("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
 
 
-    it("should should confirm", function () {
-      console.log("metadata-creator should confirm");
-      sweetAlertModal.confirm();
-      sweetAlertModal.isHidden();
-    });
+    // xit("should should confirm", function () {
+    //   console.log("metadata-creator should confirm");
+    //   sweetAlertModal.confirm();
+    //   sweetAlertModal.isHidden();
+    // });
 
 
     it("should should be on the workspace", function () {
