@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService) {
 
         var directive = {
           bindToController: {
@@ -287,7 +287,9 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
+
+                      var title = DataManipulationService.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": title},
                           'GENERIC.Updated');
                     },
                     function (err) {
@@ -298,9 +300,11 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, nodeType, null, description),
                     function (response) {
+
                       $scope.form = response.data;
+                      var title = DataManipulationService.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": response.data._ui.title}, 'GENERIC.Updated');
+                          {"title": title}, 'GENERIC.Updated');
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);

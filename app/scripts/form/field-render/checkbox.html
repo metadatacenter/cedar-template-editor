@@ -1,8 +1,6 @@
 <div class="fields fields-checkbox">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="form-group floating-label-wrapper ng-scope"
       ng-class="{'required': isRequired()}">
@@ -18,13 +16,11 @@
                 ng-disabled="!isRuntime() || preview"/>
             <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
           </div>
-          <!-- ./checkbox -->
         </div>
       </div>
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-    <!-- /.form-group -->
   </div>
 
 </div>

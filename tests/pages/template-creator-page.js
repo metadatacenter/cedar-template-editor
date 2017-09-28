@@ -81,8 +81,8 @@ var TemplateCreatorPage = function () {
   this.cssItemSortableIcon = ".item-root .sortable-icon";
   this.cssSortableIcon = ".sortable-icon";
   this.cssFieldContainer = ".field-root .elementTotalContent";
-  this.modelFieldTitle = '$root.schemaOf(field)._ui.title';
-  this.modelFieldDescription = '$root.schemaOf(field)._ui.description';
+  this.modelFieldTitle = '$root.schemaOf(field)["schema:name"]';
+  this.modelFieldDescription = '$root.schemaOf(field)["schema:description"]';
   this.hasBeenCreated = 'has been created';
   this.deleteButtonTooltip = 'delete selection';
   this.deleteElementMessage = 'The template element has been deleted.';
@@ -507,8 +507,8 @@ var TemplateCreatorPage = function () {
       }
 
       browser.wait(EC.presenceOf(createSaveTemplateButton));
-      browser.wait(EC.presenceOf(element(by.model('form._ui.title'))));
-      browser.wait(EC.presenceOf(element(by.model('form._ui.description'))));
+      browser.wait(EC.presenceOf(element(by.model('form["schema:name"]'))));
+      browser.wait(EC.presenceOf(element(by.model('form["schema:description"]'))));
 
     } else {
       browser.wait(EC.elementToBeClickable(createElementButton));
@@ -528,8 +528,8 @@ var TemplateCreatorPage = function () {
       }
 
       browser.wait(EC.presenceOf(createSaveElementButton));
-      browser.wait(EC.presenceOf(element(by.model('element._ui.title'))));
-      browser.wait(EC.presenceOf(element(by.model('element._ui.description'))));
+      browser.wait(EC.presenceOf(element(by.model('element["schema:name"]'))));
+      browser.wait(EC.presenceOf(element(by.model('element["schema:description"]'))));
     }
   };
 

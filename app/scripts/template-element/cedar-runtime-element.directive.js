@@ -374,9 +374,11 @@ define([
 
         var selectedKey;
         var schema = dms.schemaOf(node);
+        var id = dms.getId(node);
+        var title = dms.getTitle(node);
         var props = dms.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (value["@id"] == schema["@id"]) {
+          if (dms.getId(value) == id) {
             selectedKey = key;
           }
         });
@@ -389,16 +391,15 @@ define([
           dms.schemaOf(scope.element)._ui.order.splice(idx, 1);
 
           // remove it from the property Labels?
-          console.log('delete property labels?');
-          console.log(dms.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
+          // console.log('delete property labels?');
+          // console.log(dms.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
 
 
           if (UIUtilService.isElement(schema)) {
-            scope.$emit("invalidElementState",
-                ["remove", schema._ui.title, schema["@id"]]);
+
+            scope.$emit("invalidElementState", ["remove", title, id]);
           } else {
-            scope.$emit("invalidFieldState",
-                ["remove", schema._ui.title, schema["@id"]]);
+            scope.$emit("invalidFieldState", ["remove", title, id]);
           }
         }
       };

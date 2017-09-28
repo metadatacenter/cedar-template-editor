@@ -92,7 +92,7 @@
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
       <button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"
-          ng-click="getInstanceType(); showModal('field');$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
+          ng-click="getInstanceType();showModal('field')" translate>
         GENERIC.Search
       </button>
     </div>
@@ -187,8 +187,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();
-                $root.finalTitle = $root.schemaOf(field)._ui.title">Search
+            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
             </button>
           </div>
         </div>
