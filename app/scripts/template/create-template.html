@@ -1,5 +1,7 @@
 <div class="template-container scrollable-content">
 
+
+
   <div class="template-header template" id="template-header">
     <div class="container">
       <div class="row">
@@ -47,7 +49,7 @@
         <div class="right-body col-sm-10 col-sm-offset-1">
           <div id="form-preview-section">
             <div class="form-preview collapse in">
-              <form-directive form="form" page="page" model="instance" page-index="0"
+              <form-directive dirty="dirty" forms="forms" form="form" page="page" model="instance" page-index="0"
                   ng-if="!isPropertiesEmpty()"></form-directive>
               <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
             </div>
@@ -76,7 +78,7 @@
             </ul>
           </div>
 
-          <div class="template-actions">
+          <div class="template-actions" ng-if="canWrite()">
             <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>

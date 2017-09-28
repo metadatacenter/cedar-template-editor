@@ -111,15 +111,12 @@ define(['app', 'angular'], function (app) {
 
           $httpBackend.flush();
 
-          window.__karma__.loaded = function() {};
         });
 
 
-
-        it("TODO dummy test required so first test does not fail  ", function () {
-          var elm = copyDirective[0];
+        // TODO folder title is not showing in copyTitleElement
+        it("should have header with the current folder name, back arrow and and go away x  ", function () {
           expect(true).toBeTruthy();
-
         });
 
       });

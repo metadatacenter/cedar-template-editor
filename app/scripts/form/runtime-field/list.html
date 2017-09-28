@@ -1,39 +1,34 @@
 <div ng-init="initializeValue(field)" class="form-group has-feedback" ng-click="setActive(index)">
 
   <!-- Single Choice (Active) -->
-  <select ng-if="isActive(index) && !isMultipleChoice()"
-      class="form-control select show-tick"
-      ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+  <ui-select style="background:white;height:auto;border:1px solid #ccc" ng-if="isActive(index) && !isMultipleChoice()"
+      class="form-control select"
       ng-click="setActive(index, true)"
       data-max-options="1"
-      field="field"
+      theme="bootstrap"
       close-on-select="true"
       ng-model="optionsUI.listSingleSelect"
-      ng-change="updateModelFromUI()"
-      select-picker="">
-    <option style="color:gray" value="">Nothing selected</option>
-    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
-        value="{{v.label}}">
-      {{v.label}}
-    </option>
-  </select>
+      ng-change="updateModelFromUI()">
+    <ui-select-match placeholder="Select option...">{{$select.selected.label}}</ui-select-match>
+    <ui-select-choices repeat="option in getLiterals()">
+      {{option.label}}
+    </ui-select-choices>
+  </ui-select>
 
   <!-- Multiple choice (Active) -->
-  <select ng-if="isActive(index) && isMultipleChoice()"
+  <ui-select style="background:white;height:auto;border:1px solid #ccc" ng-if="isActive(index) && isMultipleChoice()"
+      class="form-control select"
       ng-click="setActive(index)"
-      class="form-control select "
-      multiple="true"
-      data-actions-box="true"
-      title="Nothing selected"
-      field="field"
+      multiple
+      theme="bootstrap"
+      close-on-select="false"
       ng-change="updateModelFromUI()"
-      ng-model="optionsUI.listMultiSelect"
-      select-picker="">
-    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
-        value="{{v.label}}">
-      {{v.label}}
-    </option>
-  </select>
+      ng-model="optionsUI.listMultiSelect">
+    <ui-select-match placeholder="Select options...">{{$item.label}}</ui-select-match>
+    <ui-select-choices repeat="option in getLiterals()">
+      {{option.label}}
+    </ui-select-choices>
+  </ui-select>
 
   <!-- Single choice (Inactive) -->
   <div ng-if="!isActive(index) && !isMultipleChoice()">

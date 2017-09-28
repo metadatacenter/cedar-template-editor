@@ -2,38 +2,9 @@
     ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
-  <!--At Runtime, the old form-->
-  <div class="page build" ng-if="isRuntime() && !$root.useNewForm" ng-repeat="page in pagesArray">
-    <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
-      <span ng-if="form.properties[item]">
-        <!--If Template field-->
-        <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
-        form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
-            ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
-          <field-directive parent-element="form" field="form.properties[item]" model="model[item]"
-              delete="removeChild(form.properties[item]); $event.stopPropagation();"
-              rename-child-key="renameChildKey"
-              is-edit-data="isEditData"></field-directive>
-        </div>
-        <!--If Template Element-->
-        <div class=" element-group full "
-            ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-
-          <cedar-template-element nested="false" element="form.properties[item]"
-              key="item"
-              model="model[item]"
-              parent-element="form"
-              delete="removeChild"
-              is-edit-data="isEditData">
-          </cedar-template-element>
-        </div>
-      </span>
-    </div>
-  </div>
-
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
-      ng-if="isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
+      ng-if="isRuntime()" ng-repeat="page in pagesArray">
 
     <div class="row">
       <div class="col-xs-9 ">
@@ -148,7 +119,7 @@
 <div ng-if="isRuntime() && isShowOutput()" ng-model="metaToRDF">
 
   <div id="outputJSON"  style="margin-top:40px">
-    <uib-tabset active="getShowOutputTab">
+    <uib-tabset active="getShowOutputTab()">
 
       <uib-tab index="0" ng-click="setShowOutputTab(0)">
         <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>

@@ -81,7 +81,7 @@
             </ul>
           </div>
 
-          <div class="element-actions">
+          <div class="element-actions" ng-if="canWrite()">
             <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>

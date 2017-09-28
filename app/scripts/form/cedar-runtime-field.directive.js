@@ -35,6 +35,12 @@ define([
       var dms = DataManipulationService;
 
 
+
+      $scope.multipleDemo = {};
+      $scope.multipleDemo.colors = ['Red','Green'];
+      $scope.multipleDemo.availableColors = ['Red','Green','Blue','Yellow','Magenta','Maroon','Umbra','Turquoise'];
+
+
       //
       // model access
       //
@@ -441,6 +447,8 @@ define([
         }
       };
 
+      $scope.multiple= {};
+
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
         var fieldValue = $scope.getValueLocation();
@@ -476,15 +484,12 @@ define([
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
-                var newValue = {};
-                newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
-                $scope.model.push(newValue);
+                $scope.model.push({'@value':$scope.optionsUI.listMultiSelect[i].label});
               }
             }
             // Single-choice list
             else {
-              var newValue = {};
-              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect;
+              $scope.model = {'@value':$scope.optionsUI.listSingleSelect[0].label};
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -514,18 +519,18 @@ define([
             }
           }
           else if (dms.isListType($scope.field)) {
-            // Multi-choice list
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
-                $scope.optionsUI.listMultiSelect.push($scope.model[i][valueLocation]);
+                var v = $scope.model[i][valueLocation];
+                if (v) {
+                  $scope.optionsUI.listMultiSelect.push({"label":$scope.model[i][valueLocation]});
+                }
+
               }
-            }
-            // Single-choice list
-            else {
-              // For this field type only one selected option is possible
+            } else {
               if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = $scope.model[0][valueLocation];
+                $scope.optionsUI.listSingleSelect = {"label":$scope.model[0][valueLocation]};
               }
             }
           }

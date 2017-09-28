@@ -124,9 +124,15 @@ define([
         return FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
+
+      $scope.setDirty = function() {
+          $rootScope.$broadcast("form:dirty");
+      };
+
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
         if ($scope.parentElement) {
+          $scope.setDirty();
           DataManipulationService.removeChild($scope.parentElement, $scope.field);
           $scope.$emit("invalidElementState",
               ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
@@ -938,7 +944,7 @@ define([
           }, 1000);
         };
 
-        addPopover($scope);
+        //addPopover($scope);
 
       },
       replace    : true,

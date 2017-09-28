@@ -1,56 +1,68 @@
 <section class="template-container scrollable-content">
   <div class="template-body metadata">
-  <div class="container">
-    <div class="row">
-      <div class="right-body col-sm-10 col-sm-offset-1 c ">
+    <div class="container">
+      <div class="row">
+        <div class="right-body col-sm-10 col-sm-offset-1 c ">
 
-        <!-- build the form -->
-        <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"  path="0"></form-directive>
+          <!-- build the form -->
+          <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"
+              path="0"></form-directive>
 
-        <!-- display success and errors -->
-        <div class="edit-actions" ng-hide="$root.isEmpty(form)">
-          <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
-            <p translate>VALIDATION.groupHeader.requiredFields</p>
-            <ul>
-              <li ng-repeat="field in failedValidation">{{field}}</li>
-            </ul>
+          <!-- display success and errors -->
+          <div class="edit-actions" ng-hide="$root.isEmpty(form)">
+            <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
+              <p translate>VALIDATION.groupHeader.requiredFields</p>
+              <ul>
+                <li ng-repeat="field in failedValidation">{{field}}</li>
+              </ul>
+            </div>
+            <div ng-if="!isEmpty(emptyRequiredFields)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.requiredFields</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in emptyRequiredFields">{{field}}</li>
+              </ul>
+            </div>
+            <div ng-if="!isEmpty(invalidFieldValues)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFields</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in invalidFieldValues">{{field}}</li>
+              </ul>
+            </div>
+            <div ng-if="!isEmpty(validationErrors)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span
+                  translate>VALIDATION.groupHeader.validationErrors</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in validationErrors">{{field}}</li>
+              </ul>
+            </div>
+            <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
+              <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+            </div>
+            <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
+              <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
+            </div>
+            <div ng-if="canWrite()">
+              <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
+                  ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
+              </button>
+              <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata"
+                  ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"
+                  ng-click="doValidation()" translate>Validate
+              </button>
+              <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled"
+                  class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;" translate>GENERIC.Save
+              </button>
+            </div>
           </div>
-          <div ng-if="!isEmpty(emptyRequiredFields)" class="alert alert-danger" role="alert">
-            <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.requiredFields</span>
-            </p>
-            <ul>
-              <li ng-repeat="field in emptyRequiredFields">{{field}}</li>
-            </ul>
-          </div>
-          <div ng-if="!isEmpty(invalidFieldValues)" class="alert alert-danger" role="alert">
-            <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFields</span></p>
-            <ul>
-              <li ng-repeat="field in invalidFieldValues">{{field}}</li>
-            </ul>
-          </div>
-          <div ng-if="!isEmpty(validationErrors)" class="alert alert-danger" role="alert">
-            <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.validationErrors</span>
-            </p>
-            <ul>
-              <li ng-repeat="field in validationErrors">{{field}}</li>
-            </ul>
-          </div>
-          <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
-            <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
-          </div>
-          <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
-            <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
-          </div>
-          <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata" ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel</button>
-          <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="doValidation()" translate>Validate</button>
-          <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;"  translate>GENERIC.Save</button>
+          <!-- /.edit-actions -->
         </div>
-        <!-- /.edit-actions -->
+        <!-- /.right-body -->
       </div>
-      <!-- /.right-body -->
+      <!-- /.row -->
     </div>
-    <!-- /.row -->
-  </div>
-  <!-- /.container -->
-</div> <!-- /.template-body -->
-  </section>
+    <!-- /.container -->
+  </div> <!-- /.template-body -->
+</section>

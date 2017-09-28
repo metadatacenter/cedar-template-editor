@@ -24,7 +24,8 @@ var TemplateCreatorPage = function () {
   var createMore = element(by.id('button-add-more'));
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
-
+  var lockIcon = element(by.css('.navbar-back .fa-lock'));
+  var dirtyIcon = element(by.css('.navbar-back .fa-exclamation-triangle'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -548,6 +549,16 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
     browser.wait(EC.invisibilityOf(templateJSON));
+  };
+
+
+
+  this.isLocked = function () {
+    browser.wait(EC.visibilityOf(lockIcon));
+  };
+
+  this.isDirty = function () {
+    browser.wait(EC.visibilityOf(dirtyIcon));
   };
 
 

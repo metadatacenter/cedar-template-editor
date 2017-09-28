@@ -32,12 +32,13 @@ define([
           '$timeout',
           'resourceService',
           'UIMessageService',
+          'UISettingsService','$anchorScroll',
           'CONST'
         ];
 
         function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
                                           resourceService,
-                                          UIMessageService,
+                                          UIMessageService,UISettingsService, $anchorScroll,
                                           CONST) {
           var vm = this;
 
@@ -55,6 +56,7 @@ define([
           vm.getResourceIconClass = getResourceIconClass;
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
+          vm.loadMore = loadMore;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -62,7 +64,8 @@ define([
           vm.destinationPathInfo = null;
           vm.destinationPath = null;
           vm.resourceTypes = null;
-          vm.sortOptionField = null;
+          vm.sortOptionField = null;  vm.offset = 0;
+          vm.totalCount = null;
 
           function canWrite() {
             return hasPermission('write');
@@ -170,14 +173,30 @@ define([
             }
           }
 
+          // callback to load more resources for the current folder or search
+          function loadMore() {
+            vm.offset += UISettingsService.getRequestLimit();
+            var offset = vm.offset;
+            var folderId = vm.currentFolderId;
+            var resourceTypes = activeResourceTypes();
+
+            // are there more?
+            if (offset < vm.totalCount) {
+              getDestinationById(folderId);
+            }
+          };
+
           function getDestinationById(folderId) {
+            var limit = UISettingsService.getRequestLimit();
+            var offset = vm.offset;
             var resourceTypes = activeResourceTypes();
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
+                    vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
-                    vm.destinationResources = response.resources;
+                    vm.destinationResources = vm.destinationResources.concat(response.resources);
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
                     vm.selectCurrent();
@@ -259,6 +278,12 @@ define([
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
+              vm.offset = 0;
+              // TODO scroll to top
+              console.log('anchorScroll');
+              $anchorScroll();
+
+
               getDestinationById(vm.currentFolderId);
             }
           });

@@ -8,14 +8,14 @@ define([
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                     "FieldTypeService", "TemplateElementService", "UIMessageService",
+                                     "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
                                      "DataManipulationService", "DataUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
+                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
     var dms = DataManipulationService;
@@ -33,6 +33,21 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
     $scope.viewType = 'popup';
+    $scope.details;
+    $scope.cannotWrite;
+
+
+    // can we write to this template?  if no details, then new element
+    $scope.canWrite = function () {
+      var result = !$scope.details || resourceService.canWrite($scope.details);
+      $scope.cannotWrite  =!result;
+      return result;
+    };
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('cannotWrite', function () {
+      $rootScope.setLocked($scope.cannotWrite);
+    });
 
     $scope.showCreateEditForm = true;
 
@@ -45,6 +60,29 @@ define([
 
 
     $scope.saveButtonDisabled = false;
+
+    $scope.setClean = function() {
+      $rootScope.$broadcast('form:clean');
+      $rootScope.setDirty(false);
+    };
+
+    // // can we write to this element?  if there are no details then it is a new element
+    // $scope.canWrite = function () {
+    //   return !$scope.details || resourceService.canWrite($scope.details);
+    // };
+
+    var getDetails = function (id) {
+      resourceService.getResourceDetailFromId(
+          id, CONST.resourceType.ELEMENT,
+          function (response) {
+            $scope.details = response;
+            $scope.canWrite();
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
+          }
+      );
+    };
 
     var getElement = function () {
       $scope.form = {};
@@ -74,7 +112,9 @@ define([
 
               $scope.elementSchema = dms.schemaOf($scope.element);
 
-              $scope.$broadcast('form:clean');
+              $scope.setClean();
+              getDetails(key);
+
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -101,7 +141,8 @@ define([
 
         $scope.elementSchema = dms.schemaOf($scope.element);
 
-        $scope.$broadcast('form:clean');
+        $scope.setClean();
+
       }
     };
     getElement();
@@ -109,8 +150,7 @@ define([
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
-      $scope.$broadcast('saveForm');
-
+      $rootScope.$broadcast('saveForm');
       //dms.updateKeys($scope.form);
     };
 
@@ -129,7 +169,7 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
-        $scope.$broadcast("form:dirty");
+        $rootScope.$broadcast("form:dirty");
         $scope.toggleMore();
       }
       $scope.showMenuPopover = false;
@@ -146,7 +186,7 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         dms.createDomIds(element);
         StagingService.addElementToElement($scope.element, element["@id"]);
-        $scope.$broadcast("form:update");
+        $rootScope.$broadcast("form:update");
       }
     };
 
@@ -173,7 +213,8 @@ define([
       $scope.element = angular.copy($scope.resetElement);
       $scope.elementSchema = dms.schemaOf($scope.element);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-      $scope.$broadcast('form:reset');
+      $rootScope.$broadcast('form:reset');
+
     };
 
     $scope.logValidation = function (validationStatus, validationReport) {
@@ -210,11 +251,15 @@ define([
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
 
-      // If Element Name is blank, produce error message
-      var title = dms.getTitle($scope.element);
-      if (!title.length) {
-        $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
-      }
+
+      // // If Element Name is blank, produce error message
+      // var title = dms.getTitle($scope.element);
+      // if (!title.length) {
+      //   $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
+      // }
+
+      DataManipulationService.defaultTitleAndDescription($scope.element._ui);
+
 
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
@@ -250,7 +295,7 @@ define([
                 dms.createDomIds(response.data);
                 $location.path(FrontendUrlService.getElementEdit(newId));
 
-                $scope.$broadcast('form:clean');
+                $scope.setClean();
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
@@ -278,7 +323,7 @@ define([
                     'GENERIC.Updated');
 
                 owner.enableSaveButton();
-                $scope.$broadcast('form.clean');
+                $scope.setClean();
 
               },
               function (err) {
@@ -288,7 +333,7 @@ define([
           );
         }
       }
-    }
+    };
 
     $scope.invalidFieldStates = {};
     $scope.invalidElementStates = {};
@@ -310,6 +355,7 @@ define([
         delete $scope.invalidElementStates[args[2]];
       }
     });
+
 
     // This function watches for changes in the title field and autogenerates the schema title and description fields
     $scope.$watch('element["schema:name"]', function (v) {
@@ -407,7 +453,7 @@ define([
     $scope.showFinderModal = function () {
       // open and activate the modal
       $scope.finderModalVisible = true;
-      $scope.$broadcast('finderModalVisible');
+      $rootScope.$broadcast('finderModalVisible');
     };
 
     $scope.hideFinder = function () {

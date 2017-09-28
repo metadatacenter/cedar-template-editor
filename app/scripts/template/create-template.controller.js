@@ -9,14 +9,14 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "UIUtilService", "DataManipulationService",
+                                          "TemplateService", "resourceService","UIMessageService", "UIUtilService", "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
-                                        FieldTypeService, TemplateService, UIMessageService,
+                                        FieldTypeService, TemplateService, resourceService, UIMessageService,
                                         UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
@@ -37,6 +37,34 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
+        $scope.details;
+        $scope.cannotWrite;
+
+
+        $scope.canWrite = function () {
+          var result = !$scope.details || resourceService.canWrite($scope.details);
+          $scope.cannotWrite  =!result;
+          return result;
+        };
+
+
+        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        $scope.$watch('cannotWrite', function () {
+          $rootScope.setLocked($scope.cannotWrite);
+        });
+
+        var getDetails = function (id) {
+          resourceService.getResourceDetailFromId(
+              id, CONST.resourceType.TEMPLATE,
+              function (response) {
+                $scope.details = response;
+                $scope.canWrite();
+              },
+              function (error) {
+                UIMessageService.showBackendError('SERVER.' + 'TEMPLATE' + '.load.error', error);
+              }
+          );
+        };
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -53,7 +81,8 @@ define([
                   $rootScope.jsonToSave = $scope.form;
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
-                  $scope.$broadcast('form:clean');
+                  $rootScope.$broadcast('form:clean');
+                  getDetails($scope.form["@id"]);
 
 
                 },
@@ -70,10 +99,15 @@ define([
             $rootScope.jsonToSave = $scope.form;
             DataManipulationService.createDomIds($scope.form);
             //$scope.getType();
-            $scope.$broadcast('form:clean');
+            $rootScope.$broadcast('form:clean');
+
           }
         };
+
+
         getTemplate();
+
+
 
         var populateCreatingFieldOrElement = function () {
           $scope.invalidFieldStates = {};
@@ -171,7 +205,7 @@ define([
           });
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-          $scope.$broadcast('form:reset');
+          $rootScope.$broadcast('form:reset');
         };
 
         $scope.saveTemplate = function () {
@@ -210,12 +244,14 @@ define([
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
 
+
           // If Template Name is blank, produce error message
           var title = dms.getTitle($scope.form);
           if (!title.length) {
            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
           }
+
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
@@ -246,7 +282,7 @@ define([
                     var newId = response.data['@id'];
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -276,7 +312,7 @@ define([
                         {"title": title}, 'GENERIC.Updated');
                     owner.enableSaveButton();
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
@@ -319,8 +355,10 @@ define([
           }
         });
 
+
         // watch for changes in the title field and generate the schema title and description fields
         $scope.$watch('form["schema:name"]', function (v) {
+
 
           if (!angular.isUndefined($scope.form)) {
             var title = dms.getTitle($scope.form);
