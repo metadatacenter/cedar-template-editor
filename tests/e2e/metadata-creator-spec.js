@@ -119,9 +119,9 @@ describe('metadata-creator', function () {
       toastyModal.isSuccess();
     });
 
-    it("should be on metadata", function () {
-      console.log("metadata-creator should be on metadata");
-      workspacePage.onMetadata();
+    it("should be on element creator page", function () {
+      console.log("metadata-creator should be on element creator page");
+      workspacePage.onElement();
     });
 
     it("should should return to the workspace", function () {

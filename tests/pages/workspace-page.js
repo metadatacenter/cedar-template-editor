@@ -22,6 +22,8 @@ var WorkspacePage = function () {
   var createNavbarWorkspace = element(by.css('.navbar.dashboard'));
   var createNavbarMetadata = element(by.css('.navbar.metadata'));
   var createControlsBar = element(by.css('.controls-bar'));
+  var createNavbarElement = element(by.css('.navbar.element'));
+  var createNavbarTemplate = element(by.css('.navbar.emplate'));
 
 
   // page content
@@ -325,6 +327,11 @@ var WorkspacePage = function () {
   // are we on the metadata page
   this.onMetadata = function () {
     browser.wait(EC.presenceOf(createNavbarMetadata));
+  };
+
+  // are we on the element page
+  this.onElement = function () {
+    browser.wait(EC.presenceOf(createNavbarElement));
   };
 
   // do we have the controls bar
