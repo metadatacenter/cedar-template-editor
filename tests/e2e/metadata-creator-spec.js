@@ -148,17 +148,27 @@ describe('metadata-creator', function () {
     });
 
     it("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
-      console.log("metadata-creator should add the element to the template and make the element multiple with min cardinality 0, max unlimited");
+      console.log("should add the element to the template and make the element multiple with min cardinality 0, max unlimited");
       workspacePage.editResource(template, 'template');
       templatePage.openFinder();
       finderModal.clearSearch();
+    });
+
+    it("should add the element to the template", function () {
+      console.log('should add the element to the template');
       finderModal.addFirstElement(element);
       templatePage.setMultiple();
+    });
+
+    it("should should be dirty", function () {
+      console.log('should should be dirty');
       templatePage.isDirty();
       templatePage.clickSave('template');
       toastyModal.isSuccess();
+    });
 
-      // return to workspace
+    it("should return to workspace", function () {
+      console.log('should return to workspace');
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
