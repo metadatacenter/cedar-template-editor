@@ -136,9 +136,10 @@ define([
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
-              $rootScope.$broadcast("form:dirty");
-              console.log('setDirty');
               $scope.toggleMore();
+              $timeout(function () {
+                $rootScope.$broadcast("form:dirty");
+              });
             });
           }
         };

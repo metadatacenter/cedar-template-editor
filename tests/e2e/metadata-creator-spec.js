@@ -97,50 +97,42 @@ describe('metadata-creator', function () {
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    xit("should add some fields to the element", function () {
+    it("should add a field to the element", function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
-      templatePage.addField('textfield', false, 'two', 'two');
     });
 
-    xit("should be dirty", function () {
+    it("should be dirty", function () {
       console.log("metadata-creator should should be dirty");
       templatePage.isDirty();
     });
 
-    xit("should should save the element", function () {
+    it("should should save the element", function () {
       console.log("metadata-creator should save the element");
       templatePage.clickSave('element');
     });
 
-    xit("should should see toasty", function () {
+    it("should should see toasty", function () {
       console.log("metadata-creator should see toasty");
       toastyModal.isSuccess();
     });
 
-    xit("should be on element creator page", function () {
+    it("should be on element creator page", function () {
       console.log("metadata-creator should be on element creator page");
       workspacePage.onElement();
     });
 
-    xit("should should return to the workspace", function () {
+    it("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
-
-    xit("should be on element creator page", function () {
-      console.log("metadata-creator should be on element creator page");
-      workspacePage.onElement();
-    });
-
 
     xit("should should confirm", function () {
       console.log("metadata-creator should confirm");
       sweetAlertModal.confirm();
       sweetAlertModal.isHidden();
     });
-
 
     it("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
@@ -160,7 +152,7 @@ describe('metadata-creator', function () {
       templatePage.setMultiple();
     });
 
-    xit("should should be dirty", function () {
+    it("should should be dirty", function () {
       console.log('should should be dirty');
       templatePage.isDirty();
     });
@@ -222,20 +214,18 @@ describe('metadata-creator', function () {
       metadataPage.documentTitle().getText().then(function (text) {
         expect(text === template + ' metadata').toBe(true);
       });
-
     });
 
-    xit("should check multiple", function () {
+    it("should check multiple", function () {
       console.log("should check multiple");
       // make sure the element is multi-instance and is clickable
       metadataPage.checkMultiple();
 
     });
 
-    xit("should add instance", function () {
+    it("should add instance", function () {
       console.log("should add instance");
       metadataPage.addInstance();
-
     });
 
     it("should return to the workspace", function () {
