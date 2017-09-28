@@ -134,7 +134,7 @@ describe('metadata-creator', function () {
       workspacePage.onElement();
     });
 
-    xit("should should return to the workspace", function () {
+    it("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
