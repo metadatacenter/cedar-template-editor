@@ -225,14 +225,14 @@ describe('metadata-creator', function () {
 
     });
 
-    it("should check multiple", function () {
+    xit("should check multiple", function () {
       console.log("should check multiple");
       // make sure the element is multi-instance and is clickable
       metadataPage.checkMultiple();
 
     });
 
-    it("should add instance", function () {
+    xit("should add instance", function () {
       console.log("should add instance");
       metadataPage.addInstance();
 
