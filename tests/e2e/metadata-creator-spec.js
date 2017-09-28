@@ -108,12 +108,20 @@ describe('metadata-creator', function () {
     it("should should save the element", function () {
       console.log("metadata-creator should save the element");
       templatePage.clickSave('element');
+    });
+
+    it("should should see toasty", function () {
+      console.log("metadata-creator should see toasty");
       toastyModal.isSuccess();
     });
 
     it("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
+    });
+
+    it("should should be on the workspace", function () {
+      console.log("metadata-creator should be on the workspace");
       workspacePage.onWorkspace();
     });
 
