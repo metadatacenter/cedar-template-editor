@@ -97,7 +97,7 @@ describe('metadata-creator', function () {
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should add some fields to the element", function () {
+    xit("should add some fields to the element", function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
@@ -109,34 +109,29 @@ describe('metadata-creator', function () {
       templatePage.isDirty();
     });
 
-    it("should should save the element", function () {
+    xit("should should save the element", function () {
       console.log("metadata-creator should save the element");
       templatePage.clickSave('element');
     });
 
-    it("should should see toasty", function () {
+    xit("should should see toasty", function () {
       console.log("metadata-creator should see toasty");
       toastyModal.isSuccess();
     });
 
-    it("should be on element creator page", function () {
+    xit("should be on element creator page", function () {
       console.log("metadata-creator should be on element creator page");
       workspacePage.onElement();
     });
 
-    it("should should return to the workspace", function () {
+    xit("should should return to the workspace", function () {
       console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
     });
 
-    it("should be on element creator page", function () {
+    xit("should be on element creator page", function () {
       console.log("metadata-creator should be on element creator page");
       workspacePage.onElement();
-    });
-
-    it("should should return to the workspace", function () {
-      console.log("metadata-creator should return to the workspace");
-      templatePage.topNavBackArrow().click();
     });
 
 
@@ -147,7 +142,7 @@ describe('metadata-creator', function () {
     });
 
 
-    xit("should should be on the workspace", function () {
+    it("should should be on the workspace", function () {
       console.log("metadata-creator should be on the workspace");
       workspacePage.onWorkspace();
     });
