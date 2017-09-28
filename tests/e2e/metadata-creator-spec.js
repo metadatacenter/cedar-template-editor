@@ -4,7 +4,6 @@ var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var FinderModal = require('../modals/finder-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
 
@@ -15,7 +14,7 @@ describe('metadata-creator', function () {
   var templatePage = TemplatePage;
   var toastyModal = ToastyModal;
   var finderModal = FinderModal;
-  var sweetAlertModal = SweetAlertModal;
+
 
   var template;
   var element;
@@ -99,7 +98,7 @@ describe('metadata-creator', function () {
     });
 
     // TODO failing
-    xit("should add some fields to the element", function () {
+    it("should add some fields to the element", function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
@@ -170,7 +169,7 @@ describe('metadata-creator', function () {
     });
   });
 
-  xdescribe('remove all created resources', function () {
+  describe('remove all created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("metadata-creator should delete " + resources.length + " resources from the user workspace");

@@ -57,6 +57,7 @@ define([
           vm.loadMore = loadMore;
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
+          vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -268,6 +269,11 @@ define([
               result = (resource.nodeType == CONST.resourceType.FOLDER);
             }
             return result;
+          }
+
+          // on modal close, scroll to the top the cheap way
+          function hideModal() {
+            document.getElementById('copyModalContent').scrollTop = 0;
           }
 
           // modal open or closed

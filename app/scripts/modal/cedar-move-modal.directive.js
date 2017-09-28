@@ -57,6 +57,7 @@ define([
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
           vm.loadMore = loadMore;
+          vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -259,7 +260,12 @@ define([
             return result;
           }
 
-          // modal open or closed
+          // on modal close, scroll to the top the cheap way
+          function hideModal() {
+            document.getElementById('moveModalContent').scrollTop = 0;
+          }
+
+          // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
 
             var visible = params[0];
@@ -279,11 +285,6 @@ define([
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
               vm.offset = 0;
-              // TODO scroll to top
-              console.log('anchorScroll');
-              $anchorScroll();
-
-
               getDestinationById(vm.currentFolderId);
             }
           });

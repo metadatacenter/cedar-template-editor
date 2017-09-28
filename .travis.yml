@@ -13,6 +13,7 @@ branches:
   only:
   - develop
   - master
+  - feature/modal-scrollTop
 notifications:
   slack:
     on_success: change
@@ -34,7 +35,7 @@ jobs:
 #  -  script: gulp test-form # This task will run as part of the e2e tests stage
 #    - before_script: gulp karma-travis-env
 #    - provider: script
-    - script: gulp test-workspace
+    - script: gulp test-metadata
 #    - provider: script
 #    - script: gulp karma-tests
 env:
