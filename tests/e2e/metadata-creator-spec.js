@@ -63,8 +63,6 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should create the sample template");
       template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
-
-      // save file for deletion later
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -82,8 +80,6 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'two', 'two');
       templatePage.clickSave('template');
       toastyModal.isSuccess();
-
-      // return to workspace
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
@@ -92,8 +88,6 @@ describe('metadata-creator', function () {
       console.log("metadata-creator create metadata should create an element");
       element = workspacePage.createElement('element');
       workspacePage.onWorkspace();
-
-      // save file for deletion later
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -101,44 +95,11 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
-      //templatePage.addField('textfield', false, 'two', 'two');
-    });
-
-    // TODO should be dirty
-    xit("should be dirty", function () {
-      console.log("metadata-creator should should be dirty");
       templatePage.isDirty();
-    });
-
-    it("should should save the element", function () {
-      console.log("metadata-creator should save the element");
       templatePage.clickSave('element');
-    });
-
-    it("should should see toasty", function () {
-      console.log("metadata-creator should see toasty");
       toastyModal.isSuccess();
-    });
-
-    // TODO should be clean
-    xit("should be clean", function () {
-      console.log("metadata-creator should should be clean");
-      templatePage.isClean();
-    });
-
-    it("should be on element creator page", function () {
-      console.log("metadata-creator should be on element creator page");
       workspacePage.onElement();
-    });
-
-    it("should should return to the workspace", function () {
-      console.log("metadata-creator should return to the workspace");
       templatePage.topNavBackArrow().click();
-    });
-
-
-    xit("should should be on the workspace", function () {
-      console.log("metadata-creator should be on the workspace");
       workspacePage.onWorkspace();
     });
 
@@ -155,7 +116,7 @@ describe('metadata-creator', function () {
       templatePage.setMultiple();
     });
 
-    // TODO should be dirty
+    // TODO should be dirty here
     xit("should should be dirty", function () {
       console.log('should should be dirty');
       templatePage.isDirty();
@@ -164,10 +125,6 @@ describe('metadata-creator', function () {
     it("should save the template", function () {
       templatePage.clickSave('template');
       toastyModal.isSuccess();
-    });
-
-    it("should return to workspace", function () {
-      console.log('should return to workspace');
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
@@ -184,50 +141,27 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
-    });
-
-    it("should return to the workspace", function () {
-      console.log("metadata-creator should return to the workspace");
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
 
-    it("should still be on the workspace", function () {
-      console.log("metadata-creator should still be on the workspace");
-      workspacePage.onWorkspace();
-    });
 
     it("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
       console.log("metadata-creator should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
-    });
-
-    it("should have stuff showing", function () {
-      console.log("metadata-creator should return to the workspace");
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
       expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
       expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
       expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
 
-    });
-
-    it("should have title showing", function () {
-      console.log("should have title showing");
       // look at the value of the document title
       browser.wait(EC.presenceOf(metadataPage.documentTitle()));
       metadataPage.documentTitle().getText().then(function (text) {
         expect(text === template + ' metadata').toBe(true);
       });
-    });
 
-    it("should check multiple", function () {
-      console.log("should check multiple");
       // make sure the element is multi-instance and is clickable
       metadataPage.checkMultiple();
-    });
-
-    it("should add instance", function () {
-      console.log("should add instance");
       metadataPage.addInstance();
     });
 
@@ -240,18 +174,9 @@ describe('metadata-creator', function () {
     it("should return to the workspace", function () {
       console.log("should return to the workspace");
       metadataPage.topNavBackArrow().click();
-    });
-
-    xit("should require confirmation", function () {
-      console.log("metadata-creator should require confirmation");
-      //sweetAlertModal.confirm();
-      //sweetAlertModal.isHidden();
-    });
-
-    it("should be on the workspace", function () {
-      console.log("should be on the workspace");
       workspacePage.onWorkspace();
     });
+
   });
 
   describe('remove all created resources', function () {

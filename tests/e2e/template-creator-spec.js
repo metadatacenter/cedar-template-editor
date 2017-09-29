@@ -115,10 +115,7 @@ describe('template-creator', function () {
   var isMore = !fieldType.primaryField;
   var title = fieldType.label;
   var description = fieldType.label + ' description';
-
-  // TODO including the element will perform all tests on element builder as well as template builder
-  //var pageTypes = ['template', 'element'];
-  var pageTypes = ['template'];
+  var pageTypes = ['template', 'element'];
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -200,6 +197,7 @@ describe('template-creator', function () {
               removeFieldButton.click();
               browser.wait(EC.stalenessOf(field));
 
+              templatePage.isDirty();
               templatePage.topNavBackArrow().click();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
@@ -214,7 +212,6 @@ describe('template-creator', function () {
               templatePage.createPage(pageType);
 
               // add two fields
-              // TODO adding just one field doesn't make the template dirty
               templatePage.addField(type, isMore, title, description);
               templatePage.addField(type, isMore, title, description);
 
@@ -243,6 +240,7 @@ describe('template-creator', function () {
               expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
               expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
+              templatePage.isDirty();
               templatePage.topNavBackArrow().click();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
@@ -266,47 +264,27 @@ describe('template-creator', function () {
 
       });
 
-      it("should show and hide the JSON preview ", function () {
-        console.log("template-creator should show and hide the JSON preview ");
+      it("should have json preview turned off " + pageType, function () {
+        console.log("template-creator should have json preview turned off " + pageType);
         workspacePage.editResource(templateOrElement, pageType);
-        templatePage.showJson();
-        templatePage.hideJson();
+        templatePage.isHiddenJson();
         templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
       });
 
-      it("should hang on to the sample template json " + pageType, function () {
-        console.log("template-creator should hang on to the sample template json " + pageType);
+      // TODO the empty json needs to be updated from staging before we turn this on
+      xit("should have valid json for empty " + pageType + " document ", function () {
+        console.log("template-creator should have valid json for empty " + pageType + " document");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.showJson();
 
-        // get the template json
-        browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
         templatePage.jsonPreview().getText().then(function (value) {
-          sampleJson = JSON.parse(value);
-          delete sampleJson._tmp;
-        });
-
-        templatePage.hideJson();
-        templatePage.topNavBackArrow().click();
-        workspacePage.onWorkspace();
-      });
-
-      // TODO turn this on once staging has been updated
-      xit("should have the correct json for an empty " + pageType, function () {
-
-        templatePage.createPage(pageType);
-        templatePage.showJson();
-
-        // get the json
-        browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
-        templatePage.jsonPreview().getText().then(function (value) {
-          cleanJson = JSON.parse(value);
-          delete cleanJson._tmp;
+          var json = JSON.parse(value);
+          delete json._tmp;
           if (pageType === 'template') {
-            expect(_.isEqual(cleanJson, templatePage.emptyTemplateJson)).toBe(true);
+            expect(_.isEqual(json, templatePage.emptyTemplateJson)).toBe(true);
           } else {
-            expect(_.isEqual(cleanJson, templatePage.emptyElementJson)).toBe(true);
+            expect(_.isEqual(json, templatePage.emptyElementJson)).toBe(true);
           }
         });
 
@@ -315,14 +293,11 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      it("should have the correct json for a clean " + pageType, function () {
-        console.log("template-creator should have the correct json for a clean " + pageType);
+      it("should update the json when " + pageType + " changes ", function () {
+        console.log("template-creator should update the json when " + pageType + " changes " + pageType);
+
         templatePage.createPage(pageType);
-
-        // add two fields
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.addField('textfield', isMore, title, description);
-
         templatePage.showJson();
 
         // get the dirty json
@@ -338,71 +313,29 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-
-        templatePage.topNavBackArrow().click();
-        sweetAlertModal.confirm();
-        templatePage.isWorkspace();
-      });
-
-      // TODO this test should work but it isn't
-      xit("should change the json preview  when the " + pageType + " changes ", function () {
-        templatePage.createPage(pageType);
-
-        // add two fields
-        templatePage.addField(fieldType, isMore, title, description);
-        templatePage.addField(fieldType, isMore, title, description);
-        templatePage.showJson();
-
-        browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
-        templatePage.jsonPreview().getText().then(function (value) {
-          var json = JSON.parse(value);
-          delete json._tmp;
-          //console.log(json);
-          if (pageType === 'template') {
-            expect(_.isEqual(templatePage.emptyTemplateJson, json)).toBe(false);
-          } else {
-            expect(_.isEqual(templatePage.emptyElementJson, json)).toBe(false);
-          }
-        });
-        templatePage.hideJson();
-
+        templatePage.isDirty();
         templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
-
       });
 
+      // TODO this should require confirmation but it doesn't
       it("should have cancel button present and active", function () {
         console.log("template-creator should have cancel button present and active");
-
         templatePage.createPage(pageType);
-
-        // add two fields
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.addField('textfield', isMore, title, description);
-
-        // cancel and confirm
+        templatePage.isDirty();
         templatePage.clickCancel(pageType);
-        // TODO confirm is not required but it should be
-        //sweetAlertModal.confirm();
-        //sweetAlertModal.isHidden();
-
-        //templatePage.topNavBackArrow().click();
         //sweetAlertModal.confirm();
         workspacePage.onWorkspace();
-
       });
 
       it("should not change the " + pageType + " when cleared and cancelled", function () {
         console.log("template-creator should not change the " + pageType + " when cleared and cancelled");
 
-        // create the resource
         templatePage.createPage(pageType);
-
-        // make it dirty
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.addField('textfield', isMore, title, description);
-
+        templatePage.isDirty();
         templatePage.showJson();
 
         browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
@@ -421,7 +354,6 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-
         templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
@@ -431,10 +363,8 @@ describe('template-creator', function () {
         console.log("template-creator should have clear displayed if " + pageType + " is dirty");
 
         templatePage.createPage(pageType);
-
-        // add two fields
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.addField('textfield', isMore, title, description);
+        templatePage.isDirty();
 
         // clear and confirm
         templatePage.clickClear(pageType);
@@ -447,53 +377,48 @@ describe('template-creator', function () {
 
       });
 
-      it("should should restore the " + pageType + " when clear is clicked and confirmed", function () {
+      // TODO this should work when we get the right empty json from staging
+      xit("should should restore the " + pageType + " when clear is clicked and confirmed", function () {
         console.log("template-creator should should restore the " + pageType + " when clear is clicked and confirmed");
 
         templatePage.createPage(pageType);
-
-        // make it dirty
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.addField('textfield', isMore, title, description);
-
-        // clear and confirm
         templatePage.clickClear(pageType);
         sweetAlertModal.confirm();
         sweetAlertModal.isHidden();
-
         templatePage.showJson();
 
-        // get the dirty template json
+        // get the  json
         browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
         templatePage.jsonPreview().getText().then(function (value) {
-          var currentJson = JSON.parse(value);
-          // TODO this doesn't work
-          //expect(_.isEqual(currentJson, sampleJson)).toBe(true);
+          var json = JSON.parse(value);
+          delete json._tmp;
+          if (pageType === 'template') {
+            expect(_.isEqual(json, templatePage.emptyTemplateJson)).toBe(true);
+          } else {
+            expect(_.isEqual(json, templatePage.emptyElementJson)).toBe(true);
+          }
         });
 
         templatePage.hideJson();
-
-        // back to workspace
         templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
-
 
     })
     (pageTypes[j]);
   }
   });
 
-  xdescribe('remove created resources', function () {
+  describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log("template-creator should delete resource from the user workspace");
+      console.log("template-creator should delete " + resources.length + " resources from the user workspace");
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          console.log('should delete resource from the user workspace ' + resource.title + ' for user ' + resource.username);
+          console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
           workspacePage.login(resource.username, resource.password);
-
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();
