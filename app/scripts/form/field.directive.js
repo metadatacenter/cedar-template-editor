@@ -124,9 +124,15 @@ define([
         return FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
+      $scope.getContent = function (field) {
+        return dms.getContent(field || $scope.field);
+      };
+
+      $scope.getUnescapedContent = function (field) {
+        return dms.getContent(field || $scope.field);
+      };
 
       $scope.setDirty = function() {
-        console.log('setDirty');
           $rootScope.$broadcast("form:dirty");
       };
 

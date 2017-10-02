@@ -5,12 +5,7 @@
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="!isRuntime()" style="padding-top: 10px;">
-    <div ng-bind-html="$root.getUnescapedContent(field)"></div>
-  </div>
-
-
-  <div ng-if="isRuntime()">
-    <div ng-bind-html="$root.getUnescapedContent(field)"></div>
+    <div ng-bind-html="getUnescapedContent(field)"></div>
   </div>
 
   <div class="clearfix all"></div>

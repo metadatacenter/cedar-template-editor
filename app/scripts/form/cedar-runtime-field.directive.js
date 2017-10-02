@@ -46,14 +46,19 @@ define([
       //
 
       // get the field title
-      $scope.getTitle = function () {
-        return dms.getTitle($scope.field);
+      $scope.getTitle = function (field) {
+        return dms.getTitle(field || $scope.field);
       };
 
       // get the field description
-      $scope.getDescription = function () {
-        return dms.getDescription($scope.field);
+      $scope.getDescription = function (field) {
+        return dms.getDescription(field || $scope.field);
       };
+
+      $scope.getContent = function (field) {
+        return dms.getContent(field || $scope.field);
+      };
+
 
       // get the field id
       $scope.getId = function () {
@@ -107,6 +112,10 @@ define([
         return dms.isRichText(field || $scope.field);
       };
 
+      $scope.getUnescapedContent = function (field) {
+        return field._ui._content;
+      };
+
       // is this a static image?
       $scope.isImage = function (field) {
         return dms.isImage(field || $scope.field);
@@ -115,6 +124,10 @@ define([
       // is the previous field static?
       $scope.isStatic = function (field) {
         return dms.isStaticField(field || $scope.field);
+      };
+
+      $scope.isPreviousStatic = function() {
+        return $scope.isStatic($scope.previous);
       };
 
       // string together field values
