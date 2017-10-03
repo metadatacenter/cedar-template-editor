@@ -8,7 +8,7 @@ var _ = require('../libs/lodash.min.js');
  * initialize the workspace by setting the default user preferences
  *
  */
-describe('create-folders', function () {
+xdescribe('create-folders', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
 

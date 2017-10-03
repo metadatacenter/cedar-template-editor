@@ -317,6 +317,7 @@ describe('folder-permissions', function () {
       console.log('folder permissions should delete  "+ resources.length + " resources should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("folder-permissions should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();

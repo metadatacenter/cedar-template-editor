@@ -183,13 +183,13 @@ describe('metadata-creator', function () {
 
   describe('create static fields', function () {
 
-    it("should create a template with static fields", function () {
+    xit("should create a template with static fields", function () {
       console.log("metadata-creator should create a template with static fields");
       var template = workspacePage.createTemplate('Static');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
       workspacePage.editResource(template, 'template');
-      templatePage.addField('image', true, 'image', 'image',"https://boygeniusreport.files.wordpress.com/2017/08/google-pixel-arcore-augmented-reality.jpg");
+      templatePage.addField('image', true, 'image', 'image',"https://i.pinimg.com/736x/66/cd/89/66cd896c4e46efa1d42128886a60d345--mini-goldendoodle-goldendoodles.jpg");
       templatePage.addField('textfield', false, 'one', 'one');
 
       templatePage.addField('richtext', true, 'richtext', 'richtext',"<p>testing</p>");
@@ -214,19 +214,19 @@ describe('metadata-creator', function () {
         expect(value).toBe(2);
       });
 
-      // var firstField = fields.first();
-      // expect(firstField.isPresent()).toBe(true);
-      // browser.actions().mouseMove(firstField).perform();
-      // browser.wait(EC.elementToBeClickable(firstField));
-      // firstField.click();
-      // expect(templatePage.createImage().isPresent()).toBe(true);
-      //
-      // var lastField = fields.last();
-      // expect(lastField.isPresent()).toBe(true);
-      // browser.actions().mouseMove(lastField).perform();
-      // browser.wait(EC.elementToBeClickable(lastField));
-      // lastField.click();
-      // expect(templatePage.createRichtext().isPresent()).toBe(true);
+      var firstField = fields.first();
+      expect(firstField.isPresent()).toBe(true);
+      browser.actions().mouseMove(firstField).perform();
+      browser.wait(EC.elementToBeClickable(firstField));
+      firstField.click();
+      expect(templatePage.createImage().isPresent()).toBe(true);
+
+      var lastField = fields.last();
+      expect(lastField.isPresent()).toBe(true);
+      browser.actions().mouseMove(lastField).perform();
+      browser.wait(EC.elementToBeClickable(lastField));
+      lastField.click();
+      expect(templatePage.createRichtext().isPresent()).toBe(true);
 
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();

@@ -152,6 +152,7 @@ describe('update-ownership', function () {
       console.log('update-ownership should delete " + resources.length + " resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("update-ownership should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
