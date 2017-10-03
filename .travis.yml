@@ -13,7 +13,7 @@ branches:
   only:
   - develop
   - master
-  - feature/model-scrollTop
+  - feature/modal-scrollTop
 notifications:
   slack:
     on_success: never
