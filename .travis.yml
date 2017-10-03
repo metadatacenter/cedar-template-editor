@@ -13,7 +13,6 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-559
 notifications:
   slack:
     on_success: always
@@ -35,7 +34,7 @@ jobs:
 #  -  script: gulp test-form # This task will run as part of the e2e tests stage
 #    - before_script: gulp karma-travis-env
 #    - provider: script
-    - script: gulp test-metadata
+    - script: gulp e2e-sequential
 #    - provider: script
 #    - script: gulp karma-tests
 
