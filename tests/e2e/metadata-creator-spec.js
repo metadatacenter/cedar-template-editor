@@ -181,11 +181,11 @@ describe('metadata-creator', function () {
     });
   });
 
-  describe('create static fields', function () {
+  xdescribe('create static fields', function () {
 
     it("should create a template with static fields", function () {
       console.log("metadata-creator should create a template with static fields");
-      template = workspacePage.createTemplate('Static');
+      var template = workspacePage.createTemplate('Static');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
       workspacePage.editResource(template, 'template');
@@ -207,21 +207,21 @@ describe('metadata-creator', function () {
       workspacePage.onMetadata();
 
       expect(templatePage.createQuestion().isPresent()).toBe(true);
-      fields = templatePage.createQuestions();
+      var fields = templatePage.createQuestions();
 
 
       fields.count().then(function (value) {
         expect(value).toBe(2);
       });
 
-      firstField = fields.first();
+      var firstField = fields.first();
       expect(firstField.isPresent()).toBe(true);
       browser.actions().mouseMove(firstField).perform();
       browser.wait(EC.elementToBeClickable(firstField));
       firstField.click();
       expect(templatePage.createImage().isPresent()).toBe(true);
 
-      lastField = fields.last();
+      var lastField = fields.last();
       expect(lastField.isPresent()).toBe(true);
       browser.actions().mouseMove(lastField).perform();
       browser.wait(EC.elementToBeClickable(lastField));
