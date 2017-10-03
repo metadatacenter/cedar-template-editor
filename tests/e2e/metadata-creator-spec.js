@@ -181,7 +181,7 @@ describe('metadata-creator', function () {
     });
   });
 
-  xdescribe('create static fields', function () {
+  describe('create static fields', function () {
 
     it("should create a template with static fields", function () {
       console.log("metadata-creator should create a template with static fields");
