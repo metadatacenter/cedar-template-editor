@@ -180,9 +180,10 @@ describe('delete-resource', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('should delete " + resources.length + " resources from the user workspace');
+      console.log('delete-resource should delete ' + resources.length + ' resources from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("delete-resource should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
