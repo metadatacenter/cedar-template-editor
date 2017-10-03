@@ -239,7 +239,6 @@ define([
       };
 
       $scope.relabelField = function(newTitle) {
-        console.log('relableField', $scope.getForm())
         DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
       };
 
@@ -266,6 +265,9 @@ define([
           $rootScope.finalTitle = $scope.getTitle();
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
+
+          // initialize the controlled term modal
+          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 

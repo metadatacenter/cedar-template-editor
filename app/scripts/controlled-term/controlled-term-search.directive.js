@@ -576,7 +576,7 @@ define([
               },
               function (value) {
                 vm.fieldName = value;
-                vm.searchQuery = getDefaultSearchQuery();
+                vm.searchQuery = value;
               });
 
           $scope.$watch(function () {

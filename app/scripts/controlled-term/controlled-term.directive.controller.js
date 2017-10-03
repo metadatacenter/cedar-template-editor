@@ -28,6 +28,7 @@ define([
     var vm = this;
 
 
+    vm.setInitialFieldConstraints = setInitialFieldConstraints;
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
     vm.addClass = addClass;
     vm.addProperty = addProperty;
@@ -75,7 +76,8 @@ define([
     vm.filterSelection = vm.options && vm.options.filterSelection || ""
     vm.modalId = vm.options && vm.options.modalId || "";
 
-    setInitialFieldConstraints();
+
+    vm.setInitialFieldConstraints();
 
     $('body').on('click', '.detail-view-tab a', function (e) {
       e.preventDefault();
@@ -527,6 +529,13 @@ define([
     /**
      * Watch functions.
      */
+
+    $scope.$on(
+        'ctdc:init',
+        function (event, args) {
+          vm.setInitialFieldConstraints();
+        }
+    );
 
     $scope.$on(
         'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSaved',
