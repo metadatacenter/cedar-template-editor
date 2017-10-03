@@ -56,6 +56,13 @@ var TemplateCreatorPage = function () {
   var createToolbar = element(by.id('toolbar'));
   var createFieldTitle = element(by.css('.field-title-definition'));
   var createFieldDescription = element(by.css('.field-description-definition'));
+  var createFieldContent = element(by.model('$root.schemaOf(field)._ui._content'));
+
+  var createQuestion = element(by.css('.question .title'));
+  var createQuestions = element.all(by.css('.question .title'));
+  var createImage = element(by.css(".image figure img"));
+  var createRichtext = element(by.css(".richtext"));
+  var createYoutube = element(by.css(".youtube figure img"));
 
   var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
@@ -83,6 +90,7 @@ var TemplateCreatorPage = function () {
   this.cssFieldContainer = ".field-root .elementTotalContent";
   this.modelFieldTitle = "fieldSchema['schema:name']";
   this.modelFieldDescription = "fieldSchema['schema:description']";
+  this.modelFieldContent = "$root.schemaOf(field)._ui._content";
   this.hasBeenCreated = 'has been created';
   this.deleteButtonTooltip = 'delete selection';
   this.deleteElementMessage = 'The template element has been deleted.';
@@ -454,6 +462,27 @@ var TemplateCreatorPage = function () {
   this.isWorkspace = function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
   };
+
+  this.createQuestion = function() {
+      return createQuestion;
+  };
+
+  this.createQuestions = function() {
+    return createQuestions;
+  };
+
+  this.createImage = function() {
+    return createImage;
+  };
+
+  this.createRichtext = function() {
+    return createRichtext;
+  };
+
+  this.createYoutube = function() {
+    return createYoutube;
+  };
+
 
 
   this.createPage = function (type, title, description) {
@@ -911,7 +940,7 @@ var TemplateCreatorPage = function () {
   };
 
 
-  this.addField = function (cedarType, isMore, title, description) {
+  this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
 
@@ -948,6 +977,12 @@ var TemplateCreatorPage = function () {
       case "phone-number":
         btn = createPhoneNumberButton;
         break;
+      case "image":
+        btn = createImageButton;
+        break;
+      case "richtext":
+        btn = createRichTextButton;
+        break;
       default:
         found = false;
         break;
@@ -963,6 +998,13 @@ var TemplateCreatorPage = function () {
       createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
       browser.wait(EC.elementToBeClickable(createFieldDescription));
       createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+    }
+
+    switch (cedarType) {
+      case "image":
+        browser.wait(EC.elementToBeClickable(createFieldContent));
+        createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        break;
     }
   };
 

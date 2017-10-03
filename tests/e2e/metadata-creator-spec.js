@@ -19,6 +19,9 @@ describe('metadata-creator', function () {
   var template;
   var element;
   var folder;
+  var fields;
+  var firstField;
+  var lastField;
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -176,8 +179,60 @@ describe('metadata-creator', function () {
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
-
   });
+
+  describe('create static fields', function () {
+
+    it("should create a template with static fields", function () {
+      console.log("metadata-creator should create a template with static fields");
+      template = workspacePage.createTemplate('Static');
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+
+      workspacePage.editResource(template, 'template');
+      templatePage.addField('image', true, 'image', 'image',"https://boygeniusreport.files.wordpress.com/2017/08/google-pixel-arcore-augmented-reality.jpg");
+      templatePage.addField('textfield', false, 'one', 'one');
+
+      templatePage.addField('richtext', true, 'richtext', 'richtext',"<p>testing</p>");
+      templatePage.addField('textfield', false, 'two', 'two');
+
+      templatePage.clickSave('template');
+      toastyModal.isSuccess();
+      templatePage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
+
+      workspacePage.populateResource(template, 'template');
+      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+
+      workspacePage.editResource(template, 'metadata');
+      workspacePage.onMetadata();
+
+      expect(templatePage.createQuestion().isPresent()).toBe(true);
+      fields = templatePage.createQuestions();
+
+
+      fields.count().then(function (value) {
+        expect(value).toBe(2);
+      });
+
+      firstField = fields.first();
+      expect(firstField.isPresent()).toBe(true);
+      browser.actions().mouseMove(firstField).perform();
+      browser.wait(EC.elementToBeClickable(firstField));
+      firstField.click();
+      expect(templatePage.createImage().isPresent()).toBe(true);
+
+      lastField = fields.last();
+      expect(lastField.isPresent()).toBe(true);
+      browser.actions().mouseMove(lastField).perform();
+      browser.wait(EC.elementToBeClickable(lastField));
+      lastField.click();
+      expect(templatePage.createRichtext().isPresent()).toBe(true);
+
+      metadataPage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
+    });
+  });
+
 
   describe('remove all created resources', function () {
 

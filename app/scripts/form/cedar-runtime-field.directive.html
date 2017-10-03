@@ -86,15 +86,15 @@
 
 
             <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
-              <div ng-if="isImage(previous)">
+              <div ng-if="isImage(previous)" class="image">
                 <figure>
                   <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
                       type="image/png" width="100%"/>
                   <figcaption><label>{{getTitle(previous)}}</label></figcaption>
                 </figure>
               </div>
-              <div ng-if="isRichText(previous)" ng-bind-html="getUnescapedContent(previous)"></div>
-              <div ng-if="isYouTube(previous)">
+              <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+              <div ng-if="isYouTube(previous)" class="youtube">
                 <figure>
                   <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
                 </figure>
@@ -154,15 +154,15 @@
               </div>
 
               <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
-                  <div ng-if="isImage(previous)">
+                  <div ng-if="isImage(previous)" class="image">
                     <figure>
                       <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
                           type="image/png" width="100%"/>
                       <figcaption><label>{{getTitle(previous)}}</label></figcaption>
                     </figure>
                   </div>
-                  <div ng-if="isRichText(previous)" ng-bind-html="getUnescapedContent(previous)"></div>
-                  <div ng-if="isYouTube(previous)">
+                  <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+                  <div ng-if="isYouTube(previous)" class="youtube">
                     <figure>
                       <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
                     </figure>
