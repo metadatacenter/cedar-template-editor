@@ -282,6 +282,7 @@ define([
       $scope.hideModal = function () {
         if ($scope.modalType) {
           UIUtilService.hideModal(dms.getId($scope.field), $scope.modalType);
+          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 

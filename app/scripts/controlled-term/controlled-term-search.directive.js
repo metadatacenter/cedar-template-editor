@@ -109,10 +109,6 @@ define([
           vm.propertyUri = '';
           vm.addPropertyUri = addPropertyUri;
 
-          // Reset search options when closing the modal
-          jQuery("#" + vm.modalId).on('hidden.bs.modal', function () {
-            reset(false, false, false, false, true);
-          });
 
           /**
            * Search-related functions
@@ -260,6 +256,8 @@ define([
           /**
            * Reset
            */
+
+
           function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
             if (!keepSearchScope) {
               vm.searchScope = vm.searchFor;
