@@ -342,15 +342,18 @@ define([
 
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
+          $rootScope.setDirty(true);
         });
 
         $scope.$on("form:update", function () {
           startParseForm();
           $scope.forms.templateForm.$dirty = true;
+          $rootScope.setDirty(true);
         });
 
         $scope.$on("form:reset", function () {
           $scope.forms.templateForm.$dirty = true;
+          $rootScope.setDirty(true);
         });
 
         // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load

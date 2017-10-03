@@ -130,14 +130,18 @@ define([
 
         // Add newly configured field to the element object
         $scope.addField = function (fieldType) {
+          console.log('addField');
+
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             var domId = DataManipulationService.createDomId();
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
-              $rootScope.$broadcast("form:dirty");
               $scope.toggleMore();
+              $timeout(function () {
+                $rootScope.$broadcast("form:dirty");
+              });
             });
           }
         };

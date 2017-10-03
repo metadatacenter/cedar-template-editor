@@ -57,6 +57,7 @@ define([
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
           vm.loadMore = loadMore;
+          vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -175,14 +176,16 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
-            vm.offset += UISettingsService.getRequestLimit();
-            var offset = vm.offset;
-            var folderId = vm.currentFolderId;
-            var resourceTypes = activeResourceTypes();
+            if ( vm.modalVisible) {
+              vm.offset += UISettingsService.getRequestLimit();
+              var offset = vm.offset;
+              var folderId = vm.currentFolderId;
+              var resourceTypes = activeResourceTypes();
 
-            // are there more?
-            if (offset < vm.totalCount) {
-              getDestinationById(folderId);
+              // are there more?
+              if (offset < vm.totalCount) {
+                getDestinationById(folderId);
+              }
             }
           };
 
@@ -259,7 +262,13 @@ define([
             return result;
           }
 
-          // modal open or closed
+          // on modal close, scroll to the top the cheap way
+          function hideModal() {
+            document.getElementById('moveModalContent').scrollTop = 0;
+            vm.modalVisible = false;
+          }
+
+          // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
 
             var visible = params[0];
@@ -279,11 +288,6 @@ define([
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
               vm.offset = 0;
-              // TODO scroll to top
-              console.log('anchorScroll');
-              $anchorScroll();
-
-
               getDestinationById(vm.currentFolderId);
             }
           });
