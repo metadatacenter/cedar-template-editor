@@ -169,8 +169,10 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
-        $rootScope.$broadcast("form:dirty");
         $scope.toggleMore();
+        $timeout(function () {
+          $rootScope.$broadcast("form:dirty");
+        });
       }
       $scope.showMenuPopover = false;
     };

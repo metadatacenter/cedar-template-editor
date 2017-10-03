@@ -57,6 +57,7 @@ define([
           vm.loadMore = loadMore;
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
+          vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -185,6 +186,7 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
+            if ( vm.modalVisible) {
               vm.offset += UISettingsService.getRequestLimit();
               var offset = vm.offset;
               var folderId = vm.currentFolderId;
@@ -194,6 +196,7 @@ define([
               if (offset < vm.totalCount) {
                 getDestinationById(folderId);
               }
+            }
           };
 
           function getDestinationById(folderId) {
@@ -268,6 +271,12 @@ define([
               result = (resource.nodeType == CONST.resourceType.FOLDER);
             }
             return result;
+          }
+
+          // on modal close, scroll to the top the cheap way
+          function hideModal() {
+            document.getElementById('copyModalContent').scrollTop = 0;
+            vm.modalVisible = false;
           }
 
           // modal open or closed

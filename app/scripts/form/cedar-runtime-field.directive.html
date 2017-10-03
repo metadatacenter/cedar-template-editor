@@ -84,9 +84,17 @@
               </field-toolbar>
             </div>
 
-            <div ng-if="isPreviousStatic()" style="margin-bottom:20px;">
-              <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
-              <div ng-if="isYouTube(previous)">
+
+            <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
+              <div ng-if="isImage(previous)" class="image">
+                <figure>
+                  <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                      type="image/png" width="100%"/>
+                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                </figure>
+              </div>
+              <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+              <div ng-if="isYouTube(previous)" class="youtube">
                 <figure>
                   <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
                 </figure>
@@ -139,33 +147,42 @@
             <div class="answer">
               <div class="row tools">
                 <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
-                    index="index"  view-state="viewState"
-                    remove="removeInput" add="addMoreInput" copy="copyField"  set-active="setActive"
+                    index="index" view-state="viewState"
+                    remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
                     expand-all="expandAll"
                     get-locator="getLocator"></field-toolbar>
               </div>
-              <div ng-if="isStatic(previous)">
-                <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
-                <div ng-if="isYouTube(previous)">
-                  <figure>
-                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                  </figure>
+
+              <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
+                  <div ng-if="isImage(previous)" class="image">
+                    <figure>
+                      <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                          type="image/png" width="100%"/>
+                      <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                    </figure>
+                  </div>
+                  <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+                  <div ng-if="isYouTube(previous)" class="youtube">
+                    <figure>
+                      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                    </figure>
+                  </div>
                 </div>
+
+                <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                  <div class="originalContent" ng-include="getFieldUrl()"></div>
+                  <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+                </form>
               </div>
-              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                <div class="originalContent" ng-include="getFieldUrl()"></div>
-                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-              </form>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- all error messages for this field  -->
-      <div class="errors" ng-if="errorMessages">
-        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+        <!-- all error messages for this field  -->
+        <div class="errors" ng-if="errorMessages">
+          <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
