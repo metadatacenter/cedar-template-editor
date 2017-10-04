@@ -221,12 +221,12 @@ describe('metadata-creator', function () {
       firstField.click();
       expect(templatePage.createImage().isPresent()).toBe(true);
 
-      var lastField = fields.last();
-      expect(lastField.isPresent()).toBe(true);
-      browser.actions().mouseMove(lastField).perform();
-      browser.wait(EC.elementToBeClickable(lastField));
-      lastField.click();
-      expect(templatePage.createRichtext().isPresent()).toBe(true);
+      // var lastField = fields.last();
+      // expect(lastField.isPresent()).toBe(true);
+      // browser.actions().mouseMove(lastField).perform();
+      // browser.wait(EC.elementToBeClickable(lastField));
+      // lastField.click();
+      // expect(templatePage.createRichtext().isPresent()).toBe(true);
 
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();
