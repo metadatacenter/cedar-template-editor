@@ -4,6 +4,7 @@ var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var FinderModal = require('../modals/finder-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
 
@@ -14,6 +15,7 @@ describe('metadata-creator', function () {
   var templatePage = TemplatePage;
   var toastyModal = ToastyModal;
   var finderModal = FinderModal;
+  var sweetAlertModal = SweetAlertModal;
 
 
   var template;
@@ -138,6 +140,15 @@ describe('metadata-creator', function () {
 
       // save file for deletion later, delete this first
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should open the template and make sure it is read-only mode", function () {
+      console.log("metadata-creator should open the template and make sure it is read-only mode");
+      workspacePage.editResource(template, 'template');
+      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.confirm();
+      metadataPage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
     });
 
     it("should open metadata with open menu", function () {
