@@ -183,7 +183,7 @@ describe('metadata-creator', function () {
 
   describe('create static fields', function () {
 
-    xit("should create a template with static fields", function () {
+    it("should create a template with static fields", function () {
       console.log("metadata-creator should create a template with static fields");
       var template = workspacePage.createTemplate('Static');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
