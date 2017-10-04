@@ -35,7 +35,7 @@ jobs:
 #  -  script: gulp test-form # This task will run as part of the e2e tests stage
 #    - before_script: gulp karma-travis-env
 #    - provider: script
-    - script: gulp e2e-sequential
+    - script: gulp test-metadata
 #    - provider: script
 #    - script: gulp karma-tests
 
