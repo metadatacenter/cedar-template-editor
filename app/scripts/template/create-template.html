@@ -78,7 +78,7 @@
             </ul>
           </div>
 
-          <div class="template-actions" ng-if="canWrite()">
+          <div class="template-actions" ng-if="!cannotWrite">
             <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>

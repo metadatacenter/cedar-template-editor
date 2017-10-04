@@ -9,7 +9,8 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "resourceService","UIMessageService", "UIUtilService", "DataManipulationService",
+                                          "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
+                                          "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
@@ -17,7 +18,8 @@ define([
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
-                                        UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
+                                        UIUtilService, DataManipulationService, controlledTermDataService,
+                                        StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
@@ -37,28 +39,51 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
+
+        // template details
         $scope.details;
+        $scope.hasInstances;
         $scope.cannotWrite;
 
-
-        $scope.canWrite = function () {
-          var result = !$scope.details || resourceService.canWrite($scope.details);
-          $scope.cannotWrite  =!result;
+        $scope.checkLocking = function () {
+          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          $scope.cannotWrite = !result;
           return result;
         };
-
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
           $rootScope.setLocked($scope.cannotWrite);
         });
 
+        var doSearchTemplateInstances = function (id) {
+          var limit = 1;
+          var offset = 0;
+          var sort = 'name';
+
+          resourceService.hasMetadata(
+              id,
+              {sort: sort, limit: limit, offset: offset},
+              function (response) {
+                $scope.hasInstances = response.totalCount > 0;
+                $scope.checkLocking();
+                if ($scope.hasInstances) {
+                  UIMessageService.showWarning("Warning", "The template may not be modified because there are metadata using it.", "OK", "") ;
+                }
+
+              },
+              function (error) {
+                UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+              }
+          );
+        };
+
         var getDetails = function (id) {
           resourceService.getResourceDetailFromId(
               id, CONST.resourceType.TEMPLATE,
               function (response) {
                 $scope.details = response;
-                $scope.canWrite();
+                doSearchTemplateInstances(id);
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.' + 'TEMPLATE' + '.load.error', error);
@@ -106,7 +131,6 @@ define([
 
 
         getTemplate();
-
 
 
         var populateCreatingFieldOrElement = function () {
@@ -252,7 +276,7 @@ define([
           // If Template Name is blank, produce error message
           var title = dms.getTitle($scope.form);
           if (!title.length) {
-           $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
           }
 
@@ -462,7 +486,6 @@ define([
         $scope.hideFinder = function () {
           jQuery("#finder-modal").modal('hide');
         };
-
 
 
         $scope.enableSaveButton = function () {

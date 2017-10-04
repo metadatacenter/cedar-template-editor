@@ -220,6 +220,7 @@ describe('metadata-creator', function () {
       var lastField = fields.last();
       expect(lastField.isPresent()).toBe(true);
 
+      //TODO these work locally but fail on Travis
       // browser.actions().mouseMove(firstField).perform();
       // browser.wait(EC.elementToBeClickable(firstField));
       // firstField.click();
