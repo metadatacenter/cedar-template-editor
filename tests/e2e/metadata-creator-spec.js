@@ -189,7 +189,8 @@ describe('metadata-creator', function () {
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
       workspacePage.editResource(template, 'template');
-      templatePage.addField('image', true, 'image', 'image',"https://i.pinimg.com/736x/66/cd/89/66cd896c4e46efa1d42128886a60d345--mini-goldendoodle-goldendoodles.jpg");
+      templatePage.addField('image', true, 'image', 'image',
+          "https://farm8.static.flickr.com/7178/14027473486_63ec060a17_z.jpg");
       templatePage.addField('textfield', false, 'one', 'one');
 
       templatePage.addField('richtext', true, 'richtext', 'richtext',"<p>testing</p>");
