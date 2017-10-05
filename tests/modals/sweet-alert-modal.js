@@ -64,8 +64,10 @@ var SweetAlertModal = function () {
   };
 
   this.noWriteAccess = function () {
+    browser.sleep(1000);  // TODO  wait for animation
     browser.wait(EC.visibilityOf(message));
     message.getText().then(function(text) {
+      console.log('message',text);
       expect(text).toContain(noWriteAccessMessagePartial);
     });
   };

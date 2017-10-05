@@ -145,7 +145,7 @@ describe('metadata-creator', function () {
     it("should open the template and make sure it is read-only mode", function () {
       console.log("metadata-creator should open the template and make sure it is read-only mode");
       workspacePage.editResource(template, 'template');
-      sweetAlertModal.noWriteAccess();
+      //sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();
