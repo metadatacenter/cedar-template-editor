@@ -33,20 +33,24 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
     $scope.viewType = 'popup';
+
+    // template details
     $scope.details;
     $scope.cannotWrite;
+    $scope.lockReason = '';
 
 
     // can we write to this template?  if no details, then new element
     $scope.canWrite = function () {
-      var result = !$scope.details || resourceService.canWrite($scope.details);
+      var result =  !$scope.details || resourceService.canWrite($scope.details);
       $scope.cannotWrite  =!result;
       return result;
+      $scope.lockReason = 'no write permission';
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      $rootScope.setLocked($scope.cannotWrite);
+      $rootScope.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
     $scope.showCreateEditForm = true;

@@ -30,6 +30,7 @@ define([
           getResources           : getResources,
           searchResources        : searchResources,
           getSearchResourcesPromise: getSearchResourcesPromise,
+          hasMetadata             : hasMetadata,
           sharedWithMeResources  : sharedWithMeResources,
           updateFolder           : updateFolder,
           copyResourceToWorkspace: copyResourceToWorkspace,
@@ -48,7 +49,7 @@ define([
           canWrite               : canWrite,
           canChangeOwner         : canChangeOwner,
           canShare               : canShare,
-          renameNode             : renameNode
+          renameNode             : renameNode,
         };
         return service;
 
@@ -321,6 +322,37 @@ define([
           }
 
           addCommonParameters(params, options);
+
+          var url = $rootScope.util.buildUrl(baseUrl, params);
+
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        // does a template have at least one instance?
+        function hasMetadata(id, options, successCallback, errorCallback) {
+          if (options == null) {
+            options = {};
+          }
+
+          var params = {};
+          var baseUrl = urlService.search();
+
+          if (id == 'null') {
+            id = '';
+          }
+
+          if (id) {
+            params['derived_from_id'] = id;
+          }
+
+          addCommonParameters(params, options);
+          delete params['resource_types'];
 
           var url = $rootScope.util.buildUrl(baseUrl, params);
 
