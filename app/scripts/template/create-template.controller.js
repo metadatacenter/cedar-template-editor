@@ -92,6 +92,7 @@ define([
         };
 
         var getTemplate = function () {
+          console.log('getTemplate')
           // Load existing form if $routeParams.id parameter is supplied
           if ($routeParams.id) {
             // Fetch existing form and assign to $scope.form property
@@ -107,6 +108,7 @@ define([
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
                   $rootScope.$broadcast('form:clean');
+                  $rootScope.setValidation(true);
                   getDetails($scope.form["@id"]);
 
 
@@ -125,11 +127,13 @@ define([
             DataManipulationService.createDomIds($scope.form);
             //$scope.getType();
             $rootScope.$broadcast('form:clean');
+            $rootScope.setValidation(true);
 
           }
         };
 
 
+        console.log('go to getTemplate');
         getTemplate();
 
 
@@ -253,6 +257,7 @@ define([
 
         $scope.logValidation = function (validationStatus, validationReport) {
 
+
           var report = JSON.parse(validationReport);
           for (var i = 0; i < report.warnings.length; i++) {
             console.log(
@@ -261,6 +266,9 @@ define([
           for (var i = 0; i < report.errors.length; i++) {
             console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
           }
+
+          console.log('logValidation',validationStatus, validationReport);
+          $rootScope.setValidation(validationStatus.validates || false);
         };
 
         // Stores the template into the database

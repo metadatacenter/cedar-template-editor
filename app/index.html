@@ -67,6 +67,7 @@
           <i class="back-arrow fa fa-arrow-left"></i>
           <span class="document-title">{{hc.getDocumentTitle()}}</span>
 
+          <span ng-if="!valid"><i class="warning fa fa-ban"></i></span>
           <span ng-if="locked"><i class="warning fa fa-lock"></i></span>
           <span ng-if="!locked && dirty"><i class="warning fa fa-exclamation-triangle"></i></span>
 

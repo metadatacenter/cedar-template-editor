@@ -117,6 +117,7 @@ define([
               $scope.elementSchema = dms.schemaOf($scope.element);
 
               $scope.setClean();
+              $rootScope.setValidation(true);
               getDetails(key);
 
             },
@@ -233,6 +234,9 @@ define([
       for (var i = 0; i < report.errors.length; i++) {
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
+
+      console.log('logValidation',validationStatus, validationReport);
+      $rootScope.setValidation(validationStatus.validates || false);
     };
 
     $scope.saveElement = function () {

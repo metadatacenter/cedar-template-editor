@@ -106,6 +106,7 @@ define([
     };
 
     $scope.logValidation = function (validationStatus, validationReport) {
+      console.log('logValidation', validationStatus, validationReport);
 
       var report = JSON.parse(validationReport);
       for (var i = 0; i < report.warnings.length; i++) {
@@ -115,6 +116,7 @@ define([
       for (var i = 0; i < report.errors.length; i++) {
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
+      $rootScope.setValidation(validationStatus.validates || false);
     };
 
     // Stores the data (instance) into the databases

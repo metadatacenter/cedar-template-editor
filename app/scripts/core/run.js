@@ -99,20 +99,31 @@ define([
       }
     };
 
-    // keeping track of dirty and locked documents
+    // keeping track of dirty, locked, and valid documents
     $rootScope.dirty = false;
-    $rootScope.locked = false;
     $rootScope.setDirty = function (value) {
       $rootScope.dirty = value;
     };
     $rootScope.isDirty = function () {
       return $rootScope.dirty;
     };
+
+    $rootScope.locked = false;
     $rootScope.setLocked = function (value) {
       $rootScope.locked = value;
     };
     $rootScope.isLocked = function () {
       return $rootScope.locked;
+    };
+
+    $rootScope.valid = true;
+    $rootScope.setValidation = function (value) {
+      console.log('setValidation',value);
+      $rootScope.valid = value;
+    };
+    $rootScope.isValid = function () {
+      console.log('isValid',$rootScope.valid);
+      return $rootScope.valid;
     };
 
 
