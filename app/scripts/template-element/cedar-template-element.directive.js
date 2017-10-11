@@ -369,10 +369,12 @@ define([
       });
 
       scope.$watchCollection("element.properties", function () {
+        setLabels();
         parseElement();
       });
 
       scope.$watchCollection("element.items.properties", function () {
+        setLabels();
         parseElement();
       });
 

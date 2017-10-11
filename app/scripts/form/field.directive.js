@@ -330,6 +330,9 @@ define([
               $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle}).trim());
         }
 
+        // update fieldSchema
+        $scope.fieldSchema = dms.schemaOf($scope.field);
+
         setDirectory();
       }, true);
 
