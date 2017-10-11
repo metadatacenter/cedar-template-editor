@@ -264,9 +264,6 @@ define([
       //   $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
       // }
 
-      DataManipulationService.defaultTitleAndDescription($scope.element._ui);
-
-
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
 
@@ -410,7 +407,6 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
-      console.log('stripTmpFields');
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
