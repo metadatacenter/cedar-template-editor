@@ -180,6 +180,13 @@ define([
       }
     };
 
+    service.setFieldSchemaTitleAndDescription = function (field, fieldTitle) {
+      service.setSchemaTitle(field,
+          $translate.instant("GENERATEDVALUE.fieldTitle", {title: fieldTitle, version: window.cedarVersion}));
+      service.setSchemaDescription(field,
+          $translate.instant("GENERATEDVALUE.fieldDescription", {title: fieldTitle, version: window.cedarVersion}));
+    };
+
     //
     // inputType
     //
@@ -760,6 +767,10 @@ define([
         // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
         delete field.required
       }
+
+      // Set default schema title and description
+      var defaultTitle = $translate.instant("GENERIC.Untitled");
+      service.setFieldSchemaTitleAndDescription(field, defaultTitle);
 
       return field;
     };
