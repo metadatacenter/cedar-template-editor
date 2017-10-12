@@ -27,6 +27,7 @@ var TemplateCreatorPage = function () {
   var formDirty = element(by.id('form-dirty'));
   var formInvalid = element(by.id('form-invalid'));
   var formLocked = element(by.id('form-locked'));
+  var formValid = element(by.id('form-valid'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -720,7 +721,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickBackArrow = function () {
-    expect(formInvalid.isDisplayed()).toBeTruthy();
+    browser.wait(EC.visibilityOf(formValid));
     topNavBackArrow.click();
   };
 

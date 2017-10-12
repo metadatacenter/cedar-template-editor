@@ -148,9 +148,13 @@ describe('metadata-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      it("should open metadata with open menu", function () {
+      xit("should open metadata with open menu", function () {
         console.log("metadata-creator should open metadata with open menu");
         workspacePage.editResource(template, 'metadata');
+        expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
+        expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
+        expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
+        expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
         workspacePage.onMetadata();
         metadataPage.clickBackArrow();
         workspacePage.onWorkspace();

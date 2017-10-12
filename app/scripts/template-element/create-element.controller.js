@@ -70,20 +70,22 @@ define([
       $rootScope.setDirty(false);
     };
 
-    // // can we write to this element?  if there are no details then it is a new element
-    // $scope.canWrite = function () {
-    //   return !$scope.details || resourceService.canWrite($scope.details);
-    // };
+
 
     // validate the resource
     var checkValidation = function (node) {
+
       if (node) {
         return resourceService.validateResource(
-            node, CONST.resourceType.TEMPLATE,
+            node, CONST.resourceType.ELEMENT,
             function (response) {
 
+              var json = angular.toJson(response);
+              var status = response.validates == "true";
+              $scope.logValidation(status, json);
+
               $timeout(function () {
-                $rootScope.$broadcast("form:validation", { state: response.validates == true });
+                $rootScope.$broadcast("form:validation", { state: status });
               });
 
             },
@@ -264,8 +266,7 @@ define([
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
 
-      console.log('logValidation',validationStatus, validationReport);
-      $rootScope.setValidation(validationStatus.validates || false);
+      $rootScope.setValidation(validationStatus);
     };
 
     $scope.saveElement = function () {

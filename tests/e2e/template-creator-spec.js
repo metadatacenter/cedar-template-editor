@@ -165,7 +165,7 @@ describe('template-creator', function () {
 
       it("should return to workspace by clicking back arrow", function () {
         console.log("template-creator should return to workspace by clicking back arrow");
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         workspacePage.onWorkspace();
       });
 
@@ -197,8 +197,8 @@ describe('template-creator', function () {
               removeFieldButton.click();
               browser.wait(EC.stalenessOf(field));
 
-              templatePage.isDirty();
-              templatePage.topNavBackArrow().click();
+              templatePage.checkDirty();
+              templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
 
@@ -240,8 +240,8 @@ describe('template-creator', function () {
               expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
               expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
-              templatePage.isDirty();
-              templatePage.topNavBackArrow().click();
+              templatePage.checkDirty();
+              templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
             });
@@ -259,7 +259,7 @@ describe('template-creator', function () {
         browser.wait(EC.visibilityOf(templatePage.topNavBackArrow()));
         browser.wait(EC.visibilityOf(templatePage.showJsonLink()));
 
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         workspacePage.onWorkspace();
 
       });
@@ -268,7 +268,7 @@ describe('template-creator', function () {
         console.log("template-creator should have json preview turned off " + pageType);
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isHiddenJson();
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         workspacePage.onWorkspace();
       });
 
@@ -289,7 +289,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         workspacePage.onWorkspace();
       });
 
@@ -313,8 +313,8 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.isDirty();
-        templatePage.topNavBackArrow().click();
+        //templatePage.checkDirty();
+        templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
@@ -324,7 +324,7 @@ describe('template-creator', function () {
         console.log("template-creator should have cancel button present and active");
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.isDirty();
+        //templatePage.checkDirty();
         templatePage.clickCancel(pageType);
         //sweetAlertModal.confirm();
         workspacePage.onWorkspace();
@@ -335,7 +335,7 @@ describe('template-creator', function () {
 
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.isDirty();
+        //templatePage.checkDirty();
         templatePage.showJson();
 
         browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
@@ -354,7 +354,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
@@ -364,14 +364,14 @@ describe('template-creator', function () {
 
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        templatePage.isDirty();
+        //templatePage.checkDirty();
 
         // clear and confirm
         templatePage.clickClear(pageType);
         sweetAlertModal.confirm();
         sweetAlertModal.isHidden();
 
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
 
@@ -401,7 +401,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.topNavBackArrow().click();
+        templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });

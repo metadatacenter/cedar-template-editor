@@ -108,16 +108,13 @@ define([
     });
 
     $rootScope.setValidation = function (value) {
-      console.log('setValidation',value);
       $rootScope.documentState.valid = value;
     };
     $rootScope.isValid = function () {
-      console.log('isValid',$rootScope.documentState.valid);
       return $rootScope.documentState.valid;
     };
 
     $rootScope.$on("form:dirty", function () {
-      console.log('on form:dirty');
       $rootScope.setDirty(true);
     });
 

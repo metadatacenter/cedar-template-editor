@@ -53,13 +53,18 @@ define([
 
         // validate the resource
         var checkValidation = function (node) {
+
           if (node) {
             return resourceService.validateResource(
                 node, CONST.resourceType.TEMPLATE,
                 function (response) {
 
+                  var json = angular.toJson(response);
+                  var status = response.validates == "true";
+                  $scope.logValidation(status, json);
+
                   $timeout(function () {
-                    $rootScope.$broadcast("form:validation", { state: response.validates == true });
+                    $rootScope.$broadcast("form:validation", { state: status });
                   });
 
                 },
@@ -68,6 +73,10 @@ define([
                 }
             );
           }
+
+          // $timeout(function () {
+          //   $rootScope.$broadcast("form:validation", { state: true });
+          // });
         };
 
         $scope.checkLocking = function () {
@@ -119,7 +128,6 @@ define([
 
 
         var getTemplate = function () {
-          console.log('getTemplate');
           // Load existing form if $routeParams.id parameter is supplied
           if ($routeParams.id) {
             // Fetch existing form and assign to $scope.form property
@@ -127,6 +135,7 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
+                  checkValidation($scope.form);
                   HeaderService.dataContainer.currentObjectScope = $scope.form;
 
                   $rootScope.keyOfRootElement = $scope.form["@id"];
@@ -135,7 +144,7 @@ define([
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
                   $rootScope.$broadcast('form:clean');
-                  checkValidation($scope.form);
+
                   getDetails($scope.form["@id"]);
 
 
@@ -147,18 +156,18 @@ define([
           } else {
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
+            checkValidation($scope.form);
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
-            checkValidation($scope.form);
+
             DataManipulationService.createDomIds($scope.form);
             $rootScope.$broadcast('form:clean');
           }
         };
 
 
-        console.log('go to getTemplate');
         getTemplate();
 
 
@@ -280,7 +289,6 @@ define([
 
         $scope.logValidation = function (validationStatus, validationReport) {
 
-
           var report = JSON.parse(validationReport);
           for (var i = 0; i < report.warnings.length; i++) {
             console.log(
@@ -290,8 +298,7 @@ define([
             console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
           }
 
-          console.log('logValidation', validationStatus, validationReport);
-          $rootScope.setValidation(validationStatus.validates || false);
+          $rootScope.setValidation(validationStatus);
         };
 
         // Stores the template into the database
@@ -328,6 +335,7 @@ define([
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
 
+                    console.log('first save',$scope.form);
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
@@ -359,6 +367,7 @@ define([
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
 
+                    console.log('subsequent save');
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 

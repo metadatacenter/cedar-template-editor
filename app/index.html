@@ -66,9 +66,11 @@
           <div id="form-back-arrow" class="col-xs-11 full-height"  ng-click="hc.confirmBack()">
             <i class="fa fa-arrow-left"></i>
             <span id="form-document-title" class="document-title">{{hc.getDocumentTitle()}}</span>
-            <span id="form-dirty" ng-if="!locked && dirty"><i  class="warning fa fa-circle" ></i></span>
+            <span id="form-valid" ng-if="documentState.valid"><i class="warning fa fa-check-square" ></i></span>
             <span id="form-invalid" ng-if="!documentState.valid"><i  class="warning fa fa-exclamation-triangle" ></i></span>
+            <span id="form-dirty" ng-if="!locked && dirty"><i  class="warning fa fa-circle" ></i></span>
             <span id="form-locked" ng-if="locked"><i  class="warning fa fa-lock" ></i></span>
+
 
           </div>
           <div class="col-xs-1 center full-height">

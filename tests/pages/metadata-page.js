@@ -16,6 +16,7 @@ var MetadataPage = function () {
   var topNavigation = element(by.id('top-navigation'));
   var formDirty = element(by.id('form-dirty'));
   var formInvalid = element(by.id('form-invalid'));
+  var formValid = element(by.id('form-valid'));
   var formLocked = element(by.id('form-locked'));
   var topNavBackArrow = element(by.id('form-back-arrow'));
   var documentTitle = element(by.id('form-document-title'));
@@ -112,7 +113,7 @@ var MetadataPage = function () {
   };
 
   this.clickBackArrow = function () {
-    expect(formInvalid.isDisplayed()).toBeTruthy();
+    browser.wait(EC.visibilityOf(formValid));
     topNavBackArrow.click();
   };
 
