@@ -402,8 +402,8 @@
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",
     "noNameField": "Untitled",
     "noNameElement": "Untitled",
-    "noDescriptionField": "Description",
-    "noDescriptionElement": "Description",
+    "noDescriptionField": "",
+    "noDescriptionElement": "",
     "groupHeader": {
       "requiredFields": "The following fields are required:",
       "invalidFields": "Values of the following fields are invalid:",

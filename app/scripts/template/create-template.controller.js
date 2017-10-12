@@ -183,8 +183,6 @@ define([
 
         // Add newly configured field to the element object
         $scope.addField = function (fieldType) {
-          console.log('addField');
-
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             var domId = DataManipulationService.createDomId();
