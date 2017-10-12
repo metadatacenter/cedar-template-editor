@@ -75,6 +75,31 @@ define([
     //   return !$scope.details || resourceService.canWrite($scope.details);
     // };
 
+    // validate the resource
+    var checkValidation = function (node) {
+      if (node) {
+        return resourceService.validateResource(
+            node, CONST.resourceType.TEMPLATE,
+            function (response) {
+
+              $timeout(function () {
+                $rootScope.$broadcast("form:validation", { state: response.validates == true });
+              });
+
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            }
+        );
+      }
+    };
+
+    $scope.checkLocking = function () {
+      var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+      $scope.cannotWrite = !result;
+      return result;
+    };
+
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(
           id, CONST.resourceType.ELEMENT,
@@ -112,12 +137,15 @@ define([
 
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = dms.getTitle($scope.form);
+
+              checkValidation($scope.element);
+
               dms.createDomIds($scope.element);
 
               $scope.elementSchema = dms.schemaOf($scope.element);
 
               $scope.setClean();
-              $rootScope.setValidation(true);
+
               getDetails(key);
 
             },
@@ -142,6 +170,7 @@ define([
         $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 
         $rootScope.jsonToSave = $scope.element;
+        checkValidation($scope.element);
         dms.createDomIds($scope.element);
 
         $scope.elementSchema = dms.schemaOf($scope.element);

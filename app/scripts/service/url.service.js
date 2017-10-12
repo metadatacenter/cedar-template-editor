@@ -151,6 +151,10 @@ define([
       return this.schemaProperties() + "/" + propertyName;
     };
 
+    service.validateResource = function (resourceType) {
+      return this.base() + '/command/validate' + '?resource_type=' + encodeURIComponent(resourceType);
+    };
+
     service.copyResourceToFolder = function () {
       return this.resourceBase() + "/command/copy-resource-to-folder";
     };

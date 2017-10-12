@@ -14,11 +14,14 @@ var MetadataPage = function () {
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
-  var documentTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.document-title'));
+  var formDirty = element(by.id('form-dirty'));
+  var formInvalid = element(by.id('form-invalid'));
+  var formLocked = element(by.id('form-locked'));
+  var topNavBackArrow = element(by.id('form-back-arrow'));
+  var documentTitle = element(by.id('form-document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
   var templateJson = element(by.id('show-json-link'));
-  var metadataJson = element(By.css('#jsonTools a:nth-child(1)'));
+  var metadataJson = element(By.css('#jsonTools a'));
   var firstItemTitle = element(by.css('.item-root')).element(by.model('model[\'@value\']'));
   var sampleTitle = 'sample title';
   var deleteTemplateMessage = 'The template has been deleted.';
@@ -108,8 +111,9 @@ var MetadataPage = function () {
     createCancelMetadataButton.click();
   };
 
-  this.clickBackArrowMetadata = function () {
-    element(by.css('.back-arrow-click')).click();
+  this.clickBackArrow = function () {
+    expect(formInvalid.isDisplayed()).toBeTruthy();
+    topNavBackArrow.click();
   };
 
   this.createToastyConfirmationPopup = function () {
@@ -143,6 +147,26 @@ var MetadataPage = function () {
 
   this.clickSweetConfirm = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
+  };
+
+  this.isDirty = function () {
+    return formDirty.isDisplayed();
+  };
+
+  this.checkDirty = function () {
+    expect(formDirty.isDisplayed()).toBeTruthy();
+  };
+
+  this.isInvalid = function () {
+    return formInvalid.isDisplayed()
+  };
+
+  this.checkValid = function () {
+    expect(formInvalid.isDisplayed()).toBeFalsy();
+  };
+
+  this.isLocked = function () {
+    return formLocked.isDisplayed()
   };
 
   // make sure the element is multiple instance and has fields in it

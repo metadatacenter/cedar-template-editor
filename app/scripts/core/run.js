@@ -99,6 +99,28 @@ define([
       }
     };
 
+    $rootScope.documentState = {
+      valid: true
+    };
+
+    $rootScope.$on("form:validation", function (even, options) {
+      $rootScope.setValidation(options.state);
+    });
+
+    $rootScope.setValidation = function (value) {
+      console.log('setValidation',value);
+      $rootScope.documentState.valid = value;
+    };
+    $rootScope.isValid = function () {
+      console.log('isValid',$rootScope.documentState.valid);
+      return $rootScope.documentState.valid;
+    };
+
+    $rootScope.$on("form:dirty", function () {
+      console.log('on form:dirty');
+      $rootScope.setDirty(true);
+    });
+
     // keeping track of dirty, locked, and valid documents
     $rootScope.dirty = false;
     $rootScope.setDirty = function (value) {
@@ -116,15 +138,8 @@ define([
       return $rootScope.locked;
     };
 
-    $rootScope.valid = true;
-    $rootScope.setValidation = function (value) {
-      console.log('setValidation',value);
-      $rootScope.valid = value;
-    };
-    $rootScope.isValid = function () {
-      console.log('isValid',$rootScope.valid);
-      return $rootScope.valid;
-    };
+
+
 
 
   }

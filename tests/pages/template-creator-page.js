@@ -24,8 +24,9 @@ var TemplateCreatorPage = function () {
   var createMore = element(by.id('button-add-more'));
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
-  var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
-  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-exclamation-triangle'));
+  var formDirty = element(by.id('form-dirty'));
+  var formInvalid = element(by.id('form-invalid'));
+  var formLocked = element(by.id('form-locked'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -74,7 +75,7 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.back-arrow-click'));
+  var topNavBackArrow = element(by.id('form-back-arrow'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
@@ -554,20 +555,32 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.invisibilityOf(templateJSON));
   };
 
-  this.isLocked = function () {
-    //expect(lockIcon.isDisplayed()).toBe(true);
-    browser.wait(EC.visibilityOf(lockIcon));
-  };
-
   this.isDirty = function () {
-    //expect(dirtyIcon.isDisplayed()).toBe(true);
-    browser.wait(EC.visibilityOf(dirtyIcon));
+    return formDirty.isDisplayed();
   };
 
-  this.isClean = function () {
-    console.log('isClean' , dirtyIcon.isDisplayed());
-    expect(dirtyIcon.isDisplayed()).toBe(false);
-    //browser.wait(EC.visibilityOf(dirtyIcon));
+  this.checkDirty = function () {
+    expect(formDirty.isDisplayed()).toBeTruthy();
+  };
+
+  this.isInvalid = function () {
+    return formInvalid.isDisplayed()
+  };
+
+  this.checkInvalid = function () {
+    expect(formInvalid.isDisplayed()).toBeTruthy();
+  };
+
+  this.checkValid = function () {
+    expect(formInvalid.isDisplayed()).toBefalsy();
+  };
+
+  this.isLocked = function () {
+    return formLocked.isDisplayed();
+  };
+
+  this.checkClean = function () {
+    expect(formDirty.isDisplayed()).toBeFalsy();
   };
 
 
@@ -707,8 +720,10 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickBackArrow = function () {
+    expect(formInvalid.isDisplayed()).toBeTruthy();
     topNavBackArrow.click();
   };
+
   this.createToolbar = function () {
     return createToolbar;
   };

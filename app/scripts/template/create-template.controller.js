@@ -51,6 +51,31 @@ define([
           return result;
         };
 
+        // validate the resource
+        var checkValidation = function (node) {
+          if (node) {
+            return resourceService.validateResource(
+                node, CONST.resourceType.TEMPLATE,
+                function (response) {
+
+                  $timeout(function () {
+                    $rootScope.$broadcast("form:validation", { state: response.validates == true });
+                  });
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                }
+            );
+          }
+        };
+
+        $scope.checkLocking = function () {
+          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          $scope.cannotWrite = !result;
+          return result;
+        };
+
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
           $rootScope.setLocked($scope.cannotWrite);
@@ -68,7 +93,8 @@ define([
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
                 if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning", "The template may not be modified because there are metadata using it.", "OK", "") ;
+                  UIMessageService.showWarning("Warning",
+                      "The template may not be modified because there are metadata using it.", "OK", "");
                 }
 
               },
@@ -91,8 +117,9 @@ define([
           );
         };
 
+
         var getTemplate = function () {
-          console.log('getTemplate')
+          console.log('getTemplate');
           // Load existing form if $routeParams.id parameter is supplied
           if ($routeParams.id) {
             // Fetch existing form and assign to $scope.form property
@@ -108,7 +135,7 @@ define([
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
                   $rootScope.$broadcast('form:clean');
-                  $rootScope.setValidation(true);
+                  checkValidation($scope.form);
                   getDetails($scope.form["@id"]);
 
 
@@ -124,11 +151,9 @@ define([
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
+            checkValidation($scope.form);
             DataManipulationService.createDomIds($scope.form);
-            //$scope.getType();
             $rootScope.$broadcast('form:clean');
-            $rootScope.setValidation(true);
-
           }
         };
 
@@ -267,7 +292,7 @@ define([
             console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
           }
 
-          console.log('logValidation',validationStatus, validationReport);
+          console.log('logValidation', validationStatus, validationReport);
           $rootScope.setValidation(validationStatus.validates || false);
         };
 

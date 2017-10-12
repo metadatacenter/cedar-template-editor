@@ -340,10 +340,12 @@ define([
 
         });
 
+
+
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
-          $rootScope.setDirty(true);
         });
+
 
         $scope.$on("form:update", function () {
           startParseForm();

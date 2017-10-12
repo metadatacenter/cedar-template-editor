@@ -72,6 +72,28 @@ define([
       );
     };
 
+    // validate the resource
+    var checkValidation = function (node) {
+      console.log('checkValidation');
+      if (node) {
+        return resourceService.validateResource(
+            node, CONST.resourceType.TEMPLATE,
+            function (response) {
+
+              console.log('checkValidation', response);
+
+              $timeout(function () {
+                $rootScope.$broadcast("form:validation", { state: response.validates == true });
+              });
+
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            }
+        );
+      }
+    };
+
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
@@ -83,6 +105,7 @@ define([
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
+            checkValidation($scope.instance);
 
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
@@ -106,7 +129,6 @@ define([
     };
 
     $scope.logValidation = function (validationStatus, validationReport) {
-      console.log('logValidation', validationStatus, validationReport);
 
       var report = JSON.parse(validationReport);
       for (var i = 0; i < report.warnings.length; i++) {
