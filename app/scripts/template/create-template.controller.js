@@ -335,7 +335,6 @@ define([
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
 
-                    console.log('first save',$scope.form);
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
@@ -366,8 +365,7 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
-
-                    console.log('subsequent save');
+                    
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
