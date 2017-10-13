@@ -136,8 +136,10 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
+
                   console.log('load existing template');
-                  checkValidation($scope.form);
+                  var copiedForm = jQuery.extend(true, {}, $scope.form);
+                  checkValidation(copiedForm);
                   HeaderService.dataContainer.currentObjectScope = $scope.form;
 
                   $rootScope.keyOfRootElement = $scope.form["@id"];
@@ -159,7 +161,9 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
             console.log('create new template');
-            checkValidation($scope.form);
+            var copiedForm = jQuery.extend(true, {}, $scope.form);
+            checkValidation(copiedForm);
+
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
