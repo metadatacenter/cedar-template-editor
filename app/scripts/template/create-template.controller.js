@@ -53,6 +53,7 @@ define([
 
         // validate the resource
         var checkValidation = function (node) {
+          console.log('checkValidation',node);
 
           if (node) {
             return resourceService.validateResource(
@@ -135,6 +136,7 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
+                  console.log('load existing template');
                   checkValidation($scope.form);
                   HeaderService.dataContainer.currentObjectScope = $scope.form;
 
@@ -156,6 +158,7 @@ define([
           } else {
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
+            console.log('create new template');
             checkValidation($scope.form);
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
@@ -335,6 +338,7 @@ define([
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
 
+
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
@@ -365,7 +369,7 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
-                    
+
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
