@@ -113,7 +113,9 @@ var MetadataPage = function () {
   };
 
   this.clickBackArrow = function () {
-    //browser.wait(EC.presenceOf(formValid));
+    browser.wait(EC.presenceOf(formValid));
+    browser.wait(EC.visibilityOf(topNavBackArrow));
+    browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
 
