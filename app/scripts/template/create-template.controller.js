@@ -137,11 +137,10 @@ define([
                 function (response) {
                   $scope.form = response.data;
 
-                  console.log('load existing template');
                   var copiedForm = jQuery.extend(true, {}, $scope.form);
                   checkValidation(copiedForm);
-                  HeaderService.dataContainer.currentObjectScope = $scope.form;
 
+                  HeaderService.dataContainer.currentObjectScope = $scope.form;
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
                   $rootScope.jsonToSave = $scope.form;
@@ -160,9 +159,10 @@ define([
           } else {
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
-            console.log('create new template');
-            var copiedForm = jQuery.extend(true, {}, $scope.form);
-            checkValidation(copiedForm);
+
+            // var copiedForm = jQuery.extend(true, {}, $scope.form);
+            // checkValidation(copiedForm);
+            $rootScope.setValidation(true);
 
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];

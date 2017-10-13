@@ -124,6 +124,10 @@ define([
             TemplateElementService.getTemplateElement($routeParams.id),
             function (response) {
               $scope.element = response.data;
+
+              var copiedForm = jQuery.extend(true, {}, $scope.element);
+              checkValidation(copiedForm);
+
               HeaderService.dataContainer.currentObjectScope = $scope.element;
 
               var key = $scope.element["@id"];
@@ -139,8 +143,6 @@ define([
 
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = dms.getTitle($scope.form);
-
-              checkValidation($scope.element);
 
               dms.createDomIds($scope.element);
 
@@ -158,6 +160,9 @@ define([
       } else {
         // If we're not loading an existing element then let's create a new empty $scope.element property
         $scope.element = DataTemplateService.getElement();
+
+        $rootScope.setValidation(true);
+
         HeaderService.dataContainer.currentObjectScope = $scope.element;
 
         var key = $scope.element["@id"] || dms.generateGUID();
@@ -172,7 +177,6 @@ define([
         $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 
         $rootScope.jsonToSave = $scope.element;
-        checkValidation($scope.element);
         dms.createDomIds($scope.element);
 
         $scope.elementSchema = dms.schemaOf($scope.element);
