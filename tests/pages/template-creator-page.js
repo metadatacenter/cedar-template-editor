@@ -749,7 +749,9 @@ var TemplateCreatorPage = function () {
 
 
 
-    browser.wait(EC.presenceOf(formValid));
+    //browser.wait(EC.visibilityOf(formValid));
+    browser.wait(EC.visibilityOf(topNavBackArrow));
+    browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
 
