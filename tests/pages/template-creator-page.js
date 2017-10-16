@@ -730,6 +730,15 @@ var TemplateCreatorPage = function () {
       }
     });
 
+    topNavBackArrow.isPresent().then(function(result) {
+      if ( result ) {
+        console.log('topNavBackArrow is success');
+      } else {
+        console.log('topNavBackArrow is failure');
+      }
+    });
+    
+
 
     // browser.wait(EC.presenceOf(formValid));
     // browser.wait(EC.visibilityOf(topNavBackArrow));
