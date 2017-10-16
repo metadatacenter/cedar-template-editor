@@ -25,9 +25,9 @@ var TemplateCreatorPage = function () {
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
   var formDirty = element(by.id('form-dirty'));
-  var formInvalid = element(by.id('#form-invalid > i'));
-  var formLocked = element(by.id('# form-locked > i'));
-  var formValid = element(by.css('#form-valid > i'));
+  var formInvalid = element(by.id('.form-invalid'));
+  var formLocked = element(by.id('.form-locked'));
+  var formValid = element(by.css('.form-valid'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -76,7 +76,8 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.css('.back-arrow-click'));
+  var topNavBackArrow = element(by.css('.back-arrow'));
+  var navbarBack = element(by.css('.navbar-back'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
   var topNav = element(by.css('.navbar-header'));
 
@@ -723,36 +724,10 @@ var TemplateCreatorPage = function () {
 
   this.clickBackArrow = function () {
     console.log('clickBackArrow');
-    // formValid.isPresent().then(function(result) {
-    //   if ( result ) {
-    //     console.log('formValid is success');
-    //   } else {
-    //     console.log('formValid is failure');
-    //   }
-    // });
-    //
-    // topNav.isPresent().then(function(result) {
-    //   if ( result ) {
-    //     console.log('topNav is success');
-    //   } else {
-    //     console.log('topNav is failure');
-    //   }
-    // });
-    //
-    // topNavBackArrow.isPresent().then(function(result) {
-    //   if ( result ) {
-    //     console.log('topNavBackArrow is success');
-    //   } else {
-    //     console.log('topNavBackArrow is failure');
-    //   }
-    // });
-
-
-
     browser.wait(EC.visibilityOf(formValid));
-    browser.wait(EC.visibilityOf(topNavBackArrow));
-    browser.wait(EC.elementToBeClickable(topNavBackArrow));
-    topNavBackArrow.click();
+    browser.wait(EC.visibilityOf(navbarBack));
+    browser.wait(EC.elementToBeClickable(navbarBack));
+    navbarBack.click();
   };
 
   this.createToolbar = function () {
@@ -766,7 +741,7 @@ var TemplateCreatorPage = function () {
     return topNavigation;
   };
   this.topNavBackArrow = function () {
-    return topNavBackArrow;
+    return navbarBack;
   };
   this.templateTitle = function () {
     return templateTitle;

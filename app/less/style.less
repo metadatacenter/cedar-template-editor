@@ -244,29 +244,36 @@ button {
   }
 
   .navbar-back {
-    margin-top: 5px;
-    margin-left: 10px;
+    margin: 0px;
+    outline:none;
+    background-color:red;
+    height:36px;
+    cursor: pointer;
 
     .back-arrow {
-      color: @white;
-      font-size: 20px;
-      margin: 0 0 0 10px;
-      font-weight: 100;
-
-      @media (min-width: @screen-sm-min) {
-        font-size: 16px;
-      }
+      background:yellow;
+      width: 1em;
+      height: 1em;
     }
 
-    .back-arrow-click {
-      position: absolute;
-      border: 0px solid red;
-      width: 46px;
-      height: 46px;
-      cursor: pointer;
-      z-index: 10;
-      top: -10px;
-      left: 10px;
+    .form-valid, .form-invalid {
+      background:aqua;
+      width: 1em;
+      height: 1em;
+    }
+
+    .form-dirty, .form-clean {
+      background:blue;
+      width: 1em;
+      height: 1em;
+
+    }
+
+    .form-locked, .form-unlocked {
+      background:green;
+      width: 1em;
+      height: 1em;
+
     }
 
     .page-title {
@@ -277,9 +284,9 @@ button {
     }
 
     .document-title {
-      color: @white;
-      font-size: 18px;
-      margin: 0 0 0 10px;
+      color:  @white;
+      font-size:18px;
+      margin: 0 0 0 0px;
       font-weight: 200;
     }
 
@@ -385,7 +392,7 @@ button {
   }
 
   .form-page {
-    height:36px;padding-top:8px;font-size:1.2em;
+    height:36px;padding-top:4px;font-size:1.2em;
     .full-height {
       height:100%;
     }
