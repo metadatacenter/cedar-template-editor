@@ -156,14 +156,14 @@ describe('template-creator', function () {
         resources.push(createResource(templateOrElement, pageType, testConfig.testUser1, testConfig.testPassword1));
       });
 
-      xit("should have editable title and description", function () {
+      it("should have editable title and description", function () {
         console.log("template-creator should have editable title and description");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isTitle(pageType, templateOrElement);
         templatePage.isDescription(pageType, sampleDescription);
       });
 
-      xit("should return to workspace by clicking back arrow", function () {
+      it("should return to workspace by clicking back arrow", function () {
         console.log("template-creator should return to workspace by clicking back arrow");
         templatePage.clickBackArrow();
         workspacePage.onWorkspace();
@@ -181,7 +181,7 @@ describe('template-creator', function () {
           if (!fieldType.staticField) {
 
 
-            xit("should add and delete a " + type + " in " + pageType , function () {
+            it("should add and delete a " + type + " in " + pageType , function () {
               console.log("template-creator should add and delete a " + type + " in " + pageType);
 
               templatePage.createPage(pageType);
@@ -204,7 +204,7 @@ describe('template-creator', function () {
 
             });
 
-            xit("should select and deselect a " + type + " in " + pageType, function () {
+            it("should select and deselect a " + type + " in " + pageType, function () {
               console.log("template-creator should select and deselect a " + type + " in " + pageType);
 
               var firstField;
@@ -250,7 +250,7 @@ describe('template-creator', function () {
         (fieldTypes[k]);
       }
 
-      xit("should show " + pageType + " header ", function () {
+      it("should show " + pageType + " header ", function () {
         console.log("template-creator should show " + pageType + " header ");
 
         templatePage.createPage(pageType);
@@ -264,7 +264,7 @@ describe('template-creator', function () {
 
       });
 
-      xit("should have json preview turned off " + pageType, function () {
+      it("should have json preview turned off " + pageType, function () {
         console.log("template-creator should have json preview turned off " + pageType);
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isHiddenJson();
@@ -293,7 +293,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      xit("should update the json when " + pageType + " changes ", function () {
+      it("should update the json when " + pageType + " changes ", function () {
         console.log("template-creator should update the json when " + pageType + " changes " + pageType);
 
         templatePage.createPage(pageType);
@@ -330,7 +330,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      xit("should not change the " + pageType + " when cleared and cancelled", function () {
+      it("should not change the " + pageType + " when cleared and cancelled", function () {
         console.log("template-creator should not change the " + pageType + " when cleared and cancelled");
 
         templatePage.createPage(pageType);
@@ -359,7 +359,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      xit("should have clear displayed if " + pageType + " is dirty", function () {
+      it("should have clear displayed if " + pageType + " is dirty", function () {
         console.log("template-creator should have clear displayed if " + pageType + " is dirty");
 
         templatePage.createPage(pageType);
@@ -411,7 +411,7 @@ describe('template-creator', function () {
   }
   });
 
-  xdescribe('remove created resources', function () {
+  describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("template-creator should delete " + resources.length + " resources from the user workspace");
