@@ -62,17 +62,16 @@
 
       <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()" class="form-page" >
-        <div class="row full-height" >
-          <div  class="col-xs-11 full-height form-back-arrow"  ng-click="hc.confirmBack()">
-            <i class="fa fa-arrow-left"></i>
-            <span id="form-document-title" class="document-title">{{hc.getDocumentTitle()}}</span>
-            <span id="form-valid" ng-if="documentState.valid"><i class="warning fa fa-check-square" ></i></span>
-            <span id="form-invalid" ng-if="!documentState.valid"><i  class="warning fa fa-exclamation-triangle" ></i></span>
-            <span id="form-dirty" ng-if="!locked && dirty"><i  class="warning fa fa-circle" ></i></span>
-            <span id="form-locked" ng-if="locked"><i  class="warning fa fa-lock" ></i></span>
+        <div class="navbar-back col-sm-12" style="background-color:red">
 
+          <div class="form-back-arrow" style="height:20px;width:20px;background-color:green" ng-click="hc.confirmBack()"></div>
+          <i class="fa fa-arrow-left"></i>
+          <span id="form-document-title" class="document-title">{{hc.getDocumentTitle()}}</span>
+          <span id="form-valid" ng-if="documentState.valid"><i class="warning fa fa-check-square" ></i></span>
+          <span id="form-invalid" ng-if="!documentState.valid"><i  class="warning fa fa-exclamation-triangle" ></i></span>
+          <span id="form-dirty" ng-if="!locked && dirty"><i  class="warning fa fa-circle" ></i></span>
+          <span id="form-locked" ng-if="locked"><i  class="warning fa fa-lock" ></i></span>
 
-          </div>
           <div class="col-xs-1 center full-height">
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
 
@@ -94,7 +93,7 @@
 
           </div>
           </div>
-        </div>
+      </div>
       </div>
 
   </div>
