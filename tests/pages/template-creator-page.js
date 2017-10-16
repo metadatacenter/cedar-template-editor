@@ -721,6 +721,16 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickBackArrow = function () {
+    console.log('clickBackArrow');
+    formValid.isPresent().then(function(result) {
+      if ( result ) {
+        console.log('formValid is success');
+      } else {
+        console.log('formValid is failure');
+      }
+    });
+
+
     // browser.wait(EC.presenceOf(formValid));
     // browser.wait(EC.visibilityOf(topNavBackArrow));
     // browser.wait(EC.elementToBeClickable(topNavBackArrow));
