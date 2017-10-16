@@ -63,7 +63,7 @@
       <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()" class="form-page" >
         <div class="row full-height" >
-          <div id="form-back-arrow" class="col-xs-11 full-height"  ng-click="hc.confirmBack()">
+          <div  class="col-xs-11 full-height form-back-arrow"  ng-click="hc.confirmBack()">
             <i class="fa fa-arrow-left"></i>
             <span id="form-document-title" class="document-title">{{hc.getDocumentTitle()}}</span>
             <span id="form-valid" ng-if="documentState.valid"><i class="warning fa fa-check-square" ></i></span>
