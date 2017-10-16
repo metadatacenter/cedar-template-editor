@@ -156,7 +156,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
         resources.push(createResource(templateOrElement, pageType, testConfig.testUser1, testConfig.testPassword1));
       });
-      
+
 
       it("should have editable title and description 2", function () {
         console.log("template-creator should have editable title and description 2");
