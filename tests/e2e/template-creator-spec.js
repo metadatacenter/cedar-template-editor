@@ -153,11 +153,13 @@ describe('template-creator', function () {
         templateOrElement = workspacePage.createTitle(pageType);
         sampleDescription = workspacePage.createDescription(pageType);
         workspacePage.createResource(pageType, templateOrElement, sampleDescription);
+        workspacePage.onWorkspace();
         resources.push(createResource(templateOrElement, pageType, testConfig.testUser1, testConfig.testPassword1));
       });
+      
 
-      it("should have editable title and description", function () {
-        console.log("template-creator should have editable title and description");
+      it("should have editable title and description 2", function () {
+        console.log("template-creator should have editable title and description 2");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isTitle(pageType, templateOrElement);
         templatePage.isDescription(pageType, sampleDescription);
