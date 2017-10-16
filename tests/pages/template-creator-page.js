@@ -78,6 +78,7 @@ var TemplateCreatorPage = function () {
   var topNavigation = element(by.id('top-navigation'));
   var topNavBackArrow = element(by.id('form-back-arrow'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
+  var topNav = element(by.css('.navbar-header'));
 
   var testTitle = 'test title';
   var testDescription = 'test description';
@@ -730,14 +731,14 @@ var TemplateCreatorPage = function () {
       }
     });
 
-    topNavBackArrow.isPresent().then(function(result) {
+    topNav.isPresent().then(function(result) {
       if ( result ) {
-        console.log('topNavBackArrow is success');
+        console.log('topNav is success');
       } else {
-        console.log('topNavBackArrow is failure');
+        console.log('topNav is failure');
       }
     });
-    
+
 
 
     // browser.wait(EC.presenceOf(formValid));
