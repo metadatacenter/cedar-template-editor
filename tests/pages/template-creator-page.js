@@ -724,7 +724,7 @@ var TemplateCreatorPage = function () {
 
   this.clickBackArrow = function () {
     console.log('clickBackArrow');
-    browser.wait(EC.visibilityOf(formValid));
+    //browser.wait(EC.visibilityOf(formValid));
     browser.wait(EC.visibilityOf(navbarBack));
     browser.wait(EC.elementToBeClickable(navbarBack));
     navbarBack.click();
