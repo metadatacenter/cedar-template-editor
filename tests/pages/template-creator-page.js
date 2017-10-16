@@ -25,9 +25,9 @@ var TemplateCreatorPage = function () {
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
   var formDirty = element(by.id('form-dirty'));
-  var formInvalid = element(by.id('form-invalid'));
-  var formLocked = element(by.id('form-locked'));
-  var formValid = element(by.id('form-valid'));
+  var formInvalid = element(by.id('#form-invalid > i'));
+  var formLocked = element(by.id('# form-locked > i'));
+  var formValid = element(by.css('#form-valid > i'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -749,7 +749,7 @@ var TemplateCreatorPage = function () {
 
 
 
-    //browser.wait(EC.visibilityOf(formValid));
+    browser.wait(EC.visibilityOf(formValid));
     browser.wait(EC.visibilityOf(topNavBackArrow));
     browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
