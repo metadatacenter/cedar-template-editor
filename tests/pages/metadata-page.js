@@ -18,7 +18,8 @@ var MetadataPage = function () {
   var formInvalid = element(by.id('form-invalid'));
   var formValid = element(by.id('form-valid'));
   var formLocked = element(by.id('form-locked'));
-  var topNavBackArrow = element(by.id('form-back-arrow'));
+  var navbarBack = element(by.css('.navbar-back'));
+
   var documentTitle = element(by.id('form-document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
   var templateJson = element(by.id('show-json-link'));
@@ -58,9 +59,7 @@ var MetadataPage = function () {
   this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function () {
-    return topNavBackArrow;
-  };
+
   this.documentTitle = function () {
     return documentTitle;
   };
@@ -112,12 +111,6 @@ var MetadataPage = function () {
     createCancelMetadataButton.click();
   };
 
-  this.clickBackArrow = function () {
-    browser.wait(EC.presenceOf(formValid));
-    browser.wait(EC.visibilityOf(topNavBackArrow));
-    browser.wait(EC.elementToBeClickable(topNavBackArrow));
-    topNavBackArrow.click();
-  };
 
   this.createToastyConfirmationPopup = function () {
     return createToastyConfirmationPopup;
@@ -171,6 +164,19 @@ var MetadataPage = function () {
   this.isLocked = function () {
     return formLocked.isDisplayed()
   };
+
+  this.navbarBack = function () {
+    return navbarBack;
+  };
+
+  this.clickBackArrow = function () {
+    console.log('clickBackArrow');
+    //browser.wait(EC.visibilityOf(formValid));
+    browser.wait(EC.visibilityOf(navbarBack));
+    browser.wait(EC.elementToBeClickable(navbarBack));
+    navbarBack.click();
+  };
+
 
   // make sure the element is multiple instance and has fields in it
   this.checkMultiple = function() {

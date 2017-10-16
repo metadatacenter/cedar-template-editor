@@ -24,7 +24,7 @@ var WorkspacePage = function () {
   var createControlsBar = element(by.css('.controls-bar'));
   var createNavbarElement = element(by.css('.navbar.element'));
   var createNavbarTemplate = element(by.css('#top-navigation.navbar.template'));
-  var topNavBackArrow = element(by.id('form-back-arrow'));
+  var navbarBack = element(by.css('.navbar-back'));
 
 
   // page content
@@ -651,9 +651,9 @@ var WorkspacePage = function () {
 
     // return to workspace
 
-    browser.wait(EC.visibilityOf(topNavBackArrow));
-    browser.wait(EC.elementToBeClickable(topNavBackArrow));
-    topNavBackArrow.click();
+    browser.wait(EC.visibilityOf(navbarBack));
+    browser.wait(EC.elementToBeClickable(navbarBack));
+    navbarBack.click();
 
   };
 

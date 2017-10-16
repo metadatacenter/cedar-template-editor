@@ -76,7 +76,6 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.css('.back-arrow'));
   var navbarBack = element(by.css('.navbar-back'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
   var topNav = element(by.css('.navbar-header'));
@@ -722,6 +721,10 @@ var TemplateCreatorPage = function () {
     return templateJSONHidden;
   };
 
+  this.navbarBack = function () {
+    return navbarBack;
+  };
+
   this.clickBackArrow = function () {
     console.log('clickBackArrow');
     //browser.wait(EC.visibilityOf(formValid));
@@ -740,9 +743,7 @@ var TemplateCreatorPage = function () {
   this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function () {
-    return navbarBack;
-  };
+
   this.templateTitle = function () {
     return templateTitle;
   };

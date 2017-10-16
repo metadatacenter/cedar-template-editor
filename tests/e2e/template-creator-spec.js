@@ -256,7 +256,7 @@ describe('template-creator', function () {
         templatePage.createPage(pageType);
         browser.wait(EC.visibilityOf(templatePage.topNavigation()));
         expect(templatePage.hasClass(templatePage.topNavigation(), pageType)).toBe(true);
-        browser.wait(EC.visibilityOf(templatePage.topNavBackArrow()));
+        browser.wait(EC.visibilityOf(templatePage.navbarBack()));
         browser.wait(EC.visibilityOf(templatePage.showJsonLink()));
 
         templatePage.clickBackArrow();
