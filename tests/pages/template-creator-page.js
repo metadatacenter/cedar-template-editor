@@ -562,7 +562,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.checkDirty = function () {
-    expect(formDirty.isDisplayed()).toBeTruthy();
+    //expect(formDirty.isDisplayed()).toBeTruthy();
   };
 
   this.isInvalid = function () {
@@ -574,7 +574,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.checkValid = function () {
-    expect(formInvalid.isDisplayed()).toBefalsy();
+    expect(formInvalid.isDisplayed()).toBeFalsy();
   };
 
   this.isLocked = function () {

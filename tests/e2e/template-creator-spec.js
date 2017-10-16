@@ -198,7 +198,7 @@ describe('template-creator', function () {
               browser.wait(EC.stalenessOf(field));
 
               // templatePage.checkDirty();
-              // templatePage.clickBackArrow();
+              templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
 
@@ -241,7 +241,7 @@ describe('template-creator', function () {
               expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
               // templatePage.checkDirty();
-              // templatePage.clickBackArrow();
+              templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
             });
@@ -314,7 +314,7 @@ describe('template-creator', function () {
 
         templatePage.hideJson();
         //templatePage.checkDirty();
-        //templatePage.clickBackArrow();
+        templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
