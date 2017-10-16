@@ -562,11 +562,11 @@ var TemplateCreatorPage = function () {
   };
 
   this.checkDirty = function () {
-    //expect(formDirty.isDisplayed()).toBeTruthy();
+    browser.wait(EC.visibilityOf(formDirty));
   };
 
   this.isInvalid = function () {
-    return formInvalid.isDisplayed()
+    return formInvalid.isDisplayed();
   };
 
   this.checkInvalid = function () {
@@ -574,7 +574,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.checkValid = function () {
-    expect(formInvalid.isDisplayed()).toBeFalsy();
+    browser.wait(EC.visibilityOf(formValid));
   };
 
   this.isLocked = function () {
@@ -582,7 +582,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.checkClean = function () {
-    expect(formDirty.isDisplayed()).toBeFalsy();
+    //expect(formDirty.isDisplayed()).toBeFalsy();
   };
 
 
@@ -749,7 +749,7 @@ var TemplateCreatorPage = function () {
 
 
 
-    browser.wait(EC.visibilityOf(formValid));
+    //browser.wait(EC.visibilityOf(formValid));
     browser.wait(EC.visibilityOf(topNavBackArrow));
     browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
