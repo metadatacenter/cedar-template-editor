@@ -197,8 +197,8 @@ describe('template-creator', function () {
               removeFieldButton.click();
               browser.wait(EC.stalenessOf(field));
 
-              templatePage.checkDirty();
-              templatePage.clickBackArrow();
+              // templatePage.checkDirty();
+              // templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
 
@@ -240,8 +240,8 @@ describe('template-creator', function () {
               expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
               expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
-              templatePage.checkDirty();
-              templatePage.clickBackArrow();
+              // templatePage.checkDirty();
+              // templatePage.clickBackArrow();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
             });
@@ -314,7 +314,7 @@ describe('template-creator', function () {
 
         templatePage.hideJson();
         //templatePage.checkDirty();
-        templatePage.clickBackArrow();
+        //templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
