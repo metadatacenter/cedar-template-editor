@@ -723,35 +723,33 @@ var TemplateCreatorPage = function () {
 
   this.clickBackArrow = function () {
     console.log('clickBackArrow');
-    formValid.isPresent().then(function(result) {
-      if ( result ) {
-        console.log('formValid is success');
-      } else {
-        console.log('formValid is failure');
-      }
-    });
+    // formValid.isPresent().then(function(result) {
+    //   if ( result ) {
+    //     console.log('formValid is success');
+    //   } else {
+    //     console.log('formValid is failure');
+    //   }
+    // });
+    //
+    // topNav.isPresent().then(function(result) {
+    //   if ( result ) {
+    //     console.log('topNav is success');
+    //   } else {
+    //     console.log('topNav is failure');
+    //   }
+    // });
+    //
+    // topNavBackArrow.isPresent().then(function(result) {
+    //   if ( result ) {
+    //     console.log('topNavBackArrow is success');
+    //   } else {
+    //     console.log('topNavBackArrow is failure');
+    //   }
+    // });
 
-    topNav.isPresent().then(function(result) {
-      if ( result ) {
-        console.log('topNav is success');
-      } else {
-        console.log('topNav is failure');
-      }
-    });
-
-    topNavBackArrow.isPresent().then(function(result) {
-      if ( result ) {
-        console.log('topNavBackArrow is success');
-      } else {
-        console.log('topNavBackArrow is failure');
-      }
-    });
 
 
-
-    // browser.wait(EC.presenceOf(formValid));
-    // browser.wait(EC.visibilityOf(topNavBackArrow));
-    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    browser.wait(EC.presenceOf(formValid));
     topNavBackArrow.click();
   };
 
