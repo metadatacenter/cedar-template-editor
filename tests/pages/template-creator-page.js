@@ -561,8 +561,8 @@ var TemplateCreatorPage = function () {
 
   this.isDirty = function () {
     //expect(dirtyIcon.isDisplayed()).toBe(true);
-    //browser.wait(EC.visibilityOf(dirtyIcon));
-    return true;
+    browser.wait(EC.visibilityOf(dirtyIcon));
+    //return true;
   };
 
   this.isClean = function () {
