@@ -66,13 +66,13 @@
           <div class="back-arrow-click" ng-click="hc.confirmBack()"
               style="position: absolute;border-width: 0px;width: 46px;height: 46px;cursor: pointer;z-index: 10;top: -10px;left: -10px;"></div>
           <i class="back-arrow fa fa-arrow-left" style="font-size: 20px;margin: 0;"></i>
-          <div style="position: absolute;left: 36px;top: -10px;width: 55px;height: 46px;padding-top: 12px;">
-            <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0 1px"></i></span>
-            <span ng-if="!locked && dirty"><i class="warning fa fa-circle" style="margin:0 1px"></i></span>
-            <span ng-if="invalid"><i class="warning fa fa-exclamation-triangle" style="margin:0 1px"></i></span>
+          <div style="position: absolute;left: 36px;top: -10px;width: 45px;height: 46px;padding-top: 14px;">
+            <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>
+            <span ng-if="dirty"><i class="warning fa fa-circle" style="margin:0"></i></span>
+            <span ng-if="true"><i class="warning fa fa-exclamation-triangle" style="margin:0"></i></span>
           </div>
 
-          <span class="document-title" style="position: relative; margin: 0 0 0 60px;padding: 0;">{{hc.getDocumentTitle()}}</span>
+          <span class="document-title" style="position: relative; margin: 0 0 0 50px;padding: 0;">{{hc.getDocumentTitle()}}</span>
 
           <div class="page-title pull-right" >
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
