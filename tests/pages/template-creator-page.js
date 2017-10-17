@@ -75,7 +75,7 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.col-xs-1.backArrowClick'));
+  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
