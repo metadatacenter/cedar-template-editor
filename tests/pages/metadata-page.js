@@ -14,11 +14,12 @@ var MetadataPage = function () {
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var topNavigation = element(by.id('top-navigation'));
-  var formDirty = element(by.id('form-dirty'));
-  var formInvalid = element(by.id('form-invalid'));
-  var formValid = element(by.id('form-valid'));
-  var formLocked = element(by.id('form-locked'));
-  var navbarBack = element(by.css('.navbar-back'));
+  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.col-xs-1.backArrowClick'));
+
+  var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
+  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-circle'));
+  var validIcon = element(by.css('#top-navigation .navbar-back i.fa-check'));
+
 
   var documentTitle = element(by.id('form-document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
@@ -145,36 +146,24 @@ var MetadataPage = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
   };
 
-  this.isDirty = function () {
-    return formDirty.isDisplayed();
-  };
-
-  this.checkDirty = function () {
-    expect(formDirty.isDisplayed()).toBeTruthy();
-  };
-
-  this.isInvalid = function () {
-    return formInvalid.isDisplayed()
-  };
-
-  this.checkValid = function () {
-    expect(formInvalid.isDisplayed()).toBeFalsy();
-  };
-
   this.isLocked = function () {
-    return formLocked.isDisplayed()
+    browser.wait(EC.visibilityOf(lockIcon));
   };
 
-  this.navbarBack = function () {
-    return navbarBack;
+  this.isDirty = function () {
+    browser.wait(EC.visibilityOf(dirtyIcon));
+  };
+
+  // TODO not finding the validIcon
+  this.isValid = function () {
+    browser.wait(EC.visibilityOf(validIcon));
+    //return true;
   };
 
   this.clickBackArrow = function () {
-    console.log('clickBackArrow');
-    //browser.wait(EC.visibilityOf(formValid));
-    browser.wait(EC.visibilityOf(navbarBack));
-    browser.wait(EC.elementToBeClickable(navbarBack));
-    navbarBack.click();
+    browser.wait(EC.visibilityOf(topNavBackArrow));
+    browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    topNavBackArrow.click();
   };
 
 

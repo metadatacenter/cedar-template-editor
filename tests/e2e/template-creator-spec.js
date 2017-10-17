@@ -162,7 +162,7 @@ describe('template-creator', function () {
           templatePage.isTitle(pageType, templateOrElement);
           templatePage.isDescription(pageType, sampleDescription);
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           workspacePage.onWorkspace();
         });
 
@@ -196,7 +196,7 @@ describe('template-creator', function () {
 
                 templatePage.isDirty();
                 templatePage.isValid();
-                templatePage.topNavBackArrow().click();
+                templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
 
@@ -240,7 +240,7 @@ describe('template-creator', function () {
 
                 templatePage.isDirty();
                 templatePage.isValid();
-                templatePage.topNavBackArrow().click();
+                templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
               });
@@ -255,11 +255,10 @@ describe('template-creator', function () {
           templatePage.createPage(pageType);
           browser.wait(EC.visibilityOf(templatePage.topNavigation()));
           expect(templatePage.hasClass(templatePage.topNavigation(), pageType)).toBe(true);
-          browser.wait(EC.visibilityOf(templatePage.topNavBackArrow()));
           browser.wait(EC.visibilityOf(templatePage.showJsonLink()));
 
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           workspacePage.onWorkspace();
 
         });
@@ -269,7 +268,7 @@ describe('template-creator', function () {
           workspacePage.editResource(templateOrElement, pageType);
           templatePage.isHiddenJson();
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           workspacePage.onWorkspace();
         });
 
@@ -291,7 +290,7 @@ describe('template-creator', function () {
 
           templatePage.hideJson();
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           workspacePage.onWorkspace();
         });
 
@@ -317,7 +316,7 @@ describe('template-creator', function () {
           templatePage.hideJson();
           templatePage.isDirty();
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();
         });
@@ -360,7 +359,7 @@ describe('template-creator', function () {
 
           templatePage.hideJson();
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();
         });
@@ -378,7 +377,7 @@ describe('template-creator', function () {
           sweetAlertModal.confirm();
           sweetAlertModal.isHidden();
 
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();
 
@@ -410,7 +409,7 @@ describe('template-creator', function () {
 
           templatePage.hideJson();
           templatePage.isValid();
-          templatePage.topNavBackArrow().click();
+          templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();
         });

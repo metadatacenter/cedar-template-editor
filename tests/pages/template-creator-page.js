@@ -75,7 +75,7 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.backArrowClick'));
+  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.col-xs-1.backArrowClick'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
@@ -706,6 +706,8 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickBackArrow = function () {
+    browser.wait(EC.visibilityOf(topNavBackArrow));
+    browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
   this.createToolbar = function () {
@@ -718,9 +720,7 @@ var TemplateCreatorPage = function () {
   this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function () {
-    return topNavBackArrow;
-  };
+
   this.templateTitle = function () {
     return templateTitle;
   };
