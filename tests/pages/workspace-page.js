@@ -23,8 +23,7 @@ var WorkspacePage = function () {
   var createNavbarMetadata = element(by.css('.navbar.metadata'));
   var createControlsBar = element(by.css('.controls-bar'));
   var createNavbarElement = element(by.css('.navbar.element'));
-  var createNavbarTemplate = element(by.css('#top-navigation.navbar.template'));
-  var navbarBack = element(by.css('.navbar-back'));
+  var createNavbarTemplate = element(by.css('.navbar.emplate'));
 
 
   // page content
@@ -650,10 +649,10 @@ var WorkspacePage = function () {
     toastyModal.isSuccess();
 
     // return to workspace
-
-    browser.wait(EC.visibilityOf(navbarBack));
-    browser.wait(EC.elementToBeClickable(navbarBack));
-    navbarBack.click();
+    var backArrow = element(by.css('.back-arrow-click'));
+    browser.wait(EC.visibilityOf(backArrow));
+    browser.wait(EC.elementToBeClickable(backArrow));
+    backArrow.click();
 
   };
 

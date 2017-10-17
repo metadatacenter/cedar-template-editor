@@ -153,13 +153,11 @@ describe('template-creator', function () {
         templateOrElement = workspacePage.createTitle(pageType);
         sampleDescription = workspacePage.createDescription(pageType);
         workspacePage.createResource(pageType, templateOrElement, sampleDescription);
-        workspacePage.onWorkspace();
         resources.push(createResource(templateOrElement, pageType, testConfig.testUser1, testConfig.testPassword1));
       });
 
-
-      it("should have editable title and description 2", function () {
-        console.log("template-creator should have editable title and description 2");
+      it("should have editable title and description", function () {
+        console.log("template-creator should have editable title and description");
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isTitle(pageType, templateOrElement);
         templatePage.isDescription(pageType, sampleDescription);
@@ -167,7 +165,7 @@ describe('template-creator', function () {
 
       it("should return to workspace by clicking back arrow", function () {
         console.log("template-creator should return to workspace by clicking back arrow");
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
       });
 
@@ -199,8 +197,8 @@ describe('template-creator', function () {
               removeFieldButton.click();
               browser.wait(EC.stalenessOf(field));
 
-              // templatePage.checkDirty();
-              templatePage.clickBackArrow();
+              templatePage.isDirty();
+              templatePage.topNavBackArrow().click();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
 
@@ -242,8 +240,8 @@ describe('template-creator', function () {
               expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
               expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
-              // templatePage.checkDirty();
-              templatePage.clickBackArrow();
+              templatePage.isDirty();
+              templatePage.topNavBackArrow().click();
               sweetAlertModal.confirm();
               workspacePage.onWorkspace();
             });
@@ -258,10 +256,10 @@ describe('template-creator', function () {
         templatePage.createPage(pageType);
         browser.wait(EC.visibilityOf(templatePage.topNavigation()));
         expect(templatePage.hasClass(templatePage.topNavigation(), pageType)).toBe(true);
-        browser.wait(EC.visibilityOf(templatePage.navbarBack()));
+        browser.wait(EC.visibilityOf(templatePage.topNavBackArrow()));
         browser.wait(EC.visibilityOf(templatePage.showJsonLink()));
 
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
 
       });
@@ -270,7 +268,7 @@ describe('template-creator', function () {
         console.log("template-creator should have json preview turned off " + pageType);
         workspacePage.editResource(templateOrElement, pageType);
         templatePage.isHiddenJson();
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
       });
 
@@ -291,7 +289,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         workspacePage.onWorkspace();
       });
 
@@ -315,18 +313,18 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        //templatePage.checkDirty();
-        templatePage.clickBackArrow();
+        templatePage.isDirty();
+        templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
 
       // TODO this should require confirmation but it doesn't
-      xit("should have cancel button present and active", function () {
+      it("should have cancel button present and active", function () {
         console.log("template-creator should have cancel button present and active");
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        //templatePage.checkDirty();
+        templatePage.isDirty();
         templatePage.clickCancel(pageType);
         //sweetAlertModal.confirm();
         workspacePage.onWorkspace();
@@ -337,7 +335,7 @@ describe('template-creator', function () {
 
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        //templatePage.checkDirty();
+        templatePage.isDirty();
         templatePage.showJson();
 
         browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
@@ -356,7 +354,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
@@ -366,14 +364,14 @@ describe('template-creator', function () {
 
         templatePage.createPage(pageType);
         templatePage.addField('textfield', isMore, title, description);
-        //templatePage.checkDirty();
+        templatePage.isDirty();
 
         // clear and confirm
         templatePage.clickClear(pageType);
         sweetAlertModal.confirm();
         sweetAlertModal.isHidden();
 
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
 
@@ -403,7 +401,7 @@ describe('template-creator', function () {
         });
 
         templatePage.hideJson();
-        templatePage.clickBackArrow();
+        templatePage.topNavBackArrow().click();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
       });
