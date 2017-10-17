@@ -63,18 +63,18 @@
       <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard() " class="form-page">
 
-          <div class="navbar-back" ng-click="hc.confirmBack()" style="position:absolute;left:0px;background-color:red;width:100px;z-index:10">
+          <div class="navbar-back" ng-click="hc.confirmBack()" >
             <span><i class="fa fa-arrow-left back-arrow"></i></span>
-            <span ng-if="documentState.valid"><i class="warning fa fa-check-square form-valid"></i></span>
-            <span ng-if="!documentState.valid"><i class="warning fa fa-exclamation-triangle form-invalid"></i></span>
-            <span ng-if="dirty"><i class="warning fa fa-circle form-dirty"></i></span>
-            <span ng-if="locked"><i class="warning fa fa-lock form-locked"></i></span>
+            <!--<span ng-if="documentState.valid"><i class="warning fa fa-check-square form-valid"></i></span>-->
+            <!--<span ng-if="!documentState.valid"><i class="warning fa fa-exclamation-triangle form-invalid"></i></span>-->
+            <!--<span ng-if="dirty"><i class="warning fa fa-circle form-dirty"></i></span>-->
+            <!--<span ng-if="locked"><i class="warning fa fa-lock form-locked"></i></span>-->
 
           </div>
-          <div class="" style="position:absolute;left:100px;background-color:green;z-index:10">
+          <div class="" style="position:absolute;left:100px;background-color:green;">
             <span id="form-document-title" class="document-title">{{hc.getDocumentTitle()}}</span>
           </div>
-          <div class="page-title " style="position:absolute;right:0px;background-color:yellow;width:20px;z-index:10">
+          <div class="page-title " style="position:absolute;right:0px;background-color:yellow;width:20px;">
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true" class="pull-right">
 
               <div ng-if="$root.pageId !== 'RUNTIME'">
