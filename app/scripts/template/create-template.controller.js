@@ -53,8 +53,6 @@ define([
 
         // validate the resource
         var checkValidation = function (node) {
-          console.log('checkValidation',node);
-
           if (node) {
             return resourceService.validateResource(
                 node, CONST.resourceType.TEMPLATE,
@@ -74,10 +72,6 @@ define([
                 }
             );
           }
-
-          // $timeout(function () {
-          //   $rootScope.$broadcast("form:validation", { state: true });
-          // });
         };
 
         $scope.checkLocking = function () {

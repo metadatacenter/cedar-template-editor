@@ -68,7 +68,8 @@
           <div class="form-feedback" >
             <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>
             <span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>
-            <span ng-if="true"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>
+            <span ng-if="!documentState.valid"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>
+            <span ng-if="documentState.valid"><i class="warning fa fa-check" style="margin:0"></i></span>
           </div>
 
           <span class="document-title" style="position: relative; margin: 0 0 0 50px;padding: 0;">{{hc.getDocumentTitle()}}</span>

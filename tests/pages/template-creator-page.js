@@ -25,7 +25,8 @@ var TemplateCreatorPage = function () {
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
   var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
-  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-exclamation-triangle'));
+  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-circle'));
+  var validIcon = element(by.css('#top-navigation .navbar-back i.fa-check'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -555,21 +556,15 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //expect(lockIcon.isDisplayed()).toBe(true);
     browser.wait(EC.visibilityOf(lockIcon));
   };
 
   this.isDirty = function () {
-    //expect(dirtyIcon.isDisplayed()).toBe(true);
     browser.wait(EC.visibilityOf(dirtyIcon));
-    //return true;
   };
 
-  this.isClean = function () {
-    //console.log('isClean' , dirtyIcon.isDisplayed());
-    //expect(dirtyIcon.isDisplayed()).toBe(false);
-    //browser.wait(EC.visibilityOf(dirtyIcon));
-    return true;
+  this.isValid = function () {
+    browser.wait(EC.visibilityOf(validIcon));
   };
 
 
