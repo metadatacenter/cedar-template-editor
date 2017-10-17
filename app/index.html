@@ -62,18 +62,20 @@
 
       <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()">
-        <div class="navbar-back col-sm-12" >
-          <div class="back-arrow-click" ng-click="hc.confirmBack()" style="background:red"></div>
+        <div class="navbar-back col-sm-12">
+          <div class="back-arrow-click" ng-click="hc.confirmBack()"
+              style="background:red;position: absolute;border-width: 0px;width: 46px;height: 46px;cursor: pointer;z-index: 10;top: -10px;left: -10px"></div>
           <i class="back-arrow fa fa-arrow-left"></i>
 
 
-          <div  style="background:green;position:absolute;left:56px;top:10px;width:60px">
-          <span ng-if="true"><i class="warning fa fa-lock" style="margin:0 2px"></i></span>
-          <span ng-if="true"><i class="warning fa fa-circle" style="margin:0 2px"></i></span>
-          <span ng-if="true"><i class="warning fa fa-exclamation-triangle" style="margin:0 2px"></i></span>
+          <div style="background: green;position: absolute;left: 56px;top: -10px; width: 60px; height: 46px;">
+            <span ng-if="true"><i class="warning fa fa-lock" style="margin:0 2px"></i></span>
+            <span ng-if="true"><i class="warning fa fa-circle" style="margin:0 2px"></i></span>
+            <span ng-if="true"><i class="warning fa fa-exclamation-triangle" style="margin:0 2px"></i></span>
           </div>
 
-          <span class="document-title" style="position:absolute;left:100px;background-color:aqua;margin:0 0 0 20px;padding:0">{{hc.getDocumentTitle()}}</span>
+          <span class="document-title"
+              style="position:absolute;left:100px;background-color:aqua;margin:0 0 0 20px;padding:0">{{hc.getDocumentTitle()}}</span>
 
           <div class="page-title pull-right" style="background-color:blue;">
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
@@ -95,9 +97,9 @@
             </span>
 
           </div>
-          </div>
         </div>
       </div>
+    </div>
 
   </div>
 </nav>
