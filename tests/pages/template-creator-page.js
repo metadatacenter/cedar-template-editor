@@ -75,7 +75,7 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.back-arrow-click'));
+  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.backArrowClick'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
@@ -565,8 +565,8 @@ var TemplateCreatorPage = function () {
 
   // TODO not finding the validIcon
   this.isValid = function () {
-    //browser.wait(EC.visibilityOf(validIcon));
-    return true;
+     browser.wait(EC.visibilityOf(validIcon));
+    //return true;
   };
 
 

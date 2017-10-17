@@ -61,20 +61,57 @@
       </div>
 
       <!-- otherwise on a form page--->
-      <div ng-if="!hc.isDashboard()">
+      <!--<div ng-if="!hc.isDashboard()">-->
+        <!--<div class="navbar-back col-sm-12">-->
+          <!--<div class="back-arrow-click" ng-click="hc.confirmBack()"></div>-->
+          <!--<i class="back-arrow fa fa-arrow-left" ></i>-->
+          <!--<div class="form-feedback" >-->
+            <!--<span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>-->
+            <!--<span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>-->
+            <!--<span ng-if="!documentState.valid"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>-->
+            <!--<span ng-if="documentState.valid"><i class="warning fa fa-check" style="margin:0"></i></span>-->
+          <!--</div>-->
+
+          <!--<span class="document-title" >{{hc.getDocumentTitle()}}</span>-->
+
+          <!--<div class="page-title pull-right" >-->
+            <!--<span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">-->
+
+              <!--<div ng-if="$root.pageId !== 'RUNTIME'">-->
+              <!--<a id='show-json-link' ng-click="$root.showRender = !$root.showRender; hc.scrollToAnchor('templateJSON')"-->
+                  <!--title="Document Preview" ng-if="$root.pageId !== 'RUNTIME'">-->
+                <!--<span ng-if="$root.showRender"><i class="fa fa-dot-circle-o"></i></span>-->
+                <!--<span ng-if="!$root.showRender"><i class="fa fa-circle-o"></i></span>-->
+              <!--</a>-->
+              <!--</div>-->
+
+              <!--<div ng-if="$root.pageId === 'RUNTIME'">-->
+              <!--<a ng-click="hc.toggleShowOutput(); hc.scrollToAnchor('outputJSON')" title="Document Preview">-->
+                <!--<span ng-if="hc.isShowOutput()"> <i class="fa fa-dot-circle-o"></i></span>-->
+                <!--<span ng-if="!hc.isShowOutput()"><i class="fa fa-circle-o"></i></span>-->
+              <!--</a>-->
+              <!--</div>-->
+            <!--</span>-->
+
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <div ng-if="!hc.isDashboard()" class="row">
         <div class="navbar-back col-sm-12">
-          <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
-          <i class="back-arrow fa fa-arrow-left" ></i>
-          <div class="form-feedback" >
-            <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>
-            <span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>
-            <span ng-if="!documentState.valid"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>
-            <span ng-if="documentState.valid"><i class="warning fa fa-check" style="margin:0"></i></span>
-          </div>
-
-          <span class="document-title" >{{hc.getDocumentTitle()}}</span>
-
-          <div class="page-title pull-right" >
+          <div class="row">
+            <div class="col-xs-1 backArrowClick" style="background:red" ng-click="hc.confirmBack()">
+              <i class="back-arrow fa fa-arrow-left" ></i>
+              <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>
+              <span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>
+              <span ng-if="!documentState.valid"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>
+              <span ng-if="documentState.valid"><i class="warning fa fa-check" style="margin:0"></i></span>
+            </div>
+            <div class="col-xs-10" style="background:green">
+              <span class="document-title" >{{hc.getDocumentTitle()}}</span>
+            </div>
+            <div class="col-xs-1" style="background:blue">
+              <div class="" >
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
 
               <div ng-if="$root.pageId !== 'RUNTIME'">
@@ -93,7 +130,10 @@
               </div>
             </span>
 
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </div>
