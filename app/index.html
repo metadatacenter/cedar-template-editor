@@ -63,13 +63,12 @@
       <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()">
         <div class="navbar-back col-sm-12">
-          <div class="back-arrow-click" ng-click="hc.confirmBack()"
-              style="position: absolute;border-width: 0px;width: 46px;height: 46px;cursor: pointer;z-index: 10;top: -10px;left: -10px;"></div>
-          <i class="back-arrow fa fa-arrow-left" style="font-size: 20px;margin: 0;"></i>
-          <div style="position: absolute;left: 36px;top: -10px;width: 45px;height: 46px;padding-top: 14px;">
+          <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
+          <i class="back-arrow fa fa-arrow-left" ></i>
+          <div class="form-feedback" >
             <span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>
-            <span ng-if="dirty"><i class="warning fa fa-circle" style="margin:0"></i></span>
-            <span ng-if="true"><i class="warning fa fa-exclamation-triangle" style="margin:0"></i></span>
+            <span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>
+            <span ng-if="true"><i class="error fa fa-exclamation-triangle" style="margin:0"></i></span>
           </div>
 
           <span class="document-title" style="position: relative; margin: 0 0 0 50px;padding: 0;">{{hc.getDocumentTitle()}}</span>

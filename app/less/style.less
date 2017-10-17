@@ -60,6 +60,8 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+@button-error: #FF5722;
+@button-dirty: #5cb85c;
 @button-pause: #f0ad4e;
 @button-pause-hover: #DD9F48;
 @button-resume: #5cb85c;
@@ -178,6 +180,14 @@ button {
     color: @button-warning;
     margin:0 2px;
   }
+  i.error {
+    color: @button-warning;
+    margin:0 2px;
+  }
+  i.dirty {
+    color:@button-warning;
+    margin:0 2px;
+  }
 
   .clear-search {
     position: absolute;
@@ -250,12 +260,12 @@ button {
     .back-arrow {
       color: @white;
       font-size: 20px;
-      margin: 0 0 0 10px;
+      margin: 0;
       font-weight: 100;
+    }
 
-      @media (min-width: @screen-sm-min) {
-        font-size: 16px;
-      }
+    .form-feedback {
+      position: absolute;left: 36px;top: -10px;width: 45px;height: 46px;padding-top: 14px;
     }
 
     .back-arrow-click {
@@ -393,7 +403,12 @@ button {
       padding:0 20px 0 0;
     }
     i.warning {
-      font-size:0.8em;margin:0
+      font-size:0.8em;margin:0;
+      color: @button-warning;
+    }
+    i.errpr {
+      font-size:0.8em;margin:0;
+      color: @button-error;
     }
   }
 
