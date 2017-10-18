@@ -558,7 +558,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    browser.wait(EC.presenceOf(dirtyIcon));
+    browser.wait(EC.presenceOf(lockIcon));
   };
 
   this.isDirty = function () {
