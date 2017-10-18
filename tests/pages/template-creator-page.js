@@ -562,7 +562,12 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
-    browser.wait(EC.presenceOf(dirtyIcon));
+    console.log('isDirty');
+    browser.wait(EC.visibilityOf(dirtyIcon));
+    browser.wait(EC.elementToBeClickable(dirtyIcon));
+    dirtyIcon.click().then(function () {
+      console.log('isDirty clicked dirtyIcon')
+    });
   };
 
   this.isValid = function () {

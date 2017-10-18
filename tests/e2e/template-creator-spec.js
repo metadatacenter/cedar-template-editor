@@ -135,6 +135,11 @@ describe('template-creator', function () {
   });
 
   afterEach(function () {
+    browser.manage().logs().get('browser').then(function(browserLog) {
+      //expect(browserLog.length).toEqual(0);
+      // Uncomment to actually see the log.
+      console.log('log: ' + require('util').inspect(browserLog));
+    });
   });
 
   it("should be on the workspace page", function () {
@@ -150,14 +155,14 @@ describe('template-creator', function () {
     workspacePage.onWorkspace();
   });
 
-  it("should check valid", function () {
+  xit("should check valid", function () {
     console.log("template-creator should check valid");
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isValid();
   });
 
-  it("should return to workspace", function () {
+  xit("should return to workspace", function () {
     console.log("template-creator should return to workspace");
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
@@ -169,10 +174,7 @@ describe('template-creator', function () {
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isDirty();
-  });
 
-  it("should return to workspace", function () {
-    console.log("template-creator should return to workspace");
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();

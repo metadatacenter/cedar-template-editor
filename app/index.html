@@ -80,9 +80,9 @@
       <div ng-if="$root.pageId !== 'RUNTIME'">
 
         <span class="feedback-form" >
-            <span><i class="warning fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
-            <span><i class="dirty fa "  ng-class="{'fa-circle': dirty, 'fa-circle-o': !dirty}"></i></span>
-            <span><i class="error fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+            <span><i ng-click="hc.console('lock')" class="warning fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
+            <span><i ng-click="hc.console('dirty')" class="dirty fa "  ng-class="{'fa-circle': dirty, 'fa-circle-o': !dirty}"></i></span>
+            <span><i ng-click="hc.console('valid')" class="error fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
           </span>
 
       <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; hc.scrollToAnchor('templateJSON')"

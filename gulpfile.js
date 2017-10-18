@@ -294,7 +294,7 @@ gulp.task('test-form', gulp.series('test-env', function () {
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e
