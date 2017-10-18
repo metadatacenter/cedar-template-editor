@@ -131,6 +131,7 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
+    browser.ignoreSynchronization = false;
   });
 
   afterEach(function () {
@@ -160,13 +161,13 @@ describe('template-creator', function () {
     workspacePage.onWorkspace();
   });
 
-  xit("should check dirty", function () {
+  it("should check dirty", function () {
     console.log("template-creator should check dirty");
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
-    templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isDirty();
     templatePage.clickBackArrow();
+    sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
 
