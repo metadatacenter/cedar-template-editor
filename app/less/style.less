@@ -60,6 +60,8 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+@button-error: #FF5722;
+@button-dirty: #5cb85c;
 @button-pause: #f0ad4e;
 @button-pause-hover: #DD9F48;
 @button-resume: #5cb85c;
@@ -176,7 +178,15 @@ button {
   }
   i.warning {
     color: @button-warning;
-    margin:0 5px;
+    margin:0 2px;
+  }
+  i.error {
+    color: @button-warning;
+    margin:0 2px;
+  }
+  i.dirty {
+    color:@button-warning;
+    margin:0 2px;
   }
 
   .clear-search {
@@ -250,18 +260,28 @@ button {
     .back-arrow {
       color: @white;
       font-size: 20px;
-      margin: 0 0 0 10px;
+      margin: 0;
       font-weight: 100;
+    }
 
-      @media (min-width: @screen-sm-min) {
-        font-size: 16px;
-      }
+    .feedback-form {
+      width:70px;overflow:hidden;min-width:70px;max-width:70px;
+    }
+
+    .form-feedback {
+      position: absolute;
+      left: 36px;
+      top: -10px;
+      width: 45px;
+      height: 46px;
+      padding-top: 14px;
+      left: 66px;
     }
 
     .back-arrow-click {
       position: absolute;
-      border: 0px solid red;
-      width: 46px;
+      border-width: 0px;
+      width: 200px;
       height: 46px;
       cursor: pointer;
       z-index: 10;
@@ -279,8 +299,10 @@ button {
     .document-title {
       color: @white;
       font-size: 18px;
-      margin: 0 0 0 10px;
       font-weight: 200;
+      position: relative;
+      margin: 0;
+      padding: 0;
     }
 
     @media (min-width: @screen-sm-min) {
@@ -364,22 +386,44 @@ button {
   }
 }
 
-.navbar.template {
-  background-color: @header-template;
-  margin-right: 10px;
-}
+#top-navigation {
 
-.navbar.element {
-  background-color: @header-element;
-  margin-right: 10px;
-}
+  &.template {
+    background-color: @header-template;
+    margin-right: 10px;
+  }
 
-.navbar.dashboard {
-  background-color: @header-dashboard;
-}
+  &.element {
+    background-color: @header-element;
+    margin-right: 10px;
+  }
 
-.navbar.metadata {
-  background-color: @header-template;
+  &.dashboard {
+    background-color: @header-dashboard;
+  }
+
+  &.metadata {
+    background-color: @header-template;
+  }
+
+  .form-page {
+    height:36px;padding-top:4px;font-size:1.2em;
+    .full-height {
+      height:100%;
+    }
+    .document-title {
+      padding:0 20px 0 0;
+    }
+    i.warning {
+      font-size:0.8em;margin:0;
+      color: @button-warning;
+    }
+    i.errpr {
+      font-size:0.8em;margin:0;
+      color: @button-error;
+    }
+  }
+
 }
 
 #angular-views-entry {

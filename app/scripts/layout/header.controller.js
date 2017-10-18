@@ -25,9 +25,12 @@ define([
 
     vm.path = $location.path();
 
-    vm.confirmBack = function () {
+    // vm.console = function(value) {
+    //   console.log(value);
+    // };
 
-      if ($rootScope.isLocked() || !$rootScope.isDirty()) {
+    vm.confirmBack = function () {
+      if ($rootScope.isLocked() || !$rootScope.isDirty() || !$rootScope.isValid()) {
         vm.goToDashboardOrBack();
       } else {
 
@@ -36,6 +39,7 @@ define([
               $timeout(function () {
                 vm.goToDashboardOrBack();
                 $rootScope.setDirty(false);
+                $rootScope.setValidation(true);
               });
 
             },

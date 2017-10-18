@@ -35,6 +35,14 @@ var ToastyModal = function () {
     browser.sleep(500);
     browser.ignoreSynchronization = true;
 
+    // createToastySuccess.isPresent().then(function(result) {
+    //   if ( result ) {
+    //     console.log('toasty is success');
+    //   } else {
+    //     console.log('toasty is failure');
+    //   }
+    // });
+
     // is it a success?
     expect(createToastySuccess.isPresent()).toBe(true);
 

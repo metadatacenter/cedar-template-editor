@@ -67,9 +67,33 @@ define([
             $scope.canWrite();
           },
           function (error) {
-            UIMessageService.showBackendError('SERVER.' + 'INSTANCE' + '.load.error', error);
+            UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
           }
       );
+    };
+
+    // validate the resource
+    var checkValidation = function (node) {
+
+      if (node) {
+        return resourceService.validateResource(
+            node, CONST.resourceType.INSTANCE,
+            function (response) {
+
+              var json = angular.toJson(response);
+              var status = response.validates == "true";
+              $scope.logValidation(status, json);
+
+              $timeout(function () {
+                $rootScope.$broadcast("form:validation", { state: status });
+              });
+
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
+            }
+        );
+      }
     };
 
     // Get/read instance with given id from $routeParams
@@ -79,10 +103,12 @@ define([
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
+            checkValidation($scope.instance);
             $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
+
 
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
@@ -115,6 +141,7 @@ define([
       for (var i = 0; i < report.errors.length; i++) {
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
+      $rootScope.setValidation(validationStatus);
     };
 
     // Stores the data (instance) into the databases

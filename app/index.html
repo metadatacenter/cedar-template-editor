@@ -37,19 +37,19 @@
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
-<nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role="navigation">
+<nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role=" navigation ">
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header">
 
-      <!-- if we are in the workspace --->
+      <!-- if we are in the workspace  --->
       <div ng-if="hc.isDashboard()">
         <div>
-          <div class=" nav-search" >
+          <div class="nav-search">
             <form>
               <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                     class="form-control search-input"
-                    id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" />
+                    id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"/>
                 <a class="clear clear-search" ng-show="hc.searchTerm" ng-click="hc.search('')">
                   <span class="fa fa-remove"></span></a>
                 <a class="clear do-search " ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search "></i></a>
@@ -60,39 +60,89 @@
         <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
-      <!-- otherwise on a form page--->
+
       <div ng-if="!hc.isDashboard()">
-        <div class="navbar-back col-sm-12" >
+        <div class="navbar-back col-sm-12">
           <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
           <i class="back-arrow fa fa-arrow-left"></i>
+
+          <span class="feedback-form">
+            <span><i class="warning fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
+            <span><i class="dirty fa " ng-class="{'fa-circle': dirty, 'fa-circle-o': !dirty}"></i></span>
+            <span><i class="error fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+          </span>
+
           <span class="document-title">{{hc.getDocumentTitle()}}</span>
 
-          <span ng-if="locked"><i class="warning fa fa-lock"></i></span>
-          <span ng-if="!locked && dirty"><i class="warning fa fa-exclamation-triangle"></i></span>
+          <div class="page-title pull-right">
+      <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
 
-          <div class="page-title pull-right" >
-            <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
+      <div ng-if="$root.pageId !== 'RUNTIME'">
+      <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; hc.scrollToAnchor('templateJSON')"
+          title="Document Preview" ng-if="$root.pageId !== 'RUNTIME'">
+      <span ng-if="$root.showRender"><i class="fa fa-dot-circle-o"></i></span>
+      <span ng-if="!$root.showRender"><i class="fa fa-circle-o"></i></span>
+      </a>
+      </div>
 
-              <div ng-if="$root.pageId !== 'RUNTIME'">
-              <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; hc.scrollToAnchor('templateJSON')"
-                  title="Document Preview" ng-if="$root.pageId !== 'RUNTIME'">
-                <span ng-if="$root.showRender"><i class="cedar-svg-complete" ></i></span>
-                <span ng-if="!$root.showRender"><i class="cedar-svg-progress" ></i></span>
-              </a>
-              </div>
+      <div ng-if="$root.pageId === 'RUNTIME'">
+      <a ng-click="hc.toggleShowOutput(); hc.scrollToAnchor('outputJSON')" title="Document Preview">
+      <span ng-if="hc.isShowOutput()"> <i class="fa fa-dot-circle-o"></i></span>
+      <span ng-if="!hc.isShowOutput()"><i class="fa fa-circle-o"></i></span>
+      </a>
+      </div>
+      </span>
 
-              <div ng-if="$root.pageId === 'RUNTIME'">
-              <a ng-click="hc.toggleShowOutput(); hc.scrollToAnchor('outputJSON')" title="Document Preview">
-                <span ng-if="hc.isShowOutput()"> <i class="cedar-svg-complete" ></i></span>
-                <span ng-if="!hc.isShowOutput()"><i class="cedar-svg-progress" ></i></span>
-              </a>
-                </div>
-            </span>
-
-          </div>
           </div>
         </div>
       </div>
+
+      <!--<div ng-if="!hc.isDashboard()" class="row">-->
+      <!--<div class="navbar-back col-sm-12">-->
+      <!--<div class="row">-->
+
+      <!--<div class="col-span-12" style="background:blue;margin-left:200px">-->
+      <!--<span class="document-title">{{hc.getDocumentTitle()}}</span>-->
+
+      <!--<span  ng-if="$root.showRender"><i class="fa fa-dot-circle-o"></i></span>-->
+      <!--<span ng-if="!$root.showRender"><i class="fa fa-circle-o"></i></span>-->
+
+      <!--&lt;!&ndash;<span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div ng-if="$root.pageId !== 'RUNTIME'">&ndash;&gt;-->
+      <!--&lt;!&ndash;<a id='show-json-link' ng-click="$root.showRender = !$root.showRender; hc.scrollToAnchor('templateJSON')"&ndash;&gt;-->
+      <!--&lt;!&ndash;title="Document Preview" ng-if="$root.pageId !== 'RUNTIME'">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-if="$root.showRender"><i class="fa fa-dot-circle-o"></i></span>&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-if="!$root.showRender"><i class="fa fa-circle-o"></i></span>&ndash;&gt;-->
+      <!--&lt;!&ndash;</a>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;<div ng-if="$root.pageId === 'RUNTIME'">&ndash;&gt;-->
+      <!--&lt;!&ndash;<a ng-click="hc.toggleShowOutput(); hc.scrollToAnchor('outputJSON')" title="Document Preview">&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-if="hc.isShowOutput()"> <i class="fa fa-dot-circle-o"></i></span>&ndash;&gt;-->
+      <!--&lt;!&ndash;<span ng-if="!hc.isShowOutput()"><i class="fa fa-circle-o"></i></span>&ndash;&gt;-->
+      <!--&lt;!&ndash;</a>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</span>&ndash;&gt;-->
+
+      <!--</div>-->
+
+
+      <!--<div class="backArrowClick" style="background:red;position:absolute;top:0;left:0;width:200px;z-index: 10"  ng-click="hc.confirmBack()">-->
+      <!--<i class="back-arrow fa fa-arrow-left"></i>-->
+      <!--<span ng-if="locked"><i class="warning fa fa-lock" style="margin:0"></i></span>-->
+      <!--<span ng-if="dirty"><i class="dirty fa fa-circle" style="margin:0"></i></span>-->
+      <!--<span ng-if="!documentState.valid"><i class="error fa fa-exclamation-triangle"-->
+      <!--style="margin:0"></i></span>-->
+      <!--<span ng-if="documentState.valid"><i class="warning fa fa-check" style="margin:0"></i></span>-->
+      <!--</div>-->
+
+
+      <!--</div>-->
+
+      <!--</div>-->
+      <!--</div>-->
+    </div>
 
   </div>
 </nav>

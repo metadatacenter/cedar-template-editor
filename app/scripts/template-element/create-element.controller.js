@@ -70,10 +70,37 @@ define([
       $rootScope.setDirty(false);
     };
 
-    // // can we write to this element?  if there are no details then it is a new element
-    // $scope.canWrite = function () {
-    //   return !$scope.details || resourceService.canWrite($scope.details);
-    // };
+
+
+    // validate the resource
+    var checkValidation = function (node) {
+
+      if (node) {
+        return resourceService.validateResource(
+            node, CONST.resourceType.ELEMENT,
+            function (response) {
+
+              var json = angular.toJson(response);
+              var status = response.validates == "true";
+              $scope.logValidation(status, json);
+
+              $timeout(function () {
+                $rootScope.$broadcast("form:validation", { state: status });
+              });
+
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            }
+        );
+      }
+    };
+
+    $scope.checkLocking = function () {
+      var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+      $scope.cannotWrite = !result;
+      return result;
+    };
 
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(
@@ -97,6 +124,10 @@ define([
             TemplateElementService.getTemplateElement($routeParams.id),
             function (response) {
               $scope.element = response.data;
+
+              var copiedForm = jQuery.extend(true, {}, $scope.element);
+              checkValidation(copiedForm);
+
               HeaderService.dataContainer.currentObjectScope = $scope.element;
 
               var key = $scope.element["@id"];
@@ -112,11 +143,13 @@ define([
 
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = dms.getTitle($scope.form);
+
               dms.createDomIds($scope.element);
 
               $scope.elementSchema = dms.schemaOf($scope.element);
 
               $scope.setClean();
+
               getDetails(key);
 
             },
@@ -127,6 +160,9 @@ define([
       } else {
         // If we're not loading an existing element then let's create a new empty $scope.element property
         $scope.element = DataTemplateService.getElement();
+
+        $rootScope.setValidation(true);
+
         HeaderService.dataContainer.currentObjectScope = $scope.element;
 
         var key = $scope.element["@id"] || dms.generateGUID();
@@ -233,6 +269,8 @@ define([
       for (var i = 0; i < report.errors.length; i++) {
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
+
+      $rootScope.setValidation(validationStatus);
     };
 
     $scope.saveElement = function () {

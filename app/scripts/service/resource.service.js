@@ -50,6 +50,7 @@ define([
           canChangeOwner         : canChangeOwner,
           canShare               : canShare,
           renameNode             : renameNode,
+          validateResource       : validateResource
         };
         return service;
 
@@ -269,6 +270,18 @@ define([
           }
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function validateResource(resource, resourceType, successCallback, errorCallback) {
+
+          var url = urlService.validateResource(resourceType);
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, resource),
               function (response) {
                 successCallback(response.data);
               },

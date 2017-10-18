@@ -51,6 +51,35 @@ define([
           return result;
         };
 
+        // validate the resource
+        var checkValidation = function (node) {
+          if (node) {
+            return resourceService.validateResource(
+                node, CONST.resourceType.TEMPLATE,
+                function (response) {
+
+                  var json = angular.toJson(response);
+                  var status = response.validates == "true";
+                  $scope.logValidation(status, json);
+
+                  $timeout(function () {
+                    $rootScope.$broadcast("form:validation", { state: status });
+                  });
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                }
+            );
+          }
+        };
+
+        $scope.checkLocking = function () {
+          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          $scope.cannotWrite = !result;
+          return result;
+        };
+
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
           $rootScope.setLocked($scope.cannotWrite);
@@ -68,7 +97,8 @@ define([
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
                 if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning", "The template may not be modified because there are metadata using it.", "OK", "") ;
+                  UIMessageService.showWarning("Warning",
+                      "The template may not be modified because there are metadata using it.", "OK", "");
                 }
 
               },
@@ -91,6 +121,7 @@ define([
           );
         };
 
+
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
           if ($routeParams.id) {
@@ -99,14 +130,18 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
-                  HeaderService.dataContainer.currentObjectScope = $scope.form;
 
+                  var copiedForm = jQuery.extend(true, {}, $scope.form);
+                  checkValidation(copiedForm);
+
+                  HeaderService.dataContainer.currentObjectScope = $scope.form;
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
                   $rootScope.jsonToSave = $scope.form;
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
                   $rootScope.$broadcast('form:clean');
+
                   getDetails($scope.form["@id"]);
 
 
@@ -118,14 +153,18 @@ define([
           } else {
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
+
+            // var copiedForm = jQuery.extend(true, {}, $scope.form);
+            // checkValidation(copiedForm);
+            $rootScope.setValidation(true);
+
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
-            DataManipulationService.createDomIds($scope.form);
-            //$scope.getType();
-            $rootScope.$broadcast('form:clean');
 
+            DataManipulationService.createDomIds($scope.form);
+            $rootScope.$broadcast('form:clean');
           }
         };
 
@@ -259,6 +298,8 @@ define([
           for (var i = 0; i < report.errors.length; i++) {
             console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
           }
+
+          $rootScope.setValidation(validationStatus);
         };
 
         // Stores the template into the database
@@ -294,6 +335,7 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
+
 
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));

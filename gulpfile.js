@@ -282,7 +282,7 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
     './tests/e2e/metadata-creator-spec.js',
   ])
       .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -291,7 +291,18 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
 
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/template-creator-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sharded.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-form-sequential', gulp.series('test-env', function () {
+  return gulp.src([
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
