@@ -142,7 +142,38 @@ describe('template-creator', function () {
     workspacePage.hasLogo();
   });
 
-  describe('create resource', function () {
+  it("should check back arrow", function () {
+    console.log("template-creator should check back arrow");
+    templatePage.createPage('template');
+    templatePage.clickBackArrow();
+    workspacePage.onWorkspace();
+  });
+
+  it("should check valid", function () {
+    console.log("template-creator should check valid");
+    templatePage.createPage('template');
+    templatePage.addField('textfield', false, 'title', 'description');
+    templatePage.clickSave('template');
+    toastyModal.isSuccess();
+    templatePage.isValid();
+    templatePage.clickBackArrow();
+    workspacePage.onWorkspace();
+  });
+
+  xit("should check dirty", function () {
+    console.log("template-creator should check dirty");
+    templatePage.createPage('template');
+    templatePage.addField('textfield', false, 'title', 'description');
+    templatePage.addField('textfield', false, 'title', 'description');
+    templatePage.isDirty();
+    templatePage.clickBackArrow();
+    workspacePage.onWorkspace();
+  });
+
+
+
+
+  xdescribe('create resource', function () {
 
     // repeat tests for both template and element editors
     for (var j = 0; j < pageTypes.length; j++) {
@@ -419,7 +450,7 @@ describe('template-creator', function () {
     }
   });
 
-  describe('remove created resources', function () {
+  xdescribe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("template-creator should delete " + resources.length + " resources from the user workspace");

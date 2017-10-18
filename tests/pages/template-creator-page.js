@@ -24,9 +24,9 @@ var TemplateCreatorPage = function () {
   var createMore = element(by.id('button-add-more'));
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
-  var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
-  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-circle'));
-  var validIcon = element(by.css('#top-navigation .navbar-back i.fa-check'));
+  var lockIcon = element(by.css('#top-navigation  i.fa-lock'));
+  var dirtyIcon = element(by.css('#top-navigation  i.fa-circle'));
+  var validIcon = element(by.css('#top-navigation  i.fa-check'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -75,7 +75,9 @@ var TemplateCreatorPage = function () {
   var templateJSON = element(by.id('templateJSON'));
   var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
+  //var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
+  var topNavBackArrow = element(by.css('.back-arrow-click'));
+
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
@@ -556,17 +558,19 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    browser.wait(EC.visibilityOf(lockIcon));
+    browser.wait(EC.presenceOf(dirtyIcon));
+    //return true;
   };
 
   this.isDirty = function () {
-    browser.wait(EC.visibilityOf(dirtyIcon));
+    browser.wait(EC.presenceOf(dirtyIcon));
+    //return true;
   };
 
   // TODO not finding the validIcon
   this.isValid = function () {
-     //browser.wait(EC.visibilityOf(validIcon));
-    return true;
+     browser.wait(EC.presenceOf(validIcon));
+    //return true;
   };
 
 
@@ -706,8 +710,8 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickBackArrow = function () {
-    browser.wait(EC.visibilityOf(topNavBackArrow));
-    browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    // browser.wait(EC.visibilityOf(topNavBackArrow));
+    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
   this.createToolbar = function () {

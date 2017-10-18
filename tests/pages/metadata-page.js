@@ -14,7 +14,8 @@ var MetadataPage = function () {
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
+  //var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
+  var topNavBackArrow = element(by.css('.back-arrow-click'));
 
   var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
   var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-circle'));
@@ -161,8 +162,8 @@ var MetadataPage = function () {
   };
 
   this.clickBackArrow = function () {
-    browser.wait(EC.visibilityOf(topNavBackArrow));
-    browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    // browser.wait(EC.visibilityOf(topNavBackArrow));
+    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
 
