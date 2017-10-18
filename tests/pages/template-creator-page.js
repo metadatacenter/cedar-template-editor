@@ -558,28 +558,15 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //browser.wait(EC.presenceOf(dirtyIcon));
-    return true;
+    browser.wait(EC.presenceOf(dirtyIcon));
   };
 
   this.isDirty = function () {
-    console.log('isDirty');
-
-    browser.debugger();
-
-    browser.driver.wait(function() {
-      return dirtyIcon.isDisplayed().then(function(IsVisible) {
-      return IsVisible;
-    });
-  }, 10000);
-
-    //expect(dirtyIcon.isPresent()).toBe(true);
-
+    browser.wait(EC.presenceOf(dirtyIcon));
   };
 
   this.isValid = function () {
-     //browser.wait(EC.presenceOf(validIcon));
-    return true;
+     browser.wait(EC.presenceOf(validIcon));
   };
 
   this.clickSave = function (type) {

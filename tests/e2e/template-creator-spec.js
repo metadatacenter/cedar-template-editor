@@ -154,10 +154,13 @@ describe('template-creator', function () {
     console.log("template-creator should check valid");
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
-    templatePage.clickSave('template');
-    toastyModal.isSuccess();
     templatePage.isValid();
+  });
+
+  it("should return to workspace", function () {
+    console.log("template-creator should return to workspace");
     templatePage.clickBackArrow();
+    sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
 
@@ -166,6 +169,10 @@ describe('template-creator', function () {
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isDirty();
+  });
+
+  it("should return to workspace", function () {
+    console.log("template-creator should return to workspace");
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();
