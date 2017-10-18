@@ -66,12 +66,10 @@
           <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
           <i class="back-arrow fa fa-arrow-left"></i>
 
-
-
-          <span style="width:70px;overflow:hidden;min-width:70px;max-width:70px;">
+          <span class="feedback-form" >
             <span><i class="warning fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
             <span><i class="dirty fa "  ng-class="{'fa-circle': dirty, 'fa-circle-o': !dirty}"></i></span>
-            <span><i  class="error fa " ng-class="{'fa-fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+            <span><i class="error fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
           </span>
 
           <span class="document-title">{{hc.getDocumentTitle()}}</span>
