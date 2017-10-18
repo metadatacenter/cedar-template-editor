@@ -131,15 +131,15 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    browser.ignoreSynchronization = false;
+    // browser.ignoreSynchronization = false;
   });
 
   afterEach(function () {
-    browser.manage().logs().get('browser').then(function(browserLog) {
-      //expect(browserLog.length).toEqual(0);
-      // Uncomment to actually see the log.
-      console.log('log: ' + require('util').inspect(browserLog));
-    });
+    // browser.manage().logs().get('browser').then(function(browserLog) {
+    //   //expect(browserLog.length).toEqual(0);
+    //   // Uncomment to actually see the log.
+    //   console.log('log: ' + require('util').inspect(browserLog));
+    // });
   });
 
   it("should be on the workspace page", function () {
