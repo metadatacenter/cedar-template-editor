@@ -282,7 +282,7 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
     './tests/e2e/metadata-creator-spec.js',
   ])
       .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e

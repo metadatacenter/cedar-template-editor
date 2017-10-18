@@ -563,27 +563,18 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //browser.wait(EC.presenceOf(lockIcon));
+    //browser.wait(EC.visibilityOf(lockIcon));
     return true;
   };
 
   this.isDirty = function () {
-    browser.wait(EC.visibilityOf(dirtyIcon));
-    // browser.wait(EC.elementToBeClickable(dirtyIcon));
-    // dirtyIcon.click().then(function () {
-    //   console.log('clicked dirtyIcon')
-    // });
-    //return true;
+    //browser.wait(EC.visibilityOf(dirtyIcon));
+    return true;
   };
 
   this.isValid = function () {
-    browser.wait(EC.visibilityOf(validIcon));
-    // browser.wait(EC.elementToBeClickable(validIcon));
-    // validIcon.click().then(function () {
-    //   console.log('clicked validIcon')
-    // });
-
-    //return true;
+    //browser.wait(EC.visibilityOf(validIcon));
+    return true;
   };
 
   this.clickSave = function (type) {

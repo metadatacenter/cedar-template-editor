@@ -85,7 +85,7 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'two', 'two');
       templatePage.clickSave('template');
       toastyModal.isSuccess();
-      templatePage.topNavBackArrow().click();
+      templatePage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
@@ -104,7 +104,7 @@ describe('metadata-creator', function () {
       templatePage.clickSave('element');
       toastyModal.isSuccess();
       workspacePage.onElement();
-      templatePage.topNavBackArrow().click();
+      templatePage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
@@ -130,7 +130,7 @@ describe('metadata-creator', function () {
     it("should save the template", function () {
       templatePage.clickSave('template');
       toastyModal.isSuccess();
-      templatePage.topNavBackArrow().click();
+      templatePage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
@@ -147,7 +147,7 @@ describe('metadata-creator', function () {
       workspacePage.editResource(template, 'template');
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
-      metadataPage.topNavBackArrow().click();
+      metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
@@ -155,7 +155,7 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
-      metadataPage.topNavBackArrow().click();
+      metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
@@ -164,7 +164,6 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
-      expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
       expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
       expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
 
@@ -187,7 +186,7 @@ describe('metadata-creator', function () {
 
     it("should return to the workspace", function () {
       console.log("should return to the workspace");
-      metadataPage.topNavBackArrow().click();
+      metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
     });
   });
@@ -209,7 +208,7 @@ describe('metadata-creator', function () {
 
       templatePage.clickSave('template');
       toastyModal.isSuccess();
-      templatePage.topNavBackArrow().click();
+      templatePage.clickBackArrow();
       workspacePage.onWorkspace();
 
       workspacePage.populateResource(template, 'template');
@@ -242,7 +241,7 @@ describe('metadata-creator', function () {
       // lastField.click();
       // expect(templatePage.createRichtext().isPresent()).toBe(true);
 
-      metadataPage.topNavBackArrow().click();
+      metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
     });
   });

@@ -176,7 +176,7 @@ describe('template-creator', function () {
   });
 
 
-  xdescribe('create resource', function () {
+  describe('create resource', function () {
 
     // repeat tests for both template and element editors
     for (var j = 0; j < pageTypes.length; j++) {
@@ -453,7 +453,7 @@ describe('template-creator', function () {
     }
   });
 
-  xdescribe('remove created resources', function () {
+  describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("template-creator should delete " + resources.length + " resources from the user workspace");

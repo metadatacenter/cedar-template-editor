@@ -22,7 +22,7 @@ var MetadataPage = function () {
   var validIcon = element(by.css('#top-navigation .navbar-back i.fa-check'));
 
 
-  var documentTitle = element(by.id('form-document-title'));
+  var documentTitle = element(by.css('.document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
   var templateJson = element(by.id('show-json-link'));
   var metadataJson = element(By.css('#jsonTools a'));
