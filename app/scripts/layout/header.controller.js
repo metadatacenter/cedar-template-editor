@@ -25,13 +25,11 @@ define([
 
     vm.path = $location.path();
 
-    vm.console = function(value) {
-      console.log(value);
-    };
+    // vm.console = function(value) {
+    //   console.log(value);
+    // };
 
     vm.confirmBack = function () {
-      console.log('confirmBack');
-
       if ($rootScope.isLocked() || !$rootScope.isDirty() || !$rootScope.isValid()) {
         vm.goToDashboardOrBack();
       } else {

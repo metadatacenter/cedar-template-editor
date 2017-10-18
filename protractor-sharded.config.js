@@ -11,11 +11,10 @@ exports.config = {
     browserName: 'chrome',
     loggingPrefs: {"driver": "ALL", "server": "ALL", "browser": "ALL"},
     chromeOptions: {
-      args: ["--headless", 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
-      //args: ['no-sandbox', "--disable-gpu", "--window-size=1440x900"]
+      //args: ["--headless", 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
     },
-    shardTestFiles:false,
-    maxInstances:1
+    shardTestFiles:true,
+    maxInstances:5
   },
 
   allScriptsTimeout: 500000,

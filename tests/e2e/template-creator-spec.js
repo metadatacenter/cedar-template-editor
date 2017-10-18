@@ -158,26 +158,22 @@ describe('template-creator', function () {
   it("should check valid", function () {
     console.log("template-creator should check valid");
     templatePage.createPage('template');
-    //templatePage.addField('textfield', false, 'title', 'description');
-    templatePage.isValid();
-
-    templatePage.clickBackArrow();
-    //sweetAlertModal.confirm();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check dirty", function () {
-    console.log("template-creator should check dirty");
-    templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
-    templatePage.isDirty();
-
+    templatePage.isValid();
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
 
-
+  it("should check dirty", function () {
+    console.log("template-creator should check dirty");
+    templatePage.createPage('template');
+    templatePage.addField('textfield', false, 'title', 'description');
+    templatePage.isDirty();
+    templatePage.clickBackArrow();
+    sweetAlertModal.confirm();
+    workspacePage.onWorkspace();
+  });
 
 
   xdescribe('create resource', function () {
