@@ -155,21 +155,18 @@ describe('template-creator', function () {
     workspacePage.onWorkspace();
   });
 
-  xit("should check valid", function () {
+  it("should check valid", function () {
     console.log("template-creator should check valid");
     templatePage.createPage('template');
-    templatePage.addField('textfield', false, 'title', 'description');
+    //templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isValid();
-  });
 
-  xit("should return to workspace", function () {
-    console.log("template-creator should return to workspace");
     templatePage.clickBackArrow();
-    sweetAlertModal.confirm();
+    //sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
 
-  it("should check dirty", function () {
+  xit("should check dirty", function () {
     console.log("template-creator should check dirty");
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');

@@ -562,16 +562,20 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
-    console.log('isDirty');
     browser.wait(EC.visibilityOf(dirtyIcon));
     browser.wait(EC.elementToBeClickable(dirtyIcon));
     dirtyIcon.click().then(function () {
-      console.log('isDirty clicked dirtyIcon')
+      console.log('clicked dirtyIcon')
     });
   };
 
   this.isValid = function () {
-     browser.wait(EC.presenceOf(validIcon));
+    //browser.wait(EC.presenceOf(validIcon));
+    browser.wait(EC.visibilityOf(validIcon));
+    browser.wait(EC.elementToBeClickable(validIcon));
+    validIcon.click().then(function () {
+      console.log('clicked validIcon')
+    });
   };
 
   this.clickSave = function (type) {

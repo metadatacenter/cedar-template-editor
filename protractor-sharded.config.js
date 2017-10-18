@@ -9,6 +9,7 @@ exports.config = {
 
   capabilities: {
     browserName: 'chrome',
+    loggingPrefs: {"driver": "ALL", "server": "ALL", "browser": "ALL"},
     chromeOptions: {
       args: ["--headless", 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
       //args: ['no-sandbox', "--disable-gpu", "--window-size=1440x900"]
