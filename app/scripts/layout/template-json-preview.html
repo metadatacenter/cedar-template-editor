@@ -1,21 +1,38 @@
-<div ng-if="$root.showRender" id="templateJSON"  style="margin-top:40px">
+<!--<div ng-if="$root.showRender" id="templateJSON"  style="margin-top:40px">-->
 
-  <!--<h5 class="center">Document Preview</h5>-->
-  <uib-tabset active="active">
+<!--&lt;!&ndash;<h5 class="center">Document Preview</h5>&ndash;&gt;-->
+<!--<uib-tabset active="active">-->
 
-    <uib-tab index="0" >
-      <uib-tab-heading><i class="cedar-svg-json-schema" ></i> JSON Schema</uib-tab-heading>
-      <pre id='form-json-preview' style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>
-    </uib-tab>
+<!--<uib-tab index="0" >-->
+<!--<uib-tab-heading><i class="cedar-svg-json-schema" ></i> JSON Schema</uib-tab-heading>-->
+<!--<pre id='form-json-preview' style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>-->
+<!--</uib-tab>-->
 
-    <!--<uib-tab index="1" ng-click="toRDF()">-->
-      <!--<uib-tab-heading >-->
-        <!--<div ><i class="cedar-svg-rdf" ></i> RDF</div>-->
-      <!--</uib-tab-heading >-->
-      <!--<pre id='form-json-preview' >{{$root.jsonToRDF}}</pre>-->
-    <!--</uib-tab>-->
+<!--&lt;!&ndash;<uib-tab index="1" ng-click="toRDF()">&ndash;&gt;-->
+<!--&lt;!&ndash;<uib-tab-heading >&ndash;&gt;-->
+<!--&lt;!&ndash;<div ><i class="cedar-svg-rdf" ></i> RDF</div>&ndash;&gt;-->
+<!--&lt;!&ndash;</uib-tab-heading >&ndash;&gt;-->
+<!--&lt;!&ndash;<pre id='form-json-preview' >{{$root.jsonToRDF}}</pre>&ndash;&gt;-->
+<!--&lt;!&ndash;</uib-tab>&ndash;&gt;-->
 
-  </uib-tabset>
+<!--</uib-tabset>-->
+<!--</div>-->
+
+
+<div id="document-preview" >
+  <uib-accordion id="templateJSON" close-others="true" style="margin-top:40px">
+
+    <div uib-accordion-group is-open="openStatusRDF" class="panel-default">
+      <uib-accordion-heading>
+        <i class="cedar-svg-json-schema" ></i> JSON Schema <i class="pull-right glyphicon"
+          ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
+      </uib-accordion-heading>
+      <pre id='form-json-preview'
+          style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>
+    </div>
+
+
+  </uib-accordion>
 </div>
 
 

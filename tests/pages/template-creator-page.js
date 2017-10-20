@@ -12,8 +12,7 @@ var TemplateCreatorPage = function () {
 
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
-  var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
-  var jsonPreview = element(by.id('form-json-preview'));
+
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createTemplatePage = element(by.css('#top-navigation.template'));
@@ -24,14 +23,13 @@ var TemplateCreatorPage = function () {
   var createMore = element(by.id('button-add-more'));
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
-  //var lockIcon = element(by.css('span.feedback-form > span > i.fa-lock'));
-  //var dirtyIcon = element(by.css('span.feedback-form > span > i.fa-circle'));
-  //var validIcon = element(by.css('span.feedback-form > span > i.fa-check'));
 
-  var dirtyIcon = element(by.id('top-navigation')).element(by.css('.navbar-header .fa-circle'));
-  var validIcon = element(by.id('top-navigation')).element(by.css('.navbar-header .fa-check'));
-  var lockIcon = element(by.id('top-navigation')).element(by.css('.navbar-header .fa-lock'));
+  var dirtyIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle'));
+  var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
+  var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
 
+  var showJsonLink = element(by.css('#document-preview  a.accordion-toggle'));
+  var jsonPreview = element(by.id('form-json-preview'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -77,10 +75,8 @@ var TemplateCreatorPage = function () {
   var sweetAlertConfirmAttribute = 'data-has-confirm-button';
   var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.cancel'));
   var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
-  var templateJSON = element(by.id('templateJSON'));
-  var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
+
   var topNavigation = element(by.id('top-navigation'));
-  //var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
   var topNavBackArrow = element(by.css('.back-arrow-click'));
 
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
@@ -539,27 +535,23 @@ var TemplateCreatorPage = function () {
   };
 
   this.showJson = function () {
-
-    browser.wait(EC.invisibilityOf(templateJSON));
-    //expect(templateJSON.isDisplayed()).toBe(false);
+    browser.wait(EC.invisibilityOf(jsonPreview));
     browser.wait(EC.visibilityOf(showJsonLink));
     browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
-    browser.wait(EC.visibilityOf(templateJSON));
+    browser.wait(EC.visibilityOf(jsonPreview));
   };
 
   this.hideJson = function () {
-
-    //expect(templateJSON.isDisplayed()).toBe(true);
-    browser.wait(EC.visibilityOf(templateJSON));
+    browser.wait(EC.visibilityOf(jsonPreview));
     browser.wait(EC.visibilityOf(showJsonLink));
     browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
-    browser.wait(EC.invisibilityOf(templateJSON));
+    browser.wait(EC.invisibilityOf(jsonPreview));
   };
 
   this.isHiddenJson = function () {
-    browser.wait(EC.invisibilityOf(templateJSON));
+    browser.wait(EC.invisibilityOf(jsonPreview));
   };
 
   this.isLocked = function () {
@@ -708,9 +700,7 @@ var TemplateCreatorPage = function () {
   this.templateJSON = function () {
     return templateJSON;
   };
-  this.templateJSONHidden = function () {
-    return templateJSONHidden;
-  };
+
 
   this.clickBackArrow = function () {
     // browser.wait(EC.visibilityOf(topNavBackArrow));

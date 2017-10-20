@@ -160,11 +160,11 @@ describe('metadata-creator', function () {
     });
 
 
+
     it("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
       console.log("metadata-creator should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
-      expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
       expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
 
       // look at the value of the document title

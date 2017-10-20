@@ -15,7 +15,37 @@ define([
     var service = {
       serviceId    : "UIUtilService",
       showOutput   : false,
-      showOutputTab: 0
+      showOutputTab: 0,
+      metaToRDF: null,
+      metaToRDFError: null,
+      instance: null
+    };
+
+    var jsonld = require('jsonld');
+
+    service.toRDF = function () {
+      var instance = $rootScope.instanceToSave;
+      var copiedForm = jQuery.extend(true, {}, instance);
+      if (copiedForm) {
+        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
+          service.metaToRDFError = err;
+          service.metaToRDF = nquads;
+          service.instance = instance;
+          return service.metaToRDF;
+        });
+      }
+    };
+
+    service.getRDF = function () {
+      return service.metaToRDF;
+    };
+
+    service.getRDFError = function () {
+      var result = $translate.instant('SERVER.RDF.SaveFirst');
+      if (service.metaToRDFError) {
+        result = service.metaToRDFError.details.cause.message;
+      }
+      return result;
     };
 
 
@@ -140,6 +170,16 @@ define([
     service.setShowOutputTab = function (index) {
       service.showOutputTab = index;
     };
+
+    service.toggleShowOutputTab = function (index) {
+      if (service.showOutputTab == index) {
+        service.showOutputTab = -1;
+      } else {
+        service.showOutputTab = index;
+      }
+    };
+
+
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {

@@ -51,7 +51,6 @@
             <div class="form-preview collapse in">
               <form-directive dirty="dirty" forms="forms" form="form" page="page" model="instance" page-index="0"
                   ng-if="!isPropertiesEmpty()"></form-directive>
-              <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
             </div>
           </div>
 
@@ -78,7 +77,7 @@
             </ul>
           </div>
 
-          <div class="template-actions" ng-if="!cannotWrite">
+          <div class="template-actions"  ng-if="!cannotWrite">
             <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
@@ -104,6 +103,9 @@
               </button>
             </div>
           </div>
+
+          <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
         </div>
 
         <div class="left-sidebar col-sm-1 pull-right">

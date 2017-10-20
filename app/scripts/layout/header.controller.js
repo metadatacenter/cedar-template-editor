@@ -12,13 +12,14 @@ define([
     '$window',
     '$timeout',
     '$document',
+    '$translate',
     'QueryParamUtilsService',
     'UIMessageService',
     'UIProgressService',
     'UIUtilService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService,
+  function HeaderController($rootScope, $location, $window, $timeout, $document, $translate,QueryParamUtilsService,
                             UIMessageService, UIProgressService, UIUtilService) {
 
     var vm = this;
@@ -28,6 +29,18 @@ define([
     // vm.console = function(value) {
     //   console.log(value);
     // };
+
+    vm.dirtyCleanTip = function() {
+      return $translate.instant(($rootScope.dirty? "Save required": "No save required"));
+    };
+
+    vm.validInvalidTip = function() {
+      return $translate.instant('Document is ' + ($rootScope.documentState.valid? "valid": "invalid"));
+    };
+
+    vm.lockUnlockTip = function() {
+      return $translate.instant('Document is ' + ($rootScope.locked? "locked": "unlocked"));
+    };
 
     vm.confirmBack = function () {
       if ($rootScope.isLocked() || !$rootScope.isDirty() || !$rootScope.isValid()) {
