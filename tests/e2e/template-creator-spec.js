@@ -272,6 +272,11 @@ describe('template-creator', function () {
                 expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
                 expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
+              });
+
+              it("should be dirty and valid ", function () {
+                console.log("template-creator should be dirty and valid ");
+
                 templatePage.isDirty();
                 templatePage.isValid();
                 templatePage.clickBackArrow();
@@ -289,7 +294,6 @@ describe('template-creator', function () {
           templatePage.createPage(pageType);
           browser.wait(EC.visibilityOf(templatePage.topNavigation()));
           expect(templatePage.hasClass(templatePage.topNavigation(), pageType)).toBe(true);
-          browser.wait(EC.visibilityOf(templatePage.showJsonLink()));
 
           templatePage.isValid();
           templatePage.clickBackArrow();

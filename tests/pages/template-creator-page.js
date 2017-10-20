@@ -24,7 +24,7 @@ var TemplateCreatorPage = function () {
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
 
-  var dirtyIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle'));
+  var dirtyIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
   var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
   var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
 
@@ -555,18 +555,18 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //browser.wait(EC.visibilityOf(lockIcon));
-    return true;
+    browser.wait(EC.visibilityOf(lockIcon));
+    //return true;
   };
 
   this.isDirty = function () {
-    //browser.wait(EC.visibilityOf(dirtyIcon));
-    return true;
+    browser.wait(EC.visibilityOf(dirtyIcon));
+    //return true;
   };
 
   this.isValid = function () {
-    //browser.wait(EC.visibilityOf(validIcon));
-    return true;
+    browser.wait(EC.visibilityOf(validIcon));
+    //return true;
   };
 
   this.clickSave = function (type) {
