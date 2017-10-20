@@ -28,7 +28,7 @@ var TemplateCreatorPage = function () {
   var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
   var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
 
-  var showJsonLink = element(by.css('#document-preview  a.accordion-toggle'));
+  var showJsonLink = element(by.css('#document-preview  .panel-default .panel-heading a'));
   var jsonPreview = element(by.id('form-json-preview'));
 
   var createSearchElement = element(by.id('button-search-element'));
