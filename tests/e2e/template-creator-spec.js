@@ -153,15 +153,25 @@ describe('template-creator', function () {
 
     templatePage.createPage('template');
     templatePage.addField('textfield', isMore, title, description);
-    templatePage.showJson();
+    templatePage.clickJsonPreview();
 
-    // get the dirty json
+  });
+
+  it("should get the json content", function () {
+    console.log("template-creator get the json");
     templatePage.jsonPreview().getText().then(function (value) {
       dirtyJson = JSON.parse(value);
       console.log('dirtyJson',dirtyJson);
       delete dirtyJson._tmp;
       expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
     });
+  });
+
+  it("should click back arrow", function () {
+    console.log("template-creator should click back arrow");
+    templatePage.clickBackArrow();
+    sweetAlertModal.confirm();
+    workspacePage.onWorkspace();
   });
 
   xit("should check back arrow", function () {
