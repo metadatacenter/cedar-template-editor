@@ -781,6 +781,7 @@ var TemplateCreatorPage = function () {
   this.clickJsonPreview = function () {
     var link = showJsonLink;
     browser.executeScript("arguments[0].scrollIntoView();", link.getWebElement());
+    browser.wait(EC.visibilityOf(link));
     browser.wait(EC.elementToBeClickable(link));
     link.click();
   };
