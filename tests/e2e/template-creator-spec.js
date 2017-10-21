@@ -148,7 +148,7 @@ describe('template-creator', function () {
     workspacePage.hasLogo();
   });
 
-  it("should update the json when changes ", function () {
+  xit("should update the json when changes ", function () {
     console.log("template-creator should update the json when changes ");
     templatePage.createPage('template');
     //templatePage.addField('textfield', isMore, title, description);
@@ -166,7 +166,7 @@ describe('template-creator', function () {
     });
   });
 
-  it("should click back arrow", function () {
+  xit("should click back arrow", function () {
     console.log("template-creator should click back arrow");
     templatePage.clickBackArrow();
     //sweetAlertModal.confirm();
@@ -201,7 +201,7 @@ describe('template-creator', function () {
   });
 
 
-  xdescribe('create resource', function () {
+  describe('create resource', function () {
 
     // repeat tests for both template and element editors
     for (var j = 0; j < pageTypes.length; j++) {
@@ -485,7 +485,7 @@ describe('template-creator', function () {
     }
   });
 
-  xdescribe('remove created resources', function () {
+  describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       console.log("template-creator should delete " + resources.length + " resources from the user workspace");
