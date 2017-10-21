@@ -779,11 +779,11 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickJsonPreview = function () {
-    var link = showJsonLink;
-    browser.executeScript("arguments[0].scrollIntoView();", link.getWebElement());
-    browser.wait(EC.visibilityOf(link));
-    browser.wait(EC.elementToBeClickable(link));
-    link.click();
+    browser.executeScript("arguments[0].scrollIntoView();", showJsonLink.getWebElement());
+    console.log('got showjsonlink');
+    // browser.wait(EC.visibilityOf(showJsonLink));
+    // browser.wait(EC.elementToBeClickable(showJsonLink));
+    showJsonLink.click();
   };
 
   // toasty

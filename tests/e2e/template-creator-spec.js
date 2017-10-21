@@ -167,7 +167,7 @@ describe('template-creator', function () {
     });
   });
 
-  xit("should click back arrow", function () {
+  it("should click back arrow", function () {
     console.log("template-creator should click back arrow");
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
