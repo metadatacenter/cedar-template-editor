@@ -28,7 +28,7 @@ var TemplateCreatorPage = function () {
   var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
   var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
 
-  var showJsonLink = element(by.css('#document-preview  .panel-default .panel-heading a'));
+  var showJsonLink = element(by.id('accordion-heading-json-schema'));
   var jsonPreview = element(by.id('form-json-preview'));
 
   var createSearchElement = element(by.id('button-search-element'));
@@ -769,6 +769,7 @@ var TemplateCreatorPage = function () {
   this.showJsonLink = function () {
     return showJsonLink;
   };
+
   this.jsonPreview = function () {
     return jsonPreview;
   };
