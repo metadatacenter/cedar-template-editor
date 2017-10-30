@@ -13,8 +13,8 @@ exports.config = {
     chromeOptions: {
       args: [ 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
     },
-    shardTestFiles:true,
-    maxInstances:5
+    shardTestFiles:false,
+    maxInstances:1
   },
 
   allScriptsTimeout: 500000,

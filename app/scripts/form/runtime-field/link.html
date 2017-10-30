@@ -15,6 +15,7 @@
   </div>
 
   <!-- actively being edited -->
+  <!-- TODO fix the link validation with a javascript library -->
   <div ng-if="isActive(index)">
     <div  class="form-group has-success has-feedback">
       <input type="text"
@@ -23,8 +24,8 @@
           placeholder="{{isActive(index) ? 'enter URI' : ''}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@id']"
-          ng-pattern="urlRegex">
+          ng-model="valueElement['@id']">
+          <!--ng-pattern="urlRegex">-->
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
   </div>
