@@ -669,24 +669,30 @@ define([
     };
 
     // Relabel the element key with a new value from the propertyLabels
-    service.relabel = function (node, key) {
+    service.relabel = function (node, currentKey) {
 
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
-      var newLabel = schema._ui.propertyLabels[key] || 'default';
-      var newKey = service.getFieldName(newLabel);
-      newKey = service.getAcceptableKey(p, newKey, key);
+      var newLabel = schema._ui.propertyLabels[currentKey] || 'default';
+      var suggestedKey = service.getFieldName(newLabel);
 
-      // update propertyLabels
-      delete schema._ui.propertyLabels[key];
-      schema._ui.propertyLabels[newKey] = newLabel;
+      var newKey = service.getAcceptableKey(p, suggestedKey, currentKey);
 
-      angular.forEach(p, function (value, k) {
-        if (value && key == k) {
-          service.relabelField(schema, key, newKey);
-        }
-      });
+      if (newKey == currentKey) {
+        // Do nothing. It's not necessary to relabel
+      }
+      else {
+        // Update propertyLabels
+        delete schema._ui.propertyLabels[currentKey];
+        schema._ui.propertyLabels[newKey] = newLabel;
+
+        angular.forEach(p, function (value, k) {
+          if (value && currentKey == k) {
+            service.relabelField(schema, currentKey, newKey);
+          }
+        });
+      }
     };
 
     //
@@ -1121,22 +1127,24 @@ define([
         return;
       }
 
-      var key = suggestedKey;
-      // if (currentKey === suggestedKey) {
-      //   key = currentKey;
-      //
-      // } else {
+      if (currentKey == suggestedKey) {
+        return currentKey;
+      }
 
+      var key = suggestedKey;
 
       if (obj[key]) {
         var idx = 1;
-        while (obj["" + key + idx]) {
+        var newKey = "" + key + idx;
+        while (obj[newKey]) {
+          if (currentKey == newKey) {
+            break; // currentKey is an acceptable key
+          }
           idx += 1;
+          newKey = "" + key + idx;
         }
-
-        key = "" + key + idx;
+        key = newKey;
       }
-      // }
 
       return key;
     };
