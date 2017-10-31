@@ -8,8 +8,8 @@
           <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"
               path="0"></form-directive>
 
-          <!-- display success and errors -->
-          <div class="edit-actions" ng-hide="$root.isEmpty(form)">
+          <!-- errors and edit actions -->
+          <div class="edit-actions"  ng-hide="$root.isEmpty(form)">
             <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
               <p translate>VALIDATION.groupHeader.requiredFields</p>
               <ul>
@@ -44,6 +44,7 @@
             <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
               <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
             </div>
+
             <div ng-if="canWrite()">
               <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
                   ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
@@ -57,12 +58,33 @@
               </button>
             </div>
           </div>
-          <!-- /.edit-actions -->
+
+          <!-- document preview -->
+          <div id="document-preview"  >
+            <uib-accordion id="outputJSON" close-others="true" >
+              <div uib-accordion-group  is-open="openStatusRDF" class="panel-default"  >
+                <uib-accordion-heading>
+                  <i class="cedar-svg-rdf"></i>  RDF  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
+                </uib-accordion-heading>
+                <div ng-if="RDF">
+                  <pre id='form-json-preview-rdf'>{{RDF}}</pre>
+                </div>
+                <div ng-if="!RDF && RDFError">
+                  <div class="center warning">
+                    {{RDFError}}
+                  </div>
+                </div>
+              </div>
+              <div uib-accordion-group  is-open="openStatusJSONLD"  class="panel-default" >
+                <uib-accordion-heading>
+                  <i class="cedar-svg-rdf1"></i>  JSON-LD  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>
+                </uib-accordion-heading>
+                <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
+              </div>
+            </uib-accordion>
+          </div>
         </div>
-        <!-- /.right-body -->
       </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container -->
-  </div> <!-- /.template-body -->
+  </div>
 </section>

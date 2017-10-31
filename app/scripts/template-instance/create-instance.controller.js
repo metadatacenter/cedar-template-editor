@@ -9,12 +9,13 @@ define([
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService", "UIUtilService", "DataManipulationService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService,TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
-                                    QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
+                                    QueryParamUtilsService, FrontendUrlService, ValidationService,
+                                    ValueRecommenderService, UIUtilService, DataManipulationService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -41,6 +42,43 @@ define([
     $scope.details;
     $scope.cannotWrite;
 
+    // $scope.isShowOutput = function () {
+    //   return UIUtilService.isShowOutput();
+    // };
+    //
+    // $scope.toggleShowOutput = function() {
+    //   return UIUtilService.toggleShowOutput();
+    // };
+    //
+    // $scope.scrollToAnchor = function(hash) {
+    //   UIUtilService.scrollToAnchor(hash);
+    // };
+    //
+    // $scope.getShowOutputTab = function () {
+    //   return UIUtilService.getShowOutputTab();
+    // };
+    //
+    // $scope.setShowOutputTab = function (index) {
+    //   return UIUtilService.setShowOutputTab(index);
+    // };
+    //
+    // $scope.toggleShowOutputTab = function (index) {
+    //   return UIUtilService.toggleShowOutputTab(index);
+    // };
+
+    // create a copy of the form with the _tmp fields stripped out
+    $scope.cleanForm = function () {
+      var copiedForm = jQuery.extend(true, {}, $scope.instance);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+
+        UIUtilService.toRDF();
+        $scope.RDF = UIUtilService.getRDF();
+        $scope.RDFError = UIUtilService.getRDFError();
+        return copiedForm;
+    };
+
 
     $scope.canWrite = function () {
       var result = !$scope.details || resourceService.canWrite($scope.details);
@@ -52,12 +90,6 @@ define([
     $scope.$watch('cannotWrite', function () {
       $rootScope.setLocked($scope.cannotWrite);
     });
-
-
-    // // can we write to this template?  if no details, then new element
-    // $scope.canWrite = function () {
-    //   return resourceService.canWrite($scope.details)
-    // };
 
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(

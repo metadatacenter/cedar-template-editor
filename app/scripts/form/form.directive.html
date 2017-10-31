@@ -115,30 +115,4 @@
 </div><!-- /.pagination-container -->
 
 
-<!-- document preview -->
-<div ng-if="isRuntime() && isShowOutput()" ng-model="metaToRDF">
 
-  <div id="outputJSON"  style="margin-top:40px">
-    <uib-tabset active="getShowOutputTab()">
-
-      <uib-tab index="0" ng-click="setShowOutputTab(0)">
-        <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>
-        <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
-      </uib-tab>
-
-      <uib-tab index="1" ng-click="toRDF();setShowOutputTab(1)">
-        <uib-tab-heading><i class="cedar-svg-rdf"></i> RDF</uib-tab-heading>
-        <div ng-if="metaToRDFError"></div>
-        <div ng-if="metaToRDF">
-          <pre id='form-json-preview-rdf'>{{getRDF()}}</pre>
-        </div>
-        <div ng-if="!metaToRDF">
-          <div class="center warning">
-            {{getRDFError()}}
-          </div>
-        </div>
-      </uib-tab>
-
-    </uib-tabset>
-  </div>
-</div>

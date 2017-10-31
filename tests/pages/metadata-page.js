@@ -14,18 +14,18 @@ var MetadataPage = function () {
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var topNavigation = element(by.id('top-navigation'));
-  //var topNavBackArrow = element(by.css('#headerCtrl > div > div > div > div > div.backArrowClick'));
   var topNavBackArrow = element(by.css('.back-arrow-click'));
 
-  var lockIcon = element(by.css('#top-navigation .navbar-back i.fa-lock'));
-  var dirtyIcon = element(by.css('#top-navigation .navbar-back i.fa-circle'));
-  var validIcon = element(by.css('#top-navigation .navbar-back i.fa-check'));
+  var lockIcon = element(by.css('#top-navigation .feedback-form i.fa-lock'));
+  var dirtyIcon = element(by.css('#top-navigation .feedback-form i.fa-circle'));
+  var validIcon = element(by.css('#top-navigation .feedback-form i.fa-check'));
 
+  var showJsonLink = element(by.css('#document-preview  a.accordion-toggle'));
+  var jsonPreview = element(by.id('form-json-preview'));
 
   var documentTitle = element(by.css('.document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
-  var templateJson = element(by.id('show-json-link'));
-  var metadataJson = element(By.css('#jsonTools a'));
+
   var firstItemTitle = element(by.css('.item-root')).element(by.model('model[\'@value\']'));
   var sampleTitle = 'sample title';
   var deleteTemplateMessage = 'The template has been deleted.';
@@ -46,6 +46,27 @@ var MetadataPage = function () {
   var metadataPageTitle = 'Metadata Editor';
   var createSaveMetadataButton = element(by.id('button-save-metadata'));
   var createCancelMetadataButton = element(by.id('button-cancel-metadata'));
+
+
+  this.showJson = function () {
+    browser.wait(EC.invisibilityOf(jsonPreview));
+    browser.wait(EC.visibilityOf(showJsonLink));
+    browser.wait(EC.elementToBeClickable(showJsonLink));
+    showJsonLink.click();
+    browser.wait(EC.visibilityOf(jsonPreview));
+  };
+
+  this.hideJson = function () {
+    browser.wait(EC.visibilityOf(jsonPreview));
+    browser.wait(EC.visibilityOf(showJsonLink));
+    browser.wait(EC.elementToBeClickable(showJsonLink));
+    showJsonLink.click();
+    browser.wait(EC.invisibilityOf(jsonPreview));
+  };
+
+  this.isHiddenJson = function () {
+    browser.wait(EC.invisibilityOf(jsonPreview));
+  };
 
 
   this.get = function () {
