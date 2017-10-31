@@ -184,8 +184,7 @@ gulp.task('e2e-sequential', gulp.series('test-env', function () {
     './tests/e2e/folder-permissions-spec.js',
     './tests/e2e/update-description-spec.js',
     './tests/e2e/update-name-spec.js',
-    './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js'
+    './tests/e2e/update-ownership-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
