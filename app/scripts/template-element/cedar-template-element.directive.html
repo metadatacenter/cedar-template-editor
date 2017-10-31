@@ -1,7 +1,7 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();">
 
-
+  element  {{getDomId(element)}}
 
   <!-- element header -->
   <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !isRuntime() && !isNested(element)}">
