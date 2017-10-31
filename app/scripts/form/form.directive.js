@@ -55,6 +55,14 @@ define([
           return UIUtilService.isShowOutput();
         };
 
+        $scope.toggleShowOutput = function() {
+          return UIUtilService.toggleShowOutput();
+        };
+
+        $scope.scrollToAnchor = function(hash) {
+          UIUtilService.scrollToAnchor(hash);
+        };
+
         $scope.getShowOutputTab = function () {
           return UIUtilService.getShowOutputTab();
         };
@@ -340,8 +348,6 @@ define([
 
         });
 
-
-
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
         });
@@ -365,7 +371,8 @@ define([
 
         // keep our rdf up-to-date
         $scope.$watch('model', function () {
-          $scope.toRDF();
+          console.log('watch model');
+          UIUtilService.toRDF($scope.model);
         }, true);
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
@@ -394,6 +401,8 @@ define([
           if (copiedForm) {
             dms.stripTmps(copiedForm);
           }
+          UIUtilService.toRDF();
+
           return copiedForm;
         };
 
@@ -410,7 +419,7 @@ define([
         };
 
         $scope.getRDF = function () {
-          return $scope.metaToRDF;
+          return UIUtilService.getRDF();
         };
 
         $scope.getRDFError = function () {

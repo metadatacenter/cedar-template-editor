@@ -52,7 +52,8 @@
               <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
               <!--</div>-->
               <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
-              <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
+
             </div>
             <!-- /.form-preview -->
           </div>
@@ -81,7 +82,7 @@
             </ul>
           </div>
 
-          <div class="element-actions" ng-if="canWrite()">
+          <div class="element-actions"  ng-if="canWrite()" style="height:auto">
             <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
@@ -91,7 +92,7 @@
             <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
             <!--</div>-->
-            <div class="clear-save">
+            <div class="clear-save" >
               <button type="button" id="button-clear-element" class="btn btn-clear element" ng-click="reset()"
                   ng-hide="isPropertiesEmpty()"
                   translate>
@@ -105,7 +106,10 @@
               </button>
             </div>
           </div>
-          <!-- /.template-actions -->
+
+          <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
+
         </div>
         <!-- /.right-body -->
 
