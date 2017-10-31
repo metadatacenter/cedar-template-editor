@@ -68,12 +68,14 @@ define([
     // element or field be edited as a spreadsheet if it is multi-instance
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
+
       var schema = DataManipulationService.schemaOf(node);
       var result = DataManipulationService.isCardinalElement(node);
-      if (DataUtilService.isElement(node)) {
+
+      if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
           if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(value);
+            var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
             var isCardinal = DataManipulationService.isCardinalElement(value);
             result = result && (!isElement && !isCardinal);
           }
@@ -104,7 +106,7 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
-        //viewState.selected = 'spreadsheet';
+        viewState.selected = 'spreadsheet';
       }
       return viewState;
     };
@@ -143,9 +145,12 @@ define([
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
-      var hashId = DataUtilService.getHashCode(id);
-      var hashPath = DataUtilService.getHashCode(path);
-      return 'dom' + hashId + '-' + (hashPath || 0).toString() + '-' + (index || 0).toString();
+      //console.log('getLocator', index);
+      // var hashId = DataUtilService.getHashCode(id);
+      // var hashPath = DataUtilService.getHashCode(path);
+      //return 'dom' + hashId + '-' + (hashPath || 0).toString() + '-' + (index || 0).toString();
+      return 'dom-' + id + '-' + (path || 0).toString() + '-' + (index || 0).toString();
+
     };
 
     // look to see if this node's value has been identified by angular as invalid
