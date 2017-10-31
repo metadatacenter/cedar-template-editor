@@ -13,6 +13,7 @@ branches:
   only:
   - develop
   - master
+  - feature/rollback
 notifications:
   slack:
     on_success: always
