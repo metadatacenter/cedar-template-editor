@@ -270,7 +270,7 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sharded.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
