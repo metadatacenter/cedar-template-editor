@@ -14,11 +14,18 @@ var MetadataPage = function () {
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
-  var documentTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.document-title'));
+  var topNavBackArrow = element(by.css('.back-arrow-click'));
+
+  var lockIcon = element(by.css('#top-navigation .feedback-form i.fa-lock'));
+  var dirtyIcon = element(by.css('#top-navigation .feedback-form i.fa-circle'));
+  var validIcon = element(by.css('#top-navigation .feedback-form i.fa-check'));
+
+  var showJsonLink = element(by.css('#document-preview  a.accordion-toggle'));
+  var jsonPreview = element(by.id('form-json-preview'));
+
+  var documentTitle = element(by.css('.document-title'));
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
-  var templateJson = element(by.id('show-json-link'));
-  var metadataJson = element(By.css('#jsonTools a:nth-child(1)'));
+
   var firstItemTitle = element(by.css('.item-root')).element(by.model('model[\'@value\']'));
   var sampleTitle = 'sample title';
   var deleteTemplateMessage = 'The template has been deleted.';
@@ -41,6 +48,27 @@ var MetadataPage = function () {
   var createCancelMetadataButton = element(by.id('button-cancel-metadata'));
 
 
+  this.showJson = function () {
+    browser.wait(EC.invisibilityOf(jsonPreview));
+    browser.wait(EC.visibilityOf(showJsonLink));
+    browser.wait(EC.elementToBeClickable(showJsonLink));
+    showJsonLink.click();
+    browser.wait(EC.visibilityOf(jsonPreview));
+  };
+
+  this.hideJson = function () {
+    browser.wait(EC.visibilityOf(jsonPreview));
+    browser.wait(EC.visibilityOf(showJsonLink));
+    browser.wait(EC.elementToBeClickable(showJsonLink));
+    showJsonLink.click();
+    browser.wait(EC.invisibilityOf(jsonPreview));
+  };
+
+  this.isHiddenJson = function () {
+    browser.wait(EC.invisibilityOf(jsonPreview));
+  };
+
+
   this.get = function () {
     browser.get(url);
     //browser.sleep(1000);
@@ -54,9 +82,7 @@ var MetadataPage = function () {
   this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function () {
-    return topNavBackArrow;
-  };
+
   this.documentTitle = function () {
     return documentTitle;
   };
@@ -108,9 +134,6 @@ var MetadataPage = function () {
     createCancelMetadataButton.click();
   };
 
-  this.clickBackArrowMetadata = function () {
-    element(by.css('.back-arrow-click')).click();
-  };
 
   this.createToastyConfirmationPopup = function () {
     return createToastyConfirmationPopup;
@@ -144,6 +167,27 @@ var MetadataPage = function () {
   this.clickSweetConfirm = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
   };
+
+  this.isLocked = function () {
+    browser.wait(EC.visibilityOf(lockIcon));
+  };
+
+  this.isDirty = function () {
+    browser.wait(EC.visibilityOf(dirtyIcon));
+  };
+
+  // TODO not finding the validIcon
+  this.isValid = function () {
+    browser.wait(EC.visibilityOf(validIcon));
+    //return true;
+  };
+
+  this.clickBackArrow = function () {
+    // browser.wait(EC.visibilityOf(topNavBackArrow));
+    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    topNavBackArrow.click();
+  };
+
 
   // make sure the element is multiple instance and has fields in it
   this.checkMultiple = function() {

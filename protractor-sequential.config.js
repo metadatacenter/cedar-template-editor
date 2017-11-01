@@ -11,6 +11,7 @@ exports.config = {
     browserName   : 'chrome',
     chromeOptions: {
       args: ["--headless", 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
+      //args: ['no-sandbox', "--disable-gpu", "--window-size=1440x900"]
     },
     shardTestFiles: false,
     maxInstances  : 1

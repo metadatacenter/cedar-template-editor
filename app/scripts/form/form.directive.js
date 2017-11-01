@@ -55,6 +55,14 @@ define([
           return UIUtilService.isShowOutput();
         };
 
+        $scope.toggleShowOutput = function() {
+          return UIUtilService.toggleShowOutput();
+        };
+
+        $scope.scrollToAnchor = function(hash) {
+          UIUtilService.scrollToAnchor(hash);
+        };
+
         $scope.getShowOutputTab = function () {
           return UIUtilService.getShowOutputTab();
         };
@@ -330,30 +338,30 @@ define([
           startParseForm();
         });
 
-        // watch the dirty flag on the form
+        // watch the dirty flag on the form and pass it up to root
         $scope.$watch('forms.templateForm.$dirty', function () {
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
         $scope.$on("form:clean", function () {
-          $scope.forms.templateForm.$setPristine();
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          $scope.forms.templateForm.$dirty = false;
+
         });
 
         $scope.$on("form:dirty", function () {
-          $scope.forms.templateForm.$setDirty();
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          $scope.forms.templateForm.$dirty = true;
         });
+
 
         $scope.$on("form:update", function () {
           startParseForm();
-          $scope.forms.templateForm.$setDirty();
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          $scope.forms.templateForm.$dirty = true;
+          $rootScope.setDirty(true);
         });
 
         $scope.$on("form:reset", function () {
-          $scope.forms.templateForm.$setDirty();
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          $scope.forms.templateForm.$dirty = true;
+          $rootScope.setDirty(true);
         });
 
         // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
@@ -363,7 +371,8 @@ define([
 
         // keep our rdf up-to-date
         $scope.$watch('model', function () {
-          $scope.toRDF();
+          console.log('watch model');
+          UIUtilService.toRDF($scope.model);
         }, true);
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
@@ -392,6 +401,8 @@ define([
           if (copiedForm) {
             dms.stripTmps(copiedForm);
           }
+          UIUtilService.toRDF();
+
           return copiedForm;
         };
 
@@ -408,7 +419,7 @@ define([
         };
 
         $scope.getRDF = function () {
-          return $scope.metaToRDF;
+          return UIUtilService.getRDF();
         };
 
         $scope.getRDFError = function () {

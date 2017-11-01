@@ -108,16 +108,26 @@ define([
 
     // node title and description
     service.getTitle = function (node) {
-      return service.schemaOf(node)._ui.title;
+      if (service.schemaOf(node)) {
+        return service.schemaOf(node)['schema:name'];
+      }
+    };
+
+    service.hasTitle = function (node) {
+      return service.schemaOf(node).hasOwnProperty('schema:name') && service.schemaOf(node)['schema:name'].length > 0;
     };
 
     service.setTitle = function (node, value) {
-      service.schemaOf(node)._ui.title = value;
+      var schema = service.schemaOf(node);
+      if (schema) {
+        service.schemaOf(node)['schema:name'] = value;
+        //service.schemaOf(node)._ui.title = value;
+      }
     };
 
     service.defaultTitle = function (node) {
-      if (service.schemaOf(node)._ui.title.length == 0) {
-        service.schemaOf(node)._ui.title = $translate.instant("GENERIC.Untitled");
+      if (!service.hasTitle(node)) {
+        service.setTitle(node, $translate.instant("GENERIC.Untitled"));
       }
     };
 
@@ -134,11 +144,22 @@ define([
     };
 
     service.getDescription = function (node) {
-      return service.schemaOf(node)._ui.description;
+      if (service.schemaOf(node)) {
+        return service.schemaOf(node)['schema:description'];
+      }
+    };
+
+    service.hasDescription = function (node) {
+      return service.schemaOf(node).hasOwnProperty('schema:description') && service.schemaOf(
+              node)['schema:description'].length > 0;
     };
 
     service.setDescription = function (node, value) {
-      service.schemaOf(node)._ui.description = value;
+      var schema = service.schemaOf(node)
+      if (schema) {
+        service.schemaOf(node)['schema:description'] = value;
+        //service.schemaOf(node)._ui.description = value;
+      }
     };
 
     // schema title and description
@@ -157,6 +178,13 @@ define([
       if (!node.description || !node.description.length) {
         node.description = $translate.instant("GENERIC.Description");
       }
+    };
+
+    service.setFieldSchemaTitleAndDescription = function (field, fieldTitle) {
+      service.setSchemaTitle(field,
+          $translate.instant("GENERATEDVALUE.fieldTitle", {title: fieldTitle, version: window.cedarVersion}));
+      service.setSchemaDescription(field,
+          $translate.instant("GENERATEDVALUE.fieldDescription", {title: fieldTitle, version: window.cedarVersion}));
     };
 
     //
@@ -325,9 +353,8 @@ define([
           '@id'                 : field['@id'],
           '@type'               : field['@type'],
           '@context'            : field['@context'],
-          'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field._ui.title}),
-          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
-              {title: field._ui.title, version: window.cedarVersion}),
+          'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
+          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",{title: field['schema:name'], version: window.cedarVersion}),
           '_ui'                 : field._ui,
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
@@ -337,7 +364,9 @@ define([
           'pav:createdBy'       : field['pav:createdBy'],
           'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
           'oslc:modifiedBy'     : field['oslc:modifiedBy'],
-          'schema:schemaVersion': field['schema:schemaVersion']
+          'schema:schemaVersion': field['schema:schemaVersion'],
+          'schema:name'         : field['schema:name'],
+          'schema:description'  : field['schema:description']
         };
         field.type = 'array';
 
@@ -357,6 +386,8 @@ define([
         delete field['pav:lastUpdatedOn'];
         delete field['oslc:modifiedBy'];
         delete field['schema:schemaVersion'];
+        delete field['schema:name'];
+        delete field['schema:description'];
 
         return true;
       } else {
@@ -384,6 +415,8 @@ define([
         field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
         field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
         field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
+        field['schema:name'] = field.items['schema:name'];
+        field['schema:description'] = field.items['schema:description'];
 
         delete field.items;
         delete field.maxItems;
@@ -451,7 +484,7 @@ define([
       });
     };
 
-    service.updateKey = function (key,  node, parent) {
+    service.updateKey = function (key, node, parent) {
       if (parent && node && (node['@id'] != parent['@id'])) {
 
         var title = service.getTitle(node);
@@ -610,7 +643,7 @@ define([
 
       // get the new key
       var properties = service.propertiesOf(schema);
-      var newKey = service.getAcceptableKey(properties,  service.getFieldName(newTitle), key);
+      var newKey = service.getAcceptableKey(properties, service.getFieldName(newTitle), key);
 
       // Rename the key at the schema.properties level
       service.renameKeyOfObject(properties, key, newKey);
@@ -636,24 +669,30 @@ define([
     };
 
     // Relabel the element key with a new value from the propertyLabels
-    service.relabel = function (node, key) {
+    service.relabel = function (node, currentKey) {
 
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
-      var newLabel = schema._ui.propertyLabels[key] || 'default';
-      var newKey = service.getFieldName(newLabel);
-      newKey = service.getAcceptableKey(p, newKey, key);
+      var newLabel = schema._ui.propertyLabels[currentKey] || 'default';
+      var suggestedKey = service.getFieldName(newLabel);
 
-      // update propertyLabels
-      delete schema._ui.propertyLabels[key];
-      schema._ui.propertyLabels[newKey] = newLabel;
+      var newKey = service.getAcceptableKey(p, suggestedKey, currentKey);
 
-      angular.forEach(p, function (value, k) {
-        if (value && key == k) {
-          service.relabelField(schema, key, newKey);
-        }
-      });
+      if (newKey == currentKey) {
+        // Do nothing. It's not necessary to relabel
+      }
+      else {
+        // Update propertyLabels
+        delete schema._ui.propertyLabels[currentKey];
+        schema._ui.propertyLabels[newKey] = newLabel;
+
+        angular.forEach(p, function (value, k) {
+          if (value && currentKey == k) {
+            service.relabelField(schema, currentKey, newKey);
+          }
+        });
+      }
     };
 
     //
@@ -722,6 +761,23 @@ define([
         service.cardinalizeField(field);
       }
 
+      // The value of the link field is a URI, and note that @id cannot be null
+      if (inputType == "link") {
+        // Define the @id field
+        var idField = {};
+        idField.type = "string";
+        idField.format = "uri";
+        field.properties["@id"] = idField;
+        delete field.properties["@value"];
+
+        // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
+        delete field.required
+      }
+
+      // Set default schema title and description
+      var defaultTitle = $translate.instant("GENERIC.Untitled");
+      service.setFieldSchemaTitleAndDescription(field, defaultTitle);
+
       return field;
     };
 
@@ -786,19 +842,17 @@ define([
       return "xsd:decimal";
     };
 
-
     // returns the properties of a template, element, or field schema
     service.getProperties = function (node) {
       return service.schemaOf(node).properties;
     };
-
 
     // If necessary, updates the field schema according to whether the field is controlled or not
     service.initializeSchema = function (field) {
       var fieldSchema = service.schemaOf(field);
       // If regular field
       if (!service.hasValueConstraint(field)) {
-        if (fieldSchema.required[0] != "@value") {
+        if (!fieldSchema.required || fieldSchema.required[0] != "@value") {
           fieldSchema.required = [];
           fieldSchema.required.push("@value")
         }
@@ -813,15 +867,12 @@ define([
       }
       // If controlled field
       else {
-        if (fieldSchema.required[0] != "@id") {
-          fieldSchema.required = [];
-          fieldSchema.required.push("@id")
-        }
+        // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
+        delete field.required;
+
         if (angular.isUndefined(fieldSchema.properties["@id"])) {
           var idField = {};
-          idField.type = [];
-          idField.type.push("string");
-          idField.type.push("null");
+          idField.type = "string";
           idField.format = "uri";
           fieldSchema.properties["@id"] = idField;
           delete fieldSchema.properties["@value"];
@@ -1045,7 +1096,9 @@ define([
 
     // Generates a nice field name
     service.getFieldName = function (rawFieldName) {
-      return DataUtilService.removeSpecialChars(rawFieldName);
+      if (rawFieldName && rawFieldName.length > 0) {
+        return DataUtilService.removeSpecialChars(rawFieldName);
+      }
     };
 
     service.getEnumOf = function (propertyName) {
@@ -1074,22 +1127,24 @@ define([
         return;
       }
 
+      if (currentKey == suggestedKey) {
+        return currentKey;
+      }
+
       var key = suggestedKey;
-      // if (currentKey === suggestedKey) {
-      //   key = currentKey;
-      //
-      // } else {
 
-
-        if (obj[key]) {
-          var idx = 1;
-          while (obj["" + key + idx]) {
-            idx += 1;
+      if (obj[key]) {
+        var idx = 1;
+        var newKey = "" + key + idx;
+        while (obj[newKey]) {
+          if (currentKey == newKey) {
+            break; // currentKey is an acceptable key
           }
-
-          key = "" + key + idx;
+          idx += 1;
+          newKey = "" + key + idx;
         }
-      // }
+        key = newKey;
+      }
 
       return key;
     };

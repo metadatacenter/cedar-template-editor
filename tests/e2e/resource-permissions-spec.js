@@ -38,13 +38,13 @@ describe('resource-permissions', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log('should be on the workspace');
+    console.log('resource-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   // reset user selections to defaults
   it('should create target folders', function () {
-    console.log('should create target folders');
+    console.log('resource-permissions should create target folders');
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     target1Folder = workspacePage.createFolder('Target');
 
@@ -55,7 +55,7 @@ describe('resource-permissions', function () {
   describe('move tests', function () {
 
     it("should move a resource owned by current user to a writable folder", function () {
-      console.log('should move a resource owned by current user to a writable folder');
+      console.log('resource-permissions should move a resource owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create template and target folder
@@ -79,7 +79,7 @@ describe('resource-permissions', function () {
     });
 
     it("should move a resource owned by current user to an unwritable folder", function () {
-      console.log('should move a resource owned by current user to an unwritable folder');
+      console.log('resource-permissions should move a resource owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // share folder with user 2, read only
@@ -110,7 +110,7 @@ describe('resource-permissions', function () {
     });
 
     it("should move a writable resource not owned by current user to a writable folder", function () {
-      console.log('should move a writable resource not owned by current user to a writable folder');
+      console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -138,7 +138,7 @@ describe('resource-permissions', function () {
     });
 
     it("should move a writable resource not owned by current user to an unwritable folder", function () {
-      console.log('should move a writable resource not owned by current user to an unwritable folder');
+      console.log('resource-permissions should move a writable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source template and target shared folder
@@ -168,7 +168,7 @@ describe('resource-permissions', function () {
     });
 
     it("should move an unwritable resource not owned by current user to an unwritable folder", function () {
-      console.log('should move an unwritable resource not owned by current user to an unwritable folder');
+      console.log('resource-permissions should move an unwritable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -196,7 +196,7 @@ describe('resource-permissions', function () {
   xdescribe('copy tests', function () {
 
     it("should copy a resource owned by current user to a writable folder", function () {
-      console.log('should copy a resource owned by current user to a writable folder');
+      console.log('resource-permissions should copy a resource owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create template and target folder
@@ -215,7 +215,7 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a resource owned by current user to an unwritable folder", function () {
-      console.log('should copy a resource owned by current user to an unwritable folder');
+      console.log('resource-permissions should copy a resource owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create a folder to share with another user
@@ -243,7 +243,7 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a writable resource not owned by current user to a writable folder", function () {
-      console.log('should copy a writable resource not owned by current user to a writable folder');
+      console.log('resource-permissions should copy a writable resource not owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -272,7 +272,7 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a writable resource not owned by current user to an unwritable folder", function () {
-      console.log('should copy a writable resource not owned by current user to an unwritable folder');
+      console.log('resource-permissions should copy a writable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source template and target shared folder
@@ -298,7 +298,7 @@ describe('resource-permissions', function () {
     });
 
     it("should copy an unwritable resource not owned by current user to an unwritable folder", function () {
-      console.log('should copy an unwritable resource not owned by current user to an unwritable folder');
+      console.log('resource-permissions should copy an unwritable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -327,7 +327,7 @@ describe('resource-permissions', function () {
   });
 
   it("should mark targets as deletable", function () {
-    console.log('should mark targets as deletable');
+    console.log('resource-permissions should mark targets as deletable');
     resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
   });
@@ -335,9 +335,10 @@ describe('resource-permissions', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('should delete resource from the user workspace');
+      console.log('should delete ' + resources.length + ' resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("resource-permissions should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();

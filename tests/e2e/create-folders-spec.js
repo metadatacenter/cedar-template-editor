@@ -8,7 +8,7 @@ var _ = require('../libs/lodash.min.js');
  * initialize the workspace by setting the default user preferences
  *
  */
-describe('clean-up', function () {
+xdescribe('create-folders', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
 
@@ -22,22 +22,19 @@ describe('clean-up', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log("clean-up should be on the workspace - hello");
+    console.log("create-folders should be on the workspace");
     workspacePage.onWorkspace();
   });
 
-  // reset user selections to defaults
-  it('should default user selections for user 2', function () {
-    console.log("clean-up should default user selections for user 2");
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.initPreferences();
-  });
 
-  // reset user selections to defaults
-  it('should default user selections for user 1', function () {
-    console.log("clean-up should default user selections for user 1");
+  it("should create 100 folders", function () {
+    console.log('create-folders should create 100 folders for user 1');
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.initPreferences();
+
+    // create folder
+    for (var i=0;i<100;i++) {
+      workspacePage.createFolder('folder' + i);
+    }
   });
 
 

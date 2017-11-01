@@ -1,6 +1,5 @@
 <div class="fields fields-date">
 
-  <!-- header row -->
   <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
@@ -12,9 +11,8 @@
         aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
-    <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+    <span class="floating-label">{{getTitle()}}</span>
   </div>
-
 
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
@@ -26,7 +24,7 @@
             ng-change="setDefaultValueIfEmpty(model)"
             class="form-control"
             ng-class="{'required': isRequired()}"
-            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            placeholder="{{getTitle()}}"
             aria-label="Select a date"
             ng-model="valueElement['@value']"
             ng-disabled="!isRuntime() || preview"
@@ -38,50 +36,10 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group form-group-narrow -->
 
-    <!--<div class="form-group form-group-narrow date-group range floating-label-wrapper"-->
-        <!--ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">-->
-
-      <!--<div class='input-group' date-time-picker>-->
-        <!--<input type="text"-->
-            <!--id="{{getId(0)}}"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} start"-->
-            <!--aria-label="Select a start date"-->
-            <!--ng-model="valueElement['@value'].start"-->
-            <!--ng-disabled="!isRuntime() || preview"-->
-            <!--validate-on="blur"-->
-            <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-      <!--<div class='input-group' date-time-picker>-->
-        <!--<input type="text"-->
-            <!--id="{{getId(0)}}"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} end"-->
-            <!--aria-label="end date"-->
-            <!--ng-model="valueElement['@value'].end"-->
-            <!--ng-disabled="!isRuntime() || preview"-->
-            <!--validate-on="blur"-->
-            <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!-- /.form-group form-group-narrow -->
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
-
-
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="field field-date">
 
@@ -92,7 +50,7 @@
         <input type="text"
             class="form-control"
             ng-class="{'required': isRequired()}"
-            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            placeholder="{{getTitle()e}}"
             aria-label="Select a date"
             ng-model="model['@value']"
             ng-disabled="true"
@@ -103,45 +61,9 @@
       </div>
     </div>
 
-    <!--<div class="form-group form-group-narrow date-group range floating-label-wrapper"-->
-        <!--ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">-->
-
-
-      <!--<div class='input-group' date-time-picker="">-->
-        <!--<input type="text"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} start"-->
-            <!--aria-label="Select a start date"-->
-            <!--ng-model="model['@value'].start"-->
-            <!--ng-disabled="true"-->
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-      <!--<div class='input-group' date-time-picker="">-->
-        <!--<input type="text"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} end"-->
-            <!--aria-label="end date"-->
-            <!--ng-model="model['@value'].end"-->
-            <!--ng-disabled="true"-->
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!-- /.form-group form-group-narrow -->
   </div>
-  <!-- /.form-group form-group-narrow -->
-
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
-
-
     <div class="form-group form-group-narrow date-group floating-label-wrapper">
 
       <div class='input-group' date-time-picker>
@@ -149,7 +71,7 @@
             ng-change="setDefaultValueIfEmpty(model)"
             class="form-control"
             ng-class="{'required': isRequired()}"
-            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            placeholder="{{getTitle()}}"
             aria-label="Select a date"
             ng-model="model['@value']"
             ng-disabled="!isRuntime() || preview"
@@ -161,46 +83,6 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group form-group-narrow -->
-
-    <!--<div class="form-group form-group-narrow date-group range floating-label-wrapper"-->
-        <!--ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">-->
-
-
-      <!--<div class='input-group' date-time-picker="">-->
-        <!--<input type="text"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} start"-->
-            <!--aria-label="Select a start date"-->
-            <!--ng-model="model['@value'].start"-->
-            <!--ng-disabled="!isRuntime() || preview"-->
-            <!--validate-on="blur"-->
-            <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
-
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-      <!--<div class='input-group' date-time-picker="">-->
-        <!--<input type="text"-->
-            <!--class="form-control"-->
-            <!--ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"-->
-            <!--placeholder="{{$root.schemaOf(field)._ui.title}} end"-->
-            <!--aria-label="Select a end date"-->
-            <!--ng-model="model['@value'].end"-->
-            <!--ng-disabled="!isRuntime() || preview"-->
-            <!--validate-on="blur"-->
-            <!--ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"-->
-            <!--with-floating-label=""/>-->
-        <!--<span class="input-group-addon">-->
-          <!--<i class="fa fa-calendar fa-2x"></i>-->
-        <!--</span>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!-- /.form-group form-group-narrow -->
   </div>
-
 
 </div>

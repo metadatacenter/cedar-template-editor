@@ -99,19 +99,45 @@ define([
       }
     };
 
-    // keeping track of dirty documents, i.e. with edits or not
-    $rootScope.dirty = false;
+    $rootScope.documentState = {
+      valid: true
+    };
 
+    $rootScope.$on("form:validation", function (even, options) {
+      $rootScope.setValidation(options.state);
+    });
+
+    $rootScope.setValidation = function (value) {
+      $rootScope.documentState.valid = value;
+    };
+    $rootScope.isValid = function () {
+      return $rootScope.documentState.valid;
+    };
+
+    $rootScope.$on("form:dirty", function () {
+      $rootScope.setDirty(true);
+    });
+
+    // keeping track of dirty, locked, and valid documents
+    $rootScope.dirty = false;
     $rootScope.setDirty = function (value) {
       $rootScope.dirty = value;
     };
-
     $rootScope.isDirty = function () {
       return $rootScope.dirty;
     };
 
-    // use the new form and hide the old form
-    $rootScope.useNewForm = true;
+    $rootScope.locked = false;
+    $rootScope.setLocked = function (value) {
+      $rootScope.locked = value;
+    };
+    $rootScope.isLocked = function () {
+      return $rootScope.locked;
+    };
+
+
+
+
 
   }
 

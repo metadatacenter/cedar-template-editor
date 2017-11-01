@@ -5,8 +5,6 @@
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <!--<p class="extra-label-context" ng-if="!isRuntime() && $root.schemaOf(field)._ui.title">-->
-      <!--{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="text"
         id="{{getId($index)}}"
         class="form-control"

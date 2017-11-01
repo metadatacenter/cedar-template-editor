@@ -1,7 +1,7 @@
 <div class="form-group floating-label-wrapper">
   <input type="text"
       class="form-control field-title-definition"
-      id="placeholder-{{$root.schemaOf(field)['@id'].substring($root.schemaOf(field)['@id'].lastIndexOf('/')+1)}}"
+      id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
       placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
       aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
       ng-model="$root.schemaOf(field)._ui.title"
@@ -10,7 +10,7 @@
 <div class="form-group floating-label-wrapper">
   <input type="text"
       class="form-control field-description-definition"
-      id="help-text-{{$root.schemaOf(field)['@id'].substring($root.schemaOf(field)['@id'].lastIndexOf('/')+1)}}"
+      id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
       placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
       aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
       ng-model="$root.schemaOf(field)._ui.description"

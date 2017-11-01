@@ -35,19 +35,30 @@ define([
       var dms = DataManipulationService;
 
 
+
+      $scope.multipleDemo = {};
+      $scope.multipleDemo.colors = ['Red','Green'];
+      $scope.multipleDemo.availableColors = ['Red','Green','Blue','Yellow','Magenta','Maroon','Umbra','Turquoise'];
+
+
       //
       // model access
       //
 
       // get the field title
-      $scope.getTitle = function () {
-        return dms.getTitle($scope.field);
+      $scope.getTitle = function (field) {
+        return dms.getTitle(field || $scope.field);
       };
 
       // get the field description
-      $scope.getDescription = function () {
-        return dms.getDescription($scope.field);
+      $scope.getDescription = function (field) {
+        return dms.getDescription(field || $scope.field);
       };
+
+      $scope.getContent = function (field) {
+        return dms.getContent(field || $scope.field);
+      };
+
 
       // get the field id
       $scope.getId = function () {
@@ -101,6 +112,10 @@ define([
         return dms.isRichText(field || $scope.field);
       };
 
+      $scope.getUnescapedContent = function (field) {
+        return field._ui._content;
+      };
+
       // is this a static image?
       $scope.isImage = function (field) {
         return dms.isImage(field || $scope.field);
@@ -109,6 +124,10 @@ define([
       // is the previous field static?
       $scope.isStatic = function (field) {
         return dms.isStaticField(field || $scope.field);
+      };
+
+      $scope.isPreviousStatic = function() {
+        return $scope.isStatic($scope.previous);
       };
 
       // string together field values
@@ -264,7 +283,7 @@ define([
           var window = angular.element($window);
           var windowHeight = $(window).height();
           var target = jQuery("#" + locator);
-          if (target) {
+          if (target && target.offset()) {
 
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);
@@ -441,6 +460,8 @@ define([
         }
       };
 
+      $scope.multiple= {};
+
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
         var fieldValue = $scope.getValueLocation();
@@ -476,15 +497,12 @@ define([
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
-                var newValue = {};
-                newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
-                $scope.model.push(newValue);
+                $scope.model.push({'@value':$scope.optionsUI.listMultiSelect[i].label});
               }
             }
             // Single-choice list
             else {
-              var newValue = {};
-              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect;
+              $scope.model = {'@value':$scope.optionsUI.listSingleSelect[0].label};
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -514,18 +532,18 @@ define([
             }
           }
           else if (dms.isListType($scope.field)) {
-            // Multi-choice list
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
-                $scope.optionsUI.listMultiSelect.push($scope.model[i][valueLocation]);
+                var v = $scope.model[i][valueLocation];
+                if (v) {
+                  $scope.optionsUI.listMultiSelect.push({"label":$scope.model[i][valueLocation]});
+                }
+
               }
-            }
-            // Single-choice list
-            else {
-              // For this field type only one selected option is possible
+            } else {
               if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = $scope.model[0][valueLocation];
+                $scope.optionsUI.listSingleSelect = {"label":$scope.model[0][valueLocation]};
               }
             }
           }

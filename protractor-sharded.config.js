@@ -4,12 +4,17 @@ exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs          : ['tests/e2e/**/*.js'],
   rootElement    : 'html',
+  chromeOnly: true,
   directConnect  : true,
 
   capabilities: {
     browserName: 'chrome',
-    shardTestFiles:true,
-    maxInstances:5
+    loggingPrefs: {"driver": "ALL", "server": "ALL", "browser": "ALL"},
+    chromeOptions: {
+      args: [ 'no-sandbox', "--disable-gpu", "--window-size=1440x900"]
+    },
+    shardTestFiles:false,
+    maxInstances:1
   },
 
   allScriptsTimeout: 500000,

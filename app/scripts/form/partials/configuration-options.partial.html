@@ -1,5 +1,5 @@
 <!-- tabs -->
-<div class="">
+<div>
   <div class="detail-options">
     <div class="element-toggles list table-style">
 
@@ -35,31 +35,16 @@
     </div>
   </div>
 
-  <!-- date range -->
-  <!--<div id="range" class="type-toggle date" ng-init="initDateSingle()" ng-show="isTabActive('range')">-->
-  <!--<div class="single-date d-option"-->
-  <!--ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'; $event.stopPropagation();"-->
-  <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">-->
-  <!--<span>Date</span>-->
-  <!--</div>-->
-  <!--<div class="date-range d-option"-->
-  <!--ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'; $event.stopPropagation();"-->
-  <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">-->
-  <!--<span>Date Range</span>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!-- /.date-type-toggle -->
-
   <!-- Required tab  -->
   <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
     <div class="type-toggle date">
       <div class="single-date d-option"
-          ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false;  $event.stopPropagation();"
+          ng-click="setDirty();$root.schemaOf(field)._valueConstraints.requiredValue = false;  $event.stopPropagation();"
           ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>No</span>
       </div>
       <div class="date-range d-option"
-          ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
+          ng-click="setDirty();$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>Yes</span>
       </div>
@@ -70,12 +55,12 @@
   <div id="value-recommendation" class="value-recommendation-options" ng-show="isTabActive('value-recommendation')">
     <div class="type-toggle date">
       <div class="single-date d-option"
-          ng-click="removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
+          ng-click="setDirty();removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled == undefined}">
         <span>No</span>
       </div>
       <div class="date-range d-option"
-          ng-click="$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
+          ng-click="setDirty();$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled}">
         <span>Yes</span>
       </div>
@@ -86,10 +71,10 @@
   <div id="cardinality-options" class="cardinality-options " ng-show="isTabActive('cardinality')" ng-init="xxx()">
 
     <div class="type-toggle date">
-      <div class="d-option" ng-class="{active: !hasMin()}" ng-click="clearMinMax();">
+      <div class="d-option" ng-class="{active: !hasMin()}" ng-click="setDirty();clearMinMax();">
         <span translate>GENERIC.No</span>
       </div>
-      <div class="d-option" ng-class="{active: hasMin()}" ng-click="defaultMinMax();">
+      <div class="d-option" ng-class="{active: hasMin()}" ng-click="setDirty();defaultMinMax();">
         <span translate>GENERIC.Yes</span>
       </div>
     </div>
@@ -107,7 +92,7 @@
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
       <button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"
-          ng-click="getInstanceType(); showModal('field');$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
+          ng-click="getInstanceType();showModal('field')" translate>
         GENERIC.Search
       </button>
     </div>
@@ -202,8 +187,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();
-                $root.finalTitle = $root.schemaOf(field)._ui.title">Search
+            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
             </button>
           </div>
         </div>
@@ -215,12 +199,12 @@
   <div id="hidden"  ng-show="isTabActive('hidden')">
     <div class="type-toggle date">
       <div class="single-date d-option"
-          ng-click="setHidden(false); $event.stopPropagation();"
+          ng-click="setDirty();setHidden(false); $event.stopPropagation();"
           ng-class="{active: !isHidden()}">
         <span>No</span>
       </div>
       <div class="date-range d-option"
-          ng-click="setHidden(true);   $event.stopPropagation();"
+          ng-click="setDirty();setHidden(true);   $event.stopPropagation();"
           ng-class="{active: isHidden()}">
         <span>Yes</span>
       </div>

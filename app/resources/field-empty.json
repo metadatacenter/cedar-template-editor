@@ -3,9 +3,16 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
     "pav:createdOn": {
       "@type": "xsd:dateTime"
     },
@@ -23,8 +30,6 @@
   "title": "",
   "description": "",
   "_ui": {
-    "title": "",
-    "description": "",
     "inputType": null
   },
   "_valueConstraints": {
@@ -58,6 +63,8 @@
   "required": [
     "@value"
   ],
+  "schema:name": "",
+  "schema:description": "",
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,

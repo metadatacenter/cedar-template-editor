@@ -7,14 +7,15 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "TemplateService", "TemplateInstanceService",
+                                      "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService", "UIUtilService", "DataManipulationService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
-                                    HeaderService, TemplateService, TemplateInstanceService,
+                                    HeaderService, TemplateService, resourceService,TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
-                                    QueryParamUtilsService, FrontendUrlService, ValidationService, ValueRecommenderService) {
+                                    QueryParamUtilsService, FrontendUrlService, ValidationService,
+                                    ValueRecommenderService, UIUtilService, DataManipulationService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -26,7 +27,7 @@ define([
             $rootScope.jsonToSave = $scope.form;
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
-            $rootScope.documentTitle = $scope.form._ui.title;
+            $rootScope.documentTitle = $scope.form['schema:name'];
 
             // Initialize value recommender service
             ValueRecommenderService.init($routeParams.templateId, $scope.form);
@@ -38,6 +39,95 @@ define([
       );
     };
 
+    $scope.details;
+    $scope.cannotWrite;
+
+    // $scope.isShowOutput = function () {
+    //   return UIUtilService.isShowOutput();
+    // };
+    //
+    // $scope.toggleShowOutput = function() {
+    //   return UIUtilService.toggleShowOutput();
+    // };
+    //
+    // $scope.scrollToAnchor = function(hash) {
+    //   UIUtilService.scrollToAnchor(hash);
+    // };
+    //
+    // $scope.getShowOutputTab = function () {
+    //   return UIUtilService.getShowOutputTab();
+    // };
+    //
+    // $scope.setShowOutputTab = function (index) {
+    //   return UIUtilService.setShowOutputTab(index);
+    // };
+    //
+    // $scope.toggleShowOutputTab = function (index) {
+    //   return UIUtilService.toggleShowOutputTab(index);
+    // };
+
+    // create a copy of the form with the _tmp fields stripped out
+    $scope.cleanForm = function () {
+      var copiedForm = jQuery.extend(true, {}, $scope.instance);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+
+        UIUtilService.toRDF();
+        $scope.RDF = UIUtilService.getRDF();
+        $scope.RDFError = UIUtilService.getRDFError();
+        return copiedForm;
+    };
+
+
+    $scope.canWrite = function () {
+      var result = !$scope.details || resourceService.canWrite($scope.details);
+      $scope.cannotWrite  =!result;
+      return result;
+    };
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('cannotWrite', function () {
+      $rootScope.setLocked($scope.cannotWrite);
+    });
+
+    var getDetails = function (id) {
+      resourceService.getResourceDetailFromId(
+          id, CONST.resourceType.INSTANCE,
+          function (response) {
+            $scope.details = response;
+            $scope.canWrite();
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
+          }
+      );
+    };
+
+    // validate the resource
+    var checkValidation = function (node) {
+
+      if (node) {
+        return resourceService.validateResource(
+            node, CONST.resourceType.INSTANCE,
+            function (response) {
+
+              var json = angular.toJson(response);
+              var status = response.validates == "true";
+              $scope.logValidation(status, json);
+
+              $timeout(function () {
+                $rootScope.$broadcast("form:validation", { state: status });
+              });
+
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
+            }
+        );
+      }
+    };
+
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
@@ -45,9 +135,13 @@ define([
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
+            checkValidation($scope.instance);
             $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            getDetails($scope.instance['@id']);
+
+
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
@@ -79,6 +173,7 @@ define([
       for (var i = 0; i < report.errors.length; i++) {
         console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
       }
+      $rootScope.setValidation(validationStatus);
     };
 
     // Stores the data (instance) into the databases
@@ -98,8 +193,8 @@ define([
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
         // Create fields that will store information used by the UI
-        $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
-        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant(
+        $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant(
                 "GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(

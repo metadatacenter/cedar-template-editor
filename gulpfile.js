@@ -83,16 +83,16 @@ gulp.task('html', function (done) {
 // Task to replace service URLs
 gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.' + cedarHost))
-      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
-      .pipe(replace('userServerUrl', 'https://user.' + cedarHost))
-      .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarHost))
-      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
-      .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarHost))
-      .pipe(replace('groupServerUrl', 'https://group.' + cedarHost))
-      .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
-      .pipe(replace('submissionServerUrl', 'https://submission.' + cedarHost))
-      .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarHost))
+      .pipe(replace('templateServerUrl', 'https://template.' + cedarRestHost))
+      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
+      .pipe(replace('userServerUrl', 'https://user.' + cedarRestHost))
+      .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarRestHost))
+      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
+      .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarRestHost))
+      .pipe(replace('groupServerUrl', 'https://group.' + cedarRestHost))
+      .pipe(replace('schemaServerUrl', 'https://schema.' + cedarRestHost))
+      .pipe(replace('submissionServerUrl', 'https://submission.' + cedarRestHost))
+      .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });
@@ -139,7 +139,7 @@ gulp.task('karma-tests', function (done) {
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
-      .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
+      .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarUIHost))
       .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
       .pipe(replace('protractorTestUser1Password', cedarTestUser1Password))
       .pipe(replace('protractorTestUser1Name', cedarTestUser1Name))
@@ -178,15 +178,15 @@ gulp.task('e2e', gulp.series('test-env', function () {
 gulp.task('e2e-sequential', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
-    './tests/e2e/template-creator-spec.js',
     './tests/e2e/delete-resource-spec.js',
     './tests/e2e/folder-permissions-spec.js',
     './tests/e2e/resource-permissions-spec.js',
     './tests/e2e/update-description-spec.js',
     './tests/e2e/update-name-spec.js',
     './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js'
+    './tests/e2e/update-permissions-spec.js',
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
@@ -232,6 +232,18 @@ gulp.task('resource-permissions', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('create-folders', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/create-folders-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
@@ -242,7 +254,7 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -270,7 +282,7 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
     './tests/e2e/metadata-creator-spec.js',
   ])
       .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -279,7 +291,6 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
 
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
@@ -290,9 +301,9 @@ gulp.task('test-form', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-metadata', gulp.series('test-env', function () {
+gulp.task('test-form-sequential', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
@@ -302,9 +313,9 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-template', gulp.series('test-env', function () {
+gulp.task('delete-resource-sequential', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/delete-resource-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
@@ -313,6 +324,21 @@ gulp.task('test-template', gulp.series('test-env', function () {
         throw e
       });
 }));
+
+gulp.task('resource-permissions-sequential', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/resource-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+
+
 
 function exitWithError(msg) {
   onError(msg);
@@ -365,8 +391,10 @@ var cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 var cedarVersion = envConfig['CEDAR_VERSION'];
 var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
 
-var cedarHostVarName = getFrontendEnvVar('HOST');
-envConfig[cedarHostVarName] = null;
+var cedarUIHostVarName = getFrontendEnvVar('UI_HOST');
+envConfig[cedarUIHostVarName] = null;
+var cedarRestHostVarName = getFrontendEnvVar('REST_HOST');
+envConfig[cedarRestHostVarName] = null;
 
 var cedarUser1LoginVarName = getFrontendEnvVar('USER1_LOGIN');
 envConfig[cedarUser1LoginVarName] = null;
@@ -384,7 +412,8 @@ envConfig[cedarUser2NameVarName] = null;
 
 readAllEnvVarsOrFail();
 
-var cedarHost = envConfig[cedarHostVarName];
+var cedarUIHost = envConfig[cedarUIHostVarName];
+var cedarRestHost = envConfig[cedarRestHostVarName];
 
 var cedarTestUser1Login = envConfig[cedarUser1LoginVarName];
 var cedarTestUser1Password = envConfig[cedarUser1PasswordVarName];

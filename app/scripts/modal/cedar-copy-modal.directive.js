@@ -33,12 +33,13 @@ define([
           '$translate',
           'resourceService',
           'UIMessageService',
+          'UISettingsService',
           'CONST'
         ];
 
         function cedarCopyModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
-                                          UIMessageService,
+                                          UIMessageService,UISettingsService,
                                           CONST) {
           var vm = this;
 
@@ -53,8 +54,10 @@ define([
           vm.updateResource = updateResource;
           vm.openDestination = openDestination;
           vm.getResourceIconClass = getResourceIconClass;
+          vm.loadMore = loadMore;
           vm.isFolder = isFolder;
           vm.canWrite = canWrite;
+          vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -63,6 +66,8 @@ define([
           vm.destinationPath = null;
           vm.resourceTypes = null;
           vm.sortOptionField = null;
+          vm.offset = 0;
+          vm.totalCount = null;
 
           function canWrite() {
             return hasPermission('write');
@@ -152,6 +157,7 @@ define([
           function openDestination(resource) {
             if (resource) {
               var id = resource['@id'];
+              vm.offset = 0;
               getDestinationById(id);
               vm.selectedDestination = resource;
               vm.currentDestination = resource;
@@ -178,15 +184,33 @@ define([
             }
           }
 
+          // callback to load more resources for the current folder or search
+          function loadMore() {
+            if ( vm.modalVisible) {
+              vm.offset += UISettingsService.getRequestLimit();
+              var offset = vm.offset;
+              var folderId = vm.currentFolderId;
+              var resourceTypes = activeResourceTypes();
+
+              // are there more?
+              if (offset < vm.totalCount) {
+                getDestinationById(folderId);
+              }
+            }
+          };
+
           function getDestinationById(folderId) {
             if (folderId) {
+              var limit = UISettingsService.getRequestLimit();
+              var offset = vm.offset;
               var resourceTypes = activeResourceTypes();
               if (resourceTypes.length > 0) {
                 return resourceService.getResources(
-                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
+                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                     function (response) {
+                      vm.totalCount = response.totalCount;
                       vm.currentDestinationID = folderId;
-                      vm.destinationResources = response.resources;
+                      vm.destinationResources = vm.destinationResources.concat(response.resources);
                       vm.destinationPathInfo = response.pathInfo;
                       vm.destinationPath = vm.destinationPathInfo.pop();
                       vm.selectCurrent();
@@ -249,6 +273,12 @@ define([
             return result;
           }
 
+          // on modal close, scroll to the top the cheap way
+          function hideModal() {
+            document.getElementById('copyModalContent').scrollTop = 0;
+            vm.modalVisible = false;
+          }
+
           // modal open or closed
           $scope.$on('copyModalVisible', function (event, params) {
 
@@ -268,6 +298,8 @@ define([
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
+              vm.offset = 0;
+              // TODO scroll to top
               getDestinationById(vm.currentFolderId);
             }
           });

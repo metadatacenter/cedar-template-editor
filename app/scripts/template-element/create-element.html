@@ -10,7 +10,7 @@
                 <input auto-focus type="text" class="form-control" id="element-name"
                     placeholder="{{'GENERIC.ElementName' | translate}}"
                     aria-label="{{'GENERIC.ElementName' | translate}}"
-                    ng-model="element._ui.title" with-floating-label>
+                    ng-model="elementSchema['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
@@ -21,14 +21,14 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-description"
                     placeholder="{{'GENERIC.ElementDescription' | translate}}"
-                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="element._ui.description"
+                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="elementSchema['schema:description']"
                     with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-element-field');$root.finalTitle = $root.schemaOf(element)._ui.title">
+            ng-click="showModal('control-options-element-field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -52,7 +52,8 @@
               <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
               <!--</div>-->
               <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
-              <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
+
             </div>
             <!-- /.form-preview -->
           </div>
@@ -81,7 +82,7 @@
             </ul>
           </div>
 
-          <div class="element-actions">
+          <div class="element-actions"  ng-if="canWrite()" style="height:auto">
             <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
@@ -91,7 +92,7 @@
             <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
             <!--</div>-->
-            <div class="clear-save">
+            <div class="clear-save" >
               <button type="button" id="button-clear-element" class="btn btn-clear element" ng-click="reset()"
                   ng-hide="isPropertiesEmpty()"
                   translate>
@@ -105,7 +106,10 @@
               </button>
             </div>
           </div>
-          <!-- /.template-actions -->
+
+          <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
+
         </div>
         <!-- /.right-body -->
 

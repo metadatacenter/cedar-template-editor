@@ -6,7 +6,7 @@
 
   <div ng-if="!isRuntime()" style="padding-top: 10px;">
     <figure>
-      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
+      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{getTitle()}}"
           type="image/png" width="100%"/>
       <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>
@@ -14,7 +14,7 @@
 
   <div ng-if="isRuntime()">
     <figure>
-      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
+      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{getTitle()}}"
           type="image/png" width="100%"/>
       <figcaption><label>{{getTitle()}}</label></figcaption>
     </figure>

@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarRenameModal', cedarRenameModalDirective);
 
-      cedarRenameModalDirective.$inject = ['CedarUser'];
+      cedarRenameModalDirective.$inject = ['CedarUser',"DataManipulationService"];
 
-      function cedarRenameModalDirective(CedarUser) {
+      function cedarRenameModalDirective(CedarUser,DataManipulationService) {
 
         var directive = {
           bindToController: {
@@ -39,9 +39,13 @@ define([
                                             UIMessageService,
                                             AuthorizedBackendService) {
           var vm = this;
+
           vm.modalVisible = false;
           vm.renameResource = null;
           vm.updateResource = updateResource;
+
+          var dms = DataManipulationService;
+
 
           function updateResource() {
             var resource = vm.renameResource;
@@ -66,7 +70,9 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
+
+                      var title = dms.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": title},
                           'GENERIC.Updated');
                       refresh();
                     },
@@ -79,8 +85,9 @@ define([
                     resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
 
+                      var title = dms.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": response.data._ui.title}, 'GENERIC.Updated');
+                          {"title": title}, 'GENERIC.Updated');
                       refresh();
                     },
                     function (err) {
@@ -91,6 +98,7 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
+
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource.name},
                           'GENERIC.Updated');
                       refresh();

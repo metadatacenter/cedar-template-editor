@@ -3,9 +3,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.service.dataUtilService', [])
-    .service('DataUtilService', DataUtilService);
+      .service('DataUtilService', DataUtilService);
 
   DataUtilService.$inject = ["$rootScope"];
 
@@ -53,30 +53,21 @@ define([
           .replace(/[\t]/g, '\\t');
     };
 
-    // Escapes JSON special characters, as well as '.', '/', and ':'.
+    // Removes special characters
     service.removeSpecialChars = function (string) {
       return string
-          .replace(/[\\]/g, '')
-          .replace(/[\"]/g, '')
-          .replace(/[\/]/g, '')
-          .replace(/[\b]/g, '')
-          .replace(/[\f]/g, '')
-          .replace(/[\n]/g, '')
-          .replace(/[\r]/g, '')
-          .replace(/[\t]/g, '')
-          .replace(/[.]/g, '')
-          .replace(/[/]/g, '')
-          .replace(/[:]/g, '')
+          .replace(/[.]/g, '') // '.'  is not accepted by MongoDB
+          .replace(/^[$]/g, ''); // '$' at the beginning of the field name is not accepted by MongoDB
     };
 
-    // Generate simple hash (more options at http://erlycoder.com/49/javascript-hash-functions-to-convert-string-into-integer-hash-)
-    service.hashCode = function(str) {
-      var hash = 0;
-      if (str.length == 0) return hash;
+    // Generate simple hash (source: http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/)
+    service.getHashCode = function (str) {
+      var hash = 0, i, chr;
+      if (str.length === 0) return hash;
       for (i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
+        chr = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
       }
       return hash;
     }

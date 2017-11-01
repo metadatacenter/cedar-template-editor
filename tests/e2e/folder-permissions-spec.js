@@ -313,10 +313,11 @@ describe('folder-permissions', function () {
 
   describe('remove created resources', function () {
 
-    it('should delete resource from the user workspace', function () {
-      console.log('folder permissions remove created resources should delete resource from the user workspace');
+    it('should delete ' + resources.length + ' resource from the user workspace', function () {
+      console.log('folder permissions should delete  '+ resources.length + ' resources should delete resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log("folder-permissions should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();

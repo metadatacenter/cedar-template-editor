@@ -1,5 +1,7 @@
 <div class="template-container scrollable-content">
 
+
+
   <div class="template-header template" id="template-header">
     <div class="container">
       <div class="row">
@@ -10,7 +12,7 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text" class="form-control" id="template-name" placeholder="Template Name"
-                    aria-label="Template Name" ng-model="form._ui.title" with-floating-label>
+                    aria-label="Template Name" ng-model="form['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
@@ -20,13 +22,13 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="template-description" placeholder="Template Description"
-                    aria-label="Template Description" ng-model="form._ui.description" with-floating-label>
+                    aria-label="Template Description" ng-model="form['schema:description']" with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-template-field'); $root.finalTitle=form._ui.title">
+            ng-click="showModal('control-options-template-field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -47,9 +49,8 @@
         <div class="right-body col-sm-10 col-sm-offset-1">
           <div id="form-preview-section">
             <div class="form-preview collapse in">
-              <form-directive form="form" page="page" model="instance" page-index="0"
+              <form-directive dirty="dirty" forms="forms" form="form" page="page" model="instance" page-index="0"
                   ng-if="!isPropertiesEmpty()"></form-directive>
-              <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
             </div>
           </div>
 
@@ -76,7 +77,7 @@
             </ul>
           </div>
 
-          <div class="template-actions">
+          <div class="template-actions"  ng-if="!cannotWrite">
             <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
@@ -102,6 +103,9 @@
               </button>
             </div>
           </div>
+
+          <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+
         </div>
 
         <div class="left-sidebar col-sm-1 pull-right">

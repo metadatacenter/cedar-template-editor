@@ -60,6 +60,8 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+@button-error: #FF5722;
+@button-dirty: #5cb85c;
 @button-pause: #f0ad4e;
 @button-pause-hover: #DD9F48;
 @button-resume: #5cb85c;
@@ -174,6 +176,18 @@ button {
   i.fa.fa-search {
     font-size: 16px;
   }
+  i.warning {
+    color: @button-warning;
+    margin: 0 2px;
+  }
+  i.error {
+    color: @button-warning;
+    margin: 0 2px;
+  }
+  i.dirty {
+    color: @button-warning;
+    margin: 0 2px;
+  }
 
   .clear-search {
     position: absolute;
@@ -246,18 +260,35 @@ button {
     .back-arrow {
       color: @white;
       font-size: 20px;
-      margin: 0 0 0 10px;
+      margin: 0;
       font-weight: 100;
+    }
 
-      @media (min-width: @screen-sm-min) {
-        font-size: 16px;
+    .feedback-form {
+      font-size: 20px;
+      i {
+        margin:0 2px;
+        color:#fff;
       }
+      i.fa.fa-lock, i.fa.fa-exclamation-triangle, i.fa.fa-circle-o {
+        color:@button-warning;
+      }
+    }
+
+    .form-feedback {
+      position: absolute;
+      left: 36px;
+      top: -10px;
+      width: 45px;
+      height: 46px;
+      padding-top: 14px;
+      left: 66px;
     }
 
     .back-arrow-click {
       position: absolute;
-      border: 0px solid red;
-      width: 46px;
+      border-width: 0px;
+      width: 200px;
       height: 46px;
       cursor: pointer;
       z-index: 10;
@@ -275,8 +306,10 @@ button {
     .document-title {
       color: @white;
       font-size: 18px;
-      margin: 0 0 0 10px;
       font-weight: 200;
+      position: relative;
+      margin: 0;
+      padding: 0;
     }
 
     @media (min-width: @screen-sm-min) {
@@ -360,22 +393,48 @@ button {
   }
 }
 
-.navbar.template {
-  background-color: @header-template;
-  margin-right: 10px;
-}
+#top-navigation {
 
-.navbar.element {
-  background-color: @header-element;
-  margin-right: 10px;
-}
+  &.template {
+    background-color: @header-template;
+    margin-right: 10px;
+  }
 
-.navbar.dashboard {
-  background-color: @header-dashboard;
-}
+  &.element {
+    background-color: @header-element;
+    margin-right: 10px;
+  }
 
-.navbar.metadata {
-  background-color: @header-template;
+  &.dashboard {
+    background-color: @header-dashboard;
+  }
+
+  &.metadata {
+    background-color: @header-template;
+  }
+
+  .form-page {
+    height: 36px;
+    padding-top: 4px;
+    font-size: 1.2em;
+    .full-height {
+      height: 100%;
+    }
+    .document-title {
+      padding: 0 20px 0 0;
+    }
+    i.warning {
+      font-size: 0.8em;
+      margin: 0;
+      color: @button-warning;
+    }
+    i.errpr {
+      font-size: 0.8em;
+      margin: 0;
+      color: @button-error;
+    }
+  }
+
 }
 
 #angular-views-entry {
@@ -2911,7 +2970,6 @@ section.dashboard-elements {
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
     border: 1px solid transparent;
-    background-color: @lt-gray;
     .count {
       font-size: smaller;
     }
@@ -3426,7 +3484,7 @@ section.dashboard-elements {
   border-top: 1px solid transparent;
   padding: 10px 0;
   text-align: center;
-  height: 300px;
+
 
   .btn {
     display: inline-block;
@@ -4679,7 +4737,7 @@ p.instructions {
 .template-actions {
   padding-top: 40px;
   border-top: 1px solid #ddd;
-  height: 300px;
+
 
   .favorite {
     float: left;
@@ -7395,32 +7453,58 @@ textarea.curlSample {
   font-size: 11px
 }
 
-// document preview in json-ld or rdf
-#outputJSON, #templateJSON {
-  .nav-tabs > li > a {
-    border: 0px solid #ccc;
-    border-radius: 0;
-    i.cedar-svg-rdf {
-      padding-right: 10px;
-    }
-  }
-  .nav-tabs > li.active > a {
-  }
-  pre {
-    background: white;
-    border: 0px;
-    border-radius: 0px;
-    min-height: 100px;
-  }
-  .warning {
-    font-size: 16px;
-    padding: 40px 0;
-    color: #ccc;
-    background-color: @white;
-    border-width: 0px;
-    min-height: 100px;
-  }
+
+#document-preview {
+  padding: 80px 0;
+  clear: both;
+
 }
+
+  #outputJSON, #templateJSON {
+    div.panel-group {
+      background-color: #eee;
+    }
+    .panel-body {
+      padding: 0;
+    }
+    .panel-title {
+      color: #888;
+    }
+    .panel-default {
+      border-radius:0;
+    }
+
+    .panel-group .panel + .panel {
+      margin-top: 0px;
+      box-shadow:none;
+    }
+    i.cedar-svg-rdf, i.cedar-svg-json-schema, i.cedar-svg-rdf1 {
+      -webkit-transform: translate(0, 3px);
+      -ms-transform: translate(0, 3px);
+      transform: translate(0, 3px);
+    }
+    i.pull-right.glyphicon {
+      margin-top:5px;
+    }
+
+    pre {
+      background: white;
+      border: 0px;
+      border-radius: 0px;
+      min-height: 100px;
+      margin: 0;
+    }
+    .warning {
+      font-size: 16px;
+      padding: 40px 0;
+      color: #ccc;
+      background-color: @white;
+      border-width: 0px;
+      min-height: 100px;
+    }
+
+  }
+
 
 table.message {
   background-color: @white;

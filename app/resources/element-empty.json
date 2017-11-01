@@ -7,6 +7,12 @@
     "pav": "http://purl.org/pav/",
     "oslc": "http://open-services.net/ns/core#",
     "schema": "http://schema.org/",
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
     "pav:createdOn": {
       "@type": "xsd:dateTime"
     },
@@ -24,8 +30,6 @@
   "title": "",
   "description": "",
   "_ui": {
-    "title": "",
-    "description": "",
     "order": [],
     "propertyLabels": {}
   },
@@ -57,6 +61,8 @@
       ]
     }
   },
+  "schema:name": "",
+  "schema:description": "",
   "required": [ "@context", "@id" ],
   "pav:createdOn": null,
   "pav:createdBy": null,

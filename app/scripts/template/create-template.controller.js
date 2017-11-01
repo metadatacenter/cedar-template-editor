@@ -9,15 +9,17 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "UIUtilService", "DataManipulationService",
+                                          "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
+                                          "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
-                                        FieldTypeService, TemplateService, UIMessageService,
-                                        UIUtilService, DataManipulationService, controlledTermDataService, StringUtilsService,
+                                        FieldTypeService, TemplateService, resourceService, UIMessageService,
+                                        UIUtilService, DataManipulationService, controlledTermDataService,
+                                        StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
@@ -28,6 +30,8 @@ define([
         $rootScope.searchBrowseModalId = "search-browse-modal";
         $rootScope.finderModalId = "finder-modal";
 
+        var dms = DataManipulationService;
+
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
         StagingService.configure(pageId);
@@ -35,6 +39,88 @@ define([
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
         $scope.viewType = 'popup';
+
+        // template details
+        $scope.details;
+        $scope.hasInstances;
+        $scope.cannotWrite;
+
+        $scope.checkLocking = function () {
+          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          $scope.cannotWrite = !result;
+          return result;
+        };
+
+        // validate the resource
+        var checkValidation = function (node) {
+          if (node) {
+            return resourceService.validateResource(
+                node, CONST.resourceType.TEMPLATE,
+                function (response) {
+
+                  var json = angular.toJson(response);
+                  var status = response.validates == "true";
+                  $scope.logValidation(status, json);
+
+                  $timeout(function () {
+                    $rootScope.$broadcast("form:validation", { state: status });
+                  });
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                }
+            );
+          }
+        };
+
+        $scope.checkLocking = function () {
+          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          $scope.cannotWrite = !result;
+          return result;
+        };
+
+        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+        $scope.$watch('cannotWrite', function () {
+          $rootScope.setLocked($scope.cannotWrite);
+        });
+
+        var doSearchTemplateInstances = function (id) {
+          var limit = 1;
+          var offset = 0;
+          var sort = 'name';
+
+          resourceService.hasMetadata(
+              id,
+              {sort: sort, limit: limit, offset: offset},
+              function (response) {
+                $scope.hasInstances = response.totalCount > 0;
+                $scope.checkLocking();
+                if ($scope.hasInstances) {
+                  UIMessageService.showWarning("Warning",
+                      "The template may not be modified because there are metadata using it.", "OK", "");
+                }
+
+              },
+              function (error) {
+                UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+              }
+          );
+        };
+
+        var getDetails = function (id) {
+          resourceService.getResourceDetailFromId(
+              id, CONST.resourceType.TEMPLATE,
+              function (response) {
+                $scope.details = response;
+                doSearchTemplateInstances(id);
+              },
+              function (error) {
+                UIMessageService.showBackendError('SERVER.' + 'TEMPLATE' + '.load.error', error);
+              }
+          );
+        };
+
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -44,14 +130,19 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
-                  HeaderService.dataContainer.currentObjectScope = $scope.form;
 
+                  var copiedForm = jQuery.extend(true, {}, $scope.form);
+                  checkValidation(copiedForm);
+
+                  HeaderService.dataContainer.currentObjectScope = $scope.form;
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
                   $rootScope.jsonToSave = $scope.form;
                   DataManipulationService.createDomIds($scope.form);
                   //$scope.getType();
-                  $scope.$broadcast('form:clean');
+                  $rootScope.$broadcast('form:clean');
+
+                  getDetails($scope.form["@id"]);
 
 
                 },
@@ -62,16 +153,24 @@ define([
           } else {
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
+
+            // var copiedForm = jQuery.extend(true, {}, $scope.form);
+            // checkValidation(copiedForm);
+            $rootScope.setValidation(true);
+
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
+
             DataManipulationService.createDomIds($scope.form);
-            //$scope.getType();
-            $scope.$broadcast('form:clean');
+            $rootScope.$broadcast('form:clean');
           }
         };
+
+
         getTemplate();
+
 
         var populateCreatingFieldOrElement = function () {
           $scope.invalidFieldStates = {};
@@ -81,7 +180,7 @@ define([
           TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
           TrackingService.pageTrack();
 
-          DataManipulationService.updateKeys($scope.form);
+          //DataManipulationService.updateKeys($scope.form);
         };
 
         var dontHaveCreatingFieldOrElement = function () {
@@ -100,8 +199,10 @@ define([
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
-              $rootScope.$broadcast("form:dirty");
               $scope.toggleMore();
+              $timeout(function () {
+                $rootScope.$broadcast("form:dirty");
+              });
             });
           }
         };
@@ -169,7 +270,7 @@ define([
           });
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-          $scope.$broadcast('form:reset');
+          $rootScope.$broadcast('form:reset');
         };
 
         $scope.saveTemplate = function () {
@@ -197,6 +298,8 @@ define([
           for (var i = 0; i < report.errors.length; i++) {
             console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
           }
+
+          $rootScope.setValidation(validationStatus);
         };
 
         // Stores the template into the database
@@ -208,15 +311,14 @@ define([
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
 
+
           // If Template Name is blank, produce error message
-          if (!$scope.form._ui.title.length) {
-           $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+          var title = dms.getTitle($scope.form);
+          if (!title.length) {
+            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
           }
-          // If Template Description is blank, produce error message
-          // if (!$scope.form._ui.description.length) {
-          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          // }
+
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
@@ -234,11 +336,13 @@ define([
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
 
+
                     $scope.logValidation(response.headers("CEDAR-Validation-Status"),
                         response.headers("CEDAR-Validation-Report"));
 
                     // confirm message
-                    UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
+                    var title = dms.getTitle(response.data);
+                    UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": title},
                         'GENERIC.Created');
 
                     // Reload page with template id
@@ -246,7 +350,7 @@ define([
                     var newId = response.data['@id'];
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -271,11 +375,12 @@ define([
                     DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
 
+                    var title = dms.getTitle(response.data);
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                        {"title": response.data._ui.title}, 'GENERIC.Updated');
+                        {"title": title}, 'GENERIC.Updated');
                     owner.enableSaveButton();
 
-                    $scope.$broadcast('form:clean');
+                    $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
@@ -318,40 +423,34 @@ define([
           }
         });
 
-        //
-        //
-        // // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-        // $scope.$watch('saveButtonDisabled', function (v) {
-        //   console.log('watch saveButtonDisabled');
-        // });
 
+        // watch for changes in the title field and generate the schema title and description fields
+        $scope.$watch('form["schema:name"]', function (v) {
 
-        // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-        $scope.$watch('form._ui.title', function (v) {
 
           if (!angular.isUndefined($scope.form)) {
-            var title = $scope.form._ui.title;
-            if (title.length > 0) {
+            var title = dms.getTitle($scope.form);
+            if (title && title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
                   {title: capitalizedTitle, version: window.cedarVersion});
             } else {
-              $scope.form._ui.title = "";
-              $scope.form._ui.description = "";
+              dms.setTitle($scope.form, "");
+              dms.setDescription($scope.form, "");
             }
             $rootScope.documentTitle = title;
           }
         });
 
-        // This function watches for changes in the form and defaults the title and description fields
+        // watch for changes in the form and defaults the title and description fields
         $scope.$watch('form', function (v) {
-          if ($scope.form && $rootScope.schemaOf($scope.form)) {
-            if (!$rootScope.schemaOf($scope.form)._ui.title) {
-              $rootScope.schemaOf($scope.form)._ui.title = $translate.instant("VALIDATION.noNameField");
+          if (dms.schemaOf($scope.form)) {
+            if (!dms.getTitle($scope.form)) {
+              dms.setTitle($scope.form, $translate.instant("VALIDATION.noNameField"));
             }
-            if (!$rootScope.schemaOf($scope.form)._ui.description) {
-              $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+            if (!dms.getDescription($scope.form)) {
+              dms.setDescription($scope.form, $translate.instant("VALIDATION.noDescriptionField"));
             }
           }
           $scope.toRDF();
@@ -427,7 +526,6 @@ define([
         $scope.hideFinder = function () {
           jQuery("#finder-modal").modal('hide');
         };
-
 
 
         $scope.enableSaveButton = function () {

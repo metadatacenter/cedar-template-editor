@@ -26,9 +26,11 @@ define([
           deleteResource         : deleteResource,
           getFacets              : getFacets,
           getResourceDetail      : getResourceDetail,
+          getResourceDetailFromId:getResourceDetailFromId,
           getResources           : getResources,
           searchResources        : searchResources,
           getSearchResourcesPromise: getSearchResourcesPromise,
+          hasMetadata             : hasMetadata,
           sharedWithMeResources  : sharedWithMeResources,
           updateFolder           : updateFolder,
           copyResourceToWorkspace: copyResourceToWorkspace,
@@ -47,7 +49,8 @@ define([
           canWrite               : canWrite,
           canChangeOwner         : canChangeOwner,
           canShare               : canShare,
-          renameNode             : renameNode
+          renameNode             : renameNode,
+          validateResource       : validateResource
         };
         return service;
 
@@ -222,6 +225,32 @@ define([
            );*/
         }
 
+        function getResourceDetailFromId(id, nodeType, successCallback, errorCallback) {
+          var url;
+
+          switch (nodeType) {
+            case CONST.resourceType.FOLDER:
+              url = urlService.folders() + '/' + encodeURIComponent(id);
+              break;
+            case CONST.resourceType.ELEMENT:
+              url = urlService.getTemplateElement(id) + '/details';
+              break;
+            case CONST.resourceType.TEMPLATE:
+              url = urlService.getTemplate(id) + '/details';
+              break;
+            case CONST.resourceType.INSTANCE:
+              url = urlService.getTemplateInstance(id) + '/details';
+              break;
+          }
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
         function getResourceDetail(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
@@ -241,6 +270,18 @@ define([
           }
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function validateResource(resource, resourceType, successCallback, errorCallback) {
+
+          var url = urlService.validateResource(resourceType);
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, resource),
               function (response) {
                 successCallback(response.data);
               },
@@ -294,6 +335,37 @@ define([
           }
 
           addCommonParameters(params, options);
+
+          var url = $rootScope.util.buildUrl(baseUrl, params);
+
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        // does a template have at least one instance?
+        function hasMetadata(id, options, successCallback, errorCallback) {
+          if (options == null) {
+            options = {};
+          }
+
+          var params = {};
+          var baseUrl = urlService.search();
+
+          if (id == 'null') {
+            id = '';
+          }
+
+          if (id) {
+            params['derived_from_id'] = id;
+          }
+
+          addCommonParameters(params, options);
+          delete params['resource_types'];
 
           var url = $rootScope.util.buildUrl(baseUrl, params);
 

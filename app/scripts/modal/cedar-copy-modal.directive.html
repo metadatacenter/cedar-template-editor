@@ -19,13 +19,14 @@
       </div>
 
       <div class="col-sm-1 pull-right">
-        <button class="close" type="button" ng-click="dc.copyModalVisible=false;" aria-label="Close"><span
+        <button class="close" type="button" ng-click="dc.copyModalVisible=false;copyto.hideModal()" aria-label="Close"><span
             aria-hidden="true">&times;</span></button></div>
 
     </div>
-    <div class="modal-body">
 
-      <!-- show the folders first -->
+    <div id="copyModalContent"  class="modal-body scrollable-content" cedar-infinite-scroll  load-more="copyto.loadMore()">
+
+      <!-- show the clickable folders  -->
       <div ng-if="dc.isFolder(resource)" class="box-row row"
           ng-class="{ selected: copyto.isDestinationSelected(resource)}"
           ng-repeat="(index, resource) in copyto.destinationResources">
@@ -43,7 +44,7 @@
             data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
       </div>
 
-
+      <!-- then the disabled documents -->
       <div ng-if="!copyto.isFolder(resource)" class="box-row row disabled"
           ng-repeat="(index, resource) in copyto.destinationResources">
         <div class="col-sm-1" ng-click="copyto.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
@@ -57,7 +58,7 @@
     </div>
     <div class="modal-footer actions">
       <div class="clear-save">
-        <button ng-disabled="copyto.copyDisabled()" ng-click="copyto.updateResource();dc.copyModalVisible=false;"
+        <button ng-disabled="copyto.copyDisabled()" ng-click="copyto.updateResource();dc.copyModalVisible=false;copyto.hideModal()"
             type="button"
             class="btn btn-save confirm"> Copy
         </button>

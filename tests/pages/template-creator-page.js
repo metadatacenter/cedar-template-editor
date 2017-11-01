@@ -12,8 +12,7 @@ var TemplateCreatorPage = function () {
 
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
-  var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
-  var jsonPreview = element(by.id('form-json-preview'));
+
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createTemplatePage = element(by.css('#top-navigation.template'));
@@ -25,6 +24,12 @@ var TemplateCreatorPage = function () {
   var createFinder = element(by.id('finder-modal'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
 
+  var dirtyIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
+  var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
+  var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
+
+  var showJsonLink = element(by.css('.accordion-toggle'));
+  var jsonPreview = element(by.id('form-json-preview'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -37,7 +42,9 @@ var TemplateCreatorPage = function () {
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
   var createSearchBreadcrumb = element(by.css('.breadcrumbs-sb  span'));
   var createSearchSubmitButton = element(by.css(".footer-buttons")).element(by.css('.subm'));
-  var createSearchBreadcrumbText = element(by.id("search-browse-modal")).element(by.css('.controls-bar .as-modal')).element(by.css('.breadcrumbs-sb')).element(by.tagName('p')).element(by.tagName('span'));
+  var createSearchBreadcrumbText = element(by.id("search-browse-modal")).element(
+      by.css('.controls-bar .as-modal')).element(by.css('.breadcrumbs-sb')).element(by.tagName('p')).element(
+      by.tagName('span'));
   var createFirstSelected = element(by.css('.form-box-container.selected'));
   var createTopNavWorkspace = element(by.css('.navbar.dashboard'));
 
@@ -55,18 +62,27 @@ var TemplateCreatorPage = function () {
   var createToolbar = element(by.id('toolbar'));
   var createFieldTitle = element(by.css('.field-title-definition'));
   var createFieldDescription = element(by.css('.field-description-definition'));
+  var createFieldContent = element(by.model('$root.schemaOf(field)._ui._content'));
+
+  var createQuestion = element(by.css('.question .title'));
+  var createQuestions = element.all(by.css('.question .title'));
+  var createImage = element(by.css(".image figure img"));
+  var createRichtext = element(by.css(".richtext"));
+  var createYoutube = element(by.css(".youtube figure img"));
 
   var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
   var createConfirmationDialog = element(by.css('.sweet-alert'));
   var sweetAlertCancelAttribute = 'data-has-cancel-button';
   var sweetAlertConfirmAttribute = 'data-has-confirm-button';
-  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.cancel'));
-  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
-  var templateJSON = element(by.id('templateJSON'));
-  var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
+  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(
+      by.css('button.cancel'));
+  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(
+      by.css('button.confirm'));
+
   var topNavigation = element(by.id('top-navigation'));
-  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.back-arrow-click'));
+  var topNavBackArrow = element(by.css('.back-arrow-click'));
+
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
   var testTitle = 'test title';
@@ -80,8 +96,9 @@ var TemplateCreatorPage = function () {
   this.cssItemSortableIcon = ".item-root .sortable-icon";
   this.cssSortableIcon = ".sortable-icon";
   this.cssFieldContainer = ".field-root .elementTotalContent";
-  this.modelFieldTitle = '$root.schemaOf(field)._ui.title';
-  this.modelFieldDescription = '$root.schemaOf(field)._ui.description';
+  this.modelFieldTitle = "fieldSchema['schema:name']";
+  this.modelFieldDescription = "fieldSchema['schema:description']";
+  this.modelFieldContent = "$root.schemaOf(field)._ui._content";
   this.hasBeenCreated = 'has been created';
   this.deleteButtonTooltip = 'delete selection';
   this.deleteElementMessage = 'The template element has been deleted.';
@@ -104,70 +121,89 @@ var TemplateCreatorPage = function () {
   var createCancelTemplateButton = element(by.id('button-cancel-template'));
   var createClearTemplateButton = element(by.id('button-clear-template'));
   this.emptyTemplateJson = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": null,
-    "@type": "https://schema.metadatacenter.org/core/Template",
-    "@context": {
-      "xsd": "http://www.w3.org/2001/XMLSchema#",
-      "pav": "http://purl.org/pav/",
-      "oslc": "http://open-services.net/ns/core#",
-      "schema": "http://schema.org/",
-      "pav:createdOn": {
+    "$schema"             : "http://json-schema.org/draft-04/schema#",
+    "@id"                 : null,
+    "@type"               : "https://schema.metadatacenter.org/core/Template",
+    "@context"            : {
+      "xsd"              : "http://www.w3.org/2001/XMLSchema#",
+      "pav"              : "http://purl.org/pav/",
+      "oslc"             : "http://open-services.net/ns/core#",
+      "schema"           : "http://schema.org/",
+      "pav:createdOn"    : {
         "@type": "xsd:dateTime"
       },
-      "pav:createdBy": {
+      "pav:createdBy"    : {
         "@type": "@id"
       },
       "pav:lastUpdatedOn": {
         "@type": "xsd:dateTime"
       },
-      "oslc:modifiedBy": {
+      "oslc:modifiedBy"  : {
         "@type": "@id"
       }
     },
-    "type": "object",
-    "title": "Untitled template schema",
-    "description": "Untitled template schema autogenerated by the CEDAR Template Editor " + testConfig.cedarVersion,
-    "_ui": {
-      "title": "Untitled",
-      "description": "Description",
-      "pages": [],
-      "order": []
+    "type"                : "object",
+    "title"               : "Untitled template schema",
+    "description"         : "Untitled template schema autogenerated by the CEDAR Template Editor 1.4.2",
+    "_ui"                 : {
+      "title"         : "Untitled",
+      "description"   : "Description",
+      "pages"         : [],
+      "order"         : [],
+      "propertyLabels": {}
     },
-    "properties": {
-      "@context": {
-        "type": "object",
-        "properties": {
-          "xsd": {
-            "type": "string",
+    "properties"          : {
+      "@context"          : {
+        "type"                : "object",
+        "properties"          : {
+          "rdfs"              : {
+            "type"  : "string",
             "format": "uri",
-            "enum": [
+            "enum"  : [
+              "http://www.w3.org/2000/01/rdf-schema#"
+            ]
+          },
+          "xsd"               : {
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
               "http://www.w3.org/2001/XMLSchema#"
             ]
           },
-          "pav": {
-            "type": "string",
+          "pav"               : {
+            "type"  : "string",
             "format": "uri",
-            "enum": [
+            "enum"  : [
               "http://purl.org/pav/"
             ]
           },
-          "schema": {
-            "type": "string",
+          "schema"            : {
+            "type"  : "string",
             "format": "uri",
-            "enum": [
+            "enum"  : [
               "http://schema.org/"
             ]
           },
-          "oslc": {
-            "type": "string",
+          "oslc"              : {
+            "type"  : "string",
             "format": "uri",
-            "enum": [
+            "enum"  : [
               "http://open-services.net/ns/core#"
             ]
           },
-          "schema:isBasedOn": {
-            "type": "object",
+          "rdfs:label"        : {
+            "type"      : "object",
+            "properties": {
+              "@type": {
+                "type": "string",
+                "enum": [
+                  "xsd:string"
+                ]
+              }
+            }
+          },
+          "schema:isBasedOn"  : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -177,8 +213,8 @@ var TemplateCreatorPage = function () {
               }
             }
           },
-          "schema:name": {
-            "type": "object",
+          "schema:name"       : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -189,7 +225,7 @@ var TemplateCreatorPage = function () {
             }
           },
           "schema:description": {
-            "type": "object",
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -199,8 +235,8 @@ var TemplateCreatorPage = function () {
               }
             }
           },
-          "pav:createdOn": {
-            "type": "object",
+          "pav:createdOn"     : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -210,8 +246,8 @@ var TemplateCreatorPage = function () {
               }
             }
           },
-          "pav:createdBy": {
-            "type": "object",
+          "pav:createdBy"     : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -221,8 +257,8 @@ var TemplateCreatorPage = function () {
               }
             }
           },
-          "pav:lastUpdatedOn": {
-            "type": "object",
+          "pav:lastUpdatedOn" : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -232,8 +268,8 @@ var TemplateCreatorPage = function () {
               }
             }
           },
-          "oslc:modifiedBy": {
-            "type": "object",
+          "oslc:modifiedBy"   : {
+            "type"      : "object",
             "properties": {
               "@type": {
                 "type": "string",
@@ -244,13 +280,7 @@ var TemplateCreatorPage = function () {
             }
           }
         },
-        "patternProperties": {
-          "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [
+        "required"            : [
           "xsd",
           "pav",
           "schema",
@@ -265,71 +295,72 @@ var TemplateCreatorPage = function () {
         ],
         "additionalProperties": false
       },
-      "@id": {
-        "type": [
+      "@id"               : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "uri"
       },
-      "@type": {
+      "@type"             : {
         "oneOf": [
           {
-            "type": "string",
+            "type"  : "string",
             "format": "uri"
           },
           {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "string",
+            "type"       : "array",
+            "minItems"   : 1,
+            "items"      : {
+              "type"  : "string",
               "format": "uri"
             },
             "uniqueItems": true
           }
         ]
       },
-      "schema:isBasedOn": {
-        "type": "string",
+      "schema:isBasedOn"  : {
+        "type"  : "string",
         "format": "uri"
       },
-      "schema:name": {
-        "type": "string",
+      "schema:name"       : {
+        "type"     : "string",
         "minLength": 1
       },
       "schema:description": {
         "type": "string"
       },
-      "pav:createdOn": {
-        "type": [
+      "pav:createdOn"     : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "date-time"
       },
-      "pav:createdBy": {
-        "type": [
+      "pav:createdBy"     : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "uri"
       },
-      "pav:lastUpdatedOn": {
-        "type": [
+      "pav:lastUpdatedOn" : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "date-time"
       },
-      "oslc:modifiedBy": {
-        "type": [
+      "oslc:modifiedBy"   : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "uri"
       }
     },
-    "required": [
+    "required"            : [
+      "@context",
       "@id",
       "schema:isBasedOn",
       "schema:name",
@@ -339,10 +370,11 @@ var TemplateCreatorPage = function () {
       "pav:lastUpdatedOn",
       "oslc:modifiedBy"
     ],
-    "pav:createdOn": null,
-    "pav:createdBy": null,
-    "pav:lastUpdatedOn": null,
-    "oslc:modifiedBy": null,
+    "pav:createdOn"       : null,
+    "pav:createdBy"       : null,
+    "pav:lastUpdatedOn"   : null,
+    "oslc:modifiedBy"     : null,
+    "schema:schemaVersion": "1.1.0",
     "additionalProperties": false
   };
 
@@ -359,127 +391,104 @@ var TemplateCreatorPage = function () {
   var cssCollapseButton = '.visibilitySwitch:nth-child(0)';
   var cssOpenButton = '.visibilitySwitch:nth-child(1)';
   this.emptyElementJson = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": null,
-    "@type": "https://schema.metadatacenter.org/core/TemplateElement",
-    "@context": {
-      "xsd": "http://www.w3.org/2001/XMLSchema#",
-      "pav": "http://purl.org/pav/",
-      "oslc": "http://open-services.net/ns/core#",
-      "schema": "http://schema.org/",
-      "pav:createdOn": {
+    "$schema"             : "http://json-schema.org/draft-04/schema#",
+    "@id"                 : null,
+    "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
+    "@context"            : {
+      "xsd"              : "http://www.w3.org/2001/XMLSchema#",
+      "pav"              : "http://purl.org/pav/",
+      "oslc"             : "http://open-services.net/ns/core#",
+      "schema"           : "http://schema.org/",
+      "pav:createdOn"    : {
         "@type": "xsd:dateTime"
       },
-      "pav:createdBy": {
+      "pav:createdBy"    : {
         "@type": "@id"
       },
       "pav:lastUpdatedOn": {
         "@type": "xsd:dateTime"
       },
-      "oslc:modifiedBy": {
+      "oslc:modifiedBy"  : {
         "@type": "@id"
       }
     },
-    "type": "object",
-    "title": "Untitled element schema",
-    "description": "Untitled element schema autogenerated by the CEDAR Template Editor " + testConfig.cedarVersion,
-    "_ui": {
-      "title": "Untitled",
-      "description": "Description",
-      "order": []
+    "type"                : "object",
+    "title"               : "Untitled element schema",
+    "description"         : "Untitled element schema autogenerated by the CEDAR Template Editor 1.4.3-SNAPSHOT",
+    "_ui"                 : {
+      "title"         : "",
+      "description"   : "",
+      "order"         : [],
+      "propertyLabels": {}
     },
-    "properties": {
+    "properties"          : {
       "@context": {
-        "type": "object",
-        "properties": {
-          "pav": {
-            "type": "string",
-            "format": "uri",
-            "enum": [
-              "http://purl.org/pav/"
-            ]
-          },
-          "oslc": {
-            "type": "string",
-            "format": "uri",
-            "enum": [
-              "http://open-services.net/ns/core#"
-            ]
-          }
-        },
-        "patternProperties": {
-          "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
-            "type": "string",
-            "format": "uri"
-          }
-        },
-        "required": [],
+        "type"                : "object",
+        "properties"          : {},
         "additionalProperties": false
       },
-      "@id": {
-        "type": [
+      "@id"     : {
+        "type"  : [
           "string",
           "null"
         ],
         "format": "uri"
       },
-      "@type": {
+      "@type"   : {
         "oneOf": [
           {
-            "type": "string",
+            "type"  : "string",
             "format": "uri"
           },
           {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-              "type": "string",
+            "type"       : "array",
+            "minItems"   : 1,
+            "items"      : {
+              "type"  : "string",
               "format": "uri"
             },
             "uniqueItems": true
           }
         ]
-      },
-      "pav:createdOn": {
-        "type": [
-          "string",
-          "null"
-        ],
-        "format": "date-time"
-      },
-      "pav:createdBy": {
-        "type": [
-          "string",
-          "null"
-        ],
-        "format": "uri"
-      },
-      "pav:lastUpdatedOn": {
-        "type": [
-          "string",
-          "null"
-        ],
-        "format": "date-time"
-      },
-      "oslc:modifiedBy": {
-        "type": [
-          "string",
-          "null"
-        ],
-        "format": "uri"
       }
     },
-    "required": [],
-    "pav:createdOn": null,
-    "pav:createdBy": null,
-    "pav:lastUpdatedOn": null,
-    "oslc:modifiedBy": null,
-    "additionalProperties": false
+    "required"            : [
+      "@context",
+      "@id"
+    ],
+    "pav:createdOn"       : null,
+    "pav:createdBy"       : null,
+    "pav:lastUpdatedOn"   : null,
+    "oslc:modifiedBy"     : null,
+    "schema:schemaVersion": "1.1.0",
+    "additionalProperties": false,
+    "schema:name"         : "Untitled",
+    "schema:description"  : "Description"
   };
 
 
   this.isWorkspace = function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+  };
+
+  this.createQuestion = function () {
+    return createQuestion;
+  };
+
+  this.createQuestions = function () {
+    return createQuestions;
+  };
+
+  this.createImage = function () {
+    return createImage;
+  };
+
+  this.createRichtext = function () {
+    return createRichtext;
+  };
+
+  this.createYoutube = function () {
+    return createYoutube;
   };
 
 
@@ -506,8 +515,6 @@ var TemplateCreatorPage = function () {
       }
 
       browser.wait(EC.presenceOf(createSaveTemplateButton));
-      browser.wait(EC.presenceOf(element(by.model('form._ui.title'))));
-      browser.wait(EC.presenceOf(element(by.model('form._ui.description'))));
 
     } else {
       browser.wait(EC.elementToBeClickable(createElementButton));
@@ -527,29 +534,43 @@ var TemplateCreatorPage = function () {
       }
 
       browser.wait(EC.presenceOf(createSaveElementButton));
-      browser.wait(EC.presenceOf(element(by.model('element._ui.title'))));
-      browser.wait(EC.presenceOf(element(by.model('element._ui.description'))));
     }
   };
 
   this.showJson = function () {
-
-    expect(templateJSON.isDisplayed()).toBe(false);
+    browser.wait(EC.invisibilityOf(jsonPreview));
     browser.wait(EC.visibilityOf(showJsonLink));
     browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
-    browser.wait(EC.visibilityOf(templateJSON));
+    browser.wait(EC.visibilityOf(jsonPreview));
   };
 
   this.hideJson = function () {
-
-    expect(templateJSON.isDisplayed()).toBe(true);
+    browser.wait(EC.visibilityOf(jsonPreview));
     browser.wait(EC.visibilityOf(showJsonLink));
     browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
-    browser.wait(EC.invisibilityOf(templateJSON));
+    browser.wait(EC.invisibilityOf(jsonPreview));
   };
 
+  this.isHiddenJson = function () {
+    browser.wait(EC.invisibilityOf(jsonPreview));
+  };
+
+  this.isLocked = function () {
+    //browser.wait(EC.visibilityOf(lockIcon));
+    return true;
+  };
+
+  this.isDirty = function () {
+    //browser.wait(EC.visibilityOf(dirtyIcon));
+    return true;
+  };
+
+  this.isValid = function () {
+    //browser.wait(EC.visibilityOf(validIcon));
+    return true;
+  };
 
   this.clickSave = function (type) {
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
@@ -682,11 +703,11 @@ var TemplateCreatorPage = function () {
   this.templateJSON = function () {
     return templateJSON;
   };
-  this.templateJSONHidden = function () {
-    return templateJSONHidden;
-  };
+
 
   this.clickBackArrow = function () {
+    // browser.wait(EC.visibilityOf(topNavBackArrow));
+    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
     topNavBackArrow.click();
   };
   this.createToolbar = function () {
@@ -699,9 +720,7 @@ var TemplateCreatorPage = function () {
   this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function () {
-    return topNavBackArrow;
-  };
+
   this.templateTitle = function () {
     return templateTitle;
   };
@@ -750,14 +769,21 @@ var TemplateCreatorPage = function () {
   this.showJsonLink = function () {
     return showJsonLink;
   };
+
   this.jsonPreview = function () {
     return jsonPreview;
   };
+
   this.getJsonPreviewText = function () {
     showJsonLink.click();
     return jsonPreview.getText();
   };
+
   this.clickJsonPreview = function () {
+    browser.executeScript("arguments[0].scrollIntoView();", showJsonLink.getWebElement());
+    console.log('got showjsonlink');
+    // browser.wait(EC.visibilityOf(showJsonLink));
+    // browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
   };
 
@@ -920,7 +946,7 @@ var TemplateCreatorPage = function () {
   };
 
 
-  this.addField = function (cedarType, isMore, title, description) {
+  this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
 
@@ -957,6 +983,12 @@ var TemplateCreatorPage = function () {
       case "phone-number":
         btn = createPhoneNumberButton;
         break;
+      case "image":
+        btn = createImageButton;
+        break;
+      case "richtext":
+        btn = createRichTextButton;
+        break;
       default:
         found = false;
         break;
@@ -972,6 +1004,13 @@ var TemplateCreatorPage = function () {
       createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
       browser.wait(EC.elementToBeClickable(createFieldDescription));
       createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+    }
+
+    switch (cedarType) {
+      case "image":
+        browser.wait(EC.elementToBeClickable(createFieldContent));
+        createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        break;
     }
   };
 
@@ -1007,7 +1046,7 @@ var TemplateCreatorPage = function () {
   };
 
   // set multiple to min 0 max unlimited which is generally the more difficult case
-  this.setMultiple = function() {
+  this.setMultiple = function () {
     var multiple = element(by.css('.detail-options .element-toggle'));
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
     browser.wait(EC.visibilityOf(multiple));
