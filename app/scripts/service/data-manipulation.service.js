@@ -588,6 +588,7 @@ define([
     service.isTmpState = function (node, value) {
       var schema = service.schemaOf(node);
       schema._tmp = schema._tmp || {};
+
       return (schema._tmp.state == value);
     };
 

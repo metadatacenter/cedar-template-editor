@@ -28,6 +28,16 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.form.fieldDirective'));
     beforeEach(module('cedar.templateEditor.service.stagingService'));
     beforeEach(module('cedar.templateEditor.service.dataManipulationService'));
+    beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('UserService', function mockUserService() {
+        var userHandler = null;
+        var service = {serviceId: "UserService"};
+        service.getToken = function() {};
+        service.injectUserHandler = function (userHandler) {};
+        service.updateOwnUser = function (instance) {};
+        return service;
+      });
+    }));
 
     // Mock the controlledTermDirectiveControlled because we don't need it for these tests
     beforeEach(function () {
