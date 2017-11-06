@@ -171,32 +171,6 @@ gulp.task('e2e-sequential', gulp.series('test-env', function () {
       });
 }));
 
-// TODO these cannot be run in parallel with the e2e-sequential tests because the open the info panel
-gulp.task('e2e-info-panel', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/update-ownership-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-
-gulp.task('create-folders', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/create-folders-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
 
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
@@ -208,7 +182,7 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sharded.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -233,6 +207,7 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
 
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
+    './tests/e2e/clean-up-spec.js',
     './tests/e2e/metadata-creator-spec.js',
     './tests/e2e/template-creator-spec.js'
   ])
@@ -244,19 +219,6 @@ gulp.task('test-form', gulp.series('test-env', function () {
       });
 }));
 
-
-
-gulp.task('delete-resource-sequential', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/delete-resource-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
 
 
 function exitWithError(msg) {

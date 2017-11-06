@@ -27,7 +27,7 @@ xdescribe('create-folders', function () {
   });
 
 
-  it("should create 100 folders", function () {
+  xit("should create 100 folders", function () {
     console.log('create-folders should create 100 folders for user 1');
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
