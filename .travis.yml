@@ -14,6 +14,7 @@ branches:
   - develop
   - master
   - feature/issue-510-again
+  - feature/unit-tests
 notifications:
   slack:
     on_success: never
@@ -34,6 +35,7 @@ jobs:
     before_script: gulp karma-travis-env # sets up the environment to run the karma tests
     script: gulp karma-tests  # karma stage
   - script: gulp test-form # e2e stage
+  - script: gulp test-permissions # e2e stage
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
