@@ -32,10 +32,8 @@ jobs:
   include:
    - stage: e2e tests
    - before_script: gulp karma-travis-env
-   - script: gulp karma-tests
-   - before_script: gulp karma-travis-env
-   - provider: script
    - script: gulp test-form
+
 
 
 env:
