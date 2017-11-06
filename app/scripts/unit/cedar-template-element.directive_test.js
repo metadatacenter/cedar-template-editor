@@ -43,6 +43,16 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.service.uIUtilService'));
     beforeEach(module('cedar.templateEditor.service.templateElementService'));
     beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('UserService', function mockUserService() {
+        var userHandler = null;
+        var service = {serviceId: "UserService"};
+        service.getToken = function() {};
+        service.injectUserHandler = function (userHandler) {};
+        service.updateOwnUser = function (instance) {};
+        return service;
+      });
+    }));
+    beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
         return cedarUser;
       });
