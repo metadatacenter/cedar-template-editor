@@ -37,7 +37,7 @@ describe('update-name', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('in info panel', function () {
+  describe('in workspace', function () {
 
     it("should fail to update name of a resource shared as readable with Everybody group", function () {
       console.log('update-name should fail to update name of a resource shared as readable with Everybody group');
