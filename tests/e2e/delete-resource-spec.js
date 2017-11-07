@@ -118,8 +118,7 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      workspacePage.rightClickResource(folder, 'folder');
-      expect(workspacePage.createRightClickDeleteMenuItem().getAttribute('class')).toMatch('link-disabled');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -153,8 +152,7 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      workspacePage.rightClickResource(folder, 'folder');
-      expect(workspacePage.createRightClickDeleteMenuItem().getAttribute('class')).toMatch('link-disabled');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
