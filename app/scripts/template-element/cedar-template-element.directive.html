@@ -1,10 +1,12 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{getDomId(element)}}"
-    ng-click="canSelect(isSelectable()); $event.preventDefault();">
+    ng-click="canSelect(isSelectable()); $event.preventDefault();"
+    ng-class="{'not-selectable': !isSelectable(), 'selectable-element': isSelectable(), 'selected-element': isEditState()}"
+   >
 
-  element  {{getDomId(element)}}
+
 
   <!-- element header -->
-  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !isRuntime() && !isNested(element)}">
+  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !isRuntime() && !isNested() && !isRoot()}">
     <div class="row" >
 
       <!-- left side of header -->
@@ -18,8 +20,9 @@
           <i class="cedar-svg-expand"></i>
         </a>
 
+
         <!-- sort icon -->
-        <div  ng-if="isSelectable()" class="sortable-handler " style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
+        <div  ng-if="isSelectable()"  style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
 
         <!-- allow elements to have properties -->
         <button ng-if="isSelectable()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal('property');" uib-tooltip="Add property">
@@ -57,6 +60,8 @@
            {{element.minItems}} .. {{element.maxItems || "N"}}
         </span>
 
+
+
       </div>
 
       <!-- right side of header -->
@@ -90,7 +95,7 @@
       </div>
 
       <!-- delete element -->
-      <div ng-if="canEditProperty()" class="preview-container col-lg-1">
+      <div ng-if="isSelectable()" class="preview-container col-lg-1">
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">

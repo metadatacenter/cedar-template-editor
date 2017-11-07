@@ -20,7 +20,8 @@ define([
         delete       : '&',
         model        : '=',
         isEditData   : "=",
-        parentElement: '='
+        parentElement: '=',
+        nested       : '='
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -41,8 +42,12 @@ define([
         return (scope.$parent.directiveName === 'form');
       };
 
+      scope.getKeyFromId = function () {
+        return dms.getKeyFromId(scope.element);
+      };
+
       scope.isRoot = function () {
-        return (dms.getId(scope.element) === $rootScope.keyOfRootElement);
+        return !dms.getKeyFromId(scope.element)  || (dms.getKeyFromId(scope.element) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
@@ -58,9 +63,8 @@ define([
       };
 
       scope.isNested = function () {
-        return scope.nested == 'true';
+        return scope.nested == true;
       };
-
 
 
       scope.isEditState = function () {
@@ -72,8 +76,10 @@ define([
       };
 
       // try to select this element
-      scope.canSelect = function (select) {
-        if (select) {
+      scope.canSelect = function (selectable) {
+
+        if (selectable) {
+          console.log('canSelect', selectable);
           UIUtilService.canSelect(scope.element);
         }
       };
@@ -255,10 +261,12 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
       scope.switchExpandedState = function (domId) {
+        console.log('switchExpandedState');
         UIUtilService.toggleElement(domId);
       };
 

@@ -81,6 +81,13 @@ define([
       return schema['@type'];
     };
 
+    service.getKeyFromId = function (node) {
+      if (node && service.getId(node)) {
+        var id = service.getId(node);
+        return id.substring(id.lastIndexOf("/") + 1);
+      }
+    };
+
     service.getId = function (node) {
       return service.schemaOf(node)['@id'];
     };
