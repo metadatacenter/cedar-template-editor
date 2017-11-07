@@ -30,6 +30,16 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.service.resourceService'));
     beforeEach(module('cedar.templateEditor.service.uISettingsService'));
     beforeEach(module('cedar.templateEditor.service.queryParamUtilsService'));
+    beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('UserService', function mockUserService() {
+        var userHandler = null;
+        var service = {serviceId: "UserService"};
+        service.getToken = function() {};
+        service.injectUserHandler = function (userHandler) {};
+        service.updateOwnUser = function (instance) {};
+        return service;
+      });
+    }));
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
@@ -114,10 +124,9 @@ define(['app', 'angular'], function (app) {
         });
 
 
-        // TODO folder title is not showing in copyTitleElement
-        it("should have header with the current folder name, back arrow and and go away x  ", function () {
-          expect(true).toBeTruthy();
-        });
+        // TODO this does not test anything
+        // it("should   ", function () {
+        // });
 
       });
     });
