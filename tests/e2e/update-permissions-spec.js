@@ -47,10 +47,7 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -87,10 +84,7 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
