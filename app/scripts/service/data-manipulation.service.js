@@ -562,7 +562,6 @@ define([
       if (node && node.hasOwnProperty("_tmp")) {
         domId = node._tmp.domId;
       }
-      console.log('getDomId', node.hasOwnProperty("_tmp"), node._tmp.domId, domId);
       return domId;
     };
 

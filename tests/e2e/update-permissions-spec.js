@@ -35,7 +35,7 @@ describe('update-permissions', function () {
 
   describe('with permissions', function () {
 
-    it("should fail to change permissions of a folder shared as readable with current user", function () {
+    xit("should fail to change permissions of a folder shared as readable with current user", function () {
       console.log('update-permissions should fail to change permissions of a folder shared as readable with current user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -47,10 +47,10 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      //expect(shareModal.canShare()).toBe(false);
+      //shareModal.clickDone();
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -87,10 +87,10 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      // expect(shareModal.canShare()).toBe(false);
+      // shareModal.clickDone();
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
