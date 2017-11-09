@@ -564,9 +564,6 @@ define([
       var domId = service.createDomId();
       if (node) {
         var schema = service.schemaOf(node);
-        if (!schema._tmp) {
-          console.log('getDomId',schema._tmp, schema);
-        }
         schema._tmp = schema._tmp || {};
         if (schema._tmp.domId){
           domId = schema._tmp.domId;
@@ -600,6 +597,7 @@ define([
       var schema = service.schemaOf(node);
       schema._tmp = schema._tmp || {};
       if (!schema._tmp.hasOwnProperty('expanded')) {
+        // schema._tmp.expanded = !DataUtilService.isElement(node);
         schema._tmp.expanded = true;
       }
       return (schema._tmp.expanded || false);
