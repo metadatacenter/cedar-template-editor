@@ -63,7 +63,7 @@ define([
                   $scope.logValidation(status, json);
 
                   $timeout(function () {
-                    $rootScope.$broadcast("form:validation", { state: status });
+                    $rootScope.$broadcast("form:validation", {state: status});
                   });
 
                 },
@@ -361,32 +361,36 @@ define([
             // Updating an existing template
             else {
               var id = $scope.form['@id'];
-              DataManipulationService.stripTmps($scope.form);
               DataManipulationService.updateKeys($scope.form);
+              $rootScope.jsonToSave = $scope.form;
+              var copiedForm = jQuery.extend(true, {}, $scope.form);
+              if (copiedForm) {
+                // strip the temps from the copied form only, and save the copy
+                DataManipulationService.stripTmps(copiedForm);
+                AuthorizedBackendService.doCall(
+                    TemplateService.updateTemplate(id, copiedForm),
+                    function (response) {
 
-              AuthorizedBackendService.doCall(
-                  TemplateService.updateTemplate(id, $scope.form),
-                  function (response) {
+                      $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                          response.headers("CEDAR-Validation-Report"));
 
-                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                        response.headers("CEDAR-Validation-Report"));
+                      //$rootScope.jsonToSave = response.data;
+                      //DataManipulationService.createDomIds(response.data);
+                      //$scope.form = response.data;
 
-                    $rootScope.jsonToSave = response.data;
-                    DataManipulationService.createDomIds(response.data);
-                    $scope.form = response.data;
+                      //var title = dms.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                          {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
+                      owner.enableSaveButton();
 
-                    var title = dms.getTitle(response.data);
-                    UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                        {"title": title}, 'GENERIC.Updated');
-                    owner.enableSaveButton();
-
-                    $rootScope.$broadcast('form:clean');
-                  },
-                  function (err) {
-                    UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    owner.enableSaveButton();
-                  }
-              );
+                      $rootScope.$broadcast('form:clean');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                      owner.enableSaveButton();
+                    }
+                );
+              }
             }
           }
         };

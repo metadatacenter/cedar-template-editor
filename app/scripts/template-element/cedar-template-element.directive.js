@@ -47,7 +47,7 @@ define([
       };
 
       scope.isRoot = function () {
-        return !dms.getKeyFromId(scope.element)  || (dms.getKeyFromId(scope.element) === $rootScope.keyOfRootElement);
+        return !dms.getId(scope.element)  || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
@@ -66,20 +66,21 @@ define([
         return scope.nested == true;
       };
 
+      scope.isSortable = function() {
+        return !scope.isNested() && !scope.isRoot();
+      };
 
       scope.isEditState = function () {
         return UIUtilService.isEditState(scope.element);
       };
 
       scope.isSelectable = function () {
-        return !scope.isRoot() && !UIUtilService.isRuntime() && !scope.isNested();
+        return !scope.isNested() && !scope.isRoot();
       };
 
       // try to select this element
       scope.canSelect = function (selectable) {
-
         if (selectable) {
-          console.log('canSelect', selectable);
           UIUtilService.canSelect(scope.element);
         }
       };
@@ -261,13 +262,16 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
-      scope.switchExpandedState = function (domId) {
-        console.log('switchExpandedState');
-        UIUtilService.toggleElement(domId);
+      scope.isExpanded = function () {
+        return dms.isExpanded(scope.element);
+      };
+
+      scope.switchExpandedState = function () {
+        dms.setExpanded(scope.element, !dms.isExpanded(scope.element));
+        //UIUtilService.toggleElement(scope.getDomId(scope.element));
       };
 
       scope.removeChild = function (node) {
@@ -355,8 +359,6 @@ define([
       };
 
       scope.$on('saveForm', function (event) {
-        //console.log('on saveForm',scope.isFirstLevel(), $rootScope.jsonToSave);
-
         // if (scope.isFirstLevel()) {
         //   var schema = dms.schemaOf($rootScope.jsonToSave);
         //   dms.relabel(schema, scope.key, scope.labels[scope.key]);

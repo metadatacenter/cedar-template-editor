@@ -51,6 +51,10 @@ define([
           return UIUtilService.isRuntime();
         };
 
+        $scope.isEditState = function (node) {
+          return UIUtilService.isEditState(node);
+        };
+
         $scope.isShowOutput = function () {
           return UIUtilService.isShowOutput();
         };

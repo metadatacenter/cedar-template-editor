@@ -264,12 +264,16 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
+        console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
-              target.find('.elementTotalContent').first().toggle();
-              target.find(".visibilitySwitch").toggle();
-              target.find(".spreadsheetSwitchLink").toggle();
+              // target.find('.element').toggle();
+              target.find('.field-root').toggle();
+              target.find('.element-root').toggle();
+              // target.find('.elementTotalContent').first().toggle();
+              target.find(".visibilitySwitch").first().toggle();
+              // target.find(".spreadsheetSwitchLink").toggle();
             }
           }, 350
       );
@@ -346,6 +350,10 @@ define([
       return DataManipulationService.isTmpState(node, "creating");
     };
 
+    service.clearEditState = function (node) {
+      return DataManipulationService.clearTmpState(node);
+    };
+
     // set edit mode
     service.setSelected = function (node) {
       DataManipulationService.setTmpState(node, "creating");
@@ -387,7 +395,8 @@ define([
 
       // don't continue with errors
       if (errorMessages.length == 0) {
-        DataManipulationService.stripTmpIfPresent(node);
+        //DataManipulationService.stripTmpIfPresent(node);
+        DataManipulationService.clearEditState(node);
 
         if (renameChildKey) {
           var key = DataManipulationService.getFieldName(DataManipulationService.getTitle(node));

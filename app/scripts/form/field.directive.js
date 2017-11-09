@@ -40,6 +40,26 @@ define([
         return UIUtilService.isRuntime();
       };
 
+      $scope.isSelectable = function () {
+        return !$scope.isNested();
+      };
+
+      $scope.isSortable = function () {
+        return $scope.isSelectable();
+      };
+
+      $scope.isRoot = function () {
+        return false;
+      };
+
+      $scope.isEditState = function () {
+        return (UIUtilService.isEditState($scope.field));
+      };
+
+      $scope.isNested = function () {
+        return $scope.nested;
+      };
+
       $scope.getShortText = function (text, maxLength, finalString, emptyString) {
         return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
       };
@@ -333,14 +353,7 @@ define([
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
 
-        $scope.isEditState = function () {
-          return (UIUtilService.isEditState($scope.field));
-        };
 
-        $scope.isNested = function () {
-          return $scope.nested;
-          //return (DataManipulationService.isNested($scope.field));
-        };
 
         $scope.addOption = function () {
           return (dms.addOption($scope.field));

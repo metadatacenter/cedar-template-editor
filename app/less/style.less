@@ -1931,11 +1931,10 @@ body.search-browse-modal {
 
     .element-group {
       width: 100%;
-
-      border: 1px solid @gray3;
-      padding: 0px 14px 0px 16px;
-      margin-bottom: 16px;
-      background-color: #e8e8e8;
+      //border: 1px solid @gray3;
+      //padding: 0px 14px 0px 16px;
+      //margin-bottom: 16px;
+      //background-color: #e8e8e8;
 
       &:not(.full) {
         padding-right: 65px;
@@ -1944,12 +1943,9 @@ body.search-browse-modal {
       }
 
       .element-header {
-
-        margin-left: -14px;
         min-width: 100%;
         position: relative;
         padding-top: 10px;
-
         .preview-edit-options {
           float: right;
           margin-top: -4px;
@@ -1973,10 +1969,29 @@ body.search-browse-modal {
 
       .nested-element {
         border: 1px solid #ccc;
-        padding: 0px 16px 0px 16px;
+        margin: 0px 16px 0px 16px;
         margin-bottom: 16px;
       }
     }
+
+    .element-root.root-element > .element-header {
+       display:none;
+    }
+
+    .element-root.selectable-element {
+      border: 1px solid @gray3;
+      padding: 0px 14px 0px 16px;
+      margin-bottom: 16px;
+      background-color: #e8e8e8;
+    }
+
+    .element-root.selected-element {
+      border: 2px solid #a8a8a8;
+      padding: 0px 14px 0px 16px;
+      margin-bottom: 16px;
+
+    }
+
   }
 }
 
@@ -3054,7 +3069,7 @@ section.dashboard-elements {
   .element-group {
 
     width: 100%;
-    border: 0px solid @gray3;
+    //border: 1px solid red;
     padding: 0px;
     margin-bottom: 0px;
     background-color: transparent;
@@ -6192,10 +6207,21 @@ body .template-header .controlled-terms-modal {
   cursor: move;
 }
 
-.selectable-element {
- }
+.element-root.selected-element, .field-root.selected-field {
+  border:2px solid #a8a8a8;
+}
 
-.selected-element {
+.selectable-element, .selected-element, .selectable-field, .selected-field {
+  pointer-events:auto;
+}
+
+.not-selectable {
+  pointer-events:none;
+
+}
+
+.form-control[disabled], fieldset[disabled] .form-control {
+  cursor: default;
 }
 
 .template-body .right-body .preview-edit-options .element-preview-actions {

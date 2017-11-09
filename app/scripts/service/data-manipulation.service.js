@@ -511,6 +511,7 @@ define([
 
     // strip _tmp fields for node and children
     service.stripTmps = function (node) {
+
       service.stripTmpIfPresent(node);
 
       if (node.type == 'array') {
@@ -538,11 +539,12 @@ define([
 
     };
 
+
+
     service.createDomIds = function (node) {
-
-      service.addDomIdIfNotPresent(node, service.createDomId());
-
-      var prop = service.propertiesOf(node);
+      var schema = service.schemaOf(node);
+      service.addDomIdIfNotPresent(schema, service.createDomId());
+      var prop = service.propertiesOf(schema);
       angular.forEach(prop, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.createDomIds(value);
@@ -551,23 +553,26 @@ define([
     };
 
     service.addDomIdIfNotPresent = function (node, id) {
-
-      if (!node.hasOwnProperty("_tmp")) {
-        node._tmp = {};
-      }
-      if (!node._tmp.hasOwnProperty("domId")) {
+      node._tmp = node._tmp || {};
+      if (!node._tmp.domId) {
         node._tmp.domId = id;
       }
-
       return node._tmp.domId;
-
     };
 
     service.getDomId = function (node) {
-      var domId = null;
-
-      if (node && node.hasOwnProperty("_tmp")) {
-        domId = node._tmp.domId;
+      var domId = service.createDomId();
+      if (node) {
+        var schema = service.schemaOf(node);
+        if (!schema._tmp) {
+          console.log('getDomId',schema._tmp, schema);
+        }
+        schema._tmp = schema._tmp || {};
+        if (schema._tmp.domId){
+          domId = schema._tmp.domId;
+        } else {
+          schema._tmp.domId = domId;
+        }
       }
       return domId;
     };
@@ -583,6 +588,23 @@ define([
       return (schema._tmp.nested || false);
     };
 
+    // set the _tmp.expanded
+    service.setExpanded = function (node, value) {
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      schema._tmp.expanded = value;
+    };
+
+    // check the _tmp.expanded
+    service.isExpanded = function (node) {
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      if (!schema._tmp.hasOwnProperty('expanded')) {
+        schema._tmp.expanded = true;
+      }
+      return (schema._tmp.expanded || false);
+    };
+
     // set the _tmp.state
     service.setTmpState = function (node, value) {
       var schema = service.schemaOf(node);
@@ -590,11 +612,16 @@ define([
       schema._tmp.state = value;
     };
 
+    service.clearEditState = function (node, value) {
+      var schema = service.schemaOf(node);
+      schema._tmp = schema._tmp || {};
+      delete schema._tmp.state;
+    };
+
     // check the _tmp.state
     service.isTmpState = function (node, value) {
       var schema = service.schemaOf(node);
       schema._tmp = schema._tmp || {};
-
       return (schema._tmp.state == value);
     };
 

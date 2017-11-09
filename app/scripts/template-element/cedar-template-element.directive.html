@@ -1,25 +1,23 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();"
-    ng-class="{'not-selectable': !isSelectable(), 'selectable-element': isSelectable(), 'selected-element': isEditState()}"
-   >
+    ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(), 'not-selectable': !isSelectable(), 'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
 
-
-
-  <!-- element header -->
-  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !isRuntime() && !isNested() && !isRoot()}">
-    <div class="row" >
-
+  <!-- header  -->
+  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': isSortable()}">
+    <!--domId={{getDomId(element)}}  expanded={{isExpanded()}} nested={{isNested()}} selected={{isEditState()}} selectable={{isSelectable()}} sortable={{isSortable()}} root={{isRoot()}}-->
+    <div class="row">
       <!-- left side of header -->
-      <div class="col-lg-6 pull-left">
+      <div class="col-lg-6 pull-left"  >
 
         <!-- toggle visibility of element contents -->
-        <a ng-click="switchExpandedState(getDomId(element)); $event.preventDefault();" class="visibilitySwitch">
-          <i class="cedar-svg-collapse"></i>
+        <span  ng-if="isEditState()">
+        <!--<a  ng-click="switchExpandedState(); $event.preventDefault();" class="visibilitySwitch" ng-class="{'visible': isExpanded()}">-->
+          <!--<i class="cedar-svg-collapse"></i>-->
+        <!--</a>-->
+        <a ng-click="switchExpandedState(); $event.preventDefault();" class="visibilitySwitch"  >
+          <i  ng-class="{'cedar-svg-collapse': isExpanded(),'cedar-svg-expand': !isExpanded()}"></i>
         </a>
-        <a ng-click="switchExpandedState(getDomId(element)); $event.preventDefault();" class="visibilitySwitch" style="display:none;">
-          <i class="cedar-svg-expand"></i>
-        </a>
-
+        </span>
 
         <!-- sort icon -->
         <div  ng-if="isSelectable()"  style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
@@ -39,59 +37,14 @@
               style="outline:none;width:300px;padding:5px">
         </p>
 
-        <!-- switch to spreadsheet view -->
-        <span ng-if="!isNested()" ng-show="$root.isArray(model) && isRuntime()" class="spreadsheetSwitch element">
-            <button type="button"
-                uib-tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                ng-show="false"
-                ng-disabled="preview" style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
-            </button>
-         </span>
-
         <!-- cardinality -->
-        <span class="multiple-instance-cardinality" ng-show="!isRuntime() && elementIsMultiInstance(element)">
+        <span class="multiple-instance-cardinality" ng-show="elementIsMultiInstance(element)">
            {{element.minItems}} .. {{element.maxItems || "N"}}
         </span>
-
-
-
       </div>
 
       <!-- right side of header -->
       <div class="col-lg-5" >
-        <div class="element-toggles list" ng-if="isRuntime() && elementIsMultiInstance(element)">
-
-          <div class="element-toggle"
-              ng-class="{active: selectedTab == $index}"
-              ng-repeat="m in model"
-              ng-click="selectTab($index)"
-              ng-if="$root.isArray(model) && model.length > 0">
-            <span>{{$index + 1}}</span>
-          </div>
-          <div class="add-element">
-            <button type="button"
-                uib-tooltip="{{'GENERIC.Add' | translate}} {{getTitle()}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="addElement(); $event.stopPropagation();"
-                class="add zero noOutline"
-                ng-show="true"
-                ng-disabled="preview"
-                style="outline:none">
-              <i class="fa fa-plus"></i>
-            </button>
-          </div>
-          <div class="clearfix"></div>
-        </div>
       </div>
 
       <!-- delete element -->
@@ -106,21 +59,13 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- element content -->
-  <div class="elementTotalContent visible">
-    <div ng-show="$root.isArray(model)">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
-    </div>
-
-    <div class="elements originalContent">
-
-      <!-- have an array with at least one element -->
-      <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
+  <!-- content -->
+  <div ng-if="isExpanded()">
+    <!-- have an array with at least one element -->
+    <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
           ng-class="['element-{{$index}}']">
 
         <div class="remove-element pull-right">
@@ -148,8 +93,8 @@
         </div>
       </div>
 
-      <!-- have an array with no elements -->
-      <div ng-if="!isRuntime() && $root.isArray(model) && model.length == 0" class="element"
+    <!-- have an array with no elements -->
+    <div ng-if="$root.isArray(model) && model.length == 0" class="element"
           ng-class="['element-0']">
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
@@ -171,8 +116,8 @@
         </div>
       </div>
 
-      <!-- not an array -->
-      <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
+    <!-- not an array -->
+    <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
           ng-model="element._ui.order">
         <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
@@ -190,9 +135,11 @@
           </div>
         </div>
       </div>
-    </div>
+  </div>
 
-    <div class="" ng-if="!isRuntime()  && !isNested() && $root.schemaOf(element)._tmp.state == 'creating'">
+
+  <!-- options -->
+  <div  ng-if="isEditState()">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: showCardinality}"
@@ -222,7 +169,6 @@
       </div>
       <div class="clearfix"></div>
     </div>
-  </div>
 
   <!-- property modal -->
   <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
