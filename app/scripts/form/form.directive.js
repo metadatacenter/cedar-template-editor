@@ -371,7 +371,6 @@ define([
 
         // keep our rdf up-to-date
         $scope.$watch('model', function () {
-          console.log('watch model');
           UIUtilService.toRDF($scope.model);
         }, true);
 

@@ -1,8 +1,9 @@
-<div ng-init="initializeValue(field)" class="form-group has-feedback" ng-click="setActive(index)">
+<div ng-init="initializeValue(field)" class="form-group " ng-click="setActive(index)">
 
   <!-- Single Choice (Active) -->
-  <ui-select style="background:white;height:auto;border:1px solid #ccc" ng-if="isActive(index) && !isMultipleChoice()"
+  <ui-select  style="background:white;padding:0;margin:0" ng-if="isActive(index) && !isMultipleChoice()"
       class="form-control select"
+
       ng-click="setActive(index, true)"
       data-max-options="1"
       theme="bootstrap"
@@ -16,7 +17,7 @@
   </ui-select>
 
   <!-- Multiple choice (Active) -->
-  <ui-select style="background:white;height:auto;border:1px solid #ccc" ng-if="isActive(index) && isMultipleChoice()"
+  <ui-select style="background:white;padding:2px;margin:0;border:1px solid #ccc" ng-if="isActive(index) && isMultipleChoice()"
       class="form-control select"
       ng-click="setActive(index)"
       multiple
