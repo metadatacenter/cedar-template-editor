@@ -15,6 +15,7 @@ branches:
   - master
   - feature/issue-510-again
   - feature/unit-tests
+  - bug/pick-from-a-list
 notifications:
   slack:
     on_success: always
