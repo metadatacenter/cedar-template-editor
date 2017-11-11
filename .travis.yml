@@ -15,7 +15,6 @@ branches:
   - master
   - feature/issue-510-again
   - feature/unit-tests
-  - feature/submission-enhancement
 notifications:
   slack:
     on_success: always
