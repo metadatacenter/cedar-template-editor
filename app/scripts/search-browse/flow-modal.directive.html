@@ -15,22 +15,30 @@
 
     <div class="modal-body">
 
-      <uib-tabset active="active">
-        <uib-tab index="0" heading="Repository">
+      <uib-tabset active="indexTab">
+        <uib-tab index="0" heading="Repository" >
           <div class="repository">
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flow-immport" name="flow-repo" ng-model="model.selectedMode"
+              <input type="radio" class="select" id="flowNcbiSra" name="flow-repo" ng-model="model.selectedMode"
                   ng-click="setMode(0);" value="0">
-              <label for="flow-immport">
+              <label for="flowNcbiSra">
                 <ng-bind-html ng-bind-html="modes[0]"/>
+              </label>
+            </div>
+
+            <div class="radio radio-primary" style="padding:10px">
+              <input type="radio" class="select" id="flowImmport" name="flow-repo" ng-model="model.selectedMode"
+                  ng-click="setMode(1);" value="1">
+              <label for="flowImmport">
+                <ng-bind-html ng-bind-html="modes[1]"/>
               </label>
             </div>
 
             <div style="padding:0 0 0 40px">
               <label class="sm" for="immport-workspace">Workspace<i
                   style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
-              <input ng-disabled="model.selectedMode != 0"
+              <input ng-disabled="model.selectedMode != 'flow-immport'"
                   id="immport-workspace"
                   type="text"
                   ng-model="model.selectedWorkspace"
@@ -44,16 +52,8 @@
               </div>
             </div>
 
-            <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flow-airr" name="flow-repo" ng-model="mode"
-                  ng-click="setMode(1);" value="1">
-              <label for="flow-airr">
-                <ng-bind-html ng-bind-html="modes[1]"/>
-              </label>
-            </div>
-
             <!--<div class="radio radio-primary" style="padding:10px">-->
-            <!--<input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="mode"-->
+            <!--<input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="model.selectedMode"-->
             <!--ng-click="setMode(2);" value="2">-->
             <!--<label for="flow-lincs">-->
             <!--<ng-bind-html ng-bind-html="modes[2]"/>-->
@@ -62,7 +62,7 @@
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="Upload">
+        <uib-tab index="1" heading="Upload" >
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
