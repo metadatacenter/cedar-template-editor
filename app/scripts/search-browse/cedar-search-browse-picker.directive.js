@@ -1165,7 +1165,13 @@ define([
 
           function showFlowModal() {
             vm.flowModalVisible = true;
-            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible]);
+            var instanceId = null;
+            var name = null;
+            if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
+              instanceId = vm.selectedResource['@id'];
+              name = vm.selectedResource.displayName;
+            }
+            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }
 
           // open the share modal
