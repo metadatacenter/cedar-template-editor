@@ -299,7 +299,10 @@ define([
               if (e.length) {
                 e[0].focus();
                 if (!e.is('select')) {
-                  e[0].select();
+                  if (typeof e[0].select == 'function') {
+                    e[0].select();
+                  }
+                  //e[0].select();
                 }
               }
             }
@@ -503,7 +506,7 @@ define([
             }
             // Single-choice list
             else {
-              $scope.model = {'@value':$scope.optionsUI.listSingleSelect[0].label};
+              $scope.model = {'@value':$scope.optionsUI.listSingleSelect.label};
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);

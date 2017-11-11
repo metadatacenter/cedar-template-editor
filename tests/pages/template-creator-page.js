@@ -25,8 +25,10 @@ var TemplateCreatorPage = function () {
   var createPageName = element(by.css('#top-navigation.dashboard'));
 
   var dirtyIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
-  var validIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-check'));
   var lockIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-lock'));
+  var invalidIcon = element(by.id('headerCtrl')).element(by.css('i.fa.fa-exclamation-triangle'));
+  var validIcon = element(by.id('headerCtrl')).element(by.css('i.fa.fa-check'));
+
 
   var showJsonLink = element(by.css('.accordion-toggle'));
   var jsonPreview = element(by.id('form-json-preview'));
