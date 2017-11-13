@@ -63,7 +63,7 @@
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="toggleActive(index)" class="title field isInactive"
                 ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              <span ng-if="isRequired()" style="color:red"> * </span>{{getTitle()}}
+              {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span>
             </div>
           </div>
 

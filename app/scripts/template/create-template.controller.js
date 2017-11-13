@@ -96,11 +96,11 @@ define([
               function (response) {
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
-                if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning",
-                      "The template may not be modified because there are metadata using it.", "OK", "");
-                }
-
+                // no longer notify user because we are putting the lock icon in the upper right corner
+                // if ($scope.hasInstances) {
+                //   UIMessageService.showWarning("Warning",
+                //       "The template may not be modified because there are metadata using it.", "OK", "");
+                // }
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);

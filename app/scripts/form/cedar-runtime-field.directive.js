@@ -219,7 +219,6 @@ define([
       };
 
       $scope.toggleActive = function (index) {
-        console.log('toggleActive', index);
         $scope.setActive(index, !$scope.isActive(index));
       };
 
