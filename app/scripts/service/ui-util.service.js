@@ -185,12 +185,9 @@ define([
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
-      //console.log('getLocator', index);
-      // var hashId = DataUtilService.getHashCode(id);
-      // var hashPath = DataUtilService.getHashCode(path);
-      //return 'dom' + hashId + '-' + (hashPath || 0).toString() + '-' + (index || 0).toString();
-      return 'dom-' + id + '-' + (path || 0).toString() + '-' + (index || 0).toString();
-
+      var hashId = DataUtilService.getHashCode(id);
+      var hashPath = DataUtilService.getHashCode(path);
+      return 'dom' + hashId + '-' + (hashPath || 0).toString() + '-' + (index || 0).toString();
     };
 
     // look to see if this node's value has been identified by angular as invalid
