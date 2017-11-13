@@ -473,7 +473,6 @@ define([
               context.getPlaceholderContext());
           var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
               context.getPlaceholderContext())[0];
-          console.log('createSpreadsheet', id, detectorElement, container);
 
           if (container) {
 
