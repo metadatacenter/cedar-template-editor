@@ -59,9 +59,11 @@
 
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
+
       <div class="row " style="cursor:pointer"  ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
+
 
           <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
             <button type="button" class="expand">
@@ -117,6 +119,7 @@
 
     <!-- an expanded list of elements -->
     <div ng-if="isListView()" ng-repeat="(i, valueElement) in valueArray">
+  
       <div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
         <div class="row"  ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">

@@ -7,6 +7,7 @@
 
       <!-- show zero cardinality   -->
       <div ng-if="valueArray.length == 0">
+        zero cardinality {{getLocator(0)}}
         <div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">
           <div class="col-xs-12">
             <div class="leader"></div>
@@ -62,7 +63,7 @@
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="toggleActive(index)" class="title field isInactive"
                 ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              <span ng-if="isRequired()" style="color:red"> * </span>{{getTitle()}}
+              {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span>
             </div>
           </div>
 

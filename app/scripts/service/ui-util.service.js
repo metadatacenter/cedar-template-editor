@@ -98,12 +98,14 @@ define([
     // element or field be edited as a spreadsheet if it is multi-instance
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
+
       var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node);
-      if (DataUtilService.isElement(node)) {
+      var result = DataManipulationService.isCardinalElement(node)  && !DataManipulationService.isMultipleChoice(node);
+
+      if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
           if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(value);
+            var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
             var isCardinal = DataManipulationService.isCardinalElement(value);
             result = result && (!isElement && !isCardinal);
           }
@@ -134,7 +136,7 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
-        //viewState.selected = 'spreadsheet';
+        viewState.selected = 'spreadsheet';
       }
       return viewState;
     };
@@ -259,12 +261,16 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
+        console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
-              target.find('.elementTotalContent').first().toggle();
-              target.find(".visibilitySwitch").toggle();
-              target.find(".spreadsheetSwitchLink").toggle();
+              // target.find('.element').toggle();
+              target.find('.field-root').toggle();
+              target.find('.element-root').toggle();
+              // target.find('.elementTotalContent').first().toggle();
+              target.find(".visibilitySwitch").first().toggle();
+              // target.find(".spreadsheetSwitchLink").toggle();
             }
           }, 350
       );
@@ -341,6 +347,10 @@ define([
       return DataManipulationService.isTmpState(node, "creating");
     };
 
+    service.clearEditState = function (node) {
+      return DataManipulationService.clearTmpState(node);
+    };
+
     // set edit mode
     service.setSelected = function (node) {
       DataManipulationService.setTmpState(node, "creating");
@@ -382,7 +392,8 @@ define([
 
       // don't continue with errors
       if (errorMessages.length == 0) {
-        DataManipulationService.stripTmpIfPresent(node);
+        //DataManipulationService.stripTmpIfPresent(node);
+        DataManipulationService.clearEditState(node);
 
         if (renameChildKey) {
           var key = DataManipulationService.getFieldName(DataManipulationService.getTitle(node));

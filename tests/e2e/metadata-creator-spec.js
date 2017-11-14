@@ -173,9 +173,9 @@ describe('metadata-creator', function () {
         expect(text === template + ' metadata').toBe(true);
       });
 
-      // make sure the element is multi-instance and is clickable
-      metadataPage.checkMultiple();
-      metadataPage.addInstance();
+      // TODO make sure the element is multi-instance and is clickable -> only works if spreadsheets are not the default view
+      // metadataPage.checkMultiple();
+      // metadataPage.addInstance();
     });
 
     // TODO should be dirty

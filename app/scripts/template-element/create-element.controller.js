@@ -347,31 +347,40 @@ define([
         // Update element
         else {
           var id = $scope.element['@id'];
-          dms.stripTmps($scope.element);
           dms.updateKeys($scope.element);
+          $rootScope.jsonToSave = $scope.element;
 
-          AuthorizedBackendService.doCall(
-              TemplateElementService.updateTemplateElement(id, $scope.element),
-              function (response) {
+          var copiedForm = jQuery.extend(true, {}, $scope.element);
+          if (copiedForm) {
+            // strip the temps from the copied form only, and save the copy
+            DataManipulationService.stripTmps(copiedForm);
 
-                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                    response.headers("CEDAR-Validation-Report"));
 
-                dms.createDomIds(response.data);
-                angular.extend($scope.element, response.data);
-                $rootScope.jsonToSave = $scope.element;
-                UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-                    'GENERIC.Updated');
 
-                owner.enableSaveButton();
-                $scope.setClean();
+            AuthorizedBackendService.doCall(
+                TemplateElementService.updateTemplateElement(id, copiedForm),
+                function (response) {
 
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                owner.enableSaveButton();
-              }
-          );
+                  $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                      response.headers("CEDAR-Validation-Report"));
+
+                  // dms.createDomIds(response.data);
+                  // angular.extend($scope.element, response.data);
+
+                  UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                      'GENERIC.Updated');
+
+                  owner.enableSaveButton();
+                  $scope.setClean();
+
+
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                  owner.enableSaveButton();
+                }
+            );
+          }
         }
       }
     };

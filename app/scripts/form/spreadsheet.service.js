@@ -257,16 +257,22 @@ define([
 
         // build the table for one row
         var extractAndStoreCellData = function (cellDataObject, rowData, columnDescriptor) {
-          var inputType = columnDescriptor.type;
-          var cedarType = columnDescriptor.cedarType;
-          if (inputType == 'dropdown') {
-            rowData.push(cellDataObject['@value']);
-          } else if (cedarType == 'checkboxes') {
-            rowData.push(JSON.stringify(cellDataObject['@value']));
-          } else if (cedarType == 'deepObject') {
-            rowData.push(columnDescriptor.cedarLabel);
+          if (cellDataObject) {
+
+            var inputType = columnDescriptor.type;
+            var cedarType = columnDescriptor.cedarType;
+            if (inputType == 'dropdown') {
+              rowData.push(cellDataObject['@value']);
+            } else if (cedarType == 'checkboxes') {
+              rowData.push(JSON.stringify(cellDataObject['@value']));
+            } else if (cedarType == 'deepObject') {
+              rowData.push(columnDescriptor.cedarLabel);
+            } else {
+              rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
+            }
+
           } else {
-            rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
+            console.log('Error: missing cellDataObject');
           }
         };
 
@@ -461,36 +467,6 @@ define([
         // build the spreadsheet, stuff it into the dom, and make it visible
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
 
-          $scope.spreadsheetContext = context;
-          context.isField = isField;
-
-          var columnHeaderOrder = getColumnHeaderOrder(context, $element);
-          var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope);
-          var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
-          var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
-          var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
-          var minRows = dms.getMinItems($element) || 0;
-          var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
-          var config = {
-            data              : tableData,
-            minSpareRows      : 1,
-            autoWrapRow       : true,
-            contextMenu       : true,
-            minRows           : minRows,
-            maxRows           : maxRows,
-            rowHeaders        : true,
-            stretchH          : 'all',
-            trimWhitespace    : false,
-            manualRowResize   : true,
-            manualColumnResize: true,
-            columns           : columnDescriptors,
-            colHeaders        : colHeaders,
-            colWidths         : 247,
-            autoColumnSize    : {syncLimit: 300},
-
-
-          };
-
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
           var detectorElement = angular.element(document.querySelector(id + '.spreadsheetViewDetector'),
@@ -498,48 +474,83 @@ define([
           var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
               context.getPlaceholderContext())[0];
 
-          // push spreadsheet data to parent scope
-          $scope.spreadsheetDataScope = {
-            tableData        : tableData,
-            tableDataSource  : tableDataSource,
-            columnDescriptors: columnDescriptors,
-            columnHeaderOrder: columnHeaderOrder,
-            addCallback      : addCallback,
-            removeCallback   : removeCallback,
-            detectorElement  : detectorElement,
-            container        : container
-          };
-          $scope.config = config;
+          if (container) {
+
+            $scope.spreadsheetContext = context;
+            context.isField = isField;
+
+            var columnHeaderOrder = getColumnHeaderOrder(context, $element);
+            var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope);
+            var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
+            var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
+            var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
+            var minRows = dms.getMinItems($element) || 0;
+            var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
+            var config = {
+              data              : tableData,
+              minSpareRows      : 1,
+              autoWrapRow       : true,
+              contextMenu       : true,
+              minRows           : minRows,
+              maxRows           : maxRows,
+              rowHeaders        : true,
+              stretchH          : 'all',
+              trimWhitespace    : false,
+              manualRowResize   : true,
+              manualColumnResize: true,
+              columns           : columnDescriptors,
+              colHeaders        : colHeaders,
+              colWidths         : 247,
+              autoColumnSize    : {syncLimit: 300},
 
 
-          // put the spreadsheet into the container
-          context.setSpreadsheetContainer(container);
-          context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
-          context.switchVisibility();
-          applyVisibility($scope);
-
-          // build the handsontable
-          var hot = new Handsontable(container, config);
-
-          registerHooks(hot, $scope, $element, columnHeaderOrder);
-          context.setTable(hot);
-          resize($scope);
+            };
 
 
-          var fullScreenHandler = function (event) {
+            // push spreadsheet data to parent scope
+            $scope.spreadsheetDataScope = {
+              tableData        : tableData,
+              tableDataSource  : tableDataSource,
+              columnDescriptors: columnDescriptors,
+              columnHeaderOrder: columnHeaderOrder,
+              addCallback      : addCallback,
+              removeCallback   : removeCallback,
+              detectorElement  : detectorElement,
+              container        : container
+            };
+            $scope.config = config;
 
-            setTimeout(function () {
-              if (service.isFullscreen($scope)) {
-              } else {
-                resize($scope);
-              }
-            }, 200);
-          };
 
-          $document[0].addEventListener('webkitfullscreenchange', fullScreenHandler);
-          $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
-          $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
-          $document[0].addEventListener('fullscreenchange', fullScreenHandler);
+            // put the spreadsheet into the container
+            context.setSpreadsheetContainer(container);
+            context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
+            context.switchVisibility();
+            applyVisibility($scope);
+
+            // build the handsontable
+            var hot = new Handsontable(container, config);
+
+            registerHooks(hot, $scope, $element, columnHeaderOrder);
+            context.setTable(hot);
+            resize($scope);
+
+
+            var fullScreenHandler = function (event) {
+
+              setTimeout(function () {
+                if (service.isFullscreen($scope)) {
+                } else {
+                  resize($scope);
+                }
+              }, 200);
+            };
+
+            $document[0].addEventListener('webkitfullscreenchange', fullScreenHandler);
+            $document[0].addEventListener('mozfullscreenchange', fullScreenHandler);
+            $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
+            $document[0].addEventListener('fullscreenchange', fullScreenHandler);
+
+          }
 
         };
 
