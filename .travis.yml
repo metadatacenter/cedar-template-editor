@@ -13,8 +13,6 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-510-again
-  - feature/unit-tests
 notifications:
   slack:
     on_success: never

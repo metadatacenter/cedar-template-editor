@@ -100,7 +100,7 @@ define([
     service.isSpreadsheetable = function (node) {
 
       var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node);
+      var result = DataManipulationService.isCardinalElement(node)  && !DataManipulationService.isMultipleChoice(node);
 
       if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
