@@ -156,6 +156,14 @@ define([
       }
     };
 
+    service.getColumnDescription = function (node, col) {
+      if (node) {
+        var key = service.getOrder(node)[col];
+        var value = service.propertiesOf(node)[key];
+        return service.getDescription(value);
+      }
+    };
+
     service.hasDescription = function (node) {
       return service.schemaOf(node).hasOwnProperty('schema:description') && service.schemaOf(
               node)['schema:description'].length > 0;

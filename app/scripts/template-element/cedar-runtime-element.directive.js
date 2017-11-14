@@ -136,6 +136,13 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
+
+        // make sure there are at least 10 entries in the spreadsheet
+        var maxItems = dms.getMaxItems(scope.element);
+        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+          scope.addMoreInput();
+        }
+
         SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
           return false;
         }, function () {

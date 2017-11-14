@@ -3480,6 +3480,19 @@ section.dashboard-elements {
 
 .spreadsheetViewContainer {
   overflow: hidden;
+  border:1px solid #ccc;
+  min-height:300px;
+
+  .tooltip {
+    position: fixed;
+    white-space:pre-wrap;
+  }
+
+  .ht_master.handsontable {
+    .wtHolder {
+      min-height:300px;
+    }
+  }
 }
 
 .alert {

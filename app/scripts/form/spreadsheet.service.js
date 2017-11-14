@@ -6,11 +6,12 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
+      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter',  'DataManipulationService',
+                                    'DataUtilService',
                                     'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
                                     'ValueRecommenderService', 'autocompleteService'];
 
-      function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
+      function SpreadsheetService($rootScope, $document, $filter,  DataManipulationService, DataUtilService,
                                   AuthorizedBackendService,
                                   HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
 
@@ -322,15 +323,20 @@ define([
         // get the single field or nested field titles
         var getColHeaders = function ($element, columnHeaderOrder, isField) {
           var colHeaders = [];
+          var title = DataManipulationService.getTitle(node);
+          var description = DataManipulationService.getDescription(node);
 
           if (isField) {
-            colHeaders.push(DataManipulationService.getTitle($element));
+            colHeaders.push(
+                '<span class="tooltip-button" data-toggle="tooltip" data-placement="bottom" title="' + description + '">' + title + ' </span>');
           } else {
             for (var i in columnHeaderOrder) {
               var key = columnHeaderOrder[i];
               var node = DataManipulationService.propertiesOf($element)[key];
               var title = DataManipulationService.getTitle(node);
-              colHeaders.push(title);
+              var description = DataManipulationService.getDescription(node);
+              colHeaders.push(
+                  '<span class="tooltip-button" data-toggle="tooltip" data-placement="bottom" title="' + description + '">' + title + ' </span>');
             }
           }
           return colHeaders;
@@ -437,6 +443,10 @@ define([
               }
             });
           });
+
+          Handsontable.hooks.add('afterRender', function () {
+                jQuery('[data-toggle="tooltip"]').tooltip();
+              });
         };
 
         // resize the container based on size of table
@@ -502,6 +512,7 @@ define([
               colHeaders        : colHeaders,
               colWidths         : 247,
               autoColumnSize    : {syncLimit: 300},
+              headerTooltips    : true
 
 
             };
