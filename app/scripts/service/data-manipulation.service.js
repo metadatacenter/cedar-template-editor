@@ -1768,23 +1768,7 @@ define([
                 }
               }
             }
-
-            var p = service.propertiesOf(value);
-
-            // Add @type information to instance at the field level
-            // if (p && !angular.isUndefined(p['@type'])) {
-            //   type = DataManipulationService.generateInstanceType(p['@type']);
-            //
-            //   if (type) {
-            //     if (angular.isArray(parentModel[name])) {
-            //       for (i = 0; i < min; i++) {
-            //         parentModel[name][i]["@type"] = type || "";
-            //       }
-            //     } else {
-            //       parentModel[name]["@type"] = type || "";
-            //     }
-            //   }
-            // }
+            service.initializeValue(value, parentModel[name]);
           }
         }
       });
