@@ -321,7 +321,7 @@ define([
         };
 
         // get the single field or nested field titles
-        var getColHeaders = function ($element, columnHeaderOrder, isField) {
+        var getColHeaders = function (node, columnHeaderOrder, isField) {
           var colHeaders = [];
           var title = DataManipulationService.getTitle(node);
           var description = DataManipulationService.getDescription(node);
@@ -332,9 +332,9 @@ define([
           } else {
             for (var i in columnHeaderOrder) {
               var key = columnHeaderOrder[i];
-              var node = DataManipulationService.propertiesOf($element)[key];
-              var title = DataManipulationService.getTitle(node);
-              var description = DataManipulationService.getDescription(node);
+              var innerNode = DataManipulationService.propertiesOf(node)[key];
+              title = DataManipulationService.getTitle(innerNode);
+              description = DataManipulationService.getDescription(innerNode);
               colHeaders.push(
                   '<span class="tooltip-button" data-toggle="tooltip" data-placement="bottom" title="' + description + '">' + title + ' </span>');
             }
@@ -444,9 +444,12 @@ define([
             });
           });
 
-          Handsontable.hooks.add('afterRender', function () {
-                jQuery('[data-toggle="tooltip"]').tooltip();
-              });
+          // TODO this should show a jquery ui tooltip rather than the default browser tooltip, but these work intermittently,
+          // TODO not sure if it should be the ht_master or ht_clone_top div
+          // Handsontable.hooks.add('afterRender', function () {
+          //       jQuery('div.ht_master span[data-toggle="tooltip"]').tooltip();
+          //       jQuery('div.ht_clone_top span[data-toggle="tooltip"]').tooltip();
+          //     });
         };
 
         // resize the container based on size of table

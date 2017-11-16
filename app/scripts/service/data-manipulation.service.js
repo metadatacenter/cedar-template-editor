@@ -1703,6 +1703,7 @@ define([
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {
+      console.log('findChildren ', iterator, parentModel);
       var ctx, min, type, i;
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
@@ -1716,13 +1717,6 @@ define([
         if (name == '@context') {
           parentModel['@context'] = service.generateInstanceContext(value);
         }
-        // Add @type information to instance
-        // else if (name == '@type') {
-        //   type = DataManipulationService.generateInstanceType(value);
-        //   if (type) {
-        //     parentModel['@type'] = type;
-        //   }
-        // }
 
         min = value.minItems || 0;
 

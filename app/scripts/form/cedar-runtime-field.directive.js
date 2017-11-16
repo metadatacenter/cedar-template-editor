@@ -192,6 +192,12 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
+        // make sure there are at least 10 entries in the spreadsheet
+        var maxItems = dms.getMaxItems($scope.field);
+        while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
+          $scope.addMoreInput();
+        }
+
         SpreadsheetService.switchToSpreadsheet($scope, $scope.field, 0, function () {
           return true;
         }, function () {
