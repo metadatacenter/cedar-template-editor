@@ -10,10 +10,12 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
-                               "DataManipulationService", "UIUtilService", "autocompleteService", "ValueRecommenderService"];
+                               "DataManipulationService", "UIUtilService", "autocompleteService",
+                               "ValueRecommenderService"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService, ValueRecommenderService) {
+                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService,
+                             ValueRecommenderService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -35,10 +37,10 @@ define([
       var dms = DataManipulationService;
 
 
-
       $scope.multipleDemo = {};
-      $scope.multipleDemo.colors = ['Red','Green'];
-      $scope.multipleDemo.availableColors = ['Red','Green','Blue','Yellow','Magenta','Maroon','Umbra','Turquoise'];
+      $scope.multipleDemo.colors = ['Red', 'Green'];
+      $scope.multipleDemo.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra',
+                                             'Turquoise'];
 
 
       //
@@ -126,7 +128,7 @@ define([
         return dms.isStaticField(field || $scope.field);
       };
 
-      $scope.isPreviousStatic = function() {
+      $scope.isPreviousStatic = function () {
         return $scope.isStatic($scope.previous);
       };
 
@@ -192,11 +194,7 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
-        // make sure there are at least 10 entries in the spreadsheet
-        var maxItems = dms.getMaxItems($scope.field);
-        while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
-          $scope.addMoreInput();
-        }
+        console.log('switchToSpreadsheet field',$scope.field);
 
         SpreadsheetService.switchToSpreadsheet($scope, $scope.field, 0, function () {
           return true;
@@ -204,6 +202,11 @@ define([
           $scope.addMoreInput();
         }, function () {
           $scope.removeInput($scope.model.length - 1);
+        }, function () {
+          $scope.createExtraRows();
+        }, function () {
+          console.log('delete extra rows field');
+          $scope.deleteExtraRows();
         })
       };
 
@@ -469,7 +472,7 @@ define([
         }
       };
 
-      $scope.multiple= {};
+      $scope.multiple = {};
 
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
@@ -506,12 +509,12 @@ define([
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
-                $scope.model.push({'@value':$scope.optionsUI.listMultiSelect[i].label});
+                $scope.model.push({'@value': $scope.optionsUI.listMultiSelect[i].label});
               }
             }
             // Single-choice list
             else {
-              $scope.model = {'@value':$scope.optionsUI.listSingleSelect.label};
+              $scope.model = {'@value': $scope.optionsUI.listSingleSelect.label};
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -546,13 +549,13 @@ define([
               for (var i = 0; i < $scope.model.length; i++) {
                 var v = $scope.model[i][valueLocation];
                 if (v) {
-                  $scope.optionsUI.listMultiSelect.push({"label":$scope.model[i][valueLocation]});
+                  $scope.optionsUI.listMultiSelect.push({"label": $scope.model[i][valueLocation]});
                 }
 
               }
             } else {
               if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = {"label":$scope.model[0][valueLocation]};
+                $scope.optionsUI.listSingleSelect = {"label": $scope.model[0][valueLocation]};
               }
             }
           }
@@ -736,13 +739,14 @@ define([
             angular.forEach($scope.model, function (valueElement, index) {
               if (angular.isArray(valueElement)) {
                 angular.forEach(valueElement, function (ve, index) {
-                  if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index )) {
+                  if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
                     allFieldsAreValid = false;
                   }
                 });
               } else {
                 if (angular.isObject(valueElement)) {
-                  if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint, index)) {
+                  if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint,
+                          index)) {
                     allFieldsAreValid = false;
                   }
                 }
@@ -786,6 +790,7 @@ define([
         }
       });
 
+
       // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
       $scope.$watch(
           function () {
@@ -806,6 +811,7 @@ define([
               $timeout(function () {
                 var zeroLocator = $scope.getLocator(0);
                 if (zeroLocator === zeroedLocator(oldValue)) {
+                  console.log('destroy',oldValue);
                   SpreadsheetService.destroySpreadsheet($scope);
                   $scope.$apply();
                 }
@@ -818,11 +824,37 @@ define([
           }
       );
 
-      $scope.isHidden = function() {
+      $scope.createExtraRows = function() {
+        console.log('createExtraRows field');
+        // make sure there are at least 10 entries in the spreadsheet
+        var maxItems = dms.getMaxItems($scope.field);
+        while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
+          $scope.addMoreInput();
+        }
+      };
+
+      $scope.deleteExtraRows = function() {
+        console.log('deleteExtraRows field');
+        // delete extra blank rows
+        var location = dms.getValueLocation($scope.field);
+        var min = dms.getMinItems($scope.field) || 0;
+        if (angular.isArray($scope.model)) {
+
+          for (var i = $scope.model.length; i > min; i--) {
+            var valueElement = $scope.model[i-1];
+
+            if (valueElement[location] == null) {
+              $scope.removeInput(i-1);
+            }
+          }
+        }
+      };
+
+      $scope.isHidden = function () {
         return DataManipulationService.isHidden($scope.field);
       };
 
-      $scope.initValue = function() {
+      $scope.initValue = function () {
         if (DataManipulationService.hasDefault($scope.field)) {
           var location = DataManipulationService.getValueLocation($scope.field);
           var value = DataManipulationService.getDefault($scope.field);
@@ -844,8 +876,6 @@ define([
 
 
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet);
-
-
 
 
     };

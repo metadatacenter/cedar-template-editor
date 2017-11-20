@@ -6,12 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter',  'DataManipulationService',
-                                    'DataUtilService',
+      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
                                     'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
                                     'ValueRecommenderService', 'autocompleteService'];
 
-      function SpreadsheetService($rootScope, $document, $filter,  DataManipulationService, DataUtilService,
+      function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
                                   AuthorizedBackendService,
                                   HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
 
@@ -434,7 +433,6 @@ define([
               }
 
               if (hook === 'afterRemoveRow') {
-                //console.log('afterRemoveRow');
                 $scope.spreadsheetDataScope.removeCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);
@@ -446,10 +444,11 @@ define([
 
           // TODO this should show a jquery ui tooltip rather than the default browser tooltip, but these work intermittently,
           // TODO not sure if it should be the ht_master or ht_clone_top div
-          // Handsontable.hooks.add('afterRender', function () {
+          Handsontable.hooks.add('afterRender', function () {
           //       jQuery('div.ht_master span[data-toggle="tooltip"]').tooltip();
           //       jQuery('div.ht_clone_top span[data-toggle="tooltip"]').tooltip();
-          //     });
+          jQuery('span[data-toggle="tooltip"]').tooltip({ show: { effect: "blind", duration: 800 } });
+               });
         };
 
         // resize the container based on size of table
@@ -478,7 +477,7 @@ define([
 
 
         // build the spreadsheet, stuff it into the dom, and make it visible
-        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
+        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows) {
 
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
@@ -501,7 +500,7 @@ define([
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
               data              : tableData,
-              minSpareRows      : 1,
+              minSpareRows      : 10,
               autoWrapRow       : true,
               contextMenu       : true,
               minRows           : minRows,
@@ -516,8 +515,6 @@ define([
               colWidths         : 247,
               autoColumnSize    : {syncLimit: 300},
               headerTooltips    : true
-
-
             };
 
 
@@ -529,11 +526,12 @@ define([
               columnHeaderOrder: columnHeaderOrder,
               addCallback      : addCallback,
               removeCallback   : removeCallback,
+              createExtraRows  : createExtraRows,
+              deleteExtraRows  : deleteExtraRows,
               detectorElement  : detectorElement,
               container        : container
             };
             $scope.config = config;
-
 
             // put the spreadsheet into the container
             context.setSpreadsheetContainer(container);
@@ -584,6 +582,10 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
+          console.log('destroySpreadsheet', $scope.spreadsheetDataScope.deleteExtraRows);
+          // delete extra rows in the object
+          $scope.spreadsheetDataScope.deleteExtraRows();
+
           if ($scope.hasOwnProperty('spreadsheetContext')) {
             var context = $scope.spreadsheetContext;
             context.switchVisibility();
@@ -592,6 +594,8 @@ define([
                 context.getTable().destroy();
                 jQuery(context.getSpreadsheetContainer()).html("");
                 applyVisibility($scope);
+
+
               }
             } else {
               context.switchVisibility();
@@ -600,10 +604,11 @@ define([
         };
 
         // create spreadsheet view using handsontable
-        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback) {
+        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows) {
+
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
-          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback);
+          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows );
         };
 
         return service;

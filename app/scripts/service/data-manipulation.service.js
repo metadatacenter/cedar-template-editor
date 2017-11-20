@@ -156,14 +156,6 @@ define([
       }
     };
 
-    service.getColumnDescription = function (node, col) {
-      if (node) {
-        var key = service.getOrder(node)[col];
-        var value = service.propertiesOf(node)[key];
-        return service.getDescription(value);
-      }
-    };
-
     service.hasDescription = function (node) {
       return service.schemaOf(node).hasOwnProperty('schema:description') && service.schemaOf(
               node)['schema:description'].length > 0;
@@ -1703,7 +1695,6 @@ define([
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {
-      console.log('findChildren ', iterator, parentModel);
       var ctx, min, type, i;
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
@@ -1717,6 +1708,13 @@ define([
         if (name == '@context') {
           parentModel['@context'] = service.generateInstanceContext(value);
         }
+        // Add @type information to instance
+        // else if (name == '@type') {
+        //   type = DataManipulationService.generateInstanceType(value);
+        //   if (type) {
+        //     parentModel['@type'] = type;
+        //   }
+        // }
 
         min = value.minItems || 0;
 
@@ -1762,7 +1760,23 @@ define([
                 }
               }
             }
-            service.initializeValue(value, parentModel[name]);
+
+            var p = service.propertiesOf(value);
+
+            // Add @type information to instance at the field level
+            // if (p && !angular.isUndefined(p['@type'])) {
+            //   type = DataManipulationService.generateInstanceType(p['@type']);
+            //
+            //   if (type) {
+            //     if (angular.isArray(parentModel[name])) {
+            //       for (i = 0; i < min; i++) {
+            //         parentModel[name][i]["@type"] = type || "";
+            //       }
+            //     } else {
+            //       parentModel[name]["@type"] = type || "";
+            //     }
+            //   }
+            // }
           }
         }
       });

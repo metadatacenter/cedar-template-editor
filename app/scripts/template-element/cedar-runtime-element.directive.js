@@ -136,19 +136,18 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-
-        // make sure there are at least 10 entries in the spreadsheet
-        // var maxItems = dms.getMaxItems(scope.element);
-        // while ((scope.model.length < 10 || scope.model.length < maxItems)) {
-        //   scope.addMoreInput();
-        // }
-
+        console.log('switchToSpreadsheet elsment',scope.element);
         SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
           return false;
         }, function () {
           scope.addMoreInput();
         }, function () {
           scope.removeElement(scope.model.length - 1);
+        }, function () {
+          scope.createExtraRows();
+        }, function () {
+          console.log('invoke deleteExtraRows');
+          scope.deleteExtraRows();
         })
       };
 
@@ -200,6 +199,45 @@ define([
             }
           }
       );
+
+
+      // make sure there are at least 10 entries in the spreadsheet
+      scope.createExtraRows = function() {
+        console.log('createExtraRows');
+        var maxItems = dms.getMaxItems(scope.element);
+        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+          scope.addMoreInput();
+        }
+      };
+
+      scope.deleteExtraRows = function() {
+        console.log('deleteExtraRows');
+        var min = dms.getMinItems(scope.element) || 0;
+        if (angular.isArray(scope.model)) {
+
+          for (var i = scope.model.length; i > min; i--) {
+            var valueElement = scope.model[i-1];
+
+            // are all the fields empty?
+            var empty = true;
+            loop: for(var prop in valueElement){
+              if (!DataUtilService.isSpecialKey(prop) && !prop.startsWith('$$')) {
+
+                var node = valueElement[prop];
+                if (Object.getOwnPropertyNames(node).length > 0) {
+                  empty = false;
+                  break loop;
+                }
+
+              }
+            }
+            if (empty) {
+              console.log('empty', i-1)
+              scope.removeElement(i-1);
+            }
+          }
+        }
+      };
 
 
       //
