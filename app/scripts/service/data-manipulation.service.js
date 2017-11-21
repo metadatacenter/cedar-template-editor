@@ -98,7 +98,10 @@ define([
 
     // is this a required field or element?
     service.isRequired = function (node) {
-      return service.schemaOf(node)._valueConstraints.requiredValue;
+
+      if (service.schemaOf(node)._valueConstraints) {
+        return service.schemaOf(node)._valueConstraints.requiredValue;
+      }
     };
 
     service.setRequired = function (node, value) {

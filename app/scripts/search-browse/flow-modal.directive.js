@@ -138,6 +138,7 @@ define([
           $scope.metadataFiles = [];
 
           $scope.instances = function (term) {
+            console.log('instances',term);
 
             var limit = UISettingsService.getRequestLimit();
             var offset = 0;
@@ -155,6 +156,7 @@ define([
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
+                  console.log('response',  $scope.resources);
 
 
                   return $scope.resources.map(function (item) {
