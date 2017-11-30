@@ -151,6 +151,13 @@ define([
         })
       };
 
+      scope.cleanupSpreadsheet = function () {
+        console.log('cleanupSpreadsheet element',scope.element);
+        scope.deleteExtraRows();
+      };
+
+
+
       scope.isTabView = function () {
         return UIUtilService.isTabView(scope.viewState);
       };
@@ -211,29 +218,32 @@ define([
       };
 
       scope.deleteExtraRows = function() {
-        console.log('deleteExtraRows');
-        var min = dms.getMinItems(scope.element) || 0;
+
         if (angular.isArray(scope.model)) {
 
-          for (var i = scope.model.length; i > min; i--) {
-            var valueElement = scope.model[i-1];
+          var min = dms.getMinItems(scope.element) || 0;
 
-            // are all the fields empty?
+          outer: for (var i = scope.model.length; i > min; i--) {
+            var valueElement = scope.model[i-1];
+            // are all the fields empty for this cardinal element instance i?
             var empty = true;
             loop: for(var prop in valueElement){
               if (!DataUtilService.isSpecialKey(prop) && !prop.startsWith('$$')) {
 
                 var node = valueElement[prop];
                 if (Object.getOwnPropertyNames(node).length > 0) {
-                  empty = false;
-                  break loop;
+                  if (node['@value'] != null && node['@value'] != '') {
+                    empty = false;
+                    break loop;
+                  }
                 }
 
               }
             }
             if (empty) {
-              console.log('empty', i-1)
               scope.removeElement(i-1);
+            } else {
+              break outer;
             }
           }
         }
@@ -598,7 +608,7 @@ define([
 
       scope.pageMinMax();
 
-      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet);
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet, scope.cleanupSpreadsheet);
       //console.log(scope.viewState);
     }
   };

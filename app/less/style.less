@@ -3183,7 +3183,7 @@ section.dashboard-elements {
 
     }
 
-    textarea {
+    textarea.form-control {
       border-width: 0px;
       background: #fff;
       padding-top: 10px;
@@ -3479,6 +3479,42 @@ section.dashboard-elements {
 }
 
 .spreadsheetViewContainer {
+
+  /* Always show scroll bars */
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  ::-webkit-scrollbar:vertical {
+    width: 1em;
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 1em;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    border: 0px solid white;
+    background-color: #ddd;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: @lt-gray;
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background-color: @lt-gray;
+  }
+
+  background-color:@lt-gray;
+
+  .handsontable .wtBorder {
+    margin-right:-1px;
+  }
+
   overflow: hidden;
   border:1px solid #ccc;
   min-height:300px;

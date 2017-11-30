@@ -194,7 +194,6 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet field',$scope.field);
 
         SpreadsheetService.switchToSpreadsheet($scope, $scope.field, 0, function () {
           return true;
@@ -205,9 +204,13 @@ define([
         }, function () {
           $scope.createExtraRows();
         }, function () {
-          console.log('delete extra rows field');
           $scope.deleteExtraRows();
         })
+      };
+
+      $scope.cleanupSpreadsheet = function () {
+        console.log('cleanupSpreadsheet');
+        $scope.deleteExtraRows();
       };
 
       $scope.isTabView = function () {
@@ -797,7 +800,11 @@ define([
             return ( $rootScope.activeLocator);
           },
           function (newValue, oldValue) {
+            console.log('watch $rootScope.activeLocator');
+
             if ($scope.isSpreadsheetView()) {
+
+              console.log('is spreadsheetView')
 
               // spreadsheet view will use the 0th instance
               var zeroedLocator = function (value) {
@@ -811,7 +818,6 @@ define([
               $timeout(function () {
                 var zeroLocator = $scope.getLocator(0);
                 if (zeroLocator === zeroedLocator(oldValue)) {
-                  console.log('destroy',oldValue);
                   SpreadsheetService.destroySpreadsheet($scope);
                   $scope.$apply();
                 }
@@ -825,7 +831,6 @@ define([
       );
 
       $scope.createExtraRows = function() {
-        console.log('createExtraRows field');
         // make sure there are at least 10 entries in the spreadsheet
         var maxItems = dms.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
@@ -834,17 +839,19 @@ define([
       };
 
       $scope.deleteExtraRows = function() {
-        console.log('deleteExtraRows field');
         // delete extra blank rows
+        console.log('deleteExtraRows', $scope.model.length);
         var location = dms.getValueLocation($scope.field);
         var min = dms.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
 
-          for (var i = $scope.model.length; i > min; i--) {
+          loop:for (var i = $scope.model.length; i > min; i--) {
             var valueElement = $scope.model[i-1];
 
             if (valueElement[location] == null) {
               $scope.removeInput(i-1);
+            } else {
+              break loop;
             }
           }
         }
@@ -875,7 +882,7 @@ define([
       $scope.setValueArray();
 
 
-      $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet);
+      $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet, $scope.cleanupSpreadsheet);
 
 
     };

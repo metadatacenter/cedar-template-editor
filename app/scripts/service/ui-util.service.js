@@ -75,6 +75,8 @@ define([
         setTimeout(function () {
           viewState.spreadsheetCallback();
         });
+      } else {
+         viewState.cleanupCallback()
       }
       return viewState;
     };
@@ -128,7 +130,7 @@ define([
       return result;
     };
 
-    service.createViewState = function (node, callback) {
+    service.createViewState = function (node, callback, cleanup) {
       var viewState = {
         views   : ['tab', 'list'],
         selected: 'tab'
@@ -136,6 +138,7 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
+        viewState.cleanupCallback = cleanup;
         viewState.selected = 'spreadsheet';
       }
       return viewState;

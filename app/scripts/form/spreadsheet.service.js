@@ -458,6 +458,7 @@ define([
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
+            console.log('detectorElement.width',detectorElement.width());
 
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData.length;
