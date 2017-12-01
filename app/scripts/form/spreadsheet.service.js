@@ -183,24 +183,25 @@ define([
               desc.editor = FullscreenDateEditor;
               break;
             case 'link':
-              desc.allowInvalid = true;
               desc.validator = service.linkValidator;
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'phone-number':
               desc.allowInvalid = true;
               desc.validator = service.phoneValidator;
-              desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'email':
-              desc.allowInvalid = true;
               desc.validator = service.emailValidator;
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'numeric':
               desc.type = 'numeric';
               desc.format = '0.0[0000]';
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'list':
               desc.type = 'dropdown';
@@ -422,8 +423,9 @@ define([
               }
 
               if (hook === 'afterChange') {
-                //console.log('afterChange');
+                console.log('afterChange');
                 updateDataModel($scope, $element);
+                //$scope.spreadsheetContext.getTable().validateCells();
               }
 
               if (hook === 'beforeChange') {
