@@ -136,7 +136,7 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet elsment',scope.element);
+        //console.log('switchToSpreadsheet elsment',scope.element);
         SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
           return false;
         }, function () {
@@ -146,13 +146,13 @@ define([
         }, function () {
           scope.createExtraRows();
         }, function () {
-          console.log('invoke deleteExtraRows');
+          //console.log('invoke deleteExtraRows');
           scope.deleteExtraRows();
         })
       };
 
       scope.cleanupSpreadsheet = function () {
-        console.log('cleanupSpreadsheet element',scope.element);
+        //console.log('cleanupSpreadsheet element',scope.element);
         scope.deleteExtraRows();
       };
 
@@ -195,6 +195,7 @@ define([
               $timeout(function () {
                 var zeroLocator = scope.getLocator(0);
                 if (zeroLocator === zeroedLocator(oldValue)) {
+                  scope.expanded[0] = false;
                   SpreadsheetService.destroySpreadsheet(scope);
                   scope.$apply();
                 }
@@ -210,7 +211,6 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function() {
-        console.log('createExtraRows');
         var maxItems = dms.getMaxItems(scope.element);
         while ((scope.model.length < 10 || scope.model.length < maxItems)) {
           scope.addMoreInput();

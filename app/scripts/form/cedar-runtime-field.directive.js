@@ -209,7 +209,6 @@ define([
       };
 
       $scope.cleanupSpreadsheet = function () {
-        console.log('cleanupSpreadsheet');
         $scope.deleteExtraRows();
       };
 
@@ -800,11 +799,9 @@ define([
             return ( $rootScope.activeLocator);
           },
           function (newValue, oldValue) {
-            console.log('watch $rootScope.activeLocator');
+
 
             if ($scope.isSpreadsheetView()) {
-
-              console.log('is spreadsheetView')
 
               // spreadsheet view will use the 0th instance
               var zeroedLocator = function (value) {
@@ -840,15 +837,13 @@ define([
 
       $scope.deleteExtraRows = function() {
         // delete extra blank rows
-        console.log('deleteExtraRows', $scope.model.length);
         var location = dms.getValueLocation($scope.field);
         var min = dms.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
 
           loop:for (var i = $scope.model.length; i > min; i--) {
             var valueElement = $scope.model[i-1];
-
-            if (valueElement[location] == null) {
+            if (valueElement[location] == null || valueElement[location].length === 0) {
               $scope.removeInput(i-1);
             } else {
               break loop;

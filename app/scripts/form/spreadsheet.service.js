@@ -85,6 +85,7 @@ define([
                     sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
                     sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
                   } else if (inputType == 'autocomplete') {
+                    // console.log('inputType', inputType);
                     if (sds.tableData[row][col]) {
                       var value = sds.tableData[row][col];
                       var id = sds.columnDescriptors[col].nodeId;
@@ -171,6 +172,7 @@ define([
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
+          var id = dms.getId(node);
           desc.cedarType = inputType;
           switch (inputType) {
 
@@ -216,21 +218,18 @@ define([
                 desc.strict = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-
                 desc.source = function (query, process) {
 
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
-                  setTimeout(function () {
+                  if (autocompleteService.autocompleteResultsCache[id][query]) {
+                    $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
+                  }
 
-                    var id = dms.getId(node);
-                    var results = autocompleteService.getAutocompleteResults(id, query || '*');
-
-                    var labels = [];
-                    for (var i = 0; i < results.length; i++) {
-                      labels[i] = results[i]['label'];
+                  $scope.$watchCollection("results", function () {
+                    if ($scope.results && $scope.results.length) {
+                      process($scope.results.map(function(a) {return a.label;}));
                     }
-                    process(labels);
-                  }, 1000);
+                  });
                 };
               } else {
                 desc.type = 'text';
@@ -327,7 +326,7 @@ define([
 
           if (isField) {
             colHeaders.push(
-                '<span class="tooltip-button" data-toggle="tooltip" data-placement="bottom" title="' + description + '">' + title + ' </span>');
+                '<span  title="' + description + '">' + title + ' </span>');
           } else {
             for (var i in columnHeaderOrder) {
               var key = columnHeaderOrder[i];
@@ -335,7 +334,7 @@ define([
               title = DataManipulationService.getTitle(innerNode);
               description = DataManipulationService.getDescription(innerNode);
               colHeaders.push(
-                  '<span class="tooltip-button" data-toggle="tooltip" data-placement="bottom" title="' + description + '">' + title + ' </span>');
+                  '<span  title="' + description + '">' + title + ' </span>');
             }
           }
           return colHeaders;
@@ -418,9 +417,17 @@ define([
 
             hot.addHook(hook, function () {
 
+              if (hook === 'afterSelection') {
+                //console.log('afterSelection');
+              }
+
               if (hook === 'afterChange') {
                 //console.log('afterChange');
                 updateDataModel($scope, $element);
+              }
+
+              if (hook === 'beforeChange') {
+                //console.log('beforeChange');
               }
 
               if (hook === 'afterCreateRow') {
@@ -445,10 +452,10 @@ define([
           // TODO this should show a jquery ui tooltip rather than the default browser tooltip, but these work intermittently,
           // TODO not sure if it should be the ht_master or ht_clone_top div
           Handsontable.hooks.add('afterRender', function () {
-          //       jQuery('div.ht_master span[data-toggle="tooltip"]').tooltip();
-          //       jQuery('div.ht_clone_top span[data-toggle="tooltip"]').tooltip();
-          jQuery('span[data-toggle="tooltip"]').tooltip({ show: { effect: "blind", duration: 800 } });
-               });
+            //       jQuery('div.ht_master span[data-toggle="tooltip"]').tooltip();
+            //       jQuery('div.ht_clone_top span[data-toggle="tooltip"]').tooltip();
+            jQuery('span[data-toggle="tooltip"]').tooltip({show: {effect: "blind", duration: 800}});
+          });
         };
 
         // resize the container based on size of table
@@ -458,7 +465,7 @@ define([
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
-            console.log('detectorElement.width',detectorElement.width());
+            // console.log('detectorElement.width', detectorElement.width());
 
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData.length;
@@ -478,7 +485,8 @@ define([
 
 
         // build the spreadsheet, stuff it into the dom, and make it visible
-        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows) {
+        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback,
+                                          createExtraRows, deleteExtraRows) {
 
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
@@ -583,33 +591,37 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
-          console.log('destroySpreadsheet', $scope.spreadsheetDataScope.deleteExtraRows);
-          // delete extra rows in the object
-          $scope.spreadsheetDataScope.deleteExtraRows();
+          if ($scope.spreadsheetDataScope) {
 
-          if ($scope.hasOwnProperty('spreadsheetContext')) {
-            var context = $scope.spreadsheetContext;
-            context.switchVisibility();
-            if (context.isOriginalContentVisible()) {
-              if (context.getTable()) {
-                context.getTable().destroy();
-                jQuery(context.getSpreadsheetContainer()).html("");
-                applyVisibility($scope);
+            // delete extra rows in the object
+            $scope.spreadsheetDataScope.deleteExtraRows();
 
-
-              }
-            } else {
+            if ($scope.hasOwnProperty('spreadsheetContext')) {
+              var context = $scope.spreadsheetContext;
               context.switchVisibility();
+              if (context.isOriginalContentVisible()) {
+                if (context.getTable()) {
+                  context.getTable().destroy();
+                  jQuery(context.getSpreadsheetContainer()).html("");
+                  applyVisibility($scope);
+
+
+                }
+              } else {
+                context.switchVisibility();
+              }
             }
           }
         };
 
         // create spreadsheet view using handsontable
-        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows) {
+        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
+                                                createExtraRows, deleteExtraRows) {
 
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
-          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows, deleteExtraRows );
+          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows,
+              deleteExtraRows);
         };
 
         return service;

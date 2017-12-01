@@ -65,6 +65,8 @@ define([
 
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
+      $rootScope.activeLocator = null;
+      $rootScope.activeZeroLocator = null;
       var path = $location.path();
       var hash = $location.hash();
       var baseUrl = '/dashboard';
