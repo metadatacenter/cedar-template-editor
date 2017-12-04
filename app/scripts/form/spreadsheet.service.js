@@ -52,7 +52,6 @@ define([
 
         // copy table data to source table
         var updateDataModel = function ($scope, $element) {
-              //console.log('updateDataModel');
               var sds = $scope.spreadsheetDataScope;
               for (var row in sds.tableData) {
                 for (var col in sds.tableData[row]) {
@@ -81,9 +80,20 @@ define([
                       value[key] = true;
                     }
                     sds.tableDataSource[row][col]['@value'] = value;
-                  } else if (cedarType === 'link') {
+                  } else if (cedarType === 'date') {
                     sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                    sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                    sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
+                  } else if (cedarType === 'numeric') {
+                    if (sds.tableData[row][col]) {
+                      sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
+                    }
+                    sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
+                  } else if (cedarType === 'link') {
+                    if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
+                      sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                    } else {
+                      delete sds.tableDataSource[row][col]['@id'];
+                    }
                   } else if (inputType == 'autocomplete') {
                     // console.log('inputType', inputType);
                     if (sds.tableData[row][col]) {
@@ -183,23 +193,26 @@ define([
               desc.editor = FullscreenDateEditor;
               break;
             case 'link':
+              desc.type = 'text';
               desc.validator = service.linkValidator;
               desc.allowInvalid = true;
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'phone-number':
+              desc.type = 'text';
               desc.allowInvalid = true;
               desc.validator = service.phoneValidator;
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'email':
+              desc.type = 'text';
               desc.validator = service.emailValidator;
               desc.allowInvalid = true;
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'numeric':
               desc.type = 'numeric';
-              desc.format = '0.0[0000]';
+              desc.format = '0[.]0[0000]';
               desc.allowInvalid = true;
               desc.invalidCellClassName = 'myInvalidClass';
               break;
@@ -261,7 +274,12 @@ define([
 
             var inputType = columnDescriptor.type;
             var cedarType = columnDescriptor.cedarType;
+
             if (inputType == 'dropdown') {
+              rowData.push(cellDataObject['@value']);
+            } else if (cedarType == 'link') {
+              rowData.push(cellDataObject['@id']);
+            } else if (cedarType == 'numeric') {
               rowData.push(cellDataObject['@value']);
             } else if (cedarType == 'checkboxes') {
               rowData.push(JSON.stringify(cellDataObject['@value']));
@@ -423,9 +441,7 @@ define([
               }
 
               if (hook === 'afterChange') {
-                console.log('afterChange');
                 updateDataModel($scope, $element);
-                //$scope.spreadsheetContext.getTable().validateCells();
               }
 
               if (hook === 'beforeChange') {

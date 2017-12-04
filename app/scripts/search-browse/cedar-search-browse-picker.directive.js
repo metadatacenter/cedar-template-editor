@@ -327,6 +327,7 @@ define([
 
           // callback to load more resources for the current folder
           vm.loadMore = function () {
+            console.log('loadMOre');
 
             if (vm.isSearching) {
               vm.searchMore();
@@ -343,6 +344,7 @@ define([
               if (offset < vm.totalCount) {
 
                 if (resourceTypes.length > 0) {
+                  console.log('loadMore, getResources');
                   return resourceService.getResources(
                       {
                         folderId     : folderId,
@@ -378,6 +380,7 @@ define([
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
+            console.log('searchMore')
 
             var limit = UISettingsService.getRequestLimit();
             var offset = vm.offset;
@@ -509,6 +512,7 @@ define([
           }
 
           function doSearch(term) {
+            console.log('doSearch');
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
             vm.offset = 0;
@@ -733,6 +737,7 @@ define([
 
 
           function getFolderContentsById(folderId, resourceId) {
+
             var resourceTypes = activeResourceTypes();
             vm.offset = 0;
             var offset = vm.offset;
@@ -740,11 +745,13 @@ define([
             var limit = UISettingsService.getRequestLimit();
 
             if (resourceTypes.length > 0) {
+              console.log('getFolderContentsById, getResources');
               return resourceService.getResources(
                   {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
+                    console.log('getFolderContentsById', vm.resources);
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
@@ -1002,6 +1009,7 @@ define([
           });
 
           $scope.selectResourceById = function (id) {
+            console.log('selectResourceById', id, vm.resources);
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {
                 if (id === vm.resources[i]['@id']) {
@@ -1019,6 +1027,7 @@ define([
           };
 
           $scope.$on('refreshWorkspace', function (event, args) {
+            console.log('on refreshWorkspace');
             var selectedResource = args ? args[0] : null;
             vm.refreshWorkspace(selectedResource);
           });

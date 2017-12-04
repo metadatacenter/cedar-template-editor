@@ -199,7 +199,11 @@ define([
                   function (response) {
                     vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
-                    vm.destinationResources = vm.destinationResources.concat(response.resources);
+                    if (vm.offset > 0) {
+                      vm.destinationResources = vm.destinationResources.concat(response.resources);
+                    } else {
+                      vm.destinationResources = response.resources;
+                    }
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
                     vm.selectCurrent();
