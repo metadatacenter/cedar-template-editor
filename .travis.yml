@@ -35,6 +35,7 @@ jobs:
     script: gulp karma-tests  # karma stage
   - script: gulp test-form # e2e stage
   - script: gulp test-permissions # e2e stage
+
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
