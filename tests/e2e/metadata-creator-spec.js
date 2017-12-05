@@ -203,7 +203,7 @@ describe('metadata-creator', function () {
           "https://farm8.static.flickr.com/7178/14027473486_63ec060a17_z.jpg");
       templatePage.addField('textfield', false, 'one', 'one');
 
-      templatePage.addField('richtext', true, 'richtext', 'richtext',"<p>testing</p>");
+      templatePage.addField('richtext', true, 'richtext', 'richtext',"testing");
       templatePage.addField('textfield', false, 'two', 'two');
 
       templatePage.clickSave('template');
