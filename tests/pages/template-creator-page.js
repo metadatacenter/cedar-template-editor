@@ -1013,11 +1013,11 @@ var TemplateCreatorPage = function () {
         browser.wait(EC.elementToBeClickable(createFieldContent));
         createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
         break;
-      case "richtext":
-        var richTextContent = element(by.css('div.cke_contents.cke_reset'));
-        browser.wait(EC.elementToBeClickable(richTextContent));
-        richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
-        break;
+      // case "richtext":
+      //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
+      //   browser.wait(EC.elementToBeClickable(richTextContent));
+      //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+      //   break;
     }
   };
 
