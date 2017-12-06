@@ -74,7 +74,7 @@ define([
     };
 
     service.doCall = function (httpConfigObject, thenFunction, catchFunction) {
-      //console.log("AuthorizedBackendService.doCall:" + httpConfigObject.url);
+      console.log("AuthorizedBackendService.doCall:");
       //console.log(this.getTokenValidityMessage());
       var owner = this;
 

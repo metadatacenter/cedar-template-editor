@@ -187,7 +187,7 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
 
 gulp.task('test-delete', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/resource-permissions-spec.js'
+    './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"

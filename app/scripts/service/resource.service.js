@@ -290,7 +290,7 @@ define([
         }
 
         function getResources(options, successCallback, errorCallback) {
-          console.log('getResources');
+
           if (options == null) {
             options = {};
           }
@@ -308,7 +308,7 @@ define([
           addCommonParameters(params, options);
 
           var url = $rootScope.util.buildUrl(baseUrl, params);
-          console.log('getResources',url);
+
 
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
