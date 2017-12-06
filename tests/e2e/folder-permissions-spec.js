@@ -168,8 +168,10 @@ describe('folder-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
       // move source to target folder
-      workspacePage.rightClickResource(sourceFolder, 'folder');
-      expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
+      moveModal.moveDisabledViaRightClick(sourceFolder, 'folder');
+      // workspacePage.rightClickResource(sourceFolder, 'folder');
+      // expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
+
       workspacePage.clearSearch();
 
       // delete these at the end

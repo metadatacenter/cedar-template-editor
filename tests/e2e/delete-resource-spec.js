@@ -49,7 +49,7 @@ describe('delete-resource', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       shareModal.shareDisabledViaRightClick(folder, 'folder');
 
-      // TODO via more options isn't working
+      // TODO via more options isn't working because it doesn't wait for the option to become disabled
       // workspacePage.selectResource(folder, 'folder');
       // workspacePage.createMoreOptionsButton().click();
       // expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
@@ -86,7 +86,7 @@ describe('delete-resource', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       shareModal.shareDisabledViaRightClick(folder, 'folder');
 
-      // TODO via more options isn't working
+      // TODO via more options isn't working because it doesn't wait for the option to become disabled
       // workspacePage.selectResource(folder, 'folder');
       // workspacePage.createMoreOptionsButton().click();
       // expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
