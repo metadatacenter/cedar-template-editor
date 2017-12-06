@@ -135,6 +135,7 @@ define([
           }
 
           function currentTitle() {
+            console.log('currentTitle', (typeof vm.currentDestination));
             console.log('currentTitle', vm.currentDestination);
             return vm.currentDestination ? vm.currentDestination.displayName : 'none';
           }

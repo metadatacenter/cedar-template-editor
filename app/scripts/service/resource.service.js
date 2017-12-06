@@ -314,7 +314,6 @@ define([
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
               function (response) {
-                console.log('getResources response',response);
                 successCallback(response.data);
               },
               errorCallback
