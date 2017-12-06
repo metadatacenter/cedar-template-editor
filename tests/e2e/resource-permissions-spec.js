@@ -109,7 +109,8 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    xit("should move a writable resource not owned by current user to a writable folder", function () {
+    // TODO fails on staging
+    it("should move a writable resource not owned by current user to a writable folder", function () {
       console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -129,7 +130,8 @@ describe('resource-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
       // move source to target folder
-      workspacePage.moveResource(sourceTemplate, 'template');
+      //workspacePage.moveResource(sourceTemplate, 'template');
+      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
       moveModal.moveToDestination(target2Folder);
       toastyModal.isSuccess();
 
