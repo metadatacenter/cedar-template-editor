@@ -86,50 +86,92 @@ define(['app', 'angular'], function (app) {
         var xGoAway = "div.modal-content .modal-header button.close";
         var folderTitle = "div.modal-content  h4.modal-title a";
         var backArrow = "div.modal-content  h4.modal-title span.arrow-click";
-
-        var visible = true;
-        var resourceTypes = {'element': true, 'field': true, 'instance': true, template: true};
-        var currentPath = {
-          '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
-          'createdByUserName'     : null,
-          'createdOnTS'           : 1511895932,
-          'currentUserPermissions': [],
-          'description'           : "Home folder of Test User 1",
-          'displayName'           : "Test User 1",
-          displayParentPath       : null,
-          displayPath             : null,
-          isRoot                  : false,
-          isSystem                : false,
-          isUserHome              : true,
-          lastUpdatedByUserName   : null,
-          lastUpdatedOnTS         : 1511895932,
-          name                    : "Test User 1",
-          nodeType                : "folder",
-          modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          createdOn               : "2017-11-28T11:05:32-0800",
-          lastUpdatedOn           : "2017-11-28T11:05:32-0800"
-        };
-        var currentFolderId = "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4";
-        var sortOptionField = "name";
-        var resource = {
-          '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
-          'currentUserPermissions': [],
-          'displayName'           : 't2',
-          'name'                  : 't2'
-        };
+        // var moveModalVisible = false;
+        // var visible = true;
+        // var resourceTypes = {'element': true, 'field': true, 'instance': true, template: true};
+        // var currentPath = {
+        //   '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
+        //   'createdByUserName'     : null,
+        //   'createdOnTS'           : 1511895932,
+        //   'currentUserPermissions': [],
+        //   'description'           : "Home folder of Test User 1",
+        //   'displayName'           : "Test User 1",
+        //   displayParentPath       : null,
+        //   displayPath             : null,
+        //   isRoot                  : false,
+        //   isSystem                : false,
+        //   isUserHome              : true,
+        //   lastUpdatedByUserName   : null,
+        //   lastUpdatedOnTS         : 1511895932,
+        //   name                    : "Test User 1",
+        //   nodeType                : "folder",
+        //   modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+        //   ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+        //   createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+        //   createdOn               : "2017-11-28T11:05:32-0800",
+        //   lastUpdatedOn           : "2017-11-28T11:05:32-0800"
+        // };
+        // var currentFolderId = "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4";
+        // var sortOptionField = "name";
+        // var resource = {
+        //   '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
+        //   'currentUserPermissions': [],
+        //   'displayName'           : 't2',
+        //   'name'                  : 't2'
+        // };
 
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
           $moveScope = $rootScope.$new();
+          console.log('$moveScope',$moveScope);
           moveDirective = '<cedar-move-modal  modal-visible="moveModalVisible" ></cedar-move-modal>';
+          // $moveScope.$parent = {
+          //   moveModalVisible: false,
+          //   resource: {
+          //     '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
+          //     'currentUserPermissions': [],
+          //     'displayName'           : 't2',
+          //     'name'                  : 't2'
+          //   },
+          //   currentPath  : {
+          //     '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
+          //     'createdByUserName'     : null,
+          //     'createdOnTS'           : 1511895932,
+          //     'currentUserPermissions': [],
+          //     'description'           : "Home folder of Test User 1",
+          //     'displayName'           : "Test User 1",
+          //     displayParentPath       : null,
+          //     displayPath             : null,
+          //     isRoot                  : false,
+          //     isSystem                : false,
+          //     isUserHome              : true,
+          //     lastUpdatedByUserName   : null,
+          //     lastUpdatedOnTS         : 1511895932,
+          //     name                    : "Test User 1",
+          //     nodeType                : "folder",
+          //     modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+          //     ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+          //     createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+          //     createdOn               : "2017-11-28T11:05:32-0800",
+          //     lastUpdatedOn           : "2017-11-28T11:05:32-0800"
+          //   },
+          //   currentFolderId : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
+          //   resourceTypes   : {'element': true, 'field': true, 'instance': true, template: true},
+          //   sortOptionField : "name"
+          // };
+
+          // console.log('$moveScope',$moveScope);
+
           moveDirective = $compile(moveDirective)($moveScope);
           $moveScope.$digest();
 
+
+
           // $moveScope.$broadcast('moveModalVisible',
-          //     [visible, resource, currentPath, currentFolderId, resourceTypes, sortOptionField]);
+          //     [$moveScope.$parent.moveModalVisible, $moveScope.$parent.resource, $moveScope.$parent.currentPath,
+          //      $moveScope.$parent.currentFolderId, $moveScope.$parent.resourceTypes,
+          //      $moveScope.$parent.sortOptionField]);
           //
           // $timeout.flush();
 

@@ -184,9 +184,7 @@ describe('resource-permissions', function () {
 
       // go to Test User 2's folder to see the shared folders
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-
-      workspacePage.rightClickResource(sourceTemplate, 'template');
-      expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
+      moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
 
       // delete these at the end
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
