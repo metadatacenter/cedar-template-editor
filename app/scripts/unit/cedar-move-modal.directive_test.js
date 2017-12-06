@@ -128,10 +128,10 @@ define(['app', 'angular'], function (app) {
           moveDirective = $compile(moveDirective)($moveScope);
           $moveScope.$digest();
 
-          $moveScope.$broadcast('moveModalVisible',
-              [visible, resource, currentPath, currentFolderId, resourceTypes, sortOptionField]);
-
-          $timeout.flush();
+          // $moveScope.$broadcast('moveModalVisible',
+          //     [visible, resource, currentPath, currentFolderId, resourceTypes, sortOptionField]);
+          //
+          // $timeout.flush();
 
         });
 
