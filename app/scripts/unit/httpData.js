@@ -853,7 +853,8 @@ var httpData = {
             "nodeType"              : "folder"
           }],
           "nodeListQueryType": "folder-content"
-        }
+        },
+        "/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb": {whatever:true}
 
       }
     }
