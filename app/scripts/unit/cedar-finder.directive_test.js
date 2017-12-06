@@ -76,9 +76,9 @@ define(['app', 'angular'], function (app) {
     beforeEach(function () {
       httpData.init($httpBackend);
       httpData.getFile('resources/i18n/locale-en.json');
-      httpData.getFile('config/url-service.conf.json?v=undefined');
+      // httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
-      httpData.getFile('img/close_modal.png');
+      //httpData.getFile('img/close_modal.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
       httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
       httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=element,folder&sort=createdOnTS');

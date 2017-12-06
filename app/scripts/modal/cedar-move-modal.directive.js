@@ -134,6 +134,7 @@ define([
           }
 
           function currentTitle() {
+            console.log('currentTitle', vm.currentDestination);
             return vm.currentDestination ? vm.currentDestination.displayName : 'none';
           }
 
@@ -143,6 +144,7 @@ define([
 
           function selectCurrent() {
             vm.selectedDestination = vm.currentDestination;
+            console.log('vm.',vm);
           }
 
           function openDestination(resource) {
@@ -190,13 +192,16 @@ define([
           };
 
           function getDestinationById(folderId) {
+            console.log('getDestinationById',folderId);
             var limit = UISettingsService.getRequestLimit();
             var offset = vm.offset;
             var resourceTypes = activeResourceTypes();
             if (resourceTypes.length > 0) {
+              console.log('resourceTypes',resourceTypes);
               return resourceService.getResources(
                   {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
+                    console.log('response',response);
                     vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
                     if (vm.offset > 0) {
@@ -209,11 +214,13 @@ define([
                     vm.selectCurrent();
                   },
                   function (error) {
+                    console.log('error',error);
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                   }
               );
             } else {
               vm.destinationResources = [];
+              console.log('vm.destinationResources',vm.destinationResources);
             }
           }
 
@@ -274,6 +281,7 @@ define([
 
           // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
+            console.log('on moveModalVisible')
 
             var visible = params[0];
             var resource = params[1];
@@ -282,12 +290,15 @@ define([
             var resourceTypes = params[4];
             var sortOptionField = params[5];
 
+            //console.log('moveModalVisible',visible,resource,currentPath, currentFolderId, resourceTypes, sortOptionField);
+
             if (visible && resource) {
               vm.modalVisible = visible;
               vm.moveResource = resource;
               vm.currentPath = currentPath;
               vm.currentFolderId = currentFolderId;
               vm.currentDestination = vm.currentPath;
+              console.log('vm.currentDestination',vm.currentDestination);
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;

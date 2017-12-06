@@ -78,7 +78,7 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('resources/i18n/locale-en.json');
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
-      httpData.getFile('img/close_modal.png');
+      // httpData.getFile('img/close_modal.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
