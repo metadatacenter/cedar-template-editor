@@ -109,7 +109,7 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    it("should move a writable resource not owned by current user to a writable folder", function () {
+    xit("should move a writable resource not owned by current user to a writable folder", function () {
       console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 

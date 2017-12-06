@@ -21,7 +21,7 @@ var httpData = {
       getUrl: function (base, service, location) {
         var url = base.replace('resource', service) + location;
         var result = this.config[location];
-        console.log('getUrl',result);
+        console.log('getUrl',location,  result);
         this.httpBackend.whenGET(url).respond(
             function (method, url, data) {
               var newElement = angular.fromJson(result);

@@ -72,8 +72,7 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
-      httpData.getUrl(UrlService.base(), "resource",
-          '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name')
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name')
     });
 
 
@@ -86,115 +85,46 @@ define(['app', 'angular'], function (app) {
         var xGoAway = "div.modal-content .modal-header button.close";
         var folderTitle = "div.modal-content  h4.modal-title a";
         var backArrow = "div.modal-content  h4.modal-title span.arrow-click";
-        // var moveModalVisible = false;
-        // var visible = true;
-        // var resourceTypes = {'element': true, 'field': true, 'instance': true, template: true};
-        // var currentPath = {
-        //   '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
-        //   'createdByUserName'     : null,
-        //   'createdOnTS'           : 1511895932,
-        //   'currentUserPermissions': [],
-        //   'description'           : "Home folder of Test User 1",
-        //   'displayName'           : "Test User 1",
-        //   displayParentPath       : null,
-        //   displayPath             : null,
-        //   isRoot                  : false,
-        //   isSystem                : false,
-        //   isUserHome              : true,
-        //   lastUpdatedByUserName   : null,
-        //   lastUpdatedOnTS         : 1511895932,
-        //   name                    : "Test User 1",
-        //   nodeType                : "folder",
-        //   modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-        //   ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-        //   createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-        //   createdOn               : "2017-11-28T11:05:32-0800",
-        //   lastUpdatedOn           : "2017-11-28T11:05:32-0800"
-        // };
-        // var currentFolderId = "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4";
-        // var sortOptionField = "name";
-        // var resource = {
-        //   '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
-        //   'currentUserPermissions': [],
-        //   'displayName'           : 't2',
-        //   'name'                  : 't2'
-        // };
+        var moveModalVisible = true;
 
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
           $moveScope = $rootScope.$new();
-          console.log('$moveScope',$moveScope);
-          moveDirective = '<cedar-move-modal  modal-visible="moveModalVisible" ></cedar-move-modal>';
-          // $moveScope = {
-          //   moveModalVisible: false,
-          //   resource: {
-          //     '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
-          //     'currentUserPermissions': [],
-          //     'displayName'           : 't2',
-          //     'name'                  : 't2'
-          //   },
-          //   currentPath  : {
-          //     '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
-          //     'createdByUserName'     : null,
-          //     'createdOnTS'           : 1511895932,
-          //     'currentUserPermissions': [],
-          //     'description'           : "Home folder of Test User 1",
-          //     'displayName'           : "Test User 1",
-          //     displayParentPath       : null,
-          //     displayPath             : null,
-          //     isRoot                  : false,
-          //     isSystem                : false,
-          //     isUserHome              : true,
-          //     lastUpdatedByUserName   : null,
-          //     lastUpdatedOnTS         : 1511895932,
-          //     name                    : "Test User 1",
-          //     nodeType                : "folder",
-          //     modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          //     ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          //     createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-          //     createdOn               : "2017-11-28T11:05:32-0800",
-          //     lastUpdatedOn           : "2017-11-28T11:05:32-0800"
-          //   },
-          //   currentFolderId : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
-          //   resourceTypes   : {'element': true, 'field': true, 'instance': true, template: true},
-          //   sortOptionField : "name"
-          // };
-
           $moveScope.moveModalVisible= true;
           $moveScope.resource= {
-              '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
-              'currentUserPermissions': [],
-              'displayName'           : 't2',
-              'name'                  : 't2'
-            };
+            '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
+            'currentUserPermissions': [],
+            'displayName'           : 't2',
+            'name'                  : 't2'
+          };
           $moveScope.currentPath  = {
-              '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
-              'createdByUserName'     : null,
-              'createdOnTS'           : 1511895932,
-              'currentUserPermissions': [],
-              'description'           : "Home folder of Test User 1",
-              'displayName'           : "Test User 1",
-              displayParentPath       : null,
-              displayPath             : null,
-              isRoot                  : false,
-              isSystem                : false,
-              isUserHome              : true,
-              lastUpdatedByUserName   : null,
-              lastUpdatedOnTS         : 1511895932,
-              name                    : "Test User 1",
-              nodeType                : "folder",
-              modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-              ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-              createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
-              createdOn               : "2017-11-28T11:05:32-0800",
-              lastUpdatedOn           : "2017-11-28T11:05:32-0800"
-            };
+            '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
+            'createdByUserName'     : null,
+            'createdOnTS'           : 1511895932,
+            'currentUserPermissions': [],
+            'description'           : "Home folder of Test User 1",
+            'displayName'           : "Test User 1",
+            displayParentPath       : null,
+            displayPath             : null,
+            isRoot                  : false,
+            isSystem                : false,
+            isUserHome              : true,
+            lastUpdatedByUserName   : null,
+            lastUpdatedOnTS         : 1511895932,
+            name                    : "Test User 1",
+            nodeType                : "folder",
+            modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+            ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+            createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+            createdOn               : "2017-11-28T11:05:32-0800",
+            lastUpdatedOn           : "2017-11-28T11:05:32-0800"
+          };
           $moveScope.currentFolderId = "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4";
           $moveScope.resourceTypes   = {'element': true, 'field': true, 'instance': true, template: true};
           $moveScope.sortOptionField = "name";
 
-
+          moveDirective = '<cedar-move-modal  modal-visible="$moveScope.moveModalVisible" move-resource="$moveScope.resource" ></cedar-move-modal>';
 
           moveDirective = $compile(moveDirective)($moveScope);
           $moveScope.$digest();
