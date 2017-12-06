@@ -126,7 +126,7 @@ define(['app', 'angular'], function (app) {
           $moveScope = $rootScope.$new();
           console.log('$moveScope',$moveScope);
           moveDirective = '<cedar-move-modal  modal-visible="moveModalVisible" ></cedar-move-modal>';
-          // $moveScope.$parent = {
+          // $moveScope = {
           //   moveModalVisible: false,
           //   resource: {
           //     '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
@@ -161,17 +161,48 @@ define(['app', 'angular'], function (app) {
           //   sortOptionField : "name"
           // };
 
-          // console.log('$moveScope',$moveScope);
+          $moveScope.moveModalVisible= true;
+          $moveScope.resource= {
+              '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
+              'currentUserPermissions': [],
+              'displayName'           : 't2',
+              'name'                  : 't2'
+            };
+          $moveScope.currentPath  = {
+              '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
+              'createdByUserName'     : null,
+              'createdOnTS'           : 1511895932,
+              'currentUserPermissions': [],
+              'description'           : "Home folder of Test User 1",
+              'displayName'           : "Test User 1",
+              displayParentPath       : null,
+              displayPath             : null,
+              isRoot                  : false,
+              isSystem                : false,
+              isUserHome              : true,
+              lastUpdatedByUserName   : null,
+              lastUpdatedOnTS         : 1511895932,
+              name                    : "Test User 1",
+              nodeType                : "folder",
+              modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+              ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+              createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
+              createdOn               : "2017-11-28T11:05:32-0800",
+              lastUpdatedOn           : "2017-11-28T11:05:32-0800"
+            };
+          $moveScope.currentFolderId = "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4";
+          $moveScope.resourceTypes   = {'element': true, 'field': true, 'instance': true, template: true};
+          $moveScope.sortOptionField = "name";
+
+
 
           moveDirective = $compile(moveDirective)($moveScope);
           $moveScope.$digest();
 
-
-
           // $moveScope.$broadcast('moveModalVisible',
-          //     [$moveScope.$parent.moveModalVisible, $moveScope.$parent.resource, $moveScope.$parent.currentPath,
-          //      $moveScope.$parent.currentFolderId, $moveScope.$parent.resourceTypes,
-          //      $moveScope.$parent.sortOptionField]);
+          //     [$moveScope.moveModalVisible, $moveScope.resource, $moveScope.currentPath,
+          //      $moveScope.currentFolderId, $moveScope.resourceTypes,
+          //      $moveScope.sortOptionField]);
           //
           // $timeout.flush();
 
@@ -185,7 +216,7 @@ define(['app', 'angular'], function (app) {
           expect(elm.querySelector(xGoAway)).toBeDefined();
           expect(elm.querySelector(folderTitle)).toBeDefined();
           expect(elm.querySelector(backArrow)).toBeDefined();
-          console.log('elm', elm);
+
         });
         it('should show t2 template in dialog contents', function () {
         });
@@ -205,7 +236,6 @@ define(['app', 'angular'], function (app) {
           // xElm.triggerHandler('click');
           //
           // $timeout.flush();
-
         });
 
       });

@@ -85,6 +85,7 @@ define([
           };
 
           function openParent() {
+            console.log('openParent',vm.destinationPathInfo);
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -281,7 +282,7 @@ define([
 
           // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
-            console.log('on moveModalVisible', params);
+
 
             var visible = params[0];
             var resource = params[1];
@@ -290,10 +291,10 @@ define([
             var resourceTypes = params[4];
             var sortOptionField = params[5];
 
-            //console.log('moveModalVisible',visible,resource,currentPath, currentFolderId, resourceTypes, sortOptionField);
+
 
             if (visible && resource) {
-              console.log('on moveModalVisible visible and resource', params);
+              console.log('on moveModalVisible visible and resource');
               vm.modalVisible = visible;
               vm.moveResource = resource;
               vm.currentPath = currentPath;

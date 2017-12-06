@@ -117,14 +117,14 @@ var ShareModal = function () {
   this.shareDisabledViaRightClick = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createShareDisabled();
-    browser.wait(EC.visibilityOf(shareMenuItem),10000);
+    browser.wait(EC.visibilityOf(shareMenuItem));
   };
 
   // open the share dialog of the given resource via the right-click menu item
   this.shareEnabledViaRightClick = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
-    browser.wait(EC.visibilityOf(shareMenuItem),10000);
+    browser.wait(EC.visibilityOf(shareMenuItem));
   };
 
 

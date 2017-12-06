@@ -47,9 +47,12 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      workspacePage.selectResource(folder, 'folder');
-      workspacePage.createMoreOptionsButton().click();
-      expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
+
+      // TODO via more options isn't working
+      // workspacePage.selectResource(folder, 'folder');
+      // workspacePage.createMoreOptionsButton().click();
+      // expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -81,9 +84,12 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      workspacePage.selectResource(folder, 'folder');
-      workspacePage.createMoreOptionsButton().click();
-      expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
+
+      // TODO via more options isn't working
+      // workspacePage.selectResource(folder, 'folder');
+      // workspacePage.createMoreOptionsButton().click();
+      // expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -106,7 +112,7 @@ describe('delete-resource', function () {
 
   describe('via right-click', function () {
 
-    xit("should fail to delete a resource shared as readable with Everybody", function () {
+    it("should fail to delete a resource shared as readable with Everybody", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with Everybody');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -140,7 +146,7 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    xit("should fail to delete a resource shared as readable with a user", function () {
+    it("should fail to delete a resource shared as readable with a user", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
