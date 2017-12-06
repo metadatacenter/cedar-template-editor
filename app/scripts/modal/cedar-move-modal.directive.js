@@ -143,8 +143,8 @@ define([
           }
 
           function selectCurrent() {
+            console.log('selectCurrent');
             vm.selectedDestination = vm.currentDestination;
-            console.log('vm.',vm);
           }
 
           function openDestination(resource) {
@@ -197,7 +197,7 @@ define([
             var offset = vm.offset;
             var resourceTypes = activeResourceTypes();
             if (resourceTypes.length > 0) {
-              console.log('resourceTypes',resourceTypes);
+              console.log('resourceTypes',resourceTypes, sortField(), limit, offset);
               return resourceService.getResources(
                   {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
@@ -281,7 +281,7 @@ define([
 
           // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
-            console.log('on moveModalVisible')
+            console.log('on moveModalVisible', params);
 
             var visible = params[0];
             var resource = params[1];
@@ -293,12 +293,12 @@ define([
             //console.log('moveModalVisible',visible,resource,currentPath, currentFolderId, resourceTypes, sortOptionField);
 
             if (visible && resource) {
+              console.log('on moveModalVisible visible and resource', params);
               vm.modalVisible = visible;
               vm.moveResource = resource;
               vm.currentPath = currentPath;
               vm.currentFolderId = currentFolderId;
               vm.currentDestination = vm.currentPath;
-              console.log('vm.currentDestination',vm.currentDestination);
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;

@@ -715,7 +715,7 @@ var httpData = {
           ],
           "nodeListQueryType": "folder-content"
         },
-        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,instance,template,folder&sort=name"        : {
+        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name"        : {
           "request"          : {
             "limit"          : 100,
             "offset"         : 0,

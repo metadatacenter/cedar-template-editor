@@ -52,7 +52,7 @@ describe('update-permissions', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should be able to change permissions of a folder shared as writable with current user", function () {
+    xit("should be able to change permissions of a folder shared as writable with current user", function () {
       console.log('update-permissions should be able to change permissions of a folder shared as writable with current user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -89,7 +89,7 @@ describe('update-permissions', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should be able to change permissions of a folder shared as writable with Everybody group", function () {
+    xit("should be able to change permissions of a folder shared as writable with Everybody group", function () {
       console.log('update-permissions should be able to change permissions of a folder shared as writable with Everybody group');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
