@@ -34,7 +34,7 @@ jobs:
     before_script: gulp karma-travis-env # sets up the environment to run the karma tests
     script: gulp karma-tests  # karma stage
   - script: gulp test-form # e2e stage
-  - script: gulp test-permissions # e2e stage
+  - script: gulp test-delete # e2e stage
 
 env:
   global:
