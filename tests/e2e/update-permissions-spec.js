@@ -61,7 +61,6 @@ describe('update-permissions', function () {
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
 
@@ -95,7 +94,6 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-
 
       resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
