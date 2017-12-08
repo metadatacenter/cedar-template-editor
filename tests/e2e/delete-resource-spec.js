@@ -94,7 +94,7 @@ describe('delete-resource', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should delete a resource shared as writable with a user", function () {
+    xit("should delete a resource shared as writable with a user", function () {
       console.log('delete-resource should delete a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
