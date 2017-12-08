@@ -60,7 +60,7 @@ define([
           vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
-          vm.destinationResources = [];
+
           vm.currentDestinationID = null;
           vm.destinationPathInfo = null;
           vm.destinationPath = null;
@@ -68,6 +68,7 @@ define([
           vm.sortOptionField = null;
           vm.offset = 0;
           vm.totalCount = null;
+          $scope.destinationResources = [];
 
           function canWrite() {
             return hasPermission('write');
@@ -211,9 +212,9 @@ define([
                       vm.totalCount = response.totalCount;
                       vm.currentDestinationID = folderId;
                       if (vm.offset > 0) {
-                        vm.destinationResources = vm.destinationResources.concat(response.resources);
+                        $scope.destinationResources = $scope.destinationResources.concat(response.resources);
                       } else {
-                        vm.destinationResources = response.resources;
+                        $scope.destinationResources = response.resources;
                       }
 
                       vm.destinationPathInfo = response.pathInfo;
@@ -225,7 +226,7 @@ define([
                     }
                 );
               } else {
-                vm.destinationResources = [];
+                $scope.destinationResources = [];
               }
             }
           }

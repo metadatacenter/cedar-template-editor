@@ -160,7 +160,6 @@ define(['app', 'angular'], function (app) {
           expect(elm.querySelector(xGoAway)).toBeDefined();
           expect(elm.querySelector(folderTitle)).toBeDefined();
           expect(elm.querySelector(backArrow)).toBeDefined();
-
         });
         it('should go to parent folder when clicking back arrow and to child folder when clicking the forward arrow', function () {
           var elm = moveDirective[0];
