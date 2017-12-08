@@ -60,13 +60,17 @@ define([
           vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
-          vm.destinationResources = [];
           vm.currentDestinationID = null;
           vm.destinationPathInfo = null;
           vm.destinationPath = null;
           vm.resourceTypes = null;
-          vm.sortOptionField = null;  vm.offset = 0;
+          vm.sortOptionField = null;
+          vm.offset = 0;
           vm.totalCount = null;
+
+          // put this in scope so the unit tests can look at it
+          $scope.destinationResources = [];
+
 
           function canWrite() {
             return hasPermission('write');
@@ -85,7 +89,7 @@ define([
           };
 
           function openParent() {
-            console.log('openParent',vm.destinationPathInfo);
+
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -135,8 +139,6 @@ define([
           }
 
           function currentTitle() {
-            console.log('currentTitle', (typeof vm.currentDestination));
-            console.log('currentTitle', vm.currentDestination);
             return vm.currentDestination ? vm.currentDestination.displayName : 'none';
           }
 
@@ -145,7 +147,6 @@ define([
           }
 
           function selectCurrent() {
-            console.log('selectCurrent');
             vm.selectedDestination = vm.currentDestination;
           }
 
@@ -194,35 +195,35 @@ define([
           };
 
           function getDestinationById(folderId) {
-            console.log('getDestinationById',folderId);
             var limit = UISettingsService.getRequestLimit();
             var offset = vm.offset;
             var resourceTypes = activeResourceTypes();
             if (resourceTypes.length > 0) {
-              console.log('resourceTypes',resourceTypes, sortField(), limit, offset);
               return resourceService.getResources(
                   {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
-                    console.log('response',response);
+
                     vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
                     if (vm.offset > 0) {
-                      vm.destinationResources = vm.destinationResources.concat(response.resources);
+                      $scope.destinationResources =  $scope.destinationResources.concat(response.resources);
                     } else {
-                      vm.destinationResources = response.resources;
+                      $scope.destinationResources = response.resources;
                     }
+
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
+
                     vm.selectCurrent();
+
                   },
                   function (error) {
-                    console.log('error',error);
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                   }
               );
             } else {
-              vm.destinationResources = [];
-              console.log('vm.destinationResources',vm.destinationResources);
+              console.log('set destinationResorces to null');
+              $scope.destinationResources = [];
             }
           }
 
@@ -295,7 +296,6 @@ define([
 
 
             if (visible && resource) {
-              console.log('on moveModalVisible visible and resource');
               vm.modalVisible = visible;
               vm.moveResource = resource;
               vm.currentPath = currentPath;

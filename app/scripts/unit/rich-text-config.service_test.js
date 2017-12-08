@@ -126,7 +126,7 @@
       }
     };
 
-    it("returns the default config again", function() {
+    xit("returns the default config again", function() {
 
         richTextConfigService.init();
         expect(richTextConfigService.getConfig("default")).toEqual(config["default"]);

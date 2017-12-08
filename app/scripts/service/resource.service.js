@@ -309,8 +309,6 @@ define([
 
           var url = $rootScope.util.buildUrl(baseUrl, params);
 
-
-          console.log('getResources',url);
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
               function (response) {

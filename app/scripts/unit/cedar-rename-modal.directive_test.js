@@ -100,7 +100,6 @@ define(['app', 'angular'], function (app) {
         it("should have a header with the current folder name ", function () {
           var elm = copyDirective[0];
           expect(elm.querySelector(copyTitle)).toBeDefined();
-          console.log(elm.querySelector(copyTitle));
         });
 
 

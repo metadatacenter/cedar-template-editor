@@ -2,7 +2,7 @@
 
 define(['app', 'angular'], function (app) {
 
-  xdescribe('field.directive_test.js:', function () {
+  describe('field.directive_test.js:', function () {
 
     var $rootScope;
     var $compile;

@@ -110,7 +110,6 @@ define(['app', 'angular'], function (app) {
         it("should have a header with the current folder name ", function () {
           var elm = shareDirective[0];
           expect(elm.querySelector(shareTitle)).toBeDefined();
-          console.log(elm.querySelector(shareTitle));
         });
 
 

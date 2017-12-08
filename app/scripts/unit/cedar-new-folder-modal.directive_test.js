@@ -100,7 +100,6 @@ define(['app', 'angular'], function (app) {
         it("should have a header with the current folder name ", function () {
           var elm = newFolderDirective[0];
           expect(elm.querySelector(newFolderTitle)).toBeDefined();
-          console.log(elm.querySelector(newFolderTitle));
         });
 
 

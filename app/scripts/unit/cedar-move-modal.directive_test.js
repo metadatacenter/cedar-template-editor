@@ -72,26 +72,36 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name')
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80a3dbf6-a840-48e9-8542-2fd31f475861/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Fa4d9694b-74cb-4938-8c7d-59986021b35f/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F64647077-5bcb-4e1d-aee4-2dce39a73e68/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
     });
 
 
     describe('In a template,', function () {
       describe('a move modal ', function () {
 
-        var $moveScope;
+
         var moveDirective;
+        var moveElement;
+        var $moveScope;
         var moveButton = "div.modal-content .modal-footer .clear-save button";
         var xGoAway = "div.modal-content .modal-header button.close";
-        var folderTitle = "div.modal-content  h4.modal-title a";
+        var folderTitle = "#folder-title";
+        var contentsResourceTitle = ".contents-resource-title";
+        var contentsFolderTitle = ".contents-folder-title";
+        var forwardArrow = "#moveModalContent .arrow-click";
         var backArrow = "div.modal-content  h4.modal-title span.arrow-click";
         var moveModalVisible = true;
+        var controller;
+
 
 
         beforeEach(function () {
           // create a new, isolated scope and a new directive
           $moveScope = $rootScope.$new();
-          $moveScope.moveModalVisible= true;
+          $moveScope.moveModalVisible= false;
           $moveScope.resource= {
             '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
             'currentUserPermissions': [],
@@ -126,16 +136,20 @@ define(['app', 'angular'], function (app) {
 
           moveDirective = '<cedar-move-modal  modal-visible="$moveScope.moveModalVisible" move-resource="$moveScope.resource" ></cedar-move-modal>';
 
-          moveDirective = $compile(moveDirective)($moveScope);
+          moveElement = angular.element(moveDirective);
+          moveDirective = $compile(moveElement)($moveScope);
           $moveScope.$digest();
 
-          // $moveScope.$broadcast('moveModalVisible',
-          //     [$moveScope.moveModalVisible, $moveScope.resource, $moveScope.currentPath,
-          //      $moveScope.currentFolderId, $moveScope.resourceTypes,
-          //      $moveScope.sortOptionField]);
-          //
-          // $timeout.flush();
+          // open the dialog
+          $moveScope.moveModalVisible= true;
+          $moveScope.$broadcast('moveModalVisible',
+              [$moveScope.moveModalVisible, $moveScope.resource, $moveScope.currentPath,
+               $moveScope.currentFolderId, $moveScope.resourceTypes,
+               $moveScope.sortOptionField]);
 
+          // flush the timeout and pending requests
+          $timeout.flush();
+          $httpBackend.flush();
         });
 
 
@@ -148,24 +162,32 @@ define(['app', 'angular'], function (app) {
           expect(elm.querySelector(backArrow)).toBeDefined();
 
         });
-        it('should show t2 template in dialog contents', function () {
-        });
-        it('should go to parent folder when clicking back arrow', function () {
-          // var elm = moveDirective[0];
-          // var backElement = angular.element(elm.querySelector(backArrow));
-          // backElement.triggerHandler('click');
-        });
-        it('should go to home folder when clicking user forward arrow ', function () {
-        });
-        it('should close when clicking done', function () {
-        });
-        it("should close when click go away button ", function () {
-          // var elm = moveDirective[0];
-          // var x = elm.querySelector(xGoAway);
-          // var xElm = angular.element(x);
-          // xElm.triggerHandler('click');
-          //
-          // $timeout.flush();
+        it('should go to parent folder when clicking back arrow and to child folder when clicking the forward arrow', function () {
+          var elm = moveDirective[0];
+          var backElement = angular.element(elm.querySelector(backArrow));
+          backElement.triggerHandler('click');
+
+          $timeout.flush();
+          $httpBackend.flush();
+          $moveScope.$apply();
+
+          elm = moveDirective[0];
+          expect(elm.querySelector(folderTitle).firstChild.nodeValue).toEqual('Users');
+          expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(4);
+          expect(elm.querySelector(contentsFolderTitle).firstChild.nodeValue.trim()).toEqual('CEDAR Admin');
+
+          // now go forward to the first directory listed
+          var forwardElement = angular.element(elm.querySelector(forwardArrow));
+          forwardElement.triggerHandler('click');
+
+          $timeout.flush();
+          $httpBackend.flush();
+          $moveScope.$apply();
+
+          elm = moveDirective[0];
+          expect(elm.querySelector(folderTitle).firstChild.nodeValue).toEqual('CEDAR Admin');
+          expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(0);
+
         });
 
       });
