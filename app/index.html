@@ -71,10 +71,9 @@
           <span class="pull-right feedback-form">
             <span uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': dirty, 'fa-circle': !dirty}"></i></span>
             <span uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
-            <!-- TODO the MiAIRR template is invalid for the video, so turn off the validation icon for now -->
-            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "-->
-                <!--ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>-->
-            <span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa fa-check"></i></span>
+            <span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
+                ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa fa-check"></i></span>-->
           </span>
 
         </div>

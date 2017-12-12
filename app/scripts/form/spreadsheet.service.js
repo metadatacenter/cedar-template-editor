@@ -23,6 +23,8 @@ define([
         };
 
 
+
+
         var dms = DataManipulationService;
 
 
@@ -233,25 +235,29 @@ define([
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
                 desc.trimDropdown = true;
-                desc.strict = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-                desc.validator = customValidator;
+                //desc.validator = customValidator;
                 desc.allowInvalid = true;
+                desc.strict = true;
                 desc.source = function (query, process) {
+
+                  var results = [];
 
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
                   if (autocompleteService.autocompleteResultsCache[id][query]) {
-                    $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
+                    results = autocompleteService.autocompleteResultsCache[id][query].results;
                   }
 
-                  $scope.$watchCollection("results", function () {
-                    if ($scope.results && $scope.results.length) {
-                      process($scope.results.map(function (a) {
+                  $scope.$watchCollection(function () {return results;}, function (newValue) {
+                    if (results && results.length) {
+                      process(results.map(function (a) {
                         return a.label;
                       }));
                     }
                   });
+
+
                 };
               } else {
                 desc.type = 'text';
@@ -524,26 +530,28 @@ define([
           var customValidator = function (query, callback) {
 
 
-            var desc = $scope.config.columns[this.col];
-            var id = DataManipulationService.getId(desc.schema);
+            // var desc = $scope.config.columns[this.col];
+            // var id = DataManipulationService.getId(desc.schema);
+            //
+            // autocompleteService.updateFieldAutocomplete(desc.schema, query);
+            // if (autocompleteService.autocompleteResultsCache[id][query]) {
+            //   $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
+            // }
+            //
+            // $scope.$watchCollection("results", function () {
+            //   if ($scope.results && $scope.results.length) {
+            //
+            //     var hasValue = function(obj, key, value) {
+            //       return obj.hasOwnProperty(key) && obj[key] === value;
+            //     };
+            //
+            //     var found = $scope.results.some(function(result) { return hasValue(result, "label", query)});
+            //     callback(found);
+            //     console.log(query,  found);
+            //   }
+            // });
 
-            autocompleteService.updateFieldAutocomplete(desc.schema, query);
-            if (autocompleteService.autocompleteResultsCache[id][query]) {
-              $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
-            }
-
-            $scope.$watchCollection("results", function () {
-              if ($scope.results && $scope.results.length) {
-
-                var hasValue = function(obj, key, value) {
-                  return obj.hasOwnProperty(key) && obj[key] === value;
-                };
-                
-                var found = $scope.results.some(function(result) { return hasValue(result, "label", query)});
-                callback(found);
-                console.log(query,  found);
-              }
-            });
+            callback(true);
 
           };
 
