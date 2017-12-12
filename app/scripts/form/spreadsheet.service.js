@@ -6,11 +6,12 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
+      SpreadsheetService.$inject = ['$rootScope', '$window', '$document', '$filter', 'DataManipulationService',
+                                    'DataUtilService',
                                     'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
                                     'ValueRecommenderService', 'autocompleteService'];
 
-      function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
+      function SpreadsheetService($rootScope, $window, $document, $filter, DataManipulationService, DataUtilService,
                                   AuthorizedBackendService,
                                   HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
 
@@ -20,6 +21,7 @@ define([
           phoneValidator: /^[\s()+-]*([0-9][\s()+-]*){6,20}$/,
           linkValidator : /^(ftp|http|https):\/\/[^ "]+$/
         };
+
 
         var dms = DataManipulationService;
 
@@ -46,6 +48,7 @@ define([
           td.className = 'htDimmed';
           return td;
         };
+
 
         // Handsontable.renderers.registerRenderer('checkboxes', service.customRendererCheckBoxes);
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
@@ -178,7 +181,7 @@ define([
         };
 
         // build a description of the cell data
-        var getDescriptor = function (context, node, $scope) {
+        var getDescriptor = function (context, node, $scope, customValidator) {
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
@@ -229,9 +232,12 @@ define([
             case 'textfield':
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
+                desc.trimDropdown = true;
                 desc.strict = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
+                desc.validator = customValidator;
+                desc.allowInvalid = true;
                 desc.source = function (query, process) {
 
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
@@ -241,7 +247,9 @@ define([
 
                   $scope.$watchCollection("results", function () {
                     if ($scope.results && $scope.results.length) {
-                      process($scope.results.map(function(a) {return a.label;}));
+                      process($scope.results.map(function (a) {
+                        return a.label;
+                      }));
                     }
                   });
                 };
@@ -254,15 +262,15 @@ define([
         };
 
         // build the data object descriptor for each column
-        var getColumnDescriptors = function (context, node, columnHeaderOrder, $scope) {
+        var getColumnDescriptors = function (context, node, columnHeaderOrder, $scope, customValidator) {
           var colDescriptors = [];
           for (var i in columnHeaderOrder) {
             if (context.isField()) {
-              colDescriptors.push(getDescriptor(context, node, $scope));
+              colDescriptors.push(getDescriptor(context, node, $scope, customValidator));
             } else {
               var key = columnHeaderOrder[i];
               var child = dms.propertiesOf(node)[key];
-              colDescriptors.push(getDescriptor(context, child, $scope));
+              colDescriptors.push(getDescriptor(context, child, $scope, customValidator));
             }
           }
           return colDescriptors;
@@ -513,13 +521,39 @@ define([
           var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
               context.getPlaceholderContext())[0];
 
+          var customValidator = function (query, callback) {
+
+
+            var desc = $scope.config.columns[this.col];
+            var id = DataManipulationService.getId(desc.schema);
+
+            autocompleteService.updateFieldAutocomplete(desc.schema, query);
+            if (autocompleteService.autocompleteResultsCache[id][query]) {
+              $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
+            }
+
+            $scope.$watchCollection("results", function () {
+              if ($scope.results && $scope.results.length) {
+
+                var hasValue = function(obj, key, value) {
+                  return obj.hasOwnProperty(key) && obj[key] === value;
+                };
+                
+                var found = $scope.results.some(function(result) { return hasValue(result, "label", query)});
+                callback(found);
+                console.log(query,  found);
+              }
+            });
+
+          };
+
           if (container) {
 
             $scope.spreadsheetContext = context;
             context.isField = isField;
 
             var columnHeaderOrder = getColumnHeaderOrder(context, $element);
-            var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope);
+            var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope, customValidator);
             var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
             var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
@@ -622,8 +656,6 @@ define([
                   context.getTable().destroy();
                   jQuery(context.getSpreadsheetContainer()).html("");
                   applyVisibility($scope);
-
-
                 }
               } else {
                 context.switchVisibility();
@@ -640,6 +672,29 @@ define([
           var context = new SpreadsheetContext(type, $element);
           createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows,
               deleteExtraRows);
+
+          var scrollable = ".template-container.scrollable-content";
+          var autoComplete = "div.handsontableInputHolder div.ht_master.handsontable ";
+          var td = "div.handsontableInputHolder div.ht_master.handsontable table td ";
+          $scope.$watch(function () {
+            return angular.element(td).is(':visible')
+          }, function (newValue, oldValue) {
+
+            if (newValue) {
+              setTimeout(function () {
+
+                var elm = angular.element(autoComplete);
+                var scrollTop = jQuery(scrollable).scrollTop();
+
+                elm.addClass('fixed');
+                elm.css({
+                  top   : 0 - scrollTop,
+                  height: 'auto'
+                });
+
+              }, 0);
+            }
+          });
         };
 
         return service;
