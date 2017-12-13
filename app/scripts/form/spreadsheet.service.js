@@ -23,8 +23,6 @@ define([
         };
 
 
-
-
         var dms = DataManipulationService;
 
 
@@ -55,88 +53,98 @@ define([
         // Handsontable.renderers.registerRenderer('checkboxes', service.customRendererCheckBoxes);
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
-        // copy table data to source table
-        var updateDataModel = function ($scope, $element) {
-              var sds = $scope.spreadsheetDataScope;
-              for (var row in sds.tableData) {
-                for (var col in sds.tableData[row]) {
-
-                  // do we have this row in the source?
-                  if (row >= sds.tableDataSource.length) {
-                    sds.tableDataSource.push([]);
-                    for (var i = 0; i < $scope.config.columns.length; i++) {
-                      var obj = {};
-                      obj['@value'] = '';
-                      sds.tableDataSource[row].push(obj);
-                    }
-                  }
-
-                  // get the types and thge node for a nested field in an element
-                  var inputType = sds.columnDescriptors[col].type;
-                  var cedarType = sds.columnDescriptors[col].cedarType;
 
 
-                  if (inputType == 'dropdown') {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                  } else if (cedarType == 'checkbox') {
-                    var valueObject = JSON.parse(sds.tableData[row][col]);
-                    var value = {};
-                    for (var key in valueObject) {
-                      value[key] = true;
-                    }
-                    sds.tableDataSource[row][col]['@value'] = value;
-                  } else if (cedarType === 'date') {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                    sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
-                  } else if (cedarType === 'numeric') {
-                    if (sds.tableData[row][col]) {
-                      sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
-                    }
-                    sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
-                  } else if (cedarType === 'link') {
-                    if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
-                      sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
-                    } else {
-                      delete sds.tableDataSource[row][col]['@id'];
-                    }
-                  } else if (inputType == 'autocomplete') {
-                    // console.log('inputType', inputType);
-                    if (sds.tableData[row][col]) {
-                      var value = sds.tableData[row][col];
-                      var id = sds.columnDescriptors[col].nodeId;
-                      var schema = sds.columnDescriptors[col].schema;
+        // if we don't have an id and label for a controlled term, go get it
+        var lazyUpdate = function ($scope, schema, id, term, model) {
+          if (!model['@id'] || !model['rdfs:label']) {
 
-                      if (isConstrained(schema)) {
+            autocompleteService.updateFieldAutocomplete(schema, term);
+            if (autocompleteService.autocompleteResultsCache[id][term]) {
 
-                        // do we have some autocomplete results?
-                        var results = autocompleteService.getAutocompleteResultsCache(id, value);
-                        if (results) {
-                          var found = false;
-                          loop: for (var i = 0; i < results.length; i++) {
-                            if (value === results[i]['label']) {
+              var results = autocompleteService.autocompleteResultsCache[id][term].results;
 
-                              sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                              sds.tableDataSource[row][col]['rdfs:label'] = results[i]['label'];
-                              found = true;
-                              break loop;
-                            }
-                          }
+              var unbindWatcher = $scope.$watchCollection(function () {
+                return results;
+              }, function () {
 
-                          if (!found) {
-                            delete sds.tableDataSource[row][col]['@id'];
-                            delete sds.tableDataSource[row][col]['rdfs:label'];
-
-                          }
-                        }
-                      }
-                    }
-                  } else {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                for (var i = 0; i < results.length; i++) {
+                  if (results[i].label == term) {
+                    model['@id'] = results[i]['@id'];
+                    model['rdfs:label'] = results[i]['label'];
+                    unbindWatcher();
+                    break;
                   }
                 }
+              });
+            }
+          }
+        };
+
+        // copy table data to source table
+        var updateDataModel = function ($scope, $element) {
+
+          var sds = $scope.spreadsheetDataScope;
+
+          for (var row in sds.tableData) {
+            for (var col in sds.tableData[row]) {
+
+              // do we have this row in the source?
+              if (row >= sds.tableDataSource.length) {
+                sds.tableDataSource.push([]);
+                for (var i = 0; i < $scope.config.columns.length; i++) {
+                  var obj = {};
+                  obj['@value'] = '';
+                  sds.tableDataSource[row].push(obj);
+                }
+              }
+
+              // get the types and thge node for a nested field in an element
+              var inputType = sds.columnDescriptors[col].type;
+              var cedarType = sds.columnDescriptors[col].cedarType;
+
+
+              if (inputType == 'dropdown') {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              } else if (cedarType == 'checkbox') {
+                var valueObject = JSON.parse(sds.tableData[row][col]);
+                var value = {};
+                for (var key in valueObject) {
+                  value[key] = true;
+                }
+                sds.tableDataSource[row][col]['@value'] = value;
+              } else if (cedarType === 'date') {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
+              } else if (cedarType === 'numeric') {
+                if (sds.tableData[row][col]) {
+                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
+                }
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
+              } else if (cedarType === 'link') {
+                if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
+                  sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                } else {
+                  delete sds.tableDataSource[row][col]['@id'];
+                }
+              } else if (inputType == 'autocomplete') {
+                // console.log('inputType', inputType);
+                if (sds.tableData[row][col]) {
+
+                  var schema = sds.columnDescriptors[col].schema;
+                  if (isConstrained(schema)) {
+                    var id = sds.columnDescriptors[col].nodeId;
+                    var term = sds.tableData[row][col];
+                    lazyUpdate($scope, schema, id, term, sds.tableDataSource[row][col]);
+                  }
+                }
+              } else {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               }
             }
-        ;
+          }
+        };
+
 
         // get column headers for single field or element's fields
         var getColumnHeaderOrder = function (context, scopeElement) {
@@ -237,27 +245,24 @@ define([
                 desc.trimDropdown = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-                //desc.validator = customValidator;
-                desc.allowInvalid = true;
+                desc.validator = customValidator;
+                desc.allowInvalid = false;
                 desc.strict = true;
                 desc.source = function (query, process) {
 
                   var results = [];
-
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
                   if (autocompleteService.autocompleteResultsCache[id][query]) {
                     results = autocompleteService.autocompleteResultsCache[id][query].results;
                   }
 
-                  $scope.$watchCollection(function () {return results;}, function (newValue) {
-                    if (results && results.length) {
-                      process(results.map(function (a) {
-                        return a.label;
-                      }));
-                    }
+                  $scope.$watchCollection(function () {
+                    return results;
+                  }, function () {
+                    process(results.map(function (a) {
+                      return a.label;
+                    }));
                   });
-
-
                 };
               } else {
                 desc.type = 'text';
@@ -528,32 +533,11 @@ define([
               context.getPlaceholderContext())[0];
 
           var customValidator = function (query, callback) {
-
-
-            // var desc = $scope.config.columns[this.col];
-            // var id = DataManipulationService.getId(desc.schema);
-            //
-            // autocompleteService.updateFieldAutocomplete(desc.schema, query);
-            // if (autocompleteService.autocompleteResultsCache[id][query]) {
-            //   $scope.results = autocompleteService.autocompleteResultsCache[id][query].results;
-            // }
-            //
-            // $scope.$watchCollection("results", function () {
-            //   if ($scope.results && $scope.results.length) {
-            //
-            //     var hasValue = function(obj, key, value) {
-            //       return obj.hasOwnProperty(key) && obj[key] === value;
-            //     };
-            //
-            //     var found = $scope.results.some(function(result) { return hasValue(result, "label", query)});
-            //     callback(found);
-            //     console.log(query,  found);
-            //   }
-            // });
-
-            callback(true);
-
+            var desc = $scope.config.columns[this.col];
+            var id = DataManipulationService.getId(desc.schema);
+            callback(autocompleteService.isCached(id, query, desc.schema));
           };
+
 
           if (container) {
 
