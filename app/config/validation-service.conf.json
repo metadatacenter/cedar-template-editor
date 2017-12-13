@@ -2,7 +2,7 @@
   {
     "type": "biosample",
     "template": "biosample",
-    "action": ["validation"]
+    "action": []
   },
   {
     "type": "airr",
