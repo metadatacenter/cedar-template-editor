@@ -172,6 +172,7 @@ define([
 
       // toggle through the list of view states
       scope.toggleView = function () {
+        console.log('toggleView');
         scope.viewState = UIUtilService.toggleView(scope.viewState);
       };
 
@@ -218,6 +219,7 @@ define([
       };
 
       scope.deleteExtraRows = function() {
+        console.log('deleteExtraRows',scope.model.length);
 
         if (angular.isArray(scope.model)) {
 
@@ -232,7 +234,8 @@ define([
 
                 var node = valueElement[prop];
                 if (Object.getOwnPropertyNames(node).length > 0) {
-                  if (node['@value'] != null && node['@value'] != '') {
+                  console.log('node',node);
+                  if (node.hasOwnProperty('@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty('@id') && (node['@id'] != null && node['@id'] != ''))) {
                     empty = false;
                     break loop;
                   }

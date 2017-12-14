@@ -502,21 +502,22 @@ define([
             var tableData = $scope.spreadsheetDataScope.tableData;
             var container = $scope.spreadsheetDataScope.container;
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
-            // console.log('detectorElement.width', detectorElement.width());
 
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData.length;
             var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
-            var spreadsheetContainerWidth = detectorElement.width() - 5;
+            var spreadsheetContainerWidth = detectorElement.width();
 
-            // angular.element(container).css("height", spreadsheetContainerHeight + "px");
-            // angular.element(container).css("width", spreadsheetContainerWidth + "px");
-            // angular.element(container).css("overflow", "hidden");
+            $scope.spreadsheetDataScope.container.style.width = spreadsheetContainerWidth;
+            $scope.spreadsheetDataScope.container.style.height = spreadsheetContainerHeight;
+
 
             $scope.spreadsheetContext.getTable().updateSettings({
               height: spreadsheetContainerHeight,
               width : spreadsheetContainerWidth
             });
+
+
           }
         };
 
@@ -540,6 +541,9 @@ define([
 
 
           if (container) {
+
+            container.style.width = 700;
+            container.style.height= 300;
 
             $scope.spreadsheetContext = context;
             context.isField = isField;
@@ -665,15 +669,20 @@ define([
           createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows,
               deleteExtraRows);
 
+          var hider = ".spreadsheetViewContainer div.wtHider";
+          var holder = ".spreadsheetViewContainer div.wtHolder";
+
           var scrollable = ".template-container.scrollable-content";
           var autoComplete = "div.handsontableInputHolder div.ht_master.handsontable ";
           var td = "div.handsontableInputHolder div.ht_master.handsontable table td ";
+          var table = "div.handsontableInputHolder div.ht_master.handsontable table  ";
           $scope.$watch(function () {
             return angular.element(td).is(':visible')
           }, function (newValue, oldValue) {
 
             if (newValue) {
               setTimeout(function () {
+
 
                 var elm = angular.element(autoComplete);
                 var scrollTop = jQuery(scrollable).scrollTop();
@@ -682,6 +691,22 @@ define([
                 elm.css({
                   top   : 0 - scrollTop,
                   height: 'auto'
+                });
+
+                var elm = angular.element(hider);
+                elm.css({
+                  width: 'auto !important'
+                });
+
+                var elm = angular.element(table);
+                elm.css({
+                  'border-width': '0',
+                  'border-width-right': '1px'
+                });
+
+                var elm = angular.element(holder);
+                elm.css({
+                  width: 'auto !important'
                 });
 
               }, 0);
