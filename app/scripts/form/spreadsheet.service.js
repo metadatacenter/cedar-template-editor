@@ -6,11 +6,12 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$document', '$filter', 'DataManipulationService', 'DataUtilService',
+      SpreadsheetService.$inject = ['$rootScope', '$window', '$document', '$filter', 'DataManipulationService',
+                                    'DataUtilService',
                                     'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
                                     'ValueRecommenderService', 'autocompleteService'];
 
-      function SpreadsheetService($rootScope, $document, $filter, DataManipulationService, DataUtilService,
+      function SpreadsheetService($rootScope, $window, $document, $filter, DataManipulationService, DataUtilService,
                                   AuthorizedBackendService,
                                   HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
 
@@ -20,6 +21,7 @@ define([
           phoneValidator: /^[\s()+-]*([0-9][\s()+-]*){6,20}$/,
           linkValidator : /^(ftp|http|https):\/\/[^ "]+$/
         };
+
 
         var dms = DataManipulationService;
 
@@ -47,80 +49,102 @@ define([
           return td;
         };
 
+
         // Handsontable.renderers.registerRenderer('checkboxes', service.customRendererCheckBoxes);
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
-        // copy table data to source table
-        var updateDataModel = function ($scope, $element) {
-              //console.log('updateDataModel');
-              var sds = $scope.spreadsheetDataScope;
-              for (var row in sds.tableData) {
-                for (var col in sds.tableData[row]) {
-
-                  // do we have this row in the source?
-                  if (row >= sds.tableDataSource.length) {
-                    sds.tableDataSource.push([]);
-                    for (var i = 0; i < $scope.config.columns.length; i++) {
-                      var obj = {};
-                      obj['@value'] = '';
-                      sds.tableDataSource[row].push(obj);
-                    }
-                  }
-
-                  // get the types and thge node for a nested field in an element
-                  var inputType = sds.columnDescriptors[col].type;
-                  var cedarType = sds.columnDescriptors[col].cedarType;
 
 
-                  if (inputType == 'dropdown') {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                  } else if (cedarType == 'checkbox') {
-                    var valueObject = JSON.parse(sds.tableData[row][col]);
-                    var value = {};
-                    for (var key in valueObject) {
-                      value[key] = true;
-                    }
-                    sds.tableDataSource[row][col]['@value'] = value;
-                  } else if (cedarType === 'link') {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                    sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
-                  } else if (inputType == 'autocomplete') {
-                    if (sds.tableData[row][col]) {
-                      var value = sds.tableData[row][col];
-                      var id = sds.columnDescriptors[col].nodeId;
-                      var schema = sds.columnDescriptors[col].schema;
+        // if we don't have an id and label for a controlled term, go get it
+        var lazyUpdate = function ($scope, schema, id, term, model) {
+          if (!model['@id'] || !model['rdfs:label']) {
 
-                      if (isConstrained(schema)) {
+            autocompleteService.updateFieldAutocomplete(schema, term);
+            if (autocompleteService.autocompleteResultsCache[id][term]) {
 
-                        // do we have some autocomplete results?
-                        var results = autocompleteService.getAutocompleteResultsCache(id, value);
-                        if (results) {
-                          var found = false;
-                          loop: for (var i = 0; i < results.length; i++) {
-                            if (value === results[i]['label']) {
+              var results = autocompleteService.autocompleteResultsCache[id][term].results;
 
-                              sds.tableDataSource[row][col]['@id'] = results[i]['@id'];
-                              sds.tableDataSource[row][col]['rdfs:label'] = results[i]['label'];
-                              found = true;
-                              break loop;
-                            }
-                          }
+              var unbindWatcher = $scope.$watchCollection(function () {
+                return results;
+              }, function () {
 
-                          if (!found) {
-                            delete sds.tableDataSource[row][col]['@id'];
-                            delete sds.tableDataSource[row][col]['rdfs:label'];
-
-                          }
-                        }
-                      }
-                    }
-                  } else {
-                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                for (var i = 0; i < results.length; i++) {
+                  if (results[i].label == term) {
+                    model['@id'] = results[i]['@id'];
+                    model['rdfs:label'] = results[i]['label'];
+                    unbindWatcher();
+                    break;
                   }
                 }
+              });
+            }
+          }
+        };
+
+        // copy table data to source table
+        var updateDataModel = function ($scope, $element) {
+
+          var sds = $scope.spreadsheetDataScope;
+
+          for (var row in sds.tableData) {
+            for (var col in sds.tableData[row]) {
+
+              // do we have this row in the source?
+              if (row >= sds.tableDataSource.length) {
+                sds.tableDataSource.push([]);
+                for (var i = 0; i < $scope.config.columns.length; i++) {
+                  var obj = {};
+                  obj['@value'] = '';
+                  sds.tableDataSource[row].push(obj);
+                }
+              }
+
+              // get the types and thge node for a nested field in an element
+              var inputType = sds.columnDescriptors[col].type;
+              var cedarType = sds.columnDescriptors[col].cedarType;
+
+
+              if (inputType == 'dropdown') {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              } else if (cedarType == 'checkbox') {
+                var valueObject = JSON.parse(sds.tableData[row][col]);
+                var value = {};
+                for (var key in valueObject) {
+                  value[key] = true;
+                }
+                sds.tableDataSource[row][col]['@value'] = value;
+              } else if (cedarType === 'date') {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
+              } else if (cedarType === 'numeric') {
+                if (sds.tableData[row][col]) {
+                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
+                }
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
+              } else if (cedarType === 'link') {
+                if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
+                  sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                } else {
+                  delete sds.tableDataSource[row][col]['@id'];
+                }
+              } else if (inputType == 'autocomplete') {
+                // console.log('inputType', inputType);
+                if (sds.tableData[row][col]) {
+
+                  var schema = sds.columnDescriptors[col].schema;
+                  if (isConstrained(schema)) {
+                    var id = sds.columnDescriptors[col].nodeId;
+                    var term = sds.tableData[row][col];
+                    lazyUpdate($scope, schema, id, term, sds.tableDataSource[row][col]);
+                  }
+                }
+              } else {
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               }
             }
-        ;
+          }
+        };
+
 
         // get column headers for single field or element's fields
         var getColumnHeaderOrder = function (context, scopeElement) {
@@ -167,10 +191,11 @@ define([
         };
 
         // build a description of the cell data
-        var getDescriptor = function (context, node, $scope) {
+        var getDescriptor = function (context, node, $scope, customValidator) {
           var desc = {};
           var literals = dms.getLiterals(node);
           var inputType = dms.getInputType(node);
+          var id = dms.getId(node);
           desc.cedarType = inputType;
           switch (inputType) {
 
@@ -181,24 +206,28 @@ define([
               desc.editor = FullscreenDateEditor;
               break;
             case 'link':
-              desc.allowInvalid = true;
+              desc.type = 'text';
               desc.validator = service.linkValidator;
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'phone-number':
+              desc.type = 'text';
               desc.allowInvalid = true;
               desc.validator = service.phoneValidator;
-              desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'email':
-              desc.allowInvalid = true;
+              desc.type = 'text';
               desc.validator = service.emailValidator;
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'numeric':
               desc.type = 'numeric';
-              desc.format = '0.0[0000]';
+              desc.format = '0[.]0[0000]';
               desc.allowInvalid = true;
+              desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'list':
               desc.type = 'dropdown';
@@ -213,24 +242,27 @@ define([
             case 'textfield':
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
-                desc.strict = true;
+                desc.trimDropdown = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-
+                desc.validator = customValidator;
+                desc.allowInvalid = false;
+                desc.strict = true;
                 desc.source = function (query, process) {
 
+                  var results = [];
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
-                  setTimeout(function () {
+                  if (autocompleteService.autocompleteResultsCache[id][query]) {
+                    results = autocompleteService.autocompleteResultsCache[id][query].results;
+                  }
 
-                    var id = dms.getId(node);
-                    var results = autocompleteService.getAutocompleteResults(id, query || '*');
-
-                    var labels = [];
-                    for (var i = 0; i < results.length; i++) {
-                      labels[i] = results[i]['label'];
-                    }
-                    process(labels);
-                  }, 1000);
+                  $scope.$watchCollection(function () {
+                    return results;
+                  }, function () {
+                    process(results.map(function (a) {
+                      return a.label;
+                    }));
+                  });
                 };
               } else {
                 desc.type = 'text';
@@ -241,15 +273,15 @@ define([
         };
 
         // build the data object descriptor for each column
-        var getColumnDescriptors = function (context, node, columnHeaderOrder, $scope) {
+        var getColumnDescriptors = function (context, node, columnHeaderOrder, $scope, customValidator) {
           var colDescriptors = [];
           for (var i in columnHeaderOrder) {
             if (context.isField()) {
-              colDescriptors.push(getDescriptor(context, node, $scope));
+              colDescriptors.push(getDescriptor(context, node, $scope, customValidator));
             } else {
               var key = columnHeaderOrder[i];
               var child = dms.propertiesOf(node)[key];
-              colDescriptors.push(getDescriptor(context, child, $scope));
+              colDescriptors.push(getDescriptor(context, child, $scope, customValidator));
             }
           }
           return colDescriptors;
@@ -261,7 +293,12 @@ define([
 
             var inputType = columnDescriptor.type;
             var cedarType = columnDescriptor.cedarType;
+
             if (inputType == 'dropdown') {
+              rowData.push(cellDataObject['@value']);
+            } else if (cedarType == 'link') {
+              rowData.push(cellDataObject['@id']);
+            } else if (cedarType == 'numeric') {
               rowData.push(cellDataObject['@value']);
             } else if (cedarType == 'checkboxes') {
               rowData.push(JSON.stringify(cellDataObject['@value']));
@@ -320,17 +357,22 @@ define([
         };
 
         // get the single field or nested field titles
-        var getColHeaders = function ($element, columnHeaderOrder, isField) {
+        var getColHeaders = function (node, columnHeaderOrder, isField) {
           var colHeaders = [];
+          var title = DataManipulationService.getTitle(node);
+          var description = DataManipulationService.getDescription(node);
 
           if (isField) {
-            colHeaders.push(DataManipulationService.getTitle($element));
+            colHeaders.push(
+                '<span  title="' + description + '">' + title + ' </span>');
           } else {
             for (var i in columnHeaderOrder) {
               var key = columnHeaderOrder[i];
-              var node = DataManipulationService.propertiesOf($element)[key];
-              var title = DataManipulationService.getTitle(node);
-              colHeaders.push(title);
+              var innerNode = DataManipulationService.propertiesOf(node)[key];
+              title = DataManipulationService.getTitle(innerNode);
+              description = DataManipulationService.getDescription(innerNode);
+              colHeaders.push(
+                  '<span  title="' + description + '">' + title + ' </span>');
             }
           }
           return colHeaders;
@@ -413,9 +455,16 @@ define([
 
             hot.addHook(hook, function () {
 
+              if (hook === 'afterSelection') {
+                //console.log('afterSelection');
+              }
+
               if (hook === 'afterChange') {
-                //console.log('afterChange');
                 updateDataModel($scope, $element);
+              }
+
+              if (hook === 'beforeChange') {
+                //console.log('beforeChange');
               }
 
               if (hook === 'afterCreateRow') {
@@ -428,7 +477,6 @@ define([
               }
 
               if (hook === 'afterRemoveRow') {
-                //console.log('afterRemoveRow');
                 $scope.spreadsheetDataScope.removeCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);
@@ -436,6 +484,14 @@ define([
                 resize($scope);
               }
             });
+          });
+
+          // TODO this should show a jquery ui tooltip rather than the default browser tooltip, but these work intermittently,
+          // TODO not sure if it should be the ht_master or ht_clone_top div
+          Handsontable.hooks.add('afterRender', function () {
+            //       jQuery('div.ht_master span[data-toggle="tooltip"]').tooltip();
+            //       jQuery('div.ht_clone_top span[data-toggle="tooltip"]').tooltip();
+            jQuery('span[data-toggle="tooltip"]').tooltip({show: {effect: "blind", duration: 800}});
           });
         };
 
@@ -450,22 +506,25 @@ define([
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData.length;
             var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
-            var spreadsheetContainerWidth = detectorElement.width() - 5;
+            var spreadsheetContainerWidth = detectorElement.width();
 
-            // angular.element(container).css("height", spreadsheetContainerHeight + "px");
-            // angular.element(container).css("width", spreadsheetContainerWidth + "px");
-            // angular.element(container).css("overflow", "hidden");
+            $scope.spreadsheetDataScope.container.style.width = spreadsheetContainerWidth;
+            $scope.spreadsheetDataScope.container.style.height = spreadsheetContainerHeight;
+
 
             $scope.spreadsheetContext.getTable().updateSettings({
               height: spreadsheetContainerHeight,
               width : spreadsheetContainerWidth
             });
+
+
           }
         };
 
 
         // build the spreadsheet, stuff it into the dom, and make it visible
-        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback) {
+        var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback,
+                                          createExtraRows, deleteExtraRows) {
 
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
@@ -474,13 +533,23 @@ define([
           var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
               context.getPlaceholderContext())[0];
 
+          var customValidator = function (query, callback) {
+            var desc = $scope.config.columns[this.col];
+            var id = DataManipulationService.getId(desc.schema);
+            callback(autocompleteService.isCached(id, query, desc.schema));
+          };
+
+
           if (container) {
+
+            container.style.width = 700;
+            container.style.height= 300;
 
             $scope.spreadsheetContext = context;
             context.isField = isField;
 
             var columnHeaderOrder = getColumnHeaderOrder(context, $element);
-            var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope);
+            var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope, customValidator);
             var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
             var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
@@ -488,7 +557,7 @@ define([
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
               data              : tableData,
-              minSpareRows      : 1,
+              minSpareRows      : 10,
               autoWrapRow       : true,
               contextMenu       : true,
               minRows           : minRows,
@@ -502,8 +571,7 @@ define([
               colHeaders        : colHeaders,
               colWidths         : 247,
               autoColumnSize    : {syncLimit: 300},
-
-
+              headerTooltips    : true
             };
 
 
@@ -515,11 +583,12 @@ define([
               columnHeaderOrder: columnHeaderOrder,
               addCallback      : addCallback,
               removeCallback   : removeCallback,
+              createExtraRows  : createExtraRows,
+              deleteExtraRows  : deleteExtraRows,
               detectorElement  : detectorElement,
               container        : container
             };
             $scope.config = config;
-
 
             // put the spreadsheet into the container
             context.setSpreadsheetContainer(container);
@@ -570,26 +639,79 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
-          if ($scope.hasOwnProperty('spreadsheetContext')) {
-            var context = $scope.spreadsheetContext;
-            context.switchVisibility();
-            if (context.isOriginalContentVisible()) {
-              if (context.getTable()) {
-                context.getTable().destroy();
-                jQuery(context.getSpreadsheetContainer()).html("");
-                applyVisibility($scope);
-              }
-            } else {
+          if ($scope.spreadsheetDataScope) {
+
+            // delete extra rows in the object
+            $scope.spreadsheetDataScope.deleteExtraRows();
+
+            if ($scope.hasOwnProperty('spreadsheetContext')) {
+              var context = $scope.spreadsheetContext;
               context.switchVisibility();
+              if (context.isOriginalContentVisible()) {
+                if (context.getTable()) {
+                  context.getTable().destroy();
+                  jQuery(context.getSpreadsheetContainer()).html("");
+                  applyVisibility($scope);
+                }
+              } else {
+                context.switchVisibility();
+              }
             }
           }
         };
 
         // create spreadsheet view using handsontable
-        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback) {
+        service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
+                                                createExtraRows, deleteExtraRows) {
+
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
-          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback);
+          createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows,
+              deleteExtraRows);
+
+          var hider = ".spreadsheetViewContainer div.wtHider";
+          var holder = ".spreadsheetViewContainer div.wtHolder";
+
+          var scrollable = ".template-container.scrollable-content";
+          var autoComplete = "div.handsontableInputHolder div.ht_master.handsontable ";
+          var td = "div.handsontableInputHolder div.ht_master.handsontable table td ";
+          var table = "div.handsontableInputHolder div.ht_master.handsontable table  ";
+          $scope.$watch(function () {
+            return angular.element(td).is(':visible')
+          }, function (newValue, oldValue) {
+
+            if (newValue) {
+              setTimeout(function () {
+
+
+                var elm = angular.element(autoComplete);
+                var scrollTop = jQuery(scrollable).scrollTop();
+
+                elm.addClass('fixed');
+                elm.css({
+                  top   : 0 - scrollTop,
+                  height: 'auto'
+                });
+
+                var elm = angular.element(hider);
+                elm.css({
+                  width: 'auto !important'
+                });
+
+                var elm = angular.element(table);
+                elm.css({
+                  'border-width': '0',
+                  'border-width-right': '1px'
+                });
+
+                var elm = angular.element(holder);
+                elm.css({
+                  width: 'auto !important'
+                });
+
+              }, 0);
+            }
+          });
         };
 
         return service;

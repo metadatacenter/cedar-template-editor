@@ -30,7 +30,7 @@
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
 
-              {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
+              {{getPropertyLabel()}} <!--<span ng-if="valueArray.length-1" class="count">({{index+1}})</span>-->
             </div>
 
           </div>
@@ -47,9 +47,9 @@
 
         </div>
         <div class="row" ng-if="isExpanded(index)">
-          <div class="col-sm-12">
+          <div class="col-xs-12">
             <div class="spreadsheetViewDetector"></div>
-            <div class="spreadsheetViewContainer"></div>
+            <div class="spreadsheetViewContainer" ></div>
             <div id="spreadsheetViewLogs"></div>
             <div id="hooksList"></div>
           </div>

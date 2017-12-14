@@ -7,7 +7,6 @@
 
       <!-- show zero cardinality   -->
       <div ng-if="valueArray.length == 0">
-        zero cardinality {{getLocator(0)}}
         <div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">
           <div class="col-xs-12">
             <div class="leader"></div>
@@ -21,8 +20,7 @@
       <!-- show the spreadsheet -->
       <div ng-if="isSpreadsheetView()">
 
-        <div class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"
-            id="{{getLocator(0)}}">
+        <div  class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}" id="{{getLocator(0)}}">
           <div class="col-sm-3 col-xs-* ">
             <div class="leader"></div>
 
@@ -31,25 +29,23 @@
             </div>
 
           </div>
-          <div class="col-sm-9 col-xs-* " ng-click="toggleActive(index)" ng-if="!isActive(index)">
-            <div class="answer originalContent" ng-include="getFieldUrl()"></div>
+          <div class="col-sm-9 answer " ng-click="toggleActive(index)" ng-if="!isActive(index)">
+            <div class="originalContent" ng-include="getFieldUrl()"></div>
           </div>
-          <div class="col-sm-9 " ng-if="isActive(index)">
+          <div class="col-sm-9 answer" ng-if="isActive(index)">
             <div class="row tools">
-              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
+              <field-toolbar class="col-xs-12 col-sm-12 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
                   expand-all="expandAll" get-locator="getLocator" view-state="viewState"></field-toolbar>
             </div>
 
-            <div class="row">
-              <div class="col-sm-12">
+
                 <div class="spreadsheetViewDetector"></div>
                 <div class="spreadsheetViewContainer"></div>
                 <div id="spreadsheetViewLogs"></div>
                 <div id="hooksList"></div>
                 <div id="htDatepickerHolder"></div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
@@ -57,7 +53,7 @@
       <!-- show a paged list of fields  -->
       <div ng-if="isTabView() && valueArray.length > 0">
 
-        <div class="row" id="{{getLocator(index)}}"
+        <div  class="row" id="{{getLocator(index)}}"
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
 
           <div class="col-sm-3 col-xs-* question">
@@ -122,7 +118,7 @@
       <div ng-if="isListView()" ng-repeat="(index, valueElement) in valueArray">
 
         <!-- inactive, not being edited  -->
-        <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
+        <div  class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3 col-xs-* ">
 
             <div ng-click="toggleActive(index)" class="title field isInactive">
@@ -137,15 +133,14 @@
         </div>
 
         <!-- active, being edited --->
-        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
+        <div  class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
             <div class="title field isActive">
               {{getTitle()}} <span ng-if="isMultipleCardinality()" class="count">({{index+1}})</span>
             </div>
           </div>
-          <div class="col-sm-9 ">
-            <div class="answer">
+          <div class="col-sm-9 answer">
               <div class="row tools">
                 <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
                     index="index" view-state="viewState"
@@ -155,35 +150,36 @@
               </div>
 
               <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
-                  <div ng-if="isImage(previous)" class="image">
-                    <figure>
-                      <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
-                          type="image/png" width="100%"/>
-                      <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                    </figure>
-                  </div>
-                  <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
-                  <div ng-if="isYouTube(previous)" class="youtube">
-                    <figure>
-                      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                    </figure>
-                  </div>
+                <div ng-if="isImage(previous)" class="image">
+                  <figure>
+                    <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                        type="image/png" width="100%"/>
+                    <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                  </figure>
                 </div>
-
-                <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                  <div class="originalContent" ng-include="getFieldUrl()"></div>
-                  <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-                </form>
+                <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+                <div ng-if="isYouTube(previous)" class="youtube">
+                  <figure>
+                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                  </figure>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- all error messages for this field  -->
-        <div class="errors" ng-if="errorMessages">
-          <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                <div class="originalContent" ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+              </form>
+            </div>
+
         </div>
       </div>
+
+      <!-- all error messages for this field  -->
+      <div class="errors" ng-if="errorMessages">
+        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+      </div>
+
     </div>
   </div>
+</div>

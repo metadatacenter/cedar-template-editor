@@ -733,6 +733,7 @@ define([
 
 
           function getFolderContentsById(folderId, resourceId) {
+
             var resourceTypes = activeResourceTypes();
             vm.offset = 0;
             var offset = vm.offset;

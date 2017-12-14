@@ -120,6 +120,13 @@ var ShareModal = function () {
     browser.wait(EC.visibilityOf(shareMenuItem));
   };
 
+  // open the share dialog of the given resource via the right-click menu item
+  this.shareEnabledViaRightClick = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
+    browser.wait(EC.visibilityOf(shareMenuItem));
+  };
+
 
   // share the given resource with the specified user name with or without write and ownership permissions
   this.shareResource = function(name, type, username, canWrite, isOwner) {

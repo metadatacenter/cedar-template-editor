@@ -290,6 +290,7 @@ define([
         }
 
         function getResources(options, successCallback, errorCallback) {
+
           if (options == null) {
             options = {};
           }

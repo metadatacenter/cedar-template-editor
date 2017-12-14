@@ -136,14 +136,27 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
+        //console.log('switchToSpreadsheet elsment',scope.element);
         SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
           return false;
         }, function () {
           scope.addMoreInput();
         }, function () {
           scope.removeElement(scope.model.length - 1);
+        }, function () {
+          scope.createExtraRows();
+        }, function () {
+          //console.log('invoke deleteExtraRows');
+          scope.deleteExtraRows();
         })
       };
+
+      scope.cleanupSpreadsheet = function () {
+        //console.log('cleanupSpreadsheet element',scope.element);
+        scope.deleteExtraRows();
+      };
+
+
 
       scope.isTabView = function () {
         return UIUtilService.isTabView(scope.viewState);
@@ -159,6 +172,7 @@ define([
 
       // toggle through the list of view states
       scope.toggleView = function () {
+        console.log('toggleView');
         scope.viewState = UIUtilService.toggleView(scope.viewState);
       };
 
@@ -182,6 +196,7 @@ define([
               $timeout(function () {
                 var zeroLocator = scope.getLocator(0);
                 if (zeroLocator === zeroedLocator(oldValue)) {
+                  scope.expanded[0] = false;
                   SpreadsheetService.destroySpreadsheet(scope);
                   scope.$apply();
                 }
@@ -193,6 +208,49 @@ define([
             }
           }
       );
+
+
+      // make sure there are at least 10 entries in the spreadsheet
+      scope.createExtraRows = function() {
+        var maxItems = dms.getMaxItems(scope.element);
+        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+          scope.addMoreInput();
+        }
+      };
+
+      scope.deleteExtraRows = function() {
+        console.log('deleteExtraRows',scope.model.length);
+
+        if (angular.isArray(scope.model)) {
+
+          var min = dms.getMinItems(scope.element) || 0;
+
+          outer: for (var i = scope.model.length; i > min; i--) {
+            var valueElement = scope.model[i-1];
+            // are all the fields empty for this cardinal element instance i?
+            var empty = true;
+            loop: for(var prop in valueElement){
+              if (!DataUtilService.isSpecialKey(prop) && !prop.startsWith('$$')) {
+
+                var node = valueElement[prop];
+                if (Object.getOwnPropertyNames(node).length > 0) {
+                  console.log('node',node);
+                  if (node.hasOwnProperty('@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty('@id') && (node['@id'] != null && node['@id'] != ''))) {
+                    empty = false;
+                    break loop;
+                  }
+                }
+
+              }
+            }
+            if (empty) {
+              scope.removeElement(i-1);
+            } else {
+              break outer;
+            }
+          }
+        }
+      };
 
 
       //
@@ -553,7 +611,7 @@ define([
 
       scope.pageMinMax();
 
-      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet);
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet, scope.cleanupSpreadsheet);
       //console.log(scope.viewState);
     }
   };

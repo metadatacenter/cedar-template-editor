@@ -32,7 +32,6 @@ define([
       return service.autocompleteResultsCache[id][query].results;
     };
 
-
     service.getAutocompleteResultsCache = function (id, query) {
       if (service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
         return service.autocompleteResultsCache[id][query].results;
@@ -227,7 +226,6 @@ define([
       }
     };
 
-
     // Note that this only checks the values if the autocomplete cache has them and the cache
     // will be empty if the user didn't use autocomplete in this session for this field.
     service.isValueConformedToConstraint = function (value, location, id, vcst, query) {
@@ -246,6 +244,40 @@ define([
       return isValid;
     };
 
+    // is this term in the the cache?
+    service.isCached = function (id, term, schema) {
+      var result = false;
+
+      if (term && id && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
+        var values = Object.values(service.autocompleteResultsCache[id]);
+        angular.forEach(values, function (obj) {
+          angular.forEach(obj.results, function (val) {
+            result = result || (val.label == term);
+          });
+        });
+      }
+      service.updateFieldAutocomplete(schema, term);
+      return result;
+    };
+
+    // // is this term in the the cache?
+    // service.getTermDetails = function (id, term) {
+    //   var result = null;
+    //
+    //   if (term && id && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
+    //     var values = Object.values(service.autocompleteResultsCache[id]);
+    //     angular.forEach(values, function (obj) {
+    //       angular.forEach(obj.results, function (val) {
+    //         if (val.label == term) {
+    //           result = val;
+    //         }
+    //       });
+    //     });
+    //   }
+    //
+    //   service.updateFieldAutocomplete(schema, term);
+    //   return result;
+    // };
 
     return service;
   }

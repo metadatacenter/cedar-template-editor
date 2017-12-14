@@ -60,13 +60,17 @@ define([
           vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
-          vm.destinationResources = [];
           vm.currentDestinationID = null;
           vm.destinationPathInfo = null;
           vm.destinationPath = null;
           vm.resourceTypes = null;
-          vm.sortOptionField = null;  vm.offset = 0;
+          vm.sortOptionField = null;
+          vm.offset = 0;
           vm.totalCount = null;
+
+          // put this in scope so the unit tests can look at it
+          $scope.destinationResources = [];
+
 
           function canWrite() {
             return hasPermission('write');
@@ -85,6 +89,7 @@ define([
           };
 
           function openParent() {
+
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -197,19 +202,28 @@ define([
               return resourceService.getResources(
                   {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
+
                     vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
-                    vm.destinationResources = vm.destinationResources.concat(response.resources);
+                    if (vm.offset > 0) {
+                      $scope.destinationResources =  $scope.destinationResources.concat(response.resources);
+                    } else {
+                      $scope.destinationResources = response.resources;
+                    }
+
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
+
                     vm.selectCurrent();
+
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                   }
               );
             } else {
-              vm.destinationResources = [];
+              console.log('set destinationResorces to null');
+              $scope.destinationResources = [];
             }
           }
 
@@ -271,12 +285,15 @@ define([
           // on modal open
           $scope.$on('moveModalVisible', function (event, params) {
 
+
             var visible = params[0];
             var resource = params[1];
             var currentPath = params[2];
             var currentFolderId = params[3];
             var resourceTypes = params[4];
             var sortOptionField = params[5];
+
+
 
             if (visible && resource) {
               vm.modalVisible = visible;

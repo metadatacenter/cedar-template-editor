@@ -3183,7 +3183,7 @@ section.dashboard-elements {
 
     }
 
-    textarea {
+    textarea.form-control {
       border-width: 0px;
       background: #fff;
       padding-top: 10px;
@@ -3479,7 +3479,71 @@ section.dashboard-elements {
 }
 
 .spreadsheetViewContainer {
+
+  .myInvalidClass {
+    background:@button-error;
+  }
+
+
+  .fixed .wtHolder {
+    position:fixed !important;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background:@white;
+    border:1px solid #ccc;
+    box-shadow: 5px 5px 5px #ccc;
+  }
+
+  /* Always show scroll bars */
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  ::-webkit-scrollbar:vertical {
+    width: 9px;
+    //margin:10px 0;
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 9px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    border: 0px solid white;
+    background-color: #ccc;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color:transparent;
+    border-radius: 0px;
+  }
+
+  ::-webkit-scrollbar-corner {
+
+  }
+
+  background-color:@lt-gray;
+
+  //.handsontable .wtBorder {
+  //  margin-right:-1px;
+  //}
+
   overflow: hidden;
+  border:1px solid #ccc;
+  min-height:300px;
+
+  .tooltip {
+    position: fixed;
+    white-space:pre-wrap;
+  }
+
+  .ht_master.handsontable {
+    .wtHolder {
+      min-height:300px;
+    }
+  }
 }
 
 .alert {
