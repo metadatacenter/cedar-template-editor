@@ -1,52 +1,21 @@
 <div class="toolbar" >
 
   <button type="button" class="delete pull-right"
-      ng-if="canDelete()"
       ng-click="remove(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.Remove' | translate}}">
-    <i class="fa fa-trash"></i>
-  </button>
-
-  <!-- have a second disabled trash so the rest of these do not move around -->
-  <button type="button" class="delete-hidden pull-right"
-      ng-if="!canDelete()"
-      ng-click="$event.stopPropagation()">
-    <i class="fa fa-trash"></i>
+    <i class="fa fa-trash" ng-class="{ 'invisible':!canDelete()}"></i>
   </button>
 
   <button type="button" class="expand-all pull-right"
-      ng-if="isExpandable()"
       ng-click="expandAll(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ExpandAll' | translate}}">
-    <i class="fa fa-expand "></i>
+    <i class="fa fa-expand " ng-class="{'invisible':!isExpandable()}"></i>
   </button>
-
-  <!--<button type="button" class="remove pull-right"-->
-      <!--ng-if="isField()"-->
-      <!--ng-click="close(index);$event.stopPropagation()"-->
-      <!--uib-tooltip="{{'GENERIC.Close' | translate}}">-->
-    <!--<i class="fa fa-remove "></i>-->
-  <!--</button>-->
-
-  <!--<button type="button" class="remove-hidden pull-right"-->
-      <!--ng-if="!isField()"-->
-      <!--ng-click="$event.stopPropagation()">-->
-    <!--<i class="fa fa-remove "></i>-->
-  <!--</button>-->
 
   <button type="button" class="question pull-right"
       ng-click="$event.stopPropagation()"
       uib-tooltip="{{(getDescription() || 'GENERIC.Help') | translate}}">
     <i class="fa fa-question-circle"></i>
-  </button>
-
-  <button type="button" class="view-toggle pull-right"
-      ng-if="isMultiple()"
-      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
-    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 "></i>
-    <i ng-if="isTabView()" class="fa fa-list-ol "></i>
-    <i ng-if="isListView()" class="fa fa-table "></i>
   </button>
 
   <button type="button" class="add pull-right"
@@ -68,6 +37,15 @@
       uib-tooltip="{{'GENERIC.FullScreen' | translate}}"
       ng-click="fullscreen();$event.stopPropagation()">
     <i class="fa fa-expand "></i>
+  </button>
+
+
+  <button type="button" class="view-toggle pull-right"
+      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
+    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ng-class="{'hidden':!isMultiple()}"></i>
+    <i ng-if="isTabView()" class="fa fa-list-ol " ng-class="{'hidden':!isMultiple()}"></i>
+    <i ng-if="isListView()" class="fa fa-table " ng-class="{'hidden':!isMultiple()}"></i>
   </button>
 
   <cedar-pager class="cedar-pager pull-right"

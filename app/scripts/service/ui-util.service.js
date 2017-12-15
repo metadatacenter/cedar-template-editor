@@ -76,7 +76,9 @@ define([
           viewState.spreadsheetCallback();
         });
       } else {
-         viewState.cleanupCallback()
+         if (typeof viewState.cleanupCallback == 'function') {
+           viewState.cleanupCallback()
+        }
       }
       return viewState;
     };
