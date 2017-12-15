@@ -40,6 +40,15 @@
     <i class="fa fa-question-circle"></i>
   </button>
 
+  <button type="button" class="view-toggle pull-right"
+      ng-if="isMultiple()"
+      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
+    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 "></i>
+    <i ng-if="isTabView()" class="fa fa-list-ol "></i>
+    <i ng-if="isListView()" class="fa fa-table "></i>
+  </button>
+
   <button type="button" class="add pull-right"
       ng-if="canAdd()"
       ng-click="add();$event.stopPropagation()"
@@ -48,19 +57,10 @@
   </button>
 
   <button type="button" class="copy pull-right"
-      ng-if="canAdd()"
+      ng-if="canCopy()"
       ng-click="copy(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.Copy' | translate}}">
     <i class="fa fa-copy"></i>
-  </button>
-
-  <button type="button" class="view-toggle pull-right"
-      ng-if="isMultiple()"
-      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
-    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 "></i>
-    <i ng-if="isTabView()" class="fa fa-list-ol "></i>
-    <i ng-if="isListView()" class="fa fa-table "></i>
   </button>
 
   <button type="button" class="expand-all pull-right"

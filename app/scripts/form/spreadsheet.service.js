@@ -326,7 +326,7 @@ define([
                 } else {
                   for (var col in headerOrder) {
                     var colName = headerOrder[col];
-                    var cellDataObject = row[colName];
+                    var cellDataObject = row[colName] || {};
                     extractAndStoreCellData(cellDataObject, rowData, columnDescriptors[col]);
                   }
                 }

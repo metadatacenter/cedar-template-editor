@@ -157,7 +157,6 @@ define([
       };
 
 
-
       scope.isTabView = function () {
         return UIUtilService.isTabView(scope.viewState);
       };
@@ -172,7 +171,6 @@ define([
 
       // toggle through the list of view states
       scope.toggleView = function () {
-        console.log('toggleView');
         scope.viewState = UIUtilService.toggleView(scope.viewState);
       };
 
@@ -211,31 +209,31 @@ define([
 
 
       // make sure there are at least 10 entries in the spreadsheet
-      scope.createExtraRows = function() {
+      scope.createExtraRows = function () {
         var maxItems = dms.getMaxItems(scope.element);
         while ((scope.model.length < 10 || scope.model.length < maxItems)) {
           scope.addMoreInput();
         }
       };
 
-      scope.deleteExtraRows = function() {
-        console.log('deleteExtraRows',scope.model.length);
+      scope.deleteExtraRows = function () {
 
         if (angular.isArray(scope.model)) {
 
           var min = dms.getMinItems(scope.element) || 0;
 
           outer: for (var i = scope.model.length; i > min; i--) {
-            var valueElement = scope.model[i-1];
+            var valueElement = scope.model[i - 1];
             // are all the fields empty for this cardinal element instance i?
             var empty = true;
-            loop: for(var prop in valueElement){
+            loop: for (var prop in valueElement) {
               if (!DataUtilService.isSpecialKey(prop) && !prop.startsWith('$$')) {
 
                 var node = valueElement[prop];
                 if (Object.getOwnPropertyNames(node).length > 0) {
-                  console.log('node',node);
-                  if (node.hasOwnProperty('@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty('@id') && (node['@id'] != null && node['@id'] != ''))) {
+                  if (node.hasOwnProperty(
+                          '@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty(
+                          '@id') && (node['@id'] != null && node['@id'] != ''))) {
                     empty = false;
                     break loop;
                   }
@@ -244,7 +242,7 @@ define([
               }
             }
             if (empty) {
-              scope.removeElement(i-1);
+              scope.removeElement(i - 1);
             } else {
               break outer;
             }
@@ -358,27 +356,29 @@ define([
         }
       };
 
-      // add a new empty element at the end of the array
+      // TODO add a new empty element at the end of the array
+      // add is not working, so call copy instead for now
       scope.addElement = function () {
-        if (scope.isMultiple()) {
-
-          var maxItems = dms.getMaxItems(scope.element);
-          if ((!maxItems || scope.model.length < maxItems)) {
-            var seed = {};
-            var properties = dms.propertiesOf(scope.element);
-            scope.model.push(seed);
-            if (angular.isArray(scope.model)) {
-              angular.forEach(scope.model, function (m) {
-                dms.findChildren(properties, m);
-              });
-            } else {
-              dms.findChildren(properties, scope.model);
-            }
-            // activate the new instance
-            scope.setActive(scope.model.length - 1, true);
-          }
-
-        }
+        scope.copyElement();
+        //if (scope.isMultiple()) {
+          // } else {
+          //   console.log('add element from nothing');
+          //   var maxItems = dms.getMaxItems(scope.element);
+          //   if ((!maxItems || scope.model.length < maxItems)) {
+          //     var seed = {};
+          //     var properties = dms.propertiesOf(scope.element);
+          //     scope.model.push(seed);
+          //     if (angular.isArray(scope.model)) {
+          //       angular.forEach(scope.model, function (m) {
+          //         dms.findChildren(properties, m);
+          //       });
+          //     } else {
+          //       dms.findChildren(properties, scope.model);
+          //     }
+          //   }
+          //   // activate the new instance
+          //   scope.setActive(scope.model.length - 1, true);
+        //}
       };
 
       // remove the element at index
@@ -611,7 +611,8 @@ define([
 
       scope.pageMinMax();
 
-      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet, scope.cleanupSpreadsheet);
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet,
+          scope.cleanupSpreadsheet);
       //console.log(scope.viewState);
     }
   };

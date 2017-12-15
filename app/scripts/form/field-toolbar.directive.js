@@ -61,7 +61,6 @@ define([
         };
 
         scope.toggleView = function () {
-          console.log('toggleView');
           return UIUtilService.toggleView(scope.viewState);
         };
 
@@ -91,13 +90,19 @@ define([
         // can we add more?
         scope.canAdd = function () {
           var maxItems = DataManipulationService.getMaxItems(scope.field);
-          return scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+          return scope.add && DataManipulationService.isElement(scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+        };
+
+        // can we add more?
+        scope.canCopy = function () {
+          var maxItems = DataManipulationService.getMaxItems(scope.field);
+          return scope.copy && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
         };
 
         // can we delete?
         scope.canDelete = function () {
           var minItems = DataManipulationService.getMinItems(scope.field);
-          return scope.isMultiple() && scope.model.length > minItems;
+          return scope.remove && scope.isMultiple() && scope.model.length > minItems;
         };
 
         scope.fullscreen = function () {

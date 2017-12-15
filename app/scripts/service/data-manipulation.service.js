@@ -508,6 +508,10 @@ define([
       }
     };
 
+    service.isElement = function (node) {
+      return DataUtilService.isElement(node);
+    };
+
     //
     // _tmp fields
     //
