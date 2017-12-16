@@ -98,8 +98,8 @@ define([
           function (response) {
             var ontologies = response.data;
             angular.forEach(ontologies, function (value) {
-              // Ignore empty ontologies (without submissions), except for CEDARPC
-              if (((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
+              // Ignore ontologies without submissions, except for CEDARPC
+              if ((value.details.hasSubmissions || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
                 value.fullName = value.name + ' (' + value.id + ')';
                 ontologiesCache[value.id] = value;
               }

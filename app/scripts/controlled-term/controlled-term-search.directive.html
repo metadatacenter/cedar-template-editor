@@ -365,7 +365,8 @@
               ng-class="{'selected-row':  (result.id == tsc.currentOntology.info.id)}">
             <td width="45%">{{result.name}} ({{result.id}})</td>
             <td width="45%">{{result.details.categories.join(", ") || "-" }}</td>
-            <td width="9%">{{result.details.numberOfClasses | number}}</td>
+            <td width="9%" ng-if="result.details.metricsAvailable">{{result.details.numberOfClasses | number}}</td>
+            <td width="9%" ng-if="!result.details.metricsAvailable">n/a</td>
           </tr>
           </tbody>
         </table>
@@ -490,9 +491,10 @@
                   <th>Description</th>
                   <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
                 </tr>
-                <tr ng-if="tsc.currentOntology.info.details.numberOfClasses">
+                <tr>
                   <th>No. Terms</th>
-                  <td>{{tsc.currentOntology.info.details.numberOfClasses | number}}</td>
+                  <td ng-if="tsc.currentOntology.info.details.metricsAvailable">{{tsc.currentOntology.info.details.numberOfClasses | number}}</td>
+                  <td ng-if="!tsc.currentOntology.info.details.metricsAvailable">n/a</td>
                 </tr>
                 </tbody>
               </table>
