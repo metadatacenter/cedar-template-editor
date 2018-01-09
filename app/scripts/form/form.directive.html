@@ -34,8 +34,6 @@
             max="pageMax" select="selectPage" range="6">
         </field-toolbar>
       </div>
-
-
     </div>
 
 
@@ -46,13 +44,10 @@
           ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
 
         <div ng-if="isSectionBreak(item)" class="row">
-
-              <div class="section-break-inline" >
-                {{form.properties[item]['schema:name']}}
-              </div>
-
+          <div class="section-break-inline">
+            {{form.properties[item]['schema:name']}}
           </div>
-
+        </div>
 
 
         <!--If field-->

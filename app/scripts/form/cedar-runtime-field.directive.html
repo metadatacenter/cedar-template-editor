@@ -54,11 +54,9 @@
       <!-- show a paged list of fields  -->
       <div ng-if="isTabView() && valueArray.length > 0">
 
-
         <div ng-if="isSectionBreak()" class="row">
           <div class="section-break-inline">{{getTitle()}}</div>
         </div>
-
 
         <div ng-if="!isSectionBreak()" class="row" id="{{getLocator(index)}}"
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">

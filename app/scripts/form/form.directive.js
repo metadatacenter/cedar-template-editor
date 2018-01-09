@@ -85,7 +85,6 @@ define([
 
         var paginate = function () {
           if ($scope.form) {
-            console.log('paginate');
 
             var orderArray = [];
             var titles = [];
@@ -110,7 +109,6 @@ define([
               if ($scope.form.properties[field]._ui && $scope.form.properties[field]._ui.inputType == 'page-break') {
                 if (index == 0) {
                   titles.push($scope.getTitle());
-                  console.log('get form title',$scope.form)
                 } else {
                   dimension++;
                   titles.push(dms.getTitle($scope.form.properties[field]));
@@ -128,8 +126,6 @@ define([
             $scope.pagesArray = orderArray;
             $scope.pageMax = $scope.pagesArray.length-1;
             $scope.pageTitles = titles;
-            console.log('pageTitles',$scope.pageTitles);
-            console.log('pagesArray',$scope.pagesArray);
           }
         };
 
@@ -189,7 +185,6 @@ define([
         };
 
         var startParseForm = function () {
-          console.log('startParseForm', $scope.form);
           if ($scope.form) {
             var model;
             if (UIUtilService.isRuntime()) {
@@ -470,7 +465,6 @@ define([
         $scope.isSectionBreak = function (item) {
           var properties = dms.propertiesOf($scope.form);
           var node = properties[item];
-          console.log('isSectionBreak', item, dms.isSectionBreak(node));
           return dms.isSectionBreak(node);
         };
 

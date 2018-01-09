@@ -127,7 +127,6 @@ define([
 
       // is this a section break?
       $scope.isSectionBreak = function (field) {
-        console.log('isSectionBreak', dms.isSectionBreak(field || $scope.field), $scope.field);
         return dms.isSectionBreak(field || $scope.field);
       };
 
