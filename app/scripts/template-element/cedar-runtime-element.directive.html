@@ -97,7 +97,7 @@
               style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;">
 
           </div>
-          <div ng-if="isExpanded(index) && index === i">
+          <div ng-if=" isExpanded(index) && index === i">
             <cedar-runtime-nested-element
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"

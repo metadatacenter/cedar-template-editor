@@ -340,7 +340,7 @@ define([
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
         if (scope.isMultiple()) {
-          var fromIndex = (typeof index === 'undefined') ? scope.index : index;
+          var fromIndex = (typeof index === 'undefined') ? scope.index : index; 
           var maxItems = dms.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
             if (scope.model.length > 0) {
@@ -391,6 +391,14 @@ define([
             }
           }
         }
+      };
+
+
+      scope.isSectionBreak = function (item) {
+        var properties = dms.propertiesOf(scope.element);
+        var node = properties[item];
+        console.log('isSectionBreak', item, node, dms.isSectionBreak(node));
+        return dms.isSectionBreak(node);
       };
 
       scope.addRow = function () {

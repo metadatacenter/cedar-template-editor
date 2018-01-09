@@ -34,6 +34,8 @@ define([
     //$scope.form = {};
     $scope.viewType = 'popup';
 
+    $scope.isElement = true;
+
     // template details
     $scope.details;
     $scope.cannotWrite;

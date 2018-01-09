@@ -45,6 +45,8 @@ define([
         $scope.hasInstances;
         $scope.cannotWrite;
 
+        $scope.isTemplate = true;
+
         $scope.checkLocking = function () {
           var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
           $scope.cannotWrite = !result;

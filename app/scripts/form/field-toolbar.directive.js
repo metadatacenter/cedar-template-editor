@@ -35,7 +35,8 @@ define([
         min         : '=',
         max         : '=',
         select      : '=',
-        range       : '='
+        range       : '=',
+        paging      : '='
       },
       controller : function ($scope, $element) {
 
@@ -52,8 +53,13 @@ define([
           return UIUtilService.isListView(scope.viewState);
         };
 
-        scope.isTabView = function () {
-          return UIUtilService.isTabView(scope.viewState);
+        // scope.isTabView = function () {
+        //   return UIUtilService.isTabView(scope.viewState);
+        // };
+
+        scope.isMultiple = function () {
+          // We consider that checkboxes and multi-choice lists are not 'multiple'
+          return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
         };
 
         scope.isSpreadsheetView = function () {
@@ -68,11 +74,6 @@ define([
           return UIUtilService.cardinalityString(scope.field);
         };
 
-        scope.isMultiple = function () {
-          // We consider that checkboxes and multi-choice lists are not 'multiple'
-          return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
-        };
-
         scope.isExpandable = function () {
           return UIUtilService.isExpandable(scope.field);
         };
@@ -84,25 +85,31 @@ define([
 
         // has a field description?
         scope.hasDescription = function () {
-          return DataManipulationService.getDescription(scope.field).length > 0;
+          return scope.field && DataManipulationService.getDescription(scope.field).length > 0;
         };
 
         // can we add more?
         scope.canAdd = function () {
-          var maxItems = DataManipulationService.getMaxItems(scope.field);
-          return scope.add && DataManipulationService.isElement(scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+          if (scope.field) {
+            var maxItems  = DataManipulationService.getMaxItems(scope.field);
+            return scope.add && DataManipulationService.isElement(scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+          }
         };
 
         // can we add more?
         scope.canCopy = function () {
-          var maxItems = DataManipulationService.getMaxItems(scope.field);
-          return scope.copy && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+          if (scope.field) {
+            var maxItems = DataManipulationService.getMaxItems(scope.field);
+            return scope.copy && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+          }
         };
 
         // can we delete?
         scope.canDelete = function () {
-          var minItems = DataManipulationService.getMinItems(scope.field);
-          return scope.remove && scope.isMultiple() && scope.model.length > minItems;
+          if (scope.field) {
+            var minItems = DataManipulationService.getMinItems(scope.field);
+            return scope.remove && scope.isMultiple() && scope.model.length > minItems;
+          }
         };
 
         scope.fullscreen = function () {

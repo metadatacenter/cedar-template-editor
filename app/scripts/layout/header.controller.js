@@ -122,6 +122,10 @@ define([
       return $rootScope.documentTitle;
     };
 
+    vm.formatDocumentTitle = function () {
+      return UIUtilService.formatTitleString($rootScope.documentTitle);
+    };
+
     vm.getPageTitle = function () {
       return $rootScope.pageTitle;
     };

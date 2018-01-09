@@ -131,7 +131,6 @@ define([
       var schema = service.schemaOf(node);
       if (schema) {
         service.schemaOf(node)['schema:name'] = value;
-        //service.schemaOf(node)._ui.title = value;
       }
     };
 
@@ -303,6 +302,16 @@ define([
     // is this an image?
     service.isImage = function (node) {
       return (service.getInputType(node) === 'image');
+    };
+
+    // is this a section break?
+    service.isSectionBreak = function (node) {
+      return (service.getInputType(node) === 'section-break');
+    };
+
+    // is this a page break?
+    service.isPageBreak = function (node) {
+      return (service.getInputType(node) === 'page-break');
     };
 
     //

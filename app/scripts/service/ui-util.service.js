@@ -13,12 +13,12 @@ define([
                          ClientSideValidationService, $translate) {
 
     var service = {
-      serviceId    : "UIUtilService",
-      showOutput   : false,
-      showOutputTab: 0,
-      metaToRDF: null,
+      serviceId     : "UIUtilService",
+      showOutput    : false,
+      showOutputTab : 0,
+      metaToRDF     : null,
       metaToRDFError: null,
-      instance: null
+      instance      : null
     };
 
     var jsonld = require('jsonld');
@@ -76,8 +76,8 @@ define([
           viewState.spreadsheetCallback();
         });
       } else {
-         if (typeof viewState.cleanupCallback == 'function') {
-           viewState.cleanupCallback()
+        if (typeof viewState.cleanupCallback == 'function') {
+          viewState.cleanupCallback()
         }
       }
       return viewState;
@@ -104,7 +104,7 @@ define([
     service.isSpreadsheetable = function (node) {
 
       var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node)  && !DataManipulationService.isMultipleChoice(node);
+      var result = DataManipulationService.isCardinalElement(node) && !DataManipulationService.isMultipleChoice(node);
 
       if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
@@ -186,6 +186,20 @@ define([
       }
     };
 
+    service.formatTitle = function (node) {
+      if (node) {
+        var title = DataManipulationService.getTitle(node);
+        if (title) {
+          return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+        }
+      }
+    };
+
+    service.formatTitleString = function (title) {
+      if (title) {
+        return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+      }
+    };
 
 
     // get the locator for the node's dom object
@@ -266,7 +280,7 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
-        console.log('toggleElement', id);
+            console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
@@ -288,7 +302,7 @@ define([
       if (content) {
         content = content.replace(/<(?:.|\n)*?>/gm, '');
       }
-      
+
       var size = DataManipulationService.getSize(field);
 
       if (size && size.width && Number.isInteger(size.width)) {
@@ -339,8 +353,6 @@ define([
     service.hideModal = function (id, type) {
       jQuery("#" + service.getModalId(id, type)).modal('hide');
     };
-
-
 
 
     //
