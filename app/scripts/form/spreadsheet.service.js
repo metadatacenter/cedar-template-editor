@@ -152,7 +152,7 @@ define([
           if (context.isField()) {
             headerOrder.push('value');
           } else {
-            var itemOrder = dms.getOrder(scopeElement);
+            var itemOrder = dms.getSpreadsheetOrder(scopeElement);
             for (var i in itemOrder) {
               headerOrder.push(itemOrder[i]);
             }

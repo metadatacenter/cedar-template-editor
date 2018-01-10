@@ -53,9 +53,9 @@ define([
           return UIUtilService.isListView(scope.viewState);
         };
 
-        // scope.isTabView = function () {
-        //   return UIUtilService.isTabView(scope.viewState);
-        // };
+        scope.isTabView = function () {
+          return UIUtilService.isTabView(scope.viewState);
+        };
 
         scope.isMultiple = function () {
           // We consider that checkboxes and multi-choice lists are not 'multiple'
