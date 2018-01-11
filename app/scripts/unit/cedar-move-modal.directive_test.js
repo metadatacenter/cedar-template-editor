@@ -144,7 +144,7 @@ define(['app', 'angular'], function (app) {
           $moveScope.moveModalVisible= true;
           $moveScope.$broadcast('moveModalVisible',
               [$moveScope.moveModalVisible, $moveScope.resource, $moveScope.currentPath,
-               $moveScope.currentFolderId, $moveScope.resourceTypes,
+               $moveScope.currentFolderId, $moveScope.currentFolderId, $moveScope.resourceTypes,
                $moveScope.sortOptionField]);
 
           // flush the timeout and pending requests

@@ -3,18 +3,25 @@
     <div class="modal-header row"  id="copyModalHeader">
 
       <div class="col-sm-1">
-        <h4 class="modal-title ">
-          <span class="arrow-click"  ng-click="copyto.openParent()" aria-label="Back"
+        <h4 class="modal-title " style="padding-left:4px;cursor:pointer;white-space:nowrap;" ng-click="copyto.openHome()"   >
+          <span class="arrow-click" type="button" aria-label="Back"
+            uib-tooltip="{{'HELP.backToHome' | translate}}"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+              data-toggle="tooltip"><i class="fa fa-home"></i></span>
+        </h4>
+      </div>
+
+      <div class="col-sm-10">
+        <h4 class="modal-title "  style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" ng-click="copyto.openParent()">
+          <span type="button" class="arrow-click" aria-label="Back"
               uib-tooltip="{{'HELP.backToParent' | translate}}"
               tooltip-trigger
               tooltip-animation="false"
-              tooltip-placement="left"
+              tooltip-placement="top"
               data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
-        </h4>
-      </div>
-      <div class="col-sm-10">
-        <h4 class="modal-title ">
-          <a  id="folder-title" role="button" ng-click="copyto.selectCurrent();">{{copyto.currentTitle()}}</a>
+          <span id="folder-title" >{{copyto.currentTitle()}}</span>
         </h4>
       </div>
 

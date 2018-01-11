@@ -143,7 +143,7 @@ define(['app', 'angular'], function (app) {
           $copyScope.copyModalVisible= true;
           $copyScope.$broadcast('copyModalVisible',
               [$copyScope.copyModalVisible, $copyScope.resource, $copyScope.currentPath,
-               $copyScope.currentFolderId, $copyScope.resourceTypes,
+               $copyScope.currentFolderId, $copyScope.currentFolderId,, $copyScope.resourceTypes,
                $copyScope.sortOptionField]);
 
           // flush the timeout and pending requests
