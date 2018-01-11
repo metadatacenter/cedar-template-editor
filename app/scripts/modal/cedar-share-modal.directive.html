@@ -34,7 +34,7 @@
               </div>
 
 
-              <select ng-disabled="share.share.newGroupName || share.newGroupName.length==0" class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
+              <select ng-disabled="!share.typeaheadGroup" class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
                   data-dropup-auto="false" class="dropdown group-permission" select-picker
                   select-model="share.typeaheadGroup.id"
                   cedar-live-search="true">
