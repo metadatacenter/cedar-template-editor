@@ -190,7 +190,7 @@ define(['app', 'angular'], function (app) {
           expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(0);
 
         });
-        it('should go to parent folder when clicking back arrow and to child folder when clicking the forward arrow', function () {
+        it('should go to parent folder when clicking back arrow and to home folder when clicking the home icon', function () {
           var elm = moveDirective[0];
           var backElement = angular.element(elm.querySelector(backArrow));
           backElement.triggerHandler('click');
