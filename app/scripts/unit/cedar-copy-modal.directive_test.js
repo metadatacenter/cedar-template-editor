@@ -93,7 +93,8 @@ define(['app', 'angular'], function (app) {
         var contentsResourceTitle = ".contents-resource-title";
         var contentsFolderTitle = ".contents-folder-title";
         var forwardArrow = "#copyModalContent .arrow-click";
-        var backArrow = "div.modal-content  h4.modal-title span.arrow-click";
+        var backArrow = "div.modal-content  h4.modal-title span.arrow-click.back-to-parent";
+        var homeIcon = "div.modal-content  h4.modal-title span.arrow-click.back-to-home";
 
 
         beforeEach(function () {
