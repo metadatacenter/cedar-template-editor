@@ -7297,7 +7297,7 @@ table.apiKey {
             height: 25px;
             float: right;
             outline: none;
-            background: #999 !important;
+            background: #999;
           }
         }
         .hidden-container {
@@ -7333,6 +7333,7 @@ table.apiKey {
           }
         }
 
+
         .btn-info {
           border-radius: 50%;
           width: 40px;
@@ -7365,6 +7366,9 @@ table.apiKey {
           &.folder {
             background: @button-folder;
           }
+        }
+        .btn-info.btn-circle:disabled {
+          background:@gray-med;
         }
         .btn-info.btn-circle-outline {
           box-shadow: none;

@@ -62,6 +62,8 @@ define([
           vm.addShare = addShare;
           vm.removeShare = removeShare;
           vm.updateUserPermission = updateUserPermission;
+          vm.clearTypeAheadUser = clearTypeAheadUser;
+          vm.clearTypeAheadGroup = clearTypeAheadGroup;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
@@ -191,6 +193,14 @@ define([
           function saveShare(resource) {
             setPermissions(resource);
           };
+
+          function clearTypeAheadUser() {
+            vm.typeaheadUser = null;
+          }
+
+          function clearTypeAheadGroup() {
+            vm.typeaheadGroup = null;
+          }
 
           // read the permissions from the server
           function getPermissions(resource) {
