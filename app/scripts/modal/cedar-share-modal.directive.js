@@ -374,7 +374,7 @@ define([
           }
 
           // when selected user changes, reset selected permission
-          function addUserToGroup(user, group) {
+          function addUserToGroup(user, group, domId) {
 
             for (var i = 0; i < group.users.length; i++) {
               if (group.users[i].user.id === user.id) {
@@ -390,6 +390,12 @@ define([
             group.users.push(member);
 
             updateGroupMembers(group);
+
+            // scroll to this node
+            $timeout(function () {
+              var scroller = document.getElementById(domId);
+              scroller.scrollTop = scroller.scrollHeight;
+            });
           }
 
 

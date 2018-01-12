@@ -303,7 +303,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadUser || !share.typeaheadGroup ||  share.typeaheadGroup.specialGroup"
-                    ng-click="share.addUserToGroup(share.typeaheadUser, share.typeaheadGroup);share.clearTypeAheadUser()">
+                    ng-click="share.addUserToGroup(share.typeaheadUser,  share.typeaheadGroup, 'group-members');share.clearTypeAheadUser()">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
