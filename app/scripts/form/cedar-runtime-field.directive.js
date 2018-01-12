@@ -57,6 +57,12 @@ define([
         return dms.getDescription(field || $scope.field);
       };
 
+      // get the field description
+      $scope.hasDescription = function () {
+        console.log('hasDescription');
+        return dms.getDescription($scope.field).length > 0;
+      };
+
       $scope.getContent = function (field) {
         return dms.getContent(field || $scope.field);
       };

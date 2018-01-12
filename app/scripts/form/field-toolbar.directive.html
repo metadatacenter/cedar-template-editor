@@ -1,18 +1,18 @@
 <div class="toolbar" >
 
-  <button type="button" class="delete pull-right"
+  <button ng-if="canDelete()" type="button" class="delete pull-right"
       ng-click="remove(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.Remove' | translate}}">
-    <i class="fa fa-trash" ng-class="{ 'invisible':!canDelete()}"></i>
+    <i class="fa fa-trash"></i>
   </button>
 
-  <button type="button" class="expand-all pull-right"
+  <button ng-if="isExpandable()" type="button" class="expand-all pull-right"
       ng-click="expandAll(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ExpandAll' | translate}}">
-    <i class="fa fa-expand " ng-class="{'invisible':!isExpandable()}"></i>
+    <i class="fa fa-expand"></i>
   </button>
 
-  <button type="button" class="question pull-right"
+  <button ng-if="hasDescription()" type="button" class="question pull-right"
       ng-click="$event.stopPropagation()"
       uib-tooltip="{{(getDescription() || 'GENERIC.Help') | translate}}">
     <i class="fa fa-question-circle"></i>
@@ -38,7 +38,6 @@
       ng-click="fullscreen();$event.stopPropagation()">
     <i class="fa fa-expand "></i>
   </button>
-
 
   <button type="button" class="view-toggle pull-right"
       ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
