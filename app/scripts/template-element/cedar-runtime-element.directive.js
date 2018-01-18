@@ -279,6 +279,7 @@ define([
 
       // can we recursively expand this element, i.e. does it have nested elements?
       scope.isExpandable = function () {
+
         var result = false;
         var props = dms.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
@@ -286,6 +287,7 @@ define([
             result = true;
           }
         });
+        console.log('isExpandable',result);
         return result;
       };
 

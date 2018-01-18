@@ -35,7 +35,8 @@ define([
         min         : '=',
         max         : '=',
         select      : '=',
-        range       : '='
+        range       : '=',
+        isExpandable: '='
       },
       controller : function ($scope, $element) {
 
@@ -73,9 +74,9 @@ define([
           return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
         };
 
-        scope.isExpandable = function () {
-          return UIUtilService.isExpandable(scope.field);
-        };
+        // scope.isExpandable = function () {
+        //   return UIUtilService.isExpandable(scope.field);
+        // };
 
         // get the field description
         scope.getDescription = function () {

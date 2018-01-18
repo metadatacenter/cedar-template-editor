@@ -516,6 +516,7 @@ define([
 
         // expand all the elements nested inside the form
         $scope.expandAll = function () {
+          console.log('expandAll');
 
           // expand the form
           $scope.expanded = true;
