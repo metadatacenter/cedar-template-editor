@@ -136,23 +136,23 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-        //console.log('switchToSpreadsheet elsment',scope.element);
-        SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
-          return false;
-        }, function () {
-          scope.addMoreInput();
-        }, function () {
-          scope.removeElement(scope.model.length - 1);
-        }, function () {
-          scope.createExtraRows();
-        }, function () {
-          //console.log('invoke deleteExtraRows');
-          scope.deleteExtraRows();
-        })
+        scope.setActive(0,true);
+        $timeout(function () {
+          SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
+            return false;
+          }, function () {
+            scope.addMoreInput();
+          }, function () {
+            scope.removeElement(scope.model.length - 1);
+          }, function () {
+            scope.createExtraRows();
+          }, function () {
+            scope.deleteExtraRows();
+          })
+        });
       };
 
       scope.cleanupSpreadsheet = function () {
-        //console.log('cleanupSpreadsheet element',scope.element);
         scope.deleteExtraRows();
       };
 
