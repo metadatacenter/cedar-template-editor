@@ -86,6 +86,13 @@ define([
         return dms.isCardinalElement($scope.field);
       };
 
+
+      $scope.isMultiple = function () {
+        // We consider that checkboxes and multi-choice lists are not 'multiple'
+        return (dms.isCardinalElement($scope.field) && !dms.isMultipleChoiceField($scope.field));
+      };
+
+
       // what is the dom id for this field?
       $scope.getLocator = function (index) {
         return UIUtilService.getLocator($scope.field, index || 0, $scope.path, $scope.uid);
@@ -116,6 +123,11 @@ define([
 
       $scope.getUnescapedContent = function (field) {
         return field._ui._content;
+      };
+
+      // is this a section break?
+      $scope.isSectionBreak = function (field) {
+        return dms.isSectionBreak(field || $scope.field);
       };
 
       // is this a static image?

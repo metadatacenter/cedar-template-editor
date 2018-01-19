@@ -49,7 +49,7 @@
   </button>
 
   <cedar-pager class="cedar-pager pull-right"
-      ng-if="isMultiple() && isTabView()"
+      ng-if="paging"
       ng-click="$event.stopPropagation()"
       values="values" index="index" min="min" max="max" select="select" range="range">
   </cedar-pager>

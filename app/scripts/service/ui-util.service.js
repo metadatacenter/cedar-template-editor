@@ -186,6 +186,20 @@ define([
       }
     };
 
+    service.formatTitle = function (node) {
+      if (node) {
+        var title = DataManipulationService.getTitle(node);
+        if (title) {
+          return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+        }
+      }
+    };
+
+    service.formatTitleString = function (title) {
+      if (title) {
+        return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+      }
+    };
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {

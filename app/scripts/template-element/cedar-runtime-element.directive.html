@@ -69,7 +69,6 @@
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
-
             {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
           </div>
 
@@ -87,17 +86,14 @@
       </div>
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
-        
+
         <li class="tv"
-
             ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
-            ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
+            ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
 
-          <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"
-              style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;">
+          <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)" style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;"></div>
+          <div ng-if=" isExpanded(index) && index === i">
 
-          </div>
-          <div ng-if="isExpanded(index) && index === i">
             <cedar-runtime-nested-element
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"
@@ -109,7 +105,8 @@
                 parent-key="fieldKey"
                 field-key="key"
                 path="path+'-'+i"
-                uid="uid+'-'+key">
+                uid="uid+'-'+key"
+                previous="$root.propertiesOf(element)[$root.schemaOf(element)['_ui']['order'][$index-1]]">
             </cedar-runtime-nested-element>
           </div>
 
