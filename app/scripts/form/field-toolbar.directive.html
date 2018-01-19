@@ -1,4 +1,4 @@
-<div class="toolbar pull-right" style="text-align:right">
+<div class="" style="white-space:nowrap">
 
   <cedar-pager class="cedar-pager "
       ng-if="isMultiple() && isTabView()"
@@ -19,7 +19,6 @@
       uib-tooltip="{{'GENERIC.ExpandAll' | translate}}">
     <i class="fa fa-expand"></i>
   </button>
-
 
   <button type="button" class="full-screen" tooltip-append-to-body="true"
       ng-if="isSpreadsheetView()"
@@ -42,8 +41,9 @@
     <i class="fa fa-plus-circle"></i>
   </button>
 
-
-  <button type="button" class="view-toggle " tooltip-append-to-body="true"
+  <button type="button"
+      ng-if="isSpreadsheetView() || isTabView() || isListView()"
+      class="view-toggle " tooltip-append-to-body="true"
       ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ToggleView' | translate}}">
     <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ng-class="{'hidden':!isMultiple()}"></i>
@@ -51,14 +51,11 @@
     <i ng-if="isListView()" class="fa fa-table " ng-class="{'hidden':!isMultiple()}"></i>
   </button>
 
-
-
   <button type="button" class="delete " tooltip-append-to-body="true"
       ng-click="remove(index);$event.stopPropagation()"
       ng-if="canDelete()"
       uib-tooltip="{{'GENERIC.Remove' | translate}}">
     <i class="fa fa-trash"></i>
   </button>
-
 
 </div>
