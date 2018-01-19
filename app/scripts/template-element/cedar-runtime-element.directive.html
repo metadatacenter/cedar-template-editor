@@ -60,15 +60,13 @@
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
 
-      <div style="cursor:pointer;display:flex;justify-content: space-between" ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
-        <div class="truncate">
-        <div  class="element title " ng-class="{'isInactive' : isInactive(index)}">
+      <div class="truncate"  style="cursor:pointer;white-space:nowrap;position:relative;left:-5px;" ng-class="{'isInactive' : isInactive(index)}" ng-click="toggleExpanded(i)">
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
-            {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
+          <span class="element title ">{{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span></span>
         </div>
-        </div>
+  
 
         <div class="tools " style="white-space:nowrap;">
           <field-toolbar ng-click="toggleExpanded(index)"
@@ -79,7 +77,7 @@
               spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
               expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
           </field-toolbar>
-        </div>
+
       </div>
 
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
