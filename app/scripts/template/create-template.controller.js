@@ -45,6 +45,8 @@ define([
         $scope.hasInstances;
         $scope.cannotWrite;
 
+        $scope.isTemplate = true;
+
         $scope.checkLocking = function () {
           var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
           $scope.cannotWrite = !result;
@@ -60,7 +62,7 @@ define([
 
                   var json = angular.toJson(response);
                   var status = response.validates == "true";
-                  $scope.logValidation(status, json);
+                  UIUtilService.logValidation(status, json);
 
                   $timeout(function () {
                     $rootScope.$broadcast("form:validation", {state: status});
@@ -288,19 +290,6 @@ define([
           }
         };
 
-        $scope.logValidation = function (validationStatus, validationReport) {
-
-          var report = JSON.parse(validationReport);
-          for (var i = 0; i < report.warnings.length; i++) {
-            console.log(
-                'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
-          }
-          for (var i = 0; i < report.errors.length; i++) {
-            console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
-          }
-
-          $rootScope.setValidation(validationStatus);
-        };
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
@@ -337,8 +326,7 @@ define([
                   function (response) {
 
 
-                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                        response.headers("CEDAR-Validation-Report"));
+                    UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                     // confirm message
                     var title = dms.getTitle(response.data);
@@ -371,8 +359,7 @@ define([
                     TemplateService.updateTemplate(id, copiedForm),
                     function (response) {
 
-                      $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                          response.headers("CEDAR-Validation-Report"));
+                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                       //$rootScope.jsonToSave = response.data;
                       //DataManipulationService.createDomIds(response.data);

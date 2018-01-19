@@ -20,7 +20,8 @@
       <!-- show the spreadsheet -->
       <div ng-if="isSpreadsheetView()">
 
-        <div  class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}" id="{{getLocator(0)}}">
+        <div class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"
+            id="{{getLocator(0)}}">
           <div class="col-sm-3 col-xs-* ">
             <div class="leader"></div>
 
@@ -40,11 +41,11 @@
             </div>
 
 
-                <div class="spreadsheetViewDetector"></div>
-                <div class="spreadsheetViewContainer"></div>
-                <div id="spreadsheetViewLogs"></div>
-                <div id="hooksList"></div>
-                <div id="htDatepickerHolder"></div>
+            <div class="spreadsheetViewDetector"></div>
+            <div class="spreadsheetViewContainer"></div>
+            <div id="spreadsheetViewLogs"></div>
+            <div id="hooksList"></div>
+            <div id="htDatepickerHolder"></div>
 
           </div>
         </div>
@@ -53,8 +54,13 @@
       <!-- show a paged list of fields  -->
       <div ng-if="isTabView() && valueArray.length > 0">
 
-        <div  class="row" id="{{getLocator(index)}}"
+        <div ng-if="isSectionBreak()" class="row">
+          <div class="section-break-inline">{{getTitle()}}</div>
+        </div>
+
+        <div ng-if="!isSectionBreak()" class="row" id="{{getLocator(index)}}"
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
+
 
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="toggleActive(index)" class="title field isInactive"
@@ -74,7 +80,7 @@
           <div class="col-sm-9 answer" ng-if="isActive(index)">
             <div class="row tools">
               <field-toolbar class="col-xs-12" values="valueArray" min="pageMin"
-                  max="pageMax" select="selectPage"
+                  max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
                   range="pageRange" model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive" expand-all="expandAll"
                   get-locator="getLocator" view-state="viewState">
@@ -83,6 +89,7 @@
 
 
             <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
+
               <div ng-if="isImage(previous)" class="image">
                 <figure>
                   <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
@@ -90,7 +97,8 @@
                   <figcaption><label>{{getTitle(previous)}}</label></figcaption>
                 </figure>
               </div>
-              <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+              <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
+                  ng-bind-html="getUnescapedContent(previous)"></div>
               <div ng-if="isYouTube(previous)" class="youtube">
                 <figure>
                   <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
@@ -100,7 +108,8 @@
 
             <div ng-repeat="(i, valueElement) in valueArray">
 
-              <div ng-if="i===index">
+
+              <div ng-if="i===index && !isSectionBreak()">
 
                 <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                   <div ng-include="getFieldUrl()"></div>
@@ -118,7 +127,7 @@
       <div ng-if="isListView()" ng-repeat="(index, valueElement) in valueArray">
 
         <!-- inactive, not being edited  -->
-        <div  class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
+        <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3 col-xs-* ">
 
             <div ng-click="toggleActive(index)" class="title field isInactive">
@@ -133,7 +142,7 @@
         </div>
 
         <!-- active, being edited --->
-        <div  class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
+        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
             <div class="title field isActive">
@@ -141,36 +150,36 @@
             </div>
           </div>
           <div class="col-sm-9 answer">
-              <div class="row tools">
-                <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
-                    index="index" view-state="viewState"
-                    remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
-                    expand-all="expandAll"
-                    get-locator="getLocator"></field-toolbar>
-              </div>
-
-              <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
-                <div ng-if="isImage(previous)" class="image">
-                  <figure>
-                    <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
-                        type="image/png" width="100%"/>
-                    <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                  </figure>
-                </div>
-                <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
-                <div ng-if="isYouTube(previous)" class="youtube">
-                  <figure>
-                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                  </figure>
-                </div>
-              </div>
-
-              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                <div class="originalContent" ng-include="getFieldUrl()"></div>
-                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-              </form>
+            <div class="row tools">
+              <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
+                  index="index" view-state="viewState"
+                  remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
+                  expand-all="expandAll"
+                  get-locator="getLocator"></field-toolbar>
             </div>
+
+            <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
+              <div ng-if="isImage(previous)" class="image">
+                <figure>
+                  <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                      type="image/png" width="100%"/>
+                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                </figure>
+              </div>
+              <div ng-if="isRichText(previous)" class="richtext" ng-bind-html="getUnescapedContent(previous)"></div>
+              <div ng-if="isYouTube(previous)" class="youtube">
+                <figure>
+                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                </figure>
+              </div>
+            </div>
+
+            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+              <div class="originalContent" ng-include="getFieldUrl()"></div>
+              <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+              <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+            </form>
+          </div>
 
         </div>
       </div>

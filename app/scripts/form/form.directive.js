@@ -35,6 +35,8 @@ define([
         $scope.model = $scope.model || {};
         $scope.checkSubmission = false;
         $scope.pageIndex = $scope.pageIndex || 0;
+        $scope.pageMin=0;
+        $scope.pageMax=0;
 
         $scope.currentPage = [],
             $scope.pageIndex = 0,
@@ -85,6 +87,7 @@ define([
           if ($scope.form) {
 
             var orderArray = [];
+            var titles = [];
             var dimension = 0;
 
             $scope.form._ui = $scope.form._ui || {};
@@ -99,19 +102,30 @@ define([
               });
             }
 
+
+
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
-              if ($scope.form.properties[field].properties &&
-                  $scope.form.properties[field]._ui &&
-                  $scope.form.properties[field]._ui.inputType == 'page-break') {
-                dimension++;
+              if ($scope.form.properties[field]._ui && $scope.form.properties[field]._ui.inputType == 'page-break') {
+                if (index == 0) {
+                  titles.push($scope.getTitle());
+                } else {
+                  dimension++;
+                  titles.push(dms.getTitle($scope.form.properties[field]));
+                }
               }
               // Push field key into page array
               orderArray[dimension] = orderArray[dimension] || [];
               orderArray[dimension].push(field);
             });
 
+            if (titles.length == 0) {
+              titles.push($scope.getTitle());
+            }
+
             $scope.pagesArray = orderArray;
+            $scope.pageMax = $scope.pagesArray.length-1;
+            $scope.pageTitles = titles;
           }
         };
 
@@ -150,6 +164,17 @@ define([
         // Load the next page of the form
         $scope.nextPage = function () {
           $scope.pageIndex++;
+          $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+        };
+
+
+        $scope.pageTitle = function () {
+          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex+1) + '. ' : '') + $scope.pageTitles[$scope.pageIndex];
+        };
+
+
+        $scope.selectPage = function (i) {
+          $scope.pageIndex = i;
           $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
         };
 
@@ -437,6 +462,12 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
+        $scope.isSectionBreak = function (item) {
+          var properties = dms.propertiesOf($scope.form);
+          var node = properties[item];
+          return dms.isSectionBreak(node);
+        };
+
         $scope.isHidden = function(item) {
           var node = $scope.form.properties[item];
           return DataManipulationService.isHidden(node);
@@ -508,6 +539,10 @@ define([
 
         $scope.getTitle = function () {
           return dms.getTitle($scope.form);
+        };
+
+        $scope.formatTitle = function () {
+          return UIUtilService.formatTitle($scope.form);
         };
 
         $scope.isExpandable = function () {

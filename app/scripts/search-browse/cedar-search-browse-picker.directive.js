@@ -1140,10 +1140,11 @@ define([
             //  r = vm.selectedResource;
             //}
             var resource = value || vm.selectedResource;
-            var folderId = vm.currentFolderId || CedarUser.getHomeFolderId();
+            var homeFolderId = CedarUser.getHomeFolderId();
+            var folderId = vm.currentFolderId || homeFolderId;
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
-                [vm.copyModalVisible, resource, vm.currentPath, folderId, vm.resourceTypes,
+                [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
                  CedarUser.getSort()]);
           }
 
@@ -1157,8 +1158,9 @@ define([
 
             if (vm.canWrite(r)) {
               vm.moveModalVisible = true;
+              var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
