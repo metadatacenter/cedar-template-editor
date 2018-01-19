@@ -13,12 +13,12 @@ define([
                          ClientSideValidationService, $translate) {
 
     var service = {
-      serviceId    : "UIUtilService",
-      showOutput   : false,
-      showOutputTab: 0,
-      metaToRDF: null,
+      serviceId     : "UIUtilService",
+      showOutput    : false,
+      showOutputTab : 0,
+      metaToRDF     : null,
       metaToRDFError: null,
-      instance: null
+      instance      : null
     };
 
     var jsonld = require('jsonld');
@@ -76,8 +76,8 @@ define([
           viewState.spreadsheetCallback();
         });
       } else {
-         if (typeof viewState.cleanupCallback == 'function') {
-           viewState.cleanupCallback()
+        if (typeof viewState.cleanupCallback == 'function') {
+          viewState.cleanupCallback()
         }
       }
       return viewState;
@@ -104,7 +104,7 @@ define([
     service.isSpreadsheetable = function (node) {
 
       var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node)  && !DataManipulationService.isMultipleChoice(node);
+      var result = DataManipulationService.isCardinalElement(node) && !DataManipulationService.isMultipleChoice(node);
 
       if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
@@ -187,7 +187,6 @@ define([
     };
 
 
-
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
       var hashId = DataUtilService.getHashCode(id);
@@ -266,7 +265,7 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
-        console.log('toggleElement', id);
+            console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
@@ -288,7 +287,7 @@ define([
       if (content) {
         content = content.replace(/<(?:.|\n)*?>/gm, '');
       }
-      
+
       var size = DataManipulationService.getSize(field);
 
       if (size && size.width && Number.isInteger(size.width)) {
@@ -339,8 +338,6 @@ define([
     service.hideModal = function (id, type) {
       jQuery("#" + service.getModalId(id, type)).modal('hide');
     };
-
-
 
 
     //
@@ -420,6 +417,39 @@ define([
       DataManipulationService.defaultTitle(node);
       if (DataManipulationService.isMultiAnswer(node)) {
         DataManipulationService.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
+      }
+    };
+
+    //report validation status, errors and warnings
+    service.logValidation = function (status, report) {
+
+      // tell the user about the status
+      $rootScope.setValidation(status);
+
+      // try to parse the report
+      if (report) {
+        var r;
+
+        try {
+          r = JSON.parse(report);
+        } catch (e) {
+          console.log(e); // error in the above string!
+        }
+
+
+        if (r) {
+          if (r.warnings) {
+            for (var i = 0; i < r.warnings.length; i++) {
+              console.log(
+                  'Validation Warning: ' + r.warnings[i].message + ' at location ' + r.warnings[i].location);
+            }
+          }
+          if (r.errors) {
+            for (var i = 0; i < r.errors.length; i++) {
+              console.log('Validation Error: ' + r.errors[i].message + ' at location ' + r.errors[i].location);
+            }
+          }
+        }
       }
     };
 
