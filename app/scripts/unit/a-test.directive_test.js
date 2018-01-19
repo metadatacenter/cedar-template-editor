@@ -115,7 +115,7 @@ define(['app', 'angular'], function (app) {
 
           copyModalVisible = true;
           $rootScope.$broadcast('copyModalVisible',
-              [copyModalVisible, resource, currentPath, currentFolderId,
+              [copyModalVisible, resource, currentPath, currentFolderId, currentFolderId,
                resourceTypes,
                CedarUser.getSort()]);
 

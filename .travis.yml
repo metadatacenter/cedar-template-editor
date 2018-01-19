@@ -13,7 +13,7 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-602
+  - feature/home-shortcut
 notifications:
   slack:
     on_success: never
