@@ -62,6 +62,8 @@ define([
           vm.addShare = addShare;
           vm.removeShare = removeShare;
           vm.updateUserPermission = updateUserPermission;
+          vm.clearTypeAheadUser = clearTypeAheadUser;
+          vm.clearTypeAheadGroup = clearTypeAheadGroup;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
@@ -191,6 +193,14 @@ define([
           function saveShare(resource) {
             setPermissions(resource);
           };
+
+          function clearTypeAheadUser() {
+            vm.typeaheadUser = null;
+          }
+
+          function clearTypeAheadGroup() {
+            vm.typeaheadGroup = null;
+          }
 
           // read the permissions from the server
           function getPermissions(resource) {
@@ -364,7 +374,7 @@ define([
           }
 
           // when selected user changes, reset selected permission
-          function addUserToGroup(user, group) {
+          function addUserToGroup(user, group, domId) {
 
             for (var i = 0; i < group.users.length; i++) {
               if (group.users[i].user.id === user.id) {
@@ -380,6 +390,12 @@ define([
             group.users.push(member);
 
             updateGroupMembers(group);
+
+            // scroll to this node
+            $timeout(function () {
+              var scroller = document.getElementById(domId);
+              scroller.scrollTop = scroller.scrollHeight;
+            });
           }
 
 
