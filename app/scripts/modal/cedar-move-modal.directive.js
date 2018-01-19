@@ -44,6 +44,7 @@ define([
 
 
           // move to...
+          vm.openHome = openHome;
           vm.openParent = openParent;
           vm.currentTitle = currentTitle;
           vm.parentTitle = parentTitle;
@@ -87,6 +88,10 @@ define([
             }
             return false;
           };
+
+          function openHome() {
+            getDestinationById(vm.homeFolderId);
+          }
 
           function openParent() {
 
@@ -211,10 +216,11 @@ define([
                       $scope.destinationResources = response.resources;
                     }
 
+                    var resource = response.pathInfo[response.pathInfo.length - 1];
+                    vm.selectedDestination = resource;
+                    vm.currentDestination = resource;
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
-
-                    vm.selectCurrent();
 
                   },
                   function (error) {
@@ -290,8 +296,9 @@ define([
             var resource = params[1];
             var currentPath = params[2];
             var currentFolderId = params[3];
-            var resourceTypes = params[4];
-            var sortOptionField = params[5];
+            var homeFolderId = params[4];
+            var resourceTypes = params[5];
+            var sortOptionField = params[6];
 
 
 
@@ -300,6 +307,7 @@ define([
               vm.moveResource = resource;
               vm.currentPath = currentPath;
               vm.currentFolderId = currentFolderId;
+              vm.homeFolderId = homeFolderId;
               vm.currentDestination = vm.currentPath;
               vm.resourceTypes = resourceTypes;
               vm.sortOptionField = sortOptionField;
