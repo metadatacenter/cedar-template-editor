@@ -13,8 +13,9 @@
   </button>
 
   <button type="button" class="question pull-right" tooltip-append-to-body="true"
+      ng-if="getDescription() && getDescription().length > 0"
       ng-click="$event.stopPropagation()"
-      uib-tooltip="{{(getDescription() || 'GENERIC.Help') | translate}}">
+      uib-tooltip="{{getDescription() | translate}}">
     <i class="fa fa-question-circle"></i>
   </button>
 
