@@ -134,6 +134,8 @@ define([
           vm.setSortByName = setSortByName;
           vm.setSortByCreated = setSortByCreated;
           vm.setSortByUpdated = setSortByUpdated;
+          vm.updateSort = updateSort;
+          vm.isSort = isSort;
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
@@ -1080,6 +1082,36 @@ define([
             init();
           }
 
+          function isSort(value) {
+            var result;
+            switch (value) {
+              case 'name':
+                result = CedarUser.isSortByName();
+                break;
+              case 'createdOnTS':
+                result = CedarUser.isSortByCreated();
+                break;
+              case 'lastUpdatedOnTS':
+                result = CedarUser.isSortByUpdated();
+                break;
+            }
+            return result;
+          }
+
+          function updateSort(value) {
+            switch (value) {
+              case 'name':
+                setSortByName();
+                break;
+              case 'createdOnTS':
+                setSortByCreated();
+                break;
+              case 'lastUpdatedOnTS':
+                setSortByUpdated();
+                break;
+            }
+          }
+
           function sortField() {
             return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
           }
@@ -1251,4 +1283,5 @@ define([
         }
       }
     }
-);
+)
+;

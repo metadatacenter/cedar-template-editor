@@ -344,9 +344,9 @@
 
                 <div class="box-title">
                   <div class="cell type"></div>
-                  <div class="cell resource">Title</div>
-                  <div class="cell date">Created</div>
-                  <div class="cell date">Modified</div>
+                  <a class="cell resource" ng-class="{'bold': dc.isSort('name')}" href="#"  href="#" ng-click="dc.updateSort('name')">Title</a>
+                  <a class="cell date" ng-class="{'bold': dc.isSort('createdOnTS')}"  href="#"   ng-click="dc.updateSort('createdOnTS')">Created</a>
+                  <a class="cell date" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}"  href="#"   ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
                 </div>
 
                 <!-- show the folders first -->
