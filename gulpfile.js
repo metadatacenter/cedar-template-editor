@@ -197,6 +197,19 @@ gulp.task('test-delete', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('test--update-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/update-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
