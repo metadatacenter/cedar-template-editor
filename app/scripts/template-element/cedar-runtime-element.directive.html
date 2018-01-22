@@ -23,14 +23,17 @@
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
 
         <!-- header -->
-        <div style="cursor:pointer;display:flex;justify-content: space-between" ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
-          <div  class="truncate" ng-click="toggleExpanded(index)"   style="cursor:pointer;white-space:nowrap;position:relative;left:-5px;font-size: 1em;color: #71977F;" ng-class="{'isInactive' : isInactive(index)}">
-            <span >
+        <div style="cursor:pointer;display:flex;justify-content: space-between"
+            ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
+          <div class="truncate" ng-click="toggleExpanded(index)"
+              style="cursor:pointer;white-space:nowrap;position:relative;left:-5px;font-size: 1em;color: #71977F;"
+              ng-class="{'isInactive' : isInactive(index)}">
+            <span>
               <button type="button" class="expand">
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
             </span>
-              <span>{{getPropertyLabel()}}</span>
+            <span>{{getPropertyLabel()}}</span>
           </div>
           <div class="tools " style="white-space:nowrap;">
             <field-toolbar ng-click="toggleExpanded(index)"
@@ -60,23 +63,23 @@
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
 
-      <div class="truncate"  style="cursor:pointer;white-space:nowrap;position:relative;left:-5px;" ng-class="{'isInactive' : isInactive(index)}" ng-click="toggleExpanded(i)">
-            <button type="button" class="expand">
-              <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
-            </button>
-          <span class="element title ">{{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span></span>
-        </div>
-  
+      <div class="truncate" style="cursor:pointer;white-space:nowrap;" ng-class="{'isInactive' : isInactive(index)}" ng-click="toggleExpanded(i)">
+        <button type="button" class="expand">
+          <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
+        </button>
+        <span class="element title ">{{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span></span>
+      </div>
 
-        <div class="tools " style="white-space:nowrap;">
-          <field-toolbar ng-click="toggleExpanded(index)"
-              ng-if="isExpanded(index)" values="valueArray" index="index"
-              min="pageMin" max="pageMax" range="pageRange"
-              field="element" model="valueArray" index="index" view-state="viewState"
-              remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
-              spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-              expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
-          </field-toolbar>
+
+      <div class="tools" style="white-space:nowrap;">
+        <field-toolbar ng-click="toggleExpanded(index)"
+            ng-if="isExpanded(index)" values="valueArray" index="index"
+            min="pageMin" max="pageMax" range="pageRange"
+            field="element" model="valueArray" index="index" view-state="viewState"
+            remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
+            spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
+            expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
+        </field-toolbar>
 
       </div>
 
@@ -113,7 +116,8 @@
 
       <div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
-        <div style="cursor:pointer;display:flex;justify-content: space-between" ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
+        <div style="cursor:pointer;display:flex;justify-content: space-between"
+            ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">
           <div class="truncate">
             <a class="element title truncate" ng-class="{'isInactive' : isInactive(i)}">
               <button type="button" class="expand">
@@ -122,8 +126,8 @@
 
               {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
-          <div style="white-space:nowrap;">
-            <field-toolbar  field="element" model="valueArray" index="i" view-state="viewState"
+          <div class="tools" style="white-space:nowrap;">
+            <field-toolbar field="element" model="valueArray" index="i" view-state="viewState"
                 remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
                 spreadsheet="switchToSpreadsheet" close="unExpand" expand-all="expandAll" get-locator="getLocator">
             </field-toolbar>

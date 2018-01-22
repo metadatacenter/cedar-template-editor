@@ -35,11 +35,11 @@ define([
     };
 
     vm.validInvalidTip = function() {
-      return $translate.instant('Document is ' + ($rootScope.documentState.valid? "valid": "invalid"));
+      return $translate.instant(($rootScope.documentState.valid? "Valid": "Invalid"));
     };
 
     vm.lockUnlockTip = function() {
-      return $translate.instant('Document is ' + ($rootScope.locked? "locked": "unlocked"));
+      return $translate.instant(($rootScope.locked? "Locked": "Unlocked"));
     };
 
     vm.confirmBack = function () {
