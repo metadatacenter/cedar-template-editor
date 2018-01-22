@@ -9,13 +9,14 @@ define([
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
-                                     "DataManipulationService", "DataUtilService", "AuthorizedBackendService",
+                                     "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService, DataUtilService,
+                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService,
+                                   DataUtilService,UIUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
     var dms = DataManipulationService;
@@ -33,6 +34,8 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
     $scope.viewType = 'popup';
+
+    $scope.isElement = true;
 
     // template details
     $scope.details;
@@ -82,7 +85,7 @@ define([
 
               var json = angular.toJson(response);
               var status = response.validates == "true";
-              $scope.logValidation(status, json);
+              UIUtilService.logValidation(status, json);
 
               $timeout(function () {
                 $rootScope.$broadcast("form:validation", { state: status });
@@ -259,20 +262,6 @@ define([
 
     };
 
-    $scope.logValidation = function (validationStatus, validationReport) {
-
-      var report = JSON.parse(validationReport);
-      for (var i = 0; i < report.warnings.length; i++) {
-        console.log(
-            'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
-      }
-      for (var i = 0; i < report.errors.length; i++) {
-        console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
-      }
-
-      $rootScope.setValidation(validationStatus);
-    };
-
     $scope.saveElement = function () {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -321,10 +310,7 @@ define([
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
 
-
-
-                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                    response.headers("CEDAR-Validation-Report"));
+                UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                 // confirm message
                 var title = dms.getTitle(response.data);
@@ -347,31 +333,39 @@ define([
         // Update element
         else {
           var id = $scope.element['@id'];
-          dms.stripTmps($scope.element);
           dms.updateKeys($scope.element);
+          $rootScope.jsonToSave = $scope.element;
 
-          AuthorizedBackendService.doCall(
-              TemplateElementService.updateTemplateElement(id, $scope.element),
-              function (response) {
+          var copiedForm = jQuery.extend(true, {}, $scope.element);
+          if (copiedForm) {
+            // strip the temps from the copied form only, and save the copy
+            DataManipulationService.stripTmps(copiedForm);
 
-                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                    response.headers("CEDAR-Validation-Report"));
 
-                dms.createDomIds(response.data);
-                angular.extend($scope.element, response.data);
-                $rootScope.jsonToSave = $scope.element;
-                UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-                    'GENERIC.Updated');
 
-                owner.enableSaveButton();
-                $scope.setClean();
+            AuthorizedBackendService.doCall(
+                TemplateElementService.updateTemplateElement(id, copiedForm),
+                function (response) {
 
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                owner.enableSaveButton();
-              }
-          );
+                  UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+                  // dms.createDomIds(response.data);
+                  // angular.extend($scope.element, response.data);
+
+                  UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                      'GENERIC.Updated');
+
+                  owner.enableSaveButton();
+                  $scope.setClean();
+
+
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                  owner.enableSaveButton();
+                }
+            );
+          }
         }
       }
     };

@@ -22,7 +22,7 @@ describe('clean-up', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log("clean-up should be on the workspace - hello");
+    console.log("clean-up should be on the workspace");
     workspacePage.onWorkspace();
   });
 

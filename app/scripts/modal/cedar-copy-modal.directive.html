@@ -3,18 +3,25 @@
     <div class="modal-header row"  id="copyModalHeader">
 
       <div class="col-sm-1">
-        <h4 class="modal-title ">
-          <span class="arrow-click"  ng-click="copyto.openParent()" aria-label="Back"
+        <h4 class="modal-title back-to-home" style="padding-left:4px;cursor:pointer;white-space:nowrap;" ng-click="copyto.openHome()"   >
+          <span class="arrow-click " type="button" aria-label="Back"
+            uib-tooltip="{{'HELP.backToHome' | translate}}"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+              data-toggle="tooltip"><i class="fa fa-home"></i></span>
+        </h4>
+      </div>
+
+      <div class="col-sm-10">
+        <h4 class="modal-title back-to-parent"  style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" ng-click="copyto.openParent()">
+          <span type="button" class="arrow-click " aria-label="Back"
               uib-tooltip="{{'HELP.backToParent' | translate}}"
               tooltip-trigger
               tooltip-animation="false"
-              tooltip-placement="left"
+              tooltip-placement="top"
               data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
-        </h4>
-      </div>
-      <div class="col-sm-10">
-        <h4 class="modal-title ">
-          <a  role="button" ng-click="copyto.selectCurrent();">{{copyto.currentTitle()}}</a>
+          <span id="folder-title" >{{copyto.currentTitle()}}</span>
         </h4>
       </div>
 
@@ -27,13 +34,13 @@
     <div id="copyModalContent"  class="modal-body scrollable-content" cedar-infinite-scroll  load-more="copyto.loadMore()">
 
       <!-- show the clickable folders  -->
-      <div ng-if="dc.isFolder(resource)" class="box-row row"
+      <div ng-if="copyto.isFolder(resource)" class="box-row row"
           ng-class="{ selected: copyto.isDestinationSelected(resource)}"
-          ng-repeat="(index, resource) in copyto.destinationResources">
+          ng-repeat="(index, resource) in destinationResources">
         <div class="col-sm-1 " ng-click="copyto.selectDestination(resource)"><i style="color:#9e9e9e;font-size:20px;padding-right:5px"
             class="fa" ng-class="copyto.getResourceIconClass(resource)"></i>
         </div>
-        <a class="col-sm-10" ng-click="copyto.selectDestination(resource)">{{resource.displayName}}
+        <a class="contents-folder-title col-sm-10" ng-click="copyto.selectDestination(resource)">{{resource.displayName}}
         </a>
         <div class="col-sm-1 arrow-click"
             ng-click="copyto.openDestination(resource)"
@@ -46,11 +53,11 @@
 
       <!-- then the disabled documents -->
       <div ng-if="!copyto.isFolder(resource)" class="box-row row disabled"
-          ng-repeat="(index, resource) in copyto.destinationResources">
+          ng-repeat="(index, resource) in destinationResources">
         <div class="col-sm-1" ng-click="copyto.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
             ng-class="copyto.getResourceIconClass(resource)"></i>
         </div>
-        <div class="col-sm-10" ng-click="copyto.selectDestination(resource)"  disabled="disabled">{{resource.displayName}}
+        <div class="contents-resource-title col-sm-10" ng-click="copyto.selectDestination(resource)"  disabled="disabled">{{resource.displayName}}
         </div>
 
       </div>

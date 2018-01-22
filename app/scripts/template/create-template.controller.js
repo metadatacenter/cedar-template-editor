@@ -45,6 +45,8 @@ define([
         $scope.hasInstances;
         $scope.cannotWrite;
 
+        $scope.isTemplate = true;
+
         $scope.checkLocking = function () {
           var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
           $scope.cannotWrite = !result;
@@ -60,10 +62,10 @@ define([
 
                   var json = angular.toJson(response);
                   var status = response.validates == "true";
-                  $scope.logValidation(status, json);
+                  UIUtilService.logValidation(status, json);
 
                   $timeout(function () {
-                    $rootScope.$broadcast("form:validation", { state: status });
+                    $rootScope.$broadcast("form:validation", {state: status});
                   });
 
                 },
@@ -96,11 +98,11 @@ define([
               function (response) {
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
-                if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning",
-                      "The template may not be modified because there are metadata using it.", "OK", "");
-                }
-
+                // no longer notify user because we are putting the lock icon in the upper right corner
+                // if ($scope.hasInstances) {
+                //   UIMessageService.showWarning("Warning",
+                //       "The template may not be modified because there are metadata using it.", "OK", "");
+                // }
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -288,19 +290,6 @@ define([
           }
         };
 
-        $scope.logValidation = function (validationStatus, validationReport) {
-
-          var report = JSON.parse(validationReport);
-          for (var i = 0; i < report.warnings.length; i++) {
-            console.log(
-                'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
-          }
-          for (var i = 0; i < report.errors.length; i++) {
-            console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
-          }
-
-          $rootScope.setValidation(validationStatus);
-        };
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
@@ -337,8 +326,7 @@ define([
                   function (response) {
 
 
-                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                        response.headers("CEDAR-Validation-Report"));
+                    UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                     // confirm message
                     var title = dms.getTitle(response.data);
@@ -361,32 +349,35 @@ define([
             // Updating an existing template
             else {
               var id = $scope.form['@id'];
-              DataManipulationService.stripTmps($scope.form);
               DataManipulationService.updateKeys($scope.form);
+              $rootScope.jsonToSave = $scope.form;
+              var copiedForm = jQuery.extend(true, {}, $scope.form);
+              if (copiedForm) {
+                // strip the temps from the copied form only, and save the copy
+                DataManipulationService.stripTmps(copiedForm);
+                AuthorizedBackendService.doCall(
+                    TemplateService.updateTemplate(id, copiedForm),
+                    function (response) {
 
-              AuthorizedBackendService.doCall(
-                  TemplateService.updateTemplate(id, $scope.form),
-                  function (response) {
+                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
-                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                        response.headers("CEDAR-Validation-Report"));
+                      //$rootScope.jsonToSave = response.data;
+                      //DataManipulationService.createDomIds(response.data);
+                      //$scope.form = response.data;
 
-                    $rootScope.jsonToSave = response.data;
-                    DataManipulationService.createDomIds(response.data);
-                    $scope.form = response.data;
+                      //var title = dms.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                          {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
+                      owner.enableSaveButton();
 
-                    var title = dms.getTitle(response.data);
-                    UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                        {"title": title}, 'GENERIC.Updated');
-                    owner.enableSaveButton();
-
-                    $rootScope.$broadcast('form:clean');
-                  },
-                  function (err) {
-                    UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    owner.enableSaveButton();
-                  }
-              );
+                      $rootScope.$broadcast('form:clean');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                      owner.enableSaveButton();
+                    }
+                );
+              }
             }
           }
         };

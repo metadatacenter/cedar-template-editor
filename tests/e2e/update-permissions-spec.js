@@ -45,12 +45,8 @@ describe('update-permissions', function () {
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -65,12 +61,8 @@ describe('update-permissions', function () {
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(true);
-      shareModal.clickDone();
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
 
       resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
@@ -85,12 +77,8 @@ describe('update-permissions', function () {
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(false);
-      shareModal.clickDone();
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
@@ -100,17 +88,12 @@ describe('update-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
-
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.openDialogViaRightClick(folder, 'folder');
-
-      expect(shareModal.canShare()).toBe(true);
-      shareModal.clickDone();
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
 
       resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });

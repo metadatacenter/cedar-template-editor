@@ -378,6 +378,7 @@ define([
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
           'numTerms': vm.currentOntology.info.details.numberOfClasses,
+          'metricsAvailable': vm.currentOntology.info.details.metricsAvailable,
           'acronym' : vm.currentOntology.info.id,
           'name'    : vm.currentOntology.info.name,
           'uri'     : vm.currentOntology.info['@id']

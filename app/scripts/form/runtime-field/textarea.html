@@ -23,7 +23,7 @@
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
     </div>
 
-    <div ng-if="isTabView()"
+    <div ng-if="!isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>

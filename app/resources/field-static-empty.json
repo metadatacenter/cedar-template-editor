@@ -11,8 +11,6 @@
   "title": "",
   "description": "",
   "_ui": {
-    "title": "",
-    "description": "",
     "inputType": null,
     "_content": null
   },
@@ -21,5 +19,6 @@
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
   "schema:schemaVersion": null,
+  "schema:description": "",
   "additionalProperties": false
 }

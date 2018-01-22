@@ -65,6 +65,8 @@ define([
 
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
+      $rootScope.activeLocator = null;
+      $rootScope.activeZeroLocator = null;
       var path = $location.path();
       var hash = $location.hash();
       var baseUrl = '/dashboard';
@@ -118,6 +120,10 @@ define([
 
     vm.getDocumentTitle = function () {
       return $rootScope.documentTitle;
+    };
+
+    vm.formatDocumentTitle = function () {
+      return UIUtilService.formatTitleString($rootScope.documentTitle);
     };
 
     vm.getPageTitle = function () {

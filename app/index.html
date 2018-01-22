@@ -66,13 +66,14 @@
           <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
           <i class="back-arrow fa fa-arrow-left"></i>
 
-          <span class="document-title">{{hc.getDocumentTitle()}}</span>
+          <span class="document-title text-nowrap" >{{hc.formatDocumentTitle()}}</span>
 
           <span class="pull-right feedback-form">
             <span uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': dirty, 'fa-circle': !dirty}"></i></span>
             <span uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
             <span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
                 ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa fa-check"></i></span>-->
           </span>
 
         </div>

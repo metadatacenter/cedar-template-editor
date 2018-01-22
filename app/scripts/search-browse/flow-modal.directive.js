@@ -65,18 +65,23 @@ define([
           //
           // tabs
           //
-          $scope.modes = ['<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
-                          '<strong>AIRR</strong> - Adaptive Immune Receptor Repertoire',
+
+
+          var flowNcbiSra = 0;
+          var flowImmport = 1;
+          var flowLincs = 2;
+          $scope.modes = ['<strong>NCBI SRA</strong> - The Sequence Read Archive',
+                          '<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
                           '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
 
 
           $scope.getTarget = function () {
             var result;
-            if ($scope.model.selectedMode === 0) {
-              result = UrlService.immportSubmission();
-            } else if ($scope.model.selectedMode === 1) {
+            if ($scope.model.selectedMode === flowNcbiSra) {
               result = UrlService.airrSubmission();
-            } else if ($scope.model.selectedMode === 2) {
+            } else if ($scope.model.selectedMode === flowImmport) {
+              result = UrlService.immportSubmission();
+            } else if ($scope.model.selectedMode === flowLincs) {
               result = UrlService.lincsSubmission();
             }
             return result;
@@ -124,15 +129,16 @@ define([
           //
 
           $scope.model = {
-            selectedInstance: undefined,
+            selectedInstance : undefined,
             selectedWorkspace: undefined,
-            selectedMode:0
+            selectedMode     : flowNcbiSra
           };
           $scope.loadingInstances;
           $scope.resources = [];
           $scope.metadataFiles = [];
 
           $scope.instances = function (term) {
+            console.log('instances',term);
 
             var limit = UISettingsService.getRequestLimit();
             var offset = 0;
@@ -150,6 +156,7 @@ define([
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
+                  console.log('response',  $scope.resources);
 
 
                   return $scope.resources.map(function (item) {
@@ -197,11 +204,38 @@ define([
           };
 
           // load and add the instances to the flow queue
+          $scope.insertItemById = function (flow, instanceId, name) {
+
+            if (instanceId && name) {
+
+              AuthorizedBackendService.doCall(
+                  TemplateInstanceService.getTemplateInstance(instanceId),
+                  function (instanceResponse) {
+
+                    // this needs a timeout or flow vomits
+                    $timeout(function () {
+                      var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)],
+                          {type: 'application/json'});
+                      blob.name = name + '.json';
+                      $scope.metadataFiles.push(blob.name);
+                      flow.addFile(blob);
+
+                      $scope.model.selectedInstance = '';
+                    }, 0);
+                  },
+                  function (instanceErr) {
+                    UIMessageService.showBackendError('SERVER.INSTANCE.load.error', instanceErr);
+                  }
+              );
+            }
+          };
+
+          // load and add the instances to the flow queue
           $scope.removeItem = function (flow, file) {
-              var index = flow.files.indexOf(file);
-              if (index > -1) {
-                flow.files.splice(index,1);
-              }
+            var index = flow.files.indexOf(file);
+            if (index > -1) {
+              flow.files.splice(index, 1);
+            }
           };
 
           //
@@ -245,7 +279,7 @@ define([
 
 
           $scope.canSubmit = function (flow) {
-            var validRepo = ($scope.model.selectedWorkspace && $scope.model.selectedMode == 0) || ($scope.model.selectedMod != 0);
+            var validRepo = ($scope.model.selectedWorkspace && $scope.model.selectedMode == flowImmport) || ($scope.model.selectedMode != flowImmport);
             return validRepo && !$scope.complete && !$scope.submitted && flow.files.length > 0;
           };
 
@@ -299,14 +333,23 @@ define([
 
             if (params && params[0]) {
               $timeout(function () {
-                // modal just opened
-                if (!$scope.workspaces) {
-                  $scope.getWorkspaces();
-                }
+
+                var instanceId = params[1];
+                var name = params[2];
+
                 if (!$scope.flow.isUploading() || $scope.paused) {
                   $scope.cancelAll($scope.flow);
 
                 }
+
+                // modal just opened
+                $scope.insertItemById($scope.flow, instanceId, name);
+
+                if (!$scope.workspaces) {
+                  // TODO turn this on again later
+                  //$scope.getWorkspaces();
+                }
+
                 jQuery('#flow-modal input').focus().select();
               }, 0);
             }

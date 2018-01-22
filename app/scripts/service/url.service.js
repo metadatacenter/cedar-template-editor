@@ -232,7 +232,7 @@ define([
     };
 
     service.airrSubmission = function () {
-      return submissionService + '/command/upload-airr-to-cedar';
+      return submissionService + '/command/upload-cairr-to-cedar';
     };
 
     service.immportSubmission = function () {

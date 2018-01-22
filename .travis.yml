@@ -15,8 +15,8 @@ branches:
   - master
 notifications:
   slack:
-    on_success: always
-    on_failure: always
+    on_success: never
+    on_failure: never
     secure: xQQEo+EtbJkzgG8peEhrIkXvq96RWsWQ3HSZTNrS/k11DEjp1//8m1yHk7JrM1sCz8rdEbvyQz79LQvAqN2UwQCIiExRs9NGh+tgHPfNrCk0pXRHNqaCrSSbcZGIXLaxDddUKXbOFqfOxjs7PhyFNjzcVN81GQ7E7fRLqfF75YYG1IY2kzMz7uuPYVB/uZ+EfWgJtoXNZy3vbLu8g5be6PHLj3nQGDU46IGUFLXxuANRzUC73EfKWNWaRRDw34Q7ThH767fvQkmX7CcO4v1EeHfvPMMXBAhyCF7kTQPkXXB+dmuirJKGNfD/7LX5/hSKBwvNKE5ZBLkCPVvLy7M627JuP61v87P9udLPcmrGeUBnfPq6s1oIHE+ihkeJGyGjKaFnOkVYx2B/3L+rHSk14cepsnhnP3dXgs2DPVsKZbilkstFQWbaGnpk3DMFpBGvh4GI/TPYXupNVn01Y5huNG5KITe7nEwO5nhow8L5gxZmLsHLI0W4bM+0SZmIdD3rfmz/jdfgUbfk9noXKP21q1Gf9+qlFqgE36yYqzzYq4xjyQus93wHxEaV7UqUz7Ici/PQE1o2yIQifa1tMQJvx7rhr+paToX95LrRF+4xRXL9+5iTwQDbRvKgUUB8cDi5d7RMyhn9upBfnEWAgDHCqgLb9M2rqU1yq2oi6HS16cM=
 before_install:
 - export DISPLAY=:99.0
@@ -29,21 +29,18 @@ install:
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:
-#  -  stage: e2e tests
-#  -  before_script: gulp karma-travis-env # sets up the environment to run the karma tests
-#  -  script: gulp test-form # This task will run as part of the e2e tests stage
-#    - before_script: gulp karma-travis-env
-#    - provider: script
-    - script: gulp test-form
-#    - provider: script
-#    - script: gulp karma-tests
+  - stage: karma and e2e tests
+    before_script: gulp karma-travis-env # sets up the environment to run the karma tests
+    script: gulp karma-tests  # karma stage
+  - script: gulp test-form # e2e stage
+  # - script: gulp test-permissions # e2e stage
 
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
   - CEDAR_FRONTEND_BEHAVIOR=server
   - CEDAR_FRONTEND_TARGET=staging
-  - CEDAR_VERSION="1.5.0"
+  - CEDAR_VERSION="1.6.0"
   - CEDAR_VERSION_MODIFIER=""
   - CEDAR_FRONTEND_staging_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_USER1_LOGIN="test1@test.com"

@@ -36,6 +36,16 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.service.resourceService'));
     beforeEach(module('cedar.templateEditor.service.uISettingsService'));
     beforeEach(module('cedar.templateEditor.service.queryParamUtilsService'));
+    beforeEach(angular.mock.module(function ($provide) {
+      $provide.service('UserService', function mockUserService() {
+        var userHandler = null;
+        var service = {serviceId: "UserService"};
+        service.getToken = function() {};
+        service.injectUserHandler = function (userHandler) {};
+        service.updateOwnUser = function (instance) {};
+        return service;
+      });
+    }));
     // we need to register our alternative version of CedarUser, before we call inject.
     beforeEach(angular.mock.module(function ($provide) {
       $provide.service('CedarUser', function mockCedarUser() {
@@ -68,7 +78,7 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('resources/i18n/locale-en.json');
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
-      httpData.getFile('img/close_modal.png');
+      // httpData.getFile('img/close_modal.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
@@ -100,7 +110,6 @@ define(['app', 'angular'], function (app) {
         it("should have a header with the current folder name ", function () {
           var elm = shareDirective[0];
           expect(elm.querySelector(shareTitle)).toBeDefined();
-          console.log(elm.querySelector(shareTitle));
         });
 
 

@@ -152,98 +152,6 @@ gulp.task('test-env', function (done) {
 });
 
 // Protractor tests
-gulp.task('e2e', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
-    './tests/e2e/template-creator-spec.js',
-    './tests/e2e/delete-resource-spec.js',
-    './tests/e2e/folder-permissions-spec.js',
-    './tests/e2e/resource-permissions-spec.js',
-    './tests/e2e/update-description-spec.js',
-    './tests/e2e/update-name-spec.js',
-    './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sharded.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-
-// Protractor tests
-gulp.task('e2e-sequential', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/delete-resource-spec.js',
-    './tests/e2e/folder-permissions-spec.js',
-    './tests/e2e/resource-permissions-spec.js',
-    './tests/e2e/update-description-spec.js',
-    './tests/e2e/update-name-spec.js',
-    './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
-    './tests/e2e/template-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('update-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/update-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('update-ownership', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/update-ownership-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('resource-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/resource-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('create-folders', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/create-folders-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
@@ -254,7 +162,7 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sharded.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -277,20 +185,22 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-metadata', gulp.series('test-env', function () {
+gulp.task('test-delete', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/folder-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sharded.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
       });
 }));
+
 
 gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
+    './tests/e2e/metadata-creator-spec.js',
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
@@ -300,43 +210,6 @@ gulp.task('test-form', gulp.series('test-env', function () {
         throw e
       });
 }));
-
-gulp.task('test-form-sequential', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/template-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('delete-resource-sequential', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/delete-resource-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('resource-permissions-sequential', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/resource-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
 
 
 

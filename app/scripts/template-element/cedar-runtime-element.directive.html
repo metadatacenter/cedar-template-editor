@@ -30,7 +30,7 @@
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
 
-              {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
+              {{getPropertyLabel()}} <!--<span ng-if="valueArray.length-1" class="count">({{index+1}})</span>-->
             </div>
 
           </div>
@@ -39,7 +39,7 @@
               ng-if="isExpanded(index)" values="valueArray" index="index"
               min="pageMin" max="pageMax" range="pageRange"
               field="element" model="valueArray" index="index" view-state="viewState"
-              remove="removeElement" add="addRow" copy="copyElement" is-active="isActive" set-active="setActive"
+               is-active="isActive" set-active="setActive"
               spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
               expand-all="expandAll"   select="selectPage"
               get-locator="getLocator">
@@ -47,9 +47,9 @@
 
         </div>
         <div class="row" ng-if="isExpanded(index)">
-          <div class="col-sm-12">
+          <div class="col-xs-12">
             <div class="spreadsheetViewDetector"></div>
-            <div class="spreadsheetViewContainer"></div>
+            <div class="spreadsheetViewContainer" ></div>
             <div id="spreadsheetViewLogs"></div>
             <div id="hooksList"></div>
           </div>
@@ -59,15 +59,16 @@
 
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
+
       <div class="row " style="cursor:pointer"  ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
+
 
           <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
-
             {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
           </div>
 
@@ -85,17 +86,14 @@
       </div>
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
-        
+
         <li class="tv"
-
             ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
-            ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
+            ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
 
-          <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"
-              style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;">
+          <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)" style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;"></div>
+          <div ng-if=" isExpanded(index) && index === i">
 
-          </div>
-          <div ng-if="isExpanded(index) && index === i">
             <cedar-runtime-nested-element
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"
@@ -107,7 +105,8 @@
                 parent-key="fieldKey"
                 field-key="key"
                 path="path+'-'+i"
-                uid="uid+'-'+key">
+                uid="uid+'-'+key"
+                previous="$root.propertiesOf(element)[$root.schemaOf(element)['_ui']['order'][$index-1]]">
             </cedar-runtime-nested-element>
           </div>
 
@@ -117,6 +116,7 @@
 
     <!-- an expanded list of elements -->
     <div ng-if="isListView()" ng-repeat="(i, valueElement) in valueArray">
+  
       <div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
         <div class="row"  ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}" ng-click="toggleExpanded(i)">

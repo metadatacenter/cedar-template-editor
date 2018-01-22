@@ -120,6 +120,18 @@
     "hasInstanceTerm": false
   },
   {
+    "cedarType": "page-break",
+    "iconClass": "cedar-svg-page-break",
+    "allowedInElement": false,
+    "label": "Page Break",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": true,
+    "allowsMultiple": false,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
+  },
+  {
     "cedarType": "section-break",
     "iconClass": "cedar-svg-section-break",
     "allowedInElement": true,

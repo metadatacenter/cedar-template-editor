@@ -2,38 +2,46 @@
   <div class="modal-content">
     <div class="modal-header row"  id="moveModalHeader">
 
-
       <div class="col-sm-1">
-        <h4 class="modal-title ">
-          <span class="arrow-click"  ng-click="move.openParent()" aria-label="Back"
+        <h4 class="modal-title back-to-home" style="padding-left:4px;cursor:pointer;white-space:nowrap;" ng-click="move.openHome()"   >
+          <span class="arrow-click " type="button" aria-label="Back"
+              uib-tooltip="{{'HELP.backToHome' | translate}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="top"
+              data-toggle="tooltip"><i class="fa fa-home"></i></span>
+        </h4>
+      </div>
+
+      <div class="col-sm-10">
+        <h4 class="modal-title back-to-parent"  style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" ng-click="move.openParent()">
+          <span type="button" class="arrow-click" aria-label="Back"
               uib-tooltip="{{'HELP.backToParent' | translate}}"
               tooltip-trigger
               tooltip-animation="false"
-              tooltip-placement="left"
+              tooltip-placement="top"
               data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
+          <span id="folder-title" >{{move.currentTitle()}}</span>
         </h4>
       </div>
-      <div class="col-sm-10">
-        <h4 class="modal-title ">
-          <a  role="button" ng-click="move.selectCurrent();">{{move.currentTitle()}}</a>
-        </h4>
-        </div>
 
-        <div class="col-sm-1 pull-right">
-          <button class="close" type="button" ng-click="dc.moveModalVisible=false;move.hideModal()" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button></div>
+      <div class="col-sm-1 pull-right">
+        <button class="close" type="button" ng-click="dc.copyModalVisible=false;move.hideModal()" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button></div>
 
     </div>
     <div id="moveModalContent" class="modal-body scrollable-content" cedar-infinite-scroll  load-more="move.loadMore()">
 
+
+
       <!-- show the folders first -->
-      <div ng-if="dc.isFolder(resource)" class="box-row row"
+      <div ng-if="move.isFolder(resource)" class="box-row row"
           ng-class="{ selected: move.isDestinationSelected(resource)}"
-          ng-repeat="(index, resource) in move.destinationResources">
+          ng-repeat="(index, resource) in destinationResources">
         <div class="col-sm-1 " ng-click="move.selectDestination(resource)"><i style="color:#9e9e9e;font-size:20px;padding-right:5px"
             class="fa" ng-class="move.getResourceIconClass(resource)"></i>
         </div>
-        <a class="col-sm-10" ng-click="move.selectDestination(resource)">{{resource.displayName}}
+        <a class="contents-folder-title col-sm-10" ng-click="move.selectDestination(resource)">{{resource.displayName}}
         </a>
         <div class="col-sm-1 arrow-click"
             ng-click="move.openDestination(resource)"
@@ -44,13 +52,13 @@
             data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
       </div>
 
-
+      <!-- then the resources -->
       <div ng-if="!move.isFolder(resource)" class="box-row row disabled"
-          ng-repeat="(index, resource) in move.destinationResources">
+          ng-repeat="(index, resource) in destinationResources">
         <div class="col-sm-1" ng-click="move.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
             ng-class="move.getResourceIconClass(resource)"></i>
         </div>
-        <div class="col-sm-10" ng-click="move.selectDestination(resource)"  disabled="disabled">{{resource.displayName}}
+        <div class="contents-resource-title col-sm-10" ng-click="move.selectDestination(resource)"  disabled="disabled">{{resource.displayName}}
         </div>
 
       </div>

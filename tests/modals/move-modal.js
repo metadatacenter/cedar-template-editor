@@ -1,5 +1,6 @@
 'use strict';
 
+var WorkspacePage = require('../pages/workspace-page.js');
 
 var MoveModal = function () {
   var EC = protractor.ExpectedConditions;
@@ -57,6 +58,20 @@ var MoveModal = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
   };
+
+  this.moveDisabledViaRightClick = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var moveMenuItem = WorkspacePage.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem),10000);
+  };
+
+  this.moveEnabledViaRightClick = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var moveMenuItem = WorkspacePage.createRightClickMoveToMenuItem();
+    browser.wait(EC.visibilityOf(moveMenuItem),10000);
+  };
+
+
 
 
 };

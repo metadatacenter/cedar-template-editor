@@ -2,15 +2,14 @@
 
   <!--- not active --->
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
-
     <div ng-if="isListView()"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['@id']}} &nbsp;</div>
 
-    <div ng-if="isTabView()"
-        aria-label="{{getDescription(field)}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
+    <div ng-if="!isListView()"
+      aria-label="{{getDescription(field)}}"
+      class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+  </div>
 
   </div>
 

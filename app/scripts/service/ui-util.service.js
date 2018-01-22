@@ -13,12 +13,12 @@ define([
                          ClientSideValidationService, $translate) {
 
     var service = {
-      serviceId    : "UIUtilService",
-      showOutput   : false,
-      showOutputTab: 0,
-      metaToRDF: null,
+      serviceId     : "UIUtilService",
+      showOutput    : false,
+      showOutputTab : 0,
+      metaToRDF     : null,
       metaToRDFError: null,
-      instance: null
+      instance      : null
     };
 
     var jsonld = require('jsonld');
@@ -75,6 +75,10 @@ define([
         setTimeout(function () {
           viewState.spreadsheetCallback();
         });
+      } else {
+        if (typeof viewState.cleanupCallback == 'function') {
+          viewState.cleanupCallback()
+        }
       }
       return viewState;
     };
@@ -98,12 +102,14 @@ define([
     // element or field be edited as a spreadsheet if it is multi-instance
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
+
       var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node);
-      if (DataUtilService.isElement(node)) {
+      var result = DataManipulationService.isCardinalElement(node) && !DataManipulationService.isMultipleChoice(node);
+
+      if (DataUtilService.isElement(schema)) {
         angular.forEach(schema.properties, function (value, key) {
           if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(value);
+            var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
             var isCardinal = DataManipulationService.isCardinalElement(value);
             result = result && (!isElement && !isCardinal);
           }
@@ -126,7 +132,7 @@ define([
       return result;
     };
 
-    service.createViewState = function (node, callback) {
+    service.createViewState = function (node, callback, cleanup) {
       var viewState = {
         views   : ['tab', 'list'],
         selected: 'tab'
@@ -134,7 +140,8 @@ define([
       if (service.isSpreadsheetable(node)) {
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
-        //viewState.selected = 'spreadsheet';
+        viewState.cleanupCallback = cleanup;
+        viewState.selected = 'spreadsheet';
       }
       return viewState;
     };
@@ -179,7 +186,20 @@ define([
       }
     };
 
+    service.formatTitle = function (node) {
+      if (node) {
+        var title = DataManipulationService.getTitle(node);
+        if (title) {
+          return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+        }
+      }
+    };
 
+    service.formatTitleString = function (title) {
+      if (title) {
+        return title.substring(0, 40) + (title.length > 40 ? '...' : '');
+      }
+    };
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
@@ -259,12 +279,16 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
+            console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
-              target.find('.elementTotalContent').first().toggle();
-              target.find(".visibilitySwitch").toggle();
-              target.find(".spreadsheetSwitchLink").toggle();
+              // target.find('.element').toggle();
+              target.find('.field-root').toggle();
+              target.find('.element-root').toggle();
+              // target.find('.elementTotalContent').first().toggle();
+              target.find(".visibilitySwitch").first().toggle();
+              // target.find(".spreadsheetSwitchLink").toggle();
             }
           }, 350
       );
@@ -277,7 +301,7 @@ define([
       if (content) {
         content = content.replace(/<(?:.|\n)*?>/gm, '');
       }
-      
+
       var size = DataManipulationService.getSize(field);
 
       if (size && size.width && Number.isInteger(size.width)) {
@@ -330,8 +354,6 @@ define([
     };
 
 
-
-
     //
     //  editing fields
     //
@@ -339,6 +361,10 @@ define([
     // are we editing this field?
     service.isEditState = function (node) {
       return DataManipulationService.isTmpState(node, "creating");
+    };
+
+    service.clearEditState = function (node) {
+      return DataManipulationService.clearTmpState(node);
     };
 
     // set edit mode
@@ -382,7 +408,8 @@ define([
 
       // don't continue with errors
       if (errorMessages.length == 0) {
-        DataManipulationService.stripTmpIfPresent(node);
+        //DataManipulationService.stripTmpIfPresent(node);
+        DataManipulationService.clearEditState(node);
 
         if (renameChildKey) {
           var key = DataManipulationService.getFieldName(DataManipulationService.getTitle(node));
@@ -404,6 +431,39 @@ define([
       DataManipulationService.defaultTitle(node);
       if (DataManipulationService.isMultiAnswer(node)) {
         DataManipulationService.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
+      }
+    };
+
+    //report validation status, errors and warnings
+    service.logValidation = function (status, report) {
+
+      // tell the user about the status
+      $rootScope.setValidation(status);
+
+      // try to parse the report
+      if (report) {
+        var r;
+
+        try {
+          r = JSON.parse(report);
+        } catch (e) {
+          console.log(e); // error in the above string!
+        }
+
+
+        if (r) {
+          if (r.warnings) {
+            for (var i = 0; i < r.warnings.length; i++) {
+              console.log(
+                  'Validation Warning: ' + r.warnings[i].message + ' at location ' + r.warnings[i].location);
+            }
+          }
+          if (r.errors) {
+            for (var i = 0; i < r.errors.length; i++) {
+              console.log('Validation Error: ' + r.errors[i].message + ' at location ' + r.errors[i].location);
+            }
+          }
+        }
       }
     };
 

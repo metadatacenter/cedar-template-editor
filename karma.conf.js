@@ -38,7 +38,6 @@ module.exports = function (config) {
       'test-require-config.js',
 
       // templates
-      'scripts/form/file-upload.directive.html',
       'scripts/template-element/cedar-template-element.directive.html',
       'scripts/form/form.directive.html',
       'scripts/form/field.directive.html',
@@ -91,7 +90,7 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
     browserNoActivityTimeout: 100000,
 

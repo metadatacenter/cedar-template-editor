@@ -180,7 +180,8 @@
             </tr>
             <tr>
               <th>No. terms</th>
-              <td>{{ctdc.stagedOntologyValueConstraints[0].numTerms | number}}</td>
+              <td ng-if="ctdc.stagedOntologyValueConstraints[0].metricsAvailable">{{ctdc.stagedOntologyValueConstraints[0].numTerms | number}}</td>
+              <td ng-if="!ctdc.stagedOntologyValueConstraints[0].metricsAvailable">n/a</td>
             </tr>
           </table>
         </div>

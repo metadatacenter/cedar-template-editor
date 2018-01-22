@@ -1,46 +1,14 @@
 <div class="item-root field-root" id="{{getDomId(field)}}"
-    ng-click="canSelect(!isNested() && !isRuntime()); $event.preventDefault(); $event.stopPropagation()">
+    ng-class="{'nested-element':isNested(), 'selected-field': isEditState(), 'not-selectable': !isSelectable(), 'selectable-field': isSelectable(),  'sortable-field': isSortable(),'root-element': false}"
+    ng-click="canSelect(isSelectable()); $event.preventDefault(); $event.stopPropagation()">
 
-  <!-- field title first -->
-  <div menuDropDownId="" ng-show="field.items && isRuntime()"
-      class="spreadsheetSwitch field"
-      style="position:relative">
-    <div>
-
-      <!-- show this add button only when you have minCardinality 0 and an empty list -->
-      <span class="zero-input-wrapper" ng-if="isRuntime() && field.items && model.length == 0">
-      <button type="button" class="add noOutline"
-          uib-tooltip="{{'HELP.addMore' | translate}}"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="addMoreInput()">
-        <i class="fa fa-plus"></i>
-
-      </button>
-    </span>
-
-    </div>
-
-  </div>
-
-  <div menuDropDownId="" ng-show="!field.items && isRuntime()"
-      class="field"
-      style="position:relative">
-  </div>
+  <!--domId={{getDomId(field)}} nested={{isNested()}} selected={{isEditState()}} selectable={{isSelectable()}} sortable={{isSortable()}} root={{isRoot()}}-->
 
   <!-- field content next -->
   <div class="elementTotalContent visible">
 
-    <div ng-show="$root.isArray(model)">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
-    </div>
-
     <!-- this is the line that pulls in the actual element -->
     <div class="originalContent" ng-include="getTemplateUrl()"></div>
-
 
     <!-- error messages last -->
     <div class="errors" ng-if="errorMessages">
