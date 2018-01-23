@@ -11,8 +11,8 @@ var MoveModal = function () {
 
   var createMoveToBody = createMoveToModal.element(by.css('div > div > div.modal-body'));
   var createMoveToModalHeader = element(by.id('moveModalHeader'));
-  var createBackToParentButon = createMoveToModalHeader.element(by.css('div:nth-child(1) > h4 > span'));
-  var createOpenFolderArrowButton = createMoveToBody.element(by.css('div.box-row.row.ng-scope.selected > div.col-sm-1.arrow-click > i'));
+  var createBackToParentButton = createMoveToModalHeader.element(by.css('.back-to-parent'));
+  var createOpenFolderArrowButton = createMoveToBody.element(by.css('div.box-row.row.ng-scope.selected > div.arrow-click'));
 
 
   // is it open?
@@ -32,9 +32,9 @@ var MoveModal = function () {
 
 
   this.moveToUserFolder = function(userName, title) {
-    browser.wait(EC.visibilityOf(createBackToParentButon));
-    browser.wait(EC.elementToBeClickable(createBackToParentButon));
-    browser.actions().doubleClick(createBackToParentButon).perform();
+    browser.wait(EC.visibilityOf(createBackToParentButton));
+    browser.wait(EC.elementToBeClickable(createBackToParentButton));
+    browser.actions().doubleClick(createBackToParentButton).perform();
 
     // click user folder
     var user = createMoveToModal.element(by.linkText(userName));
