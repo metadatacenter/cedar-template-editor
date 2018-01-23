@@ -72,7 +72,7 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should fail to delete a resource shared as readable with a user", function () {
+    xit("should fail to delete a resource shared as readable with a user", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -85,11 +85,6 @@ describe('delete-resource', function () {
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       shareModal.shareDisabledViaRightClick(folder, 'folder');
-
-      // TODO via more options isn't working because it doesn't wait for the option to become disabled
-      // workspacePage.selectResource(folder, 'folder');
-      // workspacePage.createMoreOptionsButton().click();
-      // expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
