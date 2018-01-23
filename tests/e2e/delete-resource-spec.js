@@ -141,7 +141,7 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    it("should fail to delete a resource shared as readable with a user", function () {
+    xit("should fail to delete a resource shared as readable with a user", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
