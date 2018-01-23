@@ -64,8 +64,7 @@ describe('folder-permissions', function () {
 
     });
 
-    // TODO fails on staging
-    xit("should move a folder owned by current user to an unwritable folder", function () {
+    it("should move a folder owned by current user to an unwritable folder", function () {
       console.log('folder-permissions moving folders should move a folder owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -90,8 +89,7 @@ describe('folder-permissions', function () {
       resources.push(createResource(folderTitle, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    // TODO fails on staging
-    xit("should move a writable folder not owned by current user to a writable folder", function () {
+    it("should move a writable folder not owned by current user to a writable folder", function () {
       console.log('folder-permissions moving folders should move a writable folder not owned by current user to a writable folder');
       // login as user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -122,8 +120,8 @@ describe('folder-permissions', function () {
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    // TODO fails on staging
-    xit("should (1) not move a writable folder not owned by current user to an unwritable folder", function () {
+
+    it("should (1) not move a writable folder not owned by current user to an unwritable folder", function () {
       console.log('folder-permissions moving folders should (1) not move a writable folder not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -150,8 +148,7 @@ describe('folder-permissions', function () {
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    // TODO fails on staging
-    xit("should (2) not move an unwritable folder not owned by current user to an unwritable folder", function () {
+    it("should (2) not move an unwritable folder not owned by current user to an unwritable folder", function () {
       console.log('folder-permissions moving folders should (2) not move an unwritable folder not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 

@@ -54,8 +54,7 @@ describe('resource-permissions', function () {
 
   describe('move tests', function () {
 
-    // TODO fails on staging
-    xit("should move a resource owned by current user to a writable folder", function () {
+    it("should move a resource owned by current user to a writable folder", function () {
       console.log('resource-permissions should move a resource owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -79,8 +78,7 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    // TODO fails on staging
-    xit("should move a resource owned by current user to an unwritable folder", function () {
+    it("should move a resource owned by current user to an unwritable folder", function () {
       console.log('resource-permissions should move a resource owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -111,8 +109,8 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    // TODO fails on staging
-    xit("should move a writable resource not owned by current user to a writable folder", function () {
+
+    it("should move a writable resource not owned by current user to a writable folder", function () {
       console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -141,8 +139,7 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    // TODO fails on staging
-    xit("should move a writable resource not owned by current user to an unwritable folder", function () {
+    it("should move a writable resource not owned by current user to an unwritable folder", function () {
       console.log('resource-permissions should move a writable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -172,8 +169,8 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    // TODO failing travis
-    xit("should move an unwritable resource not owned by current user to an unwritable folder", function () {
+
+    it("should move an unwritable resource not owned by current user to an unwritable folder", function () {
       console.log('resource-permissions should move an unwritable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
