@@ -129,7 +129,17 @@
     "CopyOfTitle": "Copy of {{title}}",
     "Error": "Error",
     "ToggleView": "Toggle View",
-    "FullScreen": "Full Screen"
+    "FullScreen": "Full Screen",
+    "none": "none",
+    "one": "one",
+    "two": "two",
+    "three": "three",
+    "four": "four",
+    "five": "five",
+    "six": "six",
+    "seven": "seven",
+    "eight": "eight",
+    "unlimited": "unlimited"
   },
   "HELP": {
     "createFolder": "Create folder",

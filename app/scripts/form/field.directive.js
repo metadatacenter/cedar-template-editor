@@ -101,6 +101,13 @@ define([
         return dms.isRequired($scope.field);
       };
 
+      $scope.setRequired = function(value) {
+        dms.setRequired($scope.field,value);
+        if (value && $scope.isMultiple() && dms.getMinItems($scope.field)  == 0) {
+          $scope.field.minItems = 1;
+        }
+      };
+
       $scope.getDomId = function (node) {
         return dms.getDomId(node);
       };
