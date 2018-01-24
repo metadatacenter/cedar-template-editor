@@ -14,7 +14,7 @@
         "NAME": "Rich Text"
       },
       "radio": {
-        "NAME": "Multiple Choice"
+        "NAME": "Radio"
       },
       "checkbox": {
         "NAME": "Checkbox"
@@ -126,7 +126,7 @@
     "ExpandAll": "Expand All",
     "Displaying": "Displaying",
     "Of": "of",
-    "CopyOfTitle": "Copy of {{title}}",
+    "CopyOfTitle": "{{title}} copy",
     "Error": "Error",
     "ToggleView": "Toggle View",
     "FullScreen": "Full Screen",

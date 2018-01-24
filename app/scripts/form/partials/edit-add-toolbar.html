@@ -23,7 +23,6 @@
                 ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || (isElement && fieldType.allowedInElement))">
               <a  id='button-add-field-{{fieldType.cedarType}}'
                   ng-click="addField(fieldType.cedarType);setDirty()"
-                  uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                   tooltip-placement="left"
                   ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
             </li>
@@ -35,7 +34,6 @@
 
               <a  id='button-add-field-{{fieldType.cedarType}}'
                   ng-click="addField(fieldType.cedarType);toggleMore();;setDirty()"
-                  uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                   tooltip-placement="left"
                   ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
             </li>
