@@ -92,13 +92,12 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
-                // no longer notify user because we are putting the lock icon in the upper right corner
-                // if ($scope.hasInstances) {
-                //   UIMessageService.showWarning("Warning",
-                //       "The template may not be modified because there are metadata using it.", "OK", "");
-                // }
+                $scope.hasInstances = response.totalCount > 0;
+                if ($scope.hasInstances) {
+                  UIMessageService.showWarning("Warning",
+                      "The template has metadata and should not be modified.", "OK", "");
+                }
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
