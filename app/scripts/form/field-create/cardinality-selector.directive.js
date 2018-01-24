@@ -6,12 +6,12 @@ define([
   angular.module('cedar.templateEditor.form.fieldCreate.cardinalitySelector', [])
       .directive('cardinalitySelector', cardinalitySelector);
 
-  cardinalitySelector.$inject = [];
+  cardinalitySelector.$inject = ['$translate','CONST'];
 
   /**
    * a selector dropdown for min or max cardinality
    */
-  function cardinalitySelector() {
+  function cardinalitySelector($translate, CONST) {
 
 
     // make the timeout 500;  0 doesn't work for template and element titles
@@ -51,14 +51,14 @@ define([
           $scope.init();
         }, true);
 
-
+        // build the model for the selector
         $scope.init = function () {
           $scope.model = [];
 
+          // set the range
           if ($scope.type == 'min') {
             $scope.cardinality.min = $scope.required ? 1 : 0;
             $scope.cardinality.max = $scope.maxItems ? $scope.maxItems + 1 : 8;
-
           } else  {
             $scope.cardinality.min = $scope.minItems ? $scope.minItems : 1;
             $scope.cardinality.max = 8;
@@ -69,37 +69,36 @@ define([
           for (var i = 0; i < length; i++) {
             $scope.model[i] = {};
             $scope.model[i].value = v.toString();
-            $scope.model[i].label = $scope.cardinalityLabels[v];
+            $scope.model[i].label = $translate.instant('GENERIC.' + $scope.cardinalityLabels[v]) ;
             v++;
           }
 
-          if ($scope.type == 'min') {
-            if ($scope.required && $scope.cardinality.value == 0) {
-              $scope.cardinality.value = 1;
-            }
-          } else {
+          // add the unlimited option for max
+          if ($scope.type == 'max') {
             $scope.model[i] = {};
             $scope.model[i].value = '0';
-            $scope.model[i].label = 'unlimited';
+            $scope.model[i].label = $translate.instant('GENERIC.' + $scope.zeros[$scope.type]);
           }
 
-
-          // set the label on the dropdown button
+          // set the value and label
+          $scope.cardinality.value = $scope.getValue();
           $scope.cardinality.label = $scope.getLabel();
         };
 
-        $scope.getLabel = function() {
+        $scope.getValue = function() {
+          return ($scope.type == 'min' ? $scope.cardinality.value = $scope.minItems || 0 : $scope.cardinality.value = $scope.maxItems || 0);
+        };
 
-          var value = $scope.cardinalityLabels[$scope.cardinality.value];
-          var result = $scope.minMax[$scope.type] +  ' ' + ($scope.cardinality.value == 0 ? $scope.zeros[$scope.type] : value);
-          return result;
-        }
+        $scope.getLabel = function() {
+          return $translate.instant('GENERIC.' + $scope.minMax[$scope.type]) +  ' ' + ($scope.cardinality.value == 0 ? $translate.instant('GENERIC.' + $scope.zeros[$scope.type]) : $translate.instant('GENERIC.' + $scope.cardinalityLabels[$scope.cardinality.value]));
+        };
 
         // update selected value
         $scope.update = function (value) {
-          $scope.cardinality.value = value;
 
-          var v = parseInt(value);
+          var v = (typeof value == 'string') ? parseInt(value) : value;
+          $scope.cardinality.value = v;
+
           if ($scope.type == 'min') {
             $scope.minItems = v;
             if ($scope.minItems > $scope.maxItems) {
@@ -115,12 +114,10 @@ define([
           $scope.init();
         };
 
-        // called on close and open of dropdown
+        // called on close and open
         $scope.toggled = function (value) {
         };
 
-        // initialize directive
-        $scope.init();
 
       }
 

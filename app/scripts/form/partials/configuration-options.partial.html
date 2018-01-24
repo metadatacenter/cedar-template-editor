@@ -68,7 +68,7 @@
   </div>
 
   <!-- Cardinality tab  -->
-  <div id="cardinality-options"  class="cardinality-options " ng-show="isTabActive('cardinality')" >
+  <div id="cardinality-options"  class="cardinality-options " ng-model="field.minItems" ng-show="isTabActive('cardinality')" >
 
     <div class="type-toggle date">
       <div class="d-option" ng-class="{active: !hasMin()}" ng-click="setDirty();clearMinMax();">
