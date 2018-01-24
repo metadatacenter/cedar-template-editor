@@ -47,12 +47,6 @@ define([
 
         $scope.isTemplate = true;
 
-        $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-          $scope.cannotWrite = !result;
-          return result;
-        };
-
         // validate the resource
         var checkValidation = function (node) {
           if (node) {
@@ -77,7 +71,9 @@ define([
         };
 
         $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          // to disable write if a template has existing instances as well
+          // var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          var result = !$scope.details || resourceService.canWrite($scope.details);
           $scope.cannotWrite = !result;
           return result;
         };
@@ -96,13 +92,12 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
-                // no longer notify user because we are putting the lock icon in the upper right corner
-                // if ($scope.hasInstances) {
-                //   UIMessageService.showWarning("Warning",
-                //       "The template may not be modified because there are metadata using it.", "OK", "");
-                // }
+                $scope.hasInstances = response.totalCount > 0;
+                if ($scope.hasInstances) {
+                  UIMessageService.showWarning("Warning",
+                      "The template has metadata and should not be modified.", "OK", "");
+                }
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
