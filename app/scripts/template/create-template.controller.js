@@ -47,12 +47,6 @@ define([
 
         $scope.isTemplate = true;
 
-        $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-          $scope.cannotWrite = !result;
-          return result;
-        };
-
         // validate the resource
         var checkValidation = function (node) {
           if (node) {
@@ -77,7 +71,9 @@ define([
         };
 
         $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          // to disable write if a template has existing instances as well
+          // var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          var result = !$scope.details || resourceService.canWrite($scope.details);
           $scope.cannotWrite = !result;
           return result;
         };
