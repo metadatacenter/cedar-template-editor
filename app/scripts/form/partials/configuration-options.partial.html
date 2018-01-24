@@ -39,13 +39,13 @@
   <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
     <div class="type-toggle date">
       <div class="single-date d-option"
-          ng-click="setDirty();$root.schemaOf(field)._valueConstraints.requiredValue = false;  $event.stopPropagation();"
-          ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
+          ng-click="setDirty();setRequired(false);$event.stopPropagation();"
+          ng-class="{active: !isRequired()}">
         <span>No</span>
       </div>
       <div class="date-range d-option"
-          ng-click="setDirty();$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
-          ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
+          ng-click="setDirty();setRequired(true);$event.stopPropagation();"
+          ng-class="{active: isRequired()}">
         <span>Yes</span>
       </div>
     </div>
@@ -68,7 +68,7 @@
   </div>
 
   <!-- Cardinality tab  -->
-  <div id="cardinality-options" class="cardinality-options " ng-show="isTabActive('cardinality')" ng-init="xxx()">
+  <div id="cardinality-options"  class="cardinality-options " ng-show="isTabActive('cardinality')" >
 
     <div class="type-toggle date">
       <div class="d-option" ng-class="{active: !hasMin()}" ng-click="setDirty();clearMinMax();">
@@ -79,9 +79,10 @@
       </div>
     </div>
 
+
     <div class="cardinality-selectors" ng-if="field.minItems > -1">
-      <cardinality-selector min-or-max="'min'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
-      <cardinality-selector min-or-max="'max'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()"  type="'min'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()"  type="'max'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
     </div>
   </div>
 
