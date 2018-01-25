@@ -76,6 +76,10 @@ define([
         if (folderId) {
           queryParams['folderId'] = folderId;
         }
+        var sharing = QueryParamUtilsService.getSharing();
+        if (sharing) {
+          queryParams['sharing'] = sharing;
+        }
         /*if (params.search) {
          queryParams['search'] = params.search;
          }*/

@@ -20,12 +20,16 @@ define([
 
     service.getFolderId = function () {
       return service.getQueryParameter("folderId");
-    }
+    };
+
+    service.getSharing = function() {
+      return service.getQueryParameter("sharing");
+    };
 
     service.getQueryParameter = function(parameterName) {
       var params = $location.search();
       return params[parameterName];
-    }
+    };
 
     return service;
   };
