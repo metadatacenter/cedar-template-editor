@@ -240,7 +240,8 @@
         "error": "There was an error while saving the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "readPermission": "You do not have permission to read the resource."
       },
       "delete": {
         "success": "The metadata have been deleted.",
@@ -479,6 +480,8 @@
     "templateNotDeleted": "The template was not deleted!",
     "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
     "folderCopyNotAllowed": "Copying folders is not allowed",
+    "noReadAccessToResource": "The requested operation can not be performed!<br />You do not have read access to the resource.",
+    "noWriteAccessToResource": "The requested operation can not be performed!<br />You do not have write access to the resource.",
     "permissionMissing": "You do not have enough permissions to perform this action!<br />Please request the <b>{{permissionName}}</b> permission."
   },
   "REST_ERROR_REASON": {
