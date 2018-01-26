@@ -507,7 +507,7 @@ define([
 
 
           function isHomeMode() {
-            return (vm.nodeListQueryType === 'folder-content') && (vm.params.folderId === CedarUser.getHomeFolderId());
+            return (vm.nodeListQueryType === 'folder-content');
           }
 
           function doSearch(term) {

@@ -72,6 +72,10 @@ define([
       var baseUrl = '/dashboard';
       if (path != baseUrl) {
         var queryParams = {};
+        var sharing = QueryParamUtilsService.getSharing();
+        if (sharing) {
+          queryParams['sharing'] = sharing;
+        }
         var folderId = QueryParamUtilsService.getFolderId();
         if (folderId) {
           queryParams['folderId'] = folderId;
