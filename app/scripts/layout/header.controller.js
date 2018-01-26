@@ -63,7 +63,7 @@ define([
       }
     };
 
-    vm.goToDashboardOrBack = function () { 
+    vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
       $rootScope.activeLocator = null;
       $rootScope.activeZeroLocator = null;
