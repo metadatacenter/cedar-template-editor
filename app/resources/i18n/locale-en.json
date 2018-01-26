@@ -4,6 +4,9 @@
       "textfield": {
         "NAME": "Text"
       },
+      "controlled-term": {
+        "NAME": "Controlled Terminology"
+      },
       "link": {
         "NAME": "Link"
       },

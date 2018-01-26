@@ -12,6 +12,18 @@
     "hasInstanceTerm": true
   },
   {
+    "cedarType": "controlled-term",
+    "iconClass": "cedar-svg-controll-term",
+    "label": "Controlled Terminology",
+    "allowedInElement": true,
+    "primaryField": true,
+    "hasControlledTerms": true,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": true,
+    "hasInstanceTerm": true
+  },
+  {
     "cedarType": "link",
     "iconClass": "cedar-svg-link",
     "label": "link",
