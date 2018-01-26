@@ -472,17 +472,17 @@
     "searchResult": "Search Results For: '{{searchTerm}}'"
   },
   "REST_ERROR": {
-    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location! Please try to create it with a different name.",
-    "folderCanNotBeDeleted": "The folder can not be deleted!",
-    "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder.",
-    "groupAlreadyPresent": "There is already a group with the same name present in the system!<br>Please choose a different name.",
-    "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
-    "templateNotDeleted": "The template was not deleted!",
-    "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
-    "folderCopyNotAllowed": "Copying folders is not allowed",
-    "noReadAccessToResource": "The requested operation can not be performed!<br />You do not have read access to the resource.",
-    "noWriteAccessToResource": "The requested operation can not be performed!<br />You do not have write access to the resource.",
-    "permissionMissing": "You do not have enough permissions to perform this action!<br />Please request the <b>{{permissionName}}</b> permission."
+    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",
+    "folderCanNotBeDeleted": "The folder cannot be deleted.",
+    "noWriteAccessToFolder": "You do not have permission to write to the folder.",
+    "groupAlreadyPresent": "There is already a group with the same name present in the system.<br>Please choose a different name.",
+    "folderPermissionsCanNotBeChanged": "The permissions of the selected folder cannot be changed.",
+    "templateNotDeleted": "The template was not deleted.",
+    "folderNotFound": "Folder not found.<br>Please use the UI elements to navigate to an existing folder.",
+    "folderCopyNotAllowed": "Copying folders is not allowed.",
+    "noReadAccessToResource": "You do not have permission to read the resource.",
+    "noWriteAccessToResource": "You do not have permission to write the resource.",
+    "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission."
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
