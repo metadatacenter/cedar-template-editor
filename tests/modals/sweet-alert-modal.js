@@ -13,8 +13,8 @@ var SweetAlertModal = function () {
   var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
   var message = element.all(by.css('div.sweet-alert > p')).first();
 
-  var insufficientWriteMessagePartial = "You do not have write access.";
-  var insufficientReadMessagePartial = "You do not have read access.";
+  var insufficientWriteMessagePartial = "You do not have write access";
+  var insufficientReadMessagePartial = "You do not have read access";
   var noWriteAccessMessagePartial = "The template may not be modified because there are metadata using it.";
 
 
