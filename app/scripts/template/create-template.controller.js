@@ -127,6 +127,7 @@ define([
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
                   $scope.form = response.data;
+                  console.log('getTemplate',$scope.form);
 
                   var copiedForm = jQuery.extend(true, {}, $scope.form);
                   checkValidation(copiedForm);

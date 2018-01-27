@@ -16,11 +16,12 @@ define([
     'QueryParamUtilsService',
     'UIMessageService',
     'UIProgressService',
-    'UIUtilService'
+    'UIUtilService',
+    'CedarUser'
   ];
 
   function HeaderController($rootScope, $location, $window, $timeout, $document, $translate,QueryParamUtilsService,
-                            UIMessageService, UIProgressService, UIUtilService) {
+                            UIMessageService, UIProgressService, UIUtilService,CedarUser) {
 
     var vm = this;
 
@@ -92,6 +93,31 @@ define([
       $window.scrollTo(0, 0);
 
     };
+
+    vm.goToHome = function () {
+      vm.searchTerm = null;
+      $rootScope.activeLocator = null;
+      $rootScope.activeZeroLocator = null;
+      var path = $location.path();
+      var hash = $location.hash();
+      var baseUrl = '/dashboard';
+      if (path != baseUrl) {
+        var queryParams = {};
+        var folderId = CedarUser.getHomeFolderId();
+        if (folderId) {
+          queryParams['folderId'] = folderId;
+        }
+      }
+      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      if (hash) {
+        url += '#' + hash;
+      }
+      $location.url(url);
+      $window.scrollTo(0, 0);
+
+    };
+    // share this with root
+    $rootScope.goToHome = vm.goToHome;
 
     vm.search = function (searchTerm) {
       if (vm.isDashboard()) {
