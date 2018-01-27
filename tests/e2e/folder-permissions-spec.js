@@ -80,7 +80,7 @@ describe('folder-permissions', function () {
       var folderTitle = workspacePage.createFolder('Source');
       workspacePage.moveResource(folderTitle, 'folder');
       moveModal.moveToUserFolder(testConfig.testUserName1, sharedFolderTitle);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -139,7 +139,7 @@ describe('folder-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       workspacePage.moveResource(sourceFolder, 'folder');
       moveModal.moveToDestination(targetFolder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -219,7 +219,7 @@ describe('folder-permissions', function () {
       var folderTitle = workspacePage.createFolder('Source');
       workspacePage.copyResource(folderTitle, 'folder');
       copyModal.copyToUserFolder(testConfig.testUserName1, sharedFolderTitle);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -277,7 +277,7 @@ describe('folder-permissions', function () {
 
       workspacePage.copyResource(sourceFolder, 'folder');
       copyModal.copyToDestination(targetFolder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
