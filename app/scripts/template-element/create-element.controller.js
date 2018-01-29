@@ -158,6 +158,7 @@ define([
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+              $rootScope.goToHome();
             }
         );
       } else {
