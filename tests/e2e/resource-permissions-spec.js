@@ -95,14 +95,14 @@ describe('resource-permissions', function () {
       // copy created template to user 1's shared folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
       // move created template to user 1's shared folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -139,6 +139,7 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
+    // TODO failing?
     it("should move a writable resource not owned by current user to an unwritable folder", function () {
       console.log('resource-permissions should move a writable resource not owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -156,13 +157,13 @@ describe('resource-permissions', function () {
 
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(target1Folder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Folder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -235,7 +236,7 @@ describe('resource-permissions', function () {
       // copy created template to shared folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, sharedFolderTitle);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
 
       // delete these at the end
@@ -291,7 +292,7 @@ describe('resource-permissions', function () {
 
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(targetFolder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
 
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
@@ -319,7 +320,7 @@ describe('resource-permissions', function () {
 
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(targetFolder);
-      sweetAlertModal.hasInsufficientPermissions();
+      sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
 
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));

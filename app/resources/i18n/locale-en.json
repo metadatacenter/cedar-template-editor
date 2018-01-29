@@ -129,7 +129,17 @@
     "CopyOfTitle": "Copy of {{title}}",
     "Error": "Error",
     "ToggleView": "Toggle View",
-    "FullScreen": "Full Screen"
+    "FullScreen": "Full Screen",
+    "none": "none",
+    "one": "one",
+    "two": "two",
+    "three": "three",
+    "four": "four",
+    "five": "five",
+    "six": "six",
+    "seven": "seven",
+    "eight": "eight",
+    "unlimited": "unlimited"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -230,7 +240,8 @@
         "error": "There was an error while saving the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "readPermission": "You do not have permission to read the resource."
       },
       "delete": {
         "success": "The metadata have been deleted.",
@@ -461,15 +472,17 @@
     "searchResult": "Search Results For: '{{searchTerm}}'"
   },
   "REST_ERROR": {
-    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location! Please try to create it with a different name.",
-    "folderCanNotBeDeleted": "The folder can not be deleted!",
-    "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder.",
-    "groupAlreadyPresent": "There is already a group with the same name present in the system!<br>Please choose a different name.",
-    "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
-    "templateNotDeleted": "The template was not deleted!",
-    "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
-    "folderCopyNotAllowed": "Copying folders is not allowed",
-    "permissionMissing": "You do not have enough permissions to perform this action!<br />Please request the <b>{{permissionName}}</b> permission."
+    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",
+    "folderCanNotBeDeleted": "The folder cannot be deleted.",
+    "noWriteAccessToFolder": "You do not have permission to write to the folder.",
+    "groupAlreadyPresent": "There is already a group with the same name present in the system.<br>Please choose a different name.",
+    "folderPermissionsCanNotBeChanged": "The permissions of the selected folder cannot be changed.",
+    "templateNotDeleted": "The template was not deleted.",
+    "folderNotFound": "Folder not found.<br>Please use the UI elements to navigate to an existing folder.",
+    "folderCopyNotAllowed": "Copying folders is not allowed.",
+    "noReadAccessToResource": "You do not have permission to read the resource.",
+    "noWriteAccessToResource": "You do not have permission to write the resource.",
+    "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission."
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
