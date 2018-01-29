@@ -16,6 +16,7 @@ var SweetAlertModal = function () {
   var insufficientWriteMessagePartial = "You do not have write access";
   var insufficientReadMessagePartial = "You do not have read access";
   var noWriteAccessMessagePartial = "The template may not be modified because there are metadata using it.";
+  var insufficientPermissionMessagePartial = "You do not have permission to write to the folder."
 
 
   this.createConfirmationDialog = function () {
@@ -70,6 +71,15 @@ var SweetAlertModal = function () {
     message.getText().then(function(text) {
       console.log('message',text);
       expect(text).toContain(insufficientWriteMessagePartial);
+    });
+  };
+
+  this.insufficientPermission = function () {
+    browser.sleep(1000);  // TODO  wait for animation
+    browser.wait(EC.visibilityOf(message));
+    message.getText().then(function(text) {
+      console.log('message',text);
+      expect(text).toContain(insufficientPermissionMessagePartial);
     });
   };
 

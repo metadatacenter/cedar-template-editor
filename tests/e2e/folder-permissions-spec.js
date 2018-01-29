@@ -64,8 +64,8 @@ describe('folder-permissions', function () {
 
     });
 
-    it("should move a folder owned by current user to an unwritable folder", function () {
-      console.log('folder-permissions moving folders should move a folder owned by current user to an unwritable folder');
+    xit("should fail to move a folder owned by current user to an unwritable folder", function () {
+      console.log('folder-permissions moving folders should fail to move a folder owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // share folder with user 2
@@ -80,7 +80,7 @@ describe('folder-permissions', function () {
       var folderTitle = workspacePage.createFolder('Source');
       workspacePage.moveResource(folderTitle, 'folder');
       moveModal.moveToUserFolder(testConfig.testUserName1, sharedFolderTitle);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -139,7 +139,7 @@ describe('folder-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       workspacePage.moveResource(sourceFolder, 'folder');
       moveModal.moveToDestination(targetFolder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -219,7 +219,7 @@ describe('folder-permissions', function () {
       var folderTitle = workspacePage.createFolder('Source');
       workspacePage.copyResource(folderTitle, 'folder');
       copyModal.copyToUserFolder(testConfig.testUserName1, sharedFolderTitle);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -277,7 +277,7 @@ describe('folder-permissions', function () {
 
       workspacePage.copyResource(sourceFolder, 'folder');
       copyModal.copyToDestination(targetFolder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
