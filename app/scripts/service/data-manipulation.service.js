@@ -233,6 +233,10 @@ define([
       return (service.getInputType(node) == 'link');
     };
 
+    service.isControlledTermType = function (node) {
+      return (service.getInputType(node) == 'controlled-term');
+    };
+
     service.isCheckboxType = function (node) {
       return (service.getInputType(node) == 'checkbox');
     };
@@ -823,7 +827,7 @@ define([
       }
 
       // The value of the link field is a URI, and note that @id cannot be null
-      if (inputType == "link") {
+      if (inputType == "link" || inputType == "controlled-term") {
         // Define the @id field
         var idField = {};
         idField.type = "string";
@@ -1129,7 +1133,7 @@ define([
       // usually it is in  @value
       var fieldValue = "@value";
       // but these three put it @id
-      if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
+      if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field) || service.isControlledTermType(field)) {
         fieldValue = "@id";
       }
       return fieldValue;
@@ -1140,7 +1144,7 @@ define([
       // the printable value is usually in @value
       var location = "@value";
       // but a link puts it in @id
-      if (service.isLinkType(field)) {
+      if (service.isLinkType(field) ) {
         location = "@id";
         // and the constraint puts it rdfs:label
       } else if (service.hasValueConstraint(field)) {
@@ -1151,6 +1155,8 @@ define([
         // some instances that contain controlled terms. In those cases, we want our UI to show the controlled term label.
       } else if (valueNode && valueNode.length > 0 && valueNode[0]['rdfs:label']) {
         location = "rdfs:label"
+      } else if (service.isControlledTermType(field) ) {
+        location = "@id";
       }
       return location;
     };

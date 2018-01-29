@@ -26,6 +26,17 @@ describe('template-creator', function () {
       "label"                    : "Text",
       "allowedInElement"         : true,
       "primaryField"             : true,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "controlled-term",
+      "iconClass"                : "cedar-svg-controll-term",
+      "label"                    : "Controlled Term",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
       "hasControlledTerms"       : true,
       "staticField"              : false,
       "allowsMultiple"           : true,

@@ -5,11 +5,11 @@
     "label": "Text",
     "allowedInElement": true,
     "primaryField": true,
-    "hasControlledTerms": true,
+    "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": true,
-    "hasInstanceTerm": true
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "controlled-term",

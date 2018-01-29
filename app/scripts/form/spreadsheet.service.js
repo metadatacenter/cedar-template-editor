@@ -54,10 +54,9 @@ define([
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
 
-
         // if we don't have an id and label for a controlled term, go get it
         var lazyUpdate = function ($scope, schema, id, term, model) {
-          if (!model['@id'] || !model['rdfs:label']) {
+          //if (!model['@id'] || !model['rdfs:label']) {
 
             autocompleteService.updateFieldAutocomplete(schema, term);
             if (autocompleteService.autocompleteResultsCache[id][term]) {
@@ -78,7 +77,7 @@ define([
                 }
               });
             }
-          }
+          //}
         };
 
         // copy table data to source table
@@ -103,44 +102,60 @@ define([
               var inputType = sds.columnDescriptors[col].type;
               var cedarType = sds.columnDescriptors[col].cedarType;
 
-
-              if (inputType == 'dropdown') {
-                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-              } else if (cedarType == 'checkbox') {
-                var valueObject = JSON.parse(sds.tableData[row][col]);
-                var value = {};
-                for (var key in valueObject) {
-                  value[key] = true;
-                }
-                sds.tableDataSource[row][col]['@value'] = value;
-              } else if (cedarType === 'date') {
-                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
-              } else if (cedarType === 'numeric') {
-                if (sds.tableData[row][col]) {
-                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
-                }
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
-              } else if (cedarType === 'link') {
-                if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
-                  sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
-                } else {
-                  delete sds.tableDataSource[row][col]['@id'];
-                }
-              } else if (inputType == 'autocomplete') {
-                // console.log('inputType', inputType);
-                if (sds.tableData[row][col]) {
-
-                  var schema = sds.columnDescriptors[col].schema;
-                  if (isConstrained(schema)) {
-                    var id = sds.columnDescriptors[col].nodeId;
-                    var term = sds.tableData[row][col];
-                    lazyUpdate($scope, schema, id, term, sds.tableDataSource[row][col]);
+              switch (inputType) {
+                case  'dropdown':
+                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                  break;
+                case  'checkbox':
+                  var valueObject = JSON.parse(sds.tableData[row][col]);
+                  var value = {};
+                  for (var key in valueObject) {
+                    value[key] = true;
                   }
-                }
-              } else {
-                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                  sds.tableDataSource[row][col]['@value'] = value;
+                  break;
+                case  'date':
+                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                  sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
+                  break;
+
+                case  'numeric':
+                  if (sds.tableData[row][col]) {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
+                  }
+                  sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
+                  break;
+                case  'link':
+                  if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
+                    sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                  } else {
+                    delete sds.tableDataSource[row][col]['@id'];
+                  }
+                  break;
+                case  'autocomplete':
+                  if (sds.tableData[row][col]) {
+
+                    var schema = sds.columnDescriptors[col].schema;
+                    if (isConstrained(schema)) {
+                      var id = sds.columnDescriptors[col].nodeId;
+                      var term = sds.tableData[row][col];
+                      lazyUpdate($scope, schema, id, term, sds.tableDataSource[row][col]);
+                    }
+                  }
+                  break;
+                default:
+                  if (cedarType == 'controlled-term') {
+                    if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
+                      sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
+                    } else {
+                      delete sds.tableDataSource[row][col]['@id'];
+                    }
+                  } else {
+                    sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                  }
               }
+
+
             }
           }
         };
@@ -239,7 +254,7 @@ define([
               //   desc.editor = 'checkboxes';//MultiCheckboxEditor;
               //   desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
-            case 'textfield':
+            case 'controlled-term':
               if (isConstrained(node)) {
                 desc.type = 'autocomplete';
                 desc.trimDropdown = true;
@@ -266,6 +281,9 @@ define([
                 };
               } else {
                 desc.type = 'text';
+                desc.validator = service.linkValidator;
+                desc.allowInvalid = true;
+                desc.invalidCellClassName = 'myInvalidClass';
               }
               break;
           }
@@ -294,18 +312,23 @@ define([
             var inputType = columnDescriptor.type;
             var cedarType = columnDescriptor.cedarType;
 
-            if (inputType == 'dropdown') {
+            if (inputType == 'autocomplete') {
+              rowData.push(cellDataObject['rdfs:label']);
+
+            } else if (inputType == 'dropdown' || cedarType == 'numeric') {
               rowData.push(cellDataObject['@value']);
-            } else if (cedarType == 'link') {
+
+            } else if (cedarType == 'link' || cedarType == 'controlled-term' ) {
               rowData.push(cellDataObject['@id']);
-            } else if (cedarType == 'numeric') {
-              rowData.push(cellDataObject['@value']);
+
             } else if (cedarType == 'checkboxes') {
               rowData.push(JSON.stringify(cellDataObject['@value']));
+
             } else if (cedarType == 'deepObject') {
               rowData.push(columnDescriptor.cedarLabel);
+
             } else {
-              rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
+              rowData.push(cellDataObject['@value']);
             }
 
           } else {
@@ -543,7 +566,7 @@ define([
           if (container) {
 
             container.style.width = 700;
-            container.style.height= 300;
+            container.style.height = 300;
 
             $scope.spreadsheetContext = context;
             context.isField = isField;
@@ -700,7 +723,7 @@ define([
 
                 var elm = angular.element(table);
                 elm.css({
-                  'border-width': '0',
+                  'border-width'      : '0',
                   'border-width-right': '1px'
                 });
 
@@ -718,4 +741,5 @@ define([
       };
 
     }
-);
+)
+;

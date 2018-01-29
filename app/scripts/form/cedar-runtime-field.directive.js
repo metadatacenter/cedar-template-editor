@@ -490,6 +490,7 @@ define([
 
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
+        console.log('updateModelFromUI',$scope.model);
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
 
@@ -536,6 +537,7 @@ define([
             dms.initializeValue($scope.field, $scope.model);
           }
         }
+        console.log('updateModelFromUI',$scope.model);
       };
 
       // set the UI with the values from the model
