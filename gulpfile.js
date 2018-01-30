@@ -273,7 +273,17 @@ gulp.task('test-folder-permissions', gulp.series('test-env', function () {
       });
 }));
 
-
+gulp.task('test-resource-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/resource-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
 
 function exitWithError(msg) {
   onError(msg);
