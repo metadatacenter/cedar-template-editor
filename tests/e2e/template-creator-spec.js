@@ -34,7 +34,7 @@ describe('template-creator', function () {
     {
       "cedarType"                : "controlled-term",
       "iconClass"                : "cedar-svg-controll-term",
-      "label"                    : "Controlled Term",
+      "label"                    : "Controlled Terminology",
       "allowedInElement"         : true,
       "primaryField"             : false,
       "hasControlledTerms"       : true,
