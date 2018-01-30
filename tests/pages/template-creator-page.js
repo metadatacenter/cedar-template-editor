@@ -1062,6 +1062,7 @@ var TemplateCreatorPage = function () {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
+  // TODO not working
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function () {
     var multiple = element(by.css('.detail-options .element-toggle'));
