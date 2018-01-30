@@ -1066,19 +1066,19 @@ var TemplateCreatorPage = function () {
     var yesOption = element(by.css('.d-option.set-value'));
     browser.wait(EC.visibilityOf(yesOption));
     browser.wait(EC.elementToBeClickable(yesOption));
-    console.log('setMultiple',yesOption);
+    console.log('setMultiple yesOption');
     yesOption.click();
 
     var dropdownToggle = element(by.css('.cardinality-selector.min  button.dropdown-toggle'));
     browser.wait(EC.visibilityOf(dropdownToggle));
     browser.wait(EC.elementToBeClickable(dropdownToggle));
-    console.log('setMultiple',dropdownToggle);
+    console.log('setMultiple dropdownToggle');
     dropdownToggle.click();
 
     var noneOption = element(by.css('.dropdown-selector.ng-binding.none'));
     browser.wait(EC.visibilityOf(noneOption));
     browser.wait(EC.elementToBeClickable(noneOption));
-    console.log('setMultiple',noneOption);
+    console.log('setMultiple noneOption');
     noneOption.click();
 
   }
