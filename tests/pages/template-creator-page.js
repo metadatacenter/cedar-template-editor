@@ -565,6 +565,9 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
+    var dIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
+    var dirty = EC.visibilityOf(dirtyIcon);
+    console.log('isDirty',dirty, dIcon);
     //browser.wait(EC.visibilityOf(dirtyIcon));
     return true;
   };
@@ -783,7 +786,6 @@ var TemplateCreatorPage = function () {
 
   this.clickJsonPreview = function () {
     browser.executeScript("arguments[0].scrollIntoView();", showJsonLink.getWebElement());
-    console.log('got showjsonlink');
     // browser.wait(EC.visibilityOf(showJsonLink));
     // browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
