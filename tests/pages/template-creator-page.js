@@ -1054,25 +1054,31 @@ var TemplateCreatorPage = function () {
 
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function () {
+    console.log('setMultiple');
     var multiple = element(by.css('.detail-options .element-toggle'));
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
+    console.log('setMultiple',multiple);
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
     multiple.click();
+    console.log('setMultiple clicked');
 
     var yesOption = element(by.css('.d-option.set-value'));
     browser.wait(EC.visibilityOf(yesOption));
     browser.wait(EC.elementToBeClickable(yesOption));
+    console.log('setMultiple',yesOption);
     yesOption.click();
 
     var dropdownToggle = element(by.css('.cardinality-selector.min  button.dropdown-toggle'));
     browser.wait(EC.visibilityOf(dropdownToggle));
     browser.wait(EC.elementToBeClickable(dropdownToggle));
+    console.log('setMultiple',dropdownToggle);
     dropdownToggle.click();
 
     var noneOption = element(by.css('.dropdown-selector.ng-binding.none'));
     browser.wait(EC.visibilityOf(noneOption));
     browser.wait(EC.elementToBeClickable(noneOption));
+    console.log('setMultiple',noneOption);
     noneOption.click();
 
   }
