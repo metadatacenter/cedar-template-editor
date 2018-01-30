@@ -163,7 +163,7 @@ describe('resource-permissions', function () {
 
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
