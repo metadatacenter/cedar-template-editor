@@ -17,6 +17,7 @@ var TemplateCreatorPage = function () {
   var createTemplateButton = element(by.id('button-create-template'));
   var createTemplatePage = element(by.css('#top-navigation.template'));
   var createTextFieldButton = element(by.id('button-add-field-textfield'));
+  var createControlledTermFieldButton = element(by.id('button-add-field-controlled-term'));
   var createTextAreaButton = element(by.id('button-add-field-textarea'));
   var createRadioButton = element(by.id('button-add-field-radio'));
   var createCheckboxButton = element(by.id('button-add-field-checkbox'));
@@ -964,6 +965,9 @@ var TemplateCreatorPage = function () {
     switch (cedarType) {
       case "textfield":
         btn = createTextFieldButton;
+        break;
+      case "controlled-term":
+        btn = createControlledTermFieldButton;
         break;
       case "textarea":
         btn = createTextAreaButton;
