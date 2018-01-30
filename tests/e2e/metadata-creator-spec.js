@@ -83,6 +83,7 @@ describe('metadata-creator', function () {
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.addField('textfield', false, 'two', 'two');
+      templatePage.isDirty();
       templatePage.clickSave('template');
       toastyModal.isSuccess();
       templatePage.clickBackArrow();
@@ -120,11 +121,6 @@ describe('metadata-creator', function () {
       finderModal.addFirstElement(element);
       // TODO not working
       templatePage.setMultiple();
-    });
-
-    // TODO should be dirty here
-    it("should should be dirty", function () {
-      console.log('should should be dirty');
       templatePage.isDirty();
     });
 

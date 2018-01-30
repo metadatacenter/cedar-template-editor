@@ -567,7 +567,7 @@ var TemplateCreatorPage = function () {
   this.isDirty = function () {
 
     var dirty = EC.visibilityOf(dirtyIcon);
-    console.log('isDirty',dirty);
+    console.log('isDirty',dirtyIcon);
     //browser.wait(EC.visibilityOf(dirtyIcon));
     return true;
   };
