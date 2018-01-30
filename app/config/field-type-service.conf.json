@@ -16,7 +16,7 @@
     "iconClass": "cedar-svg-controll-term",
     "label": "Controlled Terminology",
     "allowedInElement": true,
-    "primaryField": true,
+    "primaryField": false,
     "hasControlledTerms": true,
     "staticField": false,
     "allowsMultiple": true,
