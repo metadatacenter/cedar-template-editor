@@ -567,7 +567,7 @@ var TemplateCreatorPage = function () {
   this.isDirty = function () {
     var dIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
     var dirty = EC.visibilityOf(dirtyIcon);
-    console.log('isDirty',dirty, dIcon);
+    console.log('isDirty',dIcon, dirtyIcon.getWebElement());
     //browser.wait(EC.visibilityOf(dirtyIcon));
     return true;
   };
@@ -1057,6 +1057,7 @@ var TemplateCreatorPage = function () {
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function () {
     var multiple = element(by.css('.detail-options .element-toggle'));
+    console.log('setMultiple', multiple.getWebElement()[0]);
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
