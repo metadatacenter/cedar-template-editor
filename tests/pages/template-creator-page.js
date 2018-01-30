@@ -565,9 +565,11 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
+    element.all(by.css('.feedback-form .fa-circle-o')).then(function(elements) {
+      console.log('isDirty',elements);
+    });
 
     var dirty = EC.visibilityOf(dirtyIcon);
-    console.log('isDirty',dirtyIcon);
     //browser.wait(EC.visibilityOf(dirtyIcon));
     return true;
   };
@@ -1059,8 +1061,11 @@ var TemplateCreatorPage = function () {
     var multiple = element(by.css('.detail-options .element-toggle'));
 
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
-    console.log('setMultiple', EC.visibilityOf(multiple), EC.elementToBeClickable(multiple));
-    console.log("arguments[0].scrollIntoView();", multiple.getWebElement());
+
+    element.all(by.css('.detail-options .element-toggle')).then(function(elements) {
+      console.log('setMultiple',elements);
+    });
+
     // browser.wait(EC.visibilityOf(multiple));
     // browser.wait(EC.elementToBeClickable(multiple));
     // multiple.click();

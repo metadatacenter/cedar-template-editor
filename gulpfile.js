@@ -249,17 +249,7 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-template-creator', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/template-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
+
 
 gulp.task('test-delete-resource', gulp.series('test-env', function () {
   return gulp.src([
@@ -288,6 +278,54 @@ gulp.task('test-folder-permissions', gulp.series('test-env', function () {
 gulp.task('test-resource-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/resource-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-template-creator', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/template-creator-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-update-description', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-description-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-update-name', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-name-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-update-ownership', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-ownership-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
