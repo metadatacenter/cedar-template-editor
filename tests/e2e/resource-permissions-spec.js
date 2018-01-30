@@ -95,14 +95,14 @@ describe('resource-permissions', function () {
       // copy created template to user 1's shared folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
       // move created template to user 1's shared folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
@@ -157,7 +157,7 @@ describe('resource-permissions', function () {
 
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
+      sweetAlertModal.insufficientPermission();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
