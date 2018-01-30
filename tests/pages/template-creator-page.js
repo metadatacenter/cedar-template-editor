@@ -1057,7 +1057,7 @@ var TemplateCreatorPage = function () {
     console.log('setMultiple');
     var multiple = element(by.css('.detail-options .element-toggle'));
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
-    console.log('setMultiple',multiple);
+    console.log('setMultiple visibility');
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
     multiple.click();
