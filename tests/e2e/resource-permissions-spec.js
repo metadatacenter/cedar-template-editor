@@ -177,6 +177,7 @@ describe('resource-permissions', function () {
 
       // create source template and target shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
 
       // share both folders
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
@@ -190,8 +191,6 @@ describe('resource-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
 
-      // delete these at the end
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
   });
 

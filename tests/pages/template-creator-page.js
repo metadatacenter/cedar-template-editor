@@ -565,9 +565,9 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
-    var dIcon = element(by.id('top-navigation')).element(by.css('.feedback-form .fa-circle-o'));
+
     var dirty = EC.visibilityOf(dirtyIcon);
-    console.log('isDirty',dIcon, dirtyIcon.getWebElement());
+    console.log('isDirty',dirty);
     //browser.wait(EC.visibilityOf(dirtyIcon));
     return true;
   };

@@ -119,7 +119,7 @@ describe('metadata-creator', function () {
       console.log('should add the element to the template');
       finderModal.addFirstElement(element);
       // TODO not working
-      //templatePage.setMultiple();
+      templatePage.setMultiple();
     });
 
     // TODO should be dirty here

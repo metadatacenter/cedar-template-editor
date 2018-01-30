@@ -249,6 +249,18 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('test-template-creator', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/template-creator-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-delete-resource', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/delete-resource-spec.js'
@@ -276,6 +288,18 @@ gulp.task('test-folder-permissions', gulp.series('test-env', function () {
 gulp.task('test-resource-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/resource-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-update-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
