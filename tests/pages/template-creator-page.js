@@ -565,13 +565,13 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
-    element.all(by.css('.feedback-form .fa-circle-o')).then(function(elements) {
-      console.log('isDirty',elements);
-    });
+    // element.all(by.css('.feedback-form .fa-circle-o')).count().then(function(elements) {
+    //   console.log('isDirty',elements);
+    // });
 
     var dirty = EC.visibilityOf(dirtyIcon);
     //browser.wait(EC.visibilityOf(dirtyIcon));
-    return true;
+    return dirty;
   };
 
   this.isValid = function () {
