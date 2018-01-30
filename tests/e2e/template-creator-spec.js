@@ -256,16 +256,16 @@ describe('template-creator', function () {
                 browser.wait(EC.visibilityOf(field));
 
 
-                // delete the field
-                browser.actions().mouseMove(field).perform();
-                var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
-                browser.wait(EC.visibilityOf(removeFieldButton));
-                browser.wait(EC.elementToBeClickable(removeFieldButton));
-                removeFieldButton.click();
-                browser.wait(EC.stalenessOf(field));
-
-                templatePage.isDirty();
-                templatePage.isValid();
+                // // delete the field
+                // browser.actions().mouseMove(field).perform();
+                // var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
+                // browser.wait(EC.visibilityOf(removeFieldButton));
+                // browser.wait(EC.elementToBeClickable(removeFieldButton));
+                // removeFieldButton.click();
+                // browser.wait(EC.stalenessOf(field));
+                //
+                // templatePage.isDirty();
+                // templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
