@@ -956,6 +956,7 @@ var TemplateCreatorPage = function () {
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
+    console.log('addField',cedarType, isMore);
 
     if (isMore) {
       browser.wait(EC.visibilityOf(createMore));
@@ -967,6 +968,7 @@ var TemplateCreatorPage = function () {
         btn = createTextFieldButton;
         break;
       case "controlled-term":
+        console.log('controlled-term')
         btn = createControlledTermFieldButton;
         break;
       case "textarea":
