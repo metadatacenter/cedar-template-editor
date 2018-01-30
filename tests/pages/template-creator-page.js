@@ -968,7 +968,6 @@ var TemplateCreatorPage = function () {
         btn = createTextFieldButton;
         break;
       case "controlled-term":
-        console.log('controlled-term')
         btn = createControlledTermFieldButton;
         break;
       case "textarea":
