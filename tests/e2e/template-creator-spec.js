@@ -21,18 +21,6 @@ describe('template-creator', function () {
   var sampleJson;
   var fieldTypes = [
     {
-      "cedarType": "controlled-term",
-      "iconClass": "cedar-svg-controll-term",
-      "label": "Controlled Term",
-      "allowedInElement": true,
-      "primaryField": true,
-      "hasControlledTerms": true,
-      "staticField": false,
-      "allowsMultiple": true,
-      "allowsValueRecommendation": true,
-      "hasInstanceTerm": true
-    },
-    {
       "cedarType"                : "textfield",
       "iconClass"                : "cedar-svg-text",
       "label"                    : "Text",
