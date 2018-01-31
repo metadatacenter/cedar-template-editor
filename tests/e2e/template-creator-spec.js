@@ -32,15 +32,16 @@ describe('template-creator', function () {
       "allowsValueRecommendation": false
     },
     {
-      "cedarType"                : "controlled-term",
-      "iconClass"                : "cedar-svg-controll-term",
-      "label"                    : "Controlled Terminology",
-      "allowedInElement"         : true,
-      "primaryField"             : false,
-      "hasControlledTerms"       : true,
-      "staticField"              : false,
-      "allowsMultiple"           : true,
-      "allowsValueRecommendation": true
+      "cedarType": "controlled-term",
+      "iconClass": "cedar-svg-controll-term",
+      "label": "Controlled Terminology",
+      "allowedInElement": true,
+      "primaryField": false,
+      "hasControlledTerms": true,
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": true,
+      "hasInstanceTerm": true
     },
     {
       "cedarType"                : "textarea",
@@ -253,11 +254,15 @@ describe('template-creator', function () {
 
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
+              });
+
+              it("continued one", function () {
+                console.log('continued one');
                 browser.wait(EC.visibilityOf(field));
               });
 
-              it("continued", function () {
-                console.log("continued");
+              it("continued two", function () {
+                console.log("continued two");
                 // delete the field
                 browser.actions().mouseMove(field).perform();
                 var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
@@ -267,8 +272,8 @@ describe('template-creator', function () {
                 browser.wait(EC.stalenessOf(field));
               });
 
-              it("continued again", function () {
-                console.log("continued again");
+              it("continued three", function () {
+                console.log("continued three");
                 templatePage.isDirty();
                 templatePage.isValid();
                 templatePage.clickBackArrow();
