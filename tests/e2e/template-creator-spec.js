@@ -242,15 +242,8 @@ describe('template-creator', function () {
 
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
-              });
-
-              it("continued one", function () {
-                console.log('continued one');
                 browser.wait(EC.visibilityOf(field));
-              });
 
-              it("continued two", function () {
-                console.log("continued two");
                 // delete the field
                 browser.actions().mouseMove(field).perform();
                 var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
@@ -258,16 +251,12 @@ describe('template-creator', function () {
                 browser.wait(EC.elementToBeClickable(removeFieldButton));
                 removeFieldButton.click();
                 browser.wait(EC.stalenessOf(field));
-              });
 
-              it("continued three", function () {
-                console.log("continued three");
                 templatePage.isDirty();
                 templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
-
               });
 
               it("should select and deselect a " + type + " in " + pageType, function () {
