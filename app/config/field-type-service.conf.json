@@ -1,17 +1,5 @@
 [
   {
-    "cedarType": "textfield",
-    "iconClass": "cedar-svg-text",
-    "label": "Text",
-    "allowedInElement": true,
-    "primaryField": true,
-    "hasControlledTerms": false,
-    "staticField": false,
-    "allowsMultiple": true,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
-  },
-  {
     "cedarType": "controlled-term",
     "iconClass": "cedar-svg-controll-term",
     "label": "Controlled Term",
@@ -22,6 +10,18 @@
     "allowsMultiple": true,
     "allowsValueRecommendation": true,
     "hasInstanceTerm": true
+  },
+  {
+    "cedarType": "textfield",
+    "iconClass": "cedar-svg-text",
+    "label": "Text",
+    "allowedInElement": true,
+    "primaryField": true,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false
   },
   {
     "cedarType": "link",
