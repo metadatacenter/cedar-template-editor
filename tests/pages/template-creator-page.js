@@ -967,9 +967,6 @@ var TemplateCreatorPage = function () {
       case "textfield":
         btn = createTextFieldButton;
         break;
-      case "controlled-term":
-        btn = createControlledTermFieldButton;
-        break;
       case "textarea":
         btn = createTextAreaButton;
         break;
@@ -1000,6 +997,9 @@ var TemplateCreatorPage = function () {
       case "richtext":
         btn = createRichTextButton;
         break;
+      case "controlled-term":
+        btn = createControlledTermFieldButton;
+        break;
       default:
         found = false;
         break;
@@ -1007,8 +1007,8 @@ var TemplateCreatorPage = function () {
 
     if (found) {
       browser.wait(EC.visibilityOf(btn));
-      browser.wait(EC.elementToBeClickable(btn));
-      btn.click();
+      // browser.wait(EC.elementToBeClickable(btn));
+      // btn.click();
 
       // enter the name and description
       // browser.wait(EC.elementToBeClickable(createFieldTitle));
