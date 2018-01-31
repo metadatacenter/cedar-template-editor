@@ -956,7 +956,7 @@ var TemplateCreatorPage = function () {
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
-    console.log('addField',cedarType, isMore);
+    console.log('addField',cedarType, isMore, title, description, content);
 
     if (isMore) {
       browser.wait(EC.visibilityOf(createMore));
