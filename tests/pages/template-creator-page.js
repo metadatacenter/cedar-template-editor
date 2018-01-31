@@ -1011,10 +1011,10 @@ var TemplateCreatorPage = function () {
       btn.click();
 
       // enter the name and description
-      browser.wait(EC.elementToBeClickable(createFieldTitle));
-      createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
-      browser.wait(EC.elementToBeClickable(createFieldDescription));
-      createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+      // browser.wait(EC.elementToBeClickable(createFieldTitle));
+      // createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      // browser.wait(EC.elementToBeClickable(createFieldDescription));
+      // createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
     }
 
     switch (cedarType) {
