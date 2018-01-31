@@ -36,7 +36,9 @@ define([
         max         : '=',
         select      : '=',
         range       : '=',
-        paging      : '='
+        paging      : '=',
+        isExpandable: "=",
+        expandAll   : "="
       },
       controller : function ($scope, $element) {
 
@@ -74,9 +76,9 @@ define([
           return UIUtilService.cardinalityString(scope.field);
         };
 
-        scope.isExpandable = function () {
-          return UIUtilService.isExpandable(scope.field);
-        };
+        // scope.isExpandable = function () {
+        //   return UIUtilService.isExpandable(scope.field);
+        // };
 
         // get the field description
         scope.getDescription = function () {

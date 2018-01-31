@@ -541,6 +541,16 @@ define([
           return dms.getTitle($scope.form);
         };
 
+        // get the field description
+        $scope.getDescription = function () {
+          return dms.getDescription($scope.form);
+        };
+
+        // has a field description?
+        $scope.hasDescription = function () {
+          return $scope.form && dms.getDescription($scope.form).length > 0;
+        };
+
         $scope.formatTitle = function () {
           return UIUtilService.formatTitle($scope.form);
         };
@@ -551,6 +561,7 @@ define([
 
         // expand all the elements nested inside the form
         $scope.expandAll = function () {
+          console.log('expandAll');
 
           // expand the form
           $scope.expanded = true;
@@ -562,8 +573,10 @@ define([
             var selectedKey;
             var props = dms.propertiesOf($scope.form);
             angular.forEach(props, function (value, key) {
-              if (DataUtilService.isElement(value)) {
-                $scope.$broadcast("expandAll", [dms.getId(value)]);
+              var schema = dms.schemaOf(value);
+              console.log('isElement', key, DataUtilService.isElement(schema))
+              if (DataUtilService.isElement(schema)) {
+                $scope.$broadcast("expandAll", [dms.getId(schema)]);
               }
             });
 

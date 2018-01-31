@@ -16,26 +16,16 @@
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
-    <div class="row">
-      <div class="col-xs-9 ">
-        <div ng-click="toggleExpanded()">
-          <span class="title form text-nowrap">
-              <button type="button" class="expand form-title">
-                <i class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
-              </button>
-            {{pageTitle()}}</span>
-        </div>
-      </div>
-
-      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
-        <field-toolbar field="form"
-            close="close" is-active="isActive" paging="false"
-            expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
-            max="pageMax" select="selectPage" range="6">
-        </field-toolbar>
-      </div>
+    <div class="title form" style="display:flex;justify-content:space-between;cursor:pointer" ng-click="toggleExpanded()">
+      <span><button type="button" class="expand form-title"><i class="fa "
+          ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i></button></span>
+      <span style="width:100%;user-select:none;margin-left:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{pageTitle()}}</span>
+      <field-toolbar field="form"
+          close="close" is-active="isActive" paging="false"
+          expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
+          max="pageMax" select="selectPage" range="6">
+      </field-toolbar>
     </div>
-
 
     <ul class="treeview tv">
 
