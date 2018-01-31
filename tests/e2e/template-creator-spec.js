@@ -254,18 +254,23 @@ describe('template-creator', function () {
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
                 browser.wait(EC.visibilityOf(field));
+              });
 
+              it("continued", function () {
+                console.log("continued");
+                // delete the field
+                browser.actions().mouseMove(field).perform();
+                var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
+                browser.wait(EC.visibilityOf(removeFieldButton));
+                browser.wait(EC.elementToBeClickable(removeFieldButton));
+                removeFieldButton.click();
+                browser.wait(EC.stalenessOf(field));
+              });
 
-                // // delete the field
-                // browser.actions().mouseMove(field).perform();
-                // var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
-                // browser.wait(EC.visibilityOf(removeFieldButton));
-                // browser.wait(EC.elementToBeClickable(removeFieldButton));
-                // removeFieldButton.click();
-                // browser.wait(EC.stalenessOf(field));
-                //
-                // templatePage.isDirty();
-                // templatePage.isValid();
+              it("continued again", function () {
+                console.log("continued again");
+                templatePage.isDirty();
+                templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
