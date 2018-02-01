@@ -82,11 +82,13 @@ define([
 
         // get the field description
         scope.getDescription = function () {
+          console.log('getDescription',DataManipulationService.getDescription(scope.field), scope.field);
           return DataManipulationService.getDescription(scope.field);
         };
 
         // has a field description?
         scope.hasDescription = function () {
+          console.log('hasDescription',DataManipulationService.getDescription(scope.field), scope.field);
           return scope.field && DataManipulationService.getDescription(scope.field).length > 0;
         };
 

@@ -2,6 +2,7 @@
 
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
 
+
     <!-- Regular field -->
     <div ng-if="isRegular() && isListView()"
         aria-label="{{getDescription()}}"
@@ -36,6 +37,7 @@
   </div>
 
   <div ng-if="isActive(index)">
+
 
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
