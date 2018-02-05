@@ -37,7 +37,6 @@ define([
     };
 
     service.isElement = function (value) {
-      console.log('isElement', value, value['@type']);
       return value && value['@type'] && value['@type'] == elementType;
     };
 

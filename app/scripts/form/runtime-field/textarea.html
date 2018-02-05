@@ -1,8 +1,10 @@
 <div ng-init="initializeValue(field)">
 
+  <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
+    <div aria-label="{{getDescription()}}" class="isInactive truncate">{{valueArray[index]['@value']}}</div>
+  </div>
 
   <div ng-if="isActive(index)" class="form-group has-success has-feedback">
-
     <textarea
         rows="5"
         class="form-control isActive select"
@@ -10,23 +12,8 @@
         placeholder="{{isActive(index) ? 'enter value' : ''}}"
         aria-label="{{getDescription()}}"
         ng-required="isRequired()"
-        ng-model="valueElement['@value']"></textarea>
-
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
-
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-
-    <div ng-if="isListView()"
-        aria-label="{{getDescription(field)}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
-    </div>
-
-    <div ng-if="!isListView()"
-        aria-label="{{getDescription(field)}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
+        ng-model="valueArray[index]['@value']"></textarea>
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
 </div>

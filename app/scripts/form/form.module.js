@@ -19,6 +19,7 @@ define([
   'cedar/template-editor/form/recommended-value.directive',
   'cedar/template-editor/form/cedar-pager.directive',
   'cedar/template-editor/form/field-toolbar.directive',
+  'cedar/template-editor/form/field-title.directive',
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
   'cedar/template-editor/form/field-create/cardinality-selector.directive'
@@ -43,6 +44,7 @@ define([
     'cedar.templateEditor.form.recommendedValue',
     'cedar.templateEditor.form.cedarPager',
     'cedar.templateEditor.form.fieldToolbar',
+    'cedar.templateEditor.form.fieldTitle',
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
     'cedar.templateEditor.form.fieldCreate.cardinalitySelector'

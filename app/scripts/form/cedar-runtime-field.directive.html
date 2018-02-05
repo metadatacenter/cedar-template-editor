@@ -2,152 +2,10 @@
 
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
-
     <div class="fields text-fields">
 
-      <!-- show zero cardinality   -->
-      <!--<div ng-if="valueArray.length == 0">-->
-      <!--<div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">-->
-      <!--<div class="col-xs-12">-->
-      <!--<div class="leader"></div>-->
-      <!--<div class="title field">-->
-      <!--{{getTitle()}}-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-
-      <!-- show the spreadsheet -->
-      <div ng-if="isSpreadsheetView()">
-
-        <!-- section break --->
-        <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
-
-        <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}">
-
-          <!-- title --->
-          <div style="display:flex;justify-content:space-between;cursor:pointer"
-              ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
-            <div ng-click="toggleActive(index)" class="field isInactive"
-                ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span>
-            </div>
-            <div ng-if="isActive(index)">
-              <field-toolbar style="white-space:nowrap" values="valueArray" min="pageMin"
-                  max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
-                  range="pageRange" model="model" field="field" index="index"
-                  remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
-                  expand-all="expandAll"
-                  get-locator="getLocator" view-state="viewState">
-              </field-toolbar>
-            </div>
-          </div>
-
-          <!-- content -->
-          <div ng-if="!isActive()">
-            <div ng-include="getFieldUrl()"></div>
-          </div>
-
-          <div ng-if="isActive()" class="isActive answer"
-              style="margin: 10px 10px 0 10px;padding:20px;border: 1px solid #ccc;background: #f8f8f8;">
-            <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
-              <div ng-if="isImage(previous)" class="image">
-                <figure>
-                  <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
-                      type="image/png" width="100%"/>
-                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                </figure>
-              </div>
-              <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
-                  ng-bind-html="getUnescapedContent(previous)"></div>
-              <div ng-if="isYouTube(previous)" class="youtube">
-                <figure>
-                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                </figure>
-              </div>
-            </div>
-
-            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-              <div class="spreadsheetViewDetector"></div>
-              <div class="spreadsheetViewContainer"></div>
-              <div id="spreadsheetViewLogs"></div>
-              <div id="hooksList"></div>
-              <div id="htDatepickerHolder"></div>
-              <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-              <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-            </form>
-
-          </div>
-
-        </div>
-      </div>
-
-      <!-- show a tabbed list of fields, one index at a time  -->
-      <div ng-if="isTabView()">
-
-        <!-- section break --->
-        <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
-
-        <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}">
-
-          <!-- title --->
-          <div style="display:flex;justify-content:space-between;cursor:pointer"
-              ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
-            <div ng-click="toggleActive(index)" class="field isInactive"
-                ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span>
-            </div>
-            <div ng-if="isActive(index)">
-              <field-toolbar style="white-space:nowrap" values="valueArray" min="pageMin"
-                  max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
-                  range="pageRange" model="model" field="field" index="index"
-                  remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
-                  expand-all="expandAll"
-                  get-locator="getLocator" view-state="viewState">
-              </field-toolbar>
-            </div>
-          </div>
-
-          <!-- content -->
-          <div ng-if="!isActive(index)" ng-click="setActive(index, true)" style="cursor:pointer">
-            <div ng-include="getFieldUrl()"></div>
-          </div>
-
-          <div ng-if="isActive(index)" class="isActive answer"
-              style="margin: 10px 10px 0 10px;padding:20px;border: 1px solid #ccc;background: #f8f8f8;">
-            <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
-              <div ng-if="isImage(previous)" class="image">
-                <figure>
-                  <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
-                      type="image/png" width="100%"/>
-                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                </figure>
-              </div>
-              <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
-                  ng-bind-html="getUnescapedContent(previous)"></div>
-              <div ng-if="isYouTube(previous)" class="youtube">
-                <figure>
-                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                </figure>
-              </div>
-            </div>
-
-            <div ng-repeat="(i, valueElement) in valueArray">
-              <div ng-if="i===index">
-                <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                  <div ng-include="getFieldUrl()"></div>
-                  <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-                </form>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- show an expanded list of fields from the valueArray, all the indicies -->
-      <div ng-if="isListView()">
+      <div ng-if="!isActive(index)">
+         <!--field  not active-->
 
         <!-- section break --->
         <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
@@ -155,67 +13,18 @@
         <div ng-if="!isSectionBreak()">
 
           <!-- title --->
-          <div style="display:flex;justify-content:space-between;cursor:pointer">
-            <div ng-click="toggleActive(0)" class=" field "
-                ng-class="{ 'required':isRequired()}">
-              {{getTitle()}}<span ng-if="isMultipleCardinality()" class="" count> ({{index+1}})</span> <span
-                ng-if="isRequired()" style="color:red">*</span>
-            </div>
-            <div ng-if="isActive(index)">
-              <field-toolbar style="white-space:nowrap" values="valueArray" min="pageMin"
-                  max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
-                  range="pageRange" model="model" field="field" index="index"
-                  remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
-                  expand-all="expandAll"
-                  get-locator="getLocator" view-state="viewState">
-              </field-toolbar>
-            </div>
-          </div>
+          <div ng-click="toggleActive(0)" class="field" style="cursor:pointer;">
+            {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span></div>
 
-          <div ng-repeat="(index, valueElement) in valueArray">
+          <!-- content -->
+          <div style="cursor:pointer" ng-repeat="(index, valueElement) in valueArray">
             <div id="{{getLocator(index)}}">
-
-
-              <!-- inactive content -->
-              <div ng-if="!isActive(index)" class="isRowInactive">
-                <div ng-click="setActive(index, true)" style="cursor:pointer">
-                  <div style="color:#888" ng-include="getFieldUrl()"></div>
-                </div>
-              </div>
-
-              <!-- active content -->
-              <div ng-if="isActive(index)" class="isActive answer"
-                  style="margin: 10px 10px 0 10px;padding:20px;border: 1px solid #ccc;background: #f8f8f8;">
-                <div>
-                  <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">
-                    <div ng-if="isImage(previous)" class="image">
-                      <figure>
-                        <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
-                            type="image/png" width="100%"/>
-                        <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                      </figure>
-                    </div>
-                    <div ng-if="isRichText(previous)" class="richtext"
-                        ng-bind-html="getUnescapedContent(previous)"></div>
-                    <div ng-if="isYouTube(previous)" class="youtube">
-                      <figure>
-                        <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                      </figure>
-                    </div>
-                  </div>
-
-                  <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                    <div class="originalContent" ng-include="getFieldUrl()"></div>
-                    <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                    <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-                  </form>
-                </div>
+              <div class="isRowInactive" ng-click="setActive(index, true)">
+                <div style="color:#888" ng-include="getFieldUrl()"></div>
               </div>
             </div>
           </div>
-
         </div>
-
 
         <!-- all error messages for this field  -->
         <div class="errors" ng-if="errorMessages">
@@ -223,5 +32,185 @@
         </div>
 
       </div>
+
+      <div ng-if="isActive(index)">
+
+
+        <!-- show the spreadsheet -->
+        <div ng-if="isSpreadsheetView()">
+
+          <!-- section break --->
+          <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
+
+          <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}">
+
+            <!-- title --->
+            <field-title toggle-active="toggleActive" get-title="getTitle" is-required="isRequired" values="valueArray"
+                min="pageMin"
+                max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
+                range="pageRange" model="model" field="field" index="index"
+                remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
+                expand-all="expandAll"
+                get-locator="getLocator" view-state="viewState">
+            </field-title>
+
+            <!-- content -->
+            <div  style="padding:20px 0;">
+              <div class="isActive answer" style="padding:20px;border: 1px solid #ccc;background: #f8f8f8;">
+
+                <div ng-if="isPreviousStatic()" style="overflow-x:hidden">
+                  <div ng-if="isImage(previous)" class="image">
+                    <figure>
+                      <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                          type="image/png" width="100%"/>
+                      <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                    </figure>
+                  </div>
+                  <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
+                      ng-bind-html="getUnescapedContent(previous)"></div>
+                  <div ng-if="isYouTube(previous)" class="youtube">
+                    <figure>
+                      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                    </figure>
+                  </div>
+                </div>
+
+                <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                  <div class="spreadsheetViewDetector"></div>
+                  <div class="spreadsheetViewContainer"></div>
+                  <div id="spreadsheetViewLogs"></div>
+                  <div id="hooksList"></div>
+                  <div id="htDatepickerHolder"></div>
+                  <button type="submit" class="btn btn-save confirm active" style="margin:10px 0 0 0" translate>GENERIC.Ok</button>
+                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- show a tabbed list of fields, one index at a time  -->
+        <div ng-if="isTabView()">
+
+          <!-- section break --->
+          <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
+
+          <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}">
+
+            <field-title get-title="getTitle" is-required="isRequired" toggle-active="toggleActive" values="valueArray"
+                min="pageMin" max="pageMax" select="selectPage" paging="isMultipleCardinality()"
+                range="pageRange" model="model" field="field" index="index" remove="removeInput" add="addMoreInput"
+                copy="copyField" set-active="setActive" expand-all="expandAll" get-locator="getLocator"
+                view-state="viewState">
+            </field-title>
+
+            <!-- content -->
+            <div style="padding:20px 0;">
+              <div class="isActive answer" style="padding:20px;border:1px solid #ccc;background: #f8f8f8;">
+
+                <div ng-if="isPreviousStatic()" style="overflow-x:hidden">
+                  <div ng-if="isImage(previous)" class="image">
+                    <figure>
+                      <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                          type="image/png" width="100%"/>
+                      <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                    </figure>
+                  </div>
+                  <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
+                      ng-bind-html="getUnescapedContent(previous)"></div>
+                  <div ng-if="isYouTube(previous)" class="youtube">
+                    <figure>
+                      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                    </figure>
+                  </div>
+                </div>
+
+                <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                  <div ng-include="getFieldUrl()"></div>
+                  <button type="submit" class="btn btn-save confirm active" style="margin:10px 0 0 0" translate>
+                    GENERIC.Ok
+                  </button>
+                  <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- show an expanded list of fields from the valueArray, all the indicies -->
+        <div ng-if="isListView()">
+
+          <!-- section break --->
+          <div ng-if="isSectionBreak()" class="section-break-inline">{{getTitle()}}</div>
+
+          <div ng-if="!isSectionBreak()">
+
+            <!-- title --->
+            <field-title toggle-active="toggleActive" get-title="getTitle" is-required="isRequired" values="valueArray"
+                min="pageMin"
+                max="pageMax" select="selectPage" paging="false"
+                range="pageRange" model="model" field="field" index="index"
+                remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
+                expand-all="expandAll"
+                get-locator="getLocator" view-state="viewState">
+            </field-title>
+
+            <div ng-repeat="(index, valueElement) in valueArray">
+              <div id="{{getLocator(index)}}">
+
+                <!-- inactive content -->
+                <div ng-if="!isActive(index)" class="isRowInactive">
+                  <div ng-click="setActive(index, true)" style="cursor:pointer">
+                    <div style="color:#888" ng-include="getFieldUrl()"></div>
+                  </div>
+                </div>
+
+                <!-- active content -->
+                <div ng-if="isActive(index)" style="padding:20px 0;">
+                  <div class="isActive answer" style="padding:20px;border: 1px solid #ccc;background: #f8f8f8;">
+
+                    <div ng-if="isPreviousStatic()" style="overflow-x:hidden">
+                      <div ng-if="isImage(previous)" class="image">
+                        <figure>
+                          <img ng-src="{{$root.schemaOf(previous)._ui._content}}" no-image alt="{{getTitle(previous)}}"
+                              type="image/png" width="100%"/>
+                          <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                        </figure>
+                      </div>
+                      <div ng-if="isRichText(previous) && getUnescapedContent(previous)" class="richtext"
+                          ng-bind-html="getUnescapedContent(previous)"></div>
+                      <div ng-if="isYouTube(previous)" class="youtube">
+                        <figure>
+                          <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                        </figure>
+                      </div>
+                    </div>
+
+                      <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                        <div class="originalContent" ng-include="getFieldUrl()"></div>
+                        <button type="submit" class="btn btn-save confirm active" style="margin:10px 0 0 0" translate>GENERIC.Ok</button>
+                        <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+                      </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- all error messages for this field  -->
+          <div class="errors" ng-if="errorMessages">
+            <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
