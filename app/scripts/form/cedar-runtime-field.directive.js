@@ -150,9 +150,7 @@ define([
         if (dms.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              if (valueElement[i]['@value']) {
-                result += valueElement[i]['@name'] + ' = ' + valueElement[i]['@value'] + ', ';
-              }
+              result += valueElement[i]['@name'] + (valueElement[i]['@value'] ? '=' + valueElement[i]['@value'] : '') + ', ';
             }
           }
 
