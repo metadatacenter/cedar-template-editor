@@ -146,12 +146,23 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement) {
-        var location = dms.getValueLabelLocation($scope.field, valueElement);
         var result = '';
-        if (valueElement) {
-          for (var i = 0; i < valueElement.length; i++) {
-            if (valueElement[i][location]) {
-              result += valueElement[i][location] + ', ';
+        if (dms.isAttributeValueType($scope.field)) {
+          if (valueElement) {
+            for (var i = 0; i < valueElement.length; i++) {
+              if (valueElement[i]['@value']) {
+                result += valueElement[i]['@name'] + ' = ' + valueElement[i]['@value'] + ', ';
+              }
+            }
+          }
+
+        } else {
+          var location = dms.getValueLabelLocation($scope.field, valueElement);
+          if (valueElement) {
+            for (var i = 0; i < valueElement.length; i++) {
+              if (valueElement[i][location]) {
+                result += valueElement[i][location] + ', ';
+              }
             }
           }
         }
@@ -489,10 +500,55 @@ define([
       $scope.multiple = {};
 
       // set the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function () {
+      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeValueName) {
+        console.log('updateModelFromUI', oldValue, newValue);
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
 
+        if (dms.isAttributeValueType($scope.field)) {
+          if ($scope.model.length > 0) {
+
+            var attributeName = $scope.model[$scope.index]['@name'];
+            var attributeValue = $scope.model[$scope.index]['@value'];
+
+            if (isAttributeValueName) {
+              // make it unique in the parent
+              attributeName = $scope.getNewAttributeName(attributeName, $scope.$parent.model);
+              if (!$scope.isDuplicateAttribute(attributeName, $scope.$parent.model)) {
+
+                $scope.model[$scope.index]['@name'] = attributeName;
+
+
+                // delete the old field
+                delete $scope.$parent.model[oldValue];
+
+                // build the new field
+                var valueObject = {};
+                // valueObject["@value"] = attributeValue;
+                $scope.$parent.model[attributeName] = valueObject;
+              }
+            }
+            $scope.$parent.model[attributeName]['@value'] = attributeValue;
+
+          } else {
+
+            var attributeName = $scope.model['@name'];
+            var attributeValue = $scope.model['@value'];
+
+            // make it unique in the parent
+            var newAttributeName = $scope.getNewAttributeName(attributeName, $scope.$parent.model);
+            if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {
+
+              // delete the old field
+              delete $scope.$parent.model[$scope.model['@name']];
+
+              // build new field
+              var value = {};
+              value["@value"] = attributeValue;
+              $scope.$parent.model[newAttributeName] = value;
+            }
+          }
+        }
 
         if ($scope.isMultiAnswer()) {
           // Reset model
@@ -540,6 +596,7 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
+        console.log('updateUIFromModel', $scope.fieldKey, $scope.model, $scope.$parent.model);
 
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
@@ -587,17 +644,74 @@ define([
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
-        var valueLocation = $scope.getValueLocation();
+        if (dms.isAttributeValueType($scope.field)) {
+          $scope.copyAttributeValueField();
+        } else {
+          var valueLocation = $scope.getValueLocation();
+          var maxItems = dms.getMaxItems($scope.field);
+          if ((!maxItems || $scope.model.length < maxItems)) {
+
+            // copy selected instance in the model and insert immediately after
+            var obj = {};
+            obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
+            $scope.model.splice($scope.index + 1, 0, obj);
+
+            // activate the new instance
+            $timeout($scope.setActive($scope.index + 1, true), 100);
+          }
+        }
+      };
+
+      $scope.isDuplicateAttribute = function (name, model) {
+        return model.hasOwnProperty(name);
+      };
+
+      $scope.getNewAttributeName = function (oldName, model) {
+        if ($scope.isDuplicateAttribute(oldName, model)) {
+          var last = oldName.lastIndexOf("(") > 0 ? oldName.lastIndexOf("(") : oldName.length;
+          var newName = oldName.substr(0, last);
+
+          var offset = 0;
+          var res = oldName.match(/.*\(([^)]+)\)/);
+          if (res) {
+            offset + res[1] + 1;
+          }
+          var i = offset;
+          do {
+            i++;
+          } while ($scope.isDuplicateAttribute(newName + '(' + i + ')', model) && i < 10000);
+          return newName + '(' + i + ')';
+        } else {
+          return oldName;
+        }
+      };
+
+      $scope.copyAttributeValueField = function () {
+
+
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
-          // copy selected instance in the model and insert immediately after
-          var obj = {};
-          obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
-          $scope.model.splice($scope.index + 1, 0, obj);
+          // create a unique attribute name for the copy
+          var attributeValue = $scope.valueArray[$scope.index]['@value'];
+          var oldAttributeName = $scope.valueArray[$scope.index]['@name'];
+          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, $scope.$parent.model);
+          if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {
 
-          // activate the new instance
-          $timeout($scope.setActive($scope.index + 1, true), 100);
+            // copy selected instance in the model and insert immediately after
+            var obj = {};
+            obj['@value'] = attributeValue;
+            obj['@name'] = newAttributeName;
+            $scope.model.splice($scope.index + 1, 0, obj);
+
+            // build the new field at the parent level
+            var valueObject = {};
+            valueObject["@value"] = attributeValue;
+            $scope.$parent.model[newAttributeName] = valueObject;
+
+            // activate the new instance
+            $timeout($scope.setActive($scope.index + 1, true), 100);
+          }
         }
       };
 
@@ -615,7 +729,6 @@ define([
             // activate the new instance
             $scope.setActive($scope.model.length - 1, true);
           }
-
         }
         $scope.pageMinMax();
 
@@ -625,7 +738,14 @@ define([
       $scope.removeInput = function (index) {
         var minItems = dms.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
+
+          if (dms.isAttributeValueType($scope.field)) {
+            //delete the attribute from the parent model
+            var attributeName = $scope.model[index]['@name'];
+            delete $scope.$parent.model[attributeName];
+          }
           $scope.model.splice(index, 1);
+
         }
       };
 
@@ -839,7 +959,7 @@ define([
           }
       );
 
-      $scope.createExtraRows = function() {
+      $scope.createExtraRows = function () {
         // make sure there are at least 10 entries in the spreadsheet
         var maxItems = dms.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
@@ -847,16 +967,16 @@ define([
         }
       };
 
-      $scope.deleteExtraRows = function() {
+      $scope.deleteExtraRows = function () {
         // delete extra blank rows
         var location = dms.getValueLocation($scope.field);
         var min = dms.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
 
           loop:for (var i = $scope.model.length; i > min; i--) {
-            var valueElement = $scope.model[i-1];
+            var valueElement = $scope.model[i - 1];
             if (valueElement[location] == null || valueElement[location].length === 0) {
-              $scope.removeInput(i-1);
+              $scope.removeInput(i - 1);
             } else {
               break loop;
             }
@@ -889,7 +1009,8 @@ define([
       $scope.setValueArray();
 
 
-      $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet, $scope.cleanupSpreadsheet);
+      $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
+          $scope.cleanupSpreadsheet);
 
 
     };

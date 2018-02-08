@@ -147,7 +147,11 @@ define([
         var randomPropertyName = DataManipulationService.generateGUID();
         form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
-        form.properties["@context"].required.push(fieldName);
+      }
+
+      // TODO put some more specific stuff here
+      if (FieldTypeService.isAttributeValueField(fieldType)) {
+        form.additionalProperties = true;
       }
 
       // Evaluate cardinality
@@ -157,7 +161,7 @@ define([
       form.properties[fieldName] = field;
 
       // Add field to the form.required array if it's not static
-      if (!DataManipulationService.isStaticField(field)) {
+      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
         form = DataManipulationService.addKeyToRequired(form, fieldName);
       }
 

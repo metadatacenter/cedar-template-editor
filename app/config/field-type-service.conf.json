@@ -9,7 +9,21 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": true,
-    "hasInstanceTerm": true
+    "hasInstanceTerm": true,
+    "allowsRequired": true
+  },
+  {
+    "cedarType": "attribute-value",
+    "iconClass": "cedar-svg-text",
+    "label": "Attribute Value",
+    "allowedInElement": true,
+    "primaryField": true,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "link",
@@ -21,19 +35,21 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": true
+    "hasInstanceTerm": true,
+    "allowsRequired": true
   },
   {
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
     "label": "Text Area",
     "allowedInElement": true,
-    "primaryField": true,
+    "primaryField": false,
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "radio",
@@ -45,7 +61,8 @@
     "staticField": false,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "checkbox",
@@ -57,7 +74,8 @@
     "staticField": false,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "date",
@@ -69,7 +87,8 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "email",
@@ -81,7 +100,8 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "list",
@@ -93,7 +113,8 @@
     "staticField": false,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "numeric",
@@ -105,7 +126,8 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "phone-number",
@@ -117,7 +139,8 @@
     "staticField": false,
     "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   },
   {
     "cedarType": "page-break",
@@ -129,7 +152,8 @@
     "staticField": true,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "section-break",
@@ -141,7 +165,8 @@
     "staticField": true,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "richtext",
@@ -153,7 +178,8 @@
     "staticField": true,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "image",
@@ -165,7 +191,8 @@
     "staticField": true,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "youtube",
@@ -177,6 +204,7 @@
     "staticField": true,
     "allowsMultiple": false,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   }
 ]
