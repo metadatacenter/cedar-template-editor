@@ -1747,7 +1747,6 @@ define([
 
     // Used in cedar-template-element.directive.js, form.directive
     service.findChildren = function (iterator, parentModel) {
-      console.log('findChildren');
       var ctx, min, type, i;
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance

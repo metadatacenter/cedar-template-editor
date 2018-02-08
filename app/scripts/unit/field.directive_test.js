@@ -19,6 +19,12 @@ define(['app', 'angular'], function (app) {
     var compiledDirective;
     var fieldId;
 
+    var hiddenTabSelector = ".detail-options .hidden-tab";
+    var cardinalityTabSelector = ".detail-options .cardinality-tab";
+    var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+    var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+    var requiredTabSelector = ".detail-options .required-tab";
+
     var appData = applicationData.getConfig();
 
     // Load the module that contains the templates that were loaded with html2js
@@ -137,11 +143,6 @@ define(['app', 'angular'], function (app) {
       var checkBoxSelector = "input[id^='checkbox']";
       var unselectedOptionClass = 'ng-empty';
       var selectedOptionClass = 'ng-not-empty';
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
@@ -215,11 +216,6 @@ define(['app', 'angular'], function (app) {
 
     function textfieldTests() {
 
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
       var textfieldIcon = ".cedar-svg-text";
       var inputTitleSelector = "input.field-title-definition";
       var inputHelpSelector = "input.field-description-definition";
@@ -272,15 +268,14 @@ define(['app', 'angular'], function (app) {
 
     function attributeValueTests() {
 
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
       var attributeValueIcon = ".cedar-svg-attribute-value";
       var inputTitleSelector = "input.field-title-definition";
       var inputHelpSelector = "input.field-description-definition";
       var inputDefaultSelector = "input.field-default-definition";
+      var cardinalityTabsSelector = ".cardinality-options .d-option";
+      var multipleInstanceSelector = ".multiple-instance-cardinality";
+      var multipleInstanceHiddenSelector = ".multiple-instance-cardinality.ng-hide";
+
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
@@ -313,6 +308,22 @@ define(['app', 'angular'], function (app) {
         $timeout.flush();
         expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
 
+      });
+
+      it("should be able to set multiple", function () {
+        var elm = compiledDirective[0];
+
+        // multiple instance is hidden
+        expect (elm.querySelector(multipleInstanceHiddenSelector));
+
+        var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
+        noElm.triggerHandler('click');
+
+        var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
+        yesElm.triggerHandler('click');
+
+        // multiple instance is visible
+        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
       });
     }
 
