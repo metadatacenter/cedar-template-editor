@@ -12,6 +12,7 @@ define(['app', 'angular'], function (app) {
     var $fieldDirectiveScope;
     var DataManipulationService;
     var StagingService;
+    var UrlService;
     var createdTemplate;
     var createdTemplateElement;
     var compiledDirective;
@@ -52,7 +53,8 @@ define(['app', 'angular'], function (app) {
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
                   _DataManipulationService_,
-                  _StagingService_) {
+                  _StagingService_,
+                  _UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
           $controller = _$controller_;
@@ -60,53 +62,53 @@ define(['app', 'angular'], function (app) {
           $templateCache = _$templateCache_;
           DataManipulationService = _DataManipulationService_;
           StagingService = _StagingService_;
+          UrlService = _UrlService_;
         }));
 
     beforeEach(function () {
       httpData.init($httpBackend);
       httpData.getFile('resources/i18n/locale-en.json');
-      // httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
-      //httpData.getFile('img/close_modal.png');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
-    xdescribe('In a template,', function () {
+    describe('In a template,', function () {
       /* Checkbox */
-      xdescribe('a checkbox field', function () {
+      describe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplate('checkbox');
         });
         checkboxTests();
       });
 
-      // xdescribe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplate('textfield');
-      //   });
-      //   textfieldTests();
-      // });
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('textfield');
+        });
+        textfieldTests();
+      });
     });
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
-    xdescribe('In a template element,', function () {
+    describe('In a template element,', function () {
       /* Checkbox */
-      xdescribe('a checkbox field', function () {
+      describe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplateElement('checkbox');
         });
         checkboxTests();
       });
 
-      // xdescribe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplateElement('textfield');
-      //   });
-      //   textfieldTests();
-      // });
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplateElement('textfield');
+        });
+        textfieldTests();
+      });
     });
 
 
@@ -125,13 +127,13 @@ define(['app', 'angular'], function (app) {
       var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
       var requiredTabSelector = ".detail-options .required-tab";
 
-      // it("should show only the correct tabs", function () {
-      //   expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-      // });
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
 
       it("should have one option by default", function () {
         // Here, the $ symbol enables the use of jQuery's find method. By default Angular uses jqLite, which is limited

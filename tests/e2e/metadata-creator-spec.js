@@ -100,7 +100,7 @@ describe('metadata-creator', function () {
       console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
-      //templatePage.isDirty();
+      templatePage.isDirty();
       templatePage.clickSave('element');
       toastyModal.isSuccess();
       workspacePage.onElement();
