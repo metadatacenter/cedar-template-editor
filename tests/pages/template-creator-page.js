@@ -1065,7 +1065,7 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.elementToBeClickable(yesOption));
     yesOption.click();
 
-    var dropdownToggle = element(by.css('.cardinality-selector.min  button.dropdown-toggle'));
+    var dropdownToggle = element(by.css('.cardinality-selectors .min .cardinality-selector  button.dropdown-toggle'));
     browser.wait(EC.visibilityOf(dropdownToggle));
     browser.wait(EC.elementToBeClickable(dropdownToggle));
     dropdownToggle.click();
