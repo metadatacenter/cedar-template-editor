@@ -24,6 +24,10 @@ define(['app', 'angular'], function (app) {
     var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
     var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
     var requiredTabSelector = ".detail-options .required-tab";
+    var cardinalityTabsSelector = ".cardinality-options .d-option";
+    var multipleInstanceHiddenSelector = ".multiple-instance-cardinality.ng-hide";
+    var inputTitleSelector = "input.field-title-definition";
+    var inputHelpSelector = "input.field-description-definition";
 
     var appData = applicationData.getConfig();
 
@@ -81,16 +85,8 @@ define(['app', 'angular'], function (app) {
     });
 
 
-
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
     describe('In a template,', function () {
-      /* Checkbox */
-      describe('a checkbox field', function () {
-        beforeEach(function () {
-          addFieldToTemplate('checkbox');
-        });
-        checkboxTests();
-      });
 
       describe('a text field', function () {
         beforeEach(function () {
@@ -105,18 +101,19 @@ define(['app', 'angular'], function (app) {
         });
         attributeValueTests();
       });
+
+      describe('a checkbox field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('checkbox');
+        });
+        checkboxTests();
+      });
+
     });
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
     describe('In a template element,', function () {
-      /* Checkbox */
-      describe('a checkbox field', function () {
-        beforeEach(function () {
-          addFieldToTemplateElement('checkbox');
-        });
-        checkboxTests();
-      });
 
       describe('a text field', function () {
         beforeEach(function () {
@@ -130,6 +127,13 @@ define(['app', 'angular'], function (app) {
           addFieldToTemplate('attribute-value');
         });
         attributeValueTests();
+      });
+
+      describe('a checkbox field', function () {
+        beforeEach(function () {
+          addFieldToTemplateElement('checkbox');
+        });
+        checkboxTests();
       });
     });
 
@@ -217,8 +221,7 @@ define(['app', 'angular'], function (app) {
     function textfieldTests() {
 
       var textfieldIcon = ".cedar-svg-text";
-      var inputTitleSelector = "input.field-title-definition";
-      var inputHelpSelector = "input.field-description-definition";
+
       var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
@@ -264,18 +267,26 @@ define(['app', 'angular'], function (app) {
         defaultElm.triggerHandler('change');
         expect ($fieldDirectiveScope.field._valueConstraints.defaultValue === "my default value");
       });
+
+      it("should be able to set multiple", function () {
+        var elm = compiledDirective[0];
+
+        // multiple instance is hidden
+        expect (elm.querySelector(multipleInstanceHiddenSelector));
+
+        var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
+        noElm.triggerHandler('click');
+        var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
+        yesElm.triggerHandler('click');
+
+        // multiple instance is visible
+        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
+      });
     }
 
     function attributeValueTests() {
 
       var attributeValueIcon = ".cedar-svg-attribute-value";
-      var inputTitleSelector = "input.field-title-definition";
-      var inputHelpSelector = "input.field-description-definition";
-      var inputDefaultSelector = "input.field-default-definition";
-      var cardinalityTabsSelector = ".cardinality-options .d-option";
-      var multipleInstanceSelector = ".multiple-instance-cardinality";
-      var multipleInstanceHiddenSelector = ".multiple-instance-cardinality.ng-hide";
-
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
@@ -318,7 +329,6 @@ define(['app', 'angular'], function (app) {
 
         var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
         noElm.triggerHandler('click');
-
         var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
         yesElm.triggerHandler('click');
 

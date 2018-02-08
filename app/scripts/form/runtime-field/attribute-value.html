@@ -1,16 +1,14 @@
 <div ng-init="initializeValue(); initializeValueType()">
 
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
-    <div ng-if="isListView()"
+    <div ng-if="isListView() && valueArray[index]['@name']"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@name']}} = {{valueArray[index]['@value']}}  </div>
+        class="isInactive ">{{valueArray[index]['@name']}} = {{valueArray[index]['@value']}}</div>
 
-    <div ng-if="!isListView()"
+    <div ng-if="!isListView()  && valueArray[index]['@name']"
         aria-label="{{getDescription()}}"
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
-
-
   </div>
 
   <div ng-if="isActive(index)" style="display: flex;justify-content: space-between;">
