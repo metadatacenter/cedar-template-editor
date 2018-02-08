@@ -12,6 +12,7 @@ define(['app', 'angular'], function (app) {
     var $fieldDirectiveScope;
     var DataManipulationService;
     var StagingService;
+    var $timeout;
     var UrlService;
     var createdTemplate;
     var createdTemplateElement;
@@ -51,12 +52,13 @@ define(['app', 'angular'], function (app) {
     });
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _DataManipulationService_,
                   _StagingService_,
                   _UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
+          $timeout = _$timeout_;
           $controller = _$controller_;
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
@@ -90,6 +92,13 @@ define(['app', 'angular'], function (app) {
         });
         textfieldTests();
       });
+
+      describe('an attribute-value field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('attribute-value');
+        });
+        attributeValueTests();
+      });
     });
 
 
@@ -108,6 +117,13 @@ define(['app', 'angular'], function (app) {
           addFieldToTemplateElement('textfield');
         });
         textfieldTests();
+      });
+
+      describe('an attribute-value field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('attribute-value');
+        });
+        attributeValueTests();
       });
     });
 
@@ -204,6 +220,10 @@ define(['app', 'angular'], function (app) {
       var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
       var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
       var requiredTabSelector = ".detail-options .required-tab";
+      var textfieldIcon = ".cedar-svg-text";
+      var inputTitleSelector = "input.field-title-definition";
+      var inputHelpSelector = "input.field-description-definition";
+      var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
@@ -211,6 +231,88 @@ define(['app', 'angular'], function (app) {
         expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
         expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
+
+      it("should have the correct icon and two input fields", function () {
+        expect($(compiledDirective).find(textfieldIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+      });
+
+      it("should have the correct icon and three input fields", function () {
+        expect($(compiledDirective).find(textfieldIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+
+        var elm = compiledDirective[0];
+
+        var title = elm.querySelector(inputTitleSelector);
+        var titleElm = angular.element(title);
+        titleElm.triggerHandler('click');
+        titleElm.val("my title");
+        titleElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+
+        var description = elm.querySelector(inputHelpSelector);
+        var descriptionElm = angular.element(description);
+        descriptionElm.triggerHandler('click');
+        descriptionElm.val("my description");
+        descriptionElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+
+        var defaultElm = angular.element(elm.querySelector(inputDefaultSelector));
+        defaultElm.triggerHandler('click');
+        defaultElm.val("my default value");
+        defaultElm.triggerHandler('change');
+        expect ($fieldDirectiveScope.field._valueConstraints.defaultValue === "my default value");
+      });
+    }
+
+    function attributeValueTests() {
+
+      var hiddenTabSelector = ".detail-options .hidden-tab";
+      var cardinalityTabSelector = ".detail-options .cardinality-tab";
+      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+      var requiredTabSelector = ".detail-options .required-tab";
+      var attributeValueIcon = ".cedar-svg-attribute-value";
+      var inputTitleSelector = "input.field-title-definition";
+      var inputHelpSelector = "input.field-description-definition";
+      var inputDefaultSelector = "input.field-default-definition";
+
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(0);
+      });
+
+      it("should have the correct icon and two input fields", function () {
+        expect($(compiledDirective).find(attributeValueIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+
+        var elm = compiledDirective[0];
+
+        var title = elm.querySelector(inputTitleSelector);
+        var titleElm = angular.element(title);
+        titleElm.triggerHandler('click');
+        titleElm.val("my title");
+        titleElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+
+        var description = elm.querySelector(inputHelpSelector);
+        var descriptionElm = angular.element(description);
+        descriptionElm.triggerHandler('click');
+        descriptionElm.val("my description");
+        descriptionElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+
       });
     }
 

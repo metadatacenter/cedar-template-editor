@@ -119,12 +119,7 @@ describe('metadata-creator', function () {
       console.log('should add the element to the template');
       finderModal.addFirstElement(element);
       templatePage.setMultiple();
-    });
-
-    // TODO should be dirty here
-    xit("should should be dirty", function () {
-      console.log('should should be dirty');
-      //templatePage.isDirty();
+      templatePage.isDirty();
     });
 
     it("should save the template", function () {
