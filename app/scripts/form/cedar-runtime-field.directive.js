@@ -502,7 +502,6 @@ define([
 
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeValueName) {
-        console.log('updateModelFromUI', oldValue, newValue);
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
 
@@ -510,7 +509,7 @@ define([
           if ($scope.model.length > 0) {
 
             var attributeName = $scope.model[$scope.index]['@name'] || 'attribute';
-            var attributeValue = $scope.model[$scope.index]['@value'] = $scope.model[$scope.index]['@value'] || 'value';
+            var attributeValue = $scope.model[$scope.index]['@value'];
 
             if (isAttributeValueName) {
               // make it unique in the parent
@@ -593,7 +592,6 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-        console.log('updateUIFromModel', $scope.fieldKey, $scope.model, $scope.$parent.model);
 
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
@@ -694,7 +692,7 @@ define([
           }
 
           // create a unique attribute name for the copy
-          var attributeValue = $scope.valueArray[$scope.index]['@value'] || 'value';
+          var attributeValue = $scope.valueArray[$scope.index]['@value'];
           var oldAttributeName = $scope.valueArray[$scope.index]['@name'] || 'attribute';
           var newAttributeName = $scope.getNewAttributeName(oldAttributeName, $scope.$parent.model);
           if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {

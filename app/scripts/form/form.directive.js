@@ -292,7 +292,6 @@ define([
               }
             }
           });
-          console.log('parseForm', parentModel)
         };
 
         //
