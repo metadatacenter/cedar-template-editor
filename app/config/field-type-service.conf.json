@@ -14,7 +14,7 @@
   },
   {
     "cedarType": "attribute-value",
-    "iconClass": "cedar-svg-text",
+    "iconClass": "cedar-svg-attribute-value",
     "label": "Attribute Value",
     "allowedInElement": true,
     "primaryField": true,

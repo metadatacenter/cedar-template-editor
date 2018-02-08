@@ -18,7 +18,7 @@
     <div style="width: 100%;"><label>Name</label>
     <div class="form-group has-success has-feedback" >
 
-      <input type="text"
+      <input type="text" tabindex="0"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="Name"
@@ -26,13 +26,13 @@
           ng-model="valueArray[index]['@name']"
           ng-change="updateModelFromUI(valueArray[index]['@name'], '{{valueArray[index]['@name']}}',true); $event.stopPropagation();">
       </input>
-      <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     </div>
 
     <div style="width: 100%;margin-left: 10px;"><label>Value</label>
     <div class="form-group has-success has-feedback">
-      <input type="text"
+      <input type="text" tabindex="0"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="Value"
@@ -40,7 +40,7 @@
           ng-model="valueArray[index]['@value']"
           ng-change="updateModelFromUI(valueArray[index]['@value'], '{{valueArray[index]['@value']}}'); $event.stopPropagation();">
       </input>
-      <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     </div>
 

@@ -348,6 +348,7 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
+        console.log('onSubmit')
         var found = false;
 
         if ($scope.isActive(index)) {
@@ -378,13 +379,14 @@ define([
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
+        console.log('isSubmit',keyEvent)
         if (keyEvent.type === 'keypress' && keyEvent.which === 13 && keyEvent.ctrlKey) {
           $scope.onSubmit(index);
         }
-        if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
-          keyEvent.preventDefault();
-          $scope.onSubmit(index);
-        }
+        // if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
+        //   keyEvent.preventDefault();
+        //   $scope.onSubmit(index);
+        // }
       };
 
       $scope.addRow = function () {
@@ -508,8 +510,8 @@ define([
         if (dms.isAttributeValueType($scope.field)) {
           if ($scope.model.length > 0) {
 
-            var attributeName = $scope.model[$scope.index]['@name'];
-            var attributeValue = $scope.model[$scope.index]['@value'];
+            var attributeName = $scope.model[$scope.index]['@name'] || 'attribute';
+            var attributeValue = $scope.model[$scope.index]['@value'] = $scope.model[$scope.index]['@value'] || 'value';
 
             if (isAttributeValueName) {
               // make it unique in the parent
@@ -518,16 +520,12 @@ define([
 
                 $scope.model[$scope.index]['@name'] = attributeName;
 
-
-                // delete the old field
+                // update attribute name in the parent
                 delete $scope.$parent.model[oldValue];
-
-                // build the new field
-                var valueObject = {};
-                // valueObject["@value"] = attributeValue;
-                $scope.$parent.model[attributeName] = valueObject;
+                $scope.$parent.model[attributeName] = {};
               }
             }
+            // update value in the parent
             $scope.$parent.model[attributeName]['@value'] = attributeValue;
 
           } else {
@@ -692,9 +690,13 @@ define([
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
+          if (!$scope.valueArray[$scope.index]['@name']) {
+            $scope.updateModelFromUI('attribute', $scope.valueArray[$scope.index]['@name'], true);
+          }
+
           // create a unique attribute name for the copy
-          var attributeValue = $scope.valueArray[$scope.index]['@value'];
-          var oldAttributeName = $scope.valueArray[$scope.index]['@name'];
+          var attributeValue = $scope.valueArray[$scope.index]['@value'] || 'value';
+          var oldAttributeName = $scope.valueArray[$scope.index]['@name'] || 'attribute';
           var newAttributeName = $scope.getNewAttributeName(oldAttributeName, $scope.$parent.model);
           if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {
 
@@ -711,6 +713,7 @@ define([
 
             // activate the new instance
             $timeout($scope.setActive($scope.index + 1, true), 100);
+
           }
         }
       };
