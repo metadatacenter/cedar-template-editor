@@ -348,7 +348,6 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
-        console.log('onSubmit')
         var found = false;
 
         if ($scope.isActive(index)) {
@@ -379,10 +378,10 @@ define([
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
-        console.log('isSubmit',keyEvent)
         if (keyEvent.type === 'keypress' && keyEvent.which === 13 && keyEvent.ctrlKey) {
           $scope.onSubmit(index);
         }
+        // Doesn't work for multi-input fields like attribute-value
         // if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
         //   keyEvent.preventDefault();
         //   $scope.onSubmit(index);
