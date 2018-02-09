@@ -12,10 +12,22 @@ define(['app', 'angular'], function (app) {
     var $fieldDirectiveScope;
     var DataManipulationService;
     var StagingService;
+    var $timeout;
+    var UrlService;
     var createdTemplate;
     var createdTemplateElement;
     var compiledDirective;
     var fieldId;
+
+    var hiddenTabSelector = ".detail-options .hidden-tab";
+    var cardinalityTabSelector = ".detail-options .cardinality-tab";
+    var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
+    var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
+    var requiredTabSelector = ".detail-options .required-tab";
+    var cardinalityTabsSelector = ".cardinality-options .d-option";
+    var multipleInstanceHiddenSelector = ".multiple-instance-cardinality.ng-hide";
+    var inputTitleSelector = "input.field-title-definition";
+    var inputHelpSelector = "input.field-description-definition";
 
     var appData = applicationData.getConfig();
 
@@ -50,63 +62,79 @@ define(['app', 'angular'], function (app) {
     });
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _DataManipulationService_,
-                  _StagingService_) {
+                  _StagingService_,
+                  _UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
           $compile = _$compile_;
+          $timeout = _$timeout_;
           $controller = _$controller_;
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
           DataManipulationService = _DataManipulationService_;
           StagingService = _StagingService_;
+          UrlService = _UrlService_;
         }));
 
     beforeEach(function () {
       httpData.init($httpBackend);
       httpData.getFile('resources/i18n/locale-en.json');
-      // httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
-      //httpData.getFile('img/close_modal.png');
+      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
     });
 
 
-
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE */
-    xdescribe('In a template,', function () {
-      /* Checkbox */
-      xdescribe('a checkbox field', function () {
+    describe('In a template,', function () {
+
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('textfield');
+        });
+        textfieldTests();
+      });
+
+      describe('an attribute-value field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('attribute-value');
+        });
+        attributeValueTests();
+      });
+
+      describe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplate('checkbox');
         });
         checkboxTests();
       });
 
-      // xdescribe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplate('textfield');
-      //   });
-      //   textfieldTests();
-      // });
     });
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
-    xdescribe('In a template element,', function () {
-      /* Checkbox */
-      xdescribe('a checkbox field', function () {
+    describe('In a template element,', function () {
+
+      describe('a text field', function () {
+        beforeEach(function () {
+          addFieldToTemplateElement('textfield');
+        });
+        textfieldTests();
+      });
+
+      describe('an attribute-value field', function () {
+        beforeEach(function () {
+          addFieldToTemplate('attribute-value');
+        });
+        attributeValueTests();
+      });
+
+      describe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplateElement('checkbox');
         });
         checkboxTests();
       });
-
-      // xdescribe('a text field', function () {
-      //   beforeEach(function () {
-      //     addFieldToTemplateElement('textfield');
-      //   });
-      //   textfieldTests();
-      // });
     });
 
 
@@ -119,19 +147,14 @@ define(['app', 'angular'], function (app) {
       var checkBoxSelector = "input[id^='checkbox']";
       var unselectedOptionClass = 'ng-empty';
       var selectedOptionClass = 'ng-not-empty';
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
 
-      // it("should show only the correct tabs", function () {
-      //   expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
-      //   expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
-      // });
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
 
       it("should have one option by default", function () {
         // Here, the $ symbol enables the use of jQuery's find method. By default Angular uses jqLite, which is limited
@@ -197,11 +220,9 @@ define(['app', 'angular'], function (app) {
 
     function textfieldTests() {
 
-      var hiddenTabSelector = ".detail-options .hidden-tab";
-      var cardinalityTabSelector = ".detail-options .cardinality-tab";
-      var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
-      var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
-      var requiredTabSelector = ".detail-options .required-tab";
+      var textfieldIcon = ".cedar-svg-text";
+
+      var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
@@ -209,6 +230,110 @@ define(['app', 'angular'], function (app) {
         expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
         expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+      });
+
+      it("should have the correct icon and two input fields", function () {
+        expect($(compiledDirective).find(textfieldIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+      });
+
+      it("should have the correct icon and three input fields", function () {
+        expect($(compiledDirective).find(textfieldIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+
+        var elm = compiledDirective[0];
+
+        var title = elm.querySelector(inputTitleSelector);
+        var titleElm = angular.element(title);
+        titleElm.triggerHandler('click');
+        titleElm.val("my title");
+        titleElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+
+        var description = elm.querySelector(inputHelpSelector);
+        var descriptionElm = angular.element(description);
+        descriptionElm.triggerHandler('click');
+        descriptionElm.val("my description");
+        descriptionElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+
+        var defaultElm = angular.element(elm.querySelector(inputDefaultSelector));
+        defaultElm.triggerHandler('click');
+        defaultElm.val("my default value");
+        defaultElm.triggerHandler('change');
+        expect ($fieldDirectiveScope.field._valueConstraints.defaultValue === "my default value");
+      });
+
+      it("should be able to set multiple", function () {
+        var elm = compiledDirective[0];
+
+        // multiple instance is hidden
+        expect (elm.querySelector(multipleInstanceHiddenSelector));
+
+        var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
+        noElm.triggerHandler('click');
+        var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
+        yesElm.triggerHandler('click');
+
+        // multiple instance is visible
+        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
+      });
+    }
+
+    function attributeValueTests() {
+
+      var attributeValueIcon = ".cedar-svg-attribute-value";
+
+      it("should show only the correct tabs", function () {
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(0);
+      });
+
+      it("should have the correct icon and two input fields", function () {
+        expect($(compiledDirective).find(attributeValueIcon).length).toBe(1);
+        expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
+        expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
+
+        var elm = compiledDirective[0];
+
+        var title = elm.querySelector(inputTitleSelector);
+        var titleElm = angular.element(title);
+        titleElm.triggerHandler('click');
+        titleElm.val("my title");
+        titleElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+
+        var description = elm.querySelector(inputHelpSelector);
+        var descriptionElm = angular.element(description);
+        descriptionElm.triggerHandler('click');
+        descriptionElm.val("my description");
+        descriptionElm.triggerHandler('change');
+        $timeout.flush();
+        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+
+      });
+
+      it("should be able to set multiple", function () {
+        var elm = compiledDirective[0];
+
+        // multiple instance is hidden
+        expect (elm.querySelector(multipleInstanceHiddenSelector));
+
+        var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
+        noElm.triggerHandler('click');
+        var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
+        yesElm.triggerHandler('click');
+
+        // multiple instance is visible
+        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
       });
     }
 
