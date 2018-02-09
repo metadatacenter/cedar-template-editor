@@ -403,6 +403,7 @@
     "errorCallingService": "Error calling Value Recommender service"
   },
   "VALIDATION": {
+    "templateLoad": "The template is invalid and cannot be opened.",
     "externalValidation": "External validation",
     "minBiggerThanMax": "Min cannot be greater than Max.",
     "fieldTitleEmpty": "'Field Title' input cannot be left empty.",
