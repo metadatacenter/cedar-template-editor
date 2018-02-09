@@ -81,7 +81,6 @@ define([
     };
 
     service.readAndNotify = function (callback) {
-      console.log('readAndNotify');
       var url = UrlService.messagingNotNotifiedMessages();
       AuthorizedBackendService.doCall(
           HttpBuilderService.get(url),
@@ -89,7 +88,7 @@ define([
             //console.log("readAndNotify response:");
             //console.log(response.data);
 
-            showNotifications(dummyData);
+            service.showNotifications(dummyData);
             //service.showNotifications(response.data);
           },
           function (error) {
