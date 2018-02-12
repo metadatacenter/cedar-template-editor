@@ -218,6 +218,10 @@ define([
             }
           };
 
+          vm.canSubmit = function () {
+            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+          };
+
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
@@ -239,6 +243,7 @@ define([
                     vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
                   }
+                  console.log('details',resource.nodeType,response);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -423,6 +428,7 @@ define([
 
           getPreferences();
           init();
+
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();

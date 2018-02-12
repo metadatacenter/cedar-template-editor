@@ -46,7 +46,7 @@ define([
               service.unreadCount = response.data.unread;
               service.notNotifiedCount = response.data.notnotified;
               if (service.notNotifiedCount > 0) {
-                //console.log("notNotifiedCount > 0");
+                console.log("notNotifiedCount > 0",service.notNotifiedCount);
                 service.readAndNotify();
               }
             }

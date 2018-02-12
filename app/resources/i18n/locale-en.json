@@ -169,6 +169,7 @@
     "sortBy": "Sort by",
     "addProperty": "Add property",
     "unreadMessageCount": "You have unread messages",
+    "message": "Open messages",
     "repoSubmission": "Submit to repository"
   },
   "SERVER": {
