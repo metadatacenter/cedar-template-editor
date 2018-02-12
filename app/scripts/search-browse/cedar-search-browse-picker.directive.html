@@ -25,23 +25,15 @@
   </div>
   <div class="col-sm-3">
 
-
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
-        <!--<li ng-show="dc.hasUnreadMessages()" id="messaging-number">-->
-          <!--<button type="button"-->
-              <!--uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'-->
-              <!--ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus">+</span>-->
-          <!--</button>-->
-        <!--</li>-->
-
-
         <li id="messaging">
           <button class="inline"  uib-tooltip='{{"HELP.message" | translate}}'  tooltip-placement="bottom" type="button" ng-click="dc.openMessaging()"><i class="fa fa-bell inline"></i></button>
-          <div id="messaging-number" ng-show="dc.hasUnreadMessages()" style="display:inline;position:relative;left:-10px;top:-10px;font-size:smaller">
-            <button type="button"  style="display:inline;"
+          <div id="messaging-number" ng-show="dc.hasUnreadMessages()" >
+            <button type="button"
                 uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+                tooltip-placement="bottom"
                 ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus">+</span>
             </button>
           </div>

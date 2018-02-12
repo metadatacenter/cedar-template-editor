@@ -169,6 +169,45 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('test-folder-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/folder-permissions.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-resource-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/resource-permissions.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-delete-resource', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/delete-resource-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
