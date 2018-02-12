@@ -274,7 +274,7 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-templste', gulp.series('test-env', function () {
+gulp.task('test-template', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/template-creator-spec.js'
   ])
