@@ -910,7 +910,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return MessagingService.unreadCount;
+            return Math.min(MessagingService.unreadCount,9);
           }
 
           function openMessaging() {
