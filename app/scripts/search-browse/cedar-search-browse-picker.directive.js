@@ -243,7 +243,6 @@ define([
                     vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
                   }
-                  console.log('details',resource.nodeType,response);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
