@@ -1,0 +1,60 @@
+<div class="fields text-fields" ng-class="{preview: preview}">
+
+  <!-- Header row -->
+  <div ng-init="fieldTitle='Attribute Value';fieldIconClass='cedar-svg-attribute-value'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
+  <!-- SINGLE FIELD (NOT A LIST) -->
+  <div ng-valid="false" ng-init="setDefaultValueIfEmpty(model)" ng-if="!$root.isArray(model)"
+      class="form-group floating-label-wrapper has-feedback">
+    <div  class="has-no-constraint">
+      <input type="text"
+          class="form-control xx"
+          ng-change="setDefaultValueIfEmpty(model)"
+          ng-class="{'required': isRequired()}"
+          placeholder="{{getTitle()}}"
+          aria-label="{{getDescription()}}"
+          ng-model="model['@value']"
+          ng-disabled="!isRuntime() || preview"
+          with-floating-label="">
+      </input>
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
+  </div>
+
+  <!-- LIST OF TEXT FIELDS (Minimum cardinality = 0) -->
+  <div ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
+      ng-class="{'required': isRequired()}">
+    <input type="text"
+        class="form-control has-success has-feedback"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+
+        ng-disabled="true"
+        with-floating-label=""/>
+    <span class="floating-label">{{getTitle()}}</span>
+  </div>
+
+  <!-- LIST OF TEXT FIELDS (Minimum cardinality > 0) -->
+  <div ng-init="setDefaultValueIfEmpty(model)" ng-if="$root.isArray(model)"
+      class="form-group floating-label-wrapper has-feedback"
+      ng-repeat="(index, valueElement) in model">
+
+    <!--Regular field-->
+    <div  class="has-no-constraint">
+      <input type="text"
+          class="form-control has-success has-feedback"
+          ng-change="setDefaultValueIfEmpty(model)"
+          ng-class="{'required': isRequired()}"
+          placeholder="{{getTitle()}}"
+          aria-label="{{getDescription()}}"
+          ng-model="valueElement['@value']"
+          ng-disabled="!isRuntime() || preview"
+          with-floating-label=""/>
+      <span class="input-indicator-icons form-control-feedback"
+          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
+      <span class="floating-label">{{getTitle()}}</span>
+    </div>
+  </div>
+
+</div>

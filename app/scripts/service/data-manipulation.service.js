@@ -202,7 +202,12 @@ define([
 
     // what is the field inputType?
     service.getInputType = function (node) {
-      return service.schemaOf(node)._ui.inputType;
+      var result = null;
+      var schema = service.schemaOf(node);
+      if (schema._ui && schema._ui.inputType) {
+        result = schema._ui.inputType;
+      }
+      return result;
     };
 
     service.setInputType = function (node, value) {
@@ -227,6 +232,18 @@ define([
     // is this a date range?
     service.isDateRange = function (node) {
       return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+    };
+
+    service.isAttributeValueType = function (node) {
+      return (service.getInputType(node) == 'attribute-value');
+    };
+
+    service.isTextFieldType = function (node) {
+      return (service.getInputType(node) == 'textField');
+    };
+
+    service.isDateType = function (node) {
+      return (service.getInputType(node) == 'date');
     };
 
     service.isLinkType = function (node) {
@@ -373,7 +390,8 @@ define([
           '@type'               : field['@type'],
           '@context'            : field['@context'],
           'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
-          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",{title: field['schema:name'], version: window.cedarVersion}),
+          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
+              {title: field['schema:name'], version: window.cedarVersion}),
           '_ui'                 : field._ui,
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
@@ -556,7 +574,6 @@ define([
     };
 
 
-
     service.createDomIds = function (node) {
       var schema = service.schemaOf(node);
       service.addDomIdIfNotPresent(schema, service.createDomId());
@@ -581,7 +598,7 @@ define([
       if (node) {
         var schema = service.schemaOf(node);
         schema._tmp = schema._tmp || {};
-        if (schema._tmp.domId){
+        if (schema._tmp.domId) {
           domId = schema._tmp.domId;
         } else {
           schema._tmp.domId = domId;
@@ -651,7 +668,7 @@ define([
     // get order array minus any static fields
     service.getSpreadsheetOrder = function (node) {
       var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
+      service.schemaOf(node)._ui.order.forEach(function (key) {
         var field = service.propertiesOf(node)[key];
         if (!service.isStaticField(field)) {
           result.push(key);
@@ -865,6 +882,11 @@ define([
         delete field.required
       }
 
+      // The value of the link field is a URI, and note that @id cannot be null
+      if (inputType == "attribute-value") {
+        field.properties["schema:isBasedOn"] = {"@type": "@id"};
+      }
+
       // Set default schema title and description
       var defaultTitle = $translate.instant("GENERIC.Untitled");
       service.setFieldSchemaTitleAndDescription(field, defaultTitle);
@@ -999,44 +1021,46 @@ define([
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
 
-      var fieldValue = service.getValueLocation(field);
-      if (fieldValue == "@value") {
 
-        var defaultValue = service.getDefaultValue(fieldValue, field);
+        var fieldValue = service.getValueLocation(field);
+        if (fieldValue == "@value") {
 
-        // Not an array
-        if (!$rootScope.isArray(model)) {
-          if (!model) {
-            model = {};
-          }
-          // Value field has been defined
-          if (model.hasOwnProperty(fieldValue)) {
-            // If undefined value or empty string
-            if ((angular.isUndefined(
-                    model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+          var defaultValue = service.getDefaultValue(fieldValue, field);
+
+          // Not an array
+          if (!$rootScope.isArray(model)) {
+            if (!model) {
+              model = {};
+            }
+            // Value field has been defined
+            if (model.hasOwnProperty(fieldValue)) {
+              // If undefined value or empty string
+              if ((angular.isUndefined(
+                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                model[fieldValue] = defaultValue;
+              }
+            }
+            // Value field has not been defined
+            else {
               model[fieldValue] = defaultValue;
             }
           }
-          // Value field has not been defined
+          // An array
           else {
-            model[fieldValue] = defaultValue;
-          }
-        }
-        // An array
-        else {
-          // Length is 0
-          if (model.length == 0) {
-            model.push({});
-            model[0][fieldValue] = defaultValue;
-          }
-          // If length > 0
-          else {
-            for (var i = 0; i < model.length; i++) {
-              service.initializeValue(field, model[i]);
+            // Length is 0
+            if (model.length == 0) {
+              model.push({});
+              model[0][fieldValue] = defaultValue;
+            }
+            // If length > 0
+            else {
+              for (var i = 0; i < model.length; i++) {
+                service.initializeValue(field, model[i]);
+              }
             }
           }
         }
-      }
+
     };
 
     service.getDefaultValue = function (fieldValue, field) {

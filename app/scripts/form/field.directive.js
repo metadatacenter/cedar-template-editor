@@ -197,6 +197,14 @@ define([
       };
 
       // does this field allow multiple cardinality?
+      $scope.allowsRequired = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == dms.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].allowsRequired;
+      };
+
+      // does this field allow multiple cardinality?
       $scope.allowsMultiple = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);

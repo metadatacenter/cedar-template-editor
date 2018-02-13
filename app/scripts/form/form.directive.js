@@ -35,8 +35,8 @@ define([
         $scope.model = $scope.model || {};
         $scope.checkSubmission = false;
         $scope.pageIndex = $scope.pageIndex || 0;
-        $scope.pageMin=0;
-        $scope.pageMax=0;
+        $scope.pageMin = 0;
+        $scope.pageMax = 0;
 
         $scope.currentPage = [],
             $scope.pageIndex = 0,
@@ -61,11 +61,11 @@ define([
           return UIUtilService.isShowOutput();
         };
 
-        $scope.toggleShowOutput = function() {
+        $scope.toggleShowOutput = function () {
           return UIUtilService.toggleShowOutput();
         };
 
-        $scope.scrollToAnchor = function(hash) {
+        $scope.scrollToAnchor = function (hash) {
           UIUtilService.scrollToAnchor(hash);
         };
 
@@ -103,7 +103,6 @@ define([
             }
 
 
-
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
               if ($scope.form.properties[field]._ui && $scope.form.properties[field]._ui.inputType == 'page-break') {
@@ -124,7 +123,7 @@ define([
             }
 
             $scope.pagesArray = orderArray;
-            $scope.pageMax = $scope.pagesArray.length-1;
+            $scope.pageMax = $scope.pagesArray.length - 1;
             $scope.pageTitles = titles;
           }
         };
@@ -169,7 +168,7 @@ define([
 
 
         $scope.pageTitle = function () {
-          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex+1) + '. ' : '') + $scope.pageTitles[$scope.pageIndex];
+          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex + 1) + '. ' : '') + $scope.pageTitles[$scope.pageIndex];
         };
 
 
@@ -230,8 +229,8 @@ define([
             }
 
             if (!DataUtilService.isSpecialKey(name)) {
-              // Template Element
               if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+                // Template Element
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist
@@ -252,11 +251,12 @@ define([
                 } else {
                   $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
                 }
-                // Template Field
-              } else {
-                // Not a Static Field
-                if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
+
+              } else {
+                // Template Field
+                if (!dms.isStaticField(value)) {
+                  // Not a Static Field
                   var min = value.minItems || 0;
 
                   // Assign empty field instance model to $scope.model only if it does not exist
@@ -282,12 +282,12 @@ define([
                     // Set default values and types for fields
                     dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
-                    if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
-                        (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
+                    if (dms.isTextFieldType(value) || dms.isDateType(value) || dms.isNumericField(value)) {
                       dms.initializeValueType(value, parentModel[name]);
                     }
                     dms.defaultOptionsToModel(value, parentModel[name]);
                   }
+
                 }
               }
             }
@@ -354,7 +354,6 @@ define([
             $scope.validateInstance($scope.model, params[0]);
           }
         });
-
 
 
         //
@@ -468,7 +467,7 @@ define([
           return dms.isSectionBreak(node);
         };
 
-        $scope.isHidden = function(item) {
+        $scope.isHidden = function (item) {
           var node = $scope.form.properties[item];
           return DataManipulationService.isHidden(node);
         };

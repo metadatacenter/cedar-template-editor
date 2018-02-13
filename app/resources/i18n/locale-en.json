@@ -4,6 +4,9 @@
       "textfield": {
         "NAME": "Text"
       },
+      "attribute-value": {
+        "NAME": "Attribute Value"
+      },
       "link": {
         "NAME": "Link"
       },
