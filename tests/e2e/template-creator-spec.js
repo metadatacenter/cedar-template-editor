@@ -36,7 +36,7 @@ describe('template-creator', function () {
       "iconClass"                : "cedar-svg-paragraph",
       "label"                    : "Text Area",
       "allowedInElement"         : true,
-      "primaryField"             : true,
+      "primaryField"             : false,
       "hasControlledTerms"       : false,
       "staticField"              : false,
       "allowsMultiple"           : true,
