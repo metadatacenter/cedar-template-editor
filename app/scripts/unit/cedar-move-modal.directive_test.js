@@ -92,7 +92,8 @@ define(['app', 'angular'], function (app) {
         var contentsResourceTitle = ".contents-resource-title";
         var contentsFolderTitle = ".contents-folder-title";
         var forwardArrow = "#moveModalContent .arrow-click";
-        var backArrow = "div.modal-content  h4.modal-title span.arrow-click";
+        var backArrow = "div.modal-content  h4.modal-title.back-to-parent";
+        var homeIcon = "div.modal-content  h4.modal-title.back-to-home";
         var moveModalVisible = true;
         var controller;
 
@@ -144,7 +145,7 @@ define(['app', 'angular'], function (app) {
           $moveScope.moveModalVisible= true;
           $moveScope.$broadcast('moveModalVisible',
               [$moveScope.moveModalVisible, $moveScope.resource, $moveScope.currentPath,
-               $moveScope.currentFolderId, $moveScope.resourceTypes,
+               $moveScope.currentFolderId, $moveScope.currentFolderId, $moveScope.resourceTypes,
                $moveScope.sortOptionField]);
 
           // flush the timeout and pending requests
@@ -160,6 +161,7 @@ define(['app', 'angular'], function (app) {
           expect(elm.querySelector(xGoAway)).toBeDefined();
           expect(elm.querySelector(folderTitle)).toBeDefined();
           expect(elm.querySelector(backArrow)).toBeDefined();
+          expect(elm.querySelector(homeIcon)).toBeDefined();
         });
         it('should go to parent folder when clicking back arrow and to child folder when clicking the forward arrow', function () {
           var elm = moveDirective[0];
@@ -185,6 +187,33 @@ define(['app', 'angular'], function (app) {
 
           elm = moveDirective[0];
           expect(elm.querySelector(folderTitle).firstChild.nodeValue).toEqual('CEDAR Admin');
+          expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(0);
+
+        });
+        it('should go to parent folder when clicking back arrow and to home folder when clicking the home icon', function () {
+          var elm = moveDirective[0];
+          var backElement = angular.element(elm.querySelector(backArrow));
+          backElement.triggerHandler('click');
+
+          $timeout.flush();
+          $httpBackend.flush();
+          $moveScope.$apply();
+
+          elm = moveDirective[0];
+          expect(elm.querySelector(folderTitle).firstChild.nodeValue).toEqual('Users');
+          expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(4);
+          expect(elm.querySelector(contentsFolderTitle).firstChild.nodeValue.trim()).toEqual('CEDAR Admin');
+
+          // now go forward to the first directory listed
+          var homeElement = angular.element(elm.querySelector(homeIcon));
+          homeElement.triggerHandler('click');
+
+          $timeout.flush();
+          $httpBackend.flush();
+          $moveScope.$apply();
+
+          elm = moveDirective[0];
+          expect(elm.querySelector(folderTitle).firstChild.nodeValue).toEqual('Test User 1');
           expect(elm.querySelectorAll(contentsFolderTitle).length).toEqual(0);
 
         });

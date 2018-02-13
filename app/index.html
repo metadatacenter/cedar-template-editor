@@ -62,22 +62,21 @@
 
 
       <div ng-if="!hc.isDashboard()">
-        <div class="navbar-back" style="display:flex;justify-content: space-between">
-          <div class="truncate" ng-click="toggleExpanded()" style="cursor:pointer;white-space:nowrap;">
-            <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
-            <i class="back-arrow fa fa-arrow-left"></i>
-            <span class="document-title">{{hc.getDocumentTitle()}}</span>
-          </div>
-          <div>
 
-          <span class="feedback-form" style="cursor:pointer;white-space:nowrap;font-size:14px">
-            <span style="padding:5px 10px" uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa "
-                ng-class="{'fa-circle-o': dirty, 'fa-circle': !dirty}"></i></span>
-            <span style="padding-right:10px" uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa "
-                ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
-            <span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
-                ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
-            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa fa-check"></i></span>-->
+        <div class="navbar-back col-sm-12">
+          <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
+          <i class="back-arrow fa fa-arrow-left"></i>
+
+          <span class="document-title text-nowrap" >{{hc.formatDocumentTitle()}}</span>
+
+          <span ng-if="!hc.isMessaging()" class="pull-right feedback-form">
+            <span uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': dirty, 'fa-circle': !dirty}"></i></span>
+            <span uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
+            <!-- TODO for the moment, take out the tooltip -->
+            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "-->
+                <!--ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>-->
+            <span><i class="fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+
           </span>
           </div>
 

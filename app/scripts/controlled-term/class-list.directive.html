@@ -11,7 +11,11 @@
                 <th width="250px">Description</th>
                 <th>Source</th>
                 <th>Identifier</th>
-                <th>&nbsp;</th>
+                <th><button class="close" style="left:0;color:#000" type="button" ng-click=""
+                    tooltip-append-to-body="true"
+                    uib-tooltip="{{'GENERIC.Close' | translate}}"
+                    aria-label="Close"><span
+                    aria-hidden="true" >&times;</span></button></th>
               </tr>
               </thead>
               <tbody>
@@ -29,7 +33,9 @@
                   {{getShortId(getClassId(key), 16)}}
                 </td>
                 <td>
-                  <div class="class-delete" ng-click="deleteFieldAddedItem(key);$event.stopPropagation();">
+                  <div class="class-delete" ng-click="deleteFieldAddedItem(key);$event.stopPropagation();"
+                      tooltip-append-to-body="true"
+                      uib-tooltip="{{'GENERIC.Remove' | translate}}">
                     <i class="fa fa-times-circle"></i>
                   </div>
                 </td>

@@ -37,7 +37,7 @@ define([
 
       scope.nestElement = function () {
 
-       var getId = function (node) {
+        var getId = function (node) {
           var id;
           if (node.items) {
             id = node.items["@id"];
@@ -74,7 +74,7 @@ define([
       }
 
       scope.$watch("field", function () {
-        if (scope.field ) {
+        if (scope.field) {
           scope.nestElement();
         }
       });

@@ -1,21 +1,10 @@
-<div id="page-break-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-    class="input-type-container section-break">
-  <p class="type-label"><i class="cedar-svg-page-break"></i>Page Break</p>
-  <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control"
-        id="page-break-name-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-        placeholder="Page Name (Optional)"
-        aria-label="Page Name (Optional)"
-        ng-model="fieldSchema['schema:name']"
-        with-floating-label>
-  </div><!-- /.form-group -->
-  <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control"
-        id="page-break-description-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-        placeholder="Page Description (Optional)"
-        aria-label="Page Description (Optional)"
-        ng-model="fieldSchema['schema:description']"
-        with-floating-label>
-  </div><!-- /.form-group -->
-  <div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
-</div><!-- /.input-type-container -->
+
+<div id="page-break-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container page-break">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='Page Break';fieldIconClass='cedar-svg-page-break'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+
+</div>

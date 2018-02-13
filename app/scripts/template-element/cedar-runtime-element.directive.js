@@ -136,23 +136,23 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-        //console.log('switchToSpreadsheet elsment',scope.element);
-        SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
-          return false;
-        }, function () {
-          scope.addMoreInput();
-        }, function () {
-          scope.removeElement(scope.model.length - 1);
-        }, function () {
-          scope.createExtraRows();
-        }, function () {
-          //console.log('invoke deleteExtraRows');
-          scope.deleteExtraRows();
-        })
+        scope.setActive(0,true);
+        $timeout(function () {
+          SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
+            return false;
+          }, function () {
+            scope.addMoreInput();
+          }, function () {
+            scope.removeElement(scope.model.length - 1);
+          }, function () {
+            scope.createExtraRows();
+          }, function () {
+            scope.deleteExtraRows();
+          })
+        });
       };
 
       scope.cleanupSpreadsheet = function () {
-        //console.log('cleanupSpreadsheet element',scope.element);
         scope.deleteExtraRows();
       };
 
@@ -393,6 +393,27 @@ define([
             }
           }
         }
+      };
+
+      scope.isSectionBreak = function (item) {
+        var properties = dms.propertiesOf(scope.element);
+        var node = properties[item];
+        return node && dms.isSectionBreak(node);
+      };
+
+      scope.isStaticField = function (item) {
+        var properties = dms.propertiesOf(scope.element);
+        var node = properties[item];
+        return node && dms.isStaticField(node);
+      };
+
+      // a field is displayable if it is not static or it is a section break
+      // static fields get rolled into the field below them and displayed as a header
+      // section breaks get displayed as an unclickable div of text in the form
+      scope.isDisplayable = function (item) {
+        var properties = dms.propertiesOf(scope.element);
+        var node = properties[item];
+        return node && (dms.isSectionBreak(node) || !dms.isStaticField(node));
       };
 
       scope.addRow = function () {

@@ -134,6 +134,8 @@ define([
           vm.setSortByName = setSortByName;
           vm.setSortByCreated = setSortByCreated;
           vm.setSortByUpdated = setSortByUpdated;
+          vm.updateSort = updateSort;
+          vm.isSort = isSort;
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
@@ -214,6 +216,10 @@ define([
             } else {
               return vm.selectedResource['@id'] == resource['@id'];
             }
+          };
+
+          vm.canSubmit = function () {
+            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
           };
 
 
@@ -422,6 +428,7 @@ define([
           getPreferences();
           init();
 
+
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
 
@@ -505,7 +512,7 @@ define([
 
 
           function isHomeMode() {
-            return (vm.nodeListQueryType === 'folder-content') && (vm.params.folderId === CedarUser.getHomeFolderId());
+            return (vm.nodeListQueryType === 'folder-content');
           }
 
           function doSearch(term) {
@@ -902,7 +909,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return MessagingService.unreadCount;
+            return Math.min(MessagingService.unreadCount,9);
           }
 
           function openMessaging() {
@@ -1080,6 +1087,36 @@ define([
             init();
           }
 
+          function isSort(value) {
+            var result;
+            switch (value) {
+              case 'name':
+                result = CedarUser.isSortByName();
+                break;
+              case 'createdOnTS':
+                result = CedarUser.isSortByCreated();
+                break;
+              case 'lastUpdatedOnTS':
+                result = CedarUser.isSortByUpdated();
+                break;
+            }
+            return result;
+          }
+
+          function updateSort(value) {
+            switch (value) {
+              case 'name':
+                setSortByName();
+                break;
+              case 'createdOnTS':
+                setSortByCreated();
+                break;
+              case 'lastUpdatedOnTS':
+                setSortByUpdated();
+                break;
+            }
+          }
+
           function sortField() {
             return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
           }
@@ -1140,10 +1177,11 @@ define([
             //  r = vm.selectedResource;
             //}
             var resource = value || vm.selectedResource;
-            var folderId = vm.currentFolderId || CedarUser.getHomeFolderId();
+            var homeFolderId = CedarUser.getHomeFolderId();
+            var folderId = vm.currentFolderId || homeFolderId;
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
-                [vm.copyModalVisible, resource, vm.currentPath, folderId, vm.resourceTypes,
+                [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
                  CedarUser.getSort()]);
           }
 
@@ -1157,8 +1195,9 @@ define([
 
             if (vm.canWrite(r)) {
               vm.moveModalVisible = true;
+              var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
@@ -1249,4 +1288,5 @@ define([
         }
       }
     }
-);
+)
+;

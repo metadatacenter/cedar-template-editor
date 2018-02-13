@@ -101,6 +101,13 @@ define([
         return dms.isRequired($scope.field);
       };
 
+      $scope.setRequired = function(value) {
+        dms.setRequired($scope.field,value);
+        if (value && $scope.isMultiple() && dms.getMinItems($scope.field)  == 0) {
+          $scope.field.minItems = 1;
+        }
+      };
+
       $scope.getDomId = function (node) {
         return dms.getDomId(node);
       };
@@ -187,6 +194,14 @@ define([
       // is the field toggled open?
       $scope.toggled = function (open) {
         $scope.status.isopen = open;
+      };
+
+      // does this field allow multiple cardinality?
+      $scope.allowsRequired = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == dms.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].allowsRequired;
       };
 
       // does this field allow multiple cardinality?

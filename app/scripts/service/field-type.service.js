@@ -56,6 +56,10 @@ define([
       return false;
     };
 
+    service.isAttributeValueField = function (fieldType) {
+      return fieldType == 'attribute-value';
+    };
+
     service.getFieldIconClass = function (fieldType) {
       for (var ft in fieldTypes) {
         if (fieldTypes[ft].cedarType == fieldType) {

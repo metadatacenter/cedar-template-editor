@@ -8,7 +8,13 @@
               <thead>
               <tr>
                 <th>Property</th>
-                <th></th>
+                <th>
+                  <button class="close" type="button" ng-click=""
+                      tooltip-append-to-body="true"
+                      uib-tooltip="{{'GENERIC.Close' | translate}}"
+                      aria-label="Close"><span
+                      aria-hidden="true">&times;</span></button>
+                </th>
               </tr>
               </thead>
               <tbody>
@@ -16,7 +22,10 @@
               <tr ng-if="hasProperty()">
                 <td>{{getProperty()}}</td>
                 <td>
-                  <div class="class-delete" ng-click="deleteProperty();$event.stopPropagation();">
+                  <div class="class-delete"
+                      ng-click="deleteProperty();$event.stopPropagation();"
+                      tooltip-append-to-body="true"
+                      uib-tooltip="{{'GENERIC.Remove' | translate}}">
                     <i class="fa fa-times-circle"></i>
                   </div>
                 </td>

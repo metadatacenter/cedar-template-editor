@@ -34,7 +34,7 @@
               </div>
 
 
-              <select class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
+              <select ng-disabled="!share.typeaheadGroup" class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
                   data-dropup-auto="false" class="dropdown group-permission" select-picker
                   select-model="share.typeaheadGroup.id"
                   cedar-live-search="true">
@@ -53,7 +53,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadGroup"
-                    ng-click="share.addShare(share.typeaheadGroup.id, share.giveGroupPermission, 'shared-users', resource)">
+                    ng-click="share.addShare(share.typeaheadGroup.id, share.giveGroupPermission, 'shared-users', resource);share.clearTypeAheadGroup()">
                   <!--<span aria-hidden="true">&plus;</span>-->
                   <i class="fa fa-plus" ></i>
                 </button>
@@ -78,7 +78,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="share.share.newGroupName || share.newGroupName.length==0"
-                    ng-click="share.createGroup(share.newGroupName)">
+                    ng-click="share.createGroup(share.newGroupName);share.clearTypeAheadGroup()">
                   <i class="fa fa-plus" ></i>
                 </button>
               </div>
@@ -102,8 +102,8 @@
                     class="form-control user-name"></div>
 
 
-              <select ng-model="share.giveUserPermission"
-                  data-dropup-auto="false" class="dropdown col-sm-4 select-picker user-permission" select-picker
+              <select ng-disabled="!share.typeaheadUser" ng-model="share.giveUserPermission"
+                  data-dropup-auto="false" class="dropup col-sm-4 select-picker user-permission" select-picker
                   select-model="share.typeaheadUser.id"
                   cedar-live-search="true">
                 <option value="read" translate>GENERIC.canRead</option>
@@ -122,7 +122,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadUser"
-                    ng-click="share.addShare(share.typeaheadUser.id, share.giveUserPermission, 'shared-users', resource)">
+                    ng-click="share.addShare(share.typeaheadUser.id, share.giveUserPermission, 'shared-users', resource);share.clearTypeAheadUser()">
                   <!--<span aria-hidden="true">&plus;</span>-->
                   <i class="fa fa-plus" ></i>
                 </button>
@@ -303,7 +303,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadUser || !share.typeaheadGroup ||  share.typeaheadGroup.specialGroup"
-                    ng-click="share.addUserToGroup(share.typeaheadUser, share.typeaheadGroup)">
+                    ng-click="share.addUserToGroup(share.typeaheadUser,  share.typeaheadGroup, 'group-members');share.clearTypeAheadUser()">
                   <i class="fa fa-plus"></i>
                 </button>
               </div>

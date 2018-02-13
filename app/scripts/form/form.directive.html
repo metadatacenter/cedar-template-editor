@@ -1,6 +1,18 @@
+<div class="row">
+  <div class="col-xs-12 ">
+    <cedar-pager ng-if="isRuntime() && pagesArray.length>1" field="form" class="pull-right"
+        close="close" is-active="isActive" paging="pagesArray.length>1"
+        expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
+        max="pageMax" select="selectPage" range="6">
+    </cedar-pager>
+  </div>
+</div>
+
+
 <form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1) + '-' + path}}"
     ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
+
 
   <!--runtime form -->
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
@@ -19,16 +31,26 @@
         <field-toolbar field="form" style="width:auto"
             close="close" is-active="isActive"
             expand-all="expandAll" is-expandable="isExpandable">
+
         </field-toolbar>
       </div>
     </div>
 
+
     <!-- form tree -->
+
     <ul class="treeview tv">
 
-      <li ng-repeat="item in page" class="animate-fade tv"
+      <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
-          ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+          ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
+
+        <div ng-if="isSectionBreak(item)" class="row">
+          <div class="section-break-inline">
+            {{form.properties[item]['schema:name']}}
+          </div>
+        </div>
+
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
@@ -42,7 +64,7 @@
               uid="uid+'-'+item"
               parent-key="'form'"
               field-key="item"
-              previous="form.properties[page[$index-1]]"></cedar-runtime-field>
+              previous="form.properties[pagesArray[pageIndex][$index-1]]"></cedar-runtime-field>
         </div>
 
         <!--If element-->
@@ -64,9 +86,11 @@
 
       </li>
     </ul>
+
   </div>
 
   <p ng-if="form.requiredFields" class="required-text">Required</p>
+
 
   <!--template or element builder  form-->
   <div class="page build" ng-if="!isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
@@ -103,16 +127,15 @@
 
 </form>
 
-<div ng-if="form._ui.pages.length > 1 && isRuntime()" class="pagination-container">
-  <ul class="pagination">
-    <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i
-        class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
-    <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a
-        ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
-    <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next"><span translate>GENERIC.Next</span><i
-        class="fa fa-lg fa-angle-right"></i></span></a></li>
-  </ul>
-</div><!-- /.pagination-container -->
+<div class="row">
+  <div class="col-xs-12 ">
+    <cedar-pager ng-if="isRuntime() && pagesArray.length>1" field="form" class="pull-right"
+        close="close" is-active="isActive" paging="pagesArray.length>1"
+        expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
+        max="pageMax" select="selectPage" range="6">
+    </cedar-pager>
+  </div>
+</div>
 
 
 

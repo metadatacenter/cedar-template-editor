@@ -45,11 +45,7 @@ define([
         $scope.hasInstances;
         $scope.cannotWrite;
 
-        $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-          $scope.cannotWrite = !result;
-          return result;
-        };
+        $scope.isTemplate = true;
 
         // validate the resource
         var checkValidation = function (node) {
@@ -60,7 +56,7 @@ define([
 
                   var json = angular.toJson(response);
                   var status = response.validates == "true";
-                  $scope.logValidation(status, json);
+                  UIUtilService.logValidation(status, json);
 
                   $timeout(function () {
                     $rootScope.$broadcast("form:validation", {state: status});
@@ -75,7 +71,9 @@ define([
         };
 
         $scope.checkLocking = function () {
-          var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          // to disable write if a template has existing instances as well
+          // var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+          var result = !$scope.details || resourceService.canWrite($scope.details);
           $scope.cannotWrite = !result;
           return result;
         };
@@ -94,13 +92,12 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                $scope.hasInstances = response.totalCount > 0;
                 $scope.checkLocking();
-                // no longer notify user because we are putting the lock icon in the upper right corner
-                // if ($scope.hasInstances) {
-                //   UIMessageService.showWarning("Warning",
-                //       "The template may not be modified because there are metadata using it.", "OK", "");
-                // }
+                $scope.hasInstances = response.totalCount > 0;
+                if ($scope.hasInstances) {
+                  UIMessageService.showWarning("Warning",
+                      "The template has metadata and should not be modified.", "OK", "");
+                }
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -129,22 +126,40 @@ define([
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
+
                   $scope.form = response.data;
-
                   var copiedForm = jQuery.extend(true, {}, $scope.form);
-                  checkValidation(copiedForm);
+                  if (copiedForm) {
+                    return resourceService.validateResource(
+                        copiedForm, CONST.resourceType.TEMPLATE,
+                        function (response) {
+                          //TODO turn this off for now
+                          //if (response.validates == "true") {
 
-                  HeaderService.dataContainer.currentObjectScope = $scope.form;
-                  $rootScope.keyOfRootElement = $scope.form["@id"];
-                  $rootScope.rootElement = $scope.form;
-                  $rootScope.jsonToSave = $scope.form;
-                  DataManipulationService.createDomIds($scope.form);
-                  //$scope.getType();
-                  $rootScope.$broadcast('form:clean');
-
-                  getDetails($scope.form["@id"]);
-
-
+                            $rootScope.setValidation(true);
+                            HeaderService.dataContainer.currentObjectScope = $scope.form;
+                            $rootScope.keyOfRootElement = $scope.form["@id"];
+                            $rootScope.rootElement = $scope.form;
+                            $rootScope.jsonToSave = $scope.form;
+                            DataManipulationService.createDomIds($scope.form);
+                            //$scope.getType();
+                            $rootScope.$broadcast('form:clean');
+                            getDetails($scope.form["@id"]);
+                          // } else {
+                          //   // TODO validate before loading template-controller
+                          //   $rootScope.goToHome();
+                          //   UIMessageService.showWarning(
+                          //       'GENERIC.Warning',
+                          //       'VALIDATION.templateLoad',
+                          //       'GENERIC.Ok'
+                          //   );
+                          // }
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        }
+                    );
+                  }
                 },
                 function (err) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -154,10 +169,7 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
 
-            // var copiedForm = jQuery.extend(true, {}, $scope.form);
-            // checkValidation(copiedForm);
             $rootScope.setValidation(true);
-
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
@@ -167,7 +179,6 @@ define([
             $rootScope.$broadcast('form:clean');
           }
         };
-
 
         getTemplate();
 
@@ -288,19 +299,6 @@ define([
           }
         };
 
-        $scope.logValidation = function (validationStatus, validationReport) {
-
-          var report = JSON.parse(validationReport);
-          for (var i = 0; i < report.warnings.length; i++) {
-            console.log(
-                'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
-          }
-          for (var i = 0; i < report.errors.length; i++) {
-            console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
-          }
-
-          $rootScope.setValidation(validationStatus);
-        };
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
@@ -337,8 +335,7 @@ define([
                   function (response) {
 
 
-                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                        response.headers("CEDAR-Validation-Report"));
+                    UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                     // confirm message
                     var title = dms.getTitle(response.data);
@@ -371,8 +368,7 @@ define([
                     TemplateService.updateTemplate(id, copiedForm),
                     function (response) {
 
-                      $scope.logValidation(response.headers("CEDAR-Validation-Status"),
-                          response.headers("CEDAR-Validation-Report"));
+                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                       //$rootScope.jsonToSave = response.data;
                       //DataManipulationService.createDomIds(response.data);

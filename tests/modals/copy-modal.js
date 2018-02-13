@@ -8,8 +8,8 @@ var CopyModal = function () {
 
   var copyToBody = copyToModal.element(by.css('div > div > div.modal-body'));
   var copyToModalHeader = element(by.id('copyModalHeader'));
-  var backToParentButton = copyToModalHeader.element(by.css('div:nth-child(1) > h4 > span'));
-  var openFolderArrowButton = copyToBody.element(by.css('div.box-row.row.ng-scope.selected > div.col-sm-1.arrow-click > i'));
+  var backToParentButton = copyToModalHeader.element(by.css('.back-to-parent'));
+  var openFolderArrowButton = copyToBody.element(by.css('div.box-row.row.ng-scope.selected > div.arrow-click'));
 
 
   this.copyToDestination = function(title) {
