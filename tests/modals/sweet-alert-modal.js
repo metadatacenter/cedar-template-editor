@@ -60,6 +60,7 @@ var SweetAlertModal = function () {
   this.noReadAccess = function () {
     browser.wait(EC.visibilityOf(message));
     message.getText().then(function(text) {
+      console.log('noReadAccess',text,insufficientReadMessagePartial);
       expect(text).toContain(insufficientReadMessagePartial);
     });
   };
@@ -68,7 +69,7 @@ var SweetAlertModal = function () {
     browser.sleep(1000);  // TODO  wait for animation
     browser.wait(EC.visibilityOf(message));
     message.getText().then(function(text) {
-      console.log('message',text);
+      console.log('noWriteAccess',text,insufficientWriteMessagePartial);
       expect(text).toContain(insufficientWriteMessagePartial);
     });
   };
