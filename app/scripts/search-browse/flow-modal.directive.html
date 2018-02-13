@@ -1,9 +1,17 @@
 <div class="modal-dialog">
 
   <div class="modal-content" flow-init="{target: getTarget()}"
-      flow-file-progress="flowFileProgress( $flow, $file )"
+      flow-complete="flowComplete($flow)"
       flow-progress="flowProgress( $flow )"
-      flow-file-success="$file.msg = $message"
+      flow-file-progress="flowFileProgress( $file, $flow )"
+      flow-file-success="$file.msg = $message; flowFileSuccess( $file, $message, $flow )"
+      flow-file-added="flowFileAdded( $file, $event, $flow )"
+      flow-files-added="flowFilesAdded( $files, $event, $flow )"
+      flow-files-submitted="flowFilesSubmitted( $files, $event, $flow )"
+      flow-file-retry="flowFileRetry( $file, $flow )"
+      flow-file-error="flowFileError( $file, $message, $flow )"
+      flow-error="flowError( $file, $message, $flow )"
+      flow-upload-started="flowUploadStarted($flow )"
       ng-init="init($flow)">
     <!--flow-files-submitted="$flow.upload()"-->
 
@@ -15,7 +23,7 @@
 
     <div class="modal-body">
 
-      <uib-tabset active="indexTab">
+      <uib-tabset active="state.active" >
         <uib-tab index="0" heading="Repository" >
           <div class="repository">
 
@@ -66,30 +74,30 @@
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
-                <div class="row metadata">
+                <!--<div class="row metadata">-->
 
-                  <h5 class="header"> Metadata <i class="fa fa-tags "></i></h5>
-                  <div class="col-sm-10">
-                    <input type="text" ng-disabled="!canInsert()"
-                        ng-model="model.selectedInstance"
-                        placeholder="search workspace"
-                        uib-typeahead="instance for instance in instances($viewValue)"
-                        typeahead-loading="loadingInstances"
-                        typeahead-no-results="noInstances"
-                        class="form-control typeahead"
-                        typeahead-on-select="">
-                    <i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>
-                    <span ng-if="noInstances">
-                      <i class="glyphicon glyphicon-remove"></i> No Results Found
-                    </span>
-                  </div>
+                  <!--<h5 class="header"> Metadata <i class="fa fa-tags "></i></h5>-->
+                  <!--<div class="col-sm-10">-->
+                    <!--<input type="text" ng-disabled="!canInsert()"-->
+                        <!--ng-model="model.selectedInstance"-->
+                        <!--placeholder="search workspace"-->
+                        <!--uib-typeahead="instance for instance in instances($viewValue)"-->
+                        <!--typeahead-loading="loadingInstances"-->
+                        <!--typeahead-no-results="noInstances"-->
+                        <!--class="form-control typeahead"-->
+                        <!--typeahead-on-select="">-->
+                    <!--<i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>-->
+                    <!--<span ng-if="noInstances">-->
+                      <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
+                    <!--</span>-->
+                  <!--</div>-->
 
 
-                  <span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"
-                      uib-tooltip="Add to upload list" tooltip-trigger="" tooltip-animation="false" tooltip-placement="bottom" data-toggle="tooltip"
-                      ng-click="insertItems($flow, model.selectedInstance)">
-                    <i class="fa fa-plus-circle btn-add"></i></span>
-                </div>
+                  <!--<span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"-->
+                      <!--uib-tooltip="Add to upload list" tooltip-trigger="" tooltip-animation="false" tooltip-placement="bottom" data-toggle="tooltip"-->
+                      <!--ng-click="insertItems($flow, model.selectedInstance)">-->
+                    <!--<i class="fa fa-plus-circle btn-add"></i></span>-->
+                <!--</div>-->
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="actions">
@@ -163,21 +171,36 @@
           </div>
 
         </uib-tab>
+        <uib-tab index="2" heading="Log" >
+          <div style="margin-top:10px;max-height: 270px;height:270px;overflow-y:auto;overflow-x:hidden;">
+          <div style="display:flex;justify-content:center;align-items:flex-start" ng-repeat="(key, value) in state.status">
+              <div style="width:100%;margin-right:10px">
+                <div style="padding:4px;">{{value.label}}</div>
+              </div>
+            <div style="width:100%;" >
+              <div style="padding:4px;">{{value.file}}</div>
+            </div>
+          </div>
+          </div>
+        </uib-tab>
       </uib-tabset>
 
     </div>
 
     <!-- footer closes the dialog -->
     <div class="modal-footer actions">
-      <div class="row">
-        <div class="col-sm-12 clear-save">
+      <div style="display: flex;justify-content:space-between;align-items: center;">
+        <div  style="font-weight:bold;display:flex;justify-content:center;width:100%">
+          <span >{{getStatus()}}</span>
+        </div>
+        <div class="clear-save" style="width:100%" >
 
           <button type="button" ng-click="flowModalVisible=false;"
               data-dismiss="modal" aria-label="Close"
-              class="btn btn-clear done" translate>GENERIC.Close
+              class="btn done" ng-class="{'btn-save': state.complete, 'btn-clear': !state.complete}"  translate>GENERIC.Close
           </button>
           <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit"
-              class="btn btn-save " translate>GENERIC.Submit
+              class="btn" ng-class="{'btn-save': !state.complete, 'btn-clear': state.complete}" translate>GENERIC.Submit
           </button>
 
         </div>

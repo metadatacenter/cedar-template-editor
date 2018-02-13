@@ -148,6 +148,10 @@ define([
       return (vm.path === "/dashboard");
     };
 
+    vm.isMessaging = function () {
+      return (vm.path === "/messaging");
+    };
+
     vm.getDocumentTitle = function () {
       return $rootScope.documentTitle;
     };

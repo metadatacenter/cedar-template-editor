@@ -111,7 +111,9 @@ define([
           if (!DataUtilService.isSpecialKey(key)) {
             var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
             var isCardinal = DataManipulationService.isCardinalElement(value);
-            result = result && (!isElement && !isCardinal);
+            // TODO turn on spreadsheetable and ignore nested elements
+            //result = result && (!isElement && !isCardinal);
+            result = true
           }
         });
       }

@@ -53,18 +53,56 @@ define([
           // init
           //
           $scope.flow;
-          $scope.submitted = false;
-          $scope.paused = false;
-          $scope.complete = false;
+          $scope.state = {
+            'submitted': false,
+            'paused'   : false,
+            'complete' : false,
+            'status'   : [],
+            'active'   : false
+          };
+
 
           $scope.init = function (flow) {
             $scope.flow = flow;
-            //$scope.getWorkspaces();
           };
 
-          //
-          // tabs
-          //
+          $scope.isTest = false;
+          $scope.testData = function () {
+            $timeout(function () {
+              $scope.flowUploadStarted();
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileProgress({'file': {'name': 'file name'}});
+              $scope.flowFileSuccess({'file': {'name': 'file name'}});
+              $scope.flowComplete();
+            }, 10000);
+          };
 
 
           var flowNcbiSra = 0;
@@ -138,7 +176,7 @@ define([
           $scope.metadataFiles = [];
 
           $scope.instances = function (term) {
-            console.log('instances',term);
+            console.log('instances', term);
 
             var limit = UISettingsService.getRequestLimit();
             var offset = 0;
@@ -156,7 +194,7 @@ define([
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
-                  console.log('response',  $scope.resources);
+                  //console.log('response', $scope.resources);
 
 
                   return $scope.resources.map(function (item) {
@@ -171,7 +209,7 @@ define([
 
           // load and add the instances to the flow queue
           $scope.insertItems = function (flow, name) {
-            if (!$scope.submitted) {
+            if (!$state.submitted) {
               for (var i = 0; i < $scope.resources.length; i++) {
                 if ($scope.resources[i].name === name) {
 
@@ -258,7 +296,55 @@ define([
 
             // start the upload
             flow.upload();
-            $scope.submitted = true;
+            $scope.state.submitted = true;
+          };
+
+          $scope.flowComplete = function ($flow) {
+            $scope.state.status.unshift({'label': 'Upload Complete', 'file': ''});
+            $scope.state.complete = true;
+          };
+          $scope.flowProgress = function ($flow) {
+            $scope.state.status.unshift({'label': 'Progress', 'file': ''});
+          };
+          $scope.flowFileProgress = function ($file, $flow) {
+            $scope.state.status.unshift({'label': 'File Progress', 'file': $file.file.name});
+          };
+          $scope.flowFileSuccess = function ($file, $message, $flow) {
+            $scope.state.status.unshift({'label': 'File Success', 'file': $file.file.name});
+          };
+          $scope.flowFileAdded = function ($file, $event, $flow) {
+            $scope.state.status.unshift({'label': 'File Added', 'file': $file.file.name});
+          };
+          $scope.flowFilesAdded = function ($files, $event, $flow) {
+            $scope.state.status.unshift({'label': 'Files Added', 'file': ''});
+          };
+          $scope.flowFilesSubmitted = function ($files, $event, $flow) {
+            $scope.state.status.unshift({'label': 'Files Submitted', 'file': ''});
+          };
+          $scope.flowFileRetry = function ($file, $flow) {
+            $scope.state.status.unshift({'label': 'File Retry', 'file': $file.file.name});
+          };
+          $scope.flowFileError = function ($file, $message, $flow) {
+            $scope.state.status.unshift({'label': 'File Error', 'file': $file.file.name});
+          };
+          $scope.flowError = function ($file, $message, $flow) {
+            $scope.state.status.unshift({'label': 'Upload Error ', 'file': $file.file.name});
+          };
+          $scope.flowUploadStarted = function ($flow) {
+            $scope.state.submitted = true;
+            $scope.state.status.unshift({'label': 'Upload Started', 'file': ''});
+          };
+
+          $scope.getStatus = function () {
+            var substring = 'Error';
+            if ($scope.state.status.length > 0) {
+
+              for (var i=0; i<$scope.state.status.length; i++) {
+                if ($scope.state.status[i].label.indexOf(substring) !== -1) {
+                  return $scope.state.status[i].label;
+                }
+              }
+            }
           };
 
           $scope.canClear = function (flow) {
@@ -270,63 +356,43 @@ define([
           };
 
           $scope.canResume = function (flow) {
-            return $scope.paused;
+            return $scope.state.paused;
           };
 
           $scope.canInsert = function (flow) {
-            return !$scope.submitted;
+            return !$scope.state.submitted;
           };
-
 
           $scope.canSubmit = function (flow) {
             var validRepo = ($scope.model.selectedWorkspace && $scope.model.selectedMode == flowImmport) || ($scope.model.selectedMode != flowImmport);
-            return validRepo && !$scope.complete && !$scope.submitted && flow.files.length > 0;
+            return validRepo && !$scope.state.complete && !$scope.state.submitted && flow.files.length > 0;
           };
 
           $scope.cancelAll = function (flow) {
-            $scope.paused = false;
-            $scope.submitted = false;
-            $scope.complete = false;
+            //reset state and cancel flow in progress
+            $scope.state.submitted = false;
+            $scope.state.paused = false;
+            $scope.state.complete = false;
+            $scope.state.status = [];
             $scope.metadataFiles = [];
             $scope.resources = [];
             flow.cancel();
+
+            // reset active tab
+            $timeout(function () {
+              $scope.state.active = 0;
+            }, 0);
           };
 
           $scope.pauseAll = function (flow) {
-            $scope.paused = true;
+            $scope.state.paused = true;
             flow.pause();
           };
 
           $scope.resumeAll = function (flow) {
-            $scope.paused = false;
+            $scope.state.paused = false;
             flow.resume();
           };
-
-          $scope.$on('flow::fileAdded', function (event, $flow, flowFile) {
-          });
-
-          $scope.$on('flow::progress', function (event, $flow, flowFile) {
-          });
-
-          $scope.flowProgress = function (flow) {
-          };
-
-          $scope.flowFileProgress = function (flow, file) {
-          };
-
-          $scope.$on('flow::uploadStart', function (event, $flow, flowFile) {
-            $scope.submitted = true;
-
-          });
-
-          // TODO not seeing this event coming through
-          // $scope.$on('flow::complete', function (event, $flow) {
-          //   console.log('flow::complete');
-          //   $scope.complete = true;
-          //   $timeout(function () {
-          //     $flow.cancel();
-          //   }, 5000);
-          // });
 
           // modal open or closed
           $scope.$on('flowModalVisible', function (event, params) {
@@ -337,20 +403,24 @@ define([
                 var instanceId = params[1];
                 var name = params[2];
 
-                if (!$scope.flow.isUploading() || $scope.paused) {
+                if (!$scope.flow.isUploading() || $scope.state.paused) {
                   $scope.cancelAll($scope.flow);
-
                 }
 
                 // modal just opened
                 $scope.insertItemById($scope.flow, instanceId, name);
 
                 if (!$scope.workspaces) {
-                  // TODO turn this on again later
+                  // TODO turn this on again later for ImmPort
                   //$scope.getWorkspaces();
                 }
 
                 jQuery('#flow-modal input').focus().select();
+
+                // insert test data
+                if ($scope.isTest) {
+                  $scope.testData();
+                }
               }, 0);
             }
           });
