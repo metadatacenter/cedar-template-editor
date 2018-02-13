@@ -218,6 +218,10 @@ define([
             }
           };
 
+          vm.canSubmit = function () {
+            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+          };
+
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
@@ -423,6 +427,7 @@ define([
 
           getPreferences();
           init();
+
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
@@ -904,7 +909,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return MessagingService.unreadCount;
+            return Math.min(MessagingService.unreadCount,9);
           }
 
           function openMessaging() {

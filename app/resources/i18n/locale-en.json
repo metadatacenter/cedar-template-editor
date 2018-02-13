@@ -172,6 +172,7 @@
     "sortBy": "Sort by",
     "addProperty": "Add property",
     "unreadMessageCount": "You have unread messages",
+    "message": "Open messages",
     "repoSubmission": "Submit to repository"
   },
   "SERVER": {
@@ -406,6 +407,7 @@
     "errorCallingService": "Error calling Value Recommender service"
   },
   "VALIDATION": {
+    "templateLoad": "The template is invalid and cannot be opened.",
     "externalValidation": "External validation",
     "minBiggerThanMax": "Min cannot be greater than Max.",
     "fieldTitleEmpty": "'Field Title' input cannot be left empty.",

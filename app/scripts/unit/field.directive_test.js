@@ -95,7 +95,9 @@ define(['app', 'angular'], function (app) {
         textfieldTests();
       });
 
+
       describe('an attribute-value field', function () {
+
         beforeEach(function () {
           addFieldToTemplate('attribute-value');
         });
@@ -122,7 +124,9 @@ define(['app', 'angular'], function (app) {
         textfieldTests();
       });
 
+
       describe('an attribute-value field', function () {
+
         beforeEach(function () {
           addFieldToTemplate('attribute-value');
         });

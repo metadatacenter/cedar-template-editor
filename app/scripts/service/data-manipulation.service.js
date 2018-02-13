@@ -677,6 +677,36 @@ define([
       return result;
     };
 
+    // get order array
+    service.getFlatOrder = function (node) {
+      return service.schemaOf(node)._ui.order;
+    };
+
+    // get order array minus any static fields
+    service.getSpreadsheetOrder = function (node) {
+      var result = [];
+      service.schemaOf(node)._ui.order.forEach(function(key) {
+        var field = service.propertiesOf(node)[key];
+        if (!service.isStaticField(field)) {
+          result.push(key);
+        }
+      });
+      return result;
+    };
+
+    // get order array minus any static fields and nested elements
+    service.getFlatSpreadsheetOrder = function (node) {
+
+      var result = [];
+      service.schemaOf(node)._ui.order.forEach(function(key) {
+        var field = service.propertiesOf(node)[key];
+        if (!service.isStaticField(field) && !service.isElement(service.schemaOf(field))) {
+          result.push(key);
+        }
+      });
+      return result;
+    };
+
     //
     //  properties
     //
