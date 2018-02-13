@@ -133,8 +133,8 @@ define([
                     return resourceService.validateResource(
                         copiedForm, CONST.resourceType.TEMPLATE,
                         function (response) {
-
-                          if (response.validates == "true") {
+                          //TODO turn this off for now
+                          //if (response.validates == "true") {
 
                             $rootScope.setValidation(true);
                             HeaderService.dataContainer.currentObjectScope = $scope.form;
@@ -145,15 +145,15 @@ define([
                             //$scope.getType();
                             $rootScope.$broadcast('form:clean');
                             getDetails($scope.form["@id"]);
-                          } else {
-                            // TODO validate before loading template-controller
-                            $rootScope.goToHome();
-                            UIMessageService.showWarning(
-                                'GENERIC.Warning',
-                                'VALIDATION.templateLoad',
-                                'GENERIC.Ok'
-                            );
-                          }
+                          // } else {
+                          //   // TODO validate before loading template-controller
+                          //   $rootScope.goToHome();
+                          //   UIMessageService.showWarning(
+                          //       'GENERIC.Warning',
+                          //       'VALIDATION.templateLoad',
+                          //       'GENERIC.Ok'
+                          //   );
+                          // }
                         },
                         function (error) {
                           UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
