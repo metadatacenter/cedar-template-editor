@@ -504,6 +504,8 @@ define([
         var inputType = $scope.getInputType();
 
         if (dms.isAttributeValueType($scope.field)) {
+          var parentModel = $scope.parentModel || $scope.$parent.model;
+
           if ($scope.model.length > 0) {
 
             var attributeName = $scope.model[$scope.index]['@name'] || 'attribute';
@@ -511,18 +513,19 @@ define([
 
             if (isAttributeValueName) {
               // make it unique in the parent
-              attributeName = $scope.getNewAttributeName(attributeName, $scope.$parent.model);
-              if (!$scope.isDuplicateAttribute(attributeName, $scope.$parent.model)) {
+              attributeName = $scope.getNewAttributeName(attributeName, parentModel);
+              if (!$scope.isDuplicateAttribute(attributeName, parentModel)) {
+
 
                 $scope.model[$scope.index]['@name'] = attributeName;
 
                 // update attribute name in the parent
-                delete $scope.$parent.model[oldValue];
-                $scope.$parent.model[attributeName] = {};
+                delete parentModel[oldValue];
+                parentModel[attributeName] = {};
               }
             }
             // update value in the parent
-            $scope.$parent.model[attributeName]['@value'] = attributeValue;
+            parentModel[attributeName]['@value'] = attributeValue;
 
           } else {
 
@@ -530,16 +533,16 @@ define([
             var attributeValue = $scope.model['@value'];
 
             // make it unique in the parent
-            var newAttributeName = $scope.getNewAttributeName(attributeName, $scope.$parent.model);
-            if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {
+            var newAttributeName = $scope.getNewAttributeName(attributeName, parentModel);
+            if (!$scope.isDuplicateAttribute(newAttributeName, parentModel)) {
 
               // delete the old field
-              delete $scope.$parent.model[$scope.model['@name']];
+              delete parentModel[$scope.model['@name']];
 
               // build new field
               var value = {};
               value["@value"] = attributeValue;
-              $scope.$parent.model[newAttributeName] = value;
+              parentModel[newAttributeName] = value;
             }
           }
         }
@@ -638,7 +641,7 @@ define([
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
         if (dms.isAttributeValueType($scope.field)) {
-          $scope.copyAttributeValueField();
+          $scope.copyAttributeValueField($scope.parentModel);
         } else {
           var valueLocation = $scope.getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
@@ -679,7 +682,7 @@ define([
         }
       };
 
-      $scope.copyAttributeValueField = function () {
+      $scope.copyAttributeValueField = function (parentModel) {
 
 
         var maxItems = dms.getMaxItems($scope.field);
@@ -692,8 +695,8 @@ define([
           // create a unique attribute name for the copy
           var attributeValue = $scope.valueArray[$scope.index]['@value'];
           var oldAttributeName = $scope.valueArray[$scope.index]['@name'] || 'attribute';
-          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, $scope.$parent.model);
-          if (!$scope.isDuplicateAttribute(newAttributeName, $scope.$parent.model)) {
+          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parentModel);
+          if (!$scope.isDuplicateAttribute(newAttributeName, parentModel)) {
 
             // copy selected instance in the model and insert immediately after
             var obj = {};
@@ -704,7 +707,7 @@ define([
             // build the new field at the parent level
             var valueObject = {};
             valueObject["@value"] = attributeValue;
-            $scope.$parent.model[newAttributeName] = valueObject;
+            parentModel[newAttributeName] = valueObject;
 
             // activate the new instance
             $timeout($scope.setActive($scope.index + 1, true), 100);
@@ -1027,7 +1030,8 @@ define([
         previous      : '=',
         uid           : '=',
         fieldKey      : '=',
-        parentKey     : '='
+        parentKey     : '=',
+        parentModel   : '='
 
       },
       controller : function ($scope, $element) {

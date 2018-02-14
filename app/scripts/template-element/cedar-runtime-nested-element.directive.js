@@ -27,7 +27,8 @@ define([
         isEditData    : "=",
         path          : '=',
         uid           : '=',
-        previous      : '='
+        previous      : '=',
+        parentModel   : '='
       },
       replace : true,
       link    : linker
@@ -41,7 +42,7 @@ define([
       var nestElement = function () {
 
         setNested(scope.field);
-        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field previous="previous" field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" uid="uid" path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element labels="labels" relabel="relable"  model="model" element="field" preview="preview" delete="removeChild(field)"  uid="uid"  path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-element></div>';
+        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field parent-model="parentModel" previous="previous" field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" uid="uid" path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element labels="labels" relabel="relable"  model="model" element="field" preview="preview" delete="removeChild(field)"  uid="uid"  path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });

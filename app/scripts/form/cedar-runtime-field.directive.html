@@ -34,8 +34,9 @@
             <div class="originalContent" ng-include="getFieldUrl()"></div>
           </div>
           <div class="col-sm-9 answer" ng-if="isActive(index)">
-            <div class="row tools">
-              <field-toolbar class="col-xs-12 col-sm-12 pull-right " model="model" field="field" index="index"
+            <div class="flex">
+              <div></div> <!--title-->
+              <field-toolbar  model="model" field="field" index="index"
                   remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
                   expand-all="expandAll" get-locator="getLocator" view-state="viewState"></field-toolbar>
             </div>
@@ -78,8 +79,9 @@
           </div>
 
           <div class="col-sm-9 answer" ng-if="isActive(index)">
-            <div class="row tools">
-              <field-toolbar class="col-xs-12" values="valueArray" min="pageMin"
+            <div class="flex " style="min-height:2em;padding:5px 0;">
+              <div></div> <!--title-->
+              <field-toolbar  values="valueArray" min="pageMin"
                   max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
                   range="pageRange" model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive" expand-all="expandAll"
@@ -150,8 +152,9 @@
             </div>
           </div>
           <div class="col-sm-9 answer">
-            <div class="row tools">
-              <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
+            <div class="flex " style="min-height:2em;padding:5px 0;">
+              <div></div> <!--title-->
+              <field-toolbar  model="model" field="field"
                   index="index" view-state="viewState"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
                   expand-all="expandAll"

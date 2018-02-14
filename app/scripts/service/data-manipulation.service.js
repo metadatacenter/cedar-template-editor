@@ -694,13 +694,14 @@ define([
       return result;
     };
 
-    // get order array minus any static fields and nested elements
+    // get order array minus any static fields, attribute value fields, and nested elements
     service.getFlatSpreadsheetOrder = function (node) {
 
       var result = [];
       service.schemaOf(node)._ui.order.forEach(function(key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field) && !service.isElement(service.schemaOf(field))) {
+        var field = service.schemaOf(service.propertiesOf(node)[key]);
+
+        if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isAttributeValueType(field) && !service.isElement(field)) {
           result.push(key);
         }
       });

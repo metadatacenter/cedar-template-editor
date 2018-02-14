@@ -22,6 +22,7 @@ define([
     };
 
     var jsonld = require('jsonld');
+    var dms = DataManipulationService;
 
     service.toRDF = function () {
       var instance = $rootScope.instanceToSave;
@@ -103,19 +104,22 @@ define([
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
 
-      var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node) && !DataManipulationService.isMultipleChoice(node) && !DataManipulationService.isAttributeValueType(node);
+      var schema = dms.schemaOf(node);
+      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) && !dms.isAttributeValueType(node);
 
       if (DataUtilService.isElement(schema)) {
-        angular.forEach(schema.properties, function (value, key) {
-          if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
-            var isCardinal = DataManipulationService.isCardinalElement(value);
-            // TODO turn on spreadsheetable and ignore nested elements
-            //result = result && (!isElement && !isCardinal);
-            result = true
-          }
-        });
+        var order = dms.getFlatSpreadsheetOrder(node);
+        result = order.length > 0;
+        //
+        // angular.forEach(schema.properties, function (value, key) {
+        //   if (!DataUtilService.isSpecialKey(key)) {
+        //     var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
+        //     var isCardinal = DataManipulationService.isCardinalElement(value);
+        //     // TODO turn on spreadsheetable and ignore nested elements
+        //     //result = result && (!isElement && !isCardinal);
+        //     result = true
+        //   }
+        // });
       }
       return result;
     };

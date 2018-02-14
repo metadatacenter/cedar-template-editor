@@ -2906,7 +2906,6 @@ section.dashboard-elements {
   .toolbar {
     padding: 0px 22px 0 0;
     font-size: 18px;
-    visibility: hidden;
     button, .paging {
       background-color: transparent;
     }
@@ -2953,8 +2952,9 @@ section.dashboard-elements {
     cursor: pointer;
   }
 
-  .row.tools {
-    padding: 5px 0;
+  .tools {
+    min-height:2em;
+    padding:5px 0;
   }
 
   .row.isActive, .row:hover {
@@ -3145,7 +3145,7 @@ section.dashboard-elements {
       }
 
       .answer {
-        padding: 5px 20px;
+        //padding: 5px 20px;
       }
     }
 
@@ -7638,5 +7638,11 @@ table.message {
   border-top: 1px solid #9E9E9E;
   padding-top: 10px;
 
+}
+
+.flex {
+  display:flex;
+  justify-content:space-between;
+  align-content: center;
 }
 
