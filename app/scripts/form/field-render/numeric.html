@@ -4,7 +4,7 @@
   <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
+  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback truncate"
       ng-class="{'required': isRequired()}">
     <input type="text"
         class="form-control has-success has-feedback"
@@ -17,7 +17,7 @@
   </div>
 
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper truncate" ng-repeat="valueElement in model">
 
     <input type="text"
         id="{{getId($index)}}"
@@ -44,7 +44,7 @@
 
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()"
-      class="form-group floating-label-wrapper">
+      class="form-group floating-label-wrapper truncate">
 
 
     <input type="text"
@@ -69,7 +69,7 @@
   </div>
   <!-- /.form-group -->
 
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper truncate">
     <input type="text"
         id="{{getId(0)}}"
         ng-change="setDefaultValueIfEmpty(model)"

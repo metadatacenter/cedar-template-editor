@@ -3,7 +3,7 @@
   <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback truncate" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <input type="text"
         class="form-control has-success has-feedback"
         ng-class="{'required': isRequired()}"
@@ -16,7 +16,7 @@
 
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper truncate">
 
       <div class='input-group' date-time-picker>
         <input type="text"
@@ -44,7 +44,7 @@
   <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="field field-date">
 
 
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper truncate">
 
       <div class='input-group' date-time-picker>
         <input type="text"
@@ -64,7 +64,7 @@
   </div>
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper truncate">
 
       <div class='input-group' date-time-picker>
         <input type="text"
