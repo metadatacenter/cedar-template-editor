@@ -505,6 +505,7 @@ define([
 
         if (dms.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
+          console.log('parentModel',parentModel);
 
           if ($scope.model.length > 0) {
 
