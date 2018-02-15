@@ -13,6 +13,7 @@ branches:
   only:
   - develop
   - master
+  - feature/attribute-value-pairs
 notifications:
   slack:
     on_success: never

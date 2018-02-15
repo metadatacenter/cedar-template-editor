@@ -106,20 +106,8 @@ define([
 
       var schema = dms.schemaOf(node);
       var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) && !dms.isAttributeValueType(node);
-
-      if (DataUtilService.isElement(schema)) {
-        var order = dms.getFlatSpreadsheetOrder(node);
-        result = order.length > 0;
-        //
-        // angular.forEach(schema.properties, function (value, key) {
-        //   if (!DataUtilService.isSpecialKey(key)) {
-        //     var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
-        //     var isCardinal = DataManipulationService.isCardinalElement(value);
-        //     // TODO turn on spreadsheetable and ignore nested elements
-        //     //result = result && (!isElement && !isCardinal);
-        //     result = true
-        //   }
-        // });
+      if (DataUtilService.isElement(schema) && dms.isCardinalElement(node)) {
+        result =  dms.getFlatSpreadsheetOrder(node).length > 0;
       }
       return result;
     };
