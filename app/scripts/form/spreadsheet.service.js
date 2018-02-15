@@ -504,7 +504,7 @@ define([
             var detectorElement = $scope.spreadsheetDataScope.detectorElement;
 
             // Compute size based on available width and number of rows
-            var spreadsheetRowCount = tableData.length;
+            var spreadsheetRowCount = tableData ? tableData.length : 0;
             var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
             var spreadsheetContainerWidth = detectorElement.width();
 
