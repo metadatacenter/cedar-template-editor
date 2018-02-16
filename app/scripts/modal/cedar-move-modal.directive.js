@@ -106,7 +106,7 @@ define([
 
               var length = vm.destinationPathInfo.length;
               var parent = vm.destinationPathInfo[length - 1];
-              result = parent.displayName;
+              result = parent['schema:name'];
 
             }
             return result;
@@ -144,7 +144,7 @@ define([
           }
 
           function currentTitle() {
-            return vm.currentDestination ? vm.currentDestination.displayName : 'none';
+            return vm.currentDestination ? vm.currentDestination['schema:name'] : 'none';
           }
 
           function selectDestination(resource) {

@@ -87,7 +87,7 @@
                       <div class="folderIconContainer">
                         <i style="font-size:20px" class="fa" ng-class="finder.getResourceIconClass(resource)"></i>
                       </div>
-                      <div class="folderTitle">{{ resource.displayName }}</div>
+                      <div class="folderTitle">{{ resource['schema:name'] }}</div>
 
                     </div>
                   </div>
@@ -113,7 +113,7 @@
 
                       </div>
                       <div class="title">
-                        {{ resource.displayName }}
+                        {{ resource['schema:name'] }}
                       </div>
 
                     </div>
@@ -144,7 +144,7 @@
 
                 <span class="cell">
                   <i class="btn btn-sm btn-info btn-circle large-icon fa " ng-class="finder.getResourceIconClass(resource)" aria-hidden="true"></i></span>
-                <span class="cell resource">{{ resource.displayName }}</span>
+                <span class="cell resource">{{ resource['schema:name'] }}</span>
               </div>
               <!-- elements -->
               <div ng-show="finder.hasElements()" class="category" translate>GENERIC.Elements</div>
@@ -156,7 +156,7 @@
 
                 <span class="cell">
                   <i class="btn btn-sm btn-info btn-circle large-icon fa "  ng-class="finder.getResourceIconClass(resource)" aria-hidden="true"></i></span>
-                <span class="cell resource">{{ resource.displayName }}</span>
+                <span class="cell resource">{{ resource['schema:name'] }}</span>
               </div>
             </div>
 
@@ -168,7 +168,7 @@
                     ng-class="finder.getResourceIconClass(finder.selectedResource)"></i>
                 </div>
                 <div class="title" ng-class="finder.selectedResource.nodeType">
-                  {{ finder.selectedResource.displayName }}
+                  {{ finder.selectedResource['schema:name'] }}
                 </div>
                 <table class="table-details">
 
@@ -237,15 +237,15 @@
           <p ng-show="!finder.isSearching" class="not-searching">
           <span ng-repeat="folder in finder.pathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])"
-                  class="breadcrumbs browsing">{{finder.breadcrumbName(folder.displayName)}}</a> /
+                  class="breadcrumbs browsing">{{finder.breadcrumbName(folder['schema:name'])}}</a> /
             </span>
-            <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
+            <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath['schema:name'])}}</a>
           </p>
 
           <p ng-show="finder.isSearching && finder.hasSelection()" class="searching">
           <span ng-repeat="folder in finder.selectedPathInfo" >
               <a ng-click="finder.goToFolder(folder['@id'])" ng-model="folder"
-                  class="breadcrumbs">{{finder.breadcrumbName(folder.displayName)}}</a> <span ng-show="!$last">/</span>
+                  class="breadcrumbs">{{finder.breadcrumbName(folder['schema:name'])}}</a> <span ng-show="!$last">/</span>
             </span>
           </p>
         </div>
