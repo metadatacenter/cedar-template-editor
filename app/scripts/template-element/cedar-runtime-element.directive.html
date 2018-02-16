@@ -35,7 +35,9 @@
 
           </div>
 
+
           <field-toolbar ng-click="toggleExpanded(index)" paging="isMultiple()"
+
               ng-if="isExpanded(index)" values="valueArray" index="index"
               min="pageMin" max="pageMax" range="pageRange"
               field="element" model="valueArray" index="index" view-state="viewState"
@@ -74,8 +76,10 @@
 
         </div>
 
+
         <field-toolbar ng-click="toggleExpanded(index)"
             ng-if="isExpanded(index)" values="valueArray" index="index" paging="isMultiple()"
+
             min="pageMin" max="pageMax" range="pageRange"
             field="element" model="valueArray" index="index" view-state="viewState"
             remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
@@ -131,7 +135,9 @@
 
               {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
+
           <field-toolbar  paging="false" field="element" model="valueArray" index="i" view-state="viewState"
+
               remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
               spreadsheet="switchToSpreadsheet" close="unExpand" expand-all="expandAll" get-locator="getLocator">
           </field-toolbar>
