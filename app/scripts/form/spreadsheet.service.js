@@ -107,9 +107,7 @@ define([
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               } else if (cedarType == 'attribute-value') {
 
-
                   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                console.log('updateDataModel',row, col, sds.tableData[row][col],sds.tableDataSource[row][col],$scope.model,$element,sds.tableDataSource[row][col]['@value']);
 
               } else if (cedarType == 'checkbox') {
                 var valueObject = JSON.parse(sds.tableData[row][col]);
@@ -163,7 +161,6 @@ define([
               headerOrder.push(itemOrder[i]);
             }
           }
-          console.log('getColumnHeaderOrder', headerOrder);
           return headerOrder;
         };
 
@@ -555,7 +552,6 @@ define([
                                           createExtraRows, deleteExtraRows) {
 
           var model = $scope.model;
-          console.log('createSpreadsheet', model);
 
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
@@ -581,9 +577,7 @@ define([
 
 
             var columnHeaderOrder = getColumnHeaderOrder(context, $element, $scope);
-            console.log('columnHeaderOrder', columnHeaderOrder);
             var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope, customValidator);
-            console.log('columnDescriptors', columnDescriptors);
             var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
             var colHeaders = getColHeaders($element, columnHeaderOrder, $scope, isField());
@@ -698,7 +692,6 @@ define([
         service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
                                                 createExtraRows, deleteExtraRows) {
 
-          console.log('switchToSpreadsheet', $scope.model);
 
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);

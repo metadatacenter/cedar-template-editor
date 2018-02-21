@@ -665,36 +665,8 @@ define([
       return service.schemaOf(node)._ui.order;
     };
 
-    // get order array minus any static fields
-    service.getSpreadsheetOrder = function (node) {
-      var result = [];
-      service.schemaOf(node)._ui.order.forEach(function (key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field)) {
-          result.push(key);
-        }
-      });
-      return result;
-    };
 
-    // get order array
-    service.getFlatOrder = function (node) {
-      return service.schemaOf(node)._ui.order;
-    };
-
-    // get order array minus any static fields
-    service.getSpreadsheetOrder = function (node) {
-      var result = [];
-      service.schemaOf(node)._ui.order.forEach(function (key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field)) {
-          result.push(key);
-        }
-      });
-      return result;
-    };
-
-    // get order array minus any static fields, attribute value fields, and nested elements
+    // get order array that can be used to build the spreadsheet columns
     service.getFlatSpreadsheetOrder = function (node, model) {
 
       var result = [];

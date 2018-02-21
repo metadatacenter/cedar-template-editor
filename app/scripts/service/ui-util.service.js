@@ -129,7 +129,8 @@ define([
 
     service.createViewState = function (node, callback, cleanup) {
       var viewState = {
-        views   : ['tab', 'list'],
+        // views   : ['tab', 'list'],
+        views   : ['tab'],
         selected: 'tab'
       };
       if (service.isSpreadsheetable(node)) {
