@@ -252,7 +252,7 @@ describe('metadata-creator', function () {
 
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
-      templatePage.setMultiple();
+      //templatePage.setMultiple();
 
       templatePage.clickSave('template');
       toastyModal.isSuccess();

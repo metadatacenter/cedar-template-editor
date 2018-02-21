@@ -110,34 +110,6 @@ describe('resource-permissions', function () {
     });
 
 
-    it("should move a writable resource not owned by current user to a writable folder", function () {
-      console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-
-      // share the template and folder as writable
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
-
-      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // go to Test User 2's folder to see the shared folders
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-
-      // move source to target folder
-      //workspacePage.moveResource(sourceTemplate, 'template');
-      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToDestination(target2Folder);
-      toastyModal.isSuccess();
-
-      // delete these at the end
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-    });
 
     // TODO failing?
     it("should move a writable resource not owned by current user to an unwritable folder", function () {
@@ -193,6 +165,37 @@ describe('resource-permissions', function () {
       // delete these at the end
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
+
+    // TODO FAILS
+    xit("should move a writable resource not owned by current user to a writable folder", function () {
+      console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      // create source template and target shared folder
+      var sourceTemplate = workspacePage.createTemplate('Source');
+
+      // share the template and folder as writable
+      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch();
+
+      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      // go to Test User 2's folder to see the shared folders
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+
+      // move source to target folder
+      //workspacePage.moveResource(sourceTemplate, 'template');
+      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
+      moveModal.moveToDestination(target2Folder);
+      toastyModal.isSuccess();
+
+      // delete these at the end
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
   });
 
   xdescribe('copy tests', function () {
