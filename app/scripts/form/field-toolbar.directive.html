@@ -1,4 +1,4 @@
-<div class="flex">
+<div class="flex"  >
 
   <cedar-pager class="cedar-pager"
       ng-if="paging"
@@ -27,15 +27,7 @@
     <i class="fa fa-arrows-alt"></i>
   </button>
 
-  <button type="button" class="view-toggle" tooltip-append-to-body="true"
-      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.ToggleView' | translate}}"
-      tooltip-enable="isMultiple()"
-      ng-if="isMultiple()">
-    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ></i>
-    <i ng-if="isTabView()" class="fa fa-list-ol " ></i>
-    <i ng-if="isListView()" class="fa fa-table " ></i>
-  </button>
+
 
   <button type="button" class="copy" tooltip-append-to-body="true"
       ng-if="canCopy()"
@@ -51,6 +43,16 @@
       uib-tooltip="{{'GENERIC.Add' | translate}}"
       tooltip-enable="canAdd()">
     <i class="fa fa-plus-circle"></i>
+  </button>
+
+  <button type="button" class="view-toggle" tooltip-append-to-body="true"
+      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ToggleView' | translate}}"
+      tooltip-enable="isMultiple()"
+      ng-if="isMultiple()">
+    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ></i>
+    <i ng-if="isTabView()" class="fa fa-list-ol " ></i>
+    <i ng-if="isListView()" class="fa fa-table " ></i>
   </button>
 
   <button type="button" class="question" tooltip-append-to-body="true"

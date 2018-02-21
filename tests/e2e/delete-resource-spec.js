@@ -35,7 +35,7 @@ describe('delete-resource', function () {
 
   describe('via more-options button and right click', function () {
 
-    it("should delete a resource shared as writable with Everybody  with more options", function () {
+    xit("should delete a resource shared as writable with Everybody  with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
