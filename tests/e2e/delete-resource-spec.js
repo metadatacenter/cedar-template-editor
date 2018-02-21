@@ -35,8 +35,8 @@ describe('delete-resource', function () {
 
   describe('via more-options button and right click', function () {
 
-    it("should delete a resource shared as writable with Everybody  - pass", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody 1');
+    it("should delete a resource shared as writable with Everybody  with more options", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -50,23 +50,10 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should delete a resource shared as writable with Everybody", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-      var folder = workspacePage.createFolder('Writable');
 
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.deleteResource(folder, 'folder');
-    });
-
-    it("should delete a resource shared as writable with a user", function () {
-      console.log('delete-resource should delete a resource shared as writable with a user');
+    it("should delete a resource shared as writable with a user  with more options", function () {
+      console.log('delete-resource should delete a resource shared as writable with a user  with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -81,25 +68,10 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should delete a resource shared as writable with Everybody", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-      var folder = workspacePage.createFolder('Writable');
 
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.deleteResourceViaRightClick(folder, 'folder');
-
-      toastyModal.isSuccess();
-    });
-
-    it("should delete a resource shared as writable with a user", function () {
-      console.log('delete-resource should delete a resource shared as writable with a user');
+    it("should delete a resource shared as writable with a user with right-click", function () {
+      console.log('delete-resource should delete a resource shared as writable with a user with right-click');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -115,8 +87,40 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    it("should fail to delete a resource shared as readable with Everybody", function () {
-      console.log('delete-resource should fail to delete a resource shared as readable with Everybody');
+    it("should delete a resource shared as writable with Everybody with more options", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResource(folder, 'folder');
+    });
+
+    it("should delete a resource shared as writable with Everybody with right-click", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with right-click');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResourceViaRightClick(folder, 'folder');
+
+      toastyModal.isSuccess();
+    });
+
+    it("should fail to delete a resource shared as readable with Everybody with right-click", function () {
+      console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -132,8 +136,8 @@ describe('delete-resource', function () {
     });
 
 
-    it("should fail to delete a resource shared as readable with a user", function () {
-      console.log('delete-resource should fail to delete a resource shared as readable with a user');
+    it("should fail to delete a resource shared as readable with a user with right-click", function () {
+      console.log('delete-resource should fail to delete a resource shared as readable with a user with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
