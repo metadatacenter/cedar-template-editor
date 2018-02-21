@@ -244,7 +244,7 @@ describe('metadata-creator', function () {
   describe('create spreadsheets', function () {
 
     it("should view a template as spreadsheet", function () {
-      console.log("metadata-creator should view a template as spreadsheet');
+      console.log("metadata-creator should view a template as spreadsheet");
 
       var template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
@@ -268,8 +268,6 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
   });
-
-
 
 
   describe('remove all created resources', function () {
