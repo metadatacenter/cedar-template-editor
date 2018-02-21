@@ -685,7 +685,7 @@ define([
     // get order array minus any static fields
     service.getSpreadsheetOrder = function (node) {
       var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
+      service.schemaOf(node)._ui.order.forEach(function (key) {
         var field = service.propertiesOf(node)[key];
         if (!service.isStaticField(field)) {
           result.push(key);
@@ -695,13 +695,24 @@ define([
     };
 
     // get order array minus any static fields, attribute value fields, and nested elements
-    service.getFlatSpreadsheetOrder = function (node) {
+    service.getFlatSpreadsheetOrder = function (node, model) {
 
       var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
+      service.schemaOf(node)._ui.order.forEach(function (key) {
         var field = service.schemaOf(service.propertiesOf(node)[key]);
 
-        if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isAttributeValueType(field) && !service.isElement(field)) {
+        if (service.isAttributeValueType(field)) {
+
+          if (Array.isArray(model)) {
+            for (var i=0;i<model[0][key].length;i++) {
+              if (model[0][key][i]['@value']) {
+                result.push(model[0][key][i]['@value']);
+              }
+            }
+          } else {
+            result.push(key);
+          }
+        } else if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isElement(field)) {
           result.push(key);
         }
       });
@@ -1023,44 +1034,44 @@ define([
     service.initializeValue = function (field, model) {
 
 
-        var fieldValue = service.getValueLocation(field);
-        if (fieldValue == "@value") {
+      var fieldValue = service.getValueLocation(field);
+      if (fieldValue == "@value") {
 
-          var defaultValue = service.getDefaultValue(fieldValue, field);
+        var defaultValue = service.getDefaultValue(fieldValue, field);
 
-          // Not an array
-          if (!$rootScope.isArray(model)) {
-            if (!model) {
-              model = {};
-            }
-            // Value field has been defined
-            if (model.hasOwnProperty(fieldValue)) {
-              // If undefined value or empty string
-              if ((angular.isUndefined(
-                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
-                model[fieldValue] = defaultValue;
-              }
-            }
-            // Value field has not been defined
-            else {
+        // Not an array
+        if (!$rootScope.isArray(model)) {
+          if (!model) {
+            model = {};
+          }
+          // Value field has been defined
+          if (model.hasOwnProperty(fieldValue)) {
+            // If undefined value or empty string
+            if ((angular.isUndefined(
+                    model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
               model[fieldValue] = defaultValue;
             }
           }
-          // An array
+          // Value field has not been defined
           else {
-            // Length is 0
-            if (model.length == 0) {
-              model.push({});
-              model[0][fieldValue] = defaultValue;
-            }
-            // If length > 0
-            else {
-              for (var i = 0; i < model.length; i++) {
-                service.initializeValue(field, model[i]);
-              }
+            model[fieldValue] = defaultValue;
+          }
+        }
+        // An array
+        else {
+          // Length is 0
+          if (model.length == 0) {
+            model.push({});
+            model[0][fieldValue] = defaultValue;
+          }
+          // If length > 0
+          else {
+            for (var i = 0; i < model.length; i++) {
+              service.initializeValue(field, model[i]);
             }
           }
         }
+      }
 
     };
 

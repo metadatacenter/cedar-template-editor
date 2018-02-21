@@ -3,11 +3,11 @@
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
     <div ng-if="isListView() && valueArray[index]['@value']"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} = {{valueArray[index]['value']}}</div>
+        class="isInactive ">{{valueArray[index]['@value']}} = {{attributeValueArray[index]['@value']}}</div>
 
     <div ng-if="!isListView()  && valueArray[index]['@value']"
         aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+        class="isInactive "> {{getValueString(valueArray,attributeValueArray)}} &nbsp;</span>
     </div>
   </div>
 
@@ -35,8 +35,8 @@
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="Value"
           aria-label="{{getDescription()}}"
-          ng-model="valueArray[index]['value']"
-          ng-change="updateModelFromUI(valueArray[index]['value'], '{{valueArray[index]['value']}}'); $event.stopPropagation();">
+          ng-model="attributeValueArray[index]['@value']"
+          ng-change="updateModelFromUI(attributeValueArray[index]['@value'], '{{attributeValueArray[index]['@value']}}', false); $event.stopPropagation();">
       </input>
       <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
     </div>

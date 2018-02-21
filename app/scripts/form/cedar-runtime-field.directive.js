@@ -145,12 +145,12 @@ define([
       };
 
       // string together field values
-      $scope.getValueString = function (valueElement) {
+      $scope.getValueString = function (valueElement, attributeValueElement) {
         var result = '';
         if (dms.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              result += valueElement[i]['@value'] + (valueElement[i]['@value'] ? '=' + valueElement[i]['value'] : '') + ', ';
+              result += valueElement[i]['@value'] + (valueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
             }
           }
 
@@ -448,6 +448,8 @@ define([
         $scope.valueArray = [];
         if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
+        } else if (dms.isAttributeValueType($scope.field)) {
+          $scope.valueArray = $scope.model;
         } else if ($scope.model instanceof Array) {
           $scope.valueArray = $scope.model;
         } else {
@@ -456,6 +458,24 @@ define([
           }
           $scope.valueArray = [];
           $scope.valueArray.push($scope.model);
+        }
+      };
+
+      // an array of attribute names for attribute-value types
+      $scope.setAttributeValueArray = function () {
+
+
+        var parentModel = $scope.parentModel || $scope.$parent.model;
+        var parentInstance = $scope.parentInstance;
+        var parent = parentModel[parentInstance] || parentModel;
+
+
+        if (dms.isAttributeValueType($scope.field)) {
+          $scope.attributeValueArray = [];
+          for (var i = 0; i < $scope.valueArray.length; i++) {
+            var attributeName = $scope.valueArray[i]['@value'];
+            $scope.attributeValueArray.push({'@value':(parent.hasOwnProperty(attributeName) ? parent[attributeName]['@value'] : '')});
+          }
         }
       };
 
@@ -499,70 +519,72 @@ define([
       $scope.multiple = {};
 
       // set the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeValueName) {
+      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
+        var attributeName;
 
         if (dms.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
-
+          var parent = parentModel[parentInstance] || parentModel;
 
           if ($scope.model.length > 0) {
 
-            // multiple  attribute value pairs
-            var attributeName = $scope.model[$scope.index]['@value'] || 'attribute';
-            var attributeValue = $scope.model[$scope.index]['value'];
-            //var attributeValue = parentModel[parentInstance][attributeName]['@value'];
+            if (isAttributeName) {
 
-            if (isAttributeValueName) {
-              console.log('update attributeName', attributeName);
+              // attribute name, first make it unique in the parent
+              attributeName = $scope.getNewAttributeName(newValue, parent);
+              if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
-              // make it unique in the parent
-              attributeName = $scope.getNewAttributeName(attributeName, parentModel[parentInstance]);
-              if (!$scope.isDuplicateAttribute(attributeName, parentModel[parentInstance])) {
+                if (Array.isArray(parentModel)) {
+                  for (var i = 0; i < parentModel.length; i++) {
+
+                    // update all the instances
+                    parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeName;
+
+                    // update attribute name in the parent
+
+                    parentModel[i][attributeName] = {'@value': ''};
+                    if (oldValue && parentModel[i][oldValue]) {
+                      parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
+                      delete parentModel[i][oldValue];
+                    }
+
+                  }
+                } else {
+
+                  // update attribute name in the attribute-value field and in the parent
+                  parentModel[$scope.fieldKey][$scope.index]['@value'] = attributeName;
+                  parentModel[attributeName] = {'@value': ''};
+                  if (oldValue && parentModel[i][oldValue]) {
+                    delete parentModel[oldValue];
+                  }
+
+                  //update attribute name in attribute-value field
+                  //$scope.model[$scope.index]['@value'] = attributeName;
 
 
-                $scope.model['@value'] = attributeName;
-
-                for (var i = 0; i < parentModel.length; i++) {
-
-                  parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeName;
-                  //parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeValue;
-
-                  // update attribute name in the parent
-                  delete parentModel[i][oldValue];
-                  parentModel[i][attributeName] = {};
-                  parentModel[i][attributeName]['@value'] = parentModel[i][$scope.fieldKey][$scope.index]['value'];
-
-                  console.log('parentModel[i]', parentModel[i]);
                 }
-
               }
-
-
             } else {
-              console.log('update attributeValue', attributeValue);
 
-              for (var i = 0; i < parentModel.length; i++) {
-                parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeName;
-                parentModel[i][attributeName]['@value'] = attributeValue;
+              // attribute value, update value in parent model
+              var attributeName = $scope.valueArray[$scope.index]['@value'];
+
+              if (attributeName && parent[attributeName]) {
+                parent[attributeName]['@value'] = newValue;
+              } else {
+                attributeName = $scope.getNewAttributeName('attribute', parent);
+                if (!$scope.isDuplicateAttribute(attributeName, parent)) {
+                  parent[attributeName] = {'@value': newValue};
+                  parent[$scope.fieldKey][$scope.index]['@value'] = attributeName;
+                }
               }
             }
 
-
-
           } else {
-
-            // // single attribute value pair
-            // var attributeName = $scope.model['@name'];
-            // var attributeValue = $scope.model['@value'];
-            //
-            // for (var i = 0; i < parentModel.length; i++) {
-            //   parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeName;
-            //   parentModel[i][attributeName]['@value'] = attributeValue;
-            // }
-
+            // not handling scope.model as object
           }
 
         }
@@ -704,39 +726,56 @@ define([
 
       $scope.copyAttributeValueField = function (parentModel, parentInstance) {
 
+        var parentModel = $scope.parentModel || $scope.$parent.model;
+        var parentInstance = $scope.parentInstance;
+        var parent = parentModel[parentInstance] || parentModel;
+
 
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
+          // there is no attribute name defined, so give it a default name
           if (!$scope.valueArray[$scope.index]['@value']) {
-            $scope.updateModelFromUI('attribute', $scope.valueArray[$scope.index]['@value'], true);
+            $scope.updateModelFromUI('attribute', '', true);
           }
 
           // create a unique attribute name for the copy
-          var attributeValue = $scope.valueArray[$scope.index]['value'];
-          var oldAttributeName = $scope.valueArray[$scope.index]['@value'] || 'attribute';
-          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parentModel[parentInstance]);
-          if (!$scope.isDuplicateAttribute(newAttributeName, parentModel[parentInstance])) {
+          var attributeValue = $scope.attributeValueArray[$scope.index]['@value'];
+          var oldAttributeName = $scope.valueArray[$scope.index]['@value'];
+          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parent);
 
-            var obj = {};
-            obj['value'] = attributeValue;
-            obj['@value'] = newAttributeName;
-            //$scope.model.splice($scope.index + 1, 0, obj);
-
-            // copy selected instance in the model and insert immediately after
-            for (var i = 0; i < parentModel.length; i++) {
-
-              parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, obj);
+          if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
 
 
-              parentModel[i][$scope.fieldKey][$scope.index]['value'] = attributeValue;
+            if (Array.isArray(parentModel)) {
+              for (var i = 0; i < parentModel.length; i++) {
 
-              // build the new field at the parent level
+                // create the obj in the attribute-value field
+                var obj = {};
+                obj['@value'] = newAttributeName;
+                parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, obj);
+
+                // create the new field at the parent level
+                var valueObject = {};
+                valueObject["@value"] = attributeValue;
+                parentModel[i][newAttributeName] = valueObject;
+
+                $scope.attributeValueArray.push(valueObject);
+              }
+            } else {
+
+              // create the obj in the attribute-value field
+              var obj = {};
+              obj['@value'] = newAttributeName;
+              parentModel[$scope.fieldKey].splice($scope.index + 1, 0, obj);
+
+              // create the new field at the parent level
               var valueObject = {};
               valueObject["@value"] = attributeValue;
-              parentModel[i][newAttributeName] = valueObject;
-            }
+              parentModel[newAttributeName] = valueObject;
 
+              $scope.attributeValueArray.push(valueObject);
+            }
 
             // activate the new instance
             $timeout($scope.setActive($scope.index + 1, true), 100);
@@ -1037,6 +1076,7 @@ define([
       //
 
       $scope.setValueArray();
+      $scope.setAttributeValueArray();
 
 
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
