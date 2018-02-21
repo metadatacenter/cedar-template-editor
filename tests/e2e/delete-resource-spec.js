@@ -57,7 +57,27 @@ describe('delete-resource', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should delete a resource shared as writable with Everybody", function () {
+    it("should delete a resource shared as writable with Everybody 1", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody 1');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+    });
+
+    it("should delete a resource shared as writable with Everybody 2", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody 2');
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResource(folder, 'folder');
+    });
+
+    xit("should delete a resource shared as writable with Everybody", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
