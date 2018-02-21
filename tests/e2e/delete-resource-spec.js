@@ -35,7 +35,7 @@ describe('delete-resource', function () {
 
   describe('via more-options button and right click', function () {
 
-    it("should delete a resource shared as writable with Everybody  - passes", function () {
+    it("should delete a resource shared as writable with Everybody  - pass", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody 1');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -50,8 +50,8 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should delete a resource shared as writable with Everybody  - passes", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody 1');
+    it("should delete a resource shared as writable with Everybody", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -65,8 +65,8 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should delete a resource shared as writable with a user - passes ", function () {
-      console.log('delete-resource should delete a resource shared as writable with a user 1');
+    it("should delete a resource shared as writable with a user", function () {
+      console.log('delete-resource should delete a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
