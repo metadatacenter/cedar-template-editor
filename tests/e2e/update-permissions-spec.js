@@ -52,7 +52,7 @@ describe('update-permissions', function () {
 
     });
 
-    it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
+    xit("should fail to change permissions of a folder shared as readable with Everybody group", function () {
       console.log('update-permissions should fail to change permissions of a folder shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
