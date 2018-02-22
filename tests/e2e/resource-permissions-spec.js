@@ -87,19 +87,26 @@ describe('resource-permissions', function () {
       workspacePage.clearSearch();
     });
 
-    it("should move a resource to a writable folder", function () {
-      console.log('resource-permissions should move a writable resource to a writable folder');
+    it("should copy and move resource to a writable folder", function () {
+      console.log('resource-permissions should move resource to writable folder');
 
       // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      // shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
-      // workspacePage.clearSearch();
+      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch();
 
       // go to user 2's folder to see the shared folders
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
+
+      // copy resource to user 1 target
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToDestination(target1Writable);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
 
       // move resource to user 1's writable folder
       //workspacePage.moveResource(sourceTemplate, 'template');
@@ -132,38 +139,8 @@ describe('resource-permissions', function () {
       workspacePage.clearSearch();
     });
 
-    // TODO redundant
-    it("should fail to copy and move a resource to a readable folder", function () {
-      console.log('resource-permissions should fail to move a writable resource to a readable folder');
-
-      // share writable resource with user 2
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
-      workspacePage.clearSearch();
-
-      // user 2 should not be able to copy to a readable folder
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
-      sweetAlertModal.confirm();
-      workspacePage.clearSearch();
-
-      // user 2 should not be able to move to a readable folder
-      workspacePage.moveResource(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
-      sweetAlertModal.confirm();
-      workspacePage.clearSearch();
-
-    });
-
-
-    xit("should fail to move a resource to an readable folder", function () {
-      console.log('resource-permissions should fail to move a resource to an readable folder');
+    it("should fail to move a readable resource", function () {
+      console.log('resource-permissions should fail to move a readable resource');
 
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -175,12 +152,10 @@ describe('resource-permissions', function () {
       // fail to move readable resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
+      //moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
+      shareModal.moveDisabledCopyEnabled(sourceTemplate, 'template');
 
     });
-
-
-
 
   });
 

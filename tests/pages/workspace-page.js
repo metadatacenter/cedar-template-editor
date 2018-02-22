@@ -143,6 +143,7 @@ var WorkspacePage = function () {
   var createShareDisabled = createRightClickMenuItemList.element(by.css('li > a.share.link-disabled'));
   var createMoveDisabled = createRightClickMenuItemList.element(by.css('li > a.move.link-disabled'));
   var createDeleteDisabled = createRightClickMenuItemList.element(by.css('li > a.delete.link-disabled'));
+  var creatCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
 
 
   this.createMoreOptionsButton = function () {
@@ -262,6 +263,10 @@ var WorkspacePage = function () {
 
   this.createShareDisabled = function () {
     return createShareDisabled;
+  };
+
+  this.createCopyDisabled = function () {
+    return createCopyDisabled;
   };
 
   this.createMoveDisabled = function () {

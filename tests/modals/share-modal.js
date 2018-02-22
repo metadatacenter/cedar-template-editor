@@ -120,6 +120,15 @@ var ShareModal = function () {
   };
 
   // open the share dialog of the given resource via the right-click menu item
+  this.moveDisabledCopyEnabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var moveMenuItem = WorkspacePage.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+    var copyMenuItem = WorkspacePage.createRightClickCopyToMenuItem();
+    browser.wait(EC.visibilityOf(copyMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
   this.shareAndDeleteDisabled = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createShareDisabled();
