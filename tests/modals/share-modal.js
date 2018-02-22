@@ -186,19 +186,19 @@ var ShareModal = function () {
     var permissionsList = this.createShareModalGroupPermissions();
     browser.wait(EC.elementToBeClickable(permissionsList));
     permissionsList.click();
-    //
-    // if (canWrite) {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
-    //   this.createShareModalGroupWritePermission().click();
-    // }
-    // else if (isOwner) {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
-    //   this.createShareModalGroupOwnerPermission().click();
-    // }
-    // else {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
-    //   this.createShareModalGroupReadPermission().click();
-    // }
+
+    if (canWrite) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
+      this.createShareModalGroupWritePermission().click();
+    }
+    else if (isOwner) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
+      this.createShareModalGroupOwnerPermission().click();
+    }
+    else {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
+      this.createShareModalGroupReadPermission().click();
+    }
 
     var addButton = this.createShareModalAddGroupButton();
     browser.wait(EC.elementToBeClickable(addButton));
