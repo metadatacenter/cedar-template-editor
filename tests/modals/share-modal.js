@@ -10,10 +10,10 @@ var ShareModal = function () {
   var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
   var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
-  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
+  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7 > input'));
   var shareModalGroupName = shareWithGroupRow.element(by.css('div.col-sm-7 > input'));
-  var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
-  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
+  var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.select-picker'));
+  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.select-picker'));
   var shareModalUserPermissions = sharedModalUserPermissionsList.element(by.css('button'));
   var shareModalGroupPermissions = sharedModalGroupPermissionsList.element(by.css('button'));
   var shareModalUserReadPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));

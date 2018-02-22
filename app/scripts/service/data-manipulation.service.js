@@ -869,6 +869,8 @@ define([
       // The value of the link field is a URI, and note that @id cannot be null
       if (inputType == "attribute-value") {
         field.properties["schema:isBasedOn"] = {"@type": "@id"};
+        field.minItems = 1;
+        service.cardinalizeField(field);
       }
 
       // Set default schema title and description
