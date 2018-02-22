@@ -105,7 +105,7 @@ describe('delete-resource', function () {
     });
 
     // TODO FAILS
-    xit("should delete a resource shared as writable with Everybody  with more options", function () {
+    it("should delete a resource shared as writable with Everybody  with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -121,7 +121,7 @@ describe('delete-resource', function () {
     });
 
     // TODO FAILS
-    xit("should delete a resource shared as writable with Everybody with more options", function () {
+    it("should delete a resource shared as writable with Everybody with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -137,7 +137,7 @@ describe('delete-resource', function () {
     });
 
     // TODO FAILS
-    xit("should delete a resource shared as writable with Everybody with right-click", function () {
+    it("should delete a resource shared as writable with Everybody with right-click", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with right-click');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
