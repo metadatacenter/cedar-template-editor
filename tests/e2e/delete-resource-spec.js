@@ -65,7 +65,7 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareAndDeleteEnabled(folder, 'folder');
+      //shareModal.shareAndDeleteEnabled(folder, 'folder');
 
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
@@ -84,7 +84,7 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareAndDeleteEnabled(folder, 'folder');
+      //shareModal.shareAndDeleteEnabled(folder, 'folder');
 
       //shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
       shareModal.shareResource(folder, 'folder', testConfig.testUserName2, true, false);
