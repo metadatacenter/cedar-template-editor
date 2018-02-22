@@ -65,31 +65,15 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
 
-      // workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      // workspacePage.navigateToUserFolder(testConfig.testUserName2);
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should be able to change permissions of a writable resource", function () {
-      console.log('delete-resource should be able to change permissions of a writable resource');
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
-
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-    });
-
-    it("should be able to change permissions of a resource shared as writable with Everybody", function () {
-      console.log('delete-resource should be able to change permissions of a folder resource as writable with Everybody');
+    it("should share and delete a writable but not owned resource via group", function () {
+      console.log('delete-resource should share and delete a writable but not owned resource via group');
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var folder = workspacePage.createFolder('Writable');
@@ -100,28 +84,15 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
+
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-
-    });
-
-    it("should delete a resource shared as writable with Everybody", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody');
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
       workspacePage.deleteResource(folder, 'folder');
     });
 
-
-
-    it("should fail to share and delete a readable resource", function () {
-      console.log('delete-resource should fail to share and delete a readable resource');
+    it("should fail to share and delete a readable but not owned resource", function () {
+      console.log('delete-resource should fail to share and delete a readable but not owned resource');
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var folder = workspacePage.createFolder('Readable');
@@ -132,13 +103,17 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
+
       shareModal.shareDisabledViaRightClick(folder, 'folder');
+      workspacePage.clearSearch();
+
       shareModal.deleteDisabledViaRightClick(folder, 'folder');
+      workspacePage.clearSearch();
     });
 
-    // duplicate
-    xit("should fail to delete a resource shared as readable with Everybody with right-click", function () {
-      console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
+
+    it("should fail to share and delete a readable but not owned resource via group", function () {
+      console.log('delete-resource should fail to share and delete a readable but not owned resource via group');
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var folder = workspacePage.createFolder('Readable');
@@ -149,7 +124,12 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
+
       shareModal.shareDisabledViaRightClick(folder, 'folder');
+      workspacePage.clearSearch();
+
+      shareModal.deleteDisabledViaRightClick(folder, 'folder');
+      workspacePage.clearSearch();
     });
 
   });
