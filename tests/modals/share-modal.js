@@ -11,7 +11,7 @@ var ShareModal = function () {
   var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
   var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
-  var shareModalGroupName = shareWithGroupRow.element(by.css('#share-m0dal > div.col-sm-7 > input'));
+  var shareModalGroupName = shareWithGroupRow.element(by.css('input.group-name.share-with-group'));
   var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
   var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
   var shareModalUserPermissions = sharedModalUserPermissionsList.element(by.css('button'));
@@ -23,7 +23,7 @@ var ShareModal = function () {
   var shareModalUserOwnerPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
   var shareModalGroupOwnerPermission = sharedModalGroupPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
   var shareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
-  var shareModalAddGroupButton = shareWithGroupRow.element(by.css('div.col-sm-1.pull-right > button'));
+  var shareModalAddGroupButton = shareWithGroupRow.element(by.css('button.share-with-group'));
   var shareModalDoneButton = shareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
 
 
@@ -178,6 +178,7 @@ var ShareModal = function () {
 
   // share with a group given its name, whether group has write permissions, and whether group is owner
   this.shareWithGroup = function(groupName, canWrite, isOwner) {
+    console.log('shareWithGroup',groupName, canWrite,isOwner);
     var groupnameField = this.createShareModalGroupName();
     browser.wait(EC.visibilityOf(groupnameField));
     groupnameField.sendKeys(groupName);

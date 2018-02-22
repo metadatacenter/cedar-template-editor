@@ -88,7 +88,7 @@ describe('delete-resource', function () {
     // TODO it looks like sharing with Everybody is now failing
     //
     // TODO FAILS
-    xit("should fail to delete a resource shared as readable with Everybody with right-click", function () {
+    it("should fail to delete a resource shared as readable with Everybody with right-click", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
