@@ -44,9 +44,7 @@ describe('delete-resource', function () {
       shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       workspacePage.deleteResource(folder, 'folder');
     });
@@ -61,130 +59,10 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       workspacePage.deleteResourceViaRightClick(folder, 'folder');
-
       toastyModal.isSuccess();
     });
-
-    it("should fail to delete a resource shared as readable with a user with right-click", function () {
-      console.log('delete-resource should fail to delete a resource shared as readable with a user with right-click');
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      var folder = workspacePage.createFolder('Readable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.shareDisabledViaRightClick(folder, 'folder');
-    });
-
-
-    it("should fail to delete a resource shared as readable with Everybody with right-click", function () {
-      console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      var folder = workspacePage.createFolder('Readable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.shareDisabledViaRightClick(folder, 'folder');
-    });
-
-
-    it("should delete a resource shared as writable with Everybody  with more options", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      var folder = workspacePage.createFolder('Writable');
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.deleteResource(folder, 'folder');
-    });
-
-
-    it("should delete a resource shared as writable with Everybody with more options", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      var folder = workspacePage.createFolder('Writable');
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.deleteResource(folder, 'folder');
-    });
-
-  
-    it("should delete a resource shared as writable with Everybody with right-click", function () {
-      console.log('delete-resource should delete a resource shared as writable with Everybody with right-click');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      var folder = workspacePage.createFolder('Writable');
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.deleteResourceViaRightClick(folder, 'folder');
-
-      toastyModal.isSuccess();
-    });
-
-    it("should fail to change permissions of a folder shared as readable with current user", function () {
-      console.log('delete-resource should fail to change permissions of a folder shared as readable with current user');
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      var folder = workspacePage.createFolder('Readable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.shareDisabledViaRightClick(folder, 'folder');
-
-    });
-
-
-
-    it("should be able to change permissions of a folder shared as writable with Everybody", function () {
-      console.log('delete-resource should be able to change permissions of a folder shared as writable with Everybody');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      var folder = workspacePage.createFolder('Writable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
-
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-
-    });
-
 
     it("should be able to change permissions of a folder shared as writable with current user", function () {
       console.log('delete-resource should be able to change permissions of a folder shared as writable with current user');
@@ -202,9 +80,23 @@ describe('delete-resource', function () {
 
     });
 
+    it("should fail to delete a resource shared as readable with a user with right-click", function () {
+      console.log('delete-resource should fail to delete a resource shared as readable with a user with right-click');
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
-    it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
-      console.log('delete-resource should fail to change permissions of a folder shared as readable with Everybody group');
+      var folder = workspacePage.createFolder('Readable');
+      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+
+      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      workspacePage.navigateToUserFolder(testConfig.testUserName1);
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
+    });
+
+    it("should fail to delete a resource shared as readable with Everybody with right-click", function () {
+      console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -216,8 +108,70 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
       shareModal.shareDisabledViaRightClick(folder, 'folder');
+    });
+
+    it("should delete a resource shared as writable with Everybody  with more options", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResource(folder, 'folder');
+    });
+
+
+    it("should delete a resource shared as writable with Everybody with more options", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResource(folder, 'folder');
+    });
+
+    it("should be able to change permissions of a resource shared as writable with Everybody", function () {
+      console.log('delete-resource should be able to change permissions of a folder resource as writable with Everybody');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
 
     });
+
+    it("should delete a resource shared as writable with Everybody with right-click", function () {
+      console.log('delete-resource should delete a resource shared as writable with Everybody with right-click');
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.deleteResourceViaRightClick(folder, 'folder');
+      toastyModal.isSuccess();
+    });
+
+
+
   });
 
   describe('remove created resources', function () {
