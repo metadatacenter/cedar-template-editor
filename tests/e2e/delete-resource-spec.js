@@ -152,7 +152,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to change permissions of a folder shared as readable with current user", function () {
-      console.log('update-permissions should fail to change permissions of a folder shared as readable with current user');
+      console.log('delete-resource should fail to change permissions of a folder shared as readable with current user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -170,7 +170,7 @@ describe('delete-resource', function () {
 
 
     it("should be able to change permissions of a folder shared as writable with Everybody", function () {
-      console.log('update-permissions should be able to change permissions of a folder shared as writable with Everybody');
+      console.log('delete-resource should be able to change permissions of a folder shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -187,7 +187,7 @@ describe('delete-resource', function () {
 
 
     it("should be able to change permissions of a folder shared as writable with current user", function () {
-      console.log('update-permissions should be able to change permissions of a folder shared as writable with current user');
+      console.log('delete-resource should be able to change permissions of a folder shared as writable with current user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
@@ -204,7 +204,7 @@ describe('delete-resource', function () {
 
 
     it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
-      console.log('update-permissions should fail to change permissions of a folder shared as readable with Everybody group');
+      console.log('delete-resource should fail to change permissions of a folder shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
