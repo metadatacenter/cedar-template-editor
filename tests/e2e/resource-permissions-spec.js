@@ -97,17 +97,24 @@ describe('resource-permissions', function () {
 
       // go to user 2's folder to see the shared folders
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      copyModal.clickSharedWithMe();
+
+
+
+
 
       // copy resource to user 1 target
-      // workspacePage.copyResource(sourceTemplate, 'template');
-      // copyModal.copyToDestination(target1Writable);
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToDestination(target1Writable);
       // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      // toastyModal.isSuccess();
-      // workspacePage.clearSearch();
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
 
       // move resource to user 1's writable folder
       //workspacePage.moveResource(sourceTemplate, 'template');
+
+      copyModal.clickSharedWithMe();
       workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Writable);
       toastyModal.isSuccess();

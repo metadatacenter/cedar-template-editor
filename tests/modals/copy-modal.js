@@ -10,6 +10,7 @@ var CopyModal = function () {
   var copyToModalHeader = element(by.id('copyModalHeader'));
   var backToParentButton = copyToModalHeader.element(by.css('.back-to-parent'));
   var openFolderArrowButton = copyToBody.element(by.css('div.box-row.row.ng-scope.selected > div.arrow-click'));
+  var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
 
   this.copyToDestination = function(title) {
@@ -48,6 +49,11 @@ var CopyModal = function () {
     browser.wait(EC.elementToBeClickable(copyButton));
     copyButton.click();
   };
+
+  this.clickSharedWithMe = function() {
+    browser.wait(EC.elementToBeClickable(sharedWithMe));
+    sharedWithMe.click();
+  }
 
 
 };
