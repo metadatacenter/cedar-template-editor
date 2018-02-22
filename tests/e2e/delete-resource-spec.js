@@ -35,7 +35,7 @@ describe('delete-resource', function () {
 
   describe('via more-options button and right click', function () {
 
-    xit("should delete a resource shared as writable with a user  with more options", function () {
+    it("should delete a resource shared as writable with a user  with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with a user  with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -51,7 +51,7 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    xit("should delete a resource shared as writable with a user with right-click", function () {
+    it("should delete a resource shared as writable with a user with right-click", function () {
       console.log('delete-resource should delete a resource shared as writable with a user with right-click');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -68,7 +68,7 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    xit("should fail to delete a resource shared as readable with a user with right-click", function () {
+    it("should fail to delete a resource shared as readable with a user with right-click", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with a user with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -84,10 +84,7 @@ describe('delete-resource', function () {
       shareModal.shareDisabledViaRightClick(folder, 'folder');
     });
 
-    //
-    // TODO it looks like sharing with Everybody is now failing
-    //
-    // TODO FAILS
+
     it("should fail to delete a resource shared as readable with Everybody with right-click", function () {
       console.log('delete-resource should fail to delete a resource shared as readable with Everybody with right-click');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -104,7 +101,7 @@ describe('delete-resource', function () {
       shareModal.shareDisabledViaRightClick(folder, 'folder');
     });
 
-    // TODO FAILS
+
     it("should delete a resource shared as writable with Everybody  with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -120,7 +117,7 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    // TODO FAILS
+
     it("should delete a resource shared as writable with Everybody with more options", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with more options');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -136,7 +133,7 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    // TODO FAILS
+  
     it("should delete a resource shared as writable with Everybody with right-click", function () {
       console.log('delete-resource should delete a resource shared as writable with Everybody with right-click');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
