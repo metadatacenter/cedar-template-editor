@@ -183,9 +183,9 @@ var ShareModal = function () {
     groupnameField.sendKeys(groupName);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    // var permissionsList = this.createShareModalGroupPermissions();
-    // browser.wait(EC.elementToBeClickable(permissionsList));
-    // permissionsList.click();
+    var permissionsList = this.createShareModalGroupPermissions();
+    browser.wait(EC.elementToBeClickable(permissionsList));
+    permissionsList.click();
     //
     // if (canWrite) {
     //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
