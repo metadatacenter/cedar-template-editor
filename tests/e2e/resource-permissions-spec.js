@@ -56,9 +56,10 @@ describe('resource-permissions', function () {
 
     it("should move a resource owned by current user to a writable folder", function () {
       console.log('resource-permissions should move a resource owned by current user to a writable folder');
+
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
-      // create template and target folder
+      // create template
       var sourceTemplate = workspacePage.createTemplate('Source');
 
       // copy source to target folder
@@ -78,8 +79,8 @@ describe('resource-permissions', function () {
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should move a resource owned by current user to an unwritable folder", function () {
-      console.log('resource-permissions should move a resource owned by current user to an unwritable folder');
+    it("should fail to move a resource owned by current user to an unwritable folder", function () {
+      console.log('resource-permissions should fail to move a resource owned by current user to an unwritable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // share folder with user 2, read only
@@ -91,55 +92,59 @@ describe('resource-permissions', function () {
 
       // create a template to move to the shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
 
-      // copy created template to user 1's shared folder
+      // cannot copy created template to user 1's shared folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      // move created template to user 1's shared folder
+      // cannot move created template to user 1's shared folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
 
 
-    // TODO failing?
-    it("should move a writable resource not owned by current user to an unwritable folder", function () {
-      console.log('resource-permissions should move a writable resource not owned by current user to an unwritable folder');
+
+    it("should fail to move a writable resource to a readable folder", function () {
+      console.log('resource-permissions should fail to move a writable resource to a readable folder');
+
+      // create resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // create source template and target shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
+      // make resource writable for user 2
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
       workspacePage.clearSearch();
+
+      // make the folder readable for user 2
       shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
       workspacePage.clearSearch();
 
+      // user 2 should not be able to copy to a readable folder
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
+      // user 2 should not be able to move to a readable folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
 
