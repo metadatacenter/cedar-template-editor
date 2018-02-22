@@ -113,6 +113,12 @@ var ShareModal = function () {
     shareMenuItem.click();
   };
 
+  this.deleteDisabledViaRightClick = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
+  };
+
   // open the share dialog of the given resource via the right-click menu item
   this.shareDisabledViaRightClick = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
