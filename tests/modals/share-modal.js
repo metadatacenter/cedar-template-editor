@@ -8,12 +8,12 @@ var ShareModal = function () {
   var shareModal = element(by.id('share-modal'));
   var shareModalBody = shareModal.element(by.css('div > div > div.modal-body '));
   var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
-  var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
+  //var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
-  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
-  var shareModalGroupName = shareWithGroupRow.element(by.css('input.group-name.share-with-group'));
+  var shareModalUserName = shareModal.element(by.model('share.typeaheadUser'));
+  var shareModalGroupName = shareModal.element(by.model('share.typeaheadGroup'));
   var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
-  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.select-picker.group-permission'));
+  var sharedModalGroupPermissionsList = shareModal.element(by.model('share.giveGroupPermission'));
   var shareModalUserPermissions = sharedModalUserPermissionsList.element(by.css('button'));
   var shareModalGroupPermissions = sharedModalGroupPermissionsList.element(by.css('button'));
   var shareModalUserReadPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));
@@ -23,7 +23,7 @@ var ShareModal = function () {
   var shareModalUserOwnerPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
   var shareModalGroupOwnerPermission = sharedModalGroupPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
   var shareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
-  var shareModalAddGroupButton = shareWithGroupRow.element(by.css('button.share-with-group'));
+  var shareModalAddGroupButton = shareModal.element(by.model('share.resourcePermissions'));
   var shareModalDoneButton = shareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
 
 
@@ -184,22 +184,22 @@ var ShareModal = function () {
     groupnameField.sendKeys(groupName);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    // var permissionsList = this.createShareModalGroupPermissions();
-    // browser.wait(EC.elementToBeClickable(permissionsList));
-    // permissionsList.click();
-    //
-    // if (canWrite) {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
-    //   this.createShareModalGroupWritePermission().click();
-    // }
-    // else if (isOwner) {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
-    //   this.createShareModalGroupOwnerPermission().click();
-    // }
-    // else {
-    //   browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
-    //   this.createShareModalGroupReadPermission().click();
-    // }
+    var permissionsList = this.createShareModalGroupPermissions();
+    browser.wait(EC.elementToBeClickable(permissionsList));
+    permissionsList.click();
+
+    if (canWrite) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
+      this.createShareModalGroupWritePermission().click();
+    }
+    else if (isOwner) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
+      this.createShareModalGroupOwnerPermission().click();
+    }
+    else {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
+      this.createShareModalGroupReadPermission().click();
+    }
 
     var addButton = this.createShareModalAddGroupButton();
     browser.wait(EC.elementToBeClickable(addButton));
