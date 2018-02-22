@@ -105,7 +105,7 @@ describe('delete-resource', function () {
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should fail to share and delete a readable resource", function () {
+    it("should fail to move, share, and delete a readable resource", function () {
       console.log('delete-resource should fail to share and delete a readable resource');
 
       // create a resource for user 1
@@ -120,10 +120,10 @@ describe('delete-resource', function () {
       // user 2 should not be able to share or delete
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.shareAndDeleteDisabled(folder, 'folder');
+      shareModal.moveShareDeleteDisabled(folder, 'folder');
     });
 
-    it("should fail to share and delete a readable resource via group", function () {
+    it("should fail to moe, share, and delete a readable resource via group", function () {
       console.log('delete-resource should fail to share and delete a readable resource via group');
 
       // create a resource for user 1
@@ -138,7 +138,7 @@ describe('delete-resource', function () {
       // user 2 should not be able to share or delete
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.shareAndDeleteDisabled(folder, 'folder');
+      shareModal.moveShareDeleteDisabled(folder, 'folder');
     });
 
   });

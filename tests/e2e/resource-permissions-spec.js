@@ -48,11 +48,13 @@ describe('resource-permissions', function () {
 
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     target1Folder = workspacePage.createFolder('Target');
+    resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
     workspacePage.clearSearch();
 
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
     target2Folder = workspacePage.createFolder('Target');
+    resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
     workspacePage.clearSearch();
   });

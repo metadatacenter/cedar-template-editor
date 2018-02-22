@@ -129,6 +129,17 @@ var ShareModal = function () {
   };
 
   // open the share dialog of the given resource via the right-click menu item
+  this.moveShareDeleteDisabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var shareMenuItem = WorkspacePage.createShareDisabled();
+    browser.wait(EC.visibilityOf(shareMenuItem));
+    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
+    var moveMenuItem = WorkspacePage.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
   this.shareAndDeleteEnabled = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
