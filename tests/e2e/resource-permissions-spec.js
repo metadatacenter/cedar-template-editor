@@ -37,15 +37,13 @@ describe('resource-permissions', function () {
   afterEach(function () {
   });
 
-  // reset user selections to defaults
   it('should be on the workspace', function () {
     console.log('resource-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
-  // reset user selections to defaults
   it('should create target folders', function () {
-    console.log('resource-permissions should create target folders readable by other user');
+    console.log('resource-permissions should create target folders');
 
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     target1Folder = workspacePage.createFolder('Target');
@@ -65,8 +63,8 @@ describe('resource-permissions', function () {
 
   describe('copy and move tests', function () {
 
-    it("should copy and move owned resource to owned folder", function () {
-      console.log('resource-permissions should copy and move owned resource to owned folder');
+    it("should copy and move resource to folder", function () {
+      console.log('resource-permissions should copy and move resource to folder');
 
       // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -102,11 +100,11 @@ describe('resource-permissions', function () {
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
       // copy resource to user 1 target
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Writable);
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
+      // workspacePage.copyResource(sourceTemplate, 'template');
+      // copyModal.copyToDestination(target1Writable);
+      // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      // toastyModal.isSuccess();
+      // workspacePage.clearSearch();
 
       // move resource to user 1's writable folder
       //workspacePage.moveResource(sourceTemplate, 'template');
