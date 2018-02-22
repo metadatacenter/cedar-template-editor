@@ -96,12 +96,12 @@ describe('delete-resource', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
 
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-      // workspacePage.clearSearch();
-      //
-      // workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      //
-      // workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      // shareModal.shareDisabledViaRightClick(folder, 'folder');
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName1);
+      shareModal.shareDisabledViaRightClick(folder, 'folder');
     });
 
     // TODO FAILS
