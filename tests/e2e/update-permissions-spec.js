@@ -5,7 +5,7 @@ var testConfig = require('../config/test-env.js');
 var ShareModal = require('../modals/share-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-describe('update-permissions', function () {
+xdescribe('update-permissions', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -33,6 +33,7 @@ describe('update-permissions', function () {
     workspacePage.onWorkspace();
   });
 
+  // TODO remove this...redundant with delete-resource.js
   describe('with permissions', function () {
 
 
@@ -53,12 +54,8 @@ describe('update-permissions', function () {
     });
 
 
-    //
-    // TODO it looks like sharing with Everybody is now failing
-    //
 
-    // TODO FAILS
-    xit("should be able to change permissions of a folder shared as writable with Everybody", function () {
+    it("should be able to change permissions of a folder shared as writable with Everybody", function () {
       console.log('update-permissions should be able to change permissions of a folder shared as writable with Everybody');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -74,8 +71,8 @@ describe('update-permissions', function () {
 
     });
 
-    // TODO FAILS
-    xit("should be able to change permissions of a folder shared as writable with current user", function () {
+
+    it("should be able to change permissions of a folder shared as writable with current user", function () {
       console.log('update-permissions should be able to change permissions of a folder shared as writable with current user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -91,8 +88,8 @@ describe('update-permissions', function () {
 
     });
 
-    // TODO FAILS
-    xit("should fail to change permissions of a folder shared as readable with Everybody group", function () {
+
+    it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
       console.log('update-permissions should fail to change permissions of a folder shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 

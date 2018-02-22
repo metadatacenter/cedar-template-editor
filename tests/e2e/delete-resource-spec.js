@@ -58,8 +58,8 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    it("should share and delete a writable but not owned resource via user", function () {
-      console.log('delete-resource should share and delete a writable but not owned resource via user');
+    it("should share and delete a writable resource via user", function () {
+      console.log('delete-resource should share and delete a writable resource via user');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -75,16 +75,14 @@ describe('delete-resource', function () {
       shareModal.shareAndDeleteEnabled(folder, 'folder');
       workspacePage.clearSearch();
 
-      // user 1 updates sharing
+      // user 1 updates sharing and deletes
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
-
-      // user 1 deletes
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should share and delete a writable but not owned resource via group", function () {
-      console.log('delete-resource should share and delete a writable but not owned resource via group');
+    it("should share and delete a writable resource via group", function () {
+      console.log('delete-resource should share and delete a writable resource via group');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -100,17 +98,15 @@ describe('delete-resource', function () {
       shareModal.shareAndDeleteEnabled(folder, 'folder');
       workspacePage.clearSearch();
 
-      // user 1 updates sharing
+      // user 1 updates sharing and deletes
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       shareModal.shareResource(folder, 'folder', testConfig.testUserName2, true, false);
       workspacePage.clearSearch();
-
-      // user 1 deletes
       workspacePage.deleteResource(folder, 'folder');
     });
 
-    it("should fail to share and delete a readable but not owned resource", function () {
-      console.log('delete-resource should fail to share and delete a readable but not owned resource');
+    it("should fail to share and delete a readable resource", function () {
+      console.log('delete-resource should fail to share and delete a readable resource');
 
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -127,9 +123,8 @@ describe('delete-resource', function () {
       shareModal.shareAndDeleteDisabled(folder, 'folder');
     });
 
-
-    it("should fail to share and delete a readable but not owned resource via group", function () {
-      console.log('delete-resource should fail to share and delete a readable but not owned resource via group');
+    it("should fail to share and delete a readable resource via group", function () {
+      console.log('delete-resource should fail to share and delete a readable resource via group');
 
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
