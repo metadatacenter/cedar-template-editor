@@ -54,8 +54,8 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
     });
 
-    it("should share and delete a resource writable but not owned", function () {
-      console.log('delete-resource should share and delete a resource writable but not owned');
+    it("should share and delete a writable but not owned resource via user", function () {
+      console.log('delete-resource should share and delete a writable but not owned resource via user');
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var folder = workspacePage.createFolder('Writable');
@@ -77,7 +77,6 @@ describe('delete-resource', function () {
 
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var folder = workspacePage.createFolder('Writable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
 
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
@@ -85,7 +84,8 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
+      //shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
+      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, true, false);
       workspacePage.clearSearch();
 
       workspacePage.deleteResource(folder, 'folder');
@@ -104,11 +104,7 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
 
-      shareModal.shareDisabledViaRightClick(folder, 'folder');
-      workspacePage.clearSearch();
-
-      shareModal.deleteDisabledViaRightClick(folder, 'folder');
-      workspacePage.clearSearch();
+      shareModal.shareAndDeleteDisabled(folder, 'folder');
     });
 
 
@@ -125,11 +121,7 @@ describe('delete-resource', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
 
-      shareModal.shareDisabledViaRightClick(folder, 'folder');
-      workspacePage.clearSearch();
-
-      shareModal.deleteDisabledViaRightClick(folder, 'folder');
-      workspacePage.clearSearch();
+      shareModal.shareAndDeleteDisabled(folder, 'folder');
     });
 
   });
