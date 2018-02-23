@@ -8,7 +8,7 @@ var CopyModal = require('../modals/copy-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-describe('resource-permissions', function () {
+describe('copy and move', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -107,7 +107,7 @@ describe('resource-permissions', function () {
       // move resource to user 1 writable target
       workspacePage.clickSharedWithMe();
       workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Writable);
+      moveModal.moveToUserFolder(testConfig.testUserName1, target1Writable);
       toastyModal.isSuccess();
 
     });
