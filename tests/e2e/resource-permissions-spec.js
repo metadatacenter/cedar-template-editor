@@ -93,26 +93,28 @@ describe('copy and move', function () {
       var sourceTemplate = workspacePage.createTemplate('Source');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
+      //workspacePage.clearSearch();
+
 
       // copy resource to user 1 writable target
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      // workspacePage.clickSharedWithMe();
-      // workspacePage.copyResource(sourceTemplate, 'template');
-      // copyModal.copyToDestination(target1Writable);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+
+      workspacePage.copyResourceViaRightClick(sourceTemplate, 'template');
+      copyModal.copyToDestination(target1Writable);
       // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      // toastyModal.isSuccess();
-      // workspacePage.clearSearch();
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
 
       // move resource to writable target
-      // workspacePage.clickSharedWithMe();
+      //workspacePage.clickSharedWithMe();
       // workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
       // moveModal.moveToDestination(target1Writable);
       // toastyModal.isSuccess();
 
     });
 
-    it("should fail to copy and move a resource to an readable folder", function () {
+    xit("should fail to copy and move a resource to an readable folder", function () {
       console.log('resource-permissions should fail to copy and move a resource to an readable folder');
 
       // create a user 2 resource
@@ -135,7 +137,7 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should fail to move a readable resource", function () {
+    xit("should fail to move a readable resource", function () {
       console.log('resource-permissions should fail to move a readable resource');
 
       // share readable resource with user 1
