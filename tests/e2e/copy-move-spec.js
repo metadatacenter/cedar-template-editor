@@ -8,7 +8,7 @@ var CopyModal = require('../modals/copy-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-describe('delete-resource', function () {
+describe('copy and move', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -43,7 +43,7 @@ describe('delete-resource', function () {
     workspacePage.onWorkspace();
   });
 
-  xdescribe('copy and move', function () {
+  describe('copy and move', function () {
 
     it('should create target folders', function () {
       console.log('copy and move should create target folders');
@@ -161,7 +161,7 @@ describe('delete-resource', function () {
     });
   });
 
-  describe('share and delete', function () {
+  xdescribe('share and delete', function () {
 
     it("should delete a resource with more options", function () {
       console.log('share and delete should delete a resource with more options');
