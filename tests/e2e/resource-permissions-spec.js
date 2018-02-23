@@ -103,7 +103,7 @@ describe('copy and move', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      // TODO fail to move to readable resource
+      // fail to move to readable resource
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
       shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
 
@@ -143,7 +143,6 @@ describe('copy and move', function () {
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-
       // copy resource to user 1 writable target
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.copyResource(sourceTemplate, 'template');
@@ -153,9 +152,6 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
 
     });
-
-
-
   });
 
   xdescribe('copy tests', function () {
