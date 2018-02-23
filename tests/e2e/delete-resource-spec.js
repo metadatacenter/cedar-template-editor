@@ -164,7 +164,7 @@ describe('delete-resource', function () {
   describe('share and delete', function () {
 
     it("should delete a resource with more options", function () {
-      console.log('delete-resource should delete a resource with more options');
+      console.log('share and delete should delete a resource with more options');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -175,7 +175,7 @@ describe('delete-resource', function () {
     });
 
     it("should delete a resource  with right click", function () {
-      console.log('delete-resource should delete a resource with right click');
+      console.log('share and delete should delete a resource with right click');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -187,7 +187,7 @@ describe('delete-resource', function () {
     });
 
     it("should share and delete a writable resource via user", function () {
-      console.log('delete-resource should share and delete a writable resource via user');
+      console.log('share and delete should share and delete a writable resource via user');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -210,7 +210,7 @@ describe('delete-resource', function () {
     });
 
     it("should share and delete a writable resource via group", function () {
-      console.log('delete-resource should share and delete a writable resource via group');
+      console.log('share and delete should share and delete a writable resource via group');
 
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -234,7 +234,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to move, share, and delete a readable resource", function () {
-      console.log('delete-resource should fail to share and delete a readable resource');
+      console.log('share and delete should fail to share and delete a readable resource');
 
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -252,7 +252,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to moe, share, and delete a readable resource via group", function () {
-      console.log('delete-resource should fail to share and delete a readable resource via group');
+      console.log('share and delete should fail to share and delete a readable resource via group');
 
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -274,10 +274,10 @@ describe('delete-resource', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('delete-resource should delete ' + resources.length + ' resources from the user workspace');
+      console.log('copy and move, share and delete should delete ' + resources.length + ' resources from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          console.log("delete-resource should delete " + resource.title + " for user " + resource.username);
+          console.log("copy and move, share and delete should delete " + resource.title + " for user " + resource.username);
           workspacePage.login(resource.username, resource.password);
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
