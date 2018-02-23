@@ -105,10 +105,10 @@ describe('copy and move', function () {
       // workspacePage.clearSearch();
 
       // move resource to writable target
-      workspacePage.clickSharedWithMe();
-      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Writable);
-      toastyModal.isSuccess();
+      // workspacePage.clickSharedWithMe();
+      // workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
+      // moveModal.moveToDestination(target1Writable);
+      // toastyModal.isSuccess();
 
     });
 
