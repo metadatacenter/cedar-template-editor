@@ -104,8 +104,8 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
 
       // fail to move to readable resource
-      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      //shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
 
     });
 
