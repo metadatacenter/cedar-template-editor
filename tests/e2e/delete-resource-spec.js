@@ -9,7 +9,9 @@ describe('delete-resource', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
+  var moveModal = MoveModal;
   var shareModal = ShareModal;
+  var copyModal = CopyModal;
   var target1Folder;
   var target2Folder;
   var target1Writable;
