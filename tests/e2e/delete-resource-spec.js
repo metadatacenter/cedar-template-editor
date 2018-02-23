@@ -60,7 +60,7 @@ describe('delete-resource', function () {
     workspacePage.clearSearch();
   });
 
-  describe('copy and move tests', function () {
+  xdescribe('copy and move tests', function () {
 
     it("should copy and move resource to folder", function () {
       console.log('resource-permissions should copy and move resource to folder');
@@ -153,7 +153,14 @@ describe('delete-resource', function () {
     });
   });
 
-  describe('sharing and deleting', function () {
+  it("should mark targets as deletable", function () {
+    console.log('resource-permissions should mark targets as deletable');
+    resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+  });
+
+  xdescribe('sharing and deleting', function () {
 
     it("should delete a resource with more options", function () {
       console.log('delete-resource should delete a resource with more options');
