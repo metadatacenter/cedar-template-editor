@@ -99,7 +99,7 @@ describe('resource-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.clickSharedWithMe();
       workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Writable);
+      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
       toastyModal.isSuccess();
       workspacePage.clearSearch();
@@ -147,9 +147,15 @@ describe('resource-permissions', function () {
 
       // fail to move readable resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      //moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
+      workspacePage.clickSharedWithMe();
       shareModal.moveDisabledCopyEnabled(sourceTemplate, 'template');
+
+      // succeed to copy to writable folder
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
 
     });
 
