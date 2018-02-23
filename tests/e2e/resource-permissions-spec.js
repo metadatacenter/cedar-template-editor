@@ -52,7 +52,7 @@ describe('copy and move', function () {
 
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     target1Writable = workspacePage.createFolder('Target');
-    shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, true, false);
+    shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
     workspacePage.clearSearch();
 
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
