@@ -120,15 +120,13 @@ describe('copy and move', function () {
 
       // fail to move readable resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.clickSharedWithMe();
-      // shareModal.moveDisabledCopyEnabled(sourceTemplate, 'template');
-      //
-      // // succeed to copy to writable folder
-      // workspacePage.copyResource(sourceTemplate, 'template');
-      // copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
-      // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      // toastyModal.isSuccess();
-      // workspacePage.clearSearch();
+      
+      // succeed to copy to writable folder
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
 
     });
 
