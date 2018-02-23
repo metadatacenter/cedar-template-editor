@@ -105,8 +105,8 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
 
       // TODO fail to move to readable resource
-      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      //shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.moveDisabled(sourceTemplate, 'template');
 
     });
 
@@ -161,7 +161,7 @@ describe('delete-resource', function () {
     });
   });
 
-  describe('sharing and deleting', function () {
+  describe('share and delete', function () {
 
     it("should delete a resource with more options", function () {
       console.log('delete-resource should delete a resource with more options');

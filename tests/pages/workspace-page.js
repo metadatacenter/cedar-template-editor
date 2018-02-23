@@ -360,6 +360,12 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createControlsBar));
   };
 
+  this.moveDisabled = function (name, type) {
+    this.rightClickResource(name, type);
+    var moveMenuItem = this.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+  };
+
   this.clickSharedWithMe = function() {
     browser.wait(EC.elementToBeClickable(sharedWithMe));
     sharedWithMe.click();
