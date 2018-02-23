@@ -107,9 +107,9 @@ describe('copy and move', function () {
 
       // move resource to writable target
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      // workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      // moveModal.moveToDestination(target1Writable);
-      // toastyModal.isSuccess();
+      workspacePage.moveResource(sourceTemplate, 'template');
+      workspacePage.moveResource(sourceTemplate, 'template');
+      workspacePage.moveResource(sourceTemplate, 'template');
 
     });
 
