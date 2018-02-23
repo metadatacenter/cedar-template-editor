@@ -43,26 +43,26 @@ describe('delete-resource', function () {
     workspacePage.onWorkspace();
   });
 
-  it('should create target folders', function () {
-    console.log('resource-permissions should create target folders');
-
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    target1Folder = workspacePage.createFolder('Target');
-    shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
-    workspacePage.clearSearch();
-
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    target1Writable = workspacePage.createFolder('Target');
-    shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
-    workspacePage.clearSearch();
-
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    target2Folder = workspacePage.createFolder('Target');
-    shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
-    workspacePage.clearSearch();
-  });
-
   describe('copy and move tests', function () {
+
+    it('should create target folders', function () {
+      console.log('resource-permissions should create target folders');
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      target1Folder = workspacePage.createFolder('Target');
+      shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      target1Writable = workspacePage.createFolder('Target');
+      shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      target2Folder = workspacePage.createFolder('Target');
+      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
+      workspacePage.clearSearch();
+    });
 
     it("should copy and move resource to folder", function () {
       console.log('resource-permissions should copy and move resource to folder');
@@ -105,8 +105,8 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
 
       // fail to move to readable resource
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
+      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      //shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
 
     });
 
@@ -133,7 +133,6 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
     });
 
-
     it("should move resource to a writable folder", function () {
       console.log('resource-permissions should move resource to writable folder');
 
@@ -153,15 +152,15 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
 
     });
-  });
 
-  it("should mark targets as deletable", function () {
-    console.log('resource-permissions should mark targets as deletable');
-    resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-    resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
-    resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    it("should mark targets as deletable", function () {
+      console.log('resource-permissions should mark targets as deletable');
+      resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    });
   });
-
+  
   xdescribe('sharing and deleting', function () {
 
     it("should delete a resource with more options", function () {
