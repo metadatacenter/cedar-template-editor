@@ -105,8 +105,8 @@ describe('delete-resource', function () {
       workspacePage.clearSearch();
 
       // TODO fail to move to readable resource
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.moveDisabled(sourceTemplate, 'template');
+      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      //workspacePage.moveDisabled(sourceTemplate, 'template');
 
     });
 
