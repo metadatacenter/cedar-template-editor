@@ -144,6 +144,7 @@ var WorkspacePage = function () {
   var createMoveDisabled = createRightClickMenuItemList.element(by.css('li > a.move.link-disabled'));
   var createDeleteDisabled = createRightClickMenuItemList.element(by.css('li > a.delete.link-disabled'));
   var creatCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
+  var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
 
   this.createMoreOptionsButton = function () {
@@ -357,6 +358,11 @@ var WorkspacePage = function () {
   // do we have the controls bar
   this.hasControlBar = function () {
     browser.wait(EC.presenceOf(createControlsBar));
+  };
+
+  this.clickSharedWithMe = function() {
+    browser.wait(EC.elementToBeClickable(sharedWithMe));
+    sharedWithMe.click();
   };
 
   this.hasLogo = function () {

@@ -95,26 +95,17 @@ describe('resource-permissions', function () {
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      // go to user 2's folder to see the shared folders
+      // copy resource to user 1 writable target
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      copyModal.clickSharedWithMe();
-
-
-
-
-
-      // copy resource to user 1 target
+      workspacePage.clickSharedWithMe();
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(target1Writable);
-      // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      // move resource to user 1's writable folder
-      //workspacePage.moveResource(sourceTemplate, 'template');
-
-      copyModal.clickSharedWithMe();
+      // move resource to user 1 writable target
+      workspacePage.clickSharedWithMe();
       workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Writable);
       toastyModal.isSuccess();
@@ -122,7 +113,7 @@ describe('resource-permissions', function () {
     });
 
     it("should fail to copy and move a resource to an readable folder", function () {
-      console.log('resource-permissions should fail to move a resource owned by current user to an unwritable folder');
+      console.log('resource-permissions should fail to copy and move a resource to an readable folder');
 
       // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
