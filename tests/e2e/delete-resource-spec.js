@@ -274,7 +274,7 @@ describe('delete-resource', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('copy and move, share and delete should delete ' + resources.length + ' resources from the user workspace');
+      console.log('share and delete should delete ' + resources.length + ' resources from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           console.log("copy and move, share and delete should delete " + resource.title + " for user " + resource.username);
