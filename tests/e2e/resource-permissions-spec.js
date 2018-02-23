@@ -63,7 +63,7 @@ describe('copy and move', function () {
 
   describe('copy and move tests', function () {
 
-    it("should copy and move resource to folder", function () {
+    xit("should copy and move resource to folder", function () {
       console.log('resource-permissions should copy and move resource to folder');
 
       // create a user 1 resource
@@ -98,7 +98,6 @@ describe('copy and move', function () {
 
       // copy resource to user 1 writable target
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
       // workspacePage.copyResourceViaRightClick(sourceTemplate, 'template');
       // copyModal.copyToDestination(target1Writable);
@@ -107,11 +106,10 @@ describe('copy and move', function () {
       // workspacePage.clearSearch();
 
       // move resource to writable target
-      //workspacePage.clickSharedWithMe();
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Writable);
-      toastyModal.isSuccess();
+      // workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
+      // moveModal.moveToDestination(target1Writable);
+      // toastyModal.isSuccess();
 
     });
 
