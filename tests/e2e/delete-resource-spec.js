@@ -43,10 +43,10 @@ describe('delete-resource', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('copy and move tests', function () {
+  describe('copy and move', function () {
 
     it('should create target folders', function () {
-      console.log('resource-permissions should create target folders');
+      console.log('copy and move should create target folders');
 
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       target1Folder = workspacePage.createFolder('Target');
@@ -65,7 +65,7 @@ describe('delete-resource', function () {
     });
 
     it("should copy and move resource to folder", function () {
-      console.log('resource-permissions should copy and move resource to folder');
+      console.log('copy and move should copy and move resource to folder');
 
       // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -87,7 +87,7 @@ describe('delete-resource', function () {
     });
 
     it("should fail to move and succeed to copy a readable resource", function () {
-      console.log('resource-permissions should fail to move and succeed to copy a readable resource');
+      console.log('copy and move should fail to move and succeed to copy a readable resource');
 
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -104,14 +104,14 @@ describe('delete-resource', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      // fail to move to readable resource
+      // TODO fail to move to readable resource
       //workspacePage.navigateToUserFolder(testConfig.testUserName2);
       //shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
 
     });
 
     it("should fail to copy and move to a readable folder", function () {
-      console.log('resource-permissions should fail to copy and move to a readable folder');
+      console.log('copy and move should fail to copy and move to a readable folder');
 
       // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -134,7 +134,7 @@ describe('delete-resource', function () {
     });
 
     it("should move resource to a writable folder", function () {
-      console.log('resource-permissions should move resource to writable folder');
+      console.log('copy and move should move resource to writable folder');
 
       // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -154,14 +154,14 @@ describe('delete-resource', function () {
     });
 
     it("should mark targets as deletable", function () {
-      console.log('resource-permissions should mark targets as deletable');
+      console.log('copy and move should mark targets as deletable');
       resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
       resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
       resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
   });
-  
-  xdescribe('sharing and deleting', function () {
+
+  describe('sharing and deleting', function () {
 
     it("should delete a resource with more options", function () {
       console.log('delete-resource should delete a resource with more options');
