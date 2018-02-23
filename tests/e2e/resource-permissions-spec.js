@@ -93,7 +93,7 @@ describe('copy and move', function () {
       var sourceTemplate = workspacePage.createTemplate('Source');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
-      //workspacePage.clearSearch();
+      workspacePage.clearSearch();
 
 
       // copy resource to user 1 writable target
