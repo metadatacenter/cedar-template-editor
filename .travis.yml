@@ -35,12 +35,8 @@ jobs:
     script: gulp karma-tests  # karma stage
   - script: gulp test-metadata # e2e stage
   - script: gulp test-template # e2e stage
-#  - script: gulp test-folder-permissions # e2e stage
-#  - script: gulp test-resource-permissions # e2e stage
   - script: gulp test-share-delete # e2e stage
   - script: gulp test-copy-move # e2e stage
-#  - script: gulp test-update-permissions # e2e stage
-
 
 env:
   global:
