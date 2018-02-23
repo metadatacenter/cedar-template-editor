@@ -5,6 +5,7 @@ var testConfig = require('../config/test-env.js');
 var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var CopyModal = require('../modals/copy-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 describe('delete-resource', function () {
@@ -14,6 +15,7 @@ describe('delete-resource', function () {
   var moveModal = MoveModal;
   var shareModal = ShareModal;
   var copyModal = CopyModal;
+  var sweetAlertModal = SweetAlertModal;
   var target1Folder;
   var target2Folder;
   var target1Writable;
@@ -60,7 +62,7 @@ describe('delete-resource', function () {
     workspacePage.clearSearch();
   });
 
-  xdescribe('copy and move tests', function () {
+  describe('copy and move tests', function () {
 
     it("should copy and move resource to folder", function () {
       console.log('resource-permissions should copy and move resource to folder');
