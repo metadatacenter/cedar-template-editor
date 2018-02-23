@@ -111,6 +111,7 @@ describe('copy and move', function () {
       moveModal.moveToDestination(target1Writable);
       toastyModal.isSuccess();
       workspacePage.clearSearch();
+      
 
     });
 
