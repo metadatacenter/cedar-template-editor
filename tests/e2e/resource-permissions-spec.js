@@ -85,7 +85,7 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should fail to copy and move a resource to an readable folder", function () {
+    xit("should fail to copy and move a resource to an readable folder", function () {
       console.log('resource-permissions should fail to copy and move a resource to an readable folder');
 
       // create a user 2 resource
@@ -121,14 +121,14 @@ describe('copy and move', function () {
       // fail to move readable resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.clickSharedWithMe();
-      shareModal.moveDisabledCopyEnabled(sourceTemplate, 'template');
-
-      // succeed to copy to writable folder
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
+      // shareModal.moveDisabledCopyEnabled(sourceTemplate, 'template');
+      //
+      // // succeed to copy to writable folder
+      // workspacePage.copyResource(sourceTemplate, 'template');
+      // copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      // resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      // toastyModal.isSuccess();
+      // workspacePage.clearSearch();
 
     });
 
@@ -153,9 +153,9 @@ describe('copy and move', function () {
       // workspacePage.clearSearch();
 
       // move resource to writable target
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      workspacePage.moveResource(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Writable);
+      // workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      // workspacePage.moveResource(sourceTemplate, 'template');
+      // moveModal.moveToDestination(target1Writable);
       // toastyModal.isSuccess();
       // workspacePage.clearSearch();
 
