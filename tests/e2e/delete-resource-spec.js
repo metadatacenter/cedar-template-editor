@@ -2,7 +2,9 @@
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var testConfig = require('../config/test-env.js');
+var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
+var CopyModal = require('../modals/copy-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 describe('delete-resource', function () {
