@@ -99,16 +99,16 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.clickSharedWithMe();
       workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      copyModal.copyToDestination(target1Writable);
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      // move resource to user 1 writable target
-      workspacePage.clickSharedWithMe();
-      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToUserFolder(testConfig.testUserName1, target1Writable);
-      toastyModal.isSuccess();
+      // move resource to writable target
+      // workspacePage.clickSharedWithMe();
+      // workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
+      // moveModal.moveToDestination(target1Writable);
+      // toastyModal.isSuccess();
 
     });
 
