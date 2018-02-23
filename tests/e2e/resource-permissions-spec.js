@@ -85,7 +85,30 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    xit("should fail to copy and move a resource to an readable folder", function () {
+    it("should fail to move a readable resource", function () {
+      console.log('resource-permissions should fail to move a readable resource');
+
+      // share readable resource with user 1
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
+      workspacePage.clearSearch();
+
+      // fail to move readable resource
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      // succeed to copy to writable folder
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+
+    });
+
+
+    it("should fail to copy and move a resource to an readable folder", function () {
       console.log('resource-permissions should fail to copy and move a resource to an readable folder');
 
       // create a user 2 resource
@@ -108,27 +131,6 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should fail to move a readable resource", function () {
-      console.log('resource-permissions should fail to move a readable resource');
-
-      // share readable resource with user 1
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
-      workspacePage.clearSearch();
-
-      // fail to move readable resource
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      
-      // succeed to copy to writable folder
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-
-    });
 
     it("should copy and move resource to a writable folder", function () {
       console.log('resource-permissions should move resource to writable folder');
@@ -151,7 +153,7 @@ describe('copy and move', function () {
       // workspacePage.clearSearch();
 
       // move resource to writable target
-      // workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
       // workspacePage.moveResource(sourceTemplate, 'template');
       // moveModal.moveToDestination(target1Writable);
       // toastyModal.isSuccess();
