@@ -113,7 +113,7 @@ describe('copy and move', function () {
 
     });
 
-    xit("should fail to copy and move a resource to an readable folder", function () {
+    it("should fail to copy and move a resource to an readable folder", function () {
       console.log('resource-permissions should fail to copy and move a resource to an readable folder');
 
       // create a user 2 resource
