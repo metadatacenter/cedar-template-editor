@@ -119,6 +119,7 @@ describe('copy and move', function () {
       // cannot copy resource to user 1's readable folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
