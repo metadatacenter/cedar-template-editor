@@ -557,7 +557,7 @@ define([
                   // update attribute name in the attribute-value field and in the parent
                   parentModel[$scope.fieldKey][$scope.index]['@value'] = attributeName;
                   parentModel[attributeName] = {'@value': ''};
-                  if (oldValue && parentModel[i][oldValue]) {
+                  if (oldValue && parentModel[oldValue]) {
                     delete parentModel[oldValue];
                   }
 
@@ -805,16 +805,29 @@ define([
 
       // remove the value of field at index
       $scope.removeInput = function (index) {
+
         var minItems = dms.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
 
+          // attribute-value pairs propagate and have unique attributes
           if (dms.isAttributeValueType($scope.field)) {
-            //delete the attribute from the parent model
-            var attributeName = $scope.model[index]['@name'];
-            delete $scope.$parent.model[attributeName];
-          }
-          $scope.model.splice(index, 1);
+            var attributeName = $scope.model[index]['@value'];
+            if (Array.isArray($scope.parentModel)) {
+              for (var i=0;i<$scope.parentModel.length;i++) {
 
+                // remove the instance and the unique attribute
+                delete $scope.parentModel[i][attributeName];
+                $scope.parentModel[i][$scope.fieldKey].splice(index, 1);
+              }
+            } else {
+              // remove the instance and the unique attribute
+              delete $scope.parentModel[attributeName];
+              $scope.parentModel[$scope.fieldKey].splice(index, 1);
+            }
+          } else {
+            // remove the instance
+            $scope.model.splice(index, 1);
+          }
         }
       };
 
