@@ -530,7 +530,7 @@
 
             <form class="form-inline" ng-submit="dc.updateDescription()">
               <fieldset>
-                <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                <input id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
                 <button type="submit" style=" display:none">Add</button>
               </fieldset>
@@ -538,7 +538,7 @@
 
           </div>
           <div ng-if="!dc.editingDescription" class="title">
-            {{ dc.selectedResource.description }}
+            {{ dc.selectedResource['schema:description'] }}
           </div>
           <div ng-if="!dc.editingDescription" class="edit pull-right">
             <button

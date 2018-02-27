@@ -9,7 +9,7 @@
       <h5 translate>DASHBOARD.rename.label</h5>
 
       <form ng-submit="rename.updateResource();dc.renameModalVisible=false">
-        <p><input size="40" type="text"  ng-model="rename.renameResource.name"/></p>
+        <p><input size="40" type="text"  ng-model="rename.renameResource['schema:name']"/></p>
       </form>
     </div>
     <div class="modal-footer actions">

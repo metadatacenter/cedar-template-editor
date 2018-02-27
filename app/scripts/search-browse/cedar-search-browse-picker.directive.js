@@ -277,7 +277,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var description = resource.description;
+              var description = resource['schema:description'];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(

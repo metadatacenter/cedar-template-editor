@@ -125,7 +125,7 @@ define([
                     folderId,
                     function (response) {
 
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource['schema:name']},
                           'GENERIC.Moved');
 
                       refresh();

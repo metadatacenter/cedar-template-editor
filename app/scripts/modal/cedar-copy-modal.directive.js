@@ -116,10 +116,10 @@ define([
 
               if (vm.copyResource) {
                 var resource = vm.copyResource;
-                var newTitle = resource.name;
+                var newTitle = resource['schema:name'];
                 var sameFolder = vm.currentFolderId === folderId;
                 if (sameFolder) {
-                  newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
+                  newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource['schema:name']});
                 }
 
                 resourceService.copyResource(
@@ -128,7 +128,7 @@ define([
                     newTitle,
                     function (response) {
 
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.copyToResource.success', {"title": resource.name},
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.copyToResource.success', {"title": resource['schema:name']},
                           'GENERIC.Copied');
 
                       if (sameFolder) {
