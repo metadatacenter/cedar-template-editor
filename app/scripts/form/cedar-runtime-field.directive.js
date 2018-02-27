@@ -525,6 +525,7 @@ define([
         var attributeName;
 
         if (dms.isAttributeValueType($scope.field)) {
+          console.log('updateModelFromUI',newValue, oldValue);
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
           var parent = parentModel[parentInstance] || parentModel;
@@ -534,6 +535,7 @@ define([
             if (isAttributeName) {
 
               // attribute name, first make it unique in the parent
+
               attributeName = $scope.getNewAttributeName(newValue, parent);
               if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
@@ -575,7 +577,7 @@ define([
               if (attributeName && parent[attributeName]) {
                 parent[attributeName]['@value'] = newValue;
               } else {
-                attributeName = $scope.getNewAttributeName('attribute', parent);
+                attributeName = $scope.getNewAttributeName($scope.fieldKey, parent);
                 if (!$scope.isDuplicateAttribute(attributeName, parent)) {
                   parent[attributeName] = {'@value': newValue};
                   parent[$scope.fieldKey][$scope.index]['@value'] = attributeName;
@@ -705,20 +707,15 @@ define([
       };
 
       $scope.getNewAttributeName = function (oldName, model) {
-        if ($scope.isDuplicateAttribute(oldName, model)) {
-          var last = oldName.lastIndexOf("(") > 0 ? oldName.lastIndexOf("(") : oldName.length;
-          var newName = oldName.substr(0, last);
+        if (!oldName  ||  oldName.length == 0 || $scope.isDuplicateAttribute(oldName, model) ) {
 
-          var offset = 0;
-          var res = oldName.match(/.*\(([^)]+)\)/);
-          if (res) {
-            offset + res[1] + 1;
-          }
-          var i = offset;
+          var newName = $scope.fieldKey;
+          var offset = $scope.index;
+          var i = offset--;
           do {
             i++;
-          } while ($scope.isDuplicateAttribute(newName + '(' + i + ')', model) && i < 10000);
-          return newName + '(' + i + ')';
+          } while ($scope.isDuplicateAttribute(newName + i , model) && i < 10000);
+          return newName + i;
         } else {
           return oldName;
         }
@@ -736,7 +733,7 @@ define([
 
           // there is no attribute name defined, so give it a default name
           if (!$scope.valueArray[$scope.index]['@value']) {
-            $scope.updateModelFromUI('attribute', '', true);
+            $scope.updateModelFromUI($scope.fieldKey, '', true);
           }
 
           // create a unique attribute name for the copy
