@@ -289,6 +289,7 @@ define([
                       // remove the @context entry for this attribute-value fields
                       // delete the context int the parent
                       delete parentModel['@context'][name];
+                      parentModel[name] = [];
                     }
                     dms.defaultOptionsToModel(value, parentModel[name]);
                   }

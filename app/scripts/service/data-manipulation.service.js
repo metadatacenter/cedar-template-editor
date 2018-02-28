@@ -676,9 +676,9 @@ define([
         if (service.isAttributeValueType(field)) {
 
           if (Array.isArray(model)) {
-            for (var i=0;i<model[0][key].length;i++) {
-              if (model[0][key][i]['@value']) {
-                result.push(model[0][key][i]['@value']);
+            for (var i = 0; i < model[0][key].length; i++) {
+              if (model[0][key][i]) {
+                result.push(model[0][key][i]);
               }
             }
           } else {
@@ -869,7 +869,7 @@ define([
       // The value of the link field is a URI, and note that @id cannot be null
       if (inputType == "attribute-value") {
         field.properties["schema:isBasedOn"] = {"@type": "@id"};
-        field.minItems = 1;
+        field.minItems = 0;
         service.cardinalizeField(field);
       }
 
@@ -1007,41 +1007,43 @@ define([
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
 
+      if (service.isAttributeValueType(field)) {
+      } else {
+        var fieldValue = service.getValueLocation(field);
+        if (fieldValue == "@value") {
 
-      var fieldValue = service.getValueLocation(field);
-      if (fieldValue == "@value") {
+          var defaultValue = service.getDefaultValue(fieldValue, field);
 
-        var defaultValue = service.getDefaultValue(fieldValue, field);
-
-        // Not an array
-        if (!$rootScope.isArray(model)) {
-          if (!model) {
-            model = {};
-          }
-          // Value field has been defined
-          if (model.hasOwnProperty(fieldValue)) {
-            // If undefined value or empty string
-            if ((angular.isUndefined(
-                    model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+          // Not an array
+          if (!$rootScope.isArray(model)) {
+            if (!model) {
+              model = {};
+            }
+            // Value field has been defined
+            if (model.hasOwnProperty(fieldValue)) {
+              // If undefined value or empty string
+              if ((angular.isUndefined(
+                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                model[fieldValue] = defaultValue;
+              }
+            }
+            // Value field has not been defined
+            else {
               model[fieldValue] = defaultValue;
             }
           }
-          // Value field has not been defined
+          // An array
           else {
-            model[fieldValue] = defaultValue;
-          }
-        }
-        // An array
-        else {
-          // Length is 0
-          if (model.length == 0) {
-            model.push({});
-            model[0][fieldValue] = defaultValue;
-          }
-          // If length > 0
-          else {
-            for (var i = 0; i < model.length; i++) {
-              service.initializeValue(field, model[i]);
+            // Length is 0
+            if (model.length == 0) {
+              model.push({});
+              model[0][fieldValue] = defaultValue;
+            }
+            // If length > 0
+            else {
+              for (var i = 0; i < model.length; i++) {
+                service.initializeValue(field, model[i]);
+              }
             }
           }
         }
@@ -1054,6 +1056,9 @@ define([
         // If the template contains a user-defined default value, we use it as the default value for the field
         if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
           return service.getUserDefinedDefaultValue(field);
+        }
+        if (service.isAttributeValueType(field)) {
+          return service.getTitle(field);
         }
         // Otherwise, we return the default value, which is 'null'
         else {

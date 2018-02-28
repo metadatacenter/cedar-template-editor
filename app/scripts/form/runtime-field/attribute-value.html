@@ -3,7 +3,7 @@
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
     <div ng-if="isListView() && valueArray[index]['@value']"
         aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} = {{attributeValueArray[index]['@value']}}</div>
+        class="isInactive ">{{attributeNameArray[index]}} = {{attributeValueArray[index]['@value']}}</div>
 
     <div ng-if="!isListView()  && valueArray[index]['@value']"
         aria-label="{{getDescription()}}"
@@ -12,6 +12,7 @@
   </div>
 
   <div ng-if="isActive(index)" style="display: flex;justify-content: space-between;">
+    
 
     <div style="width: 100%;"><label>Name</label>
     <div class="form-group has-success has-feedback" >

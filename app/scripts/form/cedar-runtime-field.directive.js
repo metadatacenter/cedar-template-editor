@@ -150,7 +150,7 @@ define([
         if (dms.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              result += valueElement[i]['@value'] + (valueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
+              result += valueElement[i]['@value'] + (attributeValueElement[i] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
             }
           }
 
@@ -449,7 +449,10 @@ define([
         if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
         } else if (dms.isAttributeValueType($scope.field)) {
-          $scope.valueArray = $scope.model;
+          $scope.valueArray = [];
+          for (var i=0;i<$scope.model.length;i++) {
+            $scope.valueArray.push({'@value': $scope.model[i]})
+          }
         } else if ($scope.model instanceof Array) {
           $scope.valueArray = $scope.model;
         } else {
@@ -474,7 +477,8 @@ define([
           $scope.attributeValueArray = [];
           for (var i = 0; i < $scope.valueArray.length; i++) {
             var attributeName = $scope.valueArray[i]['@value'];
-            $scope.attributeValueArray.push({'@value':(parent.hasOwnProperty(attributeName) ? parent[attributeName]['@value'] : '')});
+            $scope.attributeValueArray.push(
+                {'@value': (parent.hasOwnProperty(attributeName) ? parent[attributeName]['@value'] : '')});
           }
         }
       };
@@ -525,7 +529,6 @@ define([
         var attributeName;
 
         if (dms.isAttributeValueType($scope.field)) {
-          console.log('updateModelFromUI',newValue, oldValue);
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
           var parent = parentModel[parentInstance] || parentModel;
@@ -539,11 +542,13 @@ define([
               attributeName = $scope.getNewAttributeName(newValue, parent);
               if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
+                $scope.valueArray[$scope.index]['@value'] = attributeName;
+
                 if (Array.isArray(parentModel)) {
                   for (var i = 0; i < parentModel.length; i++) {
 
                     // update all the instances
-                    parentModel[i][$scope.fieldKey][$scope.index]['@value'] = attributeName;
+                    parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
 
                     // update attribute name in the parent
 
@@ -703,18 +708,19 @@ define([
       };
 
       $scope.isDuplicateAttribute = function (name, model) {
+        console.log('isDuplicateAttribute',name,model.hasOwnProperty(name));
         return model.hasOwnProperty(name);
       };
 
       $scope.getNewAttributeName = function (oldName, model) {
-        if (!oldName  ||  oldName.length == 0 || $scope.isDuplicateAttribute(oldName, model) ) {
+        if (!oldName || oldName.length == 0 || $scope.isDuplicateAttribute(oldName, model)) {
 
           var newName = $scope.fieldKey;
           var offset = $scope.index;
           var i = offset--;
           do {
             i++;
-          } while ($scope.isDuplicateAttribute(newName + i , model) && i < 10000);
+          } while ($scope.isDuplicateAttribute(newName + i, model) && i < 10000);
           return newName + i;
         } else {
           return oldName;
@@ -748,23 +754,27 @@ define([
               for (var i = 0; i < parentModel.length; i++) {
 
                 // create the obj in the attribute-value field
+                // var obj = {};
+                // obj['@value'] = newAttributeName;
+                parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
+
                 var obj = {};
                 obj['@value'] = newAttributeName;
-                parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, obj);
+                $scope.valueArray.splice($scope.index + 1, 0, obj);
 
                 // create the new field at the parent level
                 var valueObject = {};
                 valueObject["@value"] = attributeValue;
                 parentModel[i][newAttributeName] = valueObject;
+                $scope.attributeValueArray.splice($scope.index + 1, 0, valueObject);
 
-                $scope.attributeValueArray.push(valueObject);
               }
             } else {
 
               // create the obj in the attribute-value field
-              var obj = {};
-              obj['@value'] = newAttributeName;
-              parentModel[$scope.fieldKey].splice($scope.index + 1, 0, obj);
+              // var obj = {};
+              // obj['@value'] = newAttributeName;
+              parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
 
               // create the new field at the parent level
               var valueObject = {};
@@ -783,17 +793,37 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-        if ($scope.isMultipleCardinality()) {
-          var valueLocation = $scope.getValueLocation();
-          var maxItems = dms.getMaxItems($scope.field);
-          if ((!maxItems || $scope.model.length < maxItems)) {
+        if (dms.isAttributeValueType($scope.field)) {
+          var parentModel = $scope.parentModel || $scope.$parent.model;
+          var parentInstance = $scope.parentInstance;
+          var parent = parentModel[parentInstance] || parentModel;
+          var valueLocation = '@value';
+
+          var newAttributeName = $scope.getNewAttributeName('', parent);
+          if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
+
             // add another instance in the model
-            var obj = {};
-            obj[valueLocation] = dms.getDefaultValue(valueLocation, $scope.field);
-            $scope.model.push(obj);
+            $scope.model.push(newAttributeName);
+            $scope.valueArray.push({'@value':newAttributeName});
+            $scope.setAttributeValueArray();
 
             // activate the new instance
             $scope.setActive($scope.model.length - 1, true);
+          }
+
+        } else {
+          if ($scope.isMultipleCardinality()) {
+            var valueLocation = $scope.getValueLocation();
+            var maxItems = dms.getMaxItems($scope.field);
+            if ((!maxItems || $scope.model.length < maxItems)) {
+              // add another instance in the model
+              var obj = {};
+              obj[valueLocation] = dms.getDefaultValue(valueLocation, $scope.field);
+              $scope.model.push(obj);
+
+              // activate the new instance
+              $scope.setActive($scope.model.length - 1, true);
+            }
           }
         }
         $scope.pageMinMax();
@@ -808,9 +838,9 @@ define([
 
           // attribute-value pairs propagate and have unique attributes
           if (dms.isAttributeValueType($scope.field)) {
-            var attributeName = $scope.model[index]['@value'];
+            var attributeName = $scope.model[index];
             if (Array.isArray($scope.parentModel)) {
-              for (var i=0;i<$scope.parentModel.length;i++) {
+              for (var i = 0; i < $scope.parentModel.length; i++) {
 
                 // remove the instance and the unique attribute
                 delete $scope.parentModel[i][attributeName];
@@ -821,6 +851,8 @@ define([
               delete $scope.parentModel[attributeName];
               $scope.parentModel[$scope.fieldKey].splice(index, 1);
             }
+            $scope.valueArray.splice(index, 1);
+            $scope.attributeValueArray.splice(index, 1);
           } else {
             // remove the instance
             $scope.model.splice(index, 1);
