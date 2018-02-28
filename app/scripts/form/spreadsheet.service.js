@@ -400,7 +400,6 @@ define([
               colHeaders.push('<span  title="' + description + '">' + title + ' </span>');
             }
           }
-          console.log('colHeaders',colHeaders)
           return colHeaders;
         };
 
