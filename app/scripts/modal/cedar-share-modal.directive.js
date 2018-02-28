@@ -357,7 +357,7 @@ define([
               if (isUser(node)) {
                 result = node.firstName + ' ' + node.lastName;
               } else {
-                result = node['schema:name'];
+                result = node['name'];
               }
             }
             return result;
