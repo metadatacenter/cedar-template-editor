@@ -357,7 +357,7 @@ define([
               if (isUser(node)) {
                 result = node.firstName + ' ' + node.lastName;
               } else {
-                result = node.displayName;
+                result = node['name'];
               }
             }
             return result;
@@ -554,9 +554,7 @@ define([
           function updateGroupName(group, name) {
             vm.editingTitle = false;
             if (name.length > 0) {
-              group.displayName = name;
               group.name = name;
-              vm.typeaheadGroup.displayName = name;
               vm.typeaheadGroup.name = name;
               updateGroup(group);
             }

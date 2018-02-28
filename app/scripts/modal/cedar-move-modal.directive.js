@@ -106,7 +106,7 @@ define([
 
               var length = vm.destinationPathInfo.length;
               var parent = vm.destinationPathInfo[length - 1];
-              result = parent.displayName;
+              result = parent['schema:name'];
 
             }
             return result;
@@ -125,7 +125,7 @@ define([
                     folderId,
                     function (response) {
 
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource['schema:name']},
                           'GENERIC.Moved');
 
                       refresh();
@@ -144,7 +144,7 @@ define([
           }
 
           function currentTitle() {
-            return vm.currentDestination ? vm.currentDestination.displayName : 'none';
+            return vm.currentDestination ? vm.currentDestination['schema:name'] : 'none';
           }
 
           function selectDestination(resource) {
