@@ -277,7 +277,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var description = resource.description;
+              var description = resource['schema:description'];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
@@ -1209,7 +1209,7 @@ define([
             var name = null;
             if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
               instanceId = vm.selectedResource['@id'];
-              name = vm.selectedResource.displayName;
+              name = vm.selectedResource['schema:name'];
             }
             $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }

@@ -56,9 +56,8 @@ var httpData = {
             "nodeType"              : "folder",
             "createdOnTS"           : 1502146452,
             "lastUpdatedOnTS"       : 1502146452,
-            "name"                  : "testing",
-            "description"           : "description",
-            "displayName"           : "testing",
+            "schema:name"                  : "testing",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -80,15 +79,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1499810129,
             "lastUpdatedOnTS"       : 1499810129,
-            "name"                  : "element",
-            "description"           : "Description",
-            "displayName"           : "element",
+            "schema:name"                  : "element",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -107,15 +104,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1499810169,
             "lastUpdatedOnTS"       : 1499814624,
-            "name"                  : "parent element",
-            "description"           : "Description",
-            "displayName"           : "parent element",
+            "schema:name"                  : "parent element",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -134,15 +129,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1499814283,
             "lastUpdatedOnTS"       : 1499814288,
-            "name"                  : "Untitled",
-            "description"           : "Description",
-            "displayName"           : "Untitled",
+            "schema:name"                  : "Untitled",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -161,15 +154,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1500699258,
             "lastUpdatedOnTS"       : 1500699258,
-            "name"                  : "Untitled",
-            "description"           : "Description",
-            "displayName"           : "Untitled",
+            "schema:name"                  : "Untitled",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -188,15 +179,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1501279403,
             "lastUpdatedOnTS"       : 1501279440,
-            "name"                  : "one",
-            "description"           : "Description",
-            "displayName"           : "one",
+            "schema:name"                  : "one",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -215,15 +204,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1501279412,
             "lastUpdatedOnTS"       : 1501279421,
-            "name"                  : "one again",
-            "description"           : "Description",
-            "displayName"           : "one again",
+            "schema:name"                  : "one again",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -242,15 +229,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1501279497,
             "lastUpdatedOnTS"       : 1501279497,
-            "name"                  : "Untitled",
-            "description"           : "Description",
-            "displayName"           : "Untitled",
+            "schema:name"                  : "Untitled",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -269,15 +254,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1501285535,
             "lastUpdatedOnTS"       : 1501285535,
-            "name"                  : "inner",
-            "description"           : "Description",
-            "displayName"           : "inner",
+            "schema:name"                  : "inner",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -296,15 +279,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }, {
             "nodeType"              : "element",
             "createdOnTS"           : 1501285549,
             "lastUpdatedOnTS"       : 1501285580,
-            "name"                  : "parent",
-            "description"           : "Description",
-            "displayName"           : "parent",
+            "schema:name"                  : "parent",
+            "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -323,16 +304,14 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "element"
+            }
           }],
           "pathInfo"         : [{
             "nodeType"              : "folder",
             "createdOnTS"           : 1499799926,
             "lastUpdatedOnTS"       : 1499799926,
-            "name"                  : "/",
-            "description"           : "CEDAR Root Folder",
-            "displayName"           : "/",
+            "schema:name"                  : "/",
+            "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -354,15 +333,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1499799926,
             "lastUpdatedOnTS"       : 1499799926,
-            "name"                  : "Users",
-            "description"           : "CEDAR Users",
-            "displayName"           : "Users",
+            "schema:name"                  : "Users",
+            "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -384,15 +361,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1499799927,
             "lastUpdatedOnTS"       : 1499799927,
-            "name"                  : "Test User 2",
-            "description"           : "Home folder of Test User 2",
-            "displayName"           : "Test User 2",
+            "schema:name"                  : "Test User 2",
+            "schema:description"           : "Home folder of Test User 2",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -414,8 +389,7 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }],
           "nodeListQueryType": "folder-content"
         },
@@ -447,9 +421,8 @@ var httpData = {
               "nodeType"              : "template",
               "createdOnTS"           : 1502146462,
               "lastUpdatedOnTS"       : 1502146462,
-              "name"                  : "test",
-              "description"           : "Description",
-              "displayName"           : "test",
+              "schema:name"                  : "test",
+              "schema:description"           : "schema:description",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -468,8 +441,7 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "template"
+              }
             }
           ],
           "pathInfo"         : [
@@ -477,9 +449,8 @@ var httpData = {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
-              "name"                  : "/",
-              "description"           : "CEDAR Root Folder",
-              "displayName"           : "/",
+              "schema:name"                  : "/",
+              "schema:description"           : "CEDAR Root Folder",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -501,16 +472,14 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             },
             {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
-              "name"                  : "Users",
-              "description"           : "CEDAR Users",
-              "displayName"           : "Users",
+              "schema:name"                  : "Users",
+              "schema:description"           : "CEDAR Users",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -532,16 +501,14 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             },
             {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799927,
               "lastUpdatedOnTS"       : 1499799927,
-              "name"                  : "Test User 2",
-              "description"           : "Home folder of Test User 2",
-              "displayName"           : "Test User 2",
+              "schema:name"                  : "Test User 2",
+              "schema:description"           : "Home folder of Test User 2",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -563,8 +530,7 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             }
           ],
           "nodeListQueryType": "folder-content"
@@ -596,9 +562,8 @@ var httpData = {
               "nodeType"              : "template",
               "createdOnTS"           : 1502146462,
               "lastUpdatedOnTS"       : 1502146462,
-              "name"                  : "test",
-              "description"           : "Description",
-              "displayName"           : "test",
+              "schema:name"                  : "test",
+              "schema:description"           : "schema:description",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -617,8 +582,7 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "template"
+              }
             }
           ],
           "pathInfo"         : [
@@ -626,9 +590,8 @@ var httpData = {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
-              "name"                  : "/",
-              "description"           : "CEDAR Root Folder",
-              "displayName"           : "/",
+              "schema:name"                  : "/",
+              "schema:description"           : "CEDAR Root Folder",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -650,16 +613,14 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             },
             {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
-              "name"                  : "Users",
-              "description"           : "CEDAR Users",
-              "displayName"           : "Users",
+              "schema:name"                  : "Users",
+              "schema:description"           : "CEDAR Users",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -681,16 +642,14 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             },
             {
               "nodeType"              : "folder",
               "createdOnTS"           : 1499799927,
               "lastUpdatedOnTS"       : 1499799927,
-              "name"                  : "Test User 2",
-              "description"           : "Home folder of Test User 2",
-              "displayName"           : "Test User 2",
+              "schema:name"                  : "Test User 2",
+              "schema:description"           : "Home folder of Test User 2",
               "path"                  : null,
               "parentPath"            : null,
               "displayPath"           : null,
@@ -712,8 +671,7 @@ var httpData = {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
                 "oslc"  : "http://open-services.net/ns/core#"
-              },
-              "nodeType"              : "folder"
+              }
             }
           ],
           "nodeListQueryType": "folder-content"
@@ -739,9 +697,8 @@ var httpData = {
             "nodeType"              : "template",
             "createdOnTS"           : 1512434377,
             "lastUpdatedOnTS"       : 1512434393,
-            "name"                  : "t2",
-            "description"           : null,
-            "displayName"           : "t2",
+            "schema:name"                  : "t2",
+            "schema:description"           : null,
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -760,16 +717,14 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "template"
+            }
           }],
           "pathInfo"         : [{
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "/",
-            "description"           : "CEDAR Root Folder",
-            "displayName"           : "/",
+            "schema:name"                  : "/",
+            "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -791,15 +746,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "Users",
-            "description"           : "CEDAR Users",
-            "displayName"           : "Users",
+            "schema:name"                  : "Users",
+            "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -821,15 +774,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "Test User 1",
-            "description"           : "Home folder of Test User 1",
-            "displayName"           : "Test User 1",
+            "schema:name"                  : "Test User 1",
+            "schema:description"           : "Home folder of Test User 1",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -851,8 +802,7 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }],
           "nodeListQueryType": "folder-content"
         },
@@ -875,9 +825,8 @@ var httpData = {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "CEDAR Admin",
-            "description"           : "Home folder of CEDAR Admin",
-            "displayName"           : "CEDAR Admin",
+            "schema:name"                  : "CEDAR Admin",
+            "schema:description"           : "Home folder of CEDAR Admin",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -899,15 +848,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "Debra Willrett",
-            "description"           : "Home folder of Debra Willrett",
-            "displayName"           : "Debra Willrett",
+            "schema:name"                  : "Debra Willrett",
+            "schema:description"           : "Home folder of Debra Willrett",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -929,15 +876,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "Test User 1",
-            "description"           : "Home folder of Test User 1",
-            "displayName"           : "Test User 1",
+            "schema:name"                  : "Test User 1",
+            "schema:description"           : "Home folder of Test User 1",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -959,15 +904,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "Test User 2",
-            "description"           : "Home folder of Test User 2",
-            "displayName"           : "Test User 2",
+            "schema:name"                  : "Test User 2",
+            "schema:description"           : "Home folder of Test User 2",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -989,16 +932,14 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }],
           "pathInfo"         : [{
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "/",
-            "description"           : "CEDAR Root Folder",
-            "displayName"           : "/",
+            "schema:name"                  : "/",
+            "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -1020,15 +961,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "Users",
-            "description"           : "CEDAR Users",
-            "displayName"           : "Users",
+            "schema:name"                  : "Users",
+            "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -1050,8 +989,7 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }],
           "nodeListQueryType": "folder-content"
         },
@@ -1075,9 +1013,8 @@ var httpData = {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "/",
-            "description"           : "CEDAR Root Folder",
-            "displayName"           : "/",
+            "schema:name"                  : "/",
+            "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -1099,15 +1036,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
-            "name"                  : "Users",
-            "description"           : "CEDAR Users",
-            "displayName"           : "Users",
+            "schema:name"                  : "Users",
+            "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -1129,15 +1064,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }, {
             "nodeType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
-            "name"                  : "CEDAR Admin",
-            "description"           : "Home folder of CEDAR Admin",
-            "displayName"           : "CEDAR Admin",
+            "schema:name"                  : "CEDAR Admin",
+            "schema:description"           : "Home folder of CEDAR Admin",
             "path"                  : null,
             "parentPath"            : null,
             "displayPath"           : null,
@@ -1159,8 +1092,7 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
               "oslc"  : "http://open-services.net/ns/core#"
-            },
-            "nodeType"              : "folder"
+            }
           }],
           "nodeListQueryType": "folder-content"
         },
@@ -1184,9 +1116,8 @@ var httpData = {
             "nodeType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
-            "name": "/",
-            "description": "CEDAR Root Folder",
-            "displayName": "/",
+            "schema:name": "/",
+            "schema:description": "CEDAR Root Folder",
             "path": null,
             "parentPath": null,
             "displayPath": null,
@@ -1208,15 +1139,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
               "oslc": "http://open-services.net/ns/core#"
-            },
-            "nodeType": "folder"
+            }
           }, {
             "nodeType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
-            "name": "Users",
-            "description": "CEDAR Users",
-            "displayName": "Users",
+            "schema:name": "Users",
+            "schema:description": "CEDAR Users",
             "path": null,
             "parentPath": null,
             "displayPath": null,
@@ -1238,15 +1167,13 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
               "oslc": "http://open-services.net/ns/core#"
-            },
-            "nodeType": "folder"
+            }
           }, {
             "nodeType": "folder",
             "createdOnTS": 1511895932,
             "lastUpdatedOnTS": 1511895932,
-            "name": "CEDAR Admin",
-            "description": "Home folder of CEDAR Admin",
-            "displayName": "CEDAR Admin",
+            "schema:name": "CEDAR Admin",
+            "schema:description": "Home folder of CEDAR Admin",
             "path": null,
             "parentPath": null,
             "displayPath": null,
@@ -1268,8 +1195,7 @@ var httpData = {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
               "oslc": "http://open-services.net/ns/core#"
-            },
-            "nodeType": "folder"
+            }
           }],
           "nodeListQueryType": "folder-content"
         }

@@ -106,16 +106,15 @@ define(['app', 'angular'], function (app) {
           $moveScope.resource= {
             '@id'                   : "https://repo.metadatacenter.orgx/templates/43ea9e95-5d1b-474b-b200-0f2e196d1058",
             'currentUserPermissions': [],
-            'displayName'           : 't2',
-            'name'                  : 't2'
+            'schema:name'           : 't2'
           };
           $moveScope.currentPath  = {
             '@id'                   : "https://repo.metadatacenter.orgx/folders/80e366b2-c8fb-4de5-b899-7d46c770d2f4",
             'createdByUserName'     : null,
             'createdOnTS'           : 1511895932,
             'currentUserPermissions': [],
-            'description'           : "Home folder of Test User 1",
-            'displayName'           : "Test User 1",
+            'schema:description'    : "Home folder of Test User 1",
+            'schema:name'           : "Test User 1",
             displayParentPath       : null,
             displayPath             : null,
             isRoot                  : false,

@@ -15,9 +15,9 @@
       <p ng-if="!dc.isSearching">
             <span class="folder-path" ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
-                  class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
+                  class="breadcrumbs">{{dc.breadcrumbName(folder['schema:name'])}}</a> /
             </span>
-        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
+        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath['schema:name'])}}</a>
 
       </p>
     </div>
@@ -274,7 +274,7 @@
                       <div class="folderIconContainer">
                         <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
                       </div>
-                      <div class="folderTitle">{{ resource.displayName }}</div>
+                      <div class="folderTitle">{{ resource['schema:name'] }}</div>
 
                       <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                         <button style="display:none" title="More"
@@ -320,7 +320,7 @@
                       </div>
                       <div class="title"
                           style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                        {{ resource.displayName }}
+                        {{ resource['schema:name'] }}
                       </div>
 
                       <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -369,7 +369,7 @@
 
                   <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
                       class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
+                  <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -402,7 +402,7 @@
                   <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
                       ng-class="dc.getResourceIconClass(resource)"
                       class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
+                  <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -463,7 +463,7 @@
             <div class="col-sm-10">
               <div class="title" ng-if="dc.getSelectedNode()" ng-class="dc.getSelectedNode().nodeType">
                 <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span
-                  ng-bind="dc.getSelectedNode().displayName"></span>
+                  ng-bind="dc.getSelectedNode()['schema:name']"></span>
               </div>
               <div class="title" ng-if="!dc.getSelectedNode()">
                 &nbsp;
@@ -530,7 +530,7 @@
 
             <form class="form-inline" ng-submit="dc.updateDescription()">
               <fieldset>
-                <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                <input id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
                 <button type="submit" style=" display:none">Add</button>
               </fieldset>
@@ -538,7 +538,7 @@
 
           </div>
           <div ng-if="!dc.editingDescription" class="title">
-            {{ dc.selectedResource.description }}
+            {{ dc.selectedResource['schema:description'] }}
           </div>
           <div ng-if="!dc.editingDescription" class="edit pull-right">
             <button
