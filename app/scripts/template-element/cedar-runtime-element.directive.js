@@ -135,8 +135,7 @@ define([
 
 
       // turn on spreadsheet view
-      scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet',scope.model);
+      scope.switchToSpreadsheet = function ()      {
         scope.setActive(0,true);
         $timeout(function () {
           SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
