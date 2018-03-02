@@ -179,6 +179,7 @@ define([
       };
 
       var parseElement = function () {
+        console.log('parseElement');
         if (!UIUtilService.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {

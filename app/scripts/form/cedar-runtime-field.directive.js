@@ -562,16 +562,12 @@ define([
                 } else {
 
                   // update attribute name in the attribute-value field and in the parent
-                  parentModel[$scope.fieldKey][$scope.index]['@value'] = attributeName;
+                  parentModel[$scope.fieldKey][$scope.index] = attributeName;
+
                   parentModel[attributeName] = {'@value': ''};
                   if (oldValue && parentModel[oldValue]) {
                     delete parentModel[oldValue];
                   }
-
-                  //update attribute name in attribute-value field
-                  //$scope.model[$scope.index]['@value'] = attributeName;
-
-
                 }
               }
             } else {
@@ -582,10 +578,13 @@ define([
               if (attributeName && parent[attributeName]) {
                 parent[attributeName]['@value'] = newValue;
               } else {
+
                 attributeName = $scope.getNewAttributeName($scope.fieldKey, parent);
                 if (!$scope.isDuplicateAttribute(attributeName, parent)) {
+
+                  parent[$scope.fieldKey][$scope.index] = attributeName;
                   parent[attributeName] = {'@value': newValue};
-                  parent[$scope.fieldKey][$scope.index]['@value'] = attributeName;
+
                 }
               }
             }
@@ -708,7 +707,6 @@ define([
       };
 
       $scope.isDuplicateAttribute = function (name, model) {
-        console.log('isDuplicateAttribute',name,model.hasOwnProperty(name));
         return model.hasOwnProperty(name);
       };
 
@@ -763,13 +761,17 @@ define([
                 $scope.valueArray.splice($scope.index + 1, 0, obj);
 
                 // create the new field at the parent level
-                var valueObject = {};
-                valueObject["@value"] = attributeValue;
+                var valueObject = {"@value":attributeValue};
                 parentModel[i][newAttributeName] = valueObject;
                 $scope.attributeValueArray.splice($scope.index + 1, 0, valueObject);
 
               }
             } else {
+
+              var obj = {};
+              obj['@value'] = newAttributeName;
+              $scope.valueArray.splice($scope.index + 1, 0, obj);
+
 
               // create the obj in the attribute-value field
               // var obj = {};
@@ -777,11 +779,9 @@ define([
               parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
 
               // create the new field at the parent level
-              var valueObject = {};
-              valueObject["@value"] = attributeValue;
+              var valueObject = {"@value":attributeValue};
               parentModel[newAttributeName] = valueObject;
-
-              $scope.attributeValueArray.push(valueObject);
+              $scope.attributeValueArray.splice($scope.index + 1, 0, valueObject);
             }
 
             // activate the new instance

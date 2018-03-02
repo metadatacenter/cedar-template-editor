@@ -1782,12 +1782,12 @@ define([
           parentModel['@context'] = service.generateInstanceContext(value);
         }
         // Add @type information to instance
-        // else if (name == '@type') {
-        //   type = DataManipulationService.generateInstanceType(value);
-        //   if (type) {
-        //     parentModel['@type'] = type;
-        //   }
-        // }
+        else if (name == '@type') {
+          type = service.generateInstanceType(value);
+          if (type) {
+            parentModel['@type'] = type;
+          }
+        }
 
         min = value.minItems || 0;
 
@@ -1832,6 +1832,19 @@ define([
                   parentModel[name].push(obj);
                 }
               }
+              // Set default values and types for fields
+              service.initializeValue(value, parentModel[name]);
+              // Initialize value type for those fields that have it
+              if (service.isTextFieldType(value) || service.isDateType(value) || service.isNumericField(value)) {
+                service.initializeValueType(value, parentModel[name]);
+              }
+              if (service.isAttributeValueType(value)) {
+                // remove the @context entry for this attribute-value fields
+                // delete the context int the parent
+                delete parentModel['@context'][name];
+                parentModel[name] = [];
+              }
+              service.defaultOptionsToModel(value, parentModel[name]);
             }
 
             var p = service.propertiesOf(value);

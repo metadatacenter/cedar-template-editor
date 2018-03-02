@@ -220,7 +220,7 @@ define([
 
         if (angular.isArray(scope.model)) {
 
-          var min = dms.getMinItems(scope.element) || 0;
+          var min = dms.getMinItems(scope.element) || 1;
 
           outer: for (var i = scope.model.length; i > min; i--) {
             var valueElement = scope.model[i - 1];
@@ -339,6 +339,7 @@ define([
 
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
+        console.log('copyElement',index, scope.index,scope.model.length)
         if (scope.isMultiple()) {
           var fromIndex = (typeof index === 'undefined') ? scope.index : index;
           var maxItems = dms.getMaxItems(scope.element);
@@ -349,6 +350,18 @@ define([
               // delete the @id field of the template-element-instance. The backend will need to generate a new one
               delete seed['@id'];
               scope.model.splice(fromIndex + 1, 0, seed);
+            } else {
+              console.log('copyElement build an empty instance')
+                  var seed = {};
+                  var properties = dms.propertiesOf(scope.element);
+                  scope.model.push(seed);
+                  if (angular.isArray(scope.model)) {
+                    angular.forEach(scope.model, function (m) {
+                      dms.findChildren(properties, m);
+                    });
+                  } else {
+                    dms.findChildren(properties, scope.model);
+                  }
             }
             // activate the new instance
             scope.setActive(fromIndex + 1, true);

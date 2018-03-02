@@ -213,92 +213,99 @@ define([
           console.log("deselectAll");
         };
 
-        $scope.parseForm = function (iterator, parentModel, parentKey) {
 
-          angular.forEach(iterator, function (value, name) {
-            // Add @context information to instance
-            if (name == '@context') {
-              parentModel['@context'] = dms.generateInstanceContext(value);
-            }
-            // Add @type information to template/element instance
-            else if (name == '@type') {
-              var type = dms.generateInstanceType(value);
-              if (type) {
-                parentModel['@type'] = type;
-              }
-            }
-
-            if (!DataUtilService.isSpecialKey(name)) {
-              if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
-                // Template Element
-                var min = value.minItems || 0;
-
-                // Handle position and nesting within $scope.model if it does not exist
-                if (!dms.isCardinalElement(value)) {
-                  parentModel[name] = {};
-                } else {
-                  parentModel[name] = [];
-                  for (var i = 0; i < min; i++) {
-                    parentModel[name].push({});
-                  }
-                }
-
-                if (angular.isArray(parentModel[name])) {
-                  for (var i = 0; i < min; i++) {
-                    // Indication of nested element or nested fields reached, recursively call function
-                    $scope.parseForm(dms.propertiesOf(value), parentModel[name][i], name);
-                  }
-                } else {
-                  $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
-                }
-
-
-              } else {
-                // Template Field
-                if (!dms.isStaticField(value)) {
-                  // Not a Static Field
-                  var min = value.minItems || 0;
-
-                  // Assign empty field instance model to $scope.model only if it does not exist
-                  if (parentModel[name] == undefined) {
-                    // Not multiple instance
-                    if (!dms.isCardinalElement(value)) {
-                      // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                      if (dms.isMultipleChoiceField(value)) {
-                        parentModel[name] = [];
-                      }
-                      // All other fields, including the radio field and the list field with single option
-                      else {
-                        parentModel[name] = {};
-                      }
-                      // Multiple instance
-                    } else {
-                      parentModel[name] = [];
-                      for (var i = 0; i < min; i++) {
-                        var obj = {};
-                        parentModel[name].push(obj);
-                      }
-                    }
-                    // Set default values and types for fields
-                    dms.initializeValue(value, parentModel[name]);
-                    // Initialize value type for those fields that have it
-                    if (dms.isTextFieldType(value) || dms.isDateType(value) || dms.isNumericField(value)) {
-                      dms.initializeValueType(value, parentModel[name]);
-                    }
-                    if (dms.isAttributeValueType(value)) {
-                      // remove the @context entry for this attribute-value fields
-                      // delete the context int the parent
-                      delete parentModel['@context'][name];
-                      parentModel[name] = [];
-                    }
-                    dms.defaultOptionsToModel(value, parentModel[name]);
-                  }
-
-                }
-              }
-            }
-          });
+        $scope.parseForm = function (iterator, parentModel) {
+          dms.findChildren(iterator,parentModel);
         };
+
+        // $scope.parseForm = function (iterator, parentModel) {
+        //
+        //   angular.forEach(iterator, function (value, name) {
+        //     // Add @context information to instance
+        //     if (name == '@context') {
+        //       parentModel['@context'] = dms.generateInstanceContext(value);
+        //     }
+        //     // Add @type information to template/element instance
+        //     else if (name == '@type') {
+        //       var type = dms.generateInstanceType(value);
+        //       if (type) {
+        //         parentModel['@type'] = type;
+        //       }
+        //     }
+        //
+        //     if (!DataUtilService.isSpecialKey(name)) {
+        //       if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+        //         // Template Element
+        //         var min = value.minItems || 0;
+        //
+        //         // Handle position and nesting within $scope.model if it does not exist
+        //         if (!dms.isCardinalElement(value)) {
+        //           parentModel[name] = {};
+        //         } else {
+        //           parentModel[name] = [];
+        //           for (var i = 0; i < min; i++) {
+        //             parentModel[name].push({});
+        //           }
+        //         }
+        //
+        //         if (angular.isArray(parentModel[name])) {
+        //           for (var i = 0; i < min; i++) {
+        //             // Indication of nested element or nested fields reached, recursively call function
+        //             $scope.parseForm(dms.propertiesOf(value), parentModel[name][i], name);
+        //           }
+        //         } else {
+        //           $scope.parseForm(dms.propertiesOf(value), parentModel[name], name);
+        //         }
+        //
+        //
+        //       } else {
+        //         // Template Field
+        //         if (!dms.isStaticField(value)) {
+        //           // Not a Static Field
+        //           var min = value.minItems || 0;
+        //
+        //           // Assign empty field instance model to $scope.model only if it does not exist
+        //           if (parentModel[name] == undefined) {
+        //             // Not multiple instance
+        //             if (!dms.isCardinalElement(value)) {
+        //               // Multiple choice fields (checkbox and multi-choice list) store an array of values
+        //               if (dms.isMultipleChoiceField(value)) {
+        //                 parentModel[name] = [];
+        //               }
+        //               // All other fields, including the radio field and the list field with single option
+        //               else {
+        //                 parentModel[name] = {};
+        //               }
+        //               // Multiple instance
+        //             } else {
+        //               parentModel[name] = [];
+        //               for (var i = 0; i < min; i++) {
+        //                 var obj = {};
+        //                 parentModel[name].push(obj);
+        //               }
+        //             }
+        //             // Set default values and types for fields
+        //             dms.initializeValue(value, parentModel[name]);
+        //             // Initialize value type for those fields that have it
+        //             if (dms.isTextFieldType(value) || dms.isDateType(value) || dms.isNumericField(value)) {
+        //               dms.initializeValueType(value, parentModel[name]);
+        //             }
+        //             if (dms.isAttributeValueType(value)) {
+        //               console.log('got a-v',name, parentModel);
+        //               // remove the @context entry for this attribute-value fields
+        //               // delete the context int the parent
+        //               delete parentModel['@context'][name];
+        //               parentModel[name] = [];
+        //               console.log('got a-v',name, parentModel);
+        //             }
+        //             dms.defaultOptionsToModel(value, parentModel[name]);
+        //           }
+        //
+        //         }
+        //       }
+        //     }
+        //   });
+        // };
 
         //
         // custom external validation
