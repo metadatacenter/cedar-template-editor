@@ -493,6 +493,16 @@ define([
         }
       };
 
+      $scope.hasModel = function () {
+        return  $rootScope.isArray($scope.model) && $scope.model.length > 0;
+      };
+
+
+      $scope.isDateField = function () {
+        return dms.isDateField($scope.field);
+      };
+
+
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
 

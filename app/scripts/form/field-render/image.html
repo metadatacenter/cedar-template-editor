@@ -1,26 +1,18 @@
 <div class="fields fields-email">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='&nbsp;Image';fieldIconClass='cedar-svg-image'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='&nbsp;Image';fieldIconClass='cedar-svg-image'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="!isRuntime()" style="padding-top: 10px;">
-    <figure>
-      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{getTitle()}}"
-          type="image/png" width="100%"/>
-      <figcaption><label>{{getTitle()}}</label></figcaption>
-    </figure>
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label=""/>
+    <div class="input-indicator-icons ng-valid ng-scope" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
-  <div ng-if="isRuntime()">
-    <figure>
-      <img ng-src="{{$root.schemaOf(field)._ui._content}}" no-image alt="{{getTitle()}}"
-          type="image/png" width="100%"/>
-      <figcaption><label>{{getTitle()}}</label></figcaption>
-    </figure>
-  </div>
-
-  <div class="clearfix all"></div>
 </div>
 
 

@@ -3,6 +3,15 @@
   <div ng-init="fieldTitle='Page Break';fieldIconClass='cedar-svg-page-break'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <!--<h3 class="page-title">{{getTitle()}}</h3>-->
-  <!--<p ng-if="hasDescription()" class="page-body">{{getDescription()}}</p>-->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label=""/>
+    <div class="input-indicator-icons ng-valid ng-scope" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+
 </div>
