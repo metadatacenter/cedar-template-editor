@@ -91,7 +91,7 @@ describe('template-creator', function () {
       "iconClass"                : "cedar-svg-at",
       "label"                    : "Email",
       "allowedInElement"         : true,
-      "primaryField"             : false,
+      "primaryField"             : true,
       "hasControlledTerms"       : false,
       "staticField"              : false,
       "allowsMultiple"           : true,
