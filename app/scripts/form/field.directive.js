@@ -92,6 +92,14 @@ define([
         return dms.isCardinalElement($scope.field);
       };
 
+      $scope.getCount = function () {
+        var num = dms.getMinItems($scope.field) || 0;
+        num = Math.max(1,num);
+        var result = new Array(num);
+        console.log('getCount',result);
+        return result;
+      };
+
       // is this multiple cardinality?
       $scope.hasMin = function () {
         return $scope.field.hasOwnProperty('minItems');

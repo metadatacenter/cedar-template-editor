@@ -1,55 +1,26 @@
 <div class="fields fields-list">
 
-  <!-- header row -->
   <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-init="initializeSelectionField()" class="field-list" ng-class="{'required': isRequired()}">
-
-    <!--Single selection-->
-    <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == false"
-        class="form-group form-group-narrow validation-pattern"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-
-      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
+    <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
+      <input type="text"
+          class="form-control"
+          placeholder="{{getTitle()}}"
+          aria-label="{{getDescription()}}"
+          ng-disabled="true"
+          with-floating-label=""/>
+      <div class="input-indicator-icons ng-valid ng-scope"
+          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
       <select class="form-control"
           multiple="false"
           data-max-options="1"
           field="field"
           title="Please select"
-          ng-model="optionsUI.options"
-          ng-disabled="!isRuntime() || preview"
-          ng-change="updateModelFromUI(optionsUI)"
+          ng-disabled="true"
           select-picker="">
-        <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals"
-            value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">
-          {{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}
-        </option>
       </select>
     </div>
-
-    <!--Multiple selection-->
-    <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == true"
-        class="form-group form-group-narrow validation-pattern"
-        ng-class="{'required': isRequired()}">
-
-      <p class="extra-label-context" style="padding-left:5px">{{getTitle()}}</p>
-
-      <select class="form-control"
-          multiple="true"
-          field="field"
-          title="Please select"
-          ng-model="optionsUI.options"
-          ng-disabled="!isRuntime() || preview"
-          ng-change="updateModelFromUI(optionsUI)"
-          select-picker="">
-        <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals"
-            value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">
-          {{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}
-        </option>
-      </select>
-    </div>
-  </div>
 
 </div>

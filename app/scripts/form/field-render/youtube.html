@@ -4,26 +4,17 @@
   <div ng-init="fieldTitle='&nbsp;YouTube Video';fieldIconClass='cedar-svg-youtube'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="!isRuntime()" style="padding-top: 10px;">
-    <!-- let's put the video into a figure so we can use the figcaption for the title -->
-    <figure>
-      <!-- fit-vids directive automatically resizes the video to full width -->
-      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-      <figcaption><label>{{getTitle()}}</label></figcaption>
-    </figure>
+  <div ng-valid="false" class="form-group floating-label-wrapper has-feedback">
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label="">
+    </input>
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
-
-  <div ng-if="isRuntime()">
-    <!-- let's put the video into a figure so we can use the figcaption for the title -->
-    <figure>
-      <!-- fit-vids directive automatically resizes the video to full width -->
-      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-      <figcaption><label>{{getTitle()}}</label></figcaption>
-    </figure>
-  </div>
-
-  <div class="clearfix all"></div>
 </div>
 
 

@@ -1113,6 +1113,10 @@ define([
         }
       };
 
+      $scope.hasModel = function() {
+        return $scope.model && $scope.model.length > 0;
+      };
+
       //
       // initialization
       //
