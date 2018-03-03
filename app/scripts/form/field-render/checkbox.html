@@ -3,7 +3,7 @@
   <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
+  <div ng-valid="false" class="form-group floating-label-wrapper">
     <input type="text"
         class="form-control"
         placeholder="{{getTitle()}}"
