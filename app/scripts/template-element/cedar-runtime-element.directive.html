@@ -5,8 +5,8 @@
     <!-- zero cardinality  -->
     <div ng-if="valueArray.length == 0">
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
-        <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
-          <div class="col-xs-6" ng-click="toggleExpanded(i);addElement()">
+        <div class="row isInactive myhover" ng-click="toggleExpanded(0);addElement()">
+          <div class="col-xs-6">
             <div class="element title" ng-class="{'isInactive' : isInactive(0)}">
               <button type="button" class="expand">
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
