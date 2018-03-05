@@ -36,7 +36,7 @@
           <div class="col-sm-9 answer" ng-if="isActive(index)">
             <div class="flex">
               <div></div> <!--title-->
-              <field-toolbar  model="model" field="field" index="index"
+              <field-toolbar  model="model" field="field" index="index" paging="!isSpreadsheetView()"
                   remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
                   expand-all="expandAll" get-locator="getLocator" view-state="viewState"></field-toolbar>
             </div>
