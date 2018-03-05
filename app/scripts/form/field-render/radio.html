@@ -1,34 +1,31 @@
-<!-- three different cases: 1. list of items, 2. empty list, 3. just one object --->
 <div class="fields fields-radio">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Multiple Choice';fieldIconClass='cedar-svg-multiple-choice'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Multiple Choice';fieldIconClass='cedar-svg-multiple-choice'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div class="form-group  floating-label-wrapper ng-scope">
+  <div ng-valid="false" class="form-group floating-label-wrapper">
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label=""/>
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
     <div class="form-group field-wrapper-radio  ">
-      <p class="extra-label-context">{{getTitle()}}</p>
       <div ng-init="initializeSelectionField()">
-        <div class="form-group radio-item"
-            ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+        <div class="form-group radio-item" ng-repeat="(index, value) in getLiterals()">
           <div class="radio radio-primary">
             <input type="radio"
-                ng-click="updateModelFromUI(value.label); $event.stopPropagation();"
                 id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
                 name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                 ng-model="optionsUI.option"
                 ng-value="value.label"
-                ng-disabled="!isRuntime() || preview"/>
-            <label ng-click="$event.stopPropagation();"
-                for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
+                ng-disabled="true"/>
+            <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{value.label}}</label>
           </div>
-          <div class="input-indicator-icons ng-valid ng-scope"
-              ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
       </div>
     </div>
-
-  </div>
-
 
 </div>

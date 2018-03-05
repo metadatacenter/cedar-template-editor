@@ -293,7 +293,7 @@ define(['app', 'angular'], function (app) {
       var attributeValueIcon = ".cedar-svg-attribute-value";
 
       it("should show only the correct tabs", function () {
-        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
         expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
         expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
@@ -325,16 +325,9 @@ define(['app', 'angular'], function (app) {
 
       });
 
-      it("should be able to set multiple", function () {
+
+      it("should be multiple by default", function () {
         var elm = compiledDirective[0];
-
-        // multiple instance is hidden
-        expect (elm.querySelector(multipleInstanceHiddenSelector));
-
-        var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
-        noElm.triggerHandler('click');
-        var yesElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[3]);
-        yesElm.triggerHandler('click');
 
         // multiple instance is visible
         expect (elm.querySelector(multipleInstanceHiddenSelector == null));

@@ -8,7 +8,7 @@ var CopyModal = require('../modals/copy-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-describe('resource-permissions', function () {
+describe('copy and move', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -19,6 +19,7 @@ describe('resource-permissions', function () {
 
   var target1Folder;
   var target2Folder;
+  var target1Writable;
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -36,162 +37,120 @@ describe('resource-permissions', function () {
   afterEach(function () {
   });
 
-  // reset user selections to defaults
   it('should be on the workspace', function () {
     console.log('resource-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
-  // reset user selections to defaults
   it('should create target folders', function () {
     console.log('resource-permissions should create target folders');
+
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     target1Folder = workspacePage.createFolder('Target');
+    shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
+    workspacePage.clearSearch();
+
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+    target1Writable = workspacePage.createFolder('Target');
+    shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
+    workspacePage.clearSearch();
 
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
     target2Folder = workspacePage.createFolder('Target');
+    shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
+    workspacePage.clearSearch();
   });
 
-  describe('move tests', function () {
+  describe('copy and move tests', function () {
 
-    it("should move a resource owned by current user to a writable folder", function () {
-      console.log('resource-permissions should move a resource owned by current user to a writable folder');
+    it("should copy and move resource to folder", function () {
+      console.log('resource-permissions should copy and move resource to folder');
+
+      // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // create template and target folder
       var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
-      // copy source to target folder
+      // copy resource to user 1 target
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(target1Folder);
       toastyModal.isSuccess();
       workspacePage.clearSearch();
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
-      // move source to target folder
+      // move resource to user 1 target
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToDestination(target1Folder);
       toastyModal.isSuccess();
       workspacePage.clearSearch();
-
-      // delete these at the end
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should move a resource owned by current user to an unwritable folder", function () {
-      console.log('resource-permissions should move a resource owned by current user to an unwritable folder');
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+    it("should fail to move and succeed to copy a readable resource", function () {
+      console.log('resource-permissions should fail to move and succeed to copy a readable resource');
 
-      // share folder with user 2, read only
-      shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
+      // share readable resource with user 1
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
 
-      // logout current user and login as user 2
+      // succeed to copy readable resource
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+
+      // fail to move to readable resource
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      shareModal.moveShareDeleteDisabled(sourceTemplate, 'template');
+
+    });
+
+    it("should fail to copy and move to a readable folder", function () {
+      console.log('resource-permissions should fail to copy and move to a readable folder');
+
+      // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      // create a template to move to the shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
 
-      // copy created template to user 1's shared folder
+      // cannot copy resource to user 1's readable folder
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      // move created template to user 1's shared folder
+      // cannot move resource to user 1's readable folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
-
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
 
-    it("should move a writable resource not owned by current user to a writable folder", function () {
-      console.log('resource-permissions should move a writable resource not owned by current user to a writable folder');
+    it("should move resource to a writable folder", function () {
+      console.log('resource-permissions should move resource to writable folder');
+
+      // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      // create source template and target shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
-
-      // share the template and folder as writable
+      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
-
+      // copy resource to user 1 writable target
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // go to Test User 2's folder to see the shared folders
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-
-      // move source to target folder
-      //workspacePage.moveResource(sourceTemplate, 'template');
-      workspacePage.moveResourceViaRightClick(sourceTemplate, 'template');
-      moveModal.moveToDestination(target2Folder);
-      toastyModal.isSuccess();
-
-      // delete these at the end
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-    });
-
-    // TODO failing?
-    it("should move a writable resource not owned by current user to an unwritable folder", function () {
-      console.log('resource-permissions should move a writable resource not owned by current user to an unwritable folder');
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
-      workspacePage.clearSearch();
-      shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-
       workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
-      sweetAlertModal.confirm();
-      workspacePage.clearSearch();
-
-      workspacePage.moveResource(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Folder);
-      sweetAlertModal.noWriteAccess();
-      sweetAlertModal.confirm();
-      workspacePage.clearSearch();
-
+      copyModal.copyToDestination(target1Writable);
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-    });
-
-
-    it("should move an unwritable resource not owned by current user to an unwritable folder", function () {
-      console.log('resource-permissions should move an unwritable resource not owned by current user to an unwritable folder');
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-      // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-
-      // share both folders
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
-      workspacePage.clearSearch();
-      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
+      toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-      // go to Test User 2's folder to see the shared folders
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      moveModal.moveDisabledViaRightClick(sourceTemplate, 'template');
-
-      // delete these at the end
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
   });
 
@@ -331,6 +290,7 @@ describe('resource-permissions', function () {
   it("should mark targets as deletable", function () {
     console.log('resource-permissions should mark targets as deletable');
     resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
     resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
   });
 

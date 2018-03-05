@@ -3,8 +3,16 @@
   <div ng-init="fieldTitle='Section Break';fieldIconClass='cedar-svg-section-break'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <!--<h3 class="section-title">{{getTitle()}}</h3>-->
-  <!--<p ng-if="hasDescription()" class="section-body">{{getDescription()}}</p>-->
+  <div ng-valid="false" class="form-group floating-label-wrapper has-feedback">
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label="">
+    </input>
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
 </div>
 
 

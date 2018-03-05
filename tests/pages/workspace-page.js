@@ -142,6 +142,9 @@ var WorkspacePage = function () {
   var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a.delete'));
   var createShareDisabled = createRightClickMenuItemList.element(by.css('li > a.share.link-disabled'));
   var createMoveDisabled = createRightClickMenuItemList.element(by.css('li > a.move.link-disabled'));
+  var createDeleteDisabled = createRightClickMenuItemList.element(by.css('li > a.delete.link-disabled'));
+  var creatCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
+  var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
 
   this.createMoreOptionsButton = function () {
@@ -263,8 +266,16 @@ var WorkspacePage = function () {
     return createShareDisabled;
   };
 
+  this.createCopyDisabled = function () {
+    return createCopyDisabled;
+  };
+
   this.createMoveDisabled = function () {
     return createMoveDisabled;
+  };
+
+  this.createDeleteDisabled = function () {
+    return createDeleteDisabled;
   };
 
   this.createRightClickRenameMenuItem = function () {
@@ -347,6 +358,17 @@ var WorkspacePage = function () {
   // do we have the controls bar
   this.hasControlBar = function () {
     browser.wait(EC.presenceOf(createControlsBar));
+  };
+
+  this.moveDisabled = function (name, type) {
+    this.rightClickResource(name, type);
+    var moveMenuItem = this.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+  };
+
+  this.clickSharedWithMe = function() {
+    browser.wait(EC.elementToBeClickable(sharedWithMe));
+    sharedWithMe.click();
   };
 
   this.hasLogo = function () {
@@ -434,7 +456,6 @@ var WorkspacePage = function () {
 
     // delete menu item
     browser.wait(EC.visibilityOf(createDeleteResourceButton));
-    var availableElement = by.css('.some-class:not(.disabled)');
     browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
     createDeleteResourceButton.click();
 

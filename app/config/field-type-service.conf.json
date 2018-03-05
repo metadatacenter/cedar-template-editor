@@ -20,7 +20,7 @@
     "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false,
-    "allowsMultiple": true,
+    "allowsMultiple": false,
     "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false

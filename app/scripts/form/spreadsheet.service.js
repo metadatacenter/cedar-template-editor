@@ -54,7 +54,6 @@ define([
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
 
-
         // if we don't have an id and label for a controlled term, go get it
         var lazyUpdate = function ($scope, schema, id, term, model) {
           if (!model['@id'] || !model['rdfs:label']) {
@@ -106,6 +105,10 @@ define([
 
               if (inputType == 'dropdown') {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              } else if (cedarType == 'attribute-value') {
+
+                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+
               } else if (cedarType == 'checkbox') {
                 var valueObject = JSON.parse(sds.tableData[row][col]);
                 var value = {};
@@ -147,12 +150,13 @@ define([
 
 
         // get column headers for single field or element's fields
-        var getColumnHeaderOrder = function (context, scopeElement) {
+        var getColumnHeaderOrder = function (context, scopeElement, scope) {
+
           var headerOrder = [];
           if (context.isField()) {
             headerOrder.push('value');
           } else {
-            var itemOrder = dms.getFlatSpreadsheetOrder(scopeElement);
+            var itemOrder = dms.getFlatSpreadsheetOrder(scopeElement, scope.model);
             for (var i in itemOrder) {
               headerOrder.push(itemOrder[i]);
             }
@@ -192,13 +196,26 @@ define([
 
         // build a description of the cell data
         var getDescriptor = function (context, node, $scope, customValidator) {
+
+          var literals;
+          var inputType;
+          var id;
+          var inputType;
           var desc = {};
-          var literals = dms.getLiterals(node);
-          var inputType = dms.getInputType(node);
-          var id = dms.getId(node);
+          if (node) {
+            literals = dms.getLiterals(node);
+            inputType = dms.getInputType(node);
+            id = dms.getId(node);
+          } else {
+            inputType = 'attribute-value';
+          }
+
           desc.cedarType = inputType;
           switch (inputType) {
 
+            case 'attribute-value':
+              desc.type = 'text';
+              break;
             case 'date':
               desc.type = 'date';
               desc.dateFormat = 'MM/DD/YYYY';
@@ -269,6 +286,7 @@ define([
               }
               break;
           }
+
           return desc;
         };
 
@@ -304,6 +322,8 @@ define([
               rowData.push(JSON.stringify(cellDataObject['@value']));
             } else if (cedarType == 'deepObject') {
               rowData.push(columnDescriptor.cedarLabel);
+            } else if (cedarType == 'attribute-value') {
+              rowData.push(cellDataObject['@value']);
             } else {
               rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
             }
@@ -357,22 +377,27 @@ define([
         };
 
         // get the single field or nested field titles
-        var getColHeaders = function (node, columnHeaderOrder, isField) {
+        var getColHeaders = function (node, columnHeaderOrder, scope, isField) {
           var colHeaders = [];
-          var title = DataManipulationService.getTitle(node);
-          var description = DataManipulationService.getDescription(node);
+          var title = dms.getTitle(node);
+          var description = dms.getDescription(node);
+          var model = scope.model;
 
           if (isField) {
-            colHeaders.push(
-                '<span  title="' + description + '">' + title + ' </span>');
+            colHeaders.push('<span  title="' + description + '">' + title + ' </span>');
           } else {
             for (var i in columnHeaderOrder) {
               var key = columnHeaderOrder[i];
-              var innerNode = DataManipulationService.propertiesOf(node)[key];
-              title = DataManipulationService.getTitle(innerNode);
-              description = DataManipulationService.getDescription(innerNode);
-              colHeaders.push(
-                  '<span  title="' + description + '">' + title + ' </span>');
+
+              var innerNode = dms.propertiesOf(node)[key];
+              if (innerNode) {
+                title = dms.getTitle(innerNode);
+                description = dms.getDescription(innerNode);
+              } else {
+                title = key;
+                description = "key"
+              }
+              colHeaders.push('<span  title="' + description + '">' + title + ' </span>');
             }
           }
           return colHeaders;
@@ -526,6 +551,8 @@ define([
         var createSpreadsheet = function (context, $scope, $element, index, isField, addCallback, removeCallback,
                                           createExtraRows, deleteExtraRows) {
 
+          var model = $scope.model;
+
           // detector and container elements
           var id = '#' + $scope.getLocator(index) + ' ';
           var detectorElement = angular.element(document.querySelector(id + '.spreadsheetViewDetector'),
@@ -543,16 +570,17 @@ define([
           if (container) {
 
             container.style.width = 700;
-            container.style.height= 300;
+            container.style.height = 300;
 
             $scope.spreadsheetContext = context;
             context.isField = isField;
 
-            var columnHeaderOrder = getColumnHeaderOrder(context, $element);
+
+            var columnHeaderOrder = getColumnHeaderOrder(context, $element, $scope);
             var columnDescriptors = getColumnDescriptors(context, $element, columnHeaderOrder, $scope, customValidator);
             var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
-            var colHeaders = getColHeaders($element, columnHeaderOrder, isField());
+            var colHeaders = getColHeaders($element, columnHeaderOrder, $scope, isField());
             var minRows = dms.getMinItems($element) || 0;
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
@@ -664,8 +692,10 @@ define([
         service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
                                                 createExtraRows, deleteExtraRows) {
 
+
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
+
           createSpreadsheet(context, $scope, $element, index, isField, addCallback, removeCallback, createExtraRows,
               deleteExtraRows);
 
@@ -700,7 +730,7 @@ define([
 
                 var elm = angular.element(table);
                 elm.css({
-                  'border-width': '0',
+                  'border-width'      : '0',
                   'border-width-right': '1px'
                 });
 

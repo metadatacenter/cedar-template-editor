@@ -105,11 +105,12 @@ define([
     service.isSpreadsheetable = function (node) {
 
       var schema = dms.schemaOf(node);
-      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) && !dms.isAttributeValueType(node);
+      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) &&  !dms.isAttributeValueType(node);
       if (DataUtilService.isElement(schema) && dms.isCardinalElement(node)) {
         result =  dms.getFlatSpreadsheetOrder(node).length > 0;
       }
       return result;
+      //return false;
     };
 
     // is this an element that can be expanded?
@@ -128,7 +129,8 @@ define([
 
     service.createViewState = function (node, callback, cleanup) {
       var viewState = {
-        views   : ['tab', 'list'],
+        // views   : ['tab', 'list'],
+        views   : ['tab'],
         selected: 'tab'
       };
       if (service.isSpreadsheetable(node)) {

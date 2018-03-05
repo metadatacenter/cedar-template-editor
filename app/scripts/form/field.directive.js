@@ -70,26 +70,31 @@ define([
 
 
       $scope.getHidden = function () {
-        return DataManipulationService.getHidden($scope.field);
+        return dms.getHidden($scope.field);
       };
 
       $scope.allowsHidden = function () {
-        return DataManipulationService.allowsHidden($scope.field);
+        return dms.allowsHidden($scope.field);
       };
 
       // is this multiple cardinality?
       $scope.isHidden = function () {
-        return DataManipulationService.isHidden($scope.field);
+        return dms.isHidden($scope.field);
       };
 
       // is this multiple cardinality?
       $scope.setHidden = function (value) {
-        DataManipulationService.setHidden($scope.field, value);
+        dms.setHidden($scope.field, value);
       };
 
       // is this multiple cardinality?
       $scope.isMultiple = function () {
         return dms.isCardinalElement($scope.field);
+      };
+
+      $scope.getCount = function () {
+        var min = dms.getMinItems($scope.field) || 0;
+        return new Array(Math.max(1,min));
       };
 
       // is this multiple cardinality?
@@ -167,7 +172,7 @@ define([
       $scope.ckDelete = function () {
         if ($scope.parentElement) {
           $scope.setDirty();
-          DataManipulationService.removeChild($scope.parentElement, $scope.field);
+          dms.removeChild($scope.parentElement, $scope.field);
           $scope.$emit("invalidElementState",
               ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
         }
@@ -281,7 +286,7 @@ define([
       };
 
       $scope.relabelField = function(newTitle) {
-        DataManipulationService.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
+        dms.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
       };
 
       //
@@ -623,15 +628,15 @@ define([
       };
 
       $scope.isMultipleChoice = function(field) {
-        return DataManipulationService.isMultipleChoice(field);
+        return dms.isMultipleChoice(field);
       };
 
       $scope.isMultiAnswer = function(field) {
-        return DataManipulationService.isMultiAnswer(field);
+        return dms.isMultiAnswer(field);
       };
 
       $scope.setMultipleChoice = function(field, multipleChoice) {
-        DataManipulationService.setMultipleChoice(field, multipleChoice);
+        dms.setMultipleChoice(field, multipleChoice);
       };
 
       // Initializes model for fields constrained using controlled terms
@@ -689,7 +694,7 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getValueLocation($scope.field);
+        var fieldValue = dms.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['rdfs:label']) {
@@ -825,7 +830,7 @@ define([
             if (myMap.has(key)) {
 
               // here is a duplicate, so delete it
-              DataManipulationService.deleteFieldControlledTerm(key, $scope.field);
+              dms.deleteFieldControlledTerm(key, $scope.field);
             } else {
               myMap.set(key, "");
             }
@@ -843,8 +848,8 @@ define([
           // get any missing responses
           myMap.forEach(function (value, key) {
             if (myMap.get(key) == "") {
-              setResponse(key, DataManipulationService.parseOntologyName(key),
-                  DataManipulationService.parseClassLabel(key));
+              setResponse(key, dms.parseOntologyName(key),
+                  dms.parseClassLabel(key));
             }
           }, myMap);
 

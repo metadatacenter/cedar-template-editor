@@ -1,73 +1,17 @@
 <div class="fields fields-textarea">
 
-  <!-- header row -->
   <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph';"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
-      ng-class="{'required': isRequired()}">
-    <input type="text"
-        class="form-control has-success has-feedback"
-        ng-class="{'required': isRequired()}"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-disabled="true"
-        with-floating-label=""/>
-    <span class="floating-label">{{getTitle()}}</span>
+  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
+  <textarea rows="5"
+      class="form-control"
+      placeholder="{{getTitle()}}"
+      aria-label="{{getDescription()}}"
+      ng-disabled="true"
+      with-floating-label=""></textarea>
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
-
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
-      ng-repeat="valueElement in model">
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        ng-change="setDefaultValueIfEmpty(model)"
-        ng-class="{'required': isRequired()}"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-model="valueElement['@value']"
-        ng-disabled="!isRuntime() || preview"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="isRuntime()" class="more-input-wrapper yy"
-        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div>
-  <!-- /.form-group -->
-
-
-  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()"
-      class="form-group floating-label-wrapper has-feedback">
-
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-model="model['@value']"
-        ng-disabled="true"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="isRuntime()" class="more-input-wrapper" ng-disabled="true"
-        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
-  </div>
-  <!-- /.form-group -->
-
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
-    <textarea rows="5"
-        id="comment"
-        ng-change="setDefaultValueIfEmpty(model)"
-        class="form-control"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-model="model['@value']"
-        ng-disabled="!isRuntime() || preview"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
-  <!-- /.form-group -->
 </div>

@@ -10,10 +10,10 @@ var ShareModal = function () {
   var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
   var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
-  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
+  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7 > input'));
   var shareModalGroupName = shareWithGroupRow.element(by.css('div.col-sm-7 > input'));
-  var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
-  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
+  var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.select-picker'));
+  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.select-picker'));
   var shareModalUserPermissions = sharedModalUserPermissionsList.element(by.css('button'));
   var shareModalGroupPermissions = sharedModalGroupPermissionsList.element(by.css('button'));
   var shareModalUserReadPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));
@@ -111,6 +111,50 @@ var ShareModal = function () {
     browser.wait(EC.visibilityOf(shareMenuItem));
     browser.wait(EC.elementToBeClickable(shareMenuItem));
     shareMenuItem.click();
+  };
+
+  this.deleteDisabledViaRightClick = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
+  this.moveDisabledCopyEnabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var moveMenuItem = WorkspacePage.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+    var copyMenuItem = WorkspacePage.createRightClickCopyToMenuItem();
+    browser.wait(EC.visibilityOf(copyMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
+  this.shareAndDeleteDisabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var shareMenuItem = WorkspacePage.createShareDisabled();
+    browser.wait(EC.visibilityOf(shareMenuItem));
+    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
+  this.moveShareDeleteDisabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var shareMenuItem = WorkspacePage.createShareDisabled();
+    browser.wait(EC.visibilityOf(shareMenuItem));
+    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
+    var moveMenuItem = WorkspacePage.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+  };
+
+  // open the share dialog of the given resource via the right-click menu item
+  this.shareAndDeleteEnabled = function (name, type) {
+    WorkspacePage.rightClickResource(name, type);
+    var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
+    browser.wait(EC.visibilityOf(shareMenuItem));
+    var deleteMenuItem = WorkspacePage.createRightClickDeleteMenuItem();
+    browser.wait(EC.visibilityOf(deleteMenuItem));
   };
 
   // open the share dialog of the given resource via the right-click menu item

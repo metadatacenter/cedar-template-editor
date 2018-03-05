@@ -195,10 +195,23 @@ gulp.task('test-resource-permissions', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-delete-resource', gulp.series('test-env', function () {
+gulp.task('test-copy-move', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
-    './tests/e2e/delete-resource-spec.js',
+    './tests/e2e/copy-move-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-share-delete', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/share-delete-spec.js',
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"

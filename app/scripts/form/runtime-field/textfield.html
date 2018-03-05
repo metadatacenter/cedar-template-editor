@@ -1,38 +1,10 @@
 <div ng-init="initializeValue(); initializeValueType()">
 
-  <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
-
-    <!-- Regular field -->
-    <div ng-if="isRegular() && isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp; </div>
-
-    <div ng-if="isRegular() && !isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+  <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group has-feedback value">
+    <div aria-label="{{getDescription()}}" class="isInactive " style="display: flex;justify-content: space-between;">
+      <span>{{getValue()}}</span>
+      <!--<i class="cedar-svg-help-circle isInactive"  style="color:#ccc" uib-tooltip="{{getDescription()}}"  tooltip-append-to-body="true"  tooltip-placement="top" ng-if="hasDescription()"></i>-->
     </div>
-
-    <!-- Field with values have been constrained using controlled terms -->
-    <div ng-if="isConstrained() && isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['rdfs:label']}} &nbsp;</div>
-
-    <div ng-if="isConstrained() && !isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp; </span>
-    </div>
-
-    <!-- Field with value recommendation functionality -->
-    <!--TODO: pick rdfs:label or @value depending on the existing field value-->
-    <div ng-if="isRecommended() && isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['rdfs:label']}} &nbsp;</div>
-
-    <div ng-if="isRecommended() && !isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
-
   </div>
 
   <div ng-if="isActive(index)">

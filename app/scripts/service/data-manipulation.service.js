@@ -665,43 +665,26 @@ define([
       return service.schemaOf(node)._ui.order;
     };
 
-    // get order array minus any static fields
-    service.getSpreadsheetOrder = function (node) {
+
+    // get order array that can be used to build the spreadsheet columns
+    service.getFlatSpreadsheetOrder = function (node, model) {
+
       var result = [];
       service.schemaOf(node)._ui.order.forEach(function (key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field)) {
-          result.push(key);
-        }
-      });
-      return result;
-    };
-
-    // get order array
-    service.getFlatOrder = function (node) {
-      return service.schemaOf(node)._ui.order;
-    };
-
-    // get order array minus any static fields
-    service.getSpreadsheetOrder = function (node) {
-      var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field)) {
-          result.push(key);
-        }
-      });
-      return result;
-    };
-
-    // get order array minus any static fields, attribute value fields, and nested elements
-    service.getFlatSpreadsheetOrder = function (node) {
-
-      var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
         var field = service.schemaOf(service.propertiesOf(node)[key]);
 
-        if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isAttributeValueType(field) && !service.isElement(field)) {
+        if (service.isAttributeValueType(field)) {
+
+          if (Array.isArray(model)) {
+            for (var i = 0; i < model[0][key].length; i++) {
+              if (model[0][key][i]) {
+                result.push(model[0][key][i]);
+              }
+            }
+          } else {
+            result.push(key);
+          }
+        } else if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isElement(field)) {
           result.push(key);
         }
       });
@@ -886,6 +869,8 @@ define([
       // The value of the link field is a URI, and note that @id cannot be null
       if (inputType == "attribute-value") {
         field.properties["schema:isBasedOn"] = {"@type": "@id"};
+        field.minItems = 0;
+        service.cardinalizeField(field);
       }
 
       // Set default schema title and description
@@ -1022,7 +1007,8 @@ define([
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
 
-
+      if (service.isAttributeValueType(field)) {
+      } else {
         var fieldValue = service.getValueLocation(field);
         if (fieldValue == "@value") {
 
@@ -1061,6 +1047,7 @@ define([
             }
           }
         }
+      }
 
     };
 
@@ -1069,6 +1056,9 @@ define([
         // If the template contains a user-defined default value, we use it as the default value for the field
         if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
           return service.getUserDefinedDefaultValue(field);
+        }
+        if (service.isAttributeValueType(field)) {
+          return service.getTitle(field);
         }
         // Otherwise, we return the default value, which is 'null'
         else {

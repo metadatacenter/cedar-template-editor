@@ -1,88 +1,16 @@
 <div class="fields fields-date">
 
-  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar';setDefaultValueIfEmpty(model)"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
-        class="form-control has-success has-feedback"
-        ng-class="{'required': isRequired()}"
+        class="form-control"
         placeholder="{{getTitle()}}"
         aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>
-    <span class="floating-label">{{getTitle()}}</span>
-  </div>
-
-  <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
-
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
-
-      <div class='input-group' date-time-picker>
-        <input type="text"
-            id="{{getId($index)}}"
-            ng-change="setDefaultValueIfEmpty(model)"
-            class="form-control"
-            ng-class="{'required': isRequired()}"
-            placeholder="{{getTitle()}}"
-            aria-label="Select a date"
-            ng-model="valueElement['@value']"
-            ng-disabled="!isRuntime() || preview"
-            validate-on="blur"
-            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
-            with-floating-label=""/>
-        <span class="input-group-addon">
-          <i class="fa fa-calendar fa-2x"></i>
-        </span>
-      </div>
-    </div>
-
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div>
-
-  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="field field-date">
-
-
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
-
-      <div class='input-group' date-time-picker>
-        <input type="text"
-            class="form-control"
-            ng-class="{'required': isRequired()}"
-            placeholder="{{getTitle()e}}"
-            aria-label="Select a date"
-            ng-model="model['@value']"
-            ng-disabled="true"
-            with-floating-label=""/>
-        <span class="input-group-addon">
-          <i class="fa fa-calendar fa-2x"></i>
-        </span>
-      </div>
-    </div>
-
-  </div>
-
-  <div ng-if="!$root.isArray(model)" class="field field-date">
-    <div class="form-group form-group-narrow date-group floating-label-wrapper">
-
-      <div class='input-group' date-time-picker>
-        <input type="text"
-            ng-change="setDefaultValueIfEmpty(model)"
-            class="form-control"
-            ng-class="{'required': isRequired()}"
-            placeholder="{{getTitle()}}"
-            aria-label="Select a date"
-            ng-model="model['@value']"
-            ng-disabled="!isRuntime() || preview"
-            validate-on="blur"
-            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
-            with-floating-label=""/>
-        <span class="input-group-addon">
-          <i class="fa fa-calendar fa-2x"></i>
-        </span>
-      </div>
-    </div>
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
 </div>

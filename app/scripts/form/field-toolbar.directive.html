@@ -1,35 +1,35 @@
-<div class="toolbar" >
+<div class="flex"  >
 
-  <button type="button" class="delete pull-right" tooltip-append-to-body="true"
+  <cedar-pager class="cedar-pager"
+      ng-if="paging"
+      ng-click="$event.stopPropagation()"
+      values="values" index="index" min="min" max="max" select="select" range="range">
+  </cedar-pager>
+
+  <button ng-if="isExpandable()" type="button" class="expand-all" tooltip-append-to-body="true"
+      ng-click="expandAll(index);$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.ExpandAll' | translate}}" tooltip-enable="isExpandable()" >
+    <i class="fa fa-expand "></i>
+  </button>
+
+  <button ng-if="canDelete()" type="button" class="delete" tooltip-append-to-body="true"
       ng-click="remove(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-enable="canDelete()">
-    <i class="fa fa-trash" ng-class="{ 'invisible':!canDelete()}"></i>
+    <i class="fa fa-trash"></i>
   </button>
 
-  <button type="button" class="expand-all pull-right" tooltip-append-to-body="true"
-      ng-click="expandAll(index);$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.ExpandAll' | translate}}" tooltip-enable="isExpandable()" >
-    <i class="fa fa-expand " ng-class="{'invisible':!isExpandable()}"></i>
+  <button type="button" class="expand-all" tooltip-append-to-body="true"
+      ng-if="isSpreadsheetView()"
+      uib-tooltip="{{'GENERIC.FullScreen' | translate}}"
+      ng-click="fullscreen();$event.stopPropagation()"
+      tooltip-enable="isSpreadsheetView()">
+    <i class="fa fa-arrows-alt"></i>
   </button>
 
-  <button type="button" class="question pull-right" tooltip-append-to-body="true"
-      ng-if="getDescription() && getDescription().length > 0"
-      ng-click="$event.stopPropagation()"
-      uib-tooltip="{{getDescription() | translate}}"
-      tooltip-enable="getDescription() && getDescription().length > 0" >
-    <i class="fa fa-question-circle"></i>
-  </button>
 
-  <button type="button" class="add pull-right" tooltip-append-to-body="true"
-      ng-if="canAdd()"
-      ng-click="add();$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.Add' | translate}}"
-      tooltip-enable="canAdd()">
-    <i class="fa fa-plus-circle"></i>
-  </button>
 
-  <button type="button" class="copy pull-right" tooltip-append-to-body="true"
+  <button type="button" class="copy" tooltip-append-to-body="true"
       ng-if="canCopy()"
       ng-click="copy(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.Copy' | translate}}"
@@ -37,28 +37,30 @@
     <i class="fa fa-copy"></i>
   </button>
 
-  <button type="button" class="expand-all pull-right" tooltip-append-to-body="true"
-      ng-if="isSpreadsheetView()"
-      uib-tooltip="{{'GENERIC.FullScreen' | translate}}" tooltip-is-open="isSpreadsheetView()" tooltip-trigger="none"
-      ng-click="fullscreen();$event.stopPropagation()"
-      tooltip-enable="isSpreadsheetView()">
-    <i class="fa fa-arrows-alt"></i>
+  <button type="button" class="add" tooltip-append-to-body="true"
+      ng-if="canAdd()"
+      ng-click="add();$event.stopPropagation()"
+      uib-tooltip="{{'GENERIC.Add' | translate}}"
+      tooltip-enable="canAdd()">
+    <i class="fa fa-plus-circle"></i>
   </button>
 
-
-  <button type="button" class="view-toggle pull-right" tooltip-append-to-body="true"
+  <button type="button" class="view-toggle" tooltip-append-to-body="true"
       ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ToggleView' | translate}}"
-      tooltip-enable="isMultiple()">
-    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ng-class="{'hidden':!isMultiple()}"></i>
-    <i ng-if="isTabView()" class="fa fa-list-ol " ng-class="{'hidden':!isMultiple()}"></i>
-    <i ng-if="isListView()" class="fa fa-table " ng-class="{'hidden':!isMultiple()}"></i>
+      tooltip-enable="isMultiple()"
+      ng-if="isMultiple()">
+    <i ng-if="isSpreadsheetView()" class="fa fa-sort  fa-rotate-90 " ></i>
+    <i ng-if="isTabView()" class="fa fa-list-ol " ></i>
+    <i ng-if="isListView()" class="fa fa-table " ></i>
   </button>
 
-  <cedar-pager class="cedar-pager pull-right"
-      ng-if="paging"
+  <button type="button" class="question" tooltip-append-to-body="true"
+      ng-if="getDescription() && getDescription().length > 0"
       ng-click="$event.stopPropagation()"
-      values="values" index="index" min="min" max="max" select="select" range="range">
-  </cedar-pager>
+      uib-tooltip="{{getDescription() | translate}}"
+      tooltip-enable="getDescription() && getDescription().length > 0" >
+    <i class="fa fa-question-circle"></i>
+  </button>
 
 </div>
