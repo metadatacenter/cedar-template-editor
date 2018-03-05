@@ -137,6 +137,7 @@ define([
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
         scope.setActive(0, true);
+        scope.createExtraRows();
         $timeout(function () {
           SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
             return false;
@@ -211,7 +212,8 @@ define([
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function () {
         var maxItems = dms.getMaxItems(scope.element);
-        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+        var max = maxItems ? maxItems : 10;
+        while ((scope.model.length < max)) {
           scope.addMoreInput();
         }
       };
