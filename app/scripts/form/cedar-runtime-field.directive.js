@@ -57,6 +57,11 @@ define([
         return dms.getDescription(field || $scope.field);
       };
 
+
+      $scope.hasDescription = function () {
+        return dms.getDescription($scope.field).length > 0;
+      };
+
       $scope.getContent = function (field) {
         return dms.getContent(field || $scope.field);
       };
@@ -166,6 +171,34 @@ define([
         }
         return result.trim().replace(/,\s*$/, "");
       };
+
+      // string together field values
+      $scope.getValue = function () {
+
+        if ($scope.isRegular() && $scope.isListView()) {
+          return $scope.valueArray[$scope.index]['@value'];
+        }
+        if ($scope.isRegular() && !$scope.isListView()) {
+          return $scope.getValueString($scope.valueArray);
+        }
+        if ($scope.isConstrained() && $scope.isListView()) {
+          return $scope.valueArray[$scope.index]['rdfs:label'];
+        }
+        if ($scope.isConstrained() && $scope.isListView()) {
+          return $scope.valueArray[$scope.index]['rdfs:label'];
+        }
+        if ($scope.isConstrained() && !$scope.isListView()) {
+          return $scope.getValueString($scope.valueArray);
+        }
+        if ($scope.isRecommended() && $scope.isListView()) {
+          //TODO: pick rdfs:label or @value depending on the existing field value
+          return $scope.valueArray[$scope.index]['rdfs:label'];
+        }
+        if ($scope.isRecommended() && !$scope.isListView()) {
+          return $scope.getValueString($scope.valueArray);
+        }
+      };
+
 
       // strip midnight off the date time string
       $scope.formatDateTime = function (value) {

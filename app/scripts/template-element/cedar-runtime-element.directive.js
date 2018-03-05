@@ -220,7 +220,7 @@ define([
 
         if (angular.isArray(scope.model)) {
 
-          var min = dms.getMinItems(scope.element) || 0;
+          var min = dms.getMinItems(scope.element) || 1;
 
           outer: for (var i = scope.model.length; i > min; i--) {
             var valueElement = scope.model[i - 1];
