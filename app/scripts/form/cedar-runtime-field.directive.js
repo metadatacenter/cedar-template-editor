@@ -708,7 +708,6 @@ define([
       };
 
       $scope.isDuplicateAttribute = function (name, model) {
-        console.log('isDuplicateAttribute',name,model.hasOwnProperty(name));
         return model.hasOwnProperty(name);
       };
 
