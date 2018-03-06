@@ -39,13 +39,13 @@ describe('metadata-creator', function () {
   });
 
   afterEach(function () {
-    var myReporter = {
-      specDone: function(result) {
-        console.log('Spec FullName: ' + result.fullName);
-        console.log('Spec Result: ' + result.status);
-      },
-    }
-    jasmine.getEnv().addReporter(myReporter);
+    // var myReporter = {
+    //   specDone: function(result) {
+    //     console.log('Spec FullName: ' + result.fullName);
+    //     console.log('Spec Result: ' + result.status);
+    //   },
+    // }
+    // jasmine.getEnv().addReporter(myReporter);
   });
 
   it("should be on the workspace", function () {
