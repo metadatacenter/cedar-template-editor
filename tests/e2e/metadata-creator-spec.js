@@ -254,18 +254,19 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.setMultiple();
 
-      // templatePage.clickSave('template');
-      // toastyModal.isSuccess();
-      // templatePage.clickBackArrow();
-      // workspacePage.onWorkspace();
-      //
-      // workspacePage.populateResource(template, 'template');
-      // resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
-      //
-      // workspacePage.editResource(template, 'metadata');
-      //
-      // metadataPage.clickBackArrow();
-      // workspacePage.onWorkspace();
+      templatePage.clickSave('template');
+      toastyModal.isSuccess();
+      templatePage.clickBackArrow();
+      workspacePage.onWorkspace();
+
+      workspacePage.populateResource(template, 'template');
+      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+
+      workspacePage.editResource(template, 'metadata');
+      metadataPage.switchToSpreadsheet();
+
+      metadataPage.clickBackArrow();
+      workspacePage.onWorkspace();
     });
   });
 
