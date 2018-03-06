@@ -62,6 +62,10 @@ define([
           return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
         };
 
+        scope.isAttributeValueType = function () {
+          return DataManipulationService.isAttributeValueType(scope.field);
+        };
+
         scope.isSpreadsheetView = function () {
           return UIUtilService.isSpreadsheetView(scope.viewState);
         };
