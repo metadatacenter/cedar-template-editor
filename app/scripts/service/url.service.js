@@ -244,7 +244,7 @@ define([
     };
 
     service.airrValidation = function () {
-      return submissionService + '/command/validate-airr';
+      return submissionService + '/command/validate-cairr';
     };
 
     service.getOntologies = function () {
