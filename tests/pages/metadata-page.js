@@ -173,6 +173,7 @@ var MetadataPage = function () {
   };
 
   this.isDirty = function () {
+    var dirtyIcon = element(by.css('#headerCtrl .feedback-form > span:nth-child(1) > i'));
     browser.wait(EC.visibilityOf(dirtyIcon));
   };
 
@@ -243,9 +244,12 @@ var MetadataPage = function () {
     browser.wait(EC.visibilityOf(firstCell));
     browser.wait(EC.elementToBeClickable(firstCell));
     firstCell.click().sendKeys('value').sendKeys(protractor.Key.ENTER);
+  };
 
 
+  this.addFieldValue = function() {
   }
+
 
 
 
