@@ -244,7 +244,7 @@ describe('metadata-creator', function () {
   describe('create spreadsheets', function () {
 
     it("should view a template as spreadsheet", function () {
-      console.log("metadata-creator should view a template as spreadsheet");
+      console.log("metadata-creator should view a multi-instance field as spreadsheet");
 
       var template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
@@ -252,20 +252,20 @@ describe('metadata-creator', function () {
 
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
-      //templatePage.setMultiple();
+      templatePage.setMultiple();
 
-      templatePage.clickSave('template');
-      toastyModal.isSuccess();
-      templatePage.clickBackArrow();
-      workspacePage.onWorkspace();
-
-      workspacePage.populateResource(template, 'template');
-      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
-
-      workspacePage.editResource(template, 'metadata');
-
-      metadataPage.clickBackArrow();
-      workspacePage.onWorkspace();
+      // templatePage.clickSave('template');
+      // toastyModal.isSuccess();
+      // templatePage.clickBackArrow();
+      // workspacePage.onWorkspace();
+      //
+      // workspacePage.populateResource(template, 'template');
+      // resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+      //
+      // workspacePage.editResource(template, 'metadata');
+      //
+      // metadataPage.clickBackArrow();
+      // workspacePage.onWorkspace();
     });
   });
 
