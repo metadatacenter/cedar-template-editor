@@ -155,7 +155,7 @@ define([
         if (dms.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              result += valueElement[i]['@value'] + (attributeValueElement[i] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
+              result += valueElement[i]['@value'] + (attributeValueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
             }
           }
 
@@ -484,7 +484,7 @@ define([
           $scope.valueArray.push($scope.model);
         } else if (dms.isAttributeValueType($scope.field)) {
           $scope.valueArray = [];
-          for (var i=0;i<$scope.model.length;i++) {
+          for (var i = 0; i < $scope.model.length; i++) {
             $scope.valueArray.push({'@value': $scope.model[i]})
           }
         } else if ($scope.model instanceof Array) {
@@ -586,7 +586,7 @@ define([
 
                     // update attribute name in the parent
 
-                    parentModel[i][attributeName] = {'@value': ''};
+                    parentModel[i][attributeName] = {'@value': null};
                     if (oldValue && parentModel[i][oldValue]) {
                       parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
                       delete parentModel[i][oldValue];
@@ -596,8 +596,8 @@ define([
                 } else {
 
                   // update attribute name in the attribute-value field and in the parent
-                  parentModel[$scope.fieldKey][$scope.index]['@value'] = attributeName;
-                  parentModel[attributeName] = {'@value': ''};
+                  parentModel[$scope.fieldKey][$scope.index] = attributeName;
+                  parentModel[attributeName] = {'@value': null};
                   if (oldValue && parentModel[oldValue]) {
                     delete parentModel[oldValue];
                   }
@@ -611,7 +611,7 @@ define([
             } else {
 
               // attribute value, update value in parent model
-              var attributeName = $scope.valueArray[$scope.index]['@value'];
+              //var attributeName = $scope.valueArray[$scope.index]['@value'];
 
               if (attributeName && parent[attributeName]) {
                 parent[attributeName]['@value'] = newValue;
@@ -619,7 +619,7 @@ define([
                 attributeName = $scope.getNewAttributeName($scope.fieldKey, parent);
                 if (!$scope.isDuplicateAttribute(attributeName, parent)) {
                   parent[attributeName] = {'@value': newValue};
-                  parent[$scope.fieldKey][$scope.index]['@value'] = attributeName;
+                  parent[$scope.fieldKey][$scope.index] = attributeName;
                 }
               }
             }
@@ -831,18 +831,25 @@ define([
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
           var parent = parentModel[parentInstance] || parentModel;
-          var valueLocation = '@value';
 
-          var newAttributeName = $scope.getNewAttributeName('', parent);
-          if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
+          var attributeName = $scope.getNewAttributeName('', parent);
+          if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
-            // add another instance in the model
-            $scope.model.push(newAttributeName);
-            $scope.valueArray.push({'@value':newAttributeName});
+            if (Array.isArray(parentModel)) {
+              for (var i = 0; i < parentModel.length; i++) {
+
+                parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
+                parentModel[i][attributeName] = {'@value': null};
+              }
+            } else {
+
+              parentModel[$scope.fieldKey][$scope.index] = attributeName;
+              parentModel[attributeName] = {'@value': null};
+            }
+            $scope.setValueArray();
             $scope.setAttributeValueArray();
-
-            // activate the new instance
             $scope.setActive($scope.model.length - 1, true);
+
           }
 
         } else {
@@ -1148,7 +1155,7 @@ define([
         }
       };
 
-      $scope.hasModel = function() {
+      $scope.hasModel = function () {
         return $scope.model && $scope.model.length > 0;
       };
 
