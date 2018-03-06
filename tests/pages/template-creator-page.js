@@ -1054,7 +1054,7 @@ var TemplateCreatorPage = function () {
 
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function () {
-    var multiple = element(by.css('.detail-options .element-toggle'));
+    var multiple = element(by.css('.detail-options .cardinality-tab'));
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
