@@ -35,7 +35,8 @@ describe('metadata-creator', function () {
     return result;
   };
 
-  beforeEach(function () {
+  beforeEach(function (x) {
+    console.log(x)
   });
 
   afterEach(function () {
@@ -89,7 +90,7 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should populate the sample template", function () {
+    xit("should populate the sample template", function () {
       console.log("metadata-creator should populate the sample template");
       workspacePage.populateResource(template, 'template');
       metadataPage.addFieldValue('value');
