@@ -36,7 +36,6 @@ describe('metadata-creator', function () {
   };
 
   beforeEach(function (x) {
-    console.log(x)
   });
 
   afterEach(function () {
@@ -58,7 +57,8 @@ describe('metadata-creator', function () {
 
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
-    it("metadata-creator create metadata should have a logo and control bar", function () {
+    it("metadata-creator create metadata should have a logo and control bar", function (fullName) {
+      console.log('fullName=',fullName);
       console.log("metadata-creator should have a logo and control bar");
       workspacePage.hasLogo();
       workspacePage.hasControlBar();
