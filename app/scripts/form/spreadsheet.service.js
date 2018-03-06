@@ -472,6 +472,7 @@ define([
           };
 
           hooks.forEach(function (hook) {
+            //console.log('hook',hook)
             var checked = '';
             if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
                 hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
@@ -493,7 +494,7 @@ define([
               }
 
               if (hook === 'afterCreateRow') {
-                //console.log('afterCreateRow');
+                console.log('afterCreateRow');
                 $scope.spreadsheetDataScope.addCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);

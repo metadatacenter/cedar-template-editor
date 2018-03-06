@@ -420,7 +420,6 @@ define([
       };
 
       $scope.addRow = function () {
-        console.log('addRow');
         if ($scope.isSpreadsheetView()) {
           SpreadsheetService.addRow($scope);
         } else {
@@ -611,16 +610,12 @@ define([
             } else {
 
               // attribute value, update value in parent model
-              //var attributeName = $scope.valueArray[$scope.index]['@value'];
+              var attributeName = $scope.valueArray[$scope.index]['@value'];
 
               if (attributeName && parent[attributeName]) {
                 parent[attributeName]['@value'] = newValue;
               } else {
-                attributeName = $scope.getNewAttributeName($scope.fieldKey, parent);
-                if (!$scope.isDuplicateAttribute(attributeName, parent)) {
-                  parent[attributeName] = {'@value': newValue};
-                  parent[$scope.fieldKey][$scope.index] = attributeName;
-                }
+                console.log('Error: cannot update attribute value', attributeName, parent);
               }
             }
 
@@ -826,7 +821,6 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-        console.log('addMoreInput')
         if (dms.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
@@ -1112,7 +1106,6 @@ define([
       );
 
       $scope.createExtraRows = function () {
-        console.log('createExtraRows',$scope.model.length,maxItems);
         // make sure there are at least 10 entries in the spreadsheet
         var maxItems = dms.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
