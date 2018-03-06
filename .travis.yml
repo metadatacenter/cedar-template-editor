@@ -13,7 +13,7 @@ branches:
   only:
   - develop
   - master
-  - feature/a-v-f
+  - feature/patch-to-a-v-f
 notifications:
   slack:
     on_success: never
