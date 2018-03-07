@@ -793,7 +793,7 @@ var WorkspacePage = function () {
 
     return createFirst;
   };
-  this.selectResource = selectResource;
+  this.selectResource = selectResource; 
 
   // double click the resource
   this.doubleClickResource = function (name, type) {
