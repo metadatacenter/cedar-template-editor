@@ -144,14 +144,17 @@ var WorkspacePage = function () {
   var createShareDisabled = createRightClickMenuItemList.element(by.css('li > a.share.link-disabled'));
   var createMoveDisabled = createRightClickMenuItemList.element(by.css('li > a.move.link-disabled'));
   var createDeleteDisabled = createRightClickMenuItemList.element(by.css('li > a.delete.link-disabled'));
-  var creatCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
+  var createCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
   var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
 
-  this.myReporter = {
-    specDone: function (result) {
-      console.log(result.fullName + '...' + result.status);
-    }
+  this.myReporter = function () {
+    var reporter = {
+      specDone: function (result) {
+        console.log(result.fullName + '...' + result.status);
+      }
+    };
+    return reporter;
   };
 
 
