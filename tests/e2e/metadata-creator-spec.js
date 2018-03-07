@@ -35,16 +35,17 @@ describe('metadata-creator', function () {
     return result;
   };
 
+  var myReporter = {
+    specDone: function(result) {
+      console.log(result.fullName, result.status);
+    },
+  };
+  jasmine.getEnv().addReporter(myReporter);
+
   beforeEach(function () {
   });
 
   afterEach(function () {
-    var myReporter = {
-      specDone: function(result) {
-        console.log(result.fullName, result.status);
-      },
-    };
-    jasmine.getEnv().addReporter(myReporter);
   });
 
   it("should be on the workspace", function () {
