@@ -6,7 +6,7 @@
   },
   {
     "type": "airr",
-    "template": "airr template",
+    "template": "miairr",
     "action": ["validation", "submission"]
   },
   {

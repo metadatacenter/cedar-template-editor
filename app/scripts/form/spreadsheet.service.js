@@ -472,6 +472,7 @@ define([
           };
 
           hooks.forEach(function (hook) {
+            //console.log('hook',hook)
             var checked = '';
             if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
                 hook === 'afterCreateCol' || hook === 'afterRemoveCol') {

@@ -23,6 +23,8 @@ describe('update-description', function () {
     return result;
   };
 
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
+
   beforeEach(function () {
   });
 
@@ -31,14 +33,12 @@ describe('update-description', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log('update-description should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('in info panel', function () {
 
     it("should fail to update description of a resource shared as readable with Everybody group", function () {
-      console.log('update-description should fail to update description of a resource shared as readable with Everybody group');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.closeInfoPanel();
@@ -61,7 +61,6 @@ describe('update-description', function () {
     });
 
     it("should update description of a resource shared as writable with Everybody group", function () {
-      console.log('update-description should update description of a resource shared as writable with Everybody group');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var template = workspacePage.createTemplate('Writable');
@@ -84,7 +83,6 @@ describe('update-description', function () {
     });
 
     it("should fail to update description of a resource shared as readable with a user", function () {
-      console.log('update-description should fail to update description of a resource shared as readable with a user');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var template = workspacePage.createTemplate('Readable');
@@ -105,7 +103,6 @@ describe('update-description', function () {
     });
 
     it("should update description of a resource shared as writable with a user", function () {
-      console.log('update-description should update description of a resource shared as writable with a user');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var template = workspacePage.createTemplate('Writable');
@@ -130,7 +127,6 @@ describe('update-description', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('update-description should delete ' + resources.length + ' resource from the user workspace');
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
           console.log("update-description should delete " + resource.title + " for user " + resource.username);

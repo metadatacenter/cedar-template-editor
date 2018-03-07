@@ -1,5 +1,6 @@
 <div ng-init="initializeValue(); initializeValueType()">
 
+
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
     <div ng-if="isListView() && valueArray[index]['@value']"
         aria-label="{{getDescription()}}"

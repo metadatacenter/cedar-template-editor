@@ -31,6 +31,8 @@ describe('copy and move', function () {
     return result;
   };
 
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
+
   beforeEach(function () {
   });
 
@@ -39,15 +41,12 @@ describe('copy and move', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log('should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('copy and move', function () {
 
     it('should create target folders', function () {
-      console.log('copy and move should create target folders');
-
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       target1Folder = workspacePage.createFolder('Target');
       shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
@@ -65,8 +64,6 @@ describe('copy and move', function () {
     });
 
     it("should copy and move resource to folder", function () {
-      console.log('copy and move should copy and move resource to folder');
-
       // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -87,9 +84,7 @@ describe('copy and move', function () {
     });
 
     // TODO failed
-    xit("should fail to move and succeed to copy a readable resource", function () {
-      console.log('copy and move should fail to move and succeed to copy a readable resource');
-
+    it("should fail to move and succeed to copy a readable resource", function () {
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -112,8 +107,6 @@ describe('copy and move', function () {
     });
 
     it("should fail to copy and move to a readable folder", function () {
-      console.log('copy and move should fail to copy and move to a readable folder');
-
       // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -135,8 +128,6 @@ describe('copy and move', function () {
     });
 
     it("should move resource to a writable folder", function () {
-      console.log('copy and move should move resource to writable folder');
-
       // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -155,7 +146,6 @@ describe('copy and move', function () {
     });
 
     it("should mark targets as deletable", function () {
-      console.log('copy and move should mark targets as deletable');
       resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
       resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
       resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
@@ -165,17 +155,17 @@ describe('copy and move', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log('copy and move should delete ' + resources.length + ' resources from the user workspace');
-      for (var i = 0; i < resources.length; i++) {
-        (function (resource) {
-          console.log("copy and move, share and delete should delete " + resource.title + " for user " + resource.username);
-          workspacePage.login(resource.username, resource.password);
-          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
-          toastyModal.isSuccess();
-          workspacePage.clearSearch();
-        })
-        (resources[i]);
-      }
+      workspacePage.deleteResources(resources);
+      // for (var i = 0; i < resources.length; i++) {
+      //   (function (resource) {
+      //     console.log("copy and move, share and delete should delete " + resource.title + " for user " + resource.username);
+      //     workspacePage.login(resource.username, resource.password);
+      //     workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
+      //     toastyModal.isSuccess();
+      //     workspacePage.clearSearch();
+      //   })
+      //   (resources[i]);
+      // }
     });
   });
 

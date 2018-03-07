@@ -137,6 +137,10 @@ define([
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
         scope.setActive(0, true);
+        if (dms.getMaxItems(scope.element)) {
+          // create all the rows if the maxItems is a fixed number
+          scope.createExtraRows();
+        }
         $timeout(function () {
           SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
             return false;
@@ -210,10 +214,17 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function () {
+        console.log('createExtraRows');
         var maxItems = dms.getMaxItems(scope.element);
-        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+        var max = maxItems ? maxItems : 10;
+        while ((scope.model.length < max)) {
           scope.addMoreInput();
         }
+      };
+
+      scope.addMoreInput = function () {
+        scope.addElement();
+        scope.pageMinMax();
       };
 
       scope.deleteExtraRows = function () {
@@ -422,10 +433,7 @@ define([
         }
       };
 
-      scope.addMoreInput = function () {
-        scope.addElement();
-        scope.pageMinMax();
-      };
+
 
       // toolbar pager min and max
       scope.pageMinMax = function () {
