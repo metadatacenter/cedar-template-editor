@@ -475,7 +475,7 @@ var WorkspacePage = function () {
     clearSearch();
   };
 
-  this.deleteResourceViaRightClick = function (name, type) {
+  var deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
     // is delete enabled?
@@ -484,6 +484,7 @@ var WorkspacePage = function () {
     sweetAlertModal.confirm();
     return true;
   };
+  this.deleteResourceViaRightClick;
 
   this.setSortOrder = function (order) {
 
@@ -854,7 +855,7 @@ var WorkspacePage = function () {
   };
 
   // login as the specified user with the given password
-  this.login = function (username, password) {
+  var login = function (username, password) {
     this.logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
@@ -868,6 +869,7 @@ var WorkspacePage = function () {
       });
     });
   };
+  this.login = login;
 
   // check whether the given username corresponds to the currently logged in user
   this.isUserLoggedIn = function (username) {
@@ -911,10 +913,10 @@ var WorkspacePage = function () {
     for (var i = 0; i < resources.length; i++) {
       (function (resource) {
        console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
-        this.login(resource.username, resource.password);
-        this.deleteResourceViaRightClick(resource.title, resource.type);
+        login(resource.username, resource.password);
+        deleteResourceViaRightClick(resource.title, resource.type);
         toastyModal.isSuccess();
-        this.clearSearch();
+        clearSearch();
       })
       (resources[i]);
     }
