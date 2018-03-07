@@ -83,7 +83,8 @@ var WorkspacePage = function () {
   var createDetailsPanelOwner = createDetailsPanel.element(by.css('.owner'));
   var createDetailsPanelOwnerValue = createDetailsPanel.element(by.css('div.info > div> div.owner'));
   var createDetailsPanelDescription = createDetailsPanel.element(by.id('edit-description'));
-  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(by.css('div.description > div.edit > button'));
+  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(
+      by.css('div.description > div.edit > button'));
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
@@ -148,9 +149,10 @@ var WorkspacePage = function () {
 
 
   this.myReporter = {
-      specDone: function(result) {
-        console.log(result.fullName + '...' + result.status );
-      };
+    specDone: function (result) {
+      console.log(result.fullName + '...' + result.status);
+    }
+  };
 
 
   this.createMoreOptionsButton = function () {
@@ -372,7 +374,7 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(moveMenuItem));
   };
 
-  this.clickSharedWithMe = function() {
+  this.clickSharedWithMe = function () {
     browser.wait(EC.elementToBeClickable(sharedWithMe));
     sharedWithMe.click();
   };
