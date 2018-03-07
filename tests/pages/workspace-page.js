@@ -903,11 +903,12 @@ var WorkspacePage = function () {
   };
 
   // right-click on a resource
-  this.rightClickResource = function (name, type) {
+  var rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();
     browser.actions().click(protractor.Button.RIGHT).perform();
   };
+  this.rightClickResource = rightClickResource;
 
   this.deleteResources = function (resources) {
     console.log('deleteResources',resources);
