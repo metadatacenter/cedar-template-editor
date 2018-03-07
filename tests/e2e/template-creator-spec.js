@@ -142,19 +142,34 @@ describe('template-creator', function () {
 
   it("should update the json when changes ", function () {
     templatePage.createPage('template');
-    templatePage.addField('textfield', isMore, title, description);
     templatePage.clickJsonPreview();
-  });
 
-  it("should get the json content", function () {
+    templatePage.jsonPreview().getText().then(function (value) {
+      cleanJson = JSON.parse(value);
+      console.log('cleanJson',cleanJson);
+      delete cleanJson._tmp;
+      expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+    });
+
+    templatePage.addField('textfield', isMore, title, description);
+
     templatePage.jsonPreview().getText().then(function (value) {
       dirtyJson = JSON.parse(value);
       console.log('dirtyJson',dirtyJson);
-      console.log('emptyTemplateJson',templatePage.emptyTemplateJson);
       delete dirtyJson._tmp;
-      expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+      expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
     });
   });
+
+  // it("should get the json content", function () {
+  //   templatePage.jsonPreview().getText().then(function (value) {
+  //     dirtyJson = JSON.parse(value);
+  //     console.log('dirtyJson',dirtyJson);
+  //     console.log('emptyTemplateJson',templatePage.emptyTemplateJson);
+  //     delete dirtyJson._tmp;
+  //     expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+  //   });
+  // });
 
   it("should click back arrow", function () {
     templatePage.clickBackArrow();
