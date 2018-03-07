@@ -150,14 +150,15 @@ describe('template-creator', function () {
     templatePage.jsonPreview().getText().then(function (value) {
       dirtyJson = JSON.parse(value);
       console.log('dirtyJson',dirtyJson);
+      console.log('emptyTemplateJson',templatePage.emptyTemplateJson);
       delete dirtyJson._tmp;
-      //expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+      expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
     });
   });
 
-  xit("should click back arrow", function () {
+  it("should click back arrow", function () {
     templatePage.clickBackArrow();
-    //sweetAlertModal.confirm();
+    sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
 
