@@ -564,15 +564,30 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.visibilityOf(lock));
   };
 
+  this.isUnlocked = function () {
+    var unlock = element(by.css('#headerCtrl .feedback-form i.fa-unlock'));
+    browser.wait(EC.visibilityOf(unlock));
+  };
+
   this.isDirty = function () {
     var dirty = element(by.css('#headerCtrl .feedback-form i.fa-circle-o'));
     browser.wait(EC.visibilityOf(dirty));
+  };
+
+  this.isClean = function () {
+    var clean = element(by.css('#headerCtrl .feedback-form i.fa-circle'));
+    browser.wait(EC.visibilityOf(clean));
   };
 
   this.isValid = function () {
     var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
     browser.wait(EC.visibilityOf(valid));
   };
+  this.isInvalid = function () {
+    var invalid = element(by.css('#headerCtrl .feedback-form i.fa-exclamation-triangle'));
+    browser.wait(EC.visibilityOf(invalid));
+  };
+
 
   this.clickSave = function (type) {
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
