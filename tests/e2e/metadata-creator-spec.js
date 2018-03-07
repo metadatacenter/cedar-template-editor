@@ -261,7 +261,7 @@ describe('metadata-creator', function () {
 
   describe('create spreadsheets', function () {
 
-    it("should view a template as spreadsheet", function () {
+    xit("should view a template as spreadsheet", function () {
       //console.log("metadata-creator should view a multi-instance field as spreadsheet");
 
       var template = workspacePage.createTemplate('Source');
