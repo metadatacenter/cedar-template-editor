@@ -146,15 +146,12 @@ var WorkspacePage = function () {
   var creatCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
   var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
-  var myReporter = {
-    specDone: function(result) {
-      console.log(result.fullName + '...' + result.status );
-    },
-  };
 
-  this.myReporter = function() {
-    return myReporter;
-  };
+  this.myReporter = {
+      specDone: function(result) {
+        console.log(result.fullName + '...' + result.status );
+      };
+
 
   this.createMoreOptionsButton = function () {
     return createMoreOptionsButton;

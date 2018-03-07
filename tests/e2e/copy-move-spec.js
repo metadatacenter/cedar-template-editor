@@ -41,7 +41,6 @@ describe('copy and move', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-
     workspacePage.onWorkspace();
   });
 
@@ -85,7 +84,7 @@ describe('copy and move', function () {
     });
 
     // TODO failed
-    xit("should fail to move and succeed to copy a readable resource", function () {
+    it("should fail to move and succeed to copy a readable resource", function () {
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');

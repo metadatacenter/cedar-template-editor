@@ -18,7 +18,7 @@ describe('share-delete', function () {
   var sweetAlertModal = SweetAlertModal;
   var target1Folder;
   var target2Folder;
-  var target1Writable;   
+  var target1Writable;
 
 
   var resources = [];
