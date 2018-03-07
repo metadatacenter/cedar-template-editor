@@ -494,7 +494,7 @@ define([
               }
 
               if (hook === 'afterCreateRow') {
-                console.log('afterCreateRow');
+                //console.log('afterCreateRow');
                 $scope.spreadsheetDataScope.addCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);

@@ -782,38 +782,30 @@ define([
               for (var i = 0; i < parentModel.length; i++) {
 
                 // create the obj in the attribute-value field
-                // var obj = {};
-                // obj['@value'] = newAttributeName;
                 parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
-
-                var obj = {};
-                obj['@value'] = newAttributeName;
-                $scope.valueArray.splice($scope.index + 1, 0, obj);
 
                 // create the new field at the parent level
                 var valueObject = {};
                 valueObject["@value"] = attributeValue;
                 parentModel[i][newAttributeName] = valueObject;
-                $scope.attributeValueArray.splice($scope.index + 1, 0, valueObject);
-
               }
             } else {
 
               // create the obj in the attribute-value field
-              // var obj = {};
-              // obj['@value'] = newAttributeName;
               parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
 
               // create the new field at the parent level
               var valueObject = {};
               valueObject["@value"] = attributeValue;
               parentModel[newAttributeName] = valueObject;
-
-              $scope.attributeValueArray.push(valueObject);
             }
 
             // activate the new instance
-            $timeout($scope.setActive($scope.index + 1, true), 100);
+            $timeout(function () {
+              $scope.setValueArray();
+              $scope.setAttributeValueArray();
+              $scope.setActive($scope.index + 1, true);
+            }, 100);
 
           }
         }
