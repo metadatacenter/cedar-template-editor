@@ -140,9 +140,9 @@ describe('template-creator', function () {
     workspacePage.hasLogo();
   });
 
-  xit("should update the json when changes ", function () {
+  it("should update the json when changes ", function () {
     templatePage.createPage('template');
-    //templatePage.addField('textfield', isMore, title, description);
+    templatePage.addField('textfield', isMore, title, description);
     templatePage.clickJsonPreview();
   });
 
@@ -277,10 +277,6 @@ describe('template-creator', function () {
                 // is the first selected and the second deselected
                 expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
                 expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
-
-              });
-
-              it("should be dirty and valid ", function () {
 
                 templatePage.isDirty();
                 templatePage.isValid();
