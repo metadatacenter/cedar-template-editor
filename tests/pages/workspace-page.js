@@ -907,17 +907,18 @@ var WorkspacePage = function () {
   };
 
   this.deleteResources = function (resources) {
-  for (var i = 0; i < resources.length; i++) {
-    (function (resource) {
-      console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
-      this.login(resource.username, resource.password);
-      this.deleteResourceViaRightClick(resource.title, resource.type);
-      toastyModal.isSuccess();
-      this.clearSearch();
-    })
-    (resources[i]);
+    console.log('deleteResources',resources);
+    for (var i = 0; i < resources.length; i++) {
+      (function (resource) {
+       console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
+        this.login(resource.username, resource.password);
+        this.deleteResourceViaRightClick(resource.title, resource.type);
+        toastyModal.isSuccess();
+        this.clearSearch();
+      })
+      (resources[i]);
+    }
   };
-  }
 
 };
 
