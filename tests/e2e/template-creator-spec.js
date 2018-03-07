@@ -146,7 +146,7 @@ describe('template-creator', function () {
     templatePage.clickJsonPreview();
   });
 
-  xit("should get the json content", function () {
+  it("should get the json content", function () {
     templatePage.jsonPreview().getText().then(function (value) {
       dirtyJson = JSON.parse(value);
       console.log('dirtyJson',dirtyJson);
