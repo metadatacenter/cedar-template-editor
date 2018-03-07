@@ -13,7 +13,6 @@ var _ = require('../libs/lodash.min.js');
 describe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
-
   jasmine.getEnv().addReporter(workspacePage.myReporter());
 
   // before each test maximize the window area for clicking

@@ -31,12 +31,7 @@ describe('copy and move', function () {
     return result;
   };
 
-  var myReporter = {
-    specDone: function(result) {
-      console.log(result.fullName + '...' + result.status );
-    },
-  };
-  jasmine.getEnv().addReporter(myReporter);
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
 
   beforeEach(function () {
   });
