@@ -146,62 +146,30 @@ describe('template-creator', function () {
 
     templatePage.jsonPreview().getText().then(function (value) {
       cleanJson = JSON.parse(value);
-      console.log('cleanJson',cleanJson);
-      delete cleanJson._tmp;
-      expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+
+      templatePage.addField('textfield', isMore, title, description);
+
+      templatePage.jsonPreview().getText().then(function (value) {
+        dirtyJson = JSON.parse(value);
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
+
+        templatePage.clickBackArrow();
+        sweetAlertModal.confirm();
+        workspacePage.onWorkspace();
+      });
     });
-
-    templatePage.addField('textfield', isMore, title, description);
-
-    templatePage.jsonPreview().getText().then(function (value) {
-      dirtyJson = JSON.parse(value);
-      console.log('dirtyJson',dirtyJson);
-      delete dirtyJson._tmp;
-      expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
-    });
   });
 
-  // it("should get the json content", function () {
-  //   templatePage.jsonPreview().getText().then(function (value) {
-  //     dirtyJson = JSON.parse(value);
-  //     console.log('dirtyJson',dirtyJson);
-  //     console.log('emptyTemplateJson',templatePage.emptyTemplateJson);
-  //     delete dirtyJson._tmp;
-  //     expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
-  //   });
-  // });
-
-  it("should click back arrow", function () {
-    templatePage.clickBackArrow();
-    sweetAlertModal.confirm();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check back arrow", function () {
-    templatePage.createPage('template');
-    templatePage.clickBackArrow();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check valid", function () {
+  it("should check valid and dirty", function () {
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isValid();
-    templatePage.clickBackArrow();
-    sweetAlertModal.confirm();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check dirty", function () {
-    templatePage.createPage('template');
-    templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isDirty();
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
-
-
+  
   describe('create resource', function () {
 
     // repeat tests for both template and element editors
