@@ -562,19 +562,16 @@ var TemplateCreatorPage = function () {
   this.isLocked = function () {
     var lock = element(by.css('#headerCtrl .feedback-form i.fa-lock'));
     browser.wait(EC.visibilityOf(lock));
-    return true;
   };
 
   this.isDirty = function () {
     var dirty = element(by.css('#headerCtrl .feedback-form i.fa-circle-o'));
     browser.wait(EC.visibilityOf(dirty));
-    return true;
   };
 
   this.isValid = function () {
     var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
     browser.wait(EC.visibilityOf(valid));
-    return true;
   };
 
   this.clickSave = function (type) {
