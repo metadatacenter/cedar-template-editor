@@ -440,16 +440,6 @@ describe('template-creator', function () {
 
     it('should delete resource from the user workspace', function () {
       workspacePage.deleteResources(resources);
-      // for (var i = 0; i < resources.length; i++) {
-      //   (function (resource) {
-      //     console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
-      //     workspacePage.login(resource.username, resource.password);
-      //     workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
-      //     toastyModal.isSuccess();
-      //     workspacePage.clearSearch();
-      //   })
-      //   (resources[i]);
-      // }
     });
   });
 });
