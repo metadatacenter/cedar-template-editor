@@ -793,7 +793,7 @@ var WorkspacePage = function () {
 
     return createFirst;
   };
-  this.selectResource = selectResource; 
+  this.selectResource = selectResource;
 
   // double click the resource
   this.doubleClickResource = function (name, type) {
@@ -912,7 +912,6 @@ var WorkspacePage = function () {
   this.rightClickResource = rightClickResource;
 
   this.deleteResources = function (resources) {
-    console.log('deleteResources',resources);
     for (var i = 0; i < resources.length; i++) {
       (function (resource) {
        console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
