@@ -560,7 +560,8 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //browser.wait(EC.visibilityOf(lockIcon));
+    var lock = element(by.css('#headerCtrl .feedback-form i.fa-lock'));
+    browser.wait(EC.visibilityOf(lock));
     return true;
   };
 
@@ -571,7 +572,8 @@ var TemplateCreatorPage = function () {
   };
 
   this.isValid = function () {
-    //browser.wait(EC.visibilityOf(validIcon));
+    var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
+    browser.wait(EC.visibilityOf(valid));
     return true;
   };
 
