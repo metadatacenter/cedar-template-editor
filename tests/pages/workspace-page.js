@@ -846,17 +846,18 @@ var WorkspacePage = function () {
   };
 
   // logout from the account currently logged in to
-  this.logout = function () {
+  var logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
     createUserDropdownButton.click();
     browser.wait(EC.elementToBeClickable(createLogoutMenuItem));
     createLogoutMenuItem.click();
   };
+  this.logout = logout;
 
   // login as the specified user with the given password
   var login = function (username, password) {
-    this.logout();
+    logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
