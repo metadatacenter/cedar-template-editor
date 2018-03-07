@@ -777,7 +777,7 @@ var WorkspacePage = function () {
   };
 
   // select a resource
-  this.selectResource = function (name, type) {
+  var selectResource = function (name, type) {
 
     // search for the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
@@ -793,6 +793,7 @@ var WorkspacePage = function () {
 
     return createFirst;
   };
+  this.selectResource = selectResource;
 
   // double click the resource
   this.doubleClickResource = function (name, type) {
@@ -904,7 +905,7 @@ var WorkspacePage = function () {
 
   // right-click on a resource
   var rightClickResource = function (name, type) {
-    var element = this.selectResource(name, type);
+    var element = selectResource(name, type);
     browser.actions().mouseMove(element).perform();
     browser.actions().click(protractor.Button.RIGHT).perform();
   };
