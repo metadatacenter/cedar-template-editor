@@ -37,7 +37,7 @@ describe('metadata-creator', function () {
 
   var myReporter = {
     specDone: function(result) {
-      console.log(result.fullName, result.status);
+      console.log(result.fullName + '...' + result.status );
     },
   };
   jasmine.getEnv().addReporter(myReporter);
@@ -65,28 +65,24 @@ describe('metadata-creator', function () {
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
     it("metadata-creator create metadata should have a logo and control bar", function () {
-      //console.log("metadata-creator should have a logo and control bar");
       workspacePage.hasLogo();
       workspacePage.hasControlBar();
       workspacePage.onWorkspace();
     });
 
     it("should create the sample template", function () {
-      //console.log("metadata-creator should create the sample template");
       template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should search for the sample template in the workspace ", function () {
-      //console.log("metadata-creator should search for the sample template in the workspace ");
       workspacePage.searchForResource(template, 'template');
       workspacePage.clearSearch();
       workspacePage.onWorkspace();
     });
 
     it("should add  fields to our template", function () {
-      //console.log("metadata-creator create metadata should add  fields to our template");
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.addField('textfield', false, 'two', 'two');
@@ -97,7 +93,6 @@ describe('metadata-creator', function () {
     });
 
     xit("should populate the sample template", function () {
-      //console.log("metadata-creator should populate the sample template");
       workspacePage.populateResource(template, 'template');
       metadataPage.addFieldValue('value');
       workspacePage.onMetadata();
@@ -107,14 +102,12 @@ describe('metadata-creator', function () {
     });
 
     it("should create an element", function () {
-      //console.log("metadata-creator create metadata should create an element");
       element = workspacePage.createElement('element');
       workspacePage.onWorkspace();
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should add a field to the element", function () {
-      //console.log("metadata-creator should add some fields to the element");
       workspacePage.editResource(element, 'element');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.isDirty();
@@ -126,14 +119,12 @@ describe('metadata-creator', function () {
     });
 
     it("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
-      //console.log("should add the element to the template and make the element multiple with min cardinality 0, max unlimited");
       workspacePage.editResource(template, 'template');
       templatePage.openFinder();
       finderModal.clearSearch();
     });
 
     it("should add the element to the template", function () {
-      //console.log('should add the element to the template');
       finderModal.addFirstElement(element);
       // TODO
       //templatePage.setMultiple();
@@ -148,7 +139,6 @@ describe('metadata-creator', function () {
     });
 
     it("should populate the sample template", function () {
-      //console.log("metadata-creator should populate the sample template");
       workspacePage.populateResource(template, 'template');
 
       // save file for deletion later, delete this first
@@ -156,7 +146,6 @@ describe('metadata-creator', function () {
     });
 
     xit("should open the template and make sure it is read-only mode", function () {
-      //console.log("metadata-creator should open the template and make sure it is read-only mode");
       workspacePage.editResource(template, 'template');
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
@@ -165,7 +154,6 @@ describe('metadata-creator', function () {
     });
 
     it("should open metadata with open menu", function () {
-      //console.log("metadata-creator should open metadata with open menu");
       workspacePage.editResource(template, 'metadata');
       workspacePage.onMetadata();
       metadataPage.clickBackArrow();
@@ -175,7 +163,6 @@ describe('metadata-creator', function () {
 
 
     it("should open metadata with double-click showing header, back arrow, title, and first instance of the multi-instance element", function () {
-      //console.log("metadata-creator should open metadata with double-click showing header, back arrow, title, json preview a...");
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
       expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
@@ -193,12 +180,10 @@ describe('metadata-creator', function () {
 
     // TODO should be dirty
     xit("should should be dirty", function () {
-      //console.log('should should be dirty');
       //metadataPage.isDirty();
     });
 
     it("should return to the workspace", function () {
-      //console.log("should return to the workspace");
       metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
     });
@@ -207,7 +192,6 @@ describe('metadata-creator', function () {
   describe('create static fields', function () {
 
     it("should create a template with static fields", function () {
-      console.log("metadata-creator should create a template with static fields");
       var template = workspacePage.createTemplate('Static');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
@@ -262,8 +246,6 @@ describe('metadata-creator', function () {
   describe('create spreadsheets', function () {
 
     xit("should view a template as spreadsheet", function () {
-      //console.log("metadata-creator should view a multi-instance field as spreadsheet");
-
       var template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
