@@ -270,17 +270,17 @@ describe('metadata-creator', function () {
   describe('remove all created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log("metadata-creator should delete " + resources.length + " resources from the user workspace");
-      for (var i = 0; i < resources.length; i++) {
-        (function (resource) {
-          console.log("metadata-creator should delete " + resource.title + " for user " + resource.username);
-          workspacePage.login(resource.username, resource.password);
-          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
-          toastyModal.isSuccess();
-          workspacePage.clearSearch();
-        })
-        (resources[i]);
-      }
+      workspacePage.deleteResources(resources);
+      // for (var i = 0; i < resources.length; i++) {
+      //   (function (resource) {
+      //     console.log("metadata-creator should delete " + resource.title + " for user " + resource.username);
+      //     workspacePage.login(resource.username, resource.password);
+      //     workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
+      //     toastyModal.isSuccess();
+      //     workspacePage.clearSearch();
+      //   })
+      //   (resources[i]);
+      // }
     });
   });
 

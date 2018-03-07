@@ -906,6 +906,18 @@ var WorkspacePage = function () {
     browser.actions().click(protractor.Button.RIGHT).perform();
   };
 
+  this.deleteResources = function (resources) {
+  for (var i = 0; i < resources.length; i++) {
+    (function (resource) {
+      console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
+      this.login(resource.username, resource.password);
+      this.deleteResourceViaRightClick(resource.title, resource.type);
+      toastyModal.isSuccess();
+      this.clearSearch();
+    })
+    (resources[i]);
+  };
+  }
 
 };
 
