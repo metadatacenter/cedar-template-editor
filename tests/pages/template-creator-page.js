@@ -565,7 +565,8 @@ var TemplateCreatorPage = function () {
   };
 
   this.isDirty = function () {
-    //browser.wait(EC.visibilityOf(dirtyIcon));
+    var dirty = element(by.css('#headerCtrl .feedback-form i.fa-circle-o'));
+    browser.wait(EC.visibilityOf(dirty));
     return true;
   };
 
@@ -783,7 +784,6 @@ var TemplateCreatorPage = function () {
 
   this.clickJsonPreview = function () {
     browser.executeScript("arguments[0].scrollIntoView();", showJsonLink.getWebElement());
-    console.log('got showjsonlink');
     // browser.wait(EC.visibilityOf(showJsonLink));
     // browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();

@@ -169,7 +169,7 @@ describe('template-creator', function () {
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
-  
+
   describe('create resource', function () {
 
     // repeat tests for both template and element editors
