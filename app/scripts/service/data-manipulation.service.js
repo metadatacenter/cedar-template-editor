@@ -822,11 +822,17 @@ define([
       var field;
       if (FieldTypeService.isStaticField(inputType)) {
         field = DataTemplateService.getStaticField(this.generateTempGUID());
+        field._ui.inputType = inputType;
       } else {
-        field = DataTemplateService.getField(this.generateTempGUID());
-        field.properties['@value'].type = valueType;
+        if (FieldTypeService.isAttributeValueField(inputType)) {
+          field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
+        } else {
+          field = DataTemplateService.getField(this.generateTempGUID());
+          field.properties['@value'].type = valueType;
+          field._ui.inputType = inputType;
+        }
       }
-      field._ui.inputType = inputType;
+      //field._ui.inputType = inputType;
 
       // Constrain the @type of @value according to the field type
       var valueAtType = null;
@@ -866,12 +872,12 @@ define([
         delete field.required
       }
 
-      // The value of the link field is a URI, and note that @id cannot be null
-      if (inputType == "attribute-value") {
-        field.properties["schema:isBasedOn"] = {"@type": "@id"};
-        field.minItems = 0;
-        service.cardinalizeField(field);
-      }
+      // // The value of the link field is a URI, and note that @id cannot be null
+      // if (inputType == "attribute-value") {
+      //   //field.properties["schema:isBasedOn"] = {"@type": "@id"};
+      //   // field.minItems = 0;
+      //   // service.cardinalizeField(field);
+      // }
 
       // Set default schema title and description
       var defaultTitle = $translate.instant("GENERIC.Untitled");
@@ -1522,7 +1528,7 @@ define([
 
     // get the controlled terms list for field types
     service.getFieldControlledTerms = function (node) {
-      if (service.isStaticField(node)) { // static fields
+      if (service.isStaticField(node) || service.isAttributeValueType(node)) { // static or attribute value fields
         return null;
       }
       else { // regular fields
