@@ -1,0 +1,47 @@
+{
+  "type": "array",
+  "minItems": 0,
+  "items": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@id": null,
+    "@type": "https://schema.metadatacenter.org/core/TemplateField",
+    "@context": {
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "pav": "http://purl.org/pav/",
+      "oslc": "http://open-services.net/ns/core#",
+      "schema": "http://schema.org/",
+      "schema:name": {
+        "@type": "xsd:string"
+      },
+      "schema:description": {
+        "@type": "xsd:string"
+      },
+      "pav:createdOn": {
+        "@type": "xsd:dateTime"
+      },
+      "pav:createdBy": {
+        "@type": "@id"
+      },
+      "pav:lastUpdatedOn": {
+        "@type": "xsd:dateTime"
+      },
+      "oslc:modifiedBy": {
+        "@type": "@id"
+      }
+    },
+    "type": "string",
+    "title": "",
+    "description": "",
+    "_ui": {
+      "inputType": "attribute-value"
+    },
+    "schema:name": "",
+    "schema:description": "",
+    "pav:createdOn": null,
+    "pav:createdBy": null,
+    "pav:lastUpdatedOn": null,
+    "oslc:modifiedBy": null,
+    "schema:schemaVersion": null,
+    "additionalProperties": false
+  }
+}
