@@ -242,7 +242,9 @@ define(['app', 'angular'], function (app) {
             "oslc:modifiedBy"     : "https://metadatacenter.org/users/287aef81-b87c-4278-9c40-5f3d464c5b30",
             "schema:schemaVersion": "1.1.0",
             "additionalProperties": false,
-            "$schema"             : "http://json-schema.org/draft-04/schema#"
+            "$schema"             : "http://json-schema.org/draft-04/schema#",
+            "pav:version"         : "0.0.1",
+            "bibo:status"         : "bibo:draft"
           };
           var elementId = "https://repo.metadatacenter.orgx/template-elements/7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb";
           $cedarTemplateElementScope.element = StagingService.addClonedElementToForm(

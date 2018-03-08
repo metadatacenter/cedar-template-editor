@@ -106,6 +106,8 @@ define([
           vm.canNotWrite = false;
           vm.canNotShare = false;
           vm.canNotPopulate = false;
+          vm.canNotPublish = false;
+          vm.canNotCreateDraft = false;
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
@@ -150,6 +152,10 @@ define([
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
+          vm.canPublish = canPublish;
+          vm.canPublishStatic = canPublishStatic;
+          vm.canCreateDraft = canCreateDraft;
+          vm.canCreateDraftStatic = canCreateDraftStatic;
 
           vm.editingDescription = false;
           vm.isSharedMode = isSharedMode;
@@ -234,6 +240,9 @@ define([
               resource = vm.getSelection();
             }
             var id = resource['@id'];
+            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotPublish = !vm.canPublishStatic();
+            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
@@ -242,6 +251,8 @@ define([
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
+                    vm.canNotPublish = !vm.canPublish();
+                    vm.canNotCreateDraft = !vm.canCreateDraft();
                   }
                 },
                 function (error) {
@@ -854,6 +865,28 @@ define([
 
             }
             return result;
+          }
+
+          function canPublish() {
+            return resourceService.canPublish(vm.getSelectedNode());
+          };
+
+          function canPublishStatic() {
+            return (hasSelection() &&
+                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource['bibo:status'] == 'bibo:draft');
+          }
+
+          function canCreateDraft() {
+            return resourceService.canCreateDraft(vm.getSelectedNode());
+          };
+
+          function canCreateDraftStatic() {
+            return (hasSelection() &&
+                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource['bibo:status'] == 'bibo:published');
           }
 
           function isTemplate() {

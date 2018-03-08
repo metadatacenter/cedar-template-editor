@@ -49,6 +49,8 @@ define([
           canWrite               : canWrite,
           canChangeOwner         : canChangeOwner,
           canShare               : canShare,
+          canPublish             : canPublish,
+          canCreateDraft         : canCreateDraft,
           renameNode             : renameNode,
           validateResource       : validateResource
         };
@@ -685,6 +687,26 @@ define([
             var perms = resource.currentUserPermissions;
             if (perms != null) {
               return perms.indexOf("changepermissions") != -1;
+            }
+          }
+          return false;
+        }
+
+        function canPublish(resource) {
+          if (resource != null) {
+            var perms = resource.currentUserPermissions;
+            if (perms != null) {
+              return perms.indexOf("publish") != -1;
+            }
+          }
+          return false;
+        }
+
+        function canCreateDraft(resource) {
+          if (resource != null) {
+            var perms = resource.currentUserPermissions;
+            if (perms != null) {
+              return perms.indexOf("createdraft") != -1;
             }
           }
           return false;
