@@ -703,11 +703,14 @@ define([
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           // only return non-cedar property values
-          var property = form.properties['@context'].properties[prop]['enum'][0];
-          if (property.indexOf(UrlService.schemaProperties()) == -1) {
-            result = property;
+          if (form.properties['@context'].properties[prop]) {
+            var property = form.properties['@context'].properties[prop]['enum'][0];
+
+            if (property.indexOf(UrlService.schemaProperties()) == -1) {
+              result = property;
+            }
+            break;
           }
-          break;
         }
       }
       return result;
@@ -720,8 +723,10 @@ define([
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           var randomPropertyName = service.generateGUID();
-          form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
-          break;
+          if (form.properties['@context'].properties[prop]) {
+            form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
+            break;
+          }
         }
       }
     };
