@@ -268,6 +268,7 @@ define([
 
       // toggle visibility at this index and activate if visible
       scope.toggleExpanded = function (idx) {
+        console.log('toggleExpanded',idx, scope.expanded[idx]);
         scope.expanded[idx] = !scope.expanded[idx];
         scope.setActive(idx, scope.expanded[idx]);
       };
@@ -570,6 +571,7 @@ define([
       };
 
       scope.setActive = function (idx, value) {
+        console.log('setActive',idx,value)
         var index = scope.isSpreadsheetView() ? 0 : idx;
         UIUtilService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {

@@ -14,7 +14,7 @@
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At runtime, the new form-->
-  <div class=" page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
+  <div class=" page runtime flex-container" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
     <div class="flex" style="min-height:2em;padding:5px 0;">
       <div >
@@ -37,9 +37,9 @@
     </div>
 
 
-    <ul class="treeview tv">
+    <ul class="treeview tv flex-outer" >
 
-      <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
+      <li  ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
           ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
 
@@ -51,7 +51,7 @@
 
 
         <!--If field-->
-        <div ng-if="isField(item)" class="field-instance">
+        <div ng-if="isField(item)" class="field-instance" style="width:100%">
 
           <cedar-runtime-field
               nested="false" field="form.properties[item]" model="model[item]"
@@ -67,7 +67,7 @@
         </div>
 
         <!--If element-->
-        <div ng-if="isElement(item)" class=" element-group full">
+        <div ng-if="isElement(item)" class=" element-group full" style="width:100%">
           <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
               parent-key="'form'"

@@ -151,6 +151,7 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement, attributeValueElement) {
+        //return 'valueString';
         var result = '';
         if (dms.isAttributeValueType($scope.field)) {
           if (valueElement) {

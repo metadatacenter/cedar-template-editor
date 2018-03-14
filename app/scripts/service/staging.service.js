@@ -88,7 +88,6 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
-      console.log('addFieldToStaging');
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 0;

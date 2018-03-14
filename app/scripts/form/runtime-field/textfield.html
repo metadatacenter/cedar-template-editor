@@ -1,13 +1,13 @@
-<div ng-init="initializeValue(); initializeValueType()">
+<div >
 
-  <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group has-feedback value">
-    <div aria-label="{{getDescription()}}" class="isInactive " style="display: flex;justify-content: space-between;">
-      <span>{{getValue()}}</span>
+  <!--<div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group has-feedback value" >-->
+    <!--<div aria-label="{{getDescription()}}" class="isInactive " style="display: flex;justify-content: space-between;">-->
+      <!--<span>{{getValue()}}</span>-->
       <!--<i class="cedar-svg-help-circle isInactive"  style="color:#ccc" uib-tooltip="{{getDescription()}}"  tooltip-append-to-body="true"  tooltip-placement="top" ng-if="hasDescription()"></i>-->
-    </div>
-  </div>
+    <!--</div>-->
+  <!--</div>-->
 
-  <div ng-if="isActive(index)">
+  <!--<div ng-if="isActive(index)">-->
 
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
@@ -17,34 +17,34 @@
           placeholder="{{isActive(index) ? 'enter value' : ''}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@value']">
+          ng-model="valueArray[index]['@value']">
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-    <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
-      <input type="text"
-          class="form-control select"
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter URI' : ''}}"
-          aria-label="{{getDescription()}}"
-          ng-required="isRequired()"
-          ng-model="valueElement['@id']"
-          ng-pattern="urlRegex">
-      </input>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
+    <!--<div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">-->
+      <!--<input type="text"-->
+          <!--class="form-control select"-->
+          <!--ng-class="{'isActive' : isActive(index), 'required': isRequired()}"-->
+          <!--placeholder="{{isActive(index) ? 'enter URI' : ''}}"-->
+          <!--aria-label="{{getDescription()}}"-->
+          <!--ng-required="isRequired()"-->
+          <!--ng-model="valueElement['@id']"-->
+          <!--ng-pattern="urlRegex">-->
+      <!--</input>-->
+      <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
+    <!--</div>-->
 
 
 
-    <!-- Field with values have been constrained using controlled terms -->
-    <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
-        field="field"></constrained-value>
+    <!--&lt;!&ndash; Field with values have been constrained using controlled terms &ndash;&gt;-->
+    <!--<constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"-->
+        <!--field="field"></constrained-value>-->
 
-    <!-- Field with value recommendation functionality -->
-    <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"
-        field="field"></recommended-value>
+    <!--&lt;!&ndash; Field with value recommendation functionality &ndash;&gt;-->
+    <!--<recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"-->
+        <!--field="field"></recommended-value>-->
 
-  </div>
+  <!--</div>-->
 </div>
 
 
