@@ -8,7 +8,7 @@
   </div>
 
   <!-- field title -->
-  <label ng-if="!isSectionBreak()" ng-click="setActive(0,true)" for="{{getLocator(0)}}" class="field-title"
+  <label ng-if="!isSectionBreak()" ng-click="toggleActive(0)" for="{{getLocator(0)}}" class="field-title"
       aria-label="{{getDescription()}}">
     <div class="title field">
       {{getTitle()}}<span ng-if="isRequired()" style="color:red">*</span>

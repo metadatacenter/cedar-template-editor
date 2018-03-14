@@ -349,6 +349,16 @@ define([
         }
       };
 
+      // get the field description
+      scope.getDescription = function () {
+        return DataManipulationService.getDescription(scope.element);
+      };
+
+      // has a field description?
+      scope.hasDescription = function () {
+        return scope.element && DataManipulationService.getDescription(scope.element).length > 0;
+      };
+
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
         if (scope.isMultiple()) {

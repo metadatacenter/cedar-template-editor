@@ -16,7 +16,7 @@
       </div>
     </label>
 
-    <field-toolbar ng-if="isExpanded(index)"
+    <field-toolbar style="margin-right:10px" ng-if="isExpanded(index)"
          values="valueArray" index="index" paging="!isSpreadsheetView()"
         min="pageMin" max="pageMax" range="pageRange"
         field="element" model="valueArray" index="index" view-state="viewState"
@@ -29,11 +29,11 @@
     <!-- inactive -->
     <div ng-if="!isExpanded(index)" id="{{getLocator(index)}}" style="background:transparent;padding:10px" class="form-group has-success has-feedback">
 
-      <input class="form-control select" style="background:white;"
+      <input class="form-control select" style="background:transparent;"
           id="{{getLocator(index)}}"
           type="text"
           aria-label="{{getDescription()}}"
-          ng-value="getValue()"
+          ng-value=""
           ng-disabled="true"/>
 
       <button type="button"
@@ -78,6 +78,7 @@
       <li class="tv"
           ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
           ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
+
 
         <div ng-if="isExpanded(index) && index === i" style="width:100%">
 
