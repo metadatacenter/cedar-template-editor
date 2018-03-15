@@ -508,13 +508,7 @@ define([
     // update the key values to reflect the property names or titles
     // this does not look at nested fields and elements, just top level
     service.updateKeys = function (node) {
-      service.updateKey(node, node);
-
-      if (node.type == 'array') {
-        node = node.items;
-      }
-
-      angular.forEach(node.properties, function (value, key) {
+      angular.forEach(service.propertiesOf(node), function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.updateKey(key, value, node);
         }
@@ -522,11 +516,14 @@ define([
     };
 
     service.updateKey = function (key, node, parent) {
-      if (parent && node && (node['@id'] != parent['@id'])) {
+      if (parent && node && (service.getId(node) != service.getId(parent))) {
 
         var title = service.getTitle(node);
         var labels = service.getPropertyLabels(parent);
-        if (DataUtilService.isElement(node)) {
+        var isElement = service.isElement(node);
+
+        // TODO why is this different for an element
+        if (isElement) {
           labels[key] = labels[key] || title;
         } else {
           labels[key] = title || labels[key];
@@ -536,7 +533,7 @@ define([
     };
 
     service.isElement = function (node) {
-      return DataUtilService.isElement(node);
+      return DataUtilService.isElement(service.schemaOf(node));
     };
 
     //
@@ -768,6 +765,7 @@ define([
     // Relabel the element key with a new value from the propertyLabels
     service.relabel = function (node, currentKey) {
 
+
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
@@ -775,6 +773,7 @@ define([
       var suggestedKey = service.getFieldName(newLabel);
 
       var newKey = service.getAcceptableKey(p, suggestedKey, currentKey);
+      console.log('relabel',currentKey, newKey);
 
       if (newKey == currentKey) {
         // Do nothing. It's not necessary to relabel
