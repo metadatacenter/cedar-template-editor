@@ -21,38 +21,40 @@ define([
 
         var searchTerm = null;
         var service = {
-          createFolder           : createFolder,
-          deleteFolder           : deleteFolder,
-          deleteResource         : deleteResource,
-          getFacets              : getFacets,
-          getResourceDetail      : getResourceDetail,
-          getResourceDetailFromId:getResourceDetailFromId,
-          getResources           : getResources,
-          searchResources        : searchResources,
+          createFolder             : createFolder,
+          deleteFolder             : deleteFolder,
+          deleteResource           : deleteResource,
+          getFacets                : getFacets,
+          getResourceDetail        : getResourceDetail,
+          getResourceDetailFromId  : getResourceDetailFromId,
+          getResources             : getResources,
+          searchResources          : searchResources,
           getSearchResourcesPromise: getSearchResourcesPromise,
-          hasMetadata             : hasMetadata,
-          sharedWithMeResources  : sharedWithMeResources,
-          updateFolder           : updateFolder,
-          copyResourceToWorkspace: copyResourceToWorkspace,
-          copyResource           : copyResource,
-          moveResource           : moveResource,
-          getResourceShare       : getResourceShare,
-          setResourceShare       : setResourceShare,
-          getUsers               : getUsers,
-          getGroups              : getGroups,
-          createGroup            : createGroup,
-          updateGroup            : updateGroup,
-          deleteGroup            : deleteGroup,
-          getGroupMembers        : getGroupMembers,
-          updateGroupMembers     : updateGroupMembers,
-          canRead                : canRead,
-          canWrite               : canWrite,
-          canChangeOwner         : canChangeOwner,
-          canShare               : canShare,
-          canPublish             : canPublish,
-          canCreateDraft         : canCreateDraft,
-          renameNode             : renameNode,
-          validateResource       : validateResource
+          hasMetadata              : hasMetadata,
+          sharedWithMeResources    : sharedWithMeResources,
+          updateFolder             : updateFolder,
+          copyResourceToWorkspace  : copyResourceToWorkspace,
+          copyResource             : copyResource,
+          moveResource             : moveResource,
+          getResourceShare         : getResourceShare,
+          setResourceShare         : setResourceShare,
+          getUsers                 : getUsers,
+          getGroups                : getGroups,
+          createGroup              : createGroup,
+          updateGroup              : updateGroup,
+          deleteGroup              : deleteGroup,
+          getGroupMembers          : getGroupMembers,
+          updateGroupMembers       : updateGroupMembers,
+          canRead                  : canRead,
+          canWrite                 : canWrite,
+          canChangeOwner           : canChangeOwner,
+          canShare                 : canShare,
+          canPublish               : canPublish,
+          canCreateDraft           : canCreateDraft,
+          publishResource          : publishResource,
+          createDraftResource      : createDraftResource,
+          renameNode               : renameNode,
+          validateResource         : validateResource
         };
         return service;
 
@@ -433,8 +435,8 @@ define([
         // private function
         function addCommonParameters(params, options) {
           var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function (obj) {
-                return obj.resourceType
-              });
+            return obj.resourceType
+          });
           params['resource_types'] = resourceTypes.join(',');
           if (angular.isArray(options.sort)) {
             params['sort'] = options.sort.join(',');
@@ -507,6 +509,39 @@ define([
               errorCallback
           );
         }
+
+        function publishResource(resource, newVersion, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          postData['nodeType'] = resource['nodeType'];
+          postData['newVersion'] = newVersion;
+          var url = urlService.publishResource();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function createDraftResource(resource, folderId, newVersion, propagateSharing, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          postData['nodeType'] = resource['nodeType'];
+          postData['newVersion'] = newVersion;
+          postData['folderId'] = folderId;
+          postData['propagateSharing'] = propagateSharing;
+          var url = urlService.publishResource();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
 
         function getResourceShare(resource, successCallback, errorCallback) {
           var url;

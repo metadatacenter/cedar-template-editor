@@ -26,6 +26,8 @@ define([
         delete           : '=',
         copy             : '=',
         rename           : '=',
+        publish          : '=',
+        createDraft      : '=',
         canNotPopulate   : '=',
         canNotPublish    : '=',
         canNotCreateDraft: '=',

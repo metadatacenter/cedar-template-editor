@@ -143,7 +143,8 @@
     "six": "six",
     "seven": "seven",
     "eight": "eight",
-    "unlimited": "unlimited"
+    "unlimited": "unlimited",
+    "Published": "Published"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -269,6 +270,10 @@
       "moveResource": {
         "success": "The resource '{{title}}' was moved!",
         "error": "There was an error while moving the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "publishResource": {
+        "success": "The resource '{{title}}' was published!",
+        "error": "There was an error while publishing the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {

@@ -95,6 +95,8 @@ define([
           vm.launchInstance = launchInstance;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
+          vm.publishResource = publishResource;
+          vm.createDraftResource = createDraftResource;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -615,6 +617,50 @@ define([
             );
           }
 
+          function publishResource(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+            var newVersion = '0.0.2';
+            resourceService.publishResource(
+                resource,
+                newVersion,
+                function (response) {
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": resource.name},
+                      'GENERIC.Published');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.publishResource.error', response);
+                }
+            );
+          }
+
+          function createDraftResource(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+            var folderId = vm.currentFolderId;
+            if (!folderId) {
+              folderId = CedarUser.getHomeFolderId();
+            }
+            var newVersion = '0.0.2';
+            var propagateSharing = true;
+            resourceService.createDraftResource(
+                resource,
+                folderId,
+                newVersion,
+                propagateSharing,
+                function (response) {
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": resource.name},
+                      'GENERIC.CreatedDraft');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.createDraftResource.error', response);
+                }
+            );
+          }
 
           function launchInstance(resource) {
 
