@@ -288,7 +288,7 @@ define([
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType)) {
+      if (!FieldTypeService.isStaticField(fieldType) && !DataManipulationService.isAttributeValueType(field)) {
         var randomPropertyName = DataManipulationService.generateGUID();
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
@@ -297,6 +297,12 @@ define([
         }
         element.properties["@context"].required.push(fieldName);
       }
+
+      // TODO put some more specific stuff here
+      if (FieldTypeService.isAttributeValueField(fieldType)) {
+        element.additionalProperties = true;
+      }
+
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);
 
@@ -304,7 +310,7 @@ define([
       element.properties[fieldName] = field;
 
       // Add field to the element.required array it it's not static
-      if (!DataManipulationService.isStaticField(field)) {
+      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
 
