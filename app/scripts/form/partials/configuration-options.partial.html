@@ -13,7 +13,7 @@
           ng-click="setTab('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
-      <div class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
+      <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>

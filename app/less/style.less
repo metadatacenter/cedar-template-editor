@@ -267,7 +267,7 @@ button {
     .feedback-form {
       font-size: 20px;
       i {
-        margin: 0 2px;
+        margin: 0 10px;
         color: #fff;
       }
       i.fa.fa-lock, i.fa.fa-exclamation-triangle, i.fa.fa-circle-o {
@@ -1984,14 +1984,14 @@ body.search-browse-modal {
     .element-root.selectable-element {
       border: 1px solid @gray3;
       padding: 0px 14px 0px 16px;
-      margin-bottom: 16px;
+      margin-bottom: 5px;
       background-color: #e8e8e8;
     }
 
     .element-root.selected-element {
       border: 2px solid #a8a8a8;
       padding: 0px 14px 0px 16px;
-      margin-bottom: 16px;
+      margin-bottom: 5px;
 
     }
 
@@ -2906,7 +2906,6 @@ section.dashboard-elements {
   .toolbar {
     padding: 0px 22px 0 0;
     font-size: 18px;
-    visibility: hidden;
     button, .paging {
       background-color: transparent;
     }
@@ -2953,8 +2952,9 @@ section.dashboard-elements {
     cursor: pointer;
   }
 
-  .row.tools {
-    padding: 5px 0;
+  .tools {
+    min-height:2em;
+    padding:5px 0;
   }
 
   .row.isActive, .row:hover {
@@ -3145,7 +3145,7 @@ section.dashboard-elements {
       }
 
       .answer {
-        padding: 5px 20px;
+        //padding: 5px 20px;
       }
     }
 
@@ -3503,12 +3503,12 @@ section.dashboard-elements {
   }
 
   ::-webkit-scrollbar:vertical {
-    width: 9px;
+    width: 12px;
     //margin:10px 0;
   }
 
   ::-webkit-scrollbar:horizontal {
-    height: 9px;
+    height: 12px;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -3518,7 +3518,7 @@ section.dashboard-elements {
   }
 
   ::-webkit-scrollbar-track {
-    background-color: transparent;
+    background-color: #EEEEEE;
     border-radius: 0px;
   }
 
@@ -6204,13 +6204,13 @@ body .template-header .controlled-terms-modal {
   }
 }
 
-.runtime .field-instance.multiple-instance-field {
-  border: 1px solid #ddd;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  margin-bottom: 5px;
-  background-color: #e8e8e8;
-}
+.field-instance.multiple-instance-field {
+   border: 1px solid #ddd;
+   padding-top: 2px;
+   padding-bottom: 2px;
+   margin-bottom: 5px !important;
+   background-color: #e8e8e8;
+ }
 
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -7531,7 +7531,12 @@ table.apiKey {
   max-height: 20px;
   margin: 0;
   padding: 0;
+  display:inline;
+  position:relative;
+  left:-10px;top:-10px;
+  font-size:smaller;
   button {
+    display:inline;
     margin: 0;
     padding: 0 5px;
     background: @primary-accent;
@@ -7634,4 +7639,16 @@ table.message {
   padding-top: 10px;
 
 }
+
+.flex {
+  display:flex;
+  justify-content:space-between;
+  align-content: center;
+}
+
+.flex-right {
+  display:flex;
+  justify-content:flex-end;
+}
+
 

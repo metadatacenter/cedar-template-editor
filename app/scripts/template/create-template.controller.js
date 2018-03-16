@@ -126,23 +126,40 @@ define([
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate($routeParams.id),
                 function (response) {
+
                   $scope.form = response.data;
-                  console.log('getTemplate',$scope.form);
-
                   var copiedForm = jQuery.extend(true, {}, $scope.form);
-                  checkValidation(copiedForm);
+                  if (copiedForm) {
+                    return resourceService.validateResource(
+                        copiedForm, CONST.resourceType.TEMPLATE,
+                        function (response) {
+                          //TODO turn this off for now
+                          //if (response.validates == "true") {
 
-                  HeaderService.dataContainer.currentObjectScope = $scope.form;
-                  $rootScope.keyOfRootElement = $scope.form["@id"];
-                  $rootScope.rootElement = $scope.form;
-                  $rootScope.jsonToSave = $scope.form;
-                  DataManipulationService.createDomIds($scope.form);
-                  //$scope.getType();
-                  $rootScope.$broadcast('form:clean');
-
-                  getDetails($scope.form["@id"]);
-
-
+                            $rootScope.setValidation(true);
+                            HeaderService.dataContainer.currentObjectScope = $scope.form;
+                            $rootScope.keyOfRootElement = $scope.form["@id"];
+                            $rootScope.rootElement = $scope.form;
+                            $rootScope.jsonToSave = $scope.form;
+                            DataManipulationService.createDomIds($scope.form);
+                            //$scope.getType();
+                            $rootScope.$broadcast('form:clean');
+                            getDetails($scope.form["@id"]);
+                          // } else {
+                          //   // TODO validate before loading template-controller
+                          //   $rootScope.goToHome();
+                          //   UIMessageService.showWarning(
+                          //       'GENERIC.Warning',
+                          //       'VALIDATION.templateLoad',
+                          //       'GENERIC.Ok'
+                          //   );
+                          // }
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        }
+                    );
+                  }
                 },
                 function (err) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -152,10 +169,7 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
 
-            // var copiedForm = jQuery.extend(true, {}, $scope.form);
-            // checkValidation(copiedForm);
             $rootScope.setValidation(true);
-
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
@@ -165,7 +179,6 @@ define([
             $rootScope.$broadcast('form:clean');
           }
         };
-
 
         getTemplate();
 

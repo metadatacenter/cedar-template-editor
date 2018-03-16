@@ -169,6 +169,58 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('test-folder-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/folder-permissions-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-resource-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/resource-permissions-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-copy-move', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/copy-move-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-share-delete', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/share-delete-spec.js',
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
@@ -214,6 +266,30 @@ gulp.task('test--update-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/update-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-metadata', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/metadata-creator-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-template', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"

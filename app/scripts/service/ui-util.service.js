@@ -22,6 +22,7 @@ define([
     };
 
     var jsonld = require('jsonld');
+    var dms = DataManipulationService;
 
     service.toRDF = function () {
       var instance = $rootScope.instanceToSave;
@@ -103,19 +104,13 @@ define([
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
 
-      var schema = DataManipulationService.schemaOf(node);
-      var result = DataManipulationService.isCardinalElement(node) && !DataManipulationService.isMultipleChoice(node);
-
-      if (DataUtilService.isElement(schema)) {
-        angular.forEach(schema.properties, function (value, key) {
-          if (!DataUtilService.isSpecialKey(key)) {
-            var isElement = DataUtilService.isElement(DataManipulationService.schemaOf(value));
-            var isCardinal = DataManipulationService.isCardinalElement(value);
-            result = result && (!isElement && !isCardinal);
-          }
-        });
+      var schema = dms.schemaOf(node);
+      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) &&  !dms.isAttributeValueType(node);
+      if (DataUtilService.isElement(schema) && dms.isCardinalElement(node)) {
+        result =  dms.getFlatSpreadsheetOrder(node).length > 0;
       }
       return result;
+      //return false;
     };
 
     // is this an element that can be expanded?
@@ -134,7 +129,8 @@ define([
 
     service.createViewState = function (node, callback, cleanup) {
       var viewState = {
-        views   : ['tab', 'list'],
+        // views   : ['tab', 'list'],
+        views   : ['tab'],
         selected: 'tab'
       };
       if (service.isSpreadsheetable(node)) {

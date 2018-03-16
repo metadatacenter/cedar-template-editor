@@ -45,17 +45,16 @@
               <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
             </div>
 
-            <div ng-if="canWrite()" >
-
+            <div ng-if="canWrite()" class="flex-right">
+              <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
+                  ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
+              </button>
               <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata"
-                  ng-disabled="saveButtonDisabled" class="btn btn-clear metadata pull-right" style="outline:none;"
-                  ng-click="doValidation()" translate>Validate
+                  ng-disabled="saveButtonDisabled" class="btn btn-clear metadata " style="outline:none;"
+                  ng-click="doValidation()" translate>GENERIC.Validate
               </button>
               <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled"
-                  class="btn btn-save metadata pull-right" ng-click="saveInstance()" style="outline:none;" translate>GENERIC.Save
-              </button>
-              <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata pull-right"
-                  ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
+                  class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;" translate>GENERIC.Save
               </button>
             </div>
           </div>

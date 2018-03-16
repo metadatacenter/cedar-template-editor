@@ -136,7 +136,11 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-        scope.setActive(0,true);
+        scope.setActive(0, true);
+        if (dms.getMaxItems(scope.element)) {
+          // create all the rows if the maxItems is a fixed number
+          scope.createExtraRows();
+        }
         $timeout(function () {
           SpreadsheetService.switchToSpreadsheet(scope, scope.element, 0, function () {
             return false;
@@ -210,17 +214,24 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function () {
+        console.log('createExtraRows');
         var maxItems = dms.getMaxItems(scope.element);
-        while ((scope.model.length < 10 || scope.model.length < maxItems)) {
+        var max = maxItems ? maxItems : 10;
+        while ((scope.model.length < max)) {
           scope.addMoreInput();
         }
+      };
+
+      scope.addMoreInput = function () {
+        scope.addElement();
+        scope.pageMinMax();
       };
 
       scope.deleteExtraRows = function () {
 
         if (angular.isArray(scope.model)) {
 
-          var min = dms.getMinItems(scope.element) || 0;
+          var min = dms.getMinItems(scope.element) || 1;
 
           outer: for (var i = scope.model.length; i > min; i--) {
             var valueElement = scope.model[i - 1];
@@ -359,26 +370,26 @@ define([
       // TODO add a new empty element at the end of the array
       // add is not working, so call copy instead for now
       scope.addElement = function () {
-        scope.copyElement();
-        //if (scope.isMultiple()) {
-          // } else {
-          //   console.log('add element from nothing');
-          //   var maxItems = dms.getMaxItems(scope.element);
-          //   if ((!maxItems || scope.model.length < maxItems)) {
-          //     var seed = {};
-          //     var properties = dms.propertiesOf(scope.element);
-          //     scope.model.push(seed);
-          //     if (angular.isArray(scope.model)) {
-          //       angular.forEach(scope.model, function (m) {
-          //         dms.findChildren(properties, m);
-          //       });
-          //     } else {
-          //       dms.findChildren(properties, scope.model);
-          //     }
-          //   }
-          //   // activate the new instance
-          //   scope.setActive(scope.model.length - 1, true);
-        //}
+        if (angular.isArray(scope.model) && scope.model.length == 0) {
+          // create a new element from scratch
+          var maxItems = dms.getMaxItems(scope.element);
+          if ((!maxItems || scope.model.length < maxItems)) {
+            var seed = {};
+            var properties = dms.propertiesOf(scope.element);
+            scope.model.push(seed);
+            if (angular.isArray(scope.model)) {
+              angular.forEach(scope.model, function (m) {
+                dms.findChildren(properties, m);
+              });
+            } else {
+              dms.findChildren(properties, scope.model);
+            }
+          }
+          scope.setActive(0, true);
+        } else {
+          scope.copyElement();
+        }
+
       };
 
       // remove the element at index
@@ -422,10 +433,7 @@ define([
         }
       };
 
-      scope.addMoreInput = function () {
-        scope.addElement();
-        scope.pageMinMax();
-      };
+
 
       // toolbar pager min and max
       scope.pageMinMax = function () {
@@ -623,6 +631,7 @@ define([
           scope.$parent.activateNextSiblingOf(scope.fieldKey, scope.parentKey);
         }
       }
+
 
       //
       //  initialization

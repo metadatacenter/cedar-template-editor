@@ -218,6 +218,10 @@ define([
             }
           };
 
+          vm.canSubmit = function () {
+            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+          };
+
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
@@ -273,7 +277,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var description = resource.description;
+              var description = resource['schema:description'];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
@@ -423,6 +427,7 @@ define([
 
           getPreferences();
           init();
+
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
@@ -904,7 +909,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return MessagingService.unreadCount;
+            return Math.min(MessagingService.unreadCount,9);
           }
 
           function openMessaging() {
@@ -1204,7 +1209,7 @@ define([
             var name = null;
             if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
               instanceId = vm.selectedResource['@id'];
-              name = vm.selectedResource.displayName;
+              name = vm.selectedResource['schema:name'];
             }
             $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }

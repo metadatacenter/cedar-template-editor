@@ -16,8 +16,8 @@
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
-    <div class="row">
-      <div class="col-xs-9 ">
+    <div class="flex" style="min-height:2em;padding:5px 0;">
+      <div >
         <div ng-click="toggleExpanded()">
           <span class="title form text-nowrap">
               <button type="button" class="expand form-title">
@@ -27,13 +27,13 @@
         </div>
       </div>
 
-      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
+
         <field-toolbar field="form"
             close="close" is-active="isActive" paging="false"
             expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
             max="pageMax" select="selectPage" range="6">
         </field-toolbar>
-      </div>
+
     </div>
 
 
@@ -61,6 +61,7 @@
               path="0"
               uid="uid+'-'+item"
               parent-key="'form'"
+              parent-model="model"
               field-key="item"
               previous="form.properties[pagesArray[pageIndex][$index-1]]"></cedar-runtime-field>
         </div>
@@ -72,6 +73,7 @@
               parent-key="'form'"
               field-key="item"
               model="model[item]"
+              parent-model="model"
               labels="form._ui.propertyLabels"
               relabel="relabel"
               delete="removeChild(form.properties[item])"

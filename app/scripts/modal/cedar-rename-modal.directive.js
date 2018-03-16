@@ -53,7 +53,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var name = resource.name;
+              var name = resource['schema:name'];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
@@ -99,7 +99,7 @@ define([
                     resourceService.renameNode(id, nodeType, name, null),
                     function (response) {
 
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource.name},
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource['schema:name']},
                           'GENERIC.Updated');
                       refresh();
                     },
@@ -124,7 +124,7 @@ define([
 
             if (visible && resource) {
               vm.modalVisible = visible;
-              vm.renameResource = resource;
+              vm.renameResource = angular.copy(resource);
 
               $timeout(function () {
                 jQuery('#rename-modal input').focus().select();

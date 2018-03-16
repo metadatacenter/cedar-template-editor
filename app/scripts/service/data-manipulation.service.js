@@ -202,7 +202,12 @@ define([
 
     // what is the field inputType?
     service.getInputType = function (node) {
-      return service.schemaOf(node)._ui.inputType;
+      var result = null;
+      var schema = service.schemaOf(node);
+      if (schema._ui && schema._ui.inputType) {
+        result = schema._ui.inputType;
+      }
+      return result;
     };
 
     service.setInputType = function (node, value) {
@@ -227,6 +232,18 @@ define([
     // is this a date range?
     service.isDateRange = function (node) {
       return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+    };
+
+    service.isAttributeValueType = function (node) {
+      return (service.getInputType(node) == 'attribute-value');
+    };
+
+    service.isTextFieldType = function (node) {
+      return (service.getInputType(node) == 'textField');
+    };
+
+    service.isDateType = function (node) {
+      return (service.getInputType(node) == 'date');
     };
 
     service.isLinkType = function (node) {
@@ -373,7 +390,8 @@ define([
           '@type'               : field['@type'],
           '@context'            : field['@context'],
           'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
-          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",{title: field['schema:name'], version: window.cedarVersion}),
+          'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
+              {title: field['schema:name'], version: window.cedarVersion}),
           '_ui'                 : field._ui,
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
@@ -490,13 +508,7 @@ define([
     // update the key values to reflect the property names or titles
     // this does not look at nested fields and elements, just top level
     service.updateKeys = function (node) {
-      service.updateKey(node, node);
-
-      if (node.type == 'array') {
-        node = node.items;
-      }
-
-      angular.forEach(node.properties, function (value, key) {
+      angular.forEach(service.propertiesOf(node), function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.updateKey(key, value, node);
         }
@@ -504,11 +516,14 @@ define([
     };
 
     service.updateKey = function (key, node, parent) {
-      if (parent && node && (node['@id'] != parent['@id'])) {
+      if (parent && node && (service.getId(node) != service.getId(parent))) {
 
         var title = service.getTitle(node);
         var labels = service.getPropertyLabels(parent);
-        if (DataUtilService.isElement(node)) {
+        var isElement = service.isElement(node);
+
+        // TODO why is this different for an element
+        if (isElement) {
           labels[key] = labels[key] || title;
         } else {
           labels[key] = title || labels[key];
@@ -518,7 +533,7 @@ define([
     };
 
     service.isElement = function (node) {
-      return DataUtilService.isElement(node);
+      return DataUtilService.isElement(service.schemaOf(node));
     };
 
     //
@@ -556,7 +571,6 @@ define([
     };
 
 
-
     service.createDomIds = function (node) {
       var schema = service.schemaOf(node);
       service.addDomIdIfNotPresent(schema, service.createDomId());
@@ -581,7 +595,7 @@ define([
       if (node) {
         var schema = service.schemaOf(node);
         schema._tmp = schema._tmp || {};
-        if (schema._tmp.domId){
+        if (schema._tmp.domId) {
           domId = schema._tmp.domId;
         } else {
           schema._tmp.domId = domId;
@@ -648,12 +662,26 @@ define([
       return service.schemaOf(node)._ui.order;
     };
 
-    // get order array minus any static fields
-    service.getSpreadsheetOrder = function (node) {
+
+    // get order array that can be used to build the spreadsheet columns
+    service.getFlatSpreadsheetOrder = function (node, model) {
+
       var result = [];
-      service.schemaOf(node)._ui.order.forEach(function(key) {
-        var field = service.propertiesOf(node)[key];
-        if (!service.isStaticField(field)) {
+      service.schemaOf(node)._ui.order.forEach(function (key) {
+        var field = service.schemaOf(service.propertiesOf(node)[key]);
+
+        if (service.isAttributeValueType(field)) {
+
+          if (Array.isArray(model)) {
+            for (var i = 0; i < model[0][key].length; i++) {
+              if (model[0][key][i]) {
+                result.push(model[0][key][i]);
+              }
+            }
+          } else {
+            result.push(key);
+          }
+        } else if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isElement(field)) {
           result.push(key);
         }
       });
@@ -672,11 +700,14 @@ define([
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           // only return non-cedar property values
-          var property = form.properties['@context'].properties[prop]['enum'][0];
-          if (property.indexOf(UrlService.schemaProperties()) == -1) {
-            result = property;
+          if (form.properties['@context'].properties[prop]) {
+            var property = form.properties['@context'].properties[prop]['enum'][0];
+
+            if (property.indexOf(UrlService.schemaProperties()) == -1) {
+              result = property;
+            }
+            break;
           }
-          break;
         }
       }
       return result;
@@ -689,8 +720,10 @@ define([
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           var randomPropertyName = service.generateGUID();
-          form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
-          break;
+          if (form.properties['@context'].properties[prop]) {
+            form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
+            break;
+          }
         }
       }
     };
@@ -732,6 +765,7 @@ define([
     // Relabel the element key with a new value from the propertyLabels
     service.relabel = function (node, currentKey) {
 
+
       var schema = service.schemaOf(node);
       var p = service.propertiesOf(node);
 
@@ -739,6 +773,7 @@ define([
       var suggestedKey = service.getFieldName(newLabel);
 
       var newKey = service.getAcceptableKey(p, suggestedKey, currentKey);
+      console.log('relabel',currentKey, newKey);
 
       if (newKey == currentKey) {
         // Do nothing. It's not necessary to relabel
@@ -791,11 +826,17 @@ define([
       var field;
       if (FieldTypeService.isStaticField(inputType)) {
         field = DataTemplateService.getStaticField(this.generateTempGUID());
+        field._ui.inputType = inputType;
       } else {
-        field = DataTemplateService.getField(this.generateTempGUID());
-        field.properties['@value'].type = valueType;
+        if (FieldTypeService.isAttributeValueField(inputType)) {
+          field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
+        } else {
+          field = DataTemplateService.getField(this.generateTempGUID());
+          field.properties['@value'].type = valueType;
+          field._ui.inputType = inputType;
+        }
       }
-      field._ui.inputType = inputType;
+      //field._ui.inputType = inputType;
 
       // Constrain the @type of @value according to the field type
       var valueAtType = null;
@@ -834,6 +875,13 @@ define([
         // @id is not required because "@id":"null" is not valid. If there is no value, the object will be empty
         delete field.required
       }
+
+      // // The value of the link field is a URI, and note that @id cannot be null
+      // if (inputType == "attribute-value") {
+      //   //field.properties["schema:isBasedOn"] = {"@type": "@id"};
+      //   // field.minItems = 0;
+      //   // service.cardinalizeField(field);
+      // }
 
       // Set default schema title and description
       var defaultTitle = $translate.instant("GENERIC.Untitled");
@@ -969,44 +1017,48 @@ define([
     // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
     service.initializeValue = function (field, model) {
 
-      var fieldValue = service.getValueLocation(field);
-      if (fieldValue == "@value") {
+      if (service.isAttributeValueType(field)) {
+      } else {
+        var fieldValue = service.getValueLocation(field);
+        if (fieldValue == "@value") {
 
-        var defaultValue = service.getDefaultValue(fieldValue, field);
+          var defaultValue = service.getDefaultValue(fieldValue, field);
 
-        // Not an array
-        if (!$rootScope.isArray(model)) {
-          if (!model) {
-            model = {};
-          }
-          // Value field has been defined
-          if (model.hasOwnProperty(fieldValue)) {
-            // If undefined value or empty string
-            if ((angular.isUndefined(
-                    model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+          // Not an array
+          if (!$rootScope.isArray(model)) {
+            if (!model) {
+              model = {};
+            }
+            // Value field has been defined
+            if (model.hasOwnProperty(fieldValue)) {
+              // If undefined value or empty string
+              if ((angular.isUndefined(
+                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                model[fieldValue] = defaultValue;
+              }
+            }
+            // Value field has not been defined
+            else {
               model[fieldValue] = defaultValue;
             }
           }
-          // Value field has not been defined
+          // An array
           else {
-            model[fieldValue] = defaultValue;
-          }
-        }
-        // An array
-        else {
-          // Length is 0
-          if (model.length == 0) {
-            model.push({});
-            model[0][fieldValue] = defaultValue;
-          }
-          // If length > 0
-          else {
-            for (var i = 0; i < model.length; i++) {
-              service.initializeValue(field, model[i]);
+            // Length is 0
+            if (model.length == 0) {
+              model.push({});
+              model[0][fieldValue] = defaultValue;
+            }
+            // If length > 0
+            else {
+              for (var i = 0; i < model.length; i++) {
+                service.initializeValue(field, model[i]);
+              }
             }
           }
         }
       }
+
     };
 
     service.getDefaultValue = function (fieldValue, field) {
@@ -1014,6 +1066,9 @@ define([
         // If the template contains a user-defined default value, we use it as the default value for the field
         if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
           return service.getUserDefinedDefaultValue(field);
+        }
+        if (service.isAttributeValueType(field)) {
+          return service.getTitle(field);
         }
         // Otherwise, we return the default value, which is 'null'
         else {
@@ -1477,7 +1532,7 @@ define([
 
     // get the controlled terms list for field types
     service.getFieldControlledTerms = function (node) {
-      if (service.isStaticField(node)) { // static fields
+      if (service.isStaticField(node) || service.isAttributeValueType(node)) { // static or attribute value fields
         return null;
       }
       else { // regular fields

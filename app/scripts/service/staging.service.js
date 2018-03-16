@@ -88,6 +88,7 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
+      console.log('addFieldToStaging');
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 0;
@@ -147,7 +148,11 @@ define([
         var randomPropertyName = DataManipulationService.generateGUID();
         form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
-        form.properties["@context"].required.push(fieldName);
+      }
+
+      // TODO put some more specific stuff here
+      if (FieldTypeService.isAttributeValueField(fieldType)) {
+        form.additionalProperties = true;
       }
 
       // Evaluate cardinality
@@ -157,7 +162,7 @@ define([
       form.properties[fieldName] = field;
 
       // Add field to the form.required array if it's not static
-      if (!DataManipulationService.isStaticField(field)) {
+      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
         form = DataManipulationService.addKeyToRequired(form, fieldName);
       }
 
@@ -283,7 +288,7 @@ define([
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType)) {
+      if (!FieldTypeService.isStaticField(fieldType) && !DataManipulationService.isAttributeValueType(field)) {
         var randomPropertyName = DataManipulationService.generateGUID();
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
@@ -292,6 +297,12 @@ define([
         }
         element.properties["@context"].required.push(fieldName);
       }
+
+      // TODO put some more specific stuff here
+      if (FieldTypeService.isAttributeValueField(fieldType)) {
+        element.additionalProperties = true;
+      }
+
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);
 
@@ -299,7 +310,7 @@ define([
       element.properties[fieldName] = field;
 
       // Add field to the element.required array it it's not static
-      if (!DataManipulationService.isStaticField(field)) {
+      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
 

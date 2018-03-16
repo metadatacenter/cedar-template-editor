@@ -1,73 +1,16 @@
 <div class="fields fields-phone-number">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone';setDefaultValueIfEmpty(model)"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
+  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
-        id="{{getId($index)}}"
         class="form-control"
-        ng-change="setDefaultValueIfEmpty(model)"
-        ng-class="{'required': isRequired()}"
         placeholder="{{getTitle()}}"
         aria-label="{{getDescription()}}"
-        ng-model="valueElement['@value']"
-        ng-disabled="!isRuntime() || preview"
-        validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
+        ng-disabled="true"
         with-floating-label=""/>
-    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
-
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
-    <div ng-if="isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
-  <!-- /.form-group -->
-
-  <div ng-if="$root.isArray(model) && model.length == 0 && !isRuntime()" class="form-group floating-label-wrapper">
-    <div >
-      <input type="text"
-          id="{{getId(0)}}"
-          class="form-control"
-          ng-class="{'required': isRequired()}"
-          placeholder="{{getTitle()}}"
-          aria-label="{{getDescription()}}"
-          ng-model="model['@value']"
-          ng-disabled="true"
-          validate-on="blur"
-          ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-          with-floating-label="">
-      </input>
-      <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
-
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-  </div>
-  <!-- /.form-group -->
-
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input id="{{getId(0)}}" type="text"
-        ng-change="setDefaultValueIfEmpty(model)"
-        class="form-control"
-        ng-class="{'required': isRequired()}"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-model="model['@value']"
-        ng-disabled="!isRuntime() || preview"
-        validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-        with-floating-label="">
-    </input>
-    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
-
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
-  </div>
-  <!-- /.form-group -->
 
 </div>

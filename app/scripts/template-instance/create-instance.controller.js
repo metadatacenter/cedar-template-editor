@@ -132,7 +132,6 @@ define([
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
-      console.log('getInstance')
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {

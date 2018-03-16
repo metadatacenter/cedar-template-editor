@@ -36,7 +36,7 @@ describe('template-creator', function () {
       "iconClass"                : "cedar-svg-paragraph",
       "label"                    : "Text Area",
       "allowedInElement"         : true,
-      "primaryField"             : true,
+      "primaryField"             : false,
       "hasControlledTerms"       : false,
       "staticField"              : false,
       "allowsMultiple"           : true,
@@ -127,79 +127,48 @@ describe('template-creator', function () {
     return result;
   };
 
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
 
-  // before each test, load a new page and create a template
-  // maximize the window area for clicking
   beforeEach(function () {
-    // browser.ignoreSynchronization = false;
   });
 
   afterEach(function () {
-    // browser.manage().logs().get('browser').then(function(browserLog) {
-    //   //expect(browserLog.length).toEqual(0);
-    //   // Uncomment to actually see the log.
-    //   console.log('log: ' + require('util').inspect(browserLog));
-    // });
   });
 
   it("should be on the workspace page", function () {
-    console.log("template-creator should be on the workspace page");
     workspacePage.onWorkspace();
     workspacePage.hasLogo();
   });
 
-  xit("should update the json when changes ", function () {
-    console.log("template-creator should update the json when changes ");
+  it("should update the json when changes ", function () {
     templatePage.createPage('template');
-    //templatePage.addField('textfield', isMore, title, description);
     templatePage.clickJsonPreview();
-  });
-
-  xit("should get the json content", function () {
-    console.log("template-creator get the json content");
 
     templatePage.jsonPreview().getText().then(function (value) {
-      dirtyJson = JSON.parse(value);
-      console.log('dirtyJson',dirtyJson);
-      delete dirtyJson._tmp;
-      //expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
+      cleanJson = JSON.parse(value);
+
+      templatePage.addField('textfield', isMore, title, description);
+
+      templatePage.jsonPreview().getText().then(function (value) {
+        dirtyJson = JSON.parse(value);
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
+
+        templatePage.clickBackArrow();
+        sweetAlertModal.confirm();
+        workspacePage.onWorkspace();
+      });
     });
   });
 
-  xit("should click back arrow", function () {
-    console.log("template-creator should click back arrow");
-    templatePage.clickBackArrow();
-    //sweetAlertModal.confirm();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check back arrow", function () {
-    console.log("template-creator should check back arrow");
-    templatePage.createPage('template');
-    templatePage.clickBackArrow();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check valid", function () {
-    console.log("template-creator should check valid");
+  it("should check valid and dirty", function () {
     templatePage.createPage('template');
     templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isValid();
-    templatePage.clickBackArrow();
-    sweetAlertModal.confirm();
-    workspacePage.onWorkspace();
-  });
-
-  xit("should check dirty", function () {
-    console.log("template-creator should check dirty");
-    templatePage.createPage('template');
-    templatePage.addField('textfield', false, 'title', 'description');
     templatePage.isDirty();
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
     workspacePage.onWorkspace();
   });
-
 
   describe('create resource', function () {
 
@@ -208,7 +177,6 @@ describe('template-creator', function () {
       (function (pageType) {
 
         it("template-creator should create the sample " + pageType, function () {
-          console.log("template-creator should create the sample " + pageType);
           templateOrElement = workspacePage.createTitle(pageType);
           sampleDescription = workspacePage.createDescription(pageType);
           workspacePage.createResource(pageType, templateOrElement, sampleDescription);
@@ -216,7 +184,6 @@ describe('template-creator', function () {
         });
 
         it("should have editable title and description", function () {
-          console.log("template-creator should have editable title and description");
           workspacePage.editResource(templateOrElement, pageType);
           templatePage.isTitle(pageType, templateOrElement);
           templatePage.isDescription(pageType, sampleDescription);
@@ -238,7 +205,6 @@ describe('template-creator', function () {
 
 
               it("should add and delete a " + type + " in " + pageType, function () {
-                console.log("template-creator should add and delete a " + type + " in " + pageType);
 
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
@@ -262,7 +228,6 @@ describe('template-creator', function () {
               });
 
               it("should select and deselect a " + type + " in " + pageType, function () {
-                console.log("template-creator should select and deselect a " + type + " in " + pageType);
 
                 var firstField;
                 var lastField;
@@ -297,11 +262,6 @@ describe('template-creator', function () {
                 expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
                 expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
 
-              });
-
-              it("should be dirty and valid ", function () {
-                console.log("template-creator should be dirty and valid ");
-
                 templatePage.isDirty();
                 templatePage.isValid();
                 templatePage.clickBackArrow();
@@ -314,7 +274,6 @@ describe('template-creator', function () {
         }
 
         it("should show " + pageType + " header ", function () {
-          console.log("template-creator should show " + pageType + " header ");
 
           templatePage.createPage(pageType);
           browser.wait(EC.visibilityOf(templatePage.topNavigation()));
@@ -328,7 +287,6 @@ describe('template-creator', function () {
 
         // TODO fails on travis
         xit("should have json preview turned off " + pageType, function () {
-          console.log("template-creator should have json preview turned off " + pageType);
           workspacePage.editResource(templateOrElement, pageType);
           templatePage.isHiddenJson();
           templatePage.isValid();
@@ -338,7 +296,6 @@ describe('template-creator', function () {
 
         // TODO the empty json needs to be updated from staging before we turn this on
         xit("should have valid json for empty " + pageType + " document ", function () {
-          console.log("template-creator should have valid json for empty " + pageType + " document");
           workspacePage.editResource(templateOrElement, pageType);
           templatePage.showJson();
 
@@ -360,7 +317,6 @@ describe('template-creator', function () {
 
         // fails on travis
         xit("should update the json when " + pageType + " changes ", function () {
-          console.log("template-creator should update the json when " + pageType + " changes " + pageType);
 
           templatePage.createPage(pageType);
           templatePage.addField('textfield', isMore, title, description);
@@ -388,7 +344,6 @@ describe('template-creator', function () {
 
         // TODO this should require confirmation but it doesn't
         it("should have cancel button present and active", function () {
-          console.log("template-creator should have cancel button present and active");
           templatePage.createPage(pageType);
           templatePage.addField('textfield', isMore, title, description);
           templatePage.isDirty();
@@ -400,7 +355,6 @@ describe('template-creator', function () {
 
         // todo probably going to fail on travis
         xit("should not change the " + pageType + " when cleared and cancelled", function () {
-          console.log("template-creator should not change the " + pageType + " when cleared and cancelled");
 
           templatePage.createPage(pageType);
           templatePage.addField('textfield', isMore, title, description);
@@ -431,7 +385,6 @@ describe('template-creator', function () {
         });
 
         it("should have clear displayed if " + pageType + " is dirty", function () {
-          console.log("template-creator should have clear displayed if " + pageType + " is dirty");
 
           templatePage.createPage(pageType);
           templatePage.addField('textfield', isMore, title, description);
@@ -451,8 +404,6 @@ describe('template-creator', function () {
 
         // TODO this should work when we get the right empty json from staging
         xit("should should restore the " + pageType + " when clear is clicked and confirmed", function () {
-          console.log(
-              "template-creator should should restore the " + pageType + " when clear is clicked and confirmed");
 
           templatePage.createPage(pageType);
           templatePage.addField('textfield', isMore, title, description);
@@ -488,17 +439,7 @@ describe('template-creator', function () {
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
-      console.log("template-creator should delete " + resources.length + " resources from the user workspace");
-      for (var i = 0; i < resources.length; i++) {
-        (function (resource) {
-          console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
-          workspacePage.login(resource.username, resource.password);
-          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
-          toastyModal.isSuccess();
-          workspacePage.clearSearch();
-        })
-        (resources[i]);
-      }
+      workspacePage.deleteResources(resources);
     });
   });
 });

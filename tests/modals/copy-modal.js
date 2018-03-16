@@ -50,5 +50,7 @@ var CopyModal = function () {
   };
 
 
+
+
 };
 module.exports = new CopyModal(); 

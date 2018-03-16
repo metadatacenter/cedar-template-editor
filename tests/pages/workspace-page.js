@@ -83,7 +83,8 @@ var WorkspacePage = function () {
   var createDetailsPanelOwner = createDetailsPanel.element(by.css('.owner'));
   var createDetailsPanelOwnerValue = createDetailsPanel.element(by.css('div.info > div> div.owner'));
   var createDetailsPanelDescription = createDetailsPanel.element(by.id('edit-description'));
-  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(by.css('div.description > div.edit > button'));
+  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(
+      by.css('div.description > div.edit > button'));
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
@@ -142,6 +143,19 @@ var WorkspacePage = function () {
   var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a.delete'));
   var createShareDisabled = createRightClickMenuItemList.element(by.css('li > a.share.link-disabled'));
   var createMoveDisabled = createRightClickMenuItemList.element(by.css('li > a.move.link-disabled'));
+  var createDeleteDisabled = createRightClickMenuItemList.element(by.css('li > a.delete.link-disabled'));
+  var createCopyDisabled = createRightClickMenuItemList.element(by.css('li > a.copy.link-disabled'));
+  var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
+
+
+  this.myReporter = function () {
+    var reporter = {
+      specDone: function (result) {
+        console.log(result.fullName + '...' + result.status);
+      }
+    };
+    return reporter;
+  };
 
 
   this.createMoreOptionsButton = function () {
@@ -263,8 +277,16 @@ var WorkspacePage = function () {
     return createShareDisabled;
   };
 
+  this.createCopyDisabled = function () {
+    return createCopyDisabled;
+  };
+
   this.createMoveDisabled = function () {
     return createMoveDisabled;
+  };
+
+  this.createDeleteDisabled = function () {
+    return createDeleteDisabled;
   };
 
   this.createRightClickRenameMenuItem = function () {
@@ -347,6 +369,17 @@ var WorkspacePage = function () {
   // do we have the controls bar
   this.hasControlBar = function () {
     browser.wait(EC.presenceOf(createControlsBar));
+  };
+
+  this.moveDisabled = function (name, type) {
+    this.rightClickResource(name, type);
+    var moveMenuItem = this.createMoveDisabled();
+    browser.wait(EC.visibilityOf(moveMenuItem));
+  };
+
+  this.clickSharedWithMe = function () {
+    browser.wait(EC.elementToBeClickable(sharedWithMe));
+    sharedWithMe.click();
   };
 
   this.hasLogo = function () {
@@ -434,7 +467,6 @@ var WorkspacePage = function () {
 
     // delete menu item
     browser.wait(EC.visibilityOf(createDeleteResourceButton));
-    var availableElement = by.css('.some-class:not(.disabled)');
     browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
     createDeleteResourceButton.click();
 
@@ -443,8 +475,8 @@ var WorkspacePage = function () {
     clearSearch();
   };
 
-  this.deleteResourceViaRightClick = function (name, type) {
-    this.rightClickResource(name, type);
+  var deleteResourceViaRightClick = function (name, type) {
+    rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
     // is delete enabled?
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
@@ -452,6 +484,7 @@ var WorkspacePage = function () {
     sweetAlertModal.confirm();
     return true;
   };
+  this.deleteResourceViaRightClick = deleteResourceViaRightClick;
 
   this.setSortOrder = function (order) {
 
@@ -744,7 +777,7 @@ var WorkspacePage = function () {
   };
 
   // select a resource
-  this.selectResource = function (name, type) {
+  var selectResource = function (name, type) {
 
     // search for the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
@@ -760,6 +793,7 @@ var WorkspacePage = function () {
 
     return createFirst;
   };
+  this.selectResource = selectResource;
 
   // double click the resource
   this.doubleClickResource = function (name, type) {
@@ -813,17 +847,18 @@ var WorkspacePage = function () {
   };
 
   // logout from the account currently logged in to
-  this.logout = function () {
+  var logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
     createUserDropdownButton.click();
     browser.wait(EC.elementToBeClickable(createLogoutMenuItem));
     createLogoutMenuItem.click();
   };
+  this.logout = logout;
 
   // login as the specified user with the given password
-  this.login = function (username, password) {
-    this.logout();
+  var login = function (username, password) {
+    logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
@@ -836,6 +871,7 @@ var WorkspacePage = function () {
       });
     });
   };
+  this.login = login;
 
   // check whether the given username corresponds to the currently logged in user
   this.isUserLoggedIn = function (username) {
@@ -868,12 +904,25 @@ var WorkspacePage = function () {
   };
 
   // right-click on a resource
-  this.rightClickResource = function (name, type) {
-    var element = this.selectResource(name, type);
+  var rightClickResource = function (name, type) {
+    var element = selectResource(name, type);
     browser.actions().mouseMove(element).perform();
     browser.actions().click(protractor.Button.RIGHT).perform();
   };
+  this.rightClickResource = rightClickResource;
 
+  this.deleteResources = function (resources) {
+    for (var i = 0; i < resources.length; i++) {
+      (function (resource) {
+       console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
+        login(resource.username, resource.password);
+        deleteResourceViaRightClick(resource.title, resource.type);
+        toastyModal.isSuccess();
+        clearSearch();
+      })
+      (resources[i]);
+    }
+  };
 
 };
 

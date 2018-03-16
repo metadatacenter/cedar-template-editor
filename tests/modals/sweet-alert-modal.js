@@ -13,8 +13,8 @@ var SweetAlertModal = function () {
   var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
   var message = element.all(by.css('div.sweet-alert > p')).first();
 
-  var insufficientWriteMessagePartial = "You do not have write access";
-  var insufficientReadMessagePartial = "You do not have read access";
+  var insufficientRightsMessagePartial = "You do not have write access";
+  var insufficientPermission = "do not have permission";
   var noWriteAccessMessagePartial = "The template may not be modified because there are metadata using it.";
 
 
@@ -60,7 +60,8 @@ var SweetAlertModal = function () {
   this.noReadAccess = function () {
     browser.wait(EC.visibilityOf(message));
     message.getText().then(function(text) {
-      expect(text).toContain(insufficientReadMessagePartial);
+      console.log('noReadAccess',text,insufficientPermission);
+      expect(text).toContain(insufficientPermission);
     });
   };
 
@@ -68,8 +69,8 @@ var SweetAlertModal = function () {
     browser.sleep(1000);  // TODO  wait for animation
     browser.wait(EC.visibilityOf(message));
     message.getText().then(function(text) {
-      console.log('message',text);
-      expect(text).toContain(insufficientWriteMessagePartial);
+      console.log('noWriteAccess',text,insufficientPermission);
+      expect(text).toContain(insufficientPermission);
     });
   };
 

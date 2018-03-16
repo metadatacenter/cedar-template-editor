@@ -560,19 +560,34 @@ var TemplateCreatorPage = function () {
   };
 
   this.isLocked = function () {
-    //browser.wait(EC.visibilityOf(lockIcon));
-    return true;
+    var lock = element(by.css('#headerCtrl .feedback-form i.fa-lock'));
+    browser.wait(EC.visibilityOf(lock));
+  };
+
+  this.isUnlocked = function () {
+    var unlock = element(by.css('#headerCtrl .feedback-form i.fa-unlock'));
+    browser.wait(EC.visibilityOf(unlock));
   };
 
   this.isDirty = function () {
-    //browser.wait(EC.visibilityOf(dirtyIcon));
-    return true;
+    var dirty = element(by.css('#headerCtrl .feedback-form i.fa-circle-o'));
+    browser.wait(EC.visibilityOf(dirty));
+  };
+
+  this.isClean = function () {
+    var clean = element(by.css('#headerCtrl .feedback-form i.fa-circle'));
+    browser.wait(EC.visibilityOf(clean));
   };
 
   this.isValid = function () {
-    //browser.wait(EC.visibilityOf(validIcon));
-    return true;
+    var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
+    browser.wait(EC.visibilityOf(valid));
   };
+  this.isInvalid = function () {
+    var invalid = element(by.css('#headerCtrl .feedback-form i.fa-exclamation-triangle'));
+    browser.wait(EC.visibilityOf(invalid));
+  };
+
 
   this.clickSave = function (type) {
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
@@ -783,7 +798,6 @@ var TemplateCreatorPage = function () {
 
   this.clickJsonPreview = function () {
     browser.executeScript("arguments[0].scrollIntoView();", showJsonLink.getWebElement());
-    console.log('got showjsonlink');
     // browser.wait(EC.visibilityOf(showJsonLink));
     // browser.wait(EC.elementToBeClickable(showJsonLink));
     showJsonLink.click();
@@ -1054,7 +1068,7 @@ var TemplateCreatorPage = function () {
 
   // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function () {
-    var multiple = element(by.css('.detail-options .element-toggle'));
+    var multiple = element(by.css('div.detail-options div.element-toggle.cardinality-tab'));
     browser.executeScript("arguments[0].scrollIntoView();", multiple.getWebElement());
     browser.wait(EC.visibilityOf(multiple));
     browser.wait(EC.elementToBeClickable(multiple));
@@ -1065,7 +1079,7 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.elementToBeClickable(yesOption));
     yesOption.click();
 
-    var dropdownToggle = element(by.css('.cardinality-selector.min  button.dropdown-toggle'));
+    var dropdownToggle = element(by.css('.cardinality-selectors .min .cardinality-selector  button.dropdown-toggle'));
     browser.wait(EC.visibilityOf(dropdownToggle));
     browser.wait(EC.elementToBeClickable(dropdownToggle));
     dropdownToggle.click();

@@ -15,9 +15,9 @@
       <p ng-if="!dc.isSearching">
             <span class="folder-path" ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
-                  class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
+                  class="breadcrumbs">{{dc.breadcrumbName(folder['schema:name'])}}</a> /
             </span>
-        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
+        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath['schema:name'])}}</a>
 
       </p>
     </div>
@@ -25,20 +25,23 @@
   </div>
   <div class="col-sm-3">
 
-
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
-        <li ng-show="dc.hasUnreadMessages()" id="messaging-number" >
-          <button  type="button"
-              uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
-              ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus" >+</span>
-          </button>
+        <li id="messaging">
+          <button class="inline"  uib-tooltip='{{"HELP.message" | translate}}'  tooltip-placement="bottom" type="button" ng-click="dc.openMessaging()"><i class="fa fa-bell inline"></i></button>
+          <div id="messaging-number" ng-show="dc.hasUnreadMessages()" >
+            <button type="button"
+                uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+                tooltip-placement="bottom"
+                ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus">+</span>
+            </button>
+          </div>
         </li>
 
         <li ng-if="dc.onDashboard()" class="repoSubmission">
           <button type="button"
-              ng-disabled="!$root.cedarUser.hasPermission('permission_post_submission_create')"
+              ng-disabled="!dc.canSubmit()"
               uib-tooltip='{{"HELP.repoSubmission" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
@@ -53,7 +56,8 @@
                 ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-ellipsis-v  inline "></i></button>
 
-            <cedar-dropdown-menu class="dropdown-menu dropdown-menu-right" resource="selectedResource" go-to="dc.goToResource"
+            <cedar-dropdown-menu class="dropdown-menu dropdown-menu-right" resource="selectedResource"
+                go-to="dc.goToResource"
                 share="dc.showShareModal"
                 move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
                 can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -270,7 +274,7 @@
                       <div class="folderIconContainer">
                         <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
                       </div>
-                      <div class="folderTitle">{{ resource.displayName }}</div>
+                      <div class="folderTitle">{{ resource['schema:name'] }}</div>
 
                       <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                         <button style="display:none" title="More"
@@ -316,7 +320,7 @@
                       </div>
                       <div class="title"
                           style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                        {{ resource.displayName }}
+                        {{ resource['schema:name'] }}
                       </div>
 
                       <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -344,9 +348,12 @@
 
                 <div class="box-title">
                   <div class="cell type"></div>
-                  <a class="cell resource" ng-class="{'bold': dc.isSort('name')}" href="#"  href="#" ng-click="dc.updateSort('name')">Title</a>
-                  <a class="cell date" ng-class="{'bold': dc.isSort('createdOnTS')}"  href="#"   ng-click="dc.updateSort('createdOnTS')">Created</a>
-                  <a class="cell date" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}"  href="#"   ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
+                  <a class="cell resource" ng-class="{'bold': dc.isSort('name')}" href="#" href="#"
+                      ng-click="dc.updateSort('name')">Title</a>
+                  <a class="cell date" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
+                      ng-click="dc.updateSort('createdOnTS')">Created</a>
+                  <a class="cell date" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
+                      ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
                 </div>
 
                 <!-- show the folders first -->
@@ -362,7 +369,7 @@
 
                   <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
                       class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
+                  <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -395,7 +402,7 @@
                   <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
                       ng-class="dc.getResourceIconClass(resource)"
                       class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
+                  <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -427,7 +434,6 @@
             </div>
 
 
-
           </div>
 
 
@@ -449,7 +455,7 @@
                     type="button"
                     class="close"
                     aria-label="Close"
-                    ><span aria-hidden="true"><img
+                ><span aria-hidden="true"><img
                     src="/img/close_modal.png" width="22"/></span></button>
               </div>
             </div>
@@ -457,7 +463,7 @@
             <div class="col-sm-10">
               <div class="title" ng-if="dc.getSelectedNode()" ng-class="dc.getSelectedNode().nodeType">
                 <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span
-                  ng-bind="dc.getSelectedNode().displayName"></span>
+                  ng-bind="dc.getSelectedNode()['schema:name']"></span>
               </div>
               <div class="title" ng-if="!dc.getSelectedNode()">
                 &nbsp;
@@ -524,7 +530,7 @@
 
             <form class="form-inline" ng-submit="dc.updateDescription()">
               <fieldset>
-                <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                <input id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
                 <button type="submit" style=" display:none">Add</button>
               </fieldset>
@@ -532,7 +538,7 @@
 
           </div>
           <div ng-if="!dc.editingDescription" class="title">
-            {{ dc.selectedResource.description }}
+            {{ dc.selectedResource['schema:description'] }}
           </div>
           <div ng-if="!dc.editingDescription" class="edit pull-right">
             <button
@@ -655,25 +661,25 @@
 </section>
 
 <section>
-<flow-modal  cedar-modal-show modal-visible="dc.flowModalVisible" class="modal fade"
-    id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
-    data-keyboard="true" data-backdrop="static">
-</flow-modal>
+  <flow-modal cedar-modal-show modal-visible="dc.flowModalVisible" class="modal fade"
+      id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
+      data-keyboard="true" data-backdrop="static">
+  </flow-modal>
 </section>
 
 <!--<section>-->
-  <!--<div class="row">-->
-    <!--<div class="col-sm-4">-->
-      <!--<uib-progressbar value="55"></uib-progressbar>-->
-    <!--</div>-->
-    <!--<div class="col-sm-4">-->
-      <!--<uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar>-->
-    <!--</div>-->
-    <!--<div class="col-sm-4">-->
-      <!--<uib-progressbar class="progress-striped active" max="200" value="166" type="danger"><i>166 / 200</i>-->
-      <!--</uib-progressbar>-->
-    <!--</div>-->
-  <!--</div>-->
+<!--<div class="row">-->
+<!--<div class="col-sm-4">-->
+<!--<uib-progressbar value="55"></uib-progressbar>-->
+<!--</div>-->
+<!--<div class="col-sm-4">-->
+<!--<uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar>-->
+<!--</div>-->
+<!--<div class="col-sm-4">-->
+<!--<uib-progressbar class="progress-striped active" max="200" value="166" type="danger"><i>166 / 200</i>-->
+<!--</uib-progressbar>-->
+<!--</div>-->
+<!--</div>-->
 <!--</section>-->
 
 
