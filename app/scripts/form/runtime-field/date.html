@@ -1,22 +1,24 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
-  <div ng-if="isActive(index)" class='input-group' date-time-picker>
 
-    <input type="text"
-        class="form-control select"
-        ng-class="{'isActive' : isActive(index),'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter date' : ''}}"
-        aria-label="Select a date"
-        ng-model="valueElement['@value']"
-        ng-model-options="{allowInvalid:true}"
-        validate-on="blur"
-        ng-pattern="/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"/>
+  <div ng-if="isActive(index)">
 
-    <span class="input-group-addon" ng-class="{'hidden' : !isActive(index)}">
-          <i class="fa fa-calendar fa-2x"></i>
-        </span>
+    <div class="form-group has-success has-feedback" >
+      <input type="text" id="activeDateField"
+          class="form-control select dateField"
+          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+          ng-change="setDateValue(date.dt)"
+          ng-model="date.dt"
+          placeholder="yyyy-MM-dd"
+          date-validation>
+      </input>
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
+
+
 
   </div>
+
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">

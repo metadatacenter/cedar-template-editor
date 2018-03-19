@@ -184,6 +184,7 @@ define([
         var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
 
         FullscreenDateEditor.prototype.open = function () {
+          console.log('open spreadsheet dateEditor');
 
           Handsontable.editors.DateEditor.prototype.open.apply(this, arguments);
 

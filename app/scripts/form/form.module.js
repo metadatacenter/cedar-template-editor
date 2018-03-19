@@ -21,7 +21,8 @@ define([
   'cedar/template-editor/form/field-toolbar.directive',
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
-  'cedar/template-editor/form/field-create/cardinality-selector.directive'
+  'cedar/template-editor/form/field-create/cardinality-selector.directive',
+  'cedar/template-editor/form/date-validation.directive'
 
 
 ], function(angular) {
@@ -45,7 +46,9 @@ define([
     'cedar.templateEditor.form.fieldToolbar',
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
-    'cedar.templateEditor.form.fieldCreate.cardinalitySelector'
+    'cedar.templateEditor.form.fieldCreate.cardinalitySelector',
+    'cedar.templateEditor.form.dateValidation'
+
 
   ]);
 });
