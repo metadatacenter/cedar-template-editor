@@ -14,18 +14,17 @@
         ng-model="valueElement['@value']">
     </input>
 
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
   <!-- not editing the field -->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
 
     <!-- expanded view -->
-    <div ng-if="isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
-    </div>
+    <!--<div ng-if="isListView()"-->
+        <!--aria-label="{{getDescription()}}"-->
+        <!--class="isInactive ">{{valueArray[index]['@value']}} &nbsp;-->
+    <!--</div>-->
 
     <!-- paged view -->
     <div ng-if="!isListView()"

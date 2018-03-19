@@ -313,11 +313,9 @@ define([
         if (dms.isDateType($scope.field)) {
           $scope.date.dt = $scope.valueArray[index]['@value'];
 
-
             $timeout(function () {
               $rootScope.$broadcast('runDateValidation');
             }, 0);
-
 
         }
 
@@ -575,6 +573,16 @@ define([
         var inputType = $scope.getInputType();
         var attributeName;
 
+        if (dms.isDateType($scope.field)) {
+
+          $scope.valueArray[$scope.index]['@value'] = $scope.date.dt;
+          if ($scope.model.length > 0) {
+            $scope.model[$scope.index]['@value'] = $scope.date.dt;
+          } else {
+            $scope.model['@value'] = $scope.date.dt;
+          }
+        }
+
         if (dms.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
@@ -685,8 +693,6 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-
-        console.log('dms.isDateType($scope.field)', dms.isDateType($scope.field));
 
         if (dms.isDateType($scope.field)) {
           $scope.date.dt = $scope.valueArray[$scope.index]['@value'];
@@ -1206,8 +1212,12 @@ define([
 
 
       $scope.setDateValue = function (value) {
-        if ($scope.model)
+        if ($scope.model && $scope.model.length > 0) {
           $scope.model[$scope.index]['@value'] = $scope.parseDate(value);
+        } else {
+          $scope.model['@value'] = $scope.parseDate(value);
+        }
+
       };
 
       $scope.isInvalidDate = function (value) {

@@ -1,33 +1,29 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
-
   <div ng-if="isActive(index)">
-
     <div class="form-group has-success has-feedback" >
-      <input type="text" id="activeDateField"
+      <input type="text"
           class="form-control select dateField"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           ng-change="setDateValue(date.dt)"
           ng-model="date.dt"
+          aria-label="{{getDescription()}}"
           placeholder="yyyy-MM-dd"
+          ng-model-options="{allowInvalid:true}"
           date-validation>
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-
-
-
   </div>
-
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
 
     <!-- expanded view -->
-    <div ng-if="isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
-    </div>
+    <!--<div ng-if="isListView()"-->
+        <!--aria-label="{{getDescription()}}"-->
+        <!--class="isInactive ">{{valueArray[index]['@value']}} &nbsp;-->
+    <!--</div>-->
 
     <!-- paged view -->
     <div ng-if="!isListView()"
