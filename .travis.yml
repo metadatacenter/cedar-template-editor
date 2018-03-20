@@ -26,8 +26,8 @@ install:
 - npm install
 - npm install -g 'gulpjs/gulp.git#4.0'
 - npm install -g protractor
-- webdriver-manager update --out_dir ~/selenium  --versions.chrome=2.24 --gecko false
-- nohup bash -c "webdriver-manager start --out_dir ~/selenium 2>&1 &"
+- webdriver-manager update  --gecko false
+- nohup bash -c "webdriver-manager start --gecko false 2>&1 &"
 jobs:
   include:
   - stage: karma and e2e tests
