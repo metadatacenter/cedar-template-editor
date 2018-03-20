@@ -26,7 +26,7 @@ install:
 - npm install
 - npm install -g 'gulpjs/gulp.git#4.0'
 - npm install -g protractor
-- webdriver-manager update --out_dir ~/selenium
+- webdriver-manager update --out_dir ~/selenium  --versions.chrome=2.24
 - nohup bash -c "webdriver-manager start --out_dir ~/selenium 2>&1 &"
 jobs:
   include:
