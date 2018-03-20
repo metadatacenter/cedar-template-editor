@@ -1,57 +1,41 @@
 <div>
-  <div ng-if="model !== undefined" class="item-root element-root" style="display:flex;align-items:center;flex-wrap:wrap;"  ng-click="toggleExpanded(index)">
+  <div ng-if="model !== undefined" class="item-root element-root"
+      style="display:flex;align-items:center;flex-wrap:wrap;" ng-click="toggleExpanded(index)">
 
 
-    <div class="leader" style="position:relative;left:-12px;top: -5px;width: 10px; height: 0; border-top: 1px solid #9E9E9E; border-top: 1px solid #9E9E9E;">
-      <button type="button"  style="position:relative;top:-12px;">
+    <div class="leader"
+        style="position:relative;left:-12px;top: -5px;width: 10px; height: 0; border-top: 1px solid #9E9E9E; border-top: 1px solid #9E9E9E;">
+      <button type="button" style="position:relative;top:-12px;">
         <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
       </button>
     </div>
 
     <!-- field title -->
-    <label class="field-title"  for="{{getLocator(index)}}"
+    <label class="field-title" for="{{getLocator(index)}}" id="{{getLocator(index)}}"
         aria-label="{{getDescription()}}">
-      <div class="title element" >
+      <div class="title element">
         {{getPropertyLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
       </div>
     </label>
 
+    <button type="button" ng-if="!isExpanded(index)  && getDescription() && getDescription().length > 0"
+        class="form-control-feedback"
+        style="pointer-events: auto;font-size:20px;color:#aaa;margin-right: 15px; margin-top: 10px;"
+        tooltip-append-to-body="true"
+        ng-click="$event.stopPropagation()"
+        uib-tooltip="{{getDescription() | translate}}"
+        tooltip-enable="getDescription() &amp;&amp; getDescription().length > 0">
+      <i class="fa fa-question-circle"></i>
+    </button>
+
     <field-toolbar style="margin-right:10px" ng-if="isExpanded(index)"
-         values="valueArray" index="index" paging="!isSpreadsheetView()"
+        values="valueArray" index="index" paging="!isSpreadsheetView()"
         min="pageMin" max="pageMax" range="pageRange"
         field="element" model="valueArray" index="index" view-state="viewState"
         remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
         spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
         expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
     </field-toolbar>
-
-
-    <!-- inactive -->
-    <div ng-if="!isExpanded(index)" id="{{getLocator(index)}}" style="background:transparent;padding:10px" class="form-group has-success has-feedback">
-
-      <input class="form-control select" style="background:transparent;"
-          id="{{getLocator(index)}}"
-          type="text"
-          aria-label="{{getDescription()}}"
-          ng-value=""
-          ng-disabled="true"/>
-
-      <button type="button"
-          class="form-control-feedback"
-          style="pointer-events: auto;font-size:20px;color:#aaa;margin-right: 15px; margin-top: 10px;"
-          tooltip-append-to-body="true"
-          ng-if="getDescription() &amp;&amp; getDescription().length > 0" ng-click="$event.stopPropagation()"
-          uib-tooltip="{{getDescription() | translate}}"
-          tooltip-enable="getDescription() &amp;&amp; getDescription().length > 0">
-        <i class="fa fa-question-circle"></i>
-      </button>
-
-      <!-- error messages  -->
-      <div class="errors" ng-if="errorMessages">
-        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
-      </div>
-    </div>
-
   </div>
 
   <!-- a spreadsheet list of elements -->
@@ -70,10 +54,11 @@
   </div>
 
   <!-- a paged list of elements -->
-  <div ng-if="isExpanded(index) && isTabView()" class="element expanded" >
+  <div ng-if="isExpanded(index) && isTabView()" class="element expanded">
 
 
-    <ul class="tv flex-outer"  ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray" id="{{getLocator(i)}}">
+    <ul class="tv flex-outer" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
+        id="{{getLocator(i)}}">
 
       <li class="tv"
           ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
@@ -102,6 +87,11 @@
 
       </li>
     </ul>
+  </div>
+
+  <!-- error messages  -->
+  <div class="errors" ng-if="errorMessages">
+    <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
   </div>
 
 </div>
