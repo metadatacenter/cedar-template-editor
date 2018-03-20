@@ -16,17 +16,6 @@
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index)">
-
-    <!-- expanded view -->
-    <!--<div ng-if="isListView()"-->
-        <!--aria-label="{{getDescription()}}"-->
-        <!--class="isInactive ">{{valueArray[index]['@value']}} &nbsp;-->
-    <!--</div>-->
-
-    <!-- paged view -->
-    <div ng-if="!isListView()"
-        aria-label="{{getDescription(field)}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
+    <div aria-label="{{getDescription(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 </div>
