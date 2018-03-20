@@ -459,7 +459,8 @@
     "enterFieldTitle": "Enter Field Title",
     "enterFieldDescription": "Enter Field Description (Help Text)",
     "enterDefaultvalue": "Enter Default Value",
-    "enterElementTitle": "Enter Element Title"
+    "enterElementTitle": "Enter Element Title",
+    "enterDate": "Enter Date yyyy-mm-dd"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

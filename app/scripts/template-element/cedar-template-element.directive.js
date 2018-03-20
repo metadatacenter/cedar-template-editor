@@ -301,53 +301,10 @@ define([
         }
       });
 
+      // rename the key of a child in the form
       scope.renameChildKey = function (child, newKey) {
-        if (!child) {
-          return;
-        }
-
-        var childId = dms.idOf(child);
-
-        if (!childId || /^tmp\-/.test(childId)) {
-          var p = dms.propertiesOf(scope.element);
-          if (p[newKey] && p[newKey] == child) {
-            return;
-          }
-
-          newKey = dms.getAcceptableKey(p, newKey);
-          angular.forEach(p, function (value, key) {
-            if (!value) {
-              return;
-            }
-
-            var idOfValue = dms.idOf(value);
-            if (idOfValue && idOfValue == childId) {
-              dms.renameKeyOfObject(p, key, newKey);
-
-              if (p["@context"] && p["@context"].properties) {
-                dms.renameKeyOfObject(p["@context"].properties, key, newKey);
-
-                if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                  var randomPropertyName = dms.generateGUID();
-                  p["@context"].properties[newKey].enum[0] = dms.getEnumOf(randomPropertyName);
-                }
-              }
-
-              if (p["@context"].required) {
-                var idx = p["@context"].required.indexOf(key);
-                p["@context"].required[idx] = newKey;
-              }
-
-              // Rename key in the 'order' array
-              scope.element._ui.order = dms.renameItemInArray(scope.element._ui.order, key, newKey);
-
-              // Rename key in the 'required' array
-              scope.element.required = dms.renameItemInArray(scope.element.required, key, newKey);
-            }
-          });
-        }
+        dms.renameChildKey(scope.element, child, newKey);
       };
-
 
       // try to deselect this field
       scope.canDeselect = function (field) {
@@ -444,6 +401,7 @@ define([
           }
         }
         if (fieldProp) {
+          console.log('on property:propertyAdded',property);
           scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
         }
 

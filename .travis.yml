@@ -25,8 +25,8 @@ install:
 - npm install
 - npm install -g 'gulpjs/gulp.git#4.0'
 - npm install -g protractor
-- webdriver-manager update
-- nohup bash -c "webdriver-manager start 2>&1 &"
+- webdriver-manager update  --gecko false
+- nohup bash -c "webdriver-manager start --gecko false 2>&1 &"
 jobs:
   include:
   - stage: karma and e2e tests
@@ -42,7 +42,7 @@ env:
   - CEDAR_ANALYTICS_KEY=false
   - CEDAR_FRONTEND_BEHAVIOR=server
   - CEDAR_FRONTEND_TARGET=staging
-  - CEDAR_VERSION="1.6.4-SNAPSHOT"
+  - CEDAR_VERSION="1.7.1-SNAPSHOT"
   - CEDAR_VERSION_MODIFIER=""
   - CEDAR_FRONTEND_staging_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_USER1_LOGIN="test1@test.com"

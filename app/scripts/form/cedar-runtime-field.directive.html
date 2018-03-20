@@ -42,7 +42,7 @@
   </div>
 
   <!-- active tabbed -->
-  <div ng-if="!isSectionBreak() && isActive(index) && isTabView() && valueArray.length > 0" style="background:#ddd;padding:10px" id="{{getLocator(0)}}" >
+  <div ng-if="!isSectionBreak() && isActive(index) && isTabView() && valueArray.length > 0" style="padding:10px;border: 1px solid #ccc;background: #f8f8f8;" id="{{getLocator(0)}}" >
 
     <field-toolbar values="valueArray" min="pageMin"
         max="pageMax" select="selectPage" paging="isMultipleCardinality()"

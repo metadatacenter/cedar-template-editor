@@ -2810,7 +2810,7 @@ section.dashboard-elements {
       margin: 0;
       padding: 0 0 0 12px;
       position: relative;
-      border-left: 1px solid @med-gray;
+      //border-left: 1px solid @med-gray;
     }
 
     li.tv::before, li.tv::after {
@@ -2845,18 +2845,18 @@ section.dashboard-elements {
       height: 100%;
       width: 0px;
       top: -20px;
-      border-left: 1px solid @med-gray;
+      //border-left: 1px solid @med-gray;
     }
 
     // horizontal line for single items
     li.tv.first.last::after {
       top: 0;
       height: 15px;
-      border-left: 1px solid @med-gray;
+      //border-left: 1px solid @med-gray;
     }
 
     li.tv.last.element::before {
-      border-left: 1px solid @med-gray;
+      //border-left: 1px solid @med-gray;
     }
 
     li.tv.element::after, li.tv.last.element::after, ul li.last.element::after {
@@ -2865,10 +2865,10 @@ section.dashboard-elements {
     }
 
     li.tv.last.element::before {
-      border-left: 1px solid @med-gray;
+      //border-left: 1px solid @med-gray;
       height: 16px;
       top: 0;
-      border-bottom: 1px solid @med-gray;
+      //border-bottom: 1px solid @med-gray;
       width: 10px;
     }
   }
@@ -7649,10 +7649,12 @@ table.message {
   justify-content:flex-end;
 }
 
+
 .flex-container {
   //width: 80%;
   //max-width: 1200px;
   margin: 0 auto;
+  //border-left:1px solid green;
 }
 
 .flex-container * {
@@ -7663,6 +7665,7 @@ table.message {
 .flex-inner {
   list-style-type: none;
   padding: 0;
+  border-left:1px solid @med-gray;
 }
 
 .flex-outer {
@@ -7675,6 +7678,7 @@ table.message {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+
 }
 
 .flex-inner {
@@ -7711,7 +7715,6 @@ table.message {
 
 .flex-outer > li input:not([type='checkbox']),
 .flex-outer > li textarea {
-  //padding: 15px;
   border: none;
 }
 
@@ -7731,6 +7734,9 @@ table.message {
 }
 
 
+.invalid {
+  color:red;
+}
 
 
 

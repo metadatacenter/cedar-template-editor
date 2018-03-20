@@ -5,6 +5,7 @@
     <input type="text"
         ng-click="setActive(index, true)"
         class="form-control isActive select"
+        style="border: 1px dashed #888;"
         ng-class="{'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter phone number' : ''}}"
         aria-label="{{getDescription()}}"
@@ -14,25 +15,12 @@
         ng-model="valueElement['@value']">
     </input>
 
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
   <!-- not editing the field -->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-
-    <!-- expanded view -->
-    <div ng-if="isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
-    </div>
-
-    <!-- paged view -->
-    <div ng-if="!isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
-
+    <div aria-label="{{getDescription()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 </div>
 

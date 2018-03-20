@@ -23,7 +23,6 @@ define([
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap.min',
   'lib/bootstrap-select/dist/js/bootstrap-select.min',
-  'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
   'lib/ng-ckeditor/ng-ckeditor.min',
   'ckeditor',
   'lib/handsontable/dist/handsontable.full',
