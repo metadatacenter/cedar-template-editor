@@ -219,7 +219,7 @@ define([
               break;
             case 'date':
               desc.type = 'date';
-              desc.dateFormat = 'MM/DD/YYYY';
+              desc.dateFormat = 'YYYY-MM-DD';
               desc.correctFormat = true;
               desc.editor = FullscreenDateEditor;
               break;
