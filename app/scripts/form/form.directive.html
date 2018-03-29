@@ -17,7 +17,7 @@
   <div class=" page runtime flex-container" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
     <div class="flex" style="min-height:2em;padding:5px 0;">
-      <div >
+      <div>
         <div ng-click="toggleExpanded()">
           <span class="title form text-nowrap">
               <button type="button" class="expand form-title">
@@ -27,19 +27,18 @@
         </div>
       </div>
 
-
-        <field-toolbar field="form"
-            close="close" is-active="isActive" paging="false"
-            expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
-            max="pageMax" select="selectPage" range="6">
-        </field-toolbar>
+      <field-toolbar field="form"
+          close="close" is-active="isActive" paging="false"
+          expand-all="expandAll" values="pagesArray" index="pageIndex" min="pageMin"
+          max="pageMax" select="selectPage" range="6">
+      </field-toolbar>
 
     </div>
 
 
-    <ul class="treeview tv flex-outer" >
+    <ul class="treeview tv flex-outer">
 
-      <li  ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
+      <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
           ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
 

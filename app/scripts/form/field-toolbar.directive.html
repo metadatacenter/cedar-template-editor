@@ -6,6 +6,7 @@
       values="values" index="index" min="min" max="max" select="select" range="range">
   </cedar-pager>
 
+
   <button style="margin-right:5px" ng-if="isExpandable()" type="button" class="expand-all" tooltip-append-to-body="true"
       ng-click="expandAll(index);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ExpandAll' | translate}}" tooltip-enable="isExpandable()" >

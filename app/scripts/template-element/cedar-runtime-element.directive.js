@@ -327,7 +327,9 @@ define([
 
       // listen for requests to expand this element
       scope.$on('expandAll', function (event, args) {
+
         var id = args[0];
+        console.log('expandAll',id);
 
         // only look at first level elements
         if (id === scope.getId()) {

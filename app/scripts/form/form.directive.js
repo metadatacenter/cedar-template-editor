@@ -567,7 +567,7 @@ define([
             var selectedKey;
             var props = dms.propertiesOf($scope.form);
             angular.forEach(props, function (value, key) {
-              if (DataUtilService.isElement(value)) {
+              if (dms.isElement(value)) {
                 $scope.$broadcast("expandAll", [dms.getId(value)]);
               }
             });

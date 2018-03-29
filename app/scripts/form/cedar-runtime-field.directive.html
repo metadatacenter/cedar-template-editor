@@ -16,7 +16,8 @@
   </label>
 
   <!-- inactive -->
-  <div ng-if="!isSectionBreak() && !isActive(index)" id="{{getLocator(0)}}" style="background:transparent;padding:10px"  ng-click="setActive(index,true)" class="form-group has-success has-feedback">
+  <div ng-if="!isSectionBreak() && !isActive(index)" id="{{getLocator(0)}}"
+     style="background:transparent;padding:10px"  ng-click="setActive(index,true)" class="form-group has-success has-feedback form-field">
 
     <input class="form-control select" style="background:white;"
         id="{{getLocator(index)}}"
@@ -42,7 +43,9 @@
   </div>
 
   <!-- active tabbed -->
-  <div ng-if="!isSectionBreak() && isActive(index) && isTabView() && valueArray.length > 0" style="padding:10px;border: 1px solid #ccc;background: #f8f8f8;" id="{{getLocator(0)}}" >
+  <div ng-if="!isSectionBreak() && isActive(index) && isTabView() && valueArray.length > 0"
+      class="form-field"
+      style="padding:10px;border: 1px solid #ccc;background: #f8f8f8;" id="{{getLocator(0)}}" >
 
     <field-toolbar values="valueArray" min="pageMin"
         max="pageMax" select="selectPage" paging="isMultipleCardinality()"

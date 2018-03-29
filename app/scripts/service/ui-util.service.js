@@ -113,10 +113,12 @@ define([
       //return false;
     };
 
-    // is this an element that can be expanded?
+    // is this an element or template that can be expanded?
     service.isExpandable = function (node) {
       var result = false;
-      if (DataUtilService.isElement(DataManipulationService.schemaOf(node))) {
+      var schema = dms.schemaOf(node);
+      var isTemplateOrElement = DataUtilService.isElement(schema) || DataUtilService.isTemplate(schema);
+      if (isTemplateOrElement) {
         var props = DataManipulationService.propertiesOf(node);
         angular.forEach(props, function (value, key) {
           if (DataUtilService.isElement(DataManipulationService.schemaOf(value))) {

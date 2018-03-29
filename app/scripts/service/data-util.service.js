@@ -13,6 +13,7 @@ define([
 
     var specialKeyPattern = /(^@)|(^_)|(^schema:)|(^pav:)|(^oslc:)/i;
     var elementType = "https://schema.metadatacenter.org/core/TemplateElement";
+    var templateType = "https://schema.metadatacenter.org/core/Template";
 
     var service = {
       serviceId: "DataUtilService"
@@ -37,8 +38,11 @@ define([
     };
 
     service.isElement = function (value) {
-      //console.log('isElement', value, value['@type']);
       return value && value['@type'] && value['@type'] == elementType;
+    };
+
+    service.isTemplate = function (value) {
+      return value && value['@type'] && value['@type'] == templateType;
     };
 
     // Escapes JSON special characters

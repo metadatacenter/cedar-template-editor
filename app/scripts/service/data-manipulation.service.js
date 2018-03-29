@@ -536,6 +536,10 @@ define([
       return DataUtilService.isElement(service.schemaOf(node));
     };
 
+    service.isTemplate = function (node) {
+      return DataUtilService.isTemplate(service.schemaOf(node));
+    };
+
     //
     // _tmp fields
     //
