@@ -23,18 +23,13 @@
         <div  ng-if="isSelectable()"  style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
 
         <!-- allow elements to have properties -->
-        <button ng-if="isSelectable()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal('property');" uib-tooltip="Add property">
-          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
-        </button>
+        <!--<button ng-if="isSelectable()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal('property');" uib-tooltip="Add property">-->
+          <!--<i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>-->
+        <!--</button>-->
 
         <!-- element label -->
         <p class="element-name-label " ng-class="{'nested': isNested()}">
-          <span ng-if="!canEditProperty()" >{{labels[key]}}</span>
-          <input ng-model-options="{  }" ng-if="canEditProperty()" type="text" auto-focus
-              placeholder="{{'CREATOR.enterElementTitle' | translate}}"
-              aria-label="{{'CREATOR.enterElementTitle' | translate}}"
-              ng-model="labels[key]"
-              style="outline:none;width:300px;padding:5px">
+          <span >{{labels[key]}}</span>
         </p>
 
         <!-- cardinality -->
@@ -73,6 +68,8 @@
               ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
+      <div ng-if="isEditState()" class="definition-inputs" ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
+
         <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
             class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
@@ -96,6 +93,9 @@
     <!-- have an array with no elements -->
     <div ng-if="$root.isArray(model) && model.length == 0" class="element"
           ng-class="['element-0']">
+
+      <div  ng-if="isEditState()" class="definition-inputs" ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
+
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
 
@@ -119,6 +119,9 @@
     <!-- not an array -->
     <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
           ng-model="element._ui.order">
+
+      <div ng-if="isEditState()" class="definition-inputs" ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
+
         <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
 

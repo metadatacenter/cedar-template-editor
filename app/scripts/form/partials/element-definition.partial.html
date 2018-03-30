@@ -1,37 +1,40 @@
 
 
-
 <div class="form-group floating-label-wrapper">
   <input type="text" auto-focus
       class="form-control field-title-definition"
       id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterFieldKey' | translate}}"
-      aria-label="{{'CREATOR.enterFieldKey' | translate}}"
-      ng-model="fieldSchema['schema:name']"
+      placeholder="{{'CREATOR.enterElementKey' | translate}}"
+      aria-label="{{'CREATOR.enterElementKey' | translate}}"
+      ng-model="elementSchema['schema:name']"
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
       with-floating-label>
 </div>
-
 
 <div class="form-group has-success has-feedback floating-label-wrapper" >
   <input type="text"
       class="form-control select"
       id="property-label-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterFieldLabel' | translate}}"
-      aria-label="{{'CREATOR.enterFieldLabel' | translate}}"
-      ng-model="parentElement['_ui']['propertyLabels'][fieldKey]"
+      placeholder="{{'CREATOR.enterElementLabel' | translate}}"
+      aria-label="{{'CREATOR.enterElementLabel' | translate}}"
+      ng-model="parentElement['_ui']['propertyLabels'][key]"
+
       with-floating-label>
   <div class="input-indicator-icons" ng-class="{'color-active':getProperty().length > 0}" style="top:0" ng-click="showModal('property')" uib-tooltip="{{getProperty() || ('HELP.addProperty' | translate)}}"><i class="cedar-svg-controll-term"  ></i></div>
 </div>
-
 
 <div class="form-group floating-label-wrapper">
   <input type="text"
       class="form-control field-description-definition"
       id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
-      aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
-      ng-model="fieldSchema['schema:description']"
+      placeholder="{{'CREATOR.enterElementDescription' | translate}}"
+      aria-label="{{'CREATOR.enterElementDescription' | translate}}"
+      ng-model="elementSchema['schema:description']"
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
       with-floating-label>
 </div>
+
+<hr style="height:2px;background:#ddd"/>
+
+
+

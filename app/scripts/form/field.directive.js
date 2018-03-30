@@ -32,6 +32,8 @@ define([
 
       var dms = DataManipulationService;
 
+
+
       //
       // model and ui support
       //
@@ -955,6 +957,15 @@ define([
       /* end of controlled terms functionality */
 
       $scope.fieldSchema = dms.schemaOf($scope.field);
+
+
+      $scope.getPropertyLabel = function () {
+        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
+      };
+
+      $scope.getProperty = function () {
+        return dms.getProperty($scope.parentElement, $scope.field);
+      };
 
     };
 

@@ -78,6 +78,7 @@ define([
         };
 
         $scope.relabel = function (key) {
+          console.log('relabel',key);
           // operates on templates and elements, so use the root scope json which
           // is element or form
           dms.relabel($rootScope.jsonToSave, key);
@@ -137,6 +138,7 @@ define([
 
         // rename the key of a child in the form
         $scope.renameChildKey = function (child, newKey) {
+          console.log('renameChildKey', newKey);
           dms.renameChildKey($scope.form, child, newKey);
         };
 

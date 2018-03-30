@@ -107,6 +107,7 @@ define([
 
 
           vm.propertyUri = '';
+          vm.propertyLabel = '';
           vm.addPropertyUri = addPropertyUri;
 
 
@@ -295,6 +296,7 @@ define([
               vm.resetCallback();
             }
             vm.propertyUri = '';
+            vm.propertyLabel = '';
           }
 
           /**
@@ -648,8 +650,9 @@ define([
           }
 
           function addPropertyUri() {
+            console.log('addPropertyUri');
             // tell parent to update the property for this field
-            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri]);
+            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri, vm.propertyLabel]);
           }
         }
       }

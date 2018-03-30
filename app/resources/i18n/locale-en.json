@@ -457,10 +457,15 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldDescription": "Enter Field Description (Help Text)",
+    "enterFieldKey": "Enter Field Name",
+    "enterFieldLabel": "Enter Field Label",
+    "enterPropertyLabel": "Enter Property Label",
+    "enterFieldDescription": "Enter Field Help Text",
     "enterDefaultvalue": "Enter Default Value",
-    "enterElementTitle": "Enter Element Title",
-    "enterDate": "Enter Date yyyy-mm-dd"
+    "enterElementTitle": "Enter Element Name",
+    "enterElementKey": "Enter Element Name",
+    "enterElementDescription": "Enter Element Help Text",
+    "enterDate": "Enter Date (yyyy-mm-dd)"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

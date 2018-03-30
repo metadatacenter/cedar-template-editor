@@ -5,7 +5,7 @@
   <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
         class="form-control"
-        placeholder="{{getTitle()}}"
+        placeholder="{{getPropertyLabel() || getTitle()}}"
         aria-label="{{getDescription()}}"
         ng-disabled="true"
         with-floating-label=""/>

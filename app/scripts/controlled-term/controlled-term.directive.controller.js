@@ -88,14 +88,14 @@ define([
      * Scope functions.
      */
 
-    function addProperty(property) {
+    function addProperty(property, label) {
+      console.log('addProperty',property, label);
       if (vm.filterSelection === 'properties') {
         var id = DataManipulationService.getId(vm.field);
 
         // tell the form to update the property for this field
-        $rootScope.$broadcast('property:propertyAdded', [property, id]);
+        $rootScope.$broadcast('property:propertyAdded', [property, id, label]);
       }
-
     };
 
     function addBranchToValueConstraint() {
@@ -548,12 +548,14 @@ define([
         'cedar.templateEditor.controlledTerm.propertyCreated',
         function (event, args) {
           if (vm.filterSelection === 'properties') {
+            console.log('propertyCreated',args);
 
             // tell the form to update the property for this field
             var property = args[0];
+            var label = args[1];
             var id = DataManipulationService.getId(vm.field);
 
-            $rootScope.$broadcast('property:propertyAdded', [property, id]);
+            $rootScope.$broadcast('property:propertyAdded', [property, id, label]);
           }
         }
     );
