@@ -1,6 +1,6 @@
 <div class="fields fields-numeric">
 
-  <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div  ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
@@ -11,5 +11,9 @@
         with-floating-label=""/>
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <div ng-if="hasProperty()" style="margin:2px 0 0 10px;color:#999999">
+    <div style="font-style:italic">{{getProperty()}}</div>
   </div>
 </div>

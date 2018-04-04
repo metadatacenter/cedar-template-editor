@@ -18,7 +18,8 @@ define([
       showOutputTab : 0,
       metaToRDF     : null,
       metaToRDFError: null,
-      instance      : null
+      instance      : null,
+      modalType     : null
     };
 
     var jsonld = require('jsonld');
@@ -339,14 +340,19 @@ define([
       return "control-options-" + id + "-" + type;
     };
 
-    // show the controlled terms modal
+    // show the modal
     service.showModal = function (id, type) {
-      jQuery("#" + service.getModalId(id, type)).modal('show');
+      service.modalType = type;
+      service.modalId = service.getModalId(id, service.modalType);
+      jQuery("#" + service.modalId).modal('show');
     };
 
-    // hide the controlled terms modal
-    service.hideModal = function (id, type) {
-      jQuery("#" + service.getModalId(id, type)).modal('hide');
+    // hide the modal
+    service.hideModal = function () {
+      console.log('modal',jQuery("#" + service.modalId));
+      jQuery("#" + service.modalId).modal('hide');
+      service.modalType = null;
+      service.modalId = null;
     };
 
 

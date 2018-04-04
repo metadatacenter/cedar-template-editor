@@ -508,7 +508,7 @@ define([
     // update the key values to reflect the property or name
     // this does not look at nested fields and elements, just top level
     service.updateKeys = function (parent) {
-      console.log('updateKeys');
+      console.log('udpateKeys', service.getPropertyLabels(parent));
       angular.forEach(service.propertiesOf(parent), function (node, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.updateKey(key, node, parent);
@@ -517,25 +517,19 @@ define([
     };
 
     service.updateKey = function (key, node, parent) {
-      console.log('updateKey ', key, service.getPropertyLabels(parent));
+      //console.log('updateKey ', key, service.getPropertyLabels(parent));
       if (parent && node && (service.getId(node) != service.getId(parent))) {
 
-        var id = service.getId(node);
         var title = service.getTitle(node);
         var labels = service.getPropertyLabels(parent);
         var label = labels[key];
-
-
-
-
-        //labels[oldKey] = labels[oldKey] || title;
         service.relabel(parent, key, title, label);
       }
     };
 
     // Relabel the element key with a new value from the propertyLabels
     service.relabel = function (parent, key, title, label) {
-      console.log('relabel','key', key, 'title', title, 'label', label);
+      //console.log('relabel', 'key', key, 'title', title, 'label', label);
 
 
       if (key != title) {
@@ -545,52 +539,52 @@ define([
         var labels = service.getPropertyLabels(parent);
         var newKey = service.getAcceptableKey(properties, title);
 
-
-        // delete labels[oldKey];
-        // labels[key] = newLabel;
-        // console.log('deleted labels[',oldKey,']', 'added labels[',key,']');
-
         angular.forEach(properties, function (value, k) {
           if (value && key == k) {
-            service.relabelField(schema, key, newKey);
+            service.relabelField(schema, key, newKey, label);
           }
         });
       }
     };
 
     // Relabel the field key with the field title
-    service.relabelField = function (schema, key, newKey) {
-      console.log('relabelField', newKey);
-
-      // get the new key
-      var properties = service.propertiesOf(schema);
-      //var newKey = service.getAcceptableKey(properties, service.getFieldName(newTitle), key);
-
-      // Rename the key at the schema.properties level
-      service.renameKeyOfObject(properties, key, newKey);
-
-      // Rename the key in the @context
-      if (properties["@context"] && properties["@context"].properties) {
-        service.renameKeyOfObject(properties["@context"].properties, key, newKey);
+    service.relabelField = function (schema, key, newKey, label) {
+      if (!label) {
+        console.log('Error: relabelField missing label');
       }
-      if (properties["@context"] && properties["@context"].required) {
-        var idx = properties["@context"].required.indexOf(key);
-        properties["@context"].required[idx] = newKey;
-      }
+      if (key != newKey) {
 
-      // Rename the key in the 'order' array
-      if (schema._ui.order) {
-        schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
-      }
+        // get the new key
+        var properties = service.propertiesOf(schema);
+        //var newKey = service.getAcceptableKey(properties, service.getFieldName(newTitle), key);
 
-      // Rename key in the 'required' array
-      if (schema.required) {
-        schema.required = service.renameItemInArray(schema.required, key, newKey);
-      }
+        // Rename the key at the schema.properties level
+        service.renameKeyOfObject(properties, key, newKey);
 
-      // Rename key in the 'propertyLabels' array
-      if (schema['_ui']['propertyLabels']) {
-        schema['_ui']['propertyLabels'][newKey] = schema['_ui']['propertyLabels'][key] || newKey;
+        // Rename the key in the @context
+        if (properties["@context"] && properties["@context"].properties) {
+          service.renameKeyOfObject(properties["@context"].properties, key, newKey);
+        }
+        if (properties["@context"] && properties["@context"].required) {
+          var idx = properties["@context"].required.indexOf(key);
+          properties["@context"].required[idx] = newKey;
+        }
+
+        // Rename the key in the 'order' array
+        if (schema._ui.order) {
+          schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+        }
+
+        // Rename key in the 'required' array
+        if (schema.required) {
+          schema.required = service.renameItemInArray(schema.required, key, newKey);
+        }
+
+        // Rename key in the 'propertyLabels' array
+        if (schema['_ui']['propertyLabels']) {
+          delete schema['_ui']['propertyLabels'][key];
+          schema['_ui']['propertyLabels'][newKey] = label;
+        }
       }
     };
 
@@ -1399,6 +1393,7 @@ define([
 
     // rename the key of a child in the form
     service.renameChildKey = function (parent, child, newKey) {
+      console.log('renameChildKey', newKey);
 
       if (!child) {
         return;
@@ -1418,7 +1413,6 @@ define([
           var idOfValue = service.idOf(value);
           if (idOfValue && idOfValue == childId) {
 
-            console.log('renameChildKey start',key, parentSchema._ui.propertyLabels);
             service.renameKeyOfObject(p, key, newKey);
             if (p["@context"] && p["@context"].properties) {
               service.renameKeyOfObject(p["@context"].properties, key, newKey);
@@ -1437,16 +1431,18 @@ define([
             // Rename key in the 'required' array
             parentSchema.required = service.renameItemInArray(parentSchema.required, key, newKey);
             // Rename key in the 'propertyLabels' array
-            parentSchema._ui.propertyLabels[newKey] = parentSchema._ui.propertyLabels[key];
             delete parentSchema._ui.propertyLabels[key];
-            console.log('renameChildKey done',newKey, parentSchema._ui.propertyLabels);
+            parentSchema._ui.propertyLabels[newKey] = newKey;
+
           }
         });
       }
     };
 
-    // update the property for a field inside a template or element
-    service.updateProperty = function(propertyId, propertyLabel, fieldId, parent) {
+    // update the propertyid for a field inside a template or element
+    // set the field title and description to property label and definition
+    service.updateProperty = function (propertyId, propertyLabel, propertyDescription, fieldId, parent) {
+      console.log('updateProperty', propertyLabel);
 
       var props = service.propertiesOf(parent);
       var schema = service.schemaOf(parent);
@@ -1458,8 +1454,12 @@ define([
         }
       }
       if (fieldProp) {
+        // set the property as the field title and description
+        var field = props[prop];
+        service.setTitle(field, propertyLabel);
+        service.setDescription(field, propertyDescription);
         props['@context'].properties[fieldProp]['enum'][0] = propertyId;
-        schema['_ui']['propertyLabels'][fieldProp] = propertyLabel || service.getTitle(props[fieldProp]);
+        service.getPropertyLabels(parent)[prop] = propertyLabel;
       }
     };
 

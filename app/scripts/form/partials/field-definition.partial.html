@@ -1,29 +1,18 @@
 
-
-
 <div class="form-group floating-label-wrapper">
   <input type="text" auto-focus
-      class="form-control field-title-definition"
+      class="form-control select"
       id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
       placeholder="{{'CREATOR.enterFieldKey' | translate}}"
       aria-label="{{'CREATOR.enterFieldKey' | translate}}"
       ng-model="fieldSchema['schema:name']"
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
+      autocomplete="off"
       with-floating-label>
+  <div class="input-indicator-icons color-active" style="top:0"
+      ng-click="showModal('property')" uib-tooltip="{{('HELP.addProperty' | translate)}}"><i
+      class="cedar-svg-controll-term"></i></div>
 </div>
-
-
-<div class="form-group has-success has-feedback floating-label-wrapper" >
-  <input type="text"
-      class="form-control select"
-      id="property-label-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterFieldLabel' | translate}}"
-      aria-label="{{'CREATOR.enterFieldLabel' | translate}}"
-      ng-model="parentElement['_ui']['propertyLabels'][fieldKey]"
-      with-floating-label>
-  <div class="input-indicator-icons" ng-class="{'color-active':getProperty().length > 0}" style="top:0" ng-click="showModal('property')" uib-tooltip="{{getProperty() || ('HELP.addProperty' | translate)}}"><i class="cedar-svg-controll-term"  ></i></div>
-</div>
-
 
 <div class="form-group floating-label-wrapper">
   <input type="text"
@@ -33,5 +22,16 @@
       aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
       ng-model="fieldSchema['schema:description']"
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
+      autocomplete="off"
       with-floating-label>
+</div>
+
+<div ng-if="hasProperty()" class="flex" style="padding:0 10px;color:#999999">
+  <div style="font-style:italic">{{getProperty()}}</div>
+  <div style="font-size: 20px;color: #999999;"
+      ng-click="deleteProperty();$event.stopPropagation();"
+      tooltip-append-to-body="true"
+      uib-tooltip="{{'HELP.removeProperty' | translate}}">
+    <i class="fa fa-times-circle"></i>
+  </div>
 </div>

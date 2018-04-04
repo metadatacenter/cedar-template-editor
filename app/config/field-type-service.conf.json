@@ -1,7 +1,7 @@
 [
   {
     "cedarType": "textfield",
-    "iconClass": "cedar-svg-text",
+    "iconClass": "fa fa-font",
     "label": "Text",
     "allowedInElement": true,
     "primaryField": true,
@@ -14,7 +14,7 @@
   },
   {
     "cedarType": "attribute-value",
-    "iconClass": "cedar-svg-attribute-value",
+    "iconClass": "fa fa-plus-square",
     "label": "Attribute Value",
     "allowedInElement": true,
     "primaryField": true,
@@ -27,7 +27,7 @@
   },
   {
     "cedarType": "link",
-    "iconClass": "cedar-svg-link",
+    "iconClass": "fa fa-link",
     "label": "link",
     "allowedInElement": true,
     "primaryField": false,
@@ -40,7 +40,7 @@
   },
   {
     "cedarType": "textarea",
-    "iconClass": "cedar-svg-paragraph",
+    "iconClass": "fa fa-paragraph",
     "label": "Text Area",
     "allowedInElement": true,
     "primaryField": false,
@@ -53,7 +53,7 @@
   },
   {
     "cedarType": "radio",
-    "iconClass": "cedar-svg-multiple-choice",
+    "iconClass": "fa fa-dot-circle-o",
     "label": "Multiple Choice",
     "allowedInElement": true,
     "primaryField": false,
@@ -66,7 +66,7 @@
   },
   {
     "cedarType": "checkbox",
-    "iconClass": "cedar-svg-checkbox",
+    "iconClass": "fa fa-check-square-o",
     "label": "Checkbox",
     "allowedInElement": true,
     "primaryField": false,
@@ -79,7 +79,7 @@
   },
   {
     "cedarType": "date",
-    "iconClass": "cedar-svg-calendar",
+    "iconClass": "fa fa-calendar",
     "label": "Date",
     "allowedInElement": true,
     "primaryField": true,
@@ -92,7 +92,7 @@
   },
   {
     "cedarType": "email",
-    "iconClass": "cedar-svg-at",
+    "iconClass": "fa fa-envelope",
     "label": "Email",
     "allowedInElement": true,
     "primaryField": false,

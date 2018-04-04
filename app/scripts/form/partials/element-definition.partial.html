@@ -1,40 +1,63 @@
+<div ng-if="isEditState()">
+  <div class="form-group floating-label-wrapper">
+    <input type="text" auto-focus
+        class="form-control field-title-definition"
+        id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
+        placeholder="{{'CREATOR.enterElementTitle' | translate}}"
+        aria-label="{{'CREATOR.enterElementTitle' | translate}}"
+        ng-model="elementSchema['schema:name']"
+        ng-model-options="{ debounce: 1000, allowInvalid:true }"
+        with-floating-label>
+    <div class="input-indicator-icons color-active" style="top:0"
+        ng-click="showModal('property')" uib-tooltip="{{('HELP.addProperty' | translate)}}"><i
+        class="cedar-svg-controll-term"></i></div>
+  </div>
 
+  <div ng-if="hasProperty()"
+      style="display: flex;justify-content:space-between;align-items:center;margin:0 10px 0 15px;color:#999999">
+    <div style="font-style:italic">{{getProperty()}}</div>
+    <div style="font-size: 26px;color: #999999;"
+        ng-click="deleteProperty();$event.stopPropagation();"
+        tooltip-append-to-body="true"
+        uib-tooltip="{{'HELP.removeProperty' | translate}}">
+      <i class="fa fa-times-circle"></i>
+    </div>
+  </div>
 
-<div class="form-group floating-label-wrapper">
-  <input type="text" auto-focus
-      class="form-control field-title-definition"
-      id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterElementKey' | translate}}"
-      aria-label="{{'CREATOR.enterElementKey' | translate}}"
-      ng-model="elementSchema['schema:name']"
-      ng-model-options="{ debounce: 1000, allowInvalid:true }"
-      with-floating-label>
+  <div class="form-group floating-label-wrapper">
+    <input type="text"
+        class="form-control field-description-definition"
+        id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
+        placeholder="{{'CREATOR.enterElementDescription' | translate}}"
+        aria-label="{{'CREATOR.enterElementDescription' | translate}}"
+        ng-model="elementSchema['schema:description']"
+        ng-model-options="{ debounce: 1000, allowInvalid:true }"
+        with-floating-label>
+  </div>
 </div>
 
-<div class="form-group has-success has-feedback floating-label-wrapper" >
-  <input type="text"
-      class="form-control select"
-      id="property-label-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterElementLabel' | translate}}"
-      aria-label="{{'CREATOR.enterElementLabel' | translate}}"
-      ng-model="parentElement['_ui']['propertyLabels'][key]"
+<div ng-if="!isEditState()">
 
-      with-floating-label>
-  <div class="input-indicator-icons" ng-class="{'color-active':getProperty().length > 0}" style="top:0" ng-click="showModal('property')" uib-tooltip="{{getProperty() || ('HELP.addProperty' | translate)}}"><i class="cedar-svg-controll-term"  ></i></div>
-</div>
+  <div class="form-group floating-label-wrapper">
+    <input type="text"
+        class="form-control"
+        placeholder="{{getTitle()}}"
+        aria-label="{{getDescription()}}"
+        ng-disabled="true"
+        with-floating-label/>
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
 
-<div class="form-group floating-label-wrapper">
-  <input type="text"
-      class="form-control field-description-definition"
-      id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterElementDescription' | translate}}"
-      aria-label="{{'CREATOR.enterElementDescription' | translate}}"
-      ng-model="elementSchema['schema:description']"
-      ng-model-options="{ debounce: 1000, allowInvalid:true }"
-      with-floating-label>
+  <div ng-if="!isEditState() && hasProperty()" style="margin:2px 0 0 10px;color:#999999">
+    <div style="font-style:italic">{{getProperty()}}</div>
+  </div>
 </div>
 
 <hr style="height:2px;background:#ddd"/>
+
+
+
 
 
 

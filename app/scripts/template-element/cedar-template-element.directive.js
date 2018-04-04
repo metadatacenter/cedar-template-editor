@@ -173,7 +173,7 @@ define([
       };
 
       scope.getPropertyLabel = function () {
-        return dms.getPropertyLabels(scope.parentElement)[$scope.key];
+        return dms.getPropertyLabels(scope.parentElement)[scope.key];
       };
 
       scope.getProperty = function () {
@@ -369,12 +369,21 @@ define([
         return scope.element.minItems != null;
       };
 
+      service.isCardinalElement = function (node) {
+        return node.type == 'array';
+      };
+
+      scope.getIconClass = function () {
+        return 'fa fa-sitemap';
+      };
+
 
       //
       // controlled terms modal
       //
 
       scope.modalType;
+
       // create an id for the controlled terms modal
       scope.getModalId = function (type) {
         return UIUtilService.getModalId(scope.getId(), type);
@@ -382,16 +391,8 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
+        console.log('showModal',type);
         if (type) {
-          scope.modalType = type;
-          UIUtilService.showModal(scope.getId(), type);
-        }
-      };
-
-      // show the controlled terms modal
-      scope.showModal = function (type) {
-        if (type) {
-          // TODO don't pass the search string through rootScope
           $rootScope.finalTitle = scope.getTitle();
           scope.modalType = type;
           UIUtilService.showModal(dms.getId(scope.element), type);
@@ -403,33 +404,51 @@ define([
 
       // show the controlled terms modal
       scope.hideModal = function () {
-        if (scope.modalType) {
-          UIUtilService.hideModal(scope.getId(), scope.modalType);
-        }
+        console.log('hideModal', scope.modalType);
+        UIUtilService.hideModal();
       };
 
-      // update the property for a field in the element
       scope.$on("property:propertyAdded", function (event, args) {
-        var property = args[0];   // property value
-        var id = args[1];         // field id
+        console.log('property:propertyAdded');
+        var id = args[1];
+        if (scope.getId() == id) {
 
-        var props = scope.element.properties;
-        var fieldProp;
-        for (var prop in props) {
-          if (props[prop]['@id'] === id) {
-            var fieldProp = prop;
-            break;
-          }
-        }
-        if (fieldProp) {
-          console.log('on property:propertyAdded',property);
-          scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
-        }
+          scope.hideModal();
 
-        // hide the modal
-        scope.hideModal();
+          var propertyId = args[0];
+          var propertyLabel = args[2];
+          var propertyDescription = args[3];
+
+          dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, scope.parentElement);
+        }
       });
 
+
+      scope.getPropertyLabel = function () {
+        return dms.getPropertyLabels(scope.parentElement)[scope.key];
+      };
+
+      scope.getProperty = function () {
+        return dms.getProperty($=scope.parentElement, scope.element);
+      };
+
+      scope.hasProperty = function () {
+        var property = dms.getProperty(scope.parentElement, scope.element);
+        return (property && property.length > 0);
+      };
+
+      scope.deleteProperty = function () {
+        dms.getPropertyLabels(scope.parentElement)[scope.key] = scope.key;
+        dms.deleteProperty(scope.parentElement, scope.element);
+      };
+
+      scope.getMinItems = function() {
+        return dms.getMinItems(scope.element);
+      };
+
+      scope.getMaxItems = function() {
+        return dms.getMaxItems(scope.element);
+      };
 
     }
 

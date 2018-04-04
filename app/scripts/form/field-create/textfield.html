@@ -1,10 +1,9 @@
 <div id="textfield-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'"
+  <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
   <div class="form-group floating-label-wrapper">
     <input type="text" auto-focus
@@ -13,9 +12,8 @@
         aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
         ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
         with-floating-label>
-  </div><!-- /.form-group -->
+  </div>
 
-  <!--<div ng-click=" $event.stopPropagation();" class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>-->
   <div  class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 
-</div><!-- /.input-type-container -->
+</div>

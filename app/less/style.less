@@ -3712,7 +3712,11 @@ section.dashboard-elements {
 
 .field-header {
   .field-icon {
-    color: @med-gray;
+    margin-right:10px;
+    color:#333;
+    font-size:18px;
+    margin:0 5px;
+
   }
   .type-label {
     text-transform: none;
@@ -7643,16 +7647,31 @@ table.message {
 .flex {
   display:flex;
   justify-content:space-between;
-  align-content: center;
+  align-items: center;
+  width:100%;
 }
 
 .flex-right {
   display:flex;
   justify-content:flex-end;
+  align-items: center;
+  width:100%;
 }
+.flex-left {
+  display:flex;
+  justify-content:flex-start;
+  align-items: center;
+  width:100%;
+}
+
 
 .invalid {
   color:red;
+}
+
+.required {
+  color:red;
+  font-size:12px;
 }
 
 .color-active {
@@ -7661,6 +7680,12 @@ table.message {
 
 .color-deactive {
   color:@med-gray;
+}
+
+i.cedar-svg-numeric {
+  padding:0 !important;
+  margin-left:0 !important;
+  height: 40px;
 }
 
 

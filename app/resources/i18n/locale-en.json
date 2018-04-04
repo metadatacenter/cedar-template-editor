@@ -172,6 +172,7 @@
     "deleteMapping": "Delete relationship",
     "sortBy": "Sort by",
     "addProperty": "Add property",
+    "removeProperty": "Remove property",
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
     "repoSubmission": "Submit to repository"

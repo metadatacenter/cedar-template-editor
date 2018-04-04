@@ -1,7 +1,6 @@
 <div class="fields fields-list">
 
-  <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div  ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
     <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
       <input type="text"
@@ -22,5 +21,9 @@
           select-picker="">
       </select>
     </div>
+
+  <div ng-if="hasProperty()" style="margin:2px 0 0 10px;color:#999999">
+    <div style="font-style:italic">{{getProperty()}}</div>
+  </div>
 
 </div>

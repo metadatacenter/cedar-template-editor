@@ -539,42 +539,18 @@ define([
         };
 
         $scope.showModal = function (id) {
-          jQuery("#" + id).modal('show');
+          //jQuery("#" + id).modal('show');
+          console.log('showMOdal',id);
+          UIUtilService.showModal(id,'type');
         };
 
         //TODO this event resets modal state and closes modal
         $scope.$on("field:controlledTermAdded", function () {
-          jQuery("#control-options-template-field").modal('hide');
+          console.log('hideModal');
+          UIUtilService.hideModal();
+          //jQuery("#control-options-template-field").modal('hide');
         });
 
-        // update the property for a field
-        $scope.$on("property:propertyAdded", function (event, args) {
-          console.log('property:propertyAdded',args);
-
-
-          var propertyId = args[0];
-          var id = args[1];
-          var propertyLabel = args[2];
-
-          dms.updateProperty(propertyId, propertyLabel, id, $scope.form);
-
-          // var props = dms.propertiesOf($scope.form);
-          //
-          // var fieldProp;
-          // for (var prop in props) {
-          //   if (dms.schemaOf(props[prop])['@id'] === fieldId) {
-          //     fieldProp = prop;
-          //     break;
-          //   }
-          // }
-          // if (fieldProp) {
-          //   $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = propertyId;
-          //   $scope.form['_ui']['propertyLabels'][fieldProp] = propertyLabel || dms.getTitle(props[fieldProp]);
-          //
-          // } else {
-          //   console.log('Error: did not find fieldProp',fieldProp);
-          // }
-        });
 
       }
 

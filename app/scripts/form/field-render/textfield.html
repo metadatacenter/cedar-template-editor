@@ -1,16 +1,20 @@
 <div class="fields text-fields" ng-class="{preview: preview}">
 
-  <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
         class="form-control"
-        placeholder="{{getPropertyLabel() || getTitle()}}"
+        placeholder="{{getTitle()}}"
         aria-label="{{getDescription()}}"
         ng-disabled="true"
-        with-floating-label=""/>
+        with-floating-label/>
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <div ng-if="hasProperty()" style="margin:2px 0 0 10px;color:#999999">
+    <div style="font-style:italic">{{getProperty()}}</div>
   </div>
 
 </div>

@@ -79,22 +79,23 @@ define([
 
     vm.setInitialFieldConstraints();
 
-    $('body').on('click', '.detail-view-tab a', function (e) {
+    jQuery('body').on('click', '.detail-view-tab a', function (e) {
       e.preventDefault();
-      $(this).tab('show');
+      jQuery(this).tab('show');
     });
 
     /**
      * Scope functions.
      */
 
-    function addProperty(property, label) {
-      console.log('addProperty',property, label);
+    function addProperty(property, label, definition) {
+      console.log('addProperty',property, label, definition);
       if (vm.filterSelection === 'properties') {
         var id = DataManipulationService.getId(vm.field);
 
         // tell the form to update the property for this field
-        $rootScope.$broadcast('property:propertyAdded', [property, id, label]);
+        console.log('broadcast property:propertyAdded');
+        $rootScope.$broadcast('property:propertyAdded', [property, id, label, definition]);
       }
     };
 
@@ -554,8 +555,10 @@ define([
             var property = args[0];
             var label = args[1];
             var id = DataManipulationService.getId(vm.field);
+            var description = args[2];
 
-            $rootScope.$broadcast('property:propertyAdded', [property, id, label]);
+            console.log('broadcast property:propertyAdded after prpopertyCreated')
+            $rootScope.$broadcast('property:propertyAdded', [property, id, label, description]);
           }
         }
     );

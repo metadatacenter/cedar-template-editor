@@ -1,50 +1,26 @@
-<div class="row configuration-options field-header sortable-handler"
+<div class="configuration-options field-header sortable-handler flex"
     ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
 
-  <div class=" col-lg-9 pull-left type-label">
+  <div class="flex-left" >
+    <div class="sortable-icon" ></div>
+    <i class="{{getIconClass()}} field-icon" ></i>
+    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}} .. {{getMaxItems() || "N"}}</div>
+    <i class="fa fa-asterisk required"  ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"></i>
+  </div>
 
-    <div class="type-label" >
-
-      <!-- sort icon -->
-      <span class="sortable-icon"></span>
-
-      <!-- field type -->
-      <i class="{{fieldIconClass}} field-icon"></i>
-
-      <!-- cardinality -->
-      <span  class="multiple-instance-cardinality"
-          ng-show="$parent.field.hasOwnProperty('minItems') && !isMultiAnswer($parent.field)">
-           {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
-       </span>
-
-      <!-- required -->
-      <span  style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
-
-      <!-- select properties -->
-      <button ng-if="!isStatic() && isEditState()"
-          type="button"
-          class="show-type"
-          ng-click="showModal('property')"
-          uib-tooltip="{{'HELP.addProperty' | translate}}">
-        <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
-      </button>
-
-      <!-- assigned properties -->
-      <div ng-if="!isStatic() && isEditState()" class="property-dropdown" >
-        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open)">
-          <button type="button" uib-dropdown-toggle  ng-click="$parent.toggle()" aria-haspopup="true" aria-expanded="true" class="show-type">
-            <i class="fa fa-caret-down  inline "></i></button>
-          <div uib-dropdown-menu class="property-list">
-            <property-list field="$parent.field" form="$parent.getForm()" ></property-list>
+  <div class="configuration-actions" ng-init="childType='field'">
+    <div ng-if="!isRuntime() &&  !isNested() " class="preview-container">
+      <div class="preview-edit-options ">
+        <div class="save-options">
+          <div class="trash" style="margin-right: 0;"
+              ng-click="ckDelete(); $event.stopPropagation();"
+              uib-tooltip='{{"Delete" | translate}}'
+              tooltip-placement="left">
+            <i class="fa fa-times-circle"></i>
           </div>
         </div>
       </div>
-
-
     </div>
-
   </div>
-  <div class="col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/edit-options.partial.html'"
-      ng-init="childType='field'"></div>
 
 </div>
