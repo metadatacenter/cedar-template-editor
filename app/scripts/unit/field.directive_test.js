@@ -236,6 +236,7 @@ define(['app', 'angular'], function (app) {
       });
 
       it("should have the correct icon and two input fields", function () {
+        console.log(compiledDirective);
         expect($(compiledDirective).find(textfieldIcon).length).toBe(1);
         expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
         expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);
@@ -300,6 +301,7 @@ define(['app', 'angular'], function (app) {
       });
 
       it("should have the correct icon and two input fields", function () {
+        console.log(compiledDirective);
         expect($(compiledDirective).find(attributeValueIcon).length).toBe(1);
         expect($(compiledDirective).find(inputTitleSelector).length).toBe(1);
         expect($(compiledDirective).find(inputHelpSelector).length).toBe(1);

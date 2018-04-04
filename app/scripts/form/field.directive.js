@@ -978,8 +978,8 @@ define([
       };
 
       $scope.hasProperty = function () {
-        var property = dms.getProperty($scope.parentElement, $scope.field);
-        return (property && property.length > 0);
+        //var property = dms.getProperty($scope.parentElement, $scope.field);
+        return ($scope.parentElement && $scope.field && dms.getProperty($scope.parentElement, $scope.field));
       };
 
       $scope.deleteProperty = function () {

@@ -369,8 +369,8 @@ define([
         return scope.element.minItems != null;
       };
 
-      scope.isCardinalElement = function (node) {
-        return node.type == 'array';
+      scope.isCardinalElement = function () {
+        return dms.isCardinalElement(scope.element);
       };
 
       scope.getIconClass = function () {
@@ -433,8 +433,7 @@ define([
       };
 
       scope.hasProperty = function () {
-        var property = dms.getProperty(scope.parentElement, scope.element);
-        return (property && property.length > 0);
+        return (scope.parentElement && scope.element && dms.getProperty(scope.parentElement, scope.element));
       };
 
       scope.deleteProperty = function () {

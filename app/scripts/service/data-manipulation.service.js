@@ -752,12 +752,13 @@ define([
     service.getProperty = function (form, node) {
       var id = service.getId(node);
       var result = '';
+      var schema =  service.schemaOf(form);
       var props = service.propertiesOf(form);
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           // only return non-cedar property values
-          if (form.properties['@context'].properties[prop]) {
-            var property = form.properties['@context'].properties[prop]['enum'][0];
+          if (schema.properties['@context'].properties[prop]) {
+            var property = schema.properties['@context'].properties[prop]['enum'][0];
 
             if (property.indexOf(UrlService.schemaProperties()) == -1) {
               result = property;
@@ -773,11 +774,12 @@ define([
     service.deleteProperty = function (form, node) {
       var id = service.getId(node);
       var props = service.propertiesOf(form);
+      var schema =  service.schemaOf(form);
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           var randomPropertyName = service.generateGUID();
-          if (form.properties['@context'].properties[prop]) {
-            form.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
+          if (schema.properties['@context'].properties[prop]) {
+            schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
             break;
           }
         }

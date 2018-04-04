@@ -3,39 +3,12 @@
     ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(), 'not-selectable': !isSelectable(), 'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
 
   <!-- header  -->
-  <div class="element-header input-type-container" style="position:relative;" ng-class="{'sortable-handler': isSortable()}">
-    <!--<div class="row">-->
-      <!-- left side of header -->
-      <!--<div class="col-lg-11 pull-left">-->
-
-        <!-- toggle visibility of element contents -->
-        <!--<span ng-if="isEditState()">-->
-        <!--<a ng-click="switchExpandedState(); $event.preventDefault();" class="visibilitySwitch">-->
-          <!--<i ng-class="{'cedar-svg-collapse': isExpanded(),'cedar-svg-expand': !isExpanded()}"></i>-->
-        <!--</a>-->
-        <!--</span>-->
-
-        <!--<div ng-if="isSelectable()" style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>-->
-        <div ng-init="fieldTitle='Element';fieldIconClass='fa fa-sitemap'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
-        <!--<div class="multiple-instance-cardinality" ng-show="elementIsMultiInstance(element)">{{element.minItems}} .. {{element.maxItems || "N"}}</div>-->
-      </div>
-
-      <!--<div ng-if="isSelectable()" class="preview-container col-lg-1">-->
-        <!--<div class="row preview-edit-options pull-right">-->
-          <!--<div class="toggle-options col-lg-12 pull-right">-->
-            <!--<div class="save-options">-->
-              <!--<div class="trash" ng-click="removeChild(element)" title="Delete element">-->
-                <!--<i class="fa fa-times-circle"></i>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <div class="definition-inputs" ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
+  <div class="element-header input-type-container" style="position:relative;"
+      ng-class="{'sortable-handler': isSortable()}">
+    <div ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  </div>
+  <div ng-if="!isRoot()" class="definition-inputs"
+      ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
 
   <!-- content -->
   <div ng-if="isExpanded()">
