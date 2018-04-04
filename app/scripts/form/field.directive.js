@@ -973,18 +973,17 @@ define([
         return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
       };
 
-      $scope.getProperty = function () {
-        return dms.getProperty($scope.parentElement, $scope.field);
+      $scope.getPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field);
       };
 
-      $scope.hasProperty = function () {
-        //var property = dms.getProperty($scope.parentElement, $scope.field);
-        return ($scope.parentElement && $scope.field && dms.getProperty($scope.parentElement, $scope.field));
+      $scope.hasPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field).length > 0;
       };
 
       $scope.deleteProperty = function () {
-        dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey] = $scope.fieldKey;
-        dms.deleteProperty($scope.parentElement, $scope.field);
+        dms.deletePropertyId($scope.parentElement, $scope.field);
+        dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
       };
 
       // update the property for a field with controlled terms modal selection

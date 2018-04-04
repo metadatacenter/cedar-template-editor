@@ -136,11 +136,10 @@ define([
           $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
         };
 
-        // rename the key of a child in the form
-        $scope.renameChildKey = function (child, newKey) {
-          console.log('renameChildKey', newKey);
-          dms.renameChildKey($scope.form, child, newKey);
-        };
+        // // rename the key of a child in the form
+        // $scope.renameChildKey = function (child, newKey) {
+        //   dms.renameChildKey($scope.form, child, newKey);
+        // };
 
         $scope.addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded

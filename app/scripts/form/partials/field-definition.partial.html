@@ -26,8 +26,8 @@
       with-floating-label>
 </div>
 
-<div ng-if="hasProperty()" class="flex" style="padding:0 10px;color:#999999">
-  <div style="font-style:italic">{{getProperty()}}</div>
+<div  ng-if="hasPropertyId()" class="flex" style="padding:0 10px;color:#999999">
+  <div style="font-style:italic">{{getPropertyId()}}</div>
   <div style="font-size: 20px;color: #999999;"
       ng-click="deleteProperty();$event.stopPropagation();"
       tooltip-append-to-body="true"

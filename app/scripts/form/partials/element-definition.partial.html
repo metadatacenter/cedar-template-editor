@@ -13,16 +13,6 @@
         class="cedar-svg-controll-term"></i></div>
   </div>
 
-  <div ng-if="hasProperty()"
-      style="display: flex;justify-content:space-between;align-items:center;margin:0 10px 0 15px;color:#999999">
-    <div style="font-style:italic">{{getProperty()}}</div>
-    <div style="font-size: 26px;color: #999999;"
-        ng-click="deleteProperty();$event.stopPropagation();"
-        tooltip-append-to-body="true"
-        uib-tooltip="{{'HELP.removeProperty' | translate}}">
-      <i class="fa fa-times-circle"></i>
-    </div>
-  </div>
 
   <div class="form-group floating-label-wrapper">
     <input type="text"
@@ -34,6 +24,17 @@
         ng-model-options="{ debounce: 1000, allowInvalid:true }"
         with-floating-label>
   </div>
+
+  <div ng-if="hasPropertyId()" style="display: flex;justify-content:space-between;align-items:center;margin:0 10px 0 15px;color:#999999">
+    <div style="font-style:italic">{{getPropertyId()}}</div>
+    <div style="font-size: 20px;color: #999999;"
+        ng-click="deleteProperty();$event.stopPropagation();"
+        tooltip-append-to-body="true"
+        uib-tooltip="{{'HELP.removeProperty' | translate}}">
+      <i class="fa fa-times-circle"></i>
+    </div>
+  </div>
+
 </div>
 
 <div ng-if="!isEditState()">
@@ -48,11 +49,14 @@
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
-
-  <div ng-if="!isEditState() && hasProperty()" style="margin:2px 0 0 10px;color:#999999">
-    <div style="font-style:italic">{{getProperty()}}</div>
+  <div ng-if="hasPropertyId()" style="margin:2px 0 0 10px;color:#999999">
+    <div style="font-style:italic">{{getPropertyId()}}</div>
   </div>
+
+
 </div>
+
+
 
 <hr style="height:2px;background:#ddd"/>
 

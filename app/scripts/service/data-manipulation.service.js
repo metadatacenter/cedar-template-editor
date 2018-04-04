@@ -65,6 +65,7 @@ define([
       }
     };
 
+
     // does the node have this property in its property array?
     service.hasProperty = function (node, key) {
       return node && service.propertiesOf(node).hasOwnProperty(key)
@@ -745,20 +746,23 @@ define([
     };
 
     //
-    //  properties
+    //  propertyId and propertyLabels
     //
 
-    // get the property out of the form for this node
-    service.getProperty = function (form, node) {
+
+    // get the non-CEDAR propertyId for this node
+    service.getPropertyId = function (parent, node) {
       var id = service.getId(node);
       var result = '';
-      var schema =  service.schemaOf(form);
-      var props = service.propertiesOf(form);
-      for (var prop in props) {
+      var property;
+      var prop;
+      var schema =  service.schemaOf(parent);
+      var props = service.propertiesOf(parent);
+      for (prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           // only return non-cedar property values
           if (schema.properties['@context'].properties[prop]) {
-            var property = schema.properties['@context'].properties[prop]['enum'][0];
+            property = schema.properties['@context'].properties[prop]['enum'][0];
 
             if (property.indexOf(UrlService.schemaProperties()) == -1) {
               result = property;
@@ -770,11 +774,11 @@ define([
       return result;
     };
 
-    // delete the property from the form for this node
-    service.deleteProperty = function (form, node) {
+    // delete the non-CEDAR propertyId by using a CEDAR property
+    service.deletePropertyId = function (parent, node) {
       var id = service.getId(node);
-      var props = service.propertiesOf(form);
-      var schema =  service.schemaOf(form);
+      var props = service.propertiesOf(parent);
+      var schema =  service.schemaOf(parent);
       for (var prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
           var randomPropertyName = service.generateGUID();
@@ -786,6 +790,7 @@ define([
       }
     };
 
+    // get the propertyLabel out of this node
     service.getPropertyLabels = function (node) {
       return service.schemaOf(node)['_ui']['propertyLabels'];
     };
@@ -794,6 +799,7 @@ define([
     //
     //  children
     //
+
 
     service.getChildNode = function (parentNode, childKey) {
       return service.propertiesOf(parentNode)[childKey];
@@ -1444,7 +1450,6 @@ define([
     // update the propertyid for a field inside a template or element
     // set the field title and description to property label and definition
     service.updateProperty = function (propertyId, propertyLabel, propertyDescription, fieldId, parent) {
-      console.log('updateProperty', propertyLabel);
 
       var props = service.propertiesOf(parent);
       var schema = service.schemaOf(parent);
@@ -1458,10 +1463,22 @@ define([
       if (fieldProp) {
         // set the property as the field title and description
         var field = props[prop];
-        service.setTitle(field, propertyLabel);
-        service.setDescription(field, propertyDescription);
-        props['@context'].properties[fieldProp]['enum'][0] = propertyId;
-        service.getPropertyLabels(parent)[prop] = propertyLabel;
+        var label = propertyLabel || '';
+        var description = propertyDescription || '';
+
+        // title and description
+        service.setTitle(field, label);
+        service.setDescription(field, description);
+
+        // property label
+        service.getPropertyLabels(parent)[prop] = label;
+
+        // property id
+        if (!propertyId || propertyId.length < 1) {
+          service.deletePropertyId(parent, field);
+        } else {
+          props['@context'].properties[fieldProp]['enum'][0] = propertyId;
+        }
       }
     };
 

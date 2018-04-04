@@ -15,13 +15,14 @@ define([
     var directive = {
       restrict   : 'EA',
       scope      : {
-        key          : '=',
-        element      : '=',
-        delete       : '&',
-        model        : '=',
-        isEditData   : "=",
-        parentElement: '=',
-        nested       : '='
+        key           : '=',
+        element       : '=',
+        delete        : '&',
+        model         : '=',
+        isEditData    : "=",
+        renameChildKey: "=",
+        parentElement : '=',
+        nested        : '='
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -47,7 +48,7 @@ define([
       };
 
       scope.isRoot = function () {
-        return !dms.getId(scope.element)  || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
+        return !dms.getId(scope.element) || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
@@ -66,7 +67,7 @@ define([
         return scope.nested == true;
       };
 
-      scope.isSortable = function() {
+      scope.isSortable = function () {
         return !scope.isNested() && !scope.isRoot();
       };
 
@@ -180,7 +181,7 @@ define([
         return dms.getProperty(scope.parentElement, scope.element);
       };
 
-      var setLabels = function() {
+      var setLabels = function () {
         if (scope.parentElement) {
           scope.labels = dms.getPropertyLabels(scope.parentElement);
         }
@@ -223,7 +224,6 @@ define([
       scope.selectTab = function (index) {
         scope.selectedTab = index;
       };
-
 
 
       scope.isEditState = function () {
@@ -289,6 +289,13 @@ define([
 
       };
 
+      // remove the element from the form
+      scope.ckDelete = function () {
+        dms.removeChild(scope.parentElement, scope.element);
+        scope.$emit("invalidElementState",
+            ["remove", scope.getTitle(), scope.getId()]);
+      };
+
       // is the cardinality details table open?
       scope.showCardinality = false;
 
@@ -308,11 +315,6 @@ define([
           if (errorMessages.length == 0) parseElement();
         }
       });
-
-      // rename the key of a child in the form
-      scope.renameChildKey = function (child, newKey) {
-        dms.renameChildKey(scope.element, child, newKey);
-      };
 
       // try to deselect this field
       scope.canDeselect = function (field) {
@@ -391,7 +393,7 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
-        console.log('showModal',type);
+        console.log('showModal', type);
         if (type) {
           $rootScope.finalTitle = scope.getTitle();
           scope.modalType = type;
@@ -424,28 +426,36 @@ define([
       });
 
 
+      // get the propertyLabel for this node from its parent
       scope.getPropertyLabel = function () {
         return dms.getPropertyLabels(scope.parentElement)[scope.key];
       };
 
-      scope.getProperty = function () {
-        return dms.getProperty($=scope.parentElement, scope.element);
+      // get the propertyId for this node from its parent
+      scope.getPropertyId = function () {
+        return dms.getPropertyId(scope.parentElement, scope.element);
       };
 
-      scope.hasProperty = function () {
-        return (scope.parentElement && scope.element && dms.getProperty(scope.parentElement, scope.element));
+      // get the propertyId for this node from its parent
+      scope.hasPropertyId = function () {
+        return dms.getPropertyId(scope.parentElement, scope.element).length > 0;
       };
 
+      // scope.hasProperty = function () {
+      //   return (scope.parentElement && scope.element && dms.getProperty(scope.parentElement, scope.element));
+      // };
+
+      // delete propertyId and propertyLabel for this node
       scope.deleteProperty = function () {
-        dms.getPropertyLabels(scope.parentElement)[scope.key] = scope.key;
-        dms.deleteProperty(scope.parentElement, scope.element);
+        dms.deletePropertyId(scope.parentElement, scope.element);
+        dms.updateProperty('', '', '', scope.getId(), scope.parentElement);
       };
 
-      scope.getMinItems = function() {
+      scope.getMinItems = function () {
         return dms.getMinItems(scope.element);
       };
 
-      scope.getMaxItems = function() {
+      scope.getMaxItems = function () {
         return dms.getMaxItems(scope.element);
       };
 
