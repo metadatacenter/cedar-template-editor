@@ -369,7 +369,7 @@ define([
         return scope.element.minItems != null;
       };
 
-      service.isCardinalElement = function (node) {
+      scope.isCardinalElement = function (node) {
         return node.type == 'array';
       };
 
