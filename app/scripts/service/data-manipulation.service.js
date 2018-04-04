@@ -509,7 +509,7 @@ define([
     // update the key values to reflect the property or name
     // this does not look at nested fields and elements, just top level
     service.updateKeys = function (parent) {
-      console.log('udpateKeys', service.getPropertyLabels(parent));
+      //console.log('udpateKeys', service.getPropertyLabels(parent));
       angular.forEach(service.propertiesOf(parent), function (node, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.updateKey(key, node, parent);
@@ -780,7 +780,7 @@ define([
       var props = service.propertiesOf(parent);
       var schema =  service.schemaOf(parent);
       for (var prop in props) {
-        if (service.schemaOf(props[prop])['@id'] === id) {
+        if (service.getId(props[prop]) === id) {
           var randomPropertyName = service.generateGUID();
           if (schema.properties['@context'].properties[prop]) {
             schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
@@ -1455,14 +1455,14 @@ define([
       var schema = service.schemaOf(parent);
       var fieldProp;
       for (var prop in props) {
-        if (props[prop]['@id'] === fieldId) {
+        if (service.getId(props[prop]) === fieldId) {
           var fieldProp = prop;
           break;
         }
       }
       if (fieldProp) {
         // set the property as the field title and description
-        var field = props[prop];
+        var field = service.schemaOf(props[prop]);
         var label = propertyLabel || '';
         var description = propertyDescription || '';
 

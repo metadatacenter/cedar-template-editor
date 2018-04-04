@@ -411,7 +411,7 @@ define([
       };
 
       scope.$on("property:propertyAdded", function (event, args) {
-        console.log('property:propertyAdded');
+
         var id = args[1];
         if (scope.getId() == id) {
 
@@ -420,6 +420,7 @@ define([
           var propertyId = args[0];
           var propertyLabel = args[2];
           var propertyDescription = args[3];
+          console.log('property:propertyAdded',propertyId, propertyLabel, propertyDescription);
 
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, scope.parentElement);
         }
