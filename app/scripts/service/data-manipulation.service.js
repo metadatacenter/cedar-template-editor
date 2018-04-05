@@ -204,7 +204,7 @@ define([
     service.getInputType = function (node) {
       var result = null;
       var schema = service.schemaOf(node);
-      if (schema._ui && schema._ui.inputType) {
+      if (schema && schema._ui && schema._ui.inputType) {
         result = schema._ui.inputType;
       }
       return result;

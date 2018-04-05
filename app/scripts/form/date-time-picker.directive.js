@@ -32,7 +32,7 @@ define([
             today   : 'glyphicon glyphicon-screenshot',
             clear   : 'fa fa-trash',
           },
-          format:'MM/DD/YYYY'
+          format:'YYYY-MM-DD'
 
         }).on('dp.change', function () {
           // Each time the date-time-picker date is changed trigger change function
