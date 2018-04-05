@@ -532,7 +532,7 @@ define([
           postData['newVersion'] = newVersion;
           postData['folderId'] = folderId;
           postData['propagateSharing'] = propagateSharing;
-          var url = urlService.publishResource();
+          var url = urlService.createDraftResource();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
               function (response) {

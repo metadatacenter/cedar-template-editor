@@ -60,7 +60,7 @@
                 go-to="dc.goToResource"
                 share="dc.showShareModal"
                 move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
-                publish="dc.publishResource" delete="dc.createDraftResource"
+                publish="dc.publishResource" create-draft="dc.createDraftResource"
                 can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                 can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                 can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -288,7 +288,7 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
                             copy="dc.showCopyModal" rename="dc.showRenameModal"
-                            publish="dc.publishResource" delete="dc.createDraftResource"
+                            publish="dc.publishResource" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -316,7 +316,12 @@
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-
+                      <div style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;opacity: 0.5;font-size:10px;">
+                        {{"STATUS." + resource['bibo:status'] | translate}}
+                      </div>
+                      <div style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;opacity: 0.5;font-size:10px;">
+                        {{ resource['pav:version'] }}
+                      </div>
                       <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
                           ng-class="dc.getResourceIconClass(resource)"></i>
 
@@ -337,7 +342,7 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
-                            publish="dc.publishResource" delete="dc.createDraftResource"
+                            publish="dc.publishResource" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -389,7 +394,7 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
-                          publish="dc.publishResource" delete="dc.createDraftResource"
+                          publish="dc.publishResource" create-draft="dc.createDraftResource"
                           can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -424,7 +429,7 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
-                          publish="dc.publishResource" delete="dc.createDraftResource"
+                          publish="dc.publishResource" create-draft="dc.createDraftResource"
                           can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -531,6 +536,14 @@
           <div class="row">
             <div class="col-sm-4 left">Can change owner</div>
             <div class="col-sm-8 can-change-owner">{{ dc.canChangeOwner() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Version</div>
+            <div class="col-sm-8 can-change-owner">{{ dc.getResourceVersion() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Status</div>
+            <div class="col-sm-8 can-change-owner">{{"STATUS." + dc.getResourceStatus() | translate}}</div>
           </div>
         </div>
 

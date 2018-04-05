@@ -8,8 +8,8 @@
   <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)">Move to...</a></li>
   <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)">Rename...</a></li>
   <li  role="separator" class="divider"></li>
-  <li ng-if="!canNotPublish"><a  class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publish(resource)">Publish</a></li>
-  <li ng-if="!canNotCreateDraft"><a  class="createDraft" ng-class="{'link-disabled': canNotCreateDraft}"  href="#" ng-click="createDraft(resource)">Create Draft</a></li>
+  <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publish(resource)">Publish</a></li>
+  <li ng-if="!canNotCreateDraft"><a class="createDraft" ng-class="{'link-disabled': canNotCreateDraft}"  href="#" ng-click="createDraft(resource)">Create Draft</a></li>
   <li ng-if="!canNotPublish || !canNotCreateDraft" role="separator" class="divider"></li>
   <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotWrite}"  href="#"  ng-click="delete(resource)">Delete </a></li>
 </ul>

@@ -227,7 +227,8 @@ define([
           };
 
           vm.canSubmit = function () {
-            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+            return CedarUser.hasPermission(
+                'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
           };
 
 
@@ -281,6 +282,30 @@ define([
 
           vm.canWriteToCurrentFolder = function () {
             return resourceService.canWrite(vm.currentFolder);
+          };
+
+          vm.getResourceVersion = function () {
+            var resource = vm.getSelection();
+            if (resource != null) {
+              return resource['pav:version'];
+            }
+          };
+
+          vm.getNextResourceVersion = function() {
+            var currentVersion = vm.getResourceVersion();
+            var parts = currentVersion.split(".");
+            if (parts.length == 3) {
+              parts[2] = parseInt(parts[2]) + 1;
+              return parts.join(".");
+            }
+            return null;
+          }
+
+          vm.getResourceStatus = function () {
+            var resource = vm.getSelection();
+            if (resource != null) {
+              return resource['bibo:status'];
+            }
           };
 
           vm.updateDescription = function () {
@@ -621,12 +646,13 @@ define([
             if (!resource) {
               resource = getSelection();
             }
-            var newVersion = '0.0.2';
+            var newVersion = vm.getResourceVersion();
             resourceService.publishResource(
                 resource,
                 newVersion,
                 function (response) {
-                  UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": resource.name},
+                  var title = DataManipulationService.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": title},
                       'GENERIC.Published');
                   vm.refreshWorkspace(resource);
                 },
@@ -644,7 +670,7 @@ define([
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
-            var newVersion = '0.0.2';
+            var newVersion = vm.getNextResourceVersion();
             var propagateSharing = true;
             resourceService.createDraftResource(
                 resource,
@@ -652,7 +678,8 @@ define([
                 newVersion,
                 propagateSharing,
                 function (response) {
-                  UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": resource.name},
+                  var title = DataManipulationService.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
                       'GENERIC.CreatedDraft');
                   vm.refreshWorkspace(resource);
                 },
@@ -988,7 +1015,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return Math.min(MessagingService.unreadCount,9);
+            return Math.min(MessagingService.unreadCount, 9);
           }
 
           function openMessaging() {
@@ -1261,7 +1288,7 @@ define([
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
                 [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                 CedarUser.getSort()]);
+                  CedarUser.getSort()]);
           }
 
           // open the move modal
@@ -1277,7 +1304,7 @@ define([
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
-                   CedarUser.getSort()]);
+                    CedarUser.getSort()]);
             }
           }
 

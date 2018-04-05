@@ -144,7 +144,8 @@
     "seven": "seven",
     "eight": "eight",
     "unlimited": "unlimited",
-    "Published": "Published"
+    "Published": "Published",
+    "CreatedDraft": "Draft Created"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -274,6 +275,10 @@
       "publishResource": {
         "success": "The resource '{{title}}' was published!",
         "error": "There was an error while publishing the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "createDraftResource": {
+        "success": "The draft from resource '{{title}}' was created!",
+        "error": "There was an error while creating the draft from the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -510,5 +515,10 @@
         }
       }
     }
+  },
+  "STATUS": {
+    "": "",
+    "bibo:draft": "Draft",
+    "bibo:published": "Published"
   }
 }
