@@ -114,7 +114,6 @@ define(['app', 'angular'], function (app) {
             'currentUserPermissions': [],
             'description'           : "Home folder of Test User 1",
             'displayName'           : "Test User 1",
-            displayPath             : null,
             isRoot                  : false,
             isSystem                : false,
             isUserHome              : true,

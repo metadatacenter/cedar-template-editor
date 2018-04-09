@@ -519,6 +519,7 @@
   },
   "STATUS": {
     "": "",
+    "null": "",
     "bibo:draft": "Draft",
     "bibo:published": "Published"
   }
