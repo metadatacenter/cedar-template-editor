@@ -1,8 +1,9 @@
-<div class="fields text-fields" ng-class="{preview: preview}">
+<div class="fields text-fields" ng-class="{preview: preview}" style="overflow:visible" >
 
   <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
+  <div class="flex-left" >
+  <div style="width:100%;margin-right:10px" ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
     <input type="text"
         class="form-control"
         placeholder="{{getTitle()}}"
@@ -12,9 +13,9 @@
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
-
-  <div  ng-if="hasPropertyId()" style="margin:2px 0 0 10px;color:#999999">
-    <div style="font-style:italic">{{getPropertyId()}}</div>
+    <div style="width:100px">
+  <div  ng-if="hasPropertyId()"  uib-tooltip-placement="left" tooltip-append-to-body="true" uib-tooltip="{{getPropertyId()}}"><i
+      class="cedar-svg-controll-term" style="position:relative;top:-5px;color:rgba(51, 51, 51, 0.24);"></i></div>
   </div>
-
+  </div>
 </div>
