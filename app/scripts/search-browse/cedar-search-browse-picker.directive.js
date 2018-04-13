@@ -569,7 +569,14 @@ define([
             var offset = vm.offset;
             resourceService.searchResources(
                 term,
-                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                {
+                  resourceTypes: resourceTypes,
+                  sort: sortField(),
+                  limit: limit,
+                  offset: offset,
+                  version: vm.resourceVersionFilterValue,
+                  publicationStatus: vm.resourceStatusFilterValue
+                },
                 function (response) {
                   vm.searchTerm = term;
                   vm.isSearching = true;
@@ -591,7 +598,14 @@ define([
             vm.offset = 0;
             var offset = vm.offset;
             resourceService.sharedWithMeResources(
-                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                {
+                  resourceTypes: resourceTypes,
+                  sort: sortField(),
+                  limit: limit,
+                  offset: offset,
+                  version: vm.resourceVersionFilterValue,
+                  publicationStatus: vm.resourceStatusFilterValue
+                },
                 function (response) {
                   vm.isSearching = true;
                   vm.resources = response.resources;
@@ -842,7 +856,15 @@ define([
 
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  {
+                    folderId: folderId,
+                    resourceTypes: resourceTypes,
+                    sort: sortField(),
+                    limit: limit,
+                    offset: offset,
+                    version: vm.resourceVersionFilterValue,
+                    publicationStatus: vm.resourceStatusFilterValue
+                  },
                   function (response) {
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;

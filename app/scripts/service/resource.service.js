@@ -449,6 +449,12 @@ define([
           if ('offset' in options) {
             params['offset'] = options.offset;
           }
+          if ('version' in options) {
+            params['version'] = options.version;
+          }
+          if ('publicationStatus' in options) {
+            params['publicationStatus'] = options.publicationStatus;
+          }
         }
 
         function updateFolder(folder, successCallback, errorCallback) {
