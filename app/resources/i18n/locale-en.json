@@ -145,7 +145,10 @@
     "eight": "eight",
     "unlimited": "unlimited",
     "Published": "Published",
-    "CreatedDraft": "Draft Created"
+    "CreatedDraft": "Draft Created",
+    "Draft": "Draft",
+    "Latest": "Latest",
+    "All": "All"
   },
   "HELP": {
     "createFolder": "Create folder",

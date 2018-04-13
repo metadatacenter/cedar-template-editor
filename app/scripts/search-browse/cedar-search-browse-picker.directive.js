@@ -131,6 +131,12 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
 
+          vm.isResourceStatusActive = isResourceStatusActive;
+          vm.setResourceStatus = setResourceStatus;
+
+          vm.isResourceVersionActive = isResourceVersionActive;
+          vm.setResourceVersion = setResourceVersion;
+
           vm.isGridView = isGridView;
           vm.isListView = isListView;
           vm.toggleView = toggleView;
@@ -478,10 +484,13 @@ define([
             };
             vm.filterSections = {
               type  : true,
+              status: true,
+              version: true,
               author: false,
-              status: false,
               term  : false
             };
+            vm.resourceStatusFilterValue = uip.resourceStatusFilter.status == null ? "all" : uip.resourceStatusFilter.status;
+            vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "all" : uip.resourceVersionFilter.version;
           }
 
           function init() {
@@ -1002,6 +1011,14 @@ define([
             return vm.resourceTypes[type];
           }
 
+          function isResourceStatusActive(status) {
+            return vm.resourceStatusFilterValue  == status;
+          }
+
+          function isResourceVersionActive(version) {
+            return vm.resourceVersionFilterValue  == version;
+          }
+
           function showOrHide(type) {
             return $translate.instant(isResourceTypeActive(type) ? 'GENERIC.Hide' : 'GENERIC.Show');
           }
@@ -1099,10 +1116,21 @@ define([
             return result;
           }
 
-
           function toggleResourceType(type) {
             vm.resourceTypes[type] = !vm.resourceTypes[type];
             UISettingsService.saveUIPreference('resourceTypeFilters.' + type, vm.resourceTypes[type]);
+            init();
+          }
+
+          function setResourceStatus(status) {
+            vm.resourceStatusFilterValue = status;
+            UISettingsService.saveUIPreference('resourceStatusFilter.status', status);
+            init();
+          }
+
+          function setResourceVersion(version) {
+            vm.resourceVersionFilterValue = version;
+            UISettingsService.saveUIPreference('resourceVersionFilter.version', version);
             init();
           }
 

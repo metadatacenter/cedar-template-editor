@@ -218,6 +218,76 @@
                 </ul>
 
               </li>
+
+              <li><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
+
+                <ul ng-if="dc.isFilterSection('status')" class="list-inline ">
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Published' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="template"
+                            ng-click="dc.setResourceStatus('bibo:published')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
+                        ng-class="{ active: dc.isResourceStatusActive('bibo:published') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="element"
+                            ng-click="dc.setResourceStatus('bibo:draft')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
+                        ng-class="{ active: dc.isResourceStatusActive('bibo:draft') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="metadata"
+                            ng-click="dc.setResourceStatus('all')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
+                        ng-class="{ active: dc.isResourceStatusActive('all') }"></i></button>
+                  </li>
+                </ul>
+              </li>
+
+              <li><a href="#" ng-click="dc.toggleFilters('version')">Version<i class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
+
+                <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Latest' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="template"
+                            ng-click="dc.setResourceVersion('latest')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
+                        ng-class="{ active: dc.isResourceVersionActive('latest') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="metadata"
+                            ng-click="dc.setResourceVersion('all')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
+                        ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
+                  </li>
+                </ul>
+              </li>
+
               <li class="hidden"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
 
