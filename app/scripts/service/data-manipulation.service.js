@@ -509,7 +509,6 @@ define([
     // update the key values to reflect the property or name
     // this does not look at nested fields and elements, just top level
     service.updateKeys = function (parent) {
-      //console.log('udpateKeys', service.getPropertyLabels(parent));
       angular.forEach(service.propertiesOf(parent), function (node, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.updateKey(key, node, parent);
@@ -518,21 +517,20 @@ define([
     };
 
     service.updateKey = function (key, node, parent) {
-      //console.log('updateKey ', key, service.getPropertyLabels(parent));
       if (parent && node && (service.getId(node) != service.getId(parent))) {
 
         var title = service.getTitle(node);
         var labels = service.getPropertyLabels(parent);
         var label = labels[key];
-        service.relabel(parent, key, title, label);
+        // relabel key and rebuild propertyLabel using title
+        // TODO use title for the propertyLabel?
+        //service.relabel(parent, key, title, label);
+        service.relabel(parent, key, title, title);
       }
     };
 
     // Relabel the element key with a new value from the propertyLabels
     service.relabel = function (parent, key, title, label) {
-      //console.log('relabel', 'key', key, 'title', title, 'label', label);
-
-
       if (key != title) {
 
         var schema = service.schemaOf(parent);
@@ -1463,15 +1461,15 @@ define([
       if (fieldProp) {
         // set the property as the field title and description
         var field = service.schemaOf(props[prop]);
-        var label = propertyLabel || '';
-        var description = propertyDescription || '';
+        var label = service.getTitle(field) || propertyLabel;
+        var description = service.getDescription(field) || propertyDescription;
 
         // title and description
         service.setTitle(field, label);
         service.setDescription(field, description);
 
         // property label
-        service.getPropertyLabels(parent)[prop] = label;
+        service.getPropertyLabels(parent)[prop] = propertyLabel;
 
         // property id
         if (!propertyId || propertyId.length < 1) {

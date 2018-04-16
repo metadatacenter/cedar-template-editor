@@ -55,6 +55,14 @@ define([
         return dms.getTitle(scope.element);
       };
 
+      scope.hasDescription = function () {
+        return scope.element && dms.getDescription(scope.element).length > 0;
+      };
+
+      scope.getDescription = function () {
+        return dms.getDescription(scope.element);
+      };
+
       scope.getId = function () {
         return dms.getId(scope.element);
       };

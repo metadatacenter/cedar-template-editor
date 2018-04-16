@@ -1,19 +1,37 @@
+<div class="flex" style="width:100%; border:1px solid #ddd; background:white;margin-bottom:5px;">
+  <!-- field title -->
+  <div class="form-group floating-label-wrapper" style="margin-bottom:0;width:100%;" >
+    <input type="text" auto-focus
+        class="form-control select"
+        style="border-width:0px;"
+        id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
+        placeholder="{{'CREATOR.enterFieldKey' | translate}}"
+        aria-label="{{'CREATOR.enterFieldKey' | translate}}"
+        ng-model="fieldSchema['schema:name']"
+        ng-model-options="{ debounce: 1000, allowInvalid:true }"
+        autocomplete="off"
+        with-floating-label>
+  </div>
+  <!-- property button -->
+  <div style="padding:0 10px">
+    <div class="flex">
+      <i style="display:inline;transform:none;color:#999" uib-tooltip-placement="left" tooltip-append-to-body="true"
+          uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
+          ng-click="showModal('property')"
+          class="cedar-svg-controll-term" ></i>
 
-<div class="form-group floating-label-wrapper">
-  <input type="text" auto-focus
-      class="form-control select"
-      id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-      placeholder="{{'CREATOR.enterFieldKey' | translate}}"
-      aria-label="{{'CREATOR.enterFieldKey' | translate}}"
-      ng-model="fieldSchema['schema:name']"
-      ng-model-options="{ debounce: 1000, allowInvalid:true }"
-      autocomplete="off"
-      with-floating-label>
-  <div class="input-indicator-icons color-active" style="top:0"
-      ng-click="showModal('property')" uib-tooltip="{{('HELP.addProperty' | translate)}}"><i
-      class="cedar-svg-controll-term"></i></div>
+      <div style="display:inline;color:#999" ng-if="hasPropertyId()" class="class-dropdown " uib-dropdown is-open="status.isopen">
+        <button style="background:transparent;padding:0" type="button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true"><i
+            class="fa fa-caret-down  inline "></i></button>
+        <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
+          <property-list field="field" form="parentElement" dialog-open="status.isopen"></property-list>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<!-- help text -->
 <div class="form-group floating-label-wrapper">
   <input type="text"
       class="form-control field-description-definition"
@@ -24,14 +42,4 @@
       ng-model-options="{ debounce: 1000, allowInvalid:true }"
       autocomplete="off"
       with-floating-label>
-</div>
-
-<div  ng-if="hasPropertyId()" class="flex" style="padding:0 10px;color:#999999">
-  <div style="font-style:italic">{{getPropertyId()}}</div>
-  <div style="font-size: 20px;color: #999999;"
-      ng-click="deleteProperty();$event.stopPropagation();"
-      tooltip-append-to-body="true"
-      uib-tooltip="{{'HELP.removeProperty' | translate}}">
-    <i class="fa fa-times-circle"></i>
-  </div>
 </div>

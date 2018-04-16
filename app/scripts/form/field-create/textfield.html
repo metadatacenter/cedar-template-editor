@@ -3,9 +3,9 @@
   <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <div class="definition-inputs" style="padding:0 5px" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
-  <div class="form-group floating-label-wrapper">
+  <div class="form-group floating-label-wrapper" style="padding:0 5px">
     <input type="text" auto-focus
         class="form-control field-default-definition"
         placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"

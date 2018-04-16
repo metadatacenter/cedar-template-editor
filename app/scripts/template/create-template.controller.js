@@ -540,7 +540,7 @@ define([
 
         $scope.showModal = function (id) {
           //jQuery("#" + id).modal('show');
-          console.log('showMOdal',id);
+          console.log('showModal',id);
           UIUtilService.showModal(id,'type');
         };
 

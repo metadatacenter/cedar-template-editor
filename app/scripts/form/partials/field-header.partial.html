@@ -1,21 +1,35 @@
 <div class="configuration-options field-header sortable-handler flex"
     ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
 
-  <div class="flex-left" >
-    <div class="sortable-icon" ></div>
-    <i class="{{getIconClass()}} field-icon" ></i>
-    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}} .. {{getMaxItems() || "N"}}</div>
-    <i class="fa fa-asterisk required"  ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"></i>
+  <div class="flex-left">
+    <div class="sortable-icon"></div>
+    <i class="{{getIconClass()}} field-icon"></i>
+    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}}
+      .. {{getMaxItems() || "N"}}
+    </div>
+    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"></i>
   </div>
 
   <div class="configuration-actions" ng-init="childType='field'">
-    <div ng-if="!isRuntime() &&  !isNested() " class="preview-container">
+    <div ng-if="!isRuntime() &&  !isNested() " class="preview-container flex-right" style="width:100px">
+
+
+      <!--<div ng-if="hasPropertyId()" tooltip-placement="top" tooltip-append-to-body="true"-->
+          <!--uib-tooltip="{{getPropertyId() || 'Add property'}}"><i-->
+          <!--class="cedar-svg-controll-term"-->
+          <!--ng-click="ckDelete(); $event.stopPropagation();"-->
+          <!--style="position:relative;top:-5px;cursor: pointer;color: #9E9E9E;font-size: 26px;margin-right:10px"></i></div>-->
+
+      <!--<div><i class="cedar-svg-help-circle" style="position:relative;top:-5px;cursor: pointer;color: #9E9E9E;font-size: 26px;" uib-tooltip="{{getDescription()}}" tooltip-append-to-body="true"-->
+          <!--tooltip-placement="top" ng-if="hasDescription()"></i>-->
+      <!--</div>-->
+
       <div class="preview-edit-options ">
         <div class="save-options">
           <div class="trash" style="margin-right: 0;"
               ng-click="ckDelete(); $event.stopPropagation();"
               uib-tooltip='{{"Delete" | translate}}'
-              tooltip-placement="left">
+              tooltip-placement="top">
             <i class="fa fa-times-circle"></i>
           </div>
         </div>

@@ -23,7 +23,7 @@
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
         <div class="flex" style="cursor:pointer"  ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
 
-          <div ng-click="toggleExpanded(index)">
+          <div ng-click="toggleExpanded(index)" style="width:100%">
 
             <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
               <button type="button" class="expand">
@@ -34,7 +34,6 @@
             </div>
 
           </div>
-
 
           <field-toolbar ng-click="toggleExpanded(index)" paging="!isSpreadsheetView()"
 
@@ -64,7 +63,7 @@
 
       <div class="flex" style="cursor:pointer"  ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
-        <div  ng-click="toggleExpanded(index)">
+        <div  ng-click="toggleExpanded(index)" style="width:100%">
 
 
           <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
