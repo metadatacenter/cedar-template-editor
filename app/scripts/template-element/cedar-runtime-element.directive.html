@@ -1,263 +1,99 @@
-<!--<<<<<<< HEAD-->
-<!--<div>-->
-  <!--<div ng-if="model !== undefined" class="item-root element-root"-->
-      <!--style="display:flex;align-items:center;flex-wrap:wrap;" ng-click="toggleExpanded(index)">-->
+<div>
+  <div ng-if="model !== undefined" class="item-root element-root"
+      style="display:flex;align-items:center;flex-wrap:wrap;" ng-click="toggleExpanded(index)">
 
 
-    <!--<div class="leader"-->
-        <!--style="position:relative;left:-12px;top: -5px;width: 10px; height: 0; border-top: 1px solid #9E9E9E; border-top: 1px solid #9E9E9E;">-->
-      <!--<button type="button" style="position:relative;top:-12px;">-->
-        <!--<i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>-->
-      <!--</button>-->
-    <!--</div>-->
+    <div class="leader"
+        style="position:relative;left:-12px;top: -5px;width: 10px; height: 0; border-top: 1px solid #9E9E9E; border-top: 1px solid #9E9E9E;">
+      <button type="button" style="position:relative;top:-12px;">
+        <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
+      </button>
+    </div>
 
-    <!--&lt;!&ndash; field title &ndash;&gt;-->
-    <!--<label class="field-title" for="{{getLocator(index)}}" id="{{getLocator(index)}}"-->
-        <!--aria-label="{{getDescription()}}">-->
-      <!--<div class="title element">-->
-        <!--{{getPropertyLabel()}}<span ng-if="isRequired()" style="color:red">*</span>-->
-      <!--</div>-->
-    <!--</label>-->
+    <!-- field title -->
+    <label class="field-title" for="{{getLocator(index)}}" id="{{getLocator(index)}}"
+        aria-label="{{getDescription()}}">
+      <div class="title element">
+        {{getPropertyLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
+      </div>
+    </label>
 
-    <!--<button type="button" ng-if="!isExpanded(index)  && getDescription() && getDescription().length > 0"-->
-        <!--class="form-control-feedback"-->
-        <!--style="pointer-events: auto;font-size:20px;color:#aaa;margin-right: 15px; margin-top: 10px;"-->
-        <!--tooltip-append-to-body="true"-->
-        <!--ng-click="$event.stopPropagation()"-->
-        <!--uib-tooltip="{{getDescription() | translate}}"-->
-        <!--tooltip-enable="getDescription() &amp;&amp; getDescription().length > 0">-->
-      <!--<i class="fa fa-question-circle"></i>-->
-    <!--</button>-->
+    <button type="button" ng-if="!isExpanded(index)  && getDescription() && getDescription().length > 0"
+        class="form-control-feedback"
+        style="pointer-events: auto;font-size:20px;color:#aaa;margin-right: 15px; margin-top: 10px;"
+        tooltip-append-to-body="true"
+        ng-click="$event.stopPropagation()"
+        uib-tooltip="{{getDescription() | translate}}"
+        tooltip-enable="getDescription() &amp;&amp; getDescription().length > 0">
+      <i class="fa fa-question-circle"></i>
+    </button>
 
-    <!--<field-toolbar style="margin-right:10px" ng-if="isExpanded(index)"-->
-        <!--values="valueArray" index="index" paging="!isSpreadsheetView()"-->
-        <!--min="pageMin" max="pageMax" range="pageRange"-->
-        <!--field="element" model="valueArray" index="index" view-state="viewState"-->
-        <!--remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"-->
-        <!--spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"-->
-        <!--expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">-->
-    <!--</field-toolbar>-->
-  <!--</div>-->
+    <field-toolbar style="margin-right:10px" ng-if="isExpanded(index)"
+        values="valueArray" index="index" paging="!isSpreadsheetView()"
+        min="pageMin" max="pageMax" range="pageRange"
+        field="element" model="valueArray" index="index" view-state="viewState"
+        remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
+        spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
+        expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
+    </field-toolbar>
+  </div>
 
-  <!--&lt;!&ndash; a spreadsheet list of elements &ndash;&gt;-->
-  <!--<div ng-if="isExpanded(index) && isSpreadsheetView() " class="element expand" id="{{getLocator(index)}}"-->
-      <!--style="position:relative;">-->
+  <!-- a spreadsheet list of elements -->
+  <div ng-if="isExpanded(index) && isSpreadsheetView() " class="element expand" id="{{getLocator(index)}}"
+      style="position:relative;">
 
-    <!--<div class="row" ng-if="isExpanded(index)">-->
-      <!--<div class="col-xs-12">-->
-        <!--<div class="spreadsheetViewDetector"></div>-->
-        <!--<div class="spreadsheetViewContainer"></div>-->
-        <!--<div id="spreadsheetViewLogs"></div>-->
-        <!--<div id="hooksList"></div>-->
-      <!--</div>-->
-    <!--</div>-->
-
-  <!--</div>-->
-
-  <!--&lt;!&ndash; a paged list of elements &ndash;&gt;-->
-  <!--<div ng-if="isExpanded(index) && isTabView()" class="element expanded">-->
-
-
-    <!--<ul class="tv flex-outer" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"-->
-        <!--id="{{getLocator(i)}}">-->
-<!--=======-->
-<div ng-if="model !== undefined" class="item-root element-root">
-
-  <div class="elementTotalContent">
-
-    <!-- zero cardinality  -->
-    <div ng-if="valueArray.length == 0">
-      <div class="element " id="{{getLocator(0)}}" style="position:relative">
-        <div class="row isInactive myhover" ng-click="toggleExpanded(0);addElement()">
-          <div class="col-xs-6">
-            <div class="element title" ng-class="{'isInactive' : isInactive(0)}">
-              <button type="button" class="expand">
-                <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
-              </button>
-              {{getPropertyLabel()}}
-            </div>
-          </div>
-        </div>
+    <div class="row" ng-if="isExpanded(index)">
+      <div class="col-xs-12">
+        <div class="spreadsheetViewDetector"></div>
+        <div class="spreadsheetViewContainer"></div>
+        <div id="spreadsheetViewLogs"></div>
+        <div id="hooksList"></div>
       </div>
     </div>
 
-    <!-- a spreadsheet list of elements -->
-    <div ng-if="isSpreadsheetView() && valueArray.length > 0">
-      <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
-        <div class="flex" style="cursor:pointer" ng-class="{'isInactive' : !isActive(0), 'isActive': isActive(0)}">
+  </div>
 
-          <div ng-click="toggleExpanded(index)" style="width:100%">
-
-            <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
-              <button type="button" class="expand">
-                <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
-              </button>
-
-              {{getPropertyLabel()}} <!--<span ng-if="valueArray.length-1" class="count">({{index+1}})</span>-->
-            </div>
-
-          </div>
-
-          <field-toolbar ng-click="toggleExpanded(index)" paging="false"
-              ng-if="isExpanded(index)" values="valueArray" index="index"
-              min="pageMin" max="pageMax" range="pageRange"
-              field="element" model="valueArray" index="index" view-state="viewState"
-              is-active="isActive" set-active="setActive"
-              spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-              expand-all="expandAll" select="selectPage"
-              get-locator="getLocator">
-          </field-toolbar>
-
-        </div>
-        <div class="row" ng-if="isExpanded(index)">
-          <div class="col-xs-12">
-            <div class="spreadsheetViewDetector"></div>
-            <div class="spreadsheetViewContainer"></div>
-            <div id="spreadsheetViewLogs"></div>
-            <div id="hooksList"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- a paged list of elements -->
-    <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
-
-      <div class="flex" style="cursor:pointer"
-          ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
-
-        <div ng-click="toggleExpanded(index)" style="width:100%">
+  <!-- a paged list of elements -->
+  <div ng-if="isExpanded(index) && isTabView()" class="element expanded">
 
 
-          <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
-            <button type="button" class="expand">
-              <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
-            </button>
-            {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
-          </div>
+    <ul class="tv flex-outer" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
+        id="{{getLocator(i)}}">
 
+      <li class="tv"
+          ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
+          ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
+
+
+        <div ng-if="isExpanded(index) && index === i" style="width:100%">
+
+          <cedar-runtime-nested-element
+              field="$root.propertiesOf(element)[key]"
+              model="valueArray[i][key]"
+              labels="$root.schemaOf(element)['_ui']['propertyLabels']"
+              relabel="relabel"
+              remove-child="removeChild"
+              rename-child-key="renameChildKey"
+              is-edit-data="isEditData"
+              parent-model="valueArray"
+              parent-instance="i"
+              parent-key="fieldKey"
+              field-key="key"
+              path="path+'-'+i"
+              uid="uid+'-'+key"
+              previous="$root.propertiesOf(element)[$root.schemaOf(element)['_ui']['order'][$index-1]]">
+          </cedar-runtime-nested-element>
         </div>
 
-        <field-toolbar ng-click="toggleExpanded(index)"
-            ng-if="isExpanded(index)" values="valueArray" index="index" paging="isMultiple()"
-            min="pageMin" max="pageMax" range="pageRange"
-            field="element" model="valueArray" index="index" view-state="viewState"
-            remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
-            spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-            expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
-        </field-toolbar>
+      </li>
+    </ul>
+  </div>
 
-      </div>
-      <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
-          id="{{getLocator(i)}}">
+  <!-- error messages  -->
+  <div class="errors" ng-if="errorMessages">
+    <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+  </div>
 
-        <li class="tv"
-            ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"
-            ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
-
-          <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"
-              style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;"></div>
-          <div ng-if=" isExpanded(index) && index === i">
-
-            <cedar-runtime-nested-element
-                field="$root.propertiesOf(element)[key]"
-                model="valueArray[i][key]"
-                labels="$root.schemaOf(element)['_ui']['propertyLabels']"
-                relabel="relabel"
-                remove-child="removeChild"
-                rename-child-key="renameChildKey"
-                is-edit-data="isEditData"
-                parent-model="valueArray"
-                parent-instance="i"
-                parent-key="fieldKey"
-                field-key="key"
-                path="path+'-'+i"
-                uid="uid+'-'+key"
-                previous="$root.propertiesOf(element)[$root.schemaOf(element)['_ui']['order'][$index-1]]">
-            </cedar-runtime-nested-element>
-          </div>
-
-        </li>
-      </ul>
-    </div>
-
-    <!-- an expanded list of elements -->
-    <!--<div ng-if="isListView()" ng-repeat="(i, valueElement) in valueArray">-->
-
-    <!--<div class="element element-{{i}}" id="{{getLocator(i)}}" ng-class="{'expand' : isExpanded(i)}"-->
-    <!--style="position:relative">-->
-    <!--<div class="flex" ng-class="{'isInactive' : !isActive(i), 'isActive': isActive(i)}"-->
-    <!--ng-click="toggleExpanded(i)">-->
-    <!--<div>-->
-    <!--&lt;!&ndash;&gt;>>>>>> develop&ndash;&gt;-->
-
-    <!--<li class="tv"-->
-    <!--ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey])), 'hidden': isHidden($root.propertiesOf(element)[key])}"-->
-    <!--ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">-->
+</div>
 
 
-    <!--&lt;!&ndash;<<<<<<< HEAD&ndash;&gt;-->
-    <!--<div ng-if="isExpanded(index) && index === i" style="width:100%">-->
-
-    <!--<cedar-runtime-nested-element-->
-    <!--field="$root.propertiesOf(element)[key]"-->
-    <!--model="valueArray[i][key]"-->
-    <!--labels="$root.schemaOf(element)['_ui']['propertyLabels']"-->
-    <!--relabel="relabel"-->
-    <!--remove-child="removeChild"-->
-    <!--rename-child-key="renameChildKey"-->
-    <!--is-edit-data="isEditData"-->
-    <!--parent-model="valueArray"-->
-    <!--parent-instance="i"-->
-    <!--parent-key="fieldKey"-->
-    <!--field-key="key"-->
-    <!--path="path+'-'+i"-->
-    <!--uid="uid+'-'+key"-->
-    <!--previous="$root.propertiesOf(element)[$root.schemaOf(element)['_ui']['order'][$index-1]]">-->
-    <!--</cedar-runtime-nested-element>-->
-    <!--&lt;!&ndash;=======&ndash;&gt;-->
-    <!--<field-toolbar paging="false" field="element" model="valueArray" index="i" view-state="viewState"-->
-    <!--paging="!isSpreadsheetView()"-->
-    <!--remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"-->
-    <!--spreadsheet="switchToSpreadsheet" close="unExpand" expand-all="expandAll" get-locator="getLocator">-->
-    <!--</field-toolbar>-->
-    <!--</div>-->
-    <!--<div ng-if="isExpanded(i)">-->
-    <!--<ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">-->
-
-    <!--<li class="tv" ng-if="$root.propertiesOf(element)[key]"-->
-    <!--ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key])),  'hidden': isHidden($root.propertiesOf(element)[key])}">-->
-
-
-    <!--<cedar-runtime-nested-element-->
-    <!--field="getChildNode(key)"-->
-    <!--model="valueElement[key]"-->
-    <!--parent-model="valueArray"-->
-    <!--parent-instance="i"-->
-    <!--labels="getPropertyLabels()"-->
-    <!--relabel="relabel"-->
-    <!--remove-child="removeChild"-->
-    <!--rename-child-key="renameChildKey"-->
-    <!--is-edit-data="isEditData"-->
-    <!--path="path+'-'+i"-->
-    <!--parent-key="fieldKey"-->
-    <!--field-key="key"-->
-    <!--uid="uid+'-'+key">-->
-    <!--</cedar-runtime-nested-element>-->
-    <!--</li>-->
-    <!--</ul>-->
-    <!--&lt;!&ndash;&gt;>>>>>> develop&ndash;&gt;-->
-    <!--</div>-->
-
-    <!--</li>-->
-    <!--</ul>-->
-    <!--</div>-->
-
-    <!--&lt;!&ndash; error messages  &ndash;&gt;-->
-    <!--<div class="errors" ng-if="errorMessages">-->
-    <!--<div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>-->
-    <!--</div>-->
-
-    <!--</div>-->
-      </div>
-    </div>
