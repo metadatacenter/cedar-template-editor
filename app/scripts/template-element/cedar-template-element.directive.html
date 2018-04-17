@@ -1,8 +1,8 @@
-<div ng-if="model !== undefined" class="item-root element-root" style="padding:0 5px"  id="{{getDomId(element)}}"
+<div ng-if="model !== undefined" class="item-root element-root" style="padding:0 5px;"  id="{{getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();"
     ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(),  'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
 
-
+<div style="margin:0 16px">
   <!-- header  -->
   <div class="element-header input-type-container" style="position:relative;"
       ng-class="{'sortable-handler': isSortable()}">
@@ -122,6 +122,7 @@
     <div class="clearfix"></div>
   </div>
 
+
   <!-- property modal -->
   <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
     <div class="modal-dialog">
@@ -138,5 +139,5 @@
       </div>
     </div>
   </div>
-
+</div>
 </div>
