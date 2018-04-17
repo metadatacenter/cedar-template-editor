@@ -275,11 +275,11 @@ define([
 
 
     // is this a multiple choice list?
-    service.isMultipleChoice = function (node) {
-      if (service.schemaOf(node)._valueConstraints) {
-        return service.schemaOf(node)._valueConstraints.multipleChoice;
-      }
-    };
+    // service.isMultipleChoice = function (node) {
+    //   if (service.schemaOf(node)._valueConstraints) {
+    //     return service.schemaOf(node)._valueConstraints.multipleChoice;
+    //   }
+    // };
 
     // is this a multiple choice list?
     service.isMultipleChoice = function (node) {
@@ -736,8 +736,8 @@ define([
           } else {
             result.push(key);
           }
-        } else if (!service.isStaticField(field) && !service.isMultiAnswer(field) && !service.isElement(field)) {
-          result.push(key);
+        } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(field)) {
+            result.push(key);
         }
       });
       return result;
