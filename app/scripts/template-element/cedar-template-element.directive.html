@@ -4,9 +4,9 @@
 
 <div style="margin:0 16px">
   <!-- header  -->
-  <div class="element-header input-type-container" style="position:relative;"
+  <div ng-if="!isRoot() && !nested" class="element-header input-type-container" style="position:relative;"
       ng-class="{'sortable-handler': isSortable()}">
-    <div ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <div  ng-include="'scripts/form/partials/field-header.partial.html'"></div>
   </div>
   <div ng-if="!isRoot() && !nested" class="definition-inputs"
       ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
