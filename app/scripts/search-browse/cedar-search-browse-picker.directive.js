@@ -131,8 +131,8 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
 
-          vm.isResourceStatusActive = isResourceStatusActive;
-          vm.setResourceStatus = setResourceStatus;
+          vm.isResourcePublicationStatusActive = isResourcePublicationStatusActive;
+          vm.setResourcePublicationStatus = setResourcePublicationStatus;
 
           vm.isResourceVersionActive = isResourceVersionActive;
           vm.setResourceVersion = setResourceVersion;
@@ -307,7 +307,7 @@ define([
             return null;
           }
 
-          vm.getResourceStatus = function () {
+          vm.getResourcePublicationStatus = function () {
             var resource = vm.getSelection();
             if (resource != null) {
               return resource['bibo:status'];
@@ -484,12 +484,12 @@ define([
             };
             vm.filterSections = {
               type  : true,
-              status: true,
+              publicationStatus: true,
               version: true,
               author: false,
               term  : false
             };
-            vm.resourceStatusFilterValue = uip.resourceStatusFilter.status == null ? "all" : uip.resourceStatusFilter.status;
+            vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
             vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "all" : uip.resourceVersionFilter.version;
           }
 
@@ -575,7 +575,7 @@ define([
                   limit: limit,
                   offset: offset,
                   version: vm.resourceVersionFilterValue,
-                  publicationStatus: vm.resourceStatusFilterValue
+                  publicationStatus: vm.resourcePublicationStatusFilterValue
                 },
                 function (response) {
                   vm.searchTerm = term;
@@ -604,7 +604,7 @@ define([
                   limit: limit,
                   offset: offset,
                   version: vm.resourceVersionFilterValue,
-                  publicationStatus: vm.resourceStatusFilterValue
+                  publicationStatus: vm.resourcePublicationStatusFilterValue
                 },
                 function (response) {
                   vm.isSearching = true;
@@ -863,7 +863,7 @@ define([
                     limit: limit,
                     offset: offset,
                     version: vm.resourceVersionFilterValue,
-                    publicationStatus: vm.resourceStatusFilterValue
+                    publicationStatus: vm.resourcePublicationStatusFilterValue
                   },
                   function (response) {
                     vm.currentFolderId = folderId;
@@ -1033,8 +1033,8 @@ define([
             return vm.resourceTypes[type];
           }
 
-          function isResourceStatusActive(status) {
-            return vm.resourceStatusFilterValue  == status;
+          function isResourcePublicationStatusActive(publicationStatus) {
+            return vm.resourcePublicationStatusFilterValue  == publicationStatus;
           }
 
           function isResourceVersionActive(version) {
@@ -1144,9 +1144,9 @@ define([
             init();
           }
 
-          function setResourceStatus(status) {
-            vm.resourceStatusFilterValue = status;
-            UISettingsService.saveUIPreference('resourceStatusFilter.status', status);
+          function setResourcePublicationStatus(publicationStatus) {
+            vm.resourcePublicationStatusFilterValue = publicationStatus;
+            UISettingsService.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', publicationStatus);
             init();
           }
 

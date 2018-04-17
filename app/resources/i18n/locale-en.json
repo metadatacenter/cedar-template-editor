@@ -520,7 +520,7 @@
       }
     }
   },
-  "STATUS": {
+  "PUBLICATIONSTATUS": {
     "": "",
     "null": "",
     "bibo:draft": "Draft",

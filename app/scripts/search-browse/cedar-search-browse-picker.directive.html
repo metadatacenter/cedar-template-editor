@@ -219,10 +219,10 @@
 
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
+              <li><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication Status<i class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
 
-                <ul ng-if="dc.isFilterSection('status')" class="list-inline ">
+                <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
                   <li>
                     <button uib-tooltip="{{'GENERIC.Published' | translate}}"
                             tooltip-trigger
@@ -230,9 +230,9 @@
                             tooltip-placement="top"
                             data-toggle="tooltip"
                             class="template"
-                            ng-click="dc.setResourceStatus('bibo:published')"><i
+                            ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourceStatusActive('bibo:published') }"></i></button>
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }"></i></button>
                   </li>
                   <li>
                     <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
@@ -241,9 +241,9 @@
                             tooltip-placement="top"
                             data-toggle="tooltip"
                             class="element"
-                            ng-click="dc.setResourceStatus('bibo:draft')"><i
+                            ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
-                        ng-class="{ active: dc.isResourceStatusActive('bibo:draft') }"></i></button>
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }"></i></button>
                   </li>
                   <li>
                     <button uib-tooltip="{{'GENERIC.All' | translate}}"
@@ -252,9 +252,9 @@
                             tooltip-placement="top"
                             data-toggle="tooltip"
                             class="metadata"
-                            ng-click="dc.setResourceStatus('all')"><i
+                            ng-click="dc.setResourcePublicationStatus('all')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
-                        ng-class="{ active: dc.isResourceStatusActive('all') }"></i></button>
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('all') }"></i></button>
                   </li>
                 </ul>
               </li>
@@ -286,25 +286,6 @@
                         ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
                   </li>
                 </ul>
-              </li>
-
-              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
-
-                <div ng-if="dc.isFilterSection('author')">&nbsp;</div>
-              </li>
-              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
-
-                <div ng-if="dc.isFilterSection('status')">&nbsp;</div>
-              </li>
-              <li class="hidden" ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
-
-                <div ng-if="dc.isFilterSection('term')">&nbsp;</div>
-                <!--<ul ng-if="dc.isFilterSection('term')" ui-tree-nodes="" ng-model="dc.facets.term.nodes">
-                  <li ng-repeat="node in dc.facets.term.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
-                </ul>-->
               </li>
             </ul>
           </div>
@@ -387,7 +368,7 @@
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
                       <div style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;opacity: 0.5;font-size:10px;">
-                        {{"STATUS." + resource['bibo:status'] | translate}}
+                        {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
                       </div>
                       <div style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;opacity: 0.5;font-size:10px;">
                         {{ resource['pav:version'] }}
@@ -612,8 +593,8 @@
             <div class="col-sm-8 can-change-owner">{{ dc.getResourceVersion() }}</div>
           </div>
           <div class="row" ng-if="dc.getResourceTypeClass(dc.getSelectedNode()) != 'folder'">
-            <div class="col-sm-4 left">Status</div>
-            <div class="col-sm-8 can-change-owner">{{"STATUS." + dc.getResourceStatus() | translate}}</div>
+            <div class="col-sm-4 left">Publication Status</div>
+            <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() | translate}}</div>
           </div>
         </div>
 
