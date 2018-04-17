@@ -1972,8 +1972,7 @@ body.search-browse-modal {
 
       .nested-element {
         border: 1px solid #ccc;
-        margin: 0px;
-        margin-bottom: 5px;
+        margin: 5px 0;
       }
     }
 
@@ -7649,6 +7648,33 @@ table.message {
   justify-content:space-between;
   align-items: center;
   width:100%;
+  
+  &.field-title {
+    width:100%;
+    border:1px solid #ddd;
+    background:white;
+    margin-bottom:5px;
+    .form-group {
+      margin-bottom:0;width:100%;
+      input {
+        border-width:0px;
+      }
+    }
+    .property {
+      padding:0 10px;
+      .flex {
+        i {
+          display:inline;transform:none;color:#999
+        }
+        .class-dropdown {
+          display:inline;color:#999;
+          button {
+            background:transparent;padding:0
+          }
+        }
+      }
+    }
+  }
 }
 
 .flex-right {
