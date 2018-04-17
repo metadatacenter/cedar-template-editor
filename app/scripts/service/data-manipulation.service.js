@@ -736,7 +736,7 @@ define([
           } else {
             result.push(key);
           }
-        } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isRadioType(field) && !service.isMultipleChoiceField(field)) {
+        } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(field)) {
             result.push(key);
         }
       });
