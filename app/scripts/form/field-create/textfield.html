@@ -3,10 +3,10 @@
   <!-- header -->
   <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
   <!-- title and description -->
-  <div class="definition-inputs" style="padding:0 5px" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
   <!-- default value -->
-  <div class="form-group floating-label-wrapper" style="padding:0 5px">
+  <div class="form-group floating-label-wrapper" >
     <input type="text" auto-focus
         class="form-control field-default-definition"
         placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"

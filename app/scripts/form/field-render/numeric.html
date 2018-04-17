@@ -1,19 +1,9 @@
 <div class="fields fields-numeric">
 
-  <div  ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- header -->
+  <div ng-init="fieldTitle='Number';fieldIconClass='cedar-svg-number'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- title and description -->
+  <div class="definition-inputs"
+      ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
-  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
-    <input type="text"
-        class="form-control"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-disabled="true"
-        with-floating-label=""/>
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
-
-  <div ng-if="hasPropertyId()" style="margin:2px 0 0 10px;color:#999999">
-    <div style="font-style:italic">{{getPropertyId()}}</div>
-  </div>
 </div>

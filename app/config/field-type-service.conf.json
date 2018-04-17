@@ -105,7 +105,7 @@
   },
   {
     "cedarType": "list",
-    "iconClass": "cedar-svg-list",
+    "iconClass": "fa fa-list",
     "allowedInElement": true,
     "primaryField": false,
     "label": "List",
@@ -131,7 +131,7 @@
   },
   {
     "cedarType": "phone-number",
-    "iconClass": "cedar-svg-phone",
+    "iconClass": "fa fa-th",
     "allowedInElement": true,
     "label": "Phone Number",
     "primaryField": false,
