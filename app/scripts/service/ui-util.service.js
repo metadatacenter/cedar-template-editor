@@ -138,7 +138,7 @@ define([
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
         viewState.cleanupCallback = cleanup;
-        viewState.selected = 'spreadsheet';
+        viewState.selected = 'tab';
       }
       return viewState;
     };
