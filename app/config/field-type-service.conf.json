@@ -118,7 +118,7 @@
   },
   {
     "cedarType": "numeric",
-    "iconClass": "cedar-svg-numeric",
+    "iconClass": "fa fa-hashtag",
     "allowedInElement": true,
     "primaryField": true,
     "Label": "Number",
@@ -144,7 +144,7 @@
   },
   {
     "cedarType": "page-break",
-    "iconClass": "cedar-svg-page-break",
+    "iconClass": "fa fa-file-o",
     "allowedInElement": false,
     "label": "Page Break",
     "primaryField": false,
@@ -157,7 +157,7 @@
   },
   {
     "cedarType": "section-break",
-    "iconClass": "cedar-svg-section-break",
+    "iconClass": "fa fa-minus",
     "allowedInElement": true,
     "label": "Section Break",
     "primaryField": false,
@@ -170,7 +170,7 @@
   },
   {
     "cedarType": "richtext",
-    "iconClass": "cedar-svg-rich-text",
+    "iconClass": "fa fa-pencil-square-o",
     "allowedInElement": true,
     "label": "Rich Text",
     "primaryField": false,
@@ -183,7 +183,7 @@
   },
   {
     "cedarType": "image",
-    "iconClass": "cedar-svg-image",
+    "iconClass": "fa fa-image",
     "allowedInElement": true,
     "label": "Image",
     "primaryField": false,
@@ -196,7 +196,7 @@
   },
   {
     "cedarType": "youtube",
-    "iconClass": "cedar-svg-youtube",
+    "iconClass": "fa fa-youtube-square",
     "allowedInElement": true,
     "label": "YouTube Video",
     "primaryField": false,
