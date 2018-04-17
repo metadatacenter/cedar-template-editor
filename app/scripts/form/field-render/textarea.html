@@ -1,7 +1,6 @@
 <div class="fields fields-textarea">
 
-  <div ng-init="fieldTitle='Paragraph';fieldIconClass='fa fa-paragraph';"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='fa fa-paragraph';" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
   <textarea rows="5"

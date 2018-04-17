@@ -1,31 +1,8 @@
 <div class="fields text-fields" ng-class="{preview: preview}" style="overflow:visible">
 
-  <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- header -->
+  <div ng-init="fieldTitle='Text';fieldIconClass='fa fa-font'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- title and description -->
+  <div class="definition-inputs" style="padding:0 5px" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
-
-  <div class="flex" style="width:100%; border:1px solid #ddd; background:white;margin-bottom:5px;padding:0 5px">
-    <div ng-valid="false" class="form-group floating-label-wrapper" style="margin-right:0;margin-bottom:0;width:100%;"  ng-repeat="x in getCount() track by $index">
-
-      <input type="text"
-          class="form-control"
-          placeholder="{{getTitle()}}"
-          aria-label="{{getDescription()}}"
-          ng-disabled="true"
-          style="border-width:0px;"
-          with-floating-label/>
-
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-
-      <div ng-if="hasPropertyId()" style="padding:0 10px 0 0">
-        <div class="flex">
-          <i style="padding-top:5px;transform:none;color:#999" uib-tooltip-placement="left" tooltip-append-to-body="true"
-              uib-tooltip="{{getPropertyId()}}"
-              ng-click="showModal('property')"
-              class="cedar-svg-controll-term" ></i>
-        </div>
-      </div>
-    </div>
 </div>
