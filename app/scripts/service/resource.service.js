@@ -366,7 +366,7 @@ define([
           }
 
           if (id) {
-            params['derived_from_id'] = id;
+            params['is_based_on'] = id;
           }
 
           addCommonParameters(params, options);
