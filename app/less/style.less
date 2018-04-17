@@ -1972,8 +1972,7 @@ body.search-browse-modal {
 
       .nested-element {
         border: 1px solid #ccc;
-        margin: 0px 16px 0px 16px;
-        margin-bottom: 16px;
+        margin: 5px 0;
       }
     }
 
@@ -3712,7 +3711,11 @@ section.dashboard-elements {
 
 .field-header {
   .field-icon {
-    color: @med-gray;
+    margin-right:10px;
+    color:#333;
+    font-size:18px;
+    margin:0 5px;
+
   }
   .type-label {
     text-transform: none;
@@ -7643,16 +7646,78 @@ table.message {
 .flex {
   display:flex;
   justify-content:space-between;
-  align-content: center;
+  align-items: center;
+  width:100%;
+
+  &.field-title {
+    width:100%;
+    border:1px solid #ddd;
+    background:white;
+    margin-bottom:5px;
+    .form-group {
+      margin-bottom:0;width:100%;
+      input {
+        border-width:0px;
+      }
+    }
+    .property {
+      padding:0 10px;
+      .flex {
+        i {
+          display:inline;transform:none;color:#999
+        }
+        .class-dropdown {
+          display:inline;color:#999;
+          button {
+            background:transparent;padding:0
+          }
+        }
+      }
+    }
+  }
 }
 
 .flex-right {
   display:flex;
   justify-content:flex-end;
+  align-items: center;
+  width:100%;
 }
+.flex-left {
+  display:flex;
+  justify-content:flex-start;
+  align-items: center;
+  width:100%;
+}
+
 
 .invalid {
   color:red;
 }
 
+.required {
+  color:red;
+  font-size:12px;
+}
 
+.color-active {
+  color:#5795ba;
+}
+
+.color-deactive {
+  color:@med-gray;
+}
+
+i.cedar-svg-numeric {
+  padding:0 !important;
+  margin-left:0 !important;
+  height: 40px;
+}
+
+
+
+div.tooltip-inner {
+  max-width: 500px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

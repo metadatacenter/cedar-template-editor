@@ -520,6 +520,7 @@ define([
     };
 
     $scope.showModal = function (id) {
+      console.log('showModal',id);
       jQuery("#" + id).modal('show');
     };
 
@@ -528,24 +529,19 @@ define([
       jQuery("#control-options-element-field").modal('hide');
     });
 
-    // update the property for a field in the element
-    $scope.$on("property:propertyAdded", function (event, args) {
+    // // update the property for a field
+    // $scope.$on("property:propertyAdded", function (event, args) {
+    //
+    //   var propertyId = args[0];
+    //   var propertyLabel = args[2];
+    //   var id = args[1];
+    //   var propertyDescription = args[3];
+    //
+    //   dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.element);
+    //
+    //
+    // });
 
-      var property = args[0];   // property value
-      var id = args[1];         // field id
-
-      var props = $scope.element.properties;
-      var fieldProp;
-      for (var prop in props) {
-        if (props[prop]['@id'] === id) {
-          var fieldProp = prop;
-          break;
-        }
-      }
-      if (fieldProp) {
-        $scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
-      }
-    });
 
   }
 

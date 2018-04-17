@@ -1,41 +1,41 @@
 <div id="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <!-- header row -->
+  <!-- header  -->
   <div ng-init="fieldTitle='Multiple Choice';fieldIconClass='cedar-svg-multiple-choice'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
+  <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
+  <!-- radio items -->
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
       <div ng-init="initializeSelectionField()" class="multiple-container">
         <span ng-repeat="(index, value) in getLiterals()">
           <div class="radio radio-primary">
-            <input ng-click="radioModelToDefaultOptions(index); $event.stopPropagation();"  type="radio" id="radio{{index}}"
+            <input ng-click="radioModelToDefaultOptions(index); $event.stopPropagation();" type="radio"
+                id="radio{{index}}"
                 name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                 ng-model="getLiterals()[index].selectedByDefault"
                 ng-value="true"
-                ng-checked=""
-                >
+                ng-checked="">
             <label for="radio{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
                     aria-label="Option" ng-model="getLiterals()[index]['label']" with-floating-label>
               </div>
-              <!-- /.form-group -->
             </label>
-          </div><!-- /.radio -->
+          </div>
         </span>
 
-        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another
+        </p>
       </div>
-      <!-- /.multiple-container -->
       <p class="instructions">Click choice to set as default</p>
     </div>
-    <!-- /.options-wrapper -->
-
-    <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
   </div>
-  <!-- /.input-type-container -->
+
+  <!-- options -->
+  <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
+
 </div>

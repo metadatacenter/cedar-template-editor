@@ -54,6 +54,16 @@ define([
         return dms.getTitle(field || $scope.field);
       };
 
+      $scope.getPropertyLabel = function () {
+        if ($scope.labels && $scope.fieldKey) {
+          return $scope.labels[$scope.fieldKey];
+        } else {
+          return $scope.getTitle();
+        }
+      };
+
+
+
       // get the field description
       $scope.getDescription = function (field) {
         return dms.getDescription(field || $scope.field);
@@ -1253,7 +1263,8 @@ define([
         fieldKey      : '=',
         parentKey     : '=',
         parentModel   : '=',
-        parentInstance: '='
+        parentInstance: '=',
+        labels: '='
 
       },
       controller : function ($scope, $element) {

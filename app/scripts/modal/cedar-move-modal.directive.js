@@ -95,7 +95,6 @@ define([
           }
 
           function openParent() {
-
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -225,7 +224,6 @@ define([
                   }
               );
             } else {
-              console.log('set destinationResorces to null');
               $scope.destinationResources = [];
             }
           }

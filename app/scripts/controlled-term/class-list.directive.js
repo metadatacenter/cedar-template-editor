@@ -22,7 +22,8 @@ define([
       restrict: 'E',
       scope   : {
         field         : '=',
-        viewType      : '='
+        viewType      : '=',
+        dialogOpen    : '='
       },
       templateUrl     : 'scripts/controlled-term/class-list.directive.html',
       link    : function (scope, element, attrs) {
