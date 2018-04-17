@@ -1,16 +1,9 @@
 <div class="fields fields-date">
 
-  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
-  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
-    <input type="text"
-        class="form-control"
-        placeholder="{{getTitle()}}"
-        aria-label="{{getDescription()}}"
-        ng-disabled="true"
-        with-floating-label=""/>
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
+  <!-- header -->
+  <div ng-init="fieldTitle='date';fieldIconClass='fa fa-calendar'" ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- title and description -->
+  <div class="definition-inputs"
+      ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
 </div>

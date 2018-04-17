@@ -9,7 +9,7 @@
               <tr>
                 <th>Property</th>
                 <th>
-                  <button class="close" type="button" ng-click=""
+                  <button class="close" type="button" ng-click="dialogOpen = false"
                       tooltip-append-to-body="true"
                       uib-tooltip="{{'GENERIC.Close' | translate}}"
                       aria-label="Close"><span
@@ -19,8 +19,8 @@
               </thead>
               <tbody>
               <!-- has non-CEDAR property assigned to field -->
-              <tr ng-if="hasProperty()">
-                <td>{{getProperty()}}</td>
+              <tr ng-if="hasPropertyId()">
+                <td>{{getPropertyId()}}</td>
                 <td>
                   <div class="class-delete"
                       ng-click="deleteProperty();$event.stopPropagation();"
@@ -31,7 +31,7 @@
                 </td>
               </tr>
               <!-- has CEDAR property assigned to field so don't display this -->
-              <tr ng-if="!hasProperty()">
+              <tr ng-if="!hasPropertyId()">
                 <td class="center empty">Empty</td>
                 <td></td>
               </tr>

@@ -60,6 +60,7 @@
               uid="uid+'-'+item"
               parent-key="'form'"
               parent-model="model"
+              labels="form._ui.propertyLabels"
               field-key="item"
               previous="form.properties[pagesArray[pageIndex][$index-1]]"></cedar-runtime-field>
         </div>
@@ -113,6 +114,7 @@
                  key="item"
                  model="model[item]"
                  parent-element="form"
+                 rename-child-key="renameChildKey"
                  delete="removeChild"
                  is-edit-data="isEditData">
              </cedar-template-element>

@@ -1,77 +1,22 @@
-<div ng-if="model !== undefined" class="item-root element-root" id="{{getDomId(element)}}"
+<div ng-if="model !== undefined" class="item-root element-root" style="padding:0 5px;" id="{{getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();"
-    ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(), 'not-selectable': !isSelectable(), 'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
+    ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(),  'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
 
-  <!-- header  -->
-  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': isSortable()}">
-    <!--domId={{getDomId(element)}}  expanded={{isExpanded()}} nested={{isNested()}} selected={{isEditState()}} selectable={{isSelectable()}} sortable={{isSortable()}} root={{isRoot()}}-->
-    <div class="row">
-      <!-- left side of header -->
-      <div class="col-lg-6 pull-left"  >
+  <div style="margin:0 16px">
+    <!-- header  -->
+    <div ng-if="!isRoot() && !nested" class="element-header input-type-container" style="position:relative;"
+        ng-class="{'sortable-handler': isSortable()}"
+        ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <!-- title and description  -->
+    <div ng-if="!isRoot() && !nested" class="definition-inputs"
+        ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
 
-        <!-- toggle visibility of element contents -->
-        <span  ng-if="isEditState()">
-        <!--<a  ng-click="switchExpandedState(); $event.preventDefault();" class="visibilitySwitch" ng-class="{'visible': isExpanded()}">-->
-          <!--<i class="cedar-svg-collapse"></i>-->
-        <!--</a>-->
-        <a ng-click="switchExpandedState(); $event.preventDefault();" class="visibilitySwitch"  >
-          <i  ng-class="{'cedar-svg-collapse': isExpanded(),'cedar-svg-expand': !isExpanded()}"></i>
-        </a>
-        </span>
+    <!-- content -->
+    <div ng-if="isExpanded()">
 
-        <!-- sort icon -->
-        <div  ng-if="isSelectable()"  style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
-
-        <!-- allow elements to have properties -->
-        <button ng-if="isSelectable()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal('property');" uib-tooltip="Add property">
-          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
-        </button>
-
-        <!-- element label -->
-        <p class="element-name-label " ng-class="{'nested': isNested()}">
-          <span ng-if="!canEditProperty()" >{{labels[key]}}</span>
-          <input ng-model-options="{  }" ng-if="canEditProperty()" type="text" auto-focus
-              placeholder="{{'CREATOR.enterElementTitle' | translate}}"
-              aria-label="{{'CREATOR.enterElementTitle' | translate}}"
-              ng-model="labels[key]"
-              style="outline:none;width:300px;padding:5px">
-        </p>
-
-        <!-- cardinality -->
-        <span class="multiple-instance-cardinality" ng-show="elementIsMultiInstance(element)">
-           {{element.minItems}} .. {{element.maxItems || "N"}}
-        </span>
-      </div>
-
-      <!-- right side of header -->
-      <div class="col-lg-5" >
-      </div>
-
-      <!-- delete element -->
-      <div ng-if="isSelectable()" class="preview-container col-lg-1">
-        <div class="row preview-edit-options pull-right">
-          <div class="toggle-options col-lg-12 pull-right">
-            <div class="save-options">
-              <div class="trash" ng-click="removeChild(element)" title="Delete element">
-                <i class="fa fa-times-circle"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- content -->
-  <div ng-if="isExpanded()">
-    <!-- have an array with at least one element -->
-    <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
+      <!-- have an array with at least one element -->
+      <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
           ng-class="['element-{{$index}}']">
-
-        <div class="remove-element pull-right">
-          <a class="" ng-if="isRuntime()" ng-show="model.length > element.minItems"
-              ng-click="removeElement($index)" translate>GENERIC.Remove</a>
-        </div>
 
         <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
             class="sortable-container">
@@ -88,37 +33,39 @@
                   is-root-element="false"
                   nested="true">
               </cedar-nested-template-element>
+
             </div>
           </div>
         </div>
       </div>
 
-    <!-- have an array with no elements -->
-    <div ng-if="$root.isArray(model) && model.length == 0" class="element"
+      <!-- have an array with no elements -->
+      <div ng-if="$root.isArray(model) && model.length == 0" class="element"
           ng-class="['element-0']">
+
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
 
-            <div ng-if="true">
-              <cedar-nested-template-element key="key"
-                  field="$root.propertiesOf(element)[key]"
-                  model="m[key]"
-                  parent-element="element"
-                  preview="preview"
-                  delete="delete"
-                  rename-child-key="renameChildKey"
-                  is-edit-data="isEditData"
-                  is-root-element="false"
-                  nested="true">
-              </cedar-nested-template-element>
-            </div>
+            <cedar-nested-template-element key="key"
+                field="$root.propertiesOf(element)[key]"
+                model="m[key]"
+                parent-element="element"
+                preview="preview"
+                delete="delete"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                is-root-element="false"
+                nested="true">
+            </cedar-nested-template-element>
+
           </div>
         </div>
       </div>
 
-    <!-- not an array -->
-    <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
+      <!-- not an array -->
+      <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
           ng-model="element._ui.order">
+
         <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
 
@@ -132,14 +79,14 @@
                 is-root-element="false"
                 nested="true">
             </cedar-nested-template-element>
+
           </div>
         </div>
       </div>
-  </div>
+    </div>
 
-
-  <!-- options -->
-  <div  ng-if="isEditState()">
+    <!-- options -->
+    <div ng-if="isEditState()">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle cardinality-tab table-cell-style" ng-class="{active: showCardinality}"
@@ -162,28 +109,31 @@
         </div>
 
         <div class="cardinality-selectors" ng-if="element.minItems > -1">
-          <cardinality-selector class="min" type="'min'"  min-items="element.minItems" max-items="element.maxItems"></cardinality-selector>
-          <cardinality-selector class="max" type="'max'"  min-items="element.minItems" max-items="element.maxItems"></cardinality-selector>
+          <cardinality-selector class="min" type="'min'" min-items="element.minItems"
+              max-items="element.maxItems"></cardinality-selector>
+          <cardinality-selector class="max" type="'max'" min-items="element.minItems"
+              max-items="element.maxItems"></cardinality-selector>
         </div>
 
       </div>
       <div class="clearfix"></div>
     </div>
 
-  <!-- property modal -->
-  <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content" style="overflow:auto">
-        <div class="modal-header">
-          <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-              aria-label="Close"><span aria-hidden="true"><img
-              src="/img/close_modal.png" width="22"/></span></button>
-        </div>
-        <div class="modal-body">
-          <div controlled-term field="element" options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
+    <!-- property modal -->
+    <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content" style="overflow:auto">
+          <div class="modal-header">
+            <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true"><img
+                src="/img/close_modal.png" width="22"/></span></button>
+          </div>
+          <div class="modal-body">
+            <div controlled-term field="element"
+                options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>

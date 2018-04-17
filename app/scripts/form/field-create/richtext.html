@@ -4,9 +4,8 @@
   <!-- header row -->
   <div ng-init="fieldTitle='Rich Text';fieldIconClass='cedar-svg-rich-text'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
+  <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
   <div class="form-group floating-label-wrapper">
     <textarea ckeditor="editorOptions" rows="5" type="text" class="form-control"
@@ -15,6 +14,5 @@
         aria-label="Rich Text Description (Optional)"
         ng-model="$root.schemaOf(field)._ui._content"></textarea>
   </div>
-  <!-- /.form-group -->
 
-</div><!-- /.input-type-container -->
+</div>

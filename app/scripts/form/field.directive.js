@@ -32,6 +32,8 @@ define([
 
       var dms = DataManipulationService;
 
+
+
       //
       // model and ui support
       //
@@ -92,9 +94,27 @@ define([
         return dms.isCardinalElement($scope.field);
       };
 
+      // is this multiple cardinality?
+      $scope.isCardinalElement = function () {
+        return dms.isCardinalElement($scope.field);
+      };
+
+      // get the field icon
+      $scope.getIconClass = function () {
+        return FieldTypeService.getFieldIconClass(dms.getInputType($scope.field));
+      };
+
       $scope.getCount = function () {
         var min = dms.getMinItems($scope.field) || 0;
         return new Array(Math.max(1,min));
+      };
+
+      $scope.getMinItems = function() {
+        return dms.getMinItems($scope.field);
+      };
+
+      $scope.getMaxItems = function() {
+        return dms.getMaxItems($scope.field);
       };
 
       // is this multiple cardinality?
@@ -130,7 +150,8 @@ define([
       };
 
       $scope.hasDescription = function () {
-        return dms.getDescription($scope.field).length > 0;
+        var description = dms.getDescription($scope.field);
+        return description && description.length > 0;
       };
 
       $scope.hasValueConstraint = function () {
@@ -320,10 +341,9 @@ define([
 
       // show the controlled terms modal
       $scope.hideModal = function () {
-        if ($scope.modalType) {
-          UIUtilService.hideModal(dms.getId($scope.field), $scope.modalType);
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
-        }
+        UIUtilService.hideModal();
+       //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+
       };
 
       // controlled terms modal has an outcome
@@ -335,10 +355,7 @@ define([
 
       });
 
-      // controlled terms modal has an outcome
-      $scope.$on("property:propertyAdded", function () {
-        $scope.hideModal();
-      });
+
 
       //
       // watches
@@ -952,11 +969,46 @@ define([
         var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
       };
 
+      $scope.getPropertyLabel = function () {
+        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
+      };
+
+      $scope.getPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field);
+      };
+
+      $scope.hasPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field).length > 0;
+      };
+
+      $scope.deleteProperty = function () {
+        dms.deletePropertyId($scope.parentElement, $scope.field);
+        dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
+      };
+
+      // update the property for a field with controlled terms modal selection
+      $scope.$on("property:propertyAdded", function (event, args) {
+
+        var id = args[1];
+        if ($scope.getId() == id) {
+
+          $scope.hideModal();
+
+          var propertyId = args[0];
+          var propertyLabel = args[2];
+          var propertyDescription = args[3];
+
+          dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
+        }
+      });
+
       /* end of controlled terms functionality */
 
       $scope.fieldSchema = dms.schemaOf($scope.field);
 
     };
+
+
 
     return {
       templateUrl: 'scripts/form/field.directive.html',

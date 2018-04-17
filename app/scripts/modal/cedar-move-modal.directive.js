@@ -90,11 +90,11 @@ define([
           };
 
           function openHome() {
+            vm.offset = 0;
             getDestinationById(vm.homeFolderId);
           }
 
           function openParent() {
-
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -158,6 +158,7 @@ define([
           function openDestination(resource) {
             if (resource) {
               var id = resource['@id'];
+              vm.offset = 0;
               getDestinationById(id);
               vm.selectedDestination = resource;
               vm.currentDestination = resource;
@@ -188,13 +189,8 @@ define([
           function loadMore() {
             if ( vm.modalVisible) {
               vm.offset += UISettingsService.getRequestLimit();
-              var offset = vm.offset;
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
-
-              // are there more?
-              if (offset < vm.totalCount) {
-                getDestinationById(folderId);
+              if (vm.offset < vm.totalCount) {
+                getDestinationById(vm.currentDestinationID);
               }
             }
           };
@@ -228,7 +224,6 @@ define([
                   }
               );
             } else {
-              console.log('set destinationResorces to null');
               $scope.destinationResources = [];
             }
           }

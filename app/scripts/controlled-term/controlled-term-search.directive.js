@@ -107,6 +107,8 @@ define([
 
 
           vm.propertyUri = '';
+          vm.propertyLabel = '';
+          vm.propertyDescription = '';
           vm.addPropertyUri = addPropertyUri;
 
 
@@ -295,6 +297,8 @@ define([
               vm.resetCallback();
             }
             vm.propertyUri = '';
+            vm.propertyLabel = '';
+            vm.propertyDescription = '';
           }
 
           /**
@@ -388,7 +392,7 @@ define([
               }
               if (vm.isSearchingProperties()) {
                 if (typeof vm.addCallback === "function") {
-                  vm.addCallback(vm.selectedClass.id);
+                  vm.addCallback(vm.selectedClass.id, vm.selectedClass.prefLabel,vm.selectedClass.definition);
                 }
                 if (typeof vm.resetCallback === "function") {
                   vm.resetCallback();
@@ -428,6 +432,7 @@ define([
             if (vm.isSearchingProperties()) {
               vm.selectedClass.id = selection.details.id;
               vm.selectedClass.prefLabel = selection.prefLabel;
+              vm.selectedClass.definition = selection.details.definition;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
               controlledTermService.loadTreeOfProperty(selection.details, vm);
@@ -648,8 +653,10 @@ define([
           }
 
           function addPropertyUri() {
+            console.log('addPropertyUri');
             // tell parent to update the property for this field
-            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri]);
+            console.log('addPropertyUri',vm.property, vm.propertyLabel, vm.propertyDescription)
+            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
         }
       }

@@ -290,7 +290,7 @@ define(['app', 'angular'], function (app) {
           })).toEqual(true);
         });
 
-        it("should allow cardinality to be set to multiple and default is 1..N", function () {
+        xit("should allow cardinality to be set to multiple and default is 1..N", function () {
 
           // first just set this element multiple
           var elm = compiledDirective[0];
@@ -357,7 +357,7 @@ define(['app', 'angular'], function (app) {
 
         });
 
-        it("should delete an element", function () {
+        xit("should delete an element", function () {
 
           var elm = compiledDirective[0];
           var name = elm.querySelector('p.element-name-label input');

@@ -18,22 +18,24 @@ define([
       restrict   : 'E',
       scope      : {
         field: '=',
-        form : '='
+        form : '=',
+        dialogOpen: '='
       },
       templateUrl: 'scripts/controlled-term/property-list.directive.html',
       link       : function (scope, element, attrs) {
 
-        scope.getProperty = function () {
-          return DataManipulationService.getProperty(scope.form, scope.field);
+        scope.getPropertyId = function () {
+          return DataManipulationService.getPropertyId(scope.form, scope.field);
         };
 
-        scope.hasProperty = function () {
-          var property = DataManipulationService.getProperty(scope.form, scope.field);
-          return (property && property.length > 0);
+        scope.hasPropertyId = function () {
+          return DataManipulationService.getPropertyId(scope.form, scope.field).length > 0;
         };
 
         scope.deleteProperty = function () {
-          DataManipulationService.deleteProperty(scope.form, scope.field);
+          DataManipulationService.deletePropertyId(scope.form, scope.field);
+          DataManipulationService.updateProperty('', '', '', DataManipulationService.getId(scope.field), scope.form);
+          scope.dialogOpen = false;
         };
 
 

@@ -224,7 +224,7 @@ define(['app', 'angular'], function (app) {
 
     function textfieldTests() {
 
-      var textfieldIcon = ".cedar-svg-text";
+      var textfieldIcon = ".fa-font";
 
       var inputDefaultSelector = "input.field-default-definition";
 
@@ -290,7 +290,7 @@ define(['app', 'angular'], function (app) {
 
     function attributeValueTests() {
 
-      var attributeValueIcon = ".cedar-svg-attribute-value";
+      var attributeValueIcon = ".fa-plus-square";
 
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);

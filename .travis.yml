@@ -14,6 +14,7 @@ branches:
   - develop
   - master
   - feature/issue-669
+
 notifications:
   slack:
     on_success: never

@@ -209,7 +209,7 @@ define([
     // clear the modal fade on location change
     $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
       // Select open modal(s)
-      var $openModalSelector = $(".modal.fade.in");
+      var $openModalSelector = jQuery(".modal.fade.in");
       if (($openModalSelector.data('bs.modal') || {}).isShown == true) {
         // Close open modal(s)
         $openModalSelector.modal("hide");

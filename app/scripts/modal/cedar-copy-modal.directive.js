@@ -88,10 +88,12 @@ define([
           };
 
           function openHome() {
+            vm.offset = 0;
             getDestinationById(vm.homeFolderId);
           }
 
           function openParent() {
+            vm.offset = 0;
             var length = vm.destinationPathInfo.length;
             var parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
@@ -194,13 +196,8 @@ define([
           function loadMore() {
             if ( vm.modalVisible) {
               vm.offset += UISettingsService.getRequestLimit();
-              var offset = vm.offset;
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
-
-              // are there more?
-              if (offset < vm.totalCount) {
-                getDestinationById(folderId);
+              if (vm.offset < vm.totalCount) {
+                getDestinationById(vm.currentDestinationID);
               }
             }
           };

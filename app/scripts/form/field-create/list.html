@@ -1,10 +1,12 @@
 <div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
 
+  <!-- header -->
   <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
+  <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
+  <!-- single or multi select -->
   <div class="type-toggle list" >
     <div class="single-date d-option" ng-click="setMultipleChoice(field, false)"
         ng-class="{active: !isMultipleChoice(field)}">
@@ -16,6 +18,7 @@
     </div>
   </div>
 
+  <!-- list items -->
   <div class="form-group">
     <div class="form-group floating-label-wrapper"></div>
     <div class="options-wrapper">
@@ -38,5 +41,6 @@
     </div>
   </div>
 
+  <!-- options -->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 </div>
