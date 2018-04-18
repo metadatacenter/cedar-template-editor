@@ -510,7 +510,8 @@
     "noWriteAccessToResource": "You do not have permission to write the resource.",
     "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission.",
     "createInvalidFolderName": "The folder was not created since the folder name ({{name}}) was invalid!<br />Please try to create it again with a different name.",
-    "updateInvalidFolderName": "The folder was not renamed since the folder name ({{name}}) was invalid!<br />Please try to rename it again to a different name."
+    "updateInvalidFolderName": "The folder was not renamed since the folder name ({{name}}) was invalid!<br />Please try to rename it again to a different name.",
+    "publishedResourceCanNotBeChanged": "The resource <b>{{name}}</b> can not be changed since it is published!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
