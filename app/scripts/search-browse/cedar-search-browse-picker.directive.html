@@ -588,11 +588,11 @@
             <div class="col-sm-4 left">Can change owner</div>
             <div class="col-sm-8 can-change-owner">{{ dc.canChangeOwner() }}</div>
           </div>
-          <div class="row" ng-if="dc.getResourceTypeClass(dc.getSelectedNode()) != 'folder'">
+          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
             <div class="col-sm-4 left">Version</div>
             <div class="col-sm-8 can-change-owner">{{ dc.getResourceVersion() }}</div>
           </div>
-          <div class="row" ng-if="dc.getResourceTypeClass(dc.getSelectedNode()) != 'folder'">
+          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
             <div class="col-sm-4 left">Publication Status</div>
             <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() | translate}}</div>
           </div>

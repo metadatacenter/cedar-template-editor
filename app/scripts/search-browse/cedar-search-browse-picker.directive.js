@@ -88,6 +88,7 @@ define([
           vm.getSelectedNode = getSelectedNode;
           vm.getResourceIconClass = getResourceIconClass;
           vm.getResourceTypeClass = getResourceTypeClass;
+          vm.canBeVersioned = canBeVersioned;
           vm.goToResource = goToResource;
           vm.goToFolder = goToFolder;
           vm.isResourceTypeActive = isResourceTypeActive;
@@ -484,13 +485,11 @@ define([
             };
             vm.filterSections = {
               type  : true,
-              publicationStatus: true,
-              version: true,
-              author: false,
-              term  : false
+              publicationStatus: false,
+              version: false
             };
             vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
-            vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "all" : uip.resourceVersionFilter.version;
+            vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "latest" : uip.resourceVersionFilter.version;
           }
 
           function init() {
@@ -971,6 +970,18 @@ define([
             return result;
           }
 
+          function canBeVersioned(resource) {
+            if (resource) {
+              switch (resource.nodeType) {
+                case CONST.resourceType.TEMPLATE:
+                  return true;
+                case CONST.resourceType.ELEMENT:
+                  return true;
+              }
+            }
+            return false;
+          }
+
           function canPublish() {
             return resourceService.canPublish(vm.getSelectedNode());
           };
@@ -1065,7 +1076,6 @@ define([
             return vm.showFilters && onDashboard();
           }
 
-          // TBD this blows up the current user, not sure why
           function resetFilters() {
             var updates = {};
             for (var nodeType in vm.resourceTypes) {
@@ -1073,6 +1083,11 @@ define([
               var key = 'resourceTypeFilters.' + nodeType;
               updates[key] = true;
             }
+            vm.resourcePublicationStatusFilterValue = "all";
+            vm.resourceVersionFilterValue = "latest";
+            updates['resourcePublicationStatusFilter.publicationStatus'] = vm.resourcePublicationStatusFilterValue;
+            updates['resourceVersionFilter.version'] = vm.resourceVersionFilterValue;
+
             UISettingsService.saveUIPreferences(updates);
             init();
           }

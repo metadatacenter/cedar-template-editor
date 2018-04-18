@@ -388,7 +388,7 @@
     },
     "filter": {
       "filterBy": "Filter",
-      "reset": "Reset"
+      "reset": "Reset All"
     },
     "sidebar": {
       "myWorkspace": "Workspace",
