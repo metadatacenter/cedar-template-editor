@@ -1,17 +1,9 @@
 <div class="fields fields-textarea">
 
-  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph';"
+  <!-- header -->
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='fa fa-paragraph';"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
-  <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
-  <textarea rows="5"
-      class="form-control"
-      placeholder="{{getTitle()}}"
-      aria-label="{{getDescription()}}"
-      ng-disabled="true"
-      with-floating-label=""></textarea>
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
+  <!-- title and description -->
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
 </div>

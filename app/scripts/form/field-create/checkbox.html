@@ -1,12 +1,12 @@
 <div id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <!-- header row -->
+  <!-- header  -->
   <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
+  <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
+  <!-- checkbox items -->
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
       <div ng-init="initializeSelectionField()" class="multiple-container">
@@ -21,18 +21,16 @@
                     id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
                     aria-label="Option" ng-model="getLiterals()[index]['label']" with-floating-label>
               </div>
-              <!-- /.form-group -->
             </label>
-          </div><!-- /.checkbox -->
+          </div>
         </span>
         <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
-      <!-- /.multiple-container -->
       <p class="instructions">Click choice to set as default</p>
     </div>
-    <!-- /.options-wrapper -->
   </div>
-  <!-- /.form-group -->
 
+  <!-- options -->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
-</div><!-- /.input-type-container -->
+
+</div>

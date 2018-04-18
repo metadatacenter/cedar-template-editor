@@ -1,26 +1,9 @@
 <div class="fields fields-list">
 
-  <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-
-    <div ng-valid="false" class="form-group floating-label-wrapper" ng-repeat="x in getCount() track by $index">
-      <input type="text"
-          class="form-control"
-          placeholder="{{getTitle()}}"
-          aria-label="{{getDescription()}}"
-          ng-disabled="true"
-          with-floating-label=""/>
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
-      <select class="form-control"
-          multiple="false"
-          data-max-options="1"
-          field="field"
-          title="Please select"
-          ng-disabled="true"
-          select-picker="">
-      </select>
-    </div>
+  <!-- header -->
+  <div  ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- title and description -->
+  <div class="definition-inputs"
+      ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
 </div>

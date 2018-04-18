@@ -248,14 +248,9 @@ define([
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'list':
+            case 'radio':
               desc.type = 'dropdown';
               desc.source = extractOptionsForList(dms.getLiterals(node));
-              break;
-            case 'checkbox':
-              //   desc.type = 'checkboxes';
-              //   desc.renderer = service.customRendererCheckboxes;
-              //   desc.editor = 'checkboxes';//MultiCheckboxEditor;
-              //   desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
             case 'textfield':
               if (isConstrained(node)) {

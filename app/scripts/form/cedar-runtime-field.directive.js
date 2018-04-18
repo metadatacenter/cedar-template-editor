@@ -54,6 +54,16 @@ define([
         return dms.getTitle(field || $scope.field);
       };
 
+      $scope.getPropertyLabel = function () {
+        if ($scope.labels && $scope.fieldKey) {
+          return $scope.labels[$scope.fieldKey];
+        } else {
+          return $scope.getTitle();
+        }
+      };
+
+
+
       // get the field description
       $scope.getDescription = function (field) {
         return dms.getDescription(field || $scope.field);
@@ -681,7 +691,7 @@ define([
             }
             // Single-choice list
             else {
-              $scope.model = {'@value': $scope.optionsUI.listSingleSelect.label};
+              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect.label;
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -725,8 +735,9 @@ define([
 
               }
             } else {
-              if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = {"label": $scope.model[0][valueLocation]};
+              // For this field type only one selected option is possible
+              if ($scope.model) {
+                $scope.optionsUI.listSingleSelect = {"label": $scope.model[valueLocation]};
               }
             }
           }
@@ -1234,7 +1245,6 @@ define([
         return result;
       };
 
-
     };
 
     return {
@@ -1253,7 +1263,8 @@ define([
         fieldKey      : '=',
         parentKey     : '=',
         parentModel   : '=',
-        parentInstance: '='
+        parentInstance: '=',
+        labels: '='
 
       },
       controller : function ($scope, $element) {

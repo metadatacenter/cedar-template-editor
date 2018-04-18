@@ -1,32 +1,32 @@
 <div ng-if="isEditState()">
-  <div class="flex field-title" >
+
+  <div class="flex" style="width:100%; border:1px solid #ddd; background:white;margin-bottom:5px;">
     <!-- field title -->
-    <div class="form-group floating-label-wrapper" >
+    <div class="form-group floating-label-wrapper" style="margin-bottom:0;width:100%;" >
       <input type="text" auto-focus
           class="form-control select field-title-definition"
+          style="border-width:0px;"
           id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-          placeholder="{{'CREATOR.enterFieldKey' | translate}}"
-          aria-label="{{'CREATOR.enterFieldKey' | translate}}"
-          ng-model="fieldSchema['schema:name']"
+          placeholder="{{'CREATOR.enterElementTitle' | translate}}"
+          aria-label="{{'CREATOR.enterElementTitle' | translate}}"
+          ng-model="elementSchema['schema:name']"
           ng-model-options="{ debounce: 1000, allowInvalid:true }"
           autocomplete="off"
           with-floating-label>
     </div>
     <!-- property button -->
-    <div class="property" ng-if="!isStatic()">
+    <div style="padding:0 10px">
       <div class="flex">
-        <i  uib-tooltip-placement="left" tooltip-append-to-body="true"
+        <i style="display:inline;transform:none;color:#999" uib-tooltip-placement="left" tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
             ng-click="showModal('property')"
-            class="cedar-svg-controll-term"></i>
+            class="cedar-svg-controll-term" ></i>
 
-        <div  ng-if="hasPropertyId()" class="class-dropdown " uib-dropdown
-            is-open="status.isopen">
-          <button  type="button" uib-dropdown-toggle aria-haspopup="true"
-              aria-expanded="true"><i
+        <div style="display:inline;color:#999" ng-if="hasPropertyId()" class="class-dropdown " uib-dropdown is-open="status.isopen">
+          <button style="background:transparent;padding:0" type="button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-caret-down  inline "></i></button>
           <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
-            <property-list field="field" form="parentElement" dialog-open="status.isopen"></property-list>
+            <property-list field="element" form="parentElement" dialog-open="status.isopen"></property-list>
           </div>
         </div>
       </div>
@@ -38,20 +38,18 @@
     <input type="text"
         class="form-control field-description-definition"
         id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-        placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
-        aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
-        ng-model="fieldSchema['schema:description']"
+        placeholder="{{'CREATOR.enterElementDescription' | translate}}"
+        aria-label="{{'CREATOR.enterElementDescription' | translate}}"
+        ng-model="elementSchema['schema:description']"
         ng-model-options="{ debounce: 1000, allowInvalid:true }"
-        autocomplete="off"
         with-floating-label>
   </div>
+
 </div>
 
 <div ng-if="!isEditState()">
-  <div class="flex" style="width:100%; border:1px solid #ddd; background:white;margin-bottom:5px;padding:0 5px"
-      ng-repeat="x in getCount() track by $index">
-    <div ng-valid="false" class="form-group floating-label-wrapper" style="margin-right:0;margin-bottom:0;width:100%;">
-
+  <div class="flex" style="width:100%; border:1px solid #ddd; background:white;margin-bottom:5px;padding:0 5px">
+    <div class="form-group floating-label-wrapper" style="margin-bottom:0;width:100%;">
       <input type="text"
           class="form-control"
           placeholder="{{getTitle()}}"
@@ -59,18 +57,27 @@
           ng-disabled="true"
           style="border-width:0px;"
           with-floating-label/>
-
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
-    <div ng-if="hasPropertyId()" style="padding:0 10px 0 0">
+    <!-- property button -->
+    <div style="padding:0 10px 0 0">
       <div class="flex">
         <i style="padding-top:5px;transform:none;color:#999" uib-tooltip-placement="left" tooltip-append-to-body="true"
-            uib-tooltip="{{getPropertyId()}}"
+            uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
             ng-click="showModal('property')"
-            class="cedar-svg-controll-term"></i>
+            class="cedar-svg-controll-term" ></i>
       </div>
     </div>
+
   </div>
 </div>
+
+<hr style="height:2px;background:#ddd;margin-top:5px;margin-bottom:5px"/>
+
+
+
+
+
+

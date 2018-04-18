@@ -65,7 +65,6 @@ require.config({
     //                                                                                 'lib/handsontable/dist/handsontable.full'],
     'lib/handsontable/dist/handsontable.full'                                : {'exports': 'Handsontable'},
     'lib/bootstrap/dist/js/bootstrap.min'                                        : ['jquery'],
-    'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min': ['jquery'],
     'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap.min'],
     'cedar/template-editor/handsontable/SpreadsheetContext'                      : ['lib/handsontable/dist/handsontable.full'],
     'cedar/template-editor/handsontable/MultiCheckboxEditor'                     : ['lib/handsontable/dist/handsontable.full'],
