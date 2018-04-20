@@ -20,7 +20,7 @@ define([
 
 
         var visibleHeight = element.height();
-        var threshold = 60;
+        var threshold = 60 + visibleHeight/10;
 
         function resize() {
           var scrollableHeight = element.prop('scrollHeight');
@@ -29,7 +29,6 @@ define([
           if (hiddenContentHeight - element.scrollTop() <= threshold) {
             // Scroll is at the bottom. Loading more rows
             scope.$apply(attr.loadMore);
-
           }
         }
 
