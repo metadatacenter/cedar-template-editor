@@ -330,7 +330,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                     },
@@ -340,7 +340,7 @@ define([
                 );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
 
                       var title = DataManipulationService.getTitle(response.data);
@@ -353,7 +353,7 @@ define([
                 );
               } else if (nodeType == 'template') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
 
                       $scope.form = response.data;
@@ -367,7 +367,7 @@ define([
                 );
               } else if (nodeType == 'folder') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');

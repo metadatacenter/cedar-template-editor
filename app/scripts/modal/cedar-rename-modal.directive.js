@@ -57,7 +57,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, name, null),
+                    resourceService.renameNode(id, name, null),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                       refresh();
@@ -68,7 +68,7 @@ define([
                 );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, name, null),
+                    resourceService.renameNode(id, name, null),
                     function (response) {
 
                       var title = dms.getTitle(response.data);
@@ -82,7 +82,7 @@ define([
                 );
               } else if (nodeType == 'template') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, name, null),
+                    resourceService.renameNode(id, name, null),
                     function (response) {
 
                       var title = dms.getTitle(response.data);
@@ -96,7 +96,7 @@ define([
                 );
               } else if (nodeType == 'folder') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, name, null),
+                    resourceService.renameNode(id, name, null),
                     function (response) {
 
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource['schema:name']},

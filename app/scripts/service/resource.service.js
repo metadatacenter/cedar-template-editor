@@ -473,7 +473,6 @@ define([
         function copyResourceToWorkspace(resource, newTitle, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['nodeType'] = resource['nodeType'];
           postData['folderId'] = CedarUser.getHomeFolderId();
           postData['titleTemplate'] = newTitle;
           var url = urlService.copyResourceToFolder();
@@ -489,7 +488,6 @@ define([
         function copyResource(resource, folderId, newTitle, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['nodeType'] = resource['nodeType'];
           postData['folderId'] = folderId;
           postData['titleTemplate'] = newTitle;
           var url = urlService.copyResourceToFolder();
@@ -751,10 +749,9 @@ define([
           return false;
         }
 
-        function renameNode(id, nodeType, name, description) {
+        function renameNode(id, name, description) {
           var command = {
-            "id"      : id,
-            "nodeType": nodeType
+            "id"      : id
           };
           if (name != null) {
             command["name"] = name;
