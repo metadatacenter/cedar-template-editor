@@ -519,7 +519,6 @@ define([
         function publishResource(resource, newVersion, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['nodeType'] = resource['nodeType'];
           postData['newVersion'] = newVersion;
           var url = urlService.publishResource();
           authorizedBackendService.doCall(
@@ -534,7 +533,6 @@ define([
         function createDraftResource(resource, folderId, newVersion, propagateSharing, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['nodeType'] = resource['nodeType'];
           postData['newVersion'] = newVersion;
           postData['folderId'] = folderId;
           postData['propagateSharing'] = propagateSharing;
