@@ -219,7 +219,7 @@
 
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication Status<i class="fa pull-right"
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication Status<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
 
                 <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
@@ -259,7 +259,7 @@
                 </ul>
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('version')">Version<i class="fa pull-right"
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
                 <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
@@ -367,10 +367,10 @@
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-                      <div style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
                         {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
                       </div>
-                      <div style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
                         {{ resource['pav:version'] }}
                       </div>
                       <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"

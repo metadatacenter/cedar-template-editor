@@ -173,6 +173,10 @@ define([
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
 
+          vm.versioningEnabled = function() {
+            return window.versioningEnabled;
+          }
+
           vm.hideModal = function (visible) {
             visible = false;
           };
@@ -983,22 +987,22 @@ define([
           }
 
           function canPublish() {
-            return resourceService.canPublish(vm.getSelectedNode());
+            return vm.versioningEnabled() && resourceService.canPublish(vm.getSelectedNode());
           };
 
           function canPublishStatic() {
-            return (hasSelection() &&
+            return vm.versioningEnabled() && (hasSelection() &&
                 (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
                     vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
                 vm.selectedResource['bibo:status'] == 'bibo:draft');
           }
 
           function canCreateDraft() {
-            return resourceService.canCreateDraft(vm.getSelectedNode());
+            return vm.versioningEnabled() && resourceService.canCreateDraft(vm.getSelectedNode());
           };
 
           function canCreateDraftStatic() {
-            return (hasSelection() &&
+            return vm.versioningEnabled() && (hasSelection() &&
                 (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
                     vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
                 vm.selectedResource['bibo:status'] == 'bibo:published');
