@@ -13,7 +13,7 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-autopopulate-title-description
+  - feature/issue/autopopulate-title-description
 notifications:
   slack:
     on_success: never
