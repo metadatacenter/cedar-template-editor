@@ -18,13 +18,15 @@ define([
             selectedClass        : '=',
             currentOntology      : '=',
             resetCallback        : '=?',
-            addCallback          : '=?',
+            addPropertyCallback  : '=?',
+            addClassCallback     : '=?',
+            addValueCallback     : '=?',
+            addValueSetCallback  : '=?',
             isLoadingClassDetails: '=',
             isCreatingMappings   : '=',
             isCreatingVs         : '=',
             treeVisible          : '=',
-            modalId              : '=',
-            searchFor            : '@'
+            modalId              : '='
           },
           controller      : controlledTermSearchDirectiveController,
           controllerAs    : 'tsc',
@@ -58,12 +60,16 @@ define([
           vm.ontologySearchRegexp = null;
           vm.resultsFound = null;
           vm.searchFinished = null;
-          vm.searchScope = vm.searchFor;
+
           vm.searchOptionsVisible = false;
           vm.selectedResultId = null;
           vm.selectedOntologies = [];
           vm.showSearchPreloader = false;
           vm.showEmptyQueryMsg = false;
+          vm.mode = vm.searchMode;
+          vm.searchScope = (vm.mode == 'properties' ? 'properties' : 'classes');
+
+
 
           /* Function declarations */
           vm.changeSearchScope = changeSearchScope;
@@ -77,6 +83,9 @@ define([
           vm.isFieldPropertiesMode = isFieldPropertiesMode;
           vm.isFieldTypesMode = isFieldTypesMode;
           vm.isFieldValuesMode = isFieldValuesMode;
+          vm.setFieldPropertiesMode = setFieldPropertiesMode;
+          vm.setFieldTypesMode = setFieldTypesMode;
+          vm.setFieldValuesMode = setFieldValuesMode;
           vm.isSearching = isSearching;
           vm.isTypeClass = isTypeClass;
           vm.isTypeProperty = isTypeProperty;
@@ -216,8 +225,7 @@ define([
             return result.trim().replace(/,\s*$/, "");
           }
 
-          function bioportalSearch(query, sources, maxResults, searchClasses, searchValues, searchValueSets,
-                                   searchProperties) {
+          function bioportalSearch(query, sources, maxResults, searchClasses, searchValues, searchValueSets, searchProperties) {
             if ((searchProperties)) {
               return controlledTermDataService.searchProperties(query, sources, maxResults).then(function (response) {
                 return response;
@@ -241,7 +249,6 @@ define([
           };
 
           function getDefaultSearchQuery() {
-            //return isFieldTypesMode() ? vm.fieldName : '';
             return vm.fieldName;
           }
 
@@ -262,7 +269,7 @@ define([
 
           function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
             if (!keepSearchScope) {
-              vm.searchScope = vm.searchFor;
+              vm.searchScope = (vm.mode == 'properties' ? "properties" : "classes");
               vm.searchOptionsVisible = false;
             }
             if (!keepCreationMode) {
@@ -306,16 +313,29 @@ define([
            */
 
           function isFieldPropertiesMode() {
-            return vm.searchMode == 'properties';
+            return vm.mode == 'properties';
           }
 
           function isFieldTypesMode() {
-            return vm.searchMode == 'field';
+            return vm.mode == 'field';
           }
 
           function isFieldValuesMode() {
-            return vm.searchMode == 'values';
+            return vm.mode == 'values';
           }
+
+          function setFieldPropertiesMode() {
+            vm.mode = 'properties';
+          }
+
+          function setFieldTypesMode() {
+            vm.mode = 'field';
+          }
+
+          function setFieldValuesMode() {
+            vm.mode = 'values';
+          }
+
 
           function isSearching() {
             return (vm.action == 'search');
@@ -376,38 +396,30 @@ define([
 
 
           function handleClose(close) {
+            console.log('handleClose')
             if (close) {
               if (vm.isSearchingClasses()) {
-                if (typeof vm.addCallback === "function") {
-                  if (vm.searchMode == 'field') {
-                    vm.addCallback(vm.selectedClass, vm.currentOntology);
-                  } else if (vm.searchMode == 'values') {
-                    vm.addCallback();
-                  }
+                if (vm.isFieldTypesMode() && (typeof vm.addClassCallback === "function")) {
+                  vm.addClassCallback(vm.selectedClass, vm.currentOntology);
+                } else if (vm.isFieldValuesMode() && (typeof vm.addValueCallback === "function")) {
+                  vm.addValueCallback();
                 }
-                if (typeof vm.resetCallback === "function") {
-                  vm.resetCallback();
-                }
+              }
 
+              if (vm.isSearchingProperties() && (typeof vm.addPropertyCallback === "function")) {
+                vm.addPropertyCallback(vm.selectedClass.id, vm.selectedClass.prefLabel, vm.selectedClass.definition);
               }
-              if (vm.isSearchingProperties()) {
-                if (typeof vm.addCallback === "function") {
-                  vm.addCallback(vm.selectedClass.id, vm.selectedClass.prefLabel,vm.selectedClass.definition);
-                }
-                if (typeof vm.resetCallback === "function") {
-                  vm.resetCallback();
-                }
+
+              if (vm.isSearchingValueSets() && (typeof vm.addValueSetCallback === "function")) {
+                vm.addValueSetCallback();
               }
-              if (vm.isSearchingValueSets()) {
-                if (typeof vm.addCallback === "function") {
-                  vm.addCallback();
-                }
-                if (typeof vm.resetCallback === "function") {
-                  vm.resetCallback();
-                }
+
+              if (typeof vm.resetCallback === "function") {
+                vm.resetCallback();
               }
             }
           }
+
 
           // select this thingy, then optionally close(clear) the dialog
           function selectResult(selection, resultId, close) {
@@ -544,7 +556,7 @@ define([
           }
 
           /* This function is passed as a callback down through class tree and child tree directives */
-          // TODO: update names to say 'property' instead of 'class'.
+// TODO: update names to say 'property' instead of 'class'.
           function getPropertyDetails(subtree) {
             var acronym = controlledTermService.getAcronym(subtree);
             var classId = subtree['@id'];
@@ -655,9 +667,23 @@ define([
           function addPropertyUri() {
             console.log('addPropertyUri');
             // tell parent to update the property for this field
-            console.log('addPropertyUri',vm.property, vm.propertyLabel, vm.propertyDescription)
-            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
+            console.log('addPropertyUri', vm.property, vm.propertyLabel, vm.propertyDescription)
+            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated",
+                [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
+
+          //
+          // init
+          //
+
+          if (vm.mode == 'properties') {
+            $scope.activeTab = 0;
+          } else if (vm.mode == 'field') {
+            $scope.activeTab = 1;
+          } else {
+            $scope.activeTab = 2;
+          }
+
         }
       }
     }

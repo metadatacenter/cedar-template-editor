@@ -485,6 +485,11 @@ define([
     // finder
     //
 
+
+    $scope.getTitle = function () {
+      return dms.getTitle($scope.element);
+    };
+
     $scope.showFinderModal = function () {
       // open and activate the modal
       $scope.finderModalVisible = true;
@@ -520,12 +525,20 @@ define([
     };
 
     $scope.showModal = function (id) {
-      console.log('showModal',id);
       jQuery("#" + id).modal('show');
     };
 
-    //TODO this event resets modal state and closes modal
-    $scope.$on("field:controlledTermAdded", function () {
+    $scope.$on("field:controlledTermAdded", function (event,args) {
+      if (args) {
+        var title = dms.getTitle($scope.element);
+        var description = dms.getDescription($scope.element);
+        if (args[0] && (title.length == 0 || title == 'Untitled')) {
+          dms.setTitle($scope.element, args[0]);
+        }
+        if (args[1] && (description.length == 0)) {
+          dms.setDescription($scope.element, args[1]);
+        }
+      }
       jQuery("#control-options-element-field").modal('hide');
     });
 

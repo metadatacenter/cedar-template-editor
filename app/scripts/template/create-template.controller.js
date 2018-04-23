@@ -44,6 +44,7 @@ define([
         $scope.details;
         $scope.hasInstances;
         $scope.cannotWrite;
+        $scope.documentTitle;
 
         $scope.isTemplate = true;
 
@@ -223,8 +224,8 @@ define([
           $scope.moreIsOpen = !$scope.moreIsOpen;
         };
 
-        $scope.getTitle = function (node) {
-          return DataManipulationService.getTitle(node);
+        $scope.getTitle = function () {
+          return DataManipulationService.getTitle($scope.form);
         };
 
         $scope.addElementToTemplate = function (element) {
@@ -440,6 +441,7 @@ define([
               dms.setDescription($scope.form, "");
             }
             $rootScope.documentTitle = title;
+            $scope.documentTitle = title;
           }
         });
 
@@ -538,17 +540,31 @@ define([
           $scope.saveButtonDisabled = true;
         };
 
+        // TODO change this so it uses UIUtilService.showModal
+        // $scope.showModal = function (id) {
+        //   //jQuery("#" + id).modal('show');
+        //   console.log('showModal',id);
+        //   UIUtilService.showModal(id,'type');
+        // };
+
         $scope.showModal = function (id) {
-          //jQuery("#" + id).modal('show');
-          console.log('showModal',id);
-          UIUtilService.showModal(id,'type');
+          jQuery("#" + id).modal('show');
         };
 
         //TODO this event resets modal state and closes modal
-        $scope.$on("field:controlledTermAdded", function () {
-          console.log('hideModal');
-          UIUtilService.hideModal();
-          //jQuery("#control-options-template-field").modal('hide');
+        $scope.$on("field:controlledTermAdded", function (event, args) {
+          if (args) {
+            var title = dms.getTitle($scope.form);
+            var description = dms.getDescription($scope.form);
+            if (args[0] && (title.length == 0 || title == 'Untitled')) {
+              dms.setTitle($scope.form, args[0]);
+            }
+            if (args[1] && (description.length == 0)) {
+              dms.setDescription($scope.form, args[1]);
+            }
+          }
+          //UIUtilService.hideModal();
+          jQuery("#control-options-template-field").modal('hide');
         });
 
 

@@ -27,11 +27,11 @@
           ng-click="setTab('hidden');  $event.stopPropagation();">
         <span>Hidden</span>
       </div>
-      <div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"
-          ng-class="{active: isTabActive('field')}"
-          ng-click="setTab('field');  $event.stopPropagation();">
-        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>
-      </div>
+      <!--<div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
+          <!--ng-class="{active: isTabActive('field')}"-->
+          <!--ng-click="setTab('field');  $event.stopPropagation();">-->
+        <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>-->
+      <!--</div>-->
     </div>
   </div>
 
@@ -221,12 +221,12 @@
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+        <button type="button" class="close controlled-terms-modal-field-close"  data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" options='{"filterSelection":"field", "modalId":getModalId("field")}'></div>
+        <div controlled-term field="field" salt="documentTitle" options='{"filterSelection":"field", "modalId":getModalId("field")}'></div>
       </div>
     </div>
   </div>
@@ -237,12 +237,12 @@
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+        <button type="button" class="close controlled-terms-modal-value-close"  data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" options='{"filterSelection":"values", "modalId":getModalId("values")}'></div>
+        <div controlled-term field="field"  salt="documentTitle" options='{"filterSelection":"values", "modalId":getModalId("values"), "salt":getTitle}'></div>
       </div>
     </div>
   </div>
@@ -258,7 +258,7 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field"
+        <div controlled-term field="field" salt="documentTitle"
             options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
       </div>
     </div>

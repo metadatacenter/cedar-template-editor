@@ -73,9 +73,10 @@ define([
 
     //General
     vm.controlledTerm = {};
-    vm.filterSelection = vm.options && vm.options.filterSelection || ""
-    vm.modalId = vm.options && vm.options.modalId || "";
-
+    if (vm.options) {
+      vm.filterSelection = vm.options && vm.options.filterSelection || "";
+      vm.modalId = vm.options && vm.options.modalId || "";
+    }
 
     vm.setInitialFieldConstraints();
 
@@ -132,6 +133,7 @@ define([
 
 
     function addClass(selection, ontology) {
+      console.log('addClass',selection,ontology);
 
       // has this selection been added yet?
       var alreadyAdded = false;
@@ -184,7 +186,8 @@ define([
 
 
       // TODO broadcast the action for now because parent scope is not working
-      $rootScope.$broadcast('field:controlledTermAdded');
+      console.log('188 broadcast field:controlledTermAdded');
+      $rootScope.$broadcast('field:controlledTermAdded',[selection.prefLabel,selection.definition]);
 
     }
 
@@ -392,6 +395,7 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
+      console.log('startOver');
       vm.filterSelection = vm.options && vm.options.filterSelection || "";
       vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;
@@ -748,6 +752,7 @@ define([
      */
 
     function assignValueConstraintToField() {
+      console.log('assignValueConstraintToField');
       $rootScope.schemaOf(vm.field)._valueConstraints =
           angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
 
@@ -760,6 +765,7 @@ define([
       vm.startOver();
 
       // TODO broadcast the action so dialog is closed and ontology picker is reset
+      console.log('766 broadcast field:controlledTermAdded');
       $rootScope.$broadcast('field:controlledTermAdded');
 
     }

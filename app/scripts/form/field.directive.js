@@ -29,6 +29,7 @@ define([
       $scope.status = {
         isopen: false
       };
+      $scope.documentTitle = '';
 
       var dms = DataManipulationService;
 
@@ -330,12 +331,11 @@ define([
       $scope.showModal = function (type) {
         if (type) {
           // TODO don't pass the search string through rootScope
-          $rootScope.finalTitle = $scope.getTitle();
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 
@@ -347,7 +347,8 @@ define([
       };
 
       // controlled terms modal has an outcome
-      $scope.$on("field:controlledTermAdded", function () {
+      $scope.$on("field:controlledTermAdded", function (event,args) {
+        console.log('field:controlledTermAdded',args);
         $scope.hideModal();
 
         // build the added fields map in this case
@@ -383,14 +384,14 @@ define([
 
         // update fieldSchema
         $scope.fieldSchema = dms.schemaOf($scope.field);
+        $scope.documentTitle = $scope.getTitle();
+        console.log('watch field, documentTitle', $scope.documentTitle);
 
         setDirectory();
       }, true);
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
-
-
 
         $scope.addOption = function () {
           return (dms.addOption($scope.field));

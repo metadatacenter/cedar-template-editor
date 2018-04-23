@@ -34,6 +34,7 @@ define([
 
         // update terms when field changes
         scope.$watch("field", function(newValue, oldValue) {
+          console.log('watch field');
           if (newValue !== undefined) {
             var newTerms = DataManipulationService.getFieldControlledTerms(newValue);
             if (oldValue === undefined || newTerms !== scope.terms) {
@@ -43,7 +44,8 @@ define([
         });
 
         // new class added
-        scope.$on("field:controlledTermAdded", function () {
+        scope.$on("field:controlledTermAdded", function (event,args) {
+          console.log('on field:controlledTermAdded',args);
           scope.getType();
         });
 
@@ -114,14 +116,6 @@ define([
             scope.addedFields = new Map();
             scope.addedFieldKeys = [];
           }
-        };
-
-        scope.getShortText = function (text, maxLength, finalString, emptyString) {
-          return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
-        };
-
-        scope.getShortId = function (uri, maxLength) {
-          return StringUtilsService.getShortId(uri, maxLength);
         };
 
         scope.getClassDescription = function (item) {

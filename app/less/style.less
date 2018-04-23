@@ -5525,6 +5525,7 @@ p.instructions {
       background: @modal-bg-color;
       th {
         color: @brand-primary;
+        font-size:0.9em;
       }
     }
   }
@@ -5557,6 +5558,17 @@ p.instructions {
     tr:first-child td {
       vertical-align: middle;
       border-top: none;
+    }
+
+    tbody tr td {
+      font-size:0.9em;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      div.class-delete {
+        width:auto;
+      }
     }
   }
 
@@ -5595,6 +5607,9 @@ p.instructions {
     margin-bottom: 0;
     .empty {
       color: #ccc;
+      td {
+        text-align:center;
+      }
     }
   }
 }
@@ -7720,4 +7735,10 @@ div.tooltip-inner {
   max-width: 500px;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+#controlled-term-tabs {
+  .tab-content {
+    height:0px;
+  }
 }

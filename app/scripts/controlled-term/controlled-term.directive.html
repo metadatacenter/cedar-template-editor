@@ -3,9 +3,11 @@
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'properties'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.salt"
         search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addProperty"
+        add-property-callback="ctdc.addProperty"
+        add-class-callback="ctdc.addClass"
+        add-value-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -13,8 +15,7 @@
         is-creating-mappings="false"
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
-        modal-id="ctdc.modalId"
-        search-for="properties">
+        modal-id="ctdc.modalId">
     </controlled-term-search>
 
     <div class="class-actions">
@@ -34,9 +35,11 @@
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.salt"
         search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addClass"
+        add-property-callback="ctdc.addProperty"
+        add-class-callback="ctdc.addClass"
+        add-value-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -46,10 +49,10 @@
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
         search-for="classes"
-        >
+        ctdc="ctdc">
     </controlled-term-search>
 
-    <div class="class-actions">
+    <div class="class-actions" >
       <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
         <div class="action-msg">
           <span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
@@ -70,9 +73,11 @@
   <div class="value-filter" ng-if="ctdc.filterSelection == 'values'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.salt"
         search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addValueConstraint"
+        add-property-callback="ctdc.addProperty"
+        add-class-callback="ctdc.addClass"
+        add-value-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -82,7 +87,7 @@
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
         search-for="classes"
-        >
+        ctdc="ctdc">
     </controlled-term-search>
 
     <!--Show preloader only if the tree and class details preloader is not shown-->
@@ -231,6 +236,7 @@
 
     </div>
   </div>
+
   <div style="height: 400px"></div>
 </div>
 

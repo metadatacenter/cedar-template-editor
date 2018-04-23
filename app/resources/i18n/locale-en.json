@@ -54,6 +54,19 @@
       }
     }
   },
+  "CONTROLLEDTERMS": {
+    "EnterProperty": "Enter Property URI",
+    "FindProperty": "Find a property in BioPortal or",
+    "PropertyInfo":"Please provide the following information for the property you want to create or",
+    "BackPropertySearch":"Go Back to Property Search",
+    "EnterProperty":"Enter Property URI",
+    "PropertyURI":"Property URI",
+    "StartOver":"Start Over",
+    "SearchBioPortal":"Search in BioPortal",
+    "SearchField":"Search Field",
+    "AdvancedSearchOptions":"Advanced Search Options",
+    "IWantTo":"I want to..."
+  },
   "GENERIC": {
     "Created": "Created",
     "Updated": "Saved",
@@ -143,7 +156,11 @@
     "six": "six",
     "seven": "seven",
     "eight": "eight",
-    "unlimited": "unlimited"
+    "unlimited": "unlimited",
+    "Empty":"Empty",
+    "Name":"Name",
+    "Source":"Source",
+    "Identifier":"Identifier"
   },
   "HELP": {
     "createFolder": "Create folder",
