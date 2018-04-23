@@ -1,6 +1,6 @@
 
 <!-- tabs -->
-<uib-tabset active="activeTab" id="controlled-term-tabs">
+<uib-tabset active="activeTab" id="controlled-term-tabs"  class="hidden">
 <uib-tab index="0" heading="Property" ng-click="tsc.setFieldPropertiesMode()"></uib-tab>
 <uib-tab index="1" heading="Field" ng-click="tsc.setFieldTypesMode()"></uib-tab>
 <uib-tab index="2" heading="Values" ng-click="tsc.setFieldValuesMode()"></uib-tab>
@@ -89,11 +89,11 @@
 
     <!-- searching -->
     <div ng-if="tsc.isSearching()">
-      <div ng-show="!tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or
+      <div>Find a term in BioPortal or
         <button
             type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
         </button>
-        <span ng-if="tsc.fieldName.trim().length > 0">to set the type of the field value for <span
+        <span ng-show="tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs" ng-if="tsc.fieldName.trim().length > 0">to set the type of the field value for <span
             class="highlighted">'{{tsc.fieldName}}'</span>. Note: field values must be URIs.</span>
       </div>
 
