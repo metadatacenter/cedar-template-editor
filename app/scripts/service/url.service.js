@@ -426,6 +426,14 @@ define([
       return url;
     };
 
+    service.publishResource = function () {
+      return this.resourceBase() + "/command/publish-resource";
+    };
+
+    service.createDraftResource = function () {
+      return this.resourceBase() + "/command/create-draft-resource";
+    };
+
     return service;
   }
 

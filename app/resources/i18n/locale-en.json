@@ -143,7 +143,12 @@
     "six": "six",
     "seven": "seven",
     "eight": "eight",
-    "unlimited": "unlimited"
+    "unlimited": "unlimited",
+    "Published": "Published",
+    "CreatedDraft": "Draft Created",
+    "Draft": "Draft",
+    "Latest": "Latest",
+    "All": "All"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -270,6 +275,14 @@
       "moveResource": {
         "success": "The resource '{{title}}' was moved!",
         "error": "There was an error while moving the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "publishResource": {
+        "success": "The resource '{{title}}' was published!",
+        "error": "There was an error while publishing the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "createDraftResource": {
+        "success": "The draft from resource '{{title}}' was created!",
+        "error": "There was an error while creating the draft from the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -375,7 +388,7 @@
     },
     "filter": {
       "filterBy": "Filter",
-      "reset": "Reset"
+      "reset": "Reset All"
     },
     "sidebar": {
       "myWorkspace": "Workspace",
@@ -495,7 +508,11 @@
     "folderCopyNotAllowed": "Copying folders is not allowed.",
     "noReadAccessToResource": "You do not have permission to read the resource.",
     "noWriteAccessToResource": "You do not have permission to write the resource.",
-    "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission."
+    "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission.",
+    "createInvalidFolderName": "The folder was not created since the folder name ({{name}}) was invalid!<br />Please try to create it again with a different name.",
+    "updateInvalidFolderName": "The folder was not renamed since the folder name ({{name}}) was invalid!<br />Please try to rename it again to a different name.",
+    "publishedResourceCanNotBeChanged": "The resource <b>{{name}}</b> can not be changed since it is published!",
+    "publishedResourceCanNotBeDeleted": "The resource <b>{{name}}</b> can not be deleted since it is published!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
@@ -512,5 +529,11 @@
         }
       }
     }
+  },
+  "PUBLICATIONSTATUS": {
+    "": "",
+    "null": "",
+    "bibo:draft": "Draft",
+    "bibo:published": "Published"
   }
 }
