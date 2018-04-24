@@ -512,7 +512,10 @@
     "createInvalidFolderName": "The folder was not created since the folder name ({{name}}) was invalid!<br />Please try to create it again with a different name.",
     "updateInvalidFolderName": "The folder was not renamed since the folder name ({{name}}) was invalid!<br />Please try to rename it again to a different name.",
     "publishedResourceCanNotBeChanged": "The resource <b>{{name}}</b> can not be changed since it is published!",
-    "publishedResourceCanNotBeDeleted": "The resource <b>{{name}}</b> can not be deleted since it is published!"
+    "publishedResourceCanNotBeDeleted": "The resource <b>{{name}}</b> can not be deleted since it is published!",
+    "groupCanBeModifiedOnlyByGroupAdmin": "The group can be modified only by the administrators of the groups!",
+    "groupCanBeDeletedOnlyByGroupAdmin": "The group can be deleted only by the administrators of the groups!",
+    "specialGroupCanNotBeDeleted": "The special group <b>{{name}}</b> can not be deleted!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
