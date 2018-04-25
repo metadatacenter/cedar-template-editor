@@ -76,6 +76,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -99,6 +100,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -122,6 +124,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -145,6 +148,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -168,6 +172,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -191,6 +196,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -214,6 +220,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -237,6 +244,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -260,6 +268,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -283,6 +292,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -310,6 +320,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -336,6 +347,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -362,6 +374,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -412,6 +425,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -441,6 +455,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -468,6 +483,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -495,6 +511,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -545,6 +562,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -574,6 +592,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -601,6 +620,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -628,6 +648,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -672,6 +693,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -699,6 +721,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -725,6 +748,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -751,6 +775,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -795,6 +820,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -821,6 +847,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -847,6 +874,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -873,6 +901,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -900,6 +929,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -926,6 +956,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -971,6 +1002,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -997,6 +1029,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -1023,6 +1056,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -1068,6 +1102,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
@@ -1094,6 +1129,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
@@ -1120,6 +1156,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }],

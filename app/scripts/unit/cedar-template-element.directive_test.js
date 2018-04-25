@@ -135,6 +135,7 @@ define(['app', 'angular'], function (app) {
               "xsd"              : "http://www.w3.org/2001/XMLSchema#",
               "pav"              : "http://purl.org/pav/",
               "oslc"             : "http://open-services.net/ns/core#",
+              "bibo"             : "http://purl.org/ontology/bibo/",
               "schema"           : "http://schema.org/",
               "pav:createdOn"    : {
                 "@type": "xsd:dateTime"
