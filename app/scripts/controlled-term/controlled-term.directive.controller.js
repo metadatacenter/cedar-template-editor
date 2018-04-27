@@ -16,7 +16,8 @@ define([
     'controlledTermDataService',
     'controlledTermService',
     'provisionalClassService',
-    'DataManipulationService'
+    'DataManipulationService',
+    'StringUtilsService'
   ];
 
   /**
@@ -24,7 +25,7 @@ define([
    */
   function controlledTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout,
                                              controlledTermDataService, controlledTermService, provisionalClassService,
-                                             DataManipulationService) {
+                                             DataManipulationService,StringUtilsService) {
     var vm = this;
 
 
@@ -32,6 +33,8 @@ define([
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
     vm.addClass = addClass;
     vm.addProperty = addProperty;
+    vm.getTypeForUi = getTypeForUi;
+    vm.getShortId = getShortId;
     vm.addedFieldItems = [];
     vm.addOntologyClassesToValueConstraint = addOntologyClassesToValueConstraint;
     vm.addOntologyClassToValueConstraint = addOntologyClassToValueConstraint;
@@ -70,12 +73,66 @@ define([
       'branches'      : [],
       'multipleChoice': false
     };
-
-    //General
+    vm.isFieldPropertiesMode = isFieldPropertiesMode;
+    vm.isFieldTypesMode = isFieldTypesMode;
+    vm.isFieldValuesMode = isFieldValuesMode;
+    vm.setFieldPropertiesMode = setFieldPropertiesMode;
+    vm.setFieldTypesMode = setFieldTypesMode;
+    vm.setFieldValuesMode = setFieldValuesMode;
+    vm.allowsProperty = allowsProperty;
+    vm.allowsField = allowsField;
+    vm.allowsValue = allowsValue;
+    vm.switchScope = switchScope;
     vm.controlledTerm = {};
-    if (vm.options) {
-      vm.filterSelection = vm.options && vm.options.filterSelection || "";
-      vm.modalId = vm.options && vm.options.modalId || "";
+
+
+
+
+    function switchScope(scope, action) {
+      $rootScope.$broadcast("cedar.templateEditor.controlledTerm.switchScope",
+          [scope, action]);
+    }
+
+    function allowsProperty() {
+      return vm.searchRange && vm.searchRange.includes("property") ;
+    }
+
+    function allowsField() {
+      return vm.searchRange && vm.searchRange.includes("field");
+    }
+
+    function allowsValue() {
+      return vm.searchRange && vm.searchRange.includes("value");
+    }
+
+    function isFieldPropertiesMode() {
+      return vm.searchMode == 'property';
+    }
+
+    function isFieldTypesMode() {
+      return vm.searchMode == 'field';
+    }
+
+    function isFieldValuesMode() {
+      return vm.searchMode == 'value';
+    }
+
+    function setFieldPropertiesMode() {
+      vm.searchMode = 'property';
+      vm.searchScope='properties';
+      vm.action = '';
+    }
+
+    function setFieldTypesMode() {
+      vm.searchMode = 'field';
+      vm.searchScope='classes';
+      vm.action = '';
+    }
+
+    function setFieldValuesMode() {
+      vm.searchMode = 'value';
+      vm.searchScope='classes';
+      vm.action = '';
     }
 
     vm.setInitialFieldConstraints();
@@ -89,15 +146,39 @@ define([
      * Scope functions.
      */
 
-    function addProperty(property, label, definition) {
-      console.log('addProperty',property, label, definition);
-      if (vm.filterSelection === 'properties') {
-        var id = DataManipulationService.getId(vm.field);
-
-        // tell the form to update the property for this field
-        console.log('broadcast property:propertyAdded');
-        $rootScope.$broadcast('property:propertyAdded', [property, id, label, definition]);
+    function getTypeForUi(type) {
+      if (type == 'OntologyClass') {
+        return ('Class');
       }
+      else if (type == 'Ontology') {
+        return ('Ontology');
+      }
+      else if (type == 'ValueSet') {
+        return ('Value Set');
+      }
+      else if (type == 'Value') {
+        return ('Value');
+      }
+      else if (type == 'DatatypeProperty') {
+        return ('Datatype Property');
+      }
+      else if (type == 'ObjectProperty') {
+        return ('Object Property');
+      }
+      else if (type == 'AnnotationProperty') {
+        return ('Annotation Property');
+      }
+    }
+
+    function getShortId(uri, maxLength) {
+      return StringUtilsService.getShortId(uri, maxLength);
+    }
+
+
+
+    function addProperty(property, label, definition, source, type) {
+      console.log('addProperty',vm.searchMode);
+      $rootScope.$broadcast('property:propertyAdded', [vm.searchMode, property, label, definition, DataManipulationService.getId(vm.field), source, vm.getTypeForUi(type)]);
     };
 
     function addBranchToValueConstraint() {
@@ -134,6 +215,13 @@ define([
 
     function addClass(selection, ontology) {
       console.log('addClass',selection,ontology);
+
+      var mode = vm.searchMode;
+      var classId = selection['@id'];
+      var label = selection.prefLabel;
+      var definition = selection.definition;
+      var type = selection.type;
+      var fieldId = DataManipulationService.getId(vm.field);
 
       // has this selection been added yet?
       var alreadyAdded = false;
@@ -179,15 +267,9 @@ define([
           properties['@type'].oneOf[1].items.enum = [selfUrl];
         }
       }
-      vm.startOver();
 
-      //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
-      //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
-
-
-      // TODO broadcast the action for now because parent scope is not working
-      console.log('188 broadcast field:controlledTermAdded');
-      $rootScope.$broadcast('field:controlledTermAdded',[selection.prefLabel,selection.definition]);
+      // "mode", "classId", "classLabel", 'classDescription', "fieldId","classSource","classType"
+      $rootScope.$broadcast('field:controlledTermAdded',[mode, classId ,label, definition, fieldId, type]);
 
     }
 
@@ -195,6 +277,9 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
+      console.log('addValueConstraint',action);
+
+
       if (!action || action == 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
@@ -209,12 +294,16 @@ define([
       }
       // Updates the field schema according to whether the field is controlled or not
       DataManipulationService.initializeSchema(vm.field);
+
+      $rootScope.$broadcast('value:controlledTermAdded',[DataManipulationService.getId(vm.field)]);
     }
 
     /**
      * Add ontology classes to value constraint to field values info definition.
      */
     function addOntologyClassesToValueConstraint() {
+      console.log('addOntologyClassesToValueConstraint');
+
       var alreadyAdded, constraint, i, j;
       for (i = 0; i < vm.stagedOntologyClassValueConstraints.length; i++) {
         constraint = vm.stagedOntologyClassValueConstraints[i];
@@ -243,6 +332,8 @@ define([
      * Add ontology class to value constraint to field values _ui definition.
      */
     function addOntologyClassToValueConstraint(constraint) {
+      console.log('addOntologyClassToValueConstraint');
+
       var alreadyAdded = false;
 
       for (var j = 0; j < vm.valueConstraint.classes.length; j++) {
@@ -267,6 +358,7 @@ define([
     };
 
     function addOntologyToValueConstraint() {
+      console.log('addOntologyToValueConstraint');
       var alreadyAdded, constraint, i, j;
       for (i = 0; i < vm.stagedOntologyValueConstraints.length; i++) {
         constraint = vm.stagedOntologyValueConstraints[i];
@@ -287,6 +379,7 @@ define([
     }
 
     function addValueSetToValueConstraint() {
+      console.log('addValueSetToValueConstraint');
       var alreadyAdded, constraint, i, j;
       for (i = 0; i < vm.stagedValueSetValueConstraints.length; i++) {
         constraint = vm.stagedValueSetValueConstraints[i];
@@ -308,6 +401,7 @@ define([
     };
 
     function deleteFieldAddedBranch(branch) {
+      console.log('deleteFieldAddedBranch');
       for (var i = 0, len = vm.valueConstraint.branches.length; i < len; i += 1) {
         if (vm.valueConstraint.branches[i]['uri'] == branch['uri']) {
           vm.valueConstraint.branches.splice(i, 1);
@@ -317,6 +411,7 @@ define([
     };
 
     function deleteFieldAddedClass(ontologyClass) {
+      console.log('deleteFieldAddedClass');
       for (var i = 0, len = vm.valueConstraint.classes.length; i < len; i += 1) {
         if (vm.valueConstraint.classes[i] == ontologyClass) {
           vm.valueConstraint.classes.splice(i, 1);
@@ -326,6 +421,7 @@ define([
     };
 
     function deleteFieldAddedItem(itemData) {
+      console.log('deleteFieldAddedItem');
       var properties = $rootScope.propertiesOf(vm.field);
       for (var i = 0, len = vm.addedFieldItems.length; i < len; i += 1) {
         if (vm.addedFieldItems[i] == itemData) {
@@ -355,6 +451,7 @@ define([
     };
 
     function deleteFieldAddedOntology(ontology) {
+      console.log('deleteFieldAddedOntology');
       for (var i = 0, len = vm.valueConstraint.ontologies.length; i < len; i += 1) {
         if (vm.valueConstraint.ontologies[i]['uri'] == ontology['uri']) {
           vm.valueConstraint.ontologies.splice(i, 1);
@@ -364,6 +461,7 @@ define([
     };
 
     function deleteFieldAddedValueSet(valueSet) {
+      console.log('deleteFieldAddedValueSet');
       for (var i = 0, len = vm.valueConstraint.valueSets.length; i < len; i += 1) {
         if (vm.valueConstraint.valueSets[i]['uri'] == valueSet['uri']) {
           vm.valueConstraint.valueSets.splice(i, 1);
@@ -373,6 +471,7 @@ define([
     };
 
     function stageOntologyValueConstraint() {
+      console.log('stageOntologyValueConstraint');
       vm.stagedOntologyValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function (ontologyValueConstraint) {
@@ -396,8 +495,8 @@ define([
      */
     function startOver() {
       console.log('startOver');
-      vm.filterSelection = vm.options && vm.options.filterSelection || "";
-      vm.modalId = vm.options && vm.options.modalId || "";
+      //vm.searchMode = vm.options && vm.options.searchMode || "";
+      //vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
@@ -420,12 +519,12 @@ define([
      */
     function selectFieldFilter(event) {
       angular.element('#field-value-tooltip').popover('hide');
-      vm.filterSelection = "field";
+      vm.searchMode = "field";
     };
 
     function selectValueFilter() {
       angular.element('#field-value-tooltip').popover('hide');
-      vm.filterSelection = "values";
+      vm.searchMode = "values";
     };
 
     // Default values for depth options select field
@@ -538,6 +637,7 @@ define([
     $scope.$on(
         'ctdc:init',
         function (event, args) {
+          console.log('on ctdc:init',args);
           vm.setInitialFieldConstraints();
         }
     );
@@ -552,17 +652,14 @@ define([
     $scope.$on(
         'cedar.templateEditor.controlledTerm.propertyCreated',
         function (event, args) {
-          if (vm.filterSelection === 'properties') {
-            console.log('propertyCreated',args);
+          if (vm.searchMode === 'property') {
 
             // tell the form to update the property for this field
             var property = args[0];
             var label = args[1];
-            var id = DataManipulationService.getId(vm.field);
             var description = args[2];
 
-            console.log('broadcast property:propertyAdded after prpopertyCreated')
-            $rootScope.$broadcast('property:propertyAdded', [property, id, label, description]);
+            $rootScope.$broadcast('property:propertyAdded', [vm.searchMode,property, label, description, DataManipulationService.getId(vm.field)]);
           }
         }
     );
@@ -762,11 +859,9 @@ define([
       vm.stagedOntologyClassValueConstraintData = [];
       vm.stagedValueSetValueConstraints = [];
       vm.stagedBranchesValueConstraints = [];
-      vm.startOver();
+      //vm.startOver();
 
-      // TODO broadcast the action so dialog is closed and ontology picker is reset
-      console.log('766 broadcast field:controlledTermAdded');
-      $rootScope.$broadcast('field:controlledTermAdded');
+      $rootScope.$broadcast('field:controlledTermAdded', [vm.searchMode,DataManipulationService.getId(vm.field)]);
 
     }
 

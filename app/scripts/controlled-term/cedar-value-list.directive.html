@@ -1,0 +1,97 @@
+<div class="form-group menu-form" >
+  <div class="controlled-terms controlled-term-options">
+    <div class="class-container">
+      <div class="added-field-classes">
+        <div class="class-list-container">
+          <div class="search-results-headers">
+            <table class="table table-condensed results-headers-table search-results-headers-table">
+              <thead>
+              <tr>
+                <th width="20%">{{'GENERIC.Name' | translate}}</th>
+                <th width="20%">{{'GENERIC.Type' | translate}}</th>
+                <th width="20%">{{'GENERIC.Source' | translate}}</th>
+                <th width="20%">{{'GENERIC.Id' | translate}}</th>
+                <th width="10%">{{'GENERIC.Count' | translate}}</th>
+                <th width="10%"></th>
+              </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="search-results" style="max-height:190px;overflow-y:auto;background:white">
+            <div class="table-responsive results-table-container">
+              <table class="table table-hover results-table search-results-table" >
+                <tbody>
+                <tr ng-if="!hasVC" class="center empty">
+                  <td colspan="6">{{'GENERIC.Empty' | translate}}</td>
+                </tr>
+                <tr ng-repeat="class in valueConstraint.classes">
+                  <td width="20%">{{class.prefLabel}}</td>
+                  <td width="20%">Ontology Class</td>
+                  <td width="20%">
+                    {{class.source}}
+                  </td>
+                  <td width="20%" uib-tooltip="{{getShortId(class.uri)}}" tooltip-append-to-body="true">
+                    {{getShortId(class.uri,
+                    16)}}
+                  </td>
+                  <td width="10%">1</td>
+                  <td width="10%">
+                    <div class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="valueSet in valueConstraint.valueSets">
+                  <td width="20%">{{valueSet.name}}</td>
+                  <td width="20%">Value Set</td>
+                  <td width="20%">{{valueSet.vsCollection}}</td>
+                  <td width="20%" uib-tooltip="{{getShortId(valueSet.uri)}}" tooltip-append-to-body="true">
+                    {{getShortId(valueSet.uri,
+                    16)}}
+                  </td>
+                  <td width="10%">{{valueSet.numTerms}}</td>
+                  <td width="10%">
+                    <div class="class-delete"
+                        ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="ontology in valueConstraint.ontologies">
+                  <td width="20%">{{ontology.name}}</td>
+                  <td width="20%">Ontology</td>
+                  <td width="20%">-</td>
+                  <td width="20%">{{ontology.acronym}}</td>
+                  <td width="10%">{{ontology.numTerms}}</td>
+                  <td width="10%">
+                    <div class="class-delete"
+                        ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="branch in valueConstraint.branches">
+                  <td width="20%">{{branch.name}}</td>
+                  <td width="20%">Branch</td>
+                  <td width="20%">{{branch.acronym}}</td>
+                  <td width="20%" uib-tooltip="{{getShortId(branch.uri)}}" tooltip-append-to-body="true">
+                    {{getShortId(branch.uri,16)}}
+                  </td>
+                  <td width="10%">-</td>
+                  <td width="10%">
+                    <div class="class-delete" ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

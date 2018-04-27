@@ -31,7 +31,15 @@ define([
       };
       $scope.documentTitle = '';
 
+
+
+      $scope.addedFields = new Map();
+      $scope.addedFieldKeys = [];
+
       var dms = DataManipulationService;
+      $scope.fieldSchema = dms.schemaOf($scope.field);
+      $scope.controlledTerms = {"mode" : "property", "range": ["property","value"]};
+
 
 
 
@@ -335,7 +343,7 @@ define([
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 
@@ -348,15 +356,194 @@ define([
 
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function (event,args) {
-        console.log('field:controlledTermAdded',args);
-        $scope.hideModal();
 
-        // build the added fields map in this case
-        $scope.setAddedFieldMap();
+
+        if (args && args[1] && (args[1] == $scope.getId())) {
+
+          console.log('field:controlledTermAdded',args);
+          //$scope.hideModal();
+
+          // build the added fields map in this case
+          $scope.setAddedFieldMap();
+        }
 
       });
 
+      // update the property for a field with controlled terms modal selection
+      $scope.$on("property:propertyAdded", function (event, args) {
+        console.log('propertyAdded',args);
 
+        if (args && args[3] && (args[3] == $scope.getId())) {
+          if (args[0] == 'property') {
+
+            console.log('propertyAdded', args[3]);
+            //$scope.hideModal();
+
+            var propertyId = args[1];
+            var propertyLabel = args[2];
+            var propertyDescription = args[3];
+            var id = args[4];
+
+            dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
+          }
+        }
+      });
+
+
+
+      // build a map with the added field controlled term id as the key and the details for that class as the value
+      $scope.setAddedFieldMap = function () {
+
+        var fields = dms.getFieldControlledTerms($scope.field);
+        if (fields) {
+
+          // create a new map to avoid any duplicates coming from the modal
+          var myMap = new Map();
+
+          // move the keys into the new map
+          for (var i = 0; i < fields.length; i++) {
+            var key = fields[i];
+            if (myMap.has(key)) {
+
+              // here is a duplicate, so delete it
+              dms.deleteFieldControlledTerm(key, $scope.field);
+            } else {
+              myMap.set(key, "");
+            }
+          }
+
+          // copy over any responses from the old map
+          myMap.forEach(function (value, key) {
+
+            if ($scope.addedFields.has(key)) {
+              myMap.set(key, $scope.addedFields.get(key));
+            }
+          }, myMap);
+
+
+          // get any missing responses
+          myMap.forEach(function (value, key) {
+            if (myMap.get(key) == "") {
+              setResponse(key, dms.parseOntologyName(key),
+                  dms.parseClassLabel(key));
+            }
+          }, myMap);
+
+
+          // fill up the key array
+          $scope.addedFieldKeys = [];
+          myMap.forEach(function (value, key) {
+            $scope.addedFieldKeys.push(key);
+          }, myMap);
+
+          // hang on to the new map
+          $scope.addedFields = myMap;
+
+        }
+        else {
+          // If there are no controlled terms for the field type defined in the model, the map will be empty
+          $scope.addedFields = new Map();
+          $scope.addedFieldKeys = [];
+        }
+      };
+
+      // get the class details from the server
+      var setResponse = function (item, ontologyName, className) {
+
+        // Get selected class details from the links.self endpoint provided.
+        controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
+          $scope.addedFields.set(item, response);
+        });
+      };
+
+      // get the ontology name from the addedFields map
+      $scope.getOntologyName = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).ontology;
+        }
+        return result;
+      };
+
+      // get the class description from the addedFields map
+      $scope.getPrefLabel = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).prefLabel;
+        }
+        return result;
+      };
+
+      // get the class description from the the addedFields map
+      $scope.getClassDescription = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
+            result = $scope.addedFields.get(item).definitions[0];
+          }
+        }
+        return result;
+      };
+
+      $scope.getClassId = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          if ($scope.addedFields.get(item).id) {
+            result = $scope.addedFields.get(item).id;
+          }
+        }
+        return result;
+      };
+
+      $scope.deleteFieldAddedItem = function (itemDataId) {
+        dms.deleteFieldControlledTerm(itemDataId, $scope.field);
+        $scope.setAddedFieldMap();
+      };
+
+      $scope.parseOntologyCode = function (source) {
+        return dms.parseOntologyCode(source);
+      };
+
+      $scope.parseOntologyName = function (dataItemsId) {
+        return dms.parseOntologyName(dataItemsId);
+      };
+
+      $scope.deleteFieldAddedBranch = function (branch) {
+        dms.deleteFieldAddedBranch(branch, $scope.field);
+      };
+
+      $scope.deleteFieldAddedClass = function (ontologyClass) {
+        dms.deleteFieldAddedClass(ontologyClass, $scope.field);
+      };
+
+      $scope.deleteFieldAddedOntology = function (ontology) {
+        dms.deleteFieldAddedOntology(ontology, $scope.field);
+      };
+
+      $scope.deleteFieldAddedValueSet = function (valueSet) {
+        dms.deleteFieldAddedValueSet(valueSet, $scope.field);
+      };
+
+      $scope.getOntologyCode = function (ontology) {
+        var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
+      };
+
+      $scope.getPropertyLabel = function () {
+        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
+      };
+
+      $scope.getPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field);
+      };
+
+      $scope.hasPropertyId = function () {
+        return dms.getPropertyId($scope.parentElement, $scope.field).length > 0;
+      };
+
+      $scope.deleteProperty = function () {
+        dms.deletePropertyId($scope.parentElement, $scope.field);
+        dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
+      };
 
       //
       // watches
@@ -828,184 +1015,9 @@ define([
       /* end of Value Recommendation functionality */
 
 
-      /* start of controlled terms functionality */
-
-      $scope.addedFields = new Map();
-      $scope.addedFieldKeys = [];
-
-      // build a map with the added field controlled term id as the key and the details for that class as the value
-      $scope.setAddedFieldMap = function () {
-
-        var fields = dms.getFieldControlledTerms($scope.field);
-        if (fields) {
-
-          // create a new map to avoid any duplicates coming from the modal
-          var myMap = new Map();
-
-          // move the keys into the new map
-          for (var i = 0; i < fields.length; i++) {
-            var key = fields[i];
-            if (myMap.has(key)) {
-
-              // here is a duplicate, so delete it
-              dms.deleteFieldControlledTerm(key, $scope.field);
-            } else {
-              myMap.set(key, "");
-            }
-          }
-
-          // copy over any responses from the old map
-          myMap.forEach(function (value, key) {
-
-            if ($scope.addedFields.has(key)) {
-              myMap.set(key, $scope.addedFields.get(key));
-            }
-          }, myMap);
 
 
-          // get any missing responses
-          myMap.forEach(function (value, key) {
-            if (myMap.get(key) == "") {
-              setResponse(key, dms.parseOntologyName(key),
-                  dms.parseClassLabel(key));
-            }
-          }, myMap);
 
-
-          // fill up the key array
-          $scope.addedFieldKeys = [];
-          myMap.forEach(function (value, key) {
-            $scope.addedFieldKeys.push(key);
-          }, myMap);
-
-          // hang on to the new map
-          $scope.addedFields = myMap;
-
-        }
-        else {
-          // If there are no controlled terms for the field type defined in the model, the map will be empty
-          $scope.addedFields = new Map();
-          $scope.addedFieldKeys = [];
-        }
-      };
-
-      // get the class details from the server
-      var setResponse = function (item, ontologyName, className) {
-
-        // Get selected class details from the links.self endpoint provided.
-        controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
-          $scope.addedFields.set(item, response);
-        });
-      };
-
-      // get the ontology name from the addedFields map
-      $scope.getOntologyName = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          result = $scope.addedFields.get(item).ontology;
-        }
-        return result;
-      };
-
-      // get the class description from the addedFields map
-      $scope.getPrefLabel = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          result = $scope.addedFields.get(item).prefLabel;
-        }
-        return result;
-      };
-
-      // get the class description from the the addedFields map
-      $scope.getClassDescription = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
-            result = $scope.addedFields.get(item).definitions[0];
-          }
-        }
-        return result;
-      };
-
-      $scope.getClassId = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          if ($scope.addedFields.get(item).id) {
-            result = $scope.addedFields.get(item).id;
-          }
-        }
-        return result;
-      };
-
-      $scope.deleteFieldAddedItem = function (itemDataId) {
-        dms.deleteFieldControlledTerm(itemDataId, $scope.field);
-        $scope.setAddedFieldMap();
-      };
-
-      $scope.parseOntologyCode = function (source) {
-        return dms.parseOntologyCode(source);
-      };
-
-      $scope.parseOntologyName = function (dataItemsId) {
-        return dms.parseOntologyName(dataItemsId);
-      };
-
-      $scope.deleteFieldAddedBranch = function (branch) {
-        dms.deleteFieldAddedBranch(branch, $scope.field);
-      };
-
-      $scope.deleteFieldAddedClass = function (ontologyClass) {
-        dms.deleteFieldAddedClass(ontologyClass, $scope.field);
-      };
-
-      $scope.deleteFieldAddedOntology = function (ontology) {
-        dms.deleteFieldAddedOntology(ontology, $scope.field);
-      };
-
-      $scope.deleteFieldAddedValueSet = function (valueSet) {
-        dms.deleteFieldAddedValueSet(valueSet, $scope.field);
-      };
-
-      $scope.getOntologyCode = function (ontology) {
-        var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
-      };
-
-      $scope.getPropertyLabel = function () {
-        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
-      };
-
-      $scope.getPropertyId = function () {
-        return dms.getPropertyId($scope.parentElement, $scope.field);
-      };
-
-      $scope.hasPropertyId = function () {
-        return dms.getPropertyId($scope.parentElement, $scope.field).length > 0;
-      };
-
-      $scope.deleteProperty = function () {
-        dms.deletePropertyId($scope.parentElement, $scope.field);
-        dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
-      };
-
-      // update the property for a field with controlled terms modal selection
-      $scope.$on("property:propertyAdded", function (event, args) {
-
-        var id = args[1];
-        if ($scope.getId() == id) {
-
-          $scope.hideModal();
-
-          var propertyId = args[0];
-          var propertyLabel = args[2];
-          var propertyDescription = args[3];
-
-          dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
-        }
-      });
-
-      /* end of controlled terms functionality */
-
-      $scope.fieldSchema = dms.schemaOf($scope.field);
 
     };
 

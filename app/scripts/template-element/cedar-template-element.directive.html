@@ -124,13 +124,19 @@
       <div class="modal-dialog">
         <div class="modal-content" style="overflow:auto">
           <div class="modal-header">
+            Duplicate?
             <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
                 aria-label="Close"><span aria-hidden="true"><img
                 src="/img/close_modal.png" width="22"/></span></button>
           </div>
           <div class="modal-body">
-            <div controlled-term field="element"
-                options='{"filterSelection":"properties", "modalId":getModalId("property"), "salt":getTitle}'></div>
+            <div controlled-term field="element" parentElement="parentElement"
+                options='{"searchMode":"properties", "modalId":getModalId("property"), "salt":getTitle}'></div>
+            <div class="class-actions">
+              <div class="class-action">
+                <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

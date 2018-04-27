@@ -25,14 +25,21 @@ define([
     vm.saveAsFieldItem = saveAsFieldItem;
     vm.saveAsOntologyClassValueConstraint = saveAsOntologyClassValueConstraint;
     vm.saveAsValueSetConstraint = saveAsValueSetConstraint;
-    vm.searchMode = null;
+
     vm.startOverInner = startOverInner;
     vm.startOver = startOver;
     vm.showCreateVsLoader = false;
+    vm.action = 'search';
+    vm.searchMode="classes";
+    vm.isSearching = isSearching;
 
     /**
      * Scope functions.
      */
+
+    function isSearching() {
+      return (vm.action == 'search');
+    }
 
     function addValueToValueSet(targetClass) {
       vm.provisionalValueSetValues.push(targetClass);

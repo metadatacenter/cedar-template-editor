@@ -1,124 +1,93 @@
 
-<!-- tabs -->
-<uib-tabset active="activeTab" id="controlled-term-tabs"  class="hidden">
-<uib-tab index="0" heading="Property" ng-click="tsc.setFieldPropertiesMode()"></uib-tab>
-<uib-tab index="1" heading="Field" ng-click="tsc.setFieldTypesMode()"></uib-tab>
-<uib-tab index="2" heading="Values" ng-click="tsc.setFieldValuesMode()"></uib-tab>
-</uib-tabset>
+<!-- properties | fields | values  content-->
+<div ng-if="tsc.isFieldPropertiesMode()" class="element-toggle-add-values">
 
-<!-- tab content -->
-<div>
-  <div ng-if="activeTab == 0">
+  <!--- creating -->
+  <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
+    <span>Please provide the URI for the property you want to create</span>
 
-    <!--- creating property   -->
-    <div ng-if="tsc.isCreating()">
-      {{'CONTROLLEDTERMS.PropertyInfo' | translate}}
-      <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch('properties')">
-        {{'CONTROLLEDTERMS.BackPropertySearch' | translate}}
-      </button>
+    <form name="propertyForm">
+      <div class="form-group form-group-actions clearfix">
+        <div class="field-search">
+          <div class="input-group field-search-input-group" style="width:100%">
 
-      <div class="clear form-group add-ontology-class ">
-
-        <!-- Start over, invisible but takes up space -->
-        <div class="btn-start-over-group clearfix invisible">
-          <button type="button" class="btn btn-start-over " ng-click="tsc.reset(false, false, false, false, true)">
-            {{'CONTROLLEDTERMS.StartOver' | translate}}
-          </button>
+            <input type="url" class="form-control field-search-form-control" name="propertyURI"
+                placeholder="property URI" aria-label="property URI"
+                ng-model="tsc.propertyUri" with-floating-label=""
+                ng-submit="tsc.addPropertyUri()"/>
+          </div>
         </div>
-
-        <!-- Enter Property URI -->
-        <form name="propertyForm">
-          <div class="floating-label-wrapper field-search">
-            <input type="url" class="form-control required" name="propertyURI" style="border:none"
-                placeholder="{{'CONTROLLEDTERMS.EnterProperty' | translate}}"
-                ng-model="tsc.propertyUri" with-floating-label/>
-          </div>
-
-          <!-- Submit -->
-          <div class="clear btn-create-term">
-            <button type="button"
-                class="std-button btn"
-                ng-click="tsc.addPropertyUri()"
-                ng-disabled="!tsc.propertyUri || !propertyForm.$valid">
-              {{'GENERIC.Submit' | translate}}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- searching properties -->
-    <div ng-if="tsc.isSearching()">
-
-      <div>
-        {{'CONTROLLEDTERMS.FindProperty' | translate}}
-        <button type="button" class="btn btn-create-term"
-            ng-click="tsc.switchToCreate('properties')">{{'CONTROLLEDTERMS.EnterProperty' | translate}}
-        </button>
-      </div>
-
-      <cedar-bioportal-search mode="mode" tsc="tsc" ctdc="ctdc"></cedar-bioportal-search>
-    </div>
-  </div>
-  <div ng-if="activeTab == 1">
-
-    <!-- creating -->
-    <div ng-if="tsc.isCreating()" class="creation-container">
-      <div>Please provide the following information for the term you want to create or
-        <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch('classes')">Go Back to Term
-          Search
-        </button>
-      </div>
-
-      <div class="clear form-group add-ontology-class"
-          ng-controller="provisionalClassController as pcc">
-        <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
         <div class="clear btn-create-term">
           <button type="button"
               class="std-button btn"
-              ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
-              ng-disabled="!pcc.isValid()">Create Term
+              ng-click="tsc.addPropertyUri()">Enter Property
           </button>
-          <!--<div class="input-indicator-icons">-->
-          <i class="cedar-svg-help-circle help-icon"
-              uib-tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
-          <!--</div>-->
         </div>
       </div>
-    </div>
-
-    <!-- searching -->
-    <div ng-if="tsc.isSearching()">
-      <div>Find a term in BioPortal or
-        <button
-            type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
-        </button>
-        <span ng-show="tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs" ng-if="tsc.fieldName.trim().length > 0">to set the type of the field value for <span
-            class="highlighted">'{{tsc.fieldName}}'</span>. Note: field values must be URIs.</span>
-      </div>
-
-      <cedar-bioportal-search mode="mode" tsc="tsc" ctdc="ctdc"></cedar-bioportal-search>
-    </div>
-
+    </form>
   </div>
-  <div ng-if="activeTab == 2">
 
-    <!-- Field values - Create Term or Value Set -->
-    <div ng-if="tsc.isCreating()" class="creation-container" >
-  <span>Please choose an option below or <button type="button" class="btn btn-create-term"
-      ng-click="tsc.switchToSearch('classes')">Go Back to Term Search
-  </button></span>
-      <!--Tab Headers-->
+  <!-- searching -->
+  <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+    <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
+      current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
+        add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
+        is-loading-class-details="tsc.isLoadingClassDetails" is-creating-mappings="tsc.isCreatingMappings" is-creating-vs="tsc.isCreatingVs"
+        tree-visible="tsc.treeVisible"></cedar-bioportal-search>
+  </div>
+
+</div>
+
+<div ng-if="tsc.isFieldTypesMode()" class="element-toggle-add-values">
+
+  <!-- creating -->
+  <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
+
+    <div class="clear form-group add-ontology-class"
+        ng-controller="provisionalClassController as pcc">
+      <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+      <div class="clear btn-create-term">
+        <button type="button"
+            class="std-button btn"
+            ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+            ng-disabled="!pcc.isValid()">Create Term
+        </button>
+        <!--<div class="input-indicator-icons">-->
+        <i class="cedar-svg-help-circle help-icon"
+            uib-tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+        <!--</div>-->
+      </div>
+    </div>
+  </div>
+
+  <!-- searching -->
+  <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+    <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
+        current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
+        add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
+        is-loading-class-details="tsc.isLoadingClassDetails" is-creating-mappings="tsc.isCreatingMappings" is-creating-vs="tsc.isCreatingVs"
+        tree-visible="tsc.treeVisible"></cedar-bioportal-search>
+  </div>
+
+</div>
+
+<div ng-if="tsc.isFieldValuesMode()" class="element-toggle-add-values">
+
+  <!-- search | create header  -->
+  <div ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
+
+    <!-- create content -->
+    <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
+
+      <!--create Term or Value Set -->
       <div class="element-toggles">
-        <!-- Create Term (Tab Header) -->
         <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValue}"
             ng-click="tsc.switchToCreateValue()">
-          <span>Create Term</span>
+          <span>Term</span>
         </div>
-        <!-- Create Term (Tab Header) -->
         <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValueSet}"
             ng-click="tsc.switchToCreateValueSet()">
-          <span>Create Value Set</span>
+          <span>Value Set</span>
         </div>
       </div>
 
@@ -147,7 +116,6 @@
                 class="std-button btn"
                 ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
                 ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">
-              Create
               Value Set
             </button>
             <i class="cedar-svg-help-circle help-icon"
@@ -162,21 +130,18 @@
       </div>
     </div>
 
-    <div ng-if="tsc.isSearching()">
-      <div ng-show="!tsc.isCreatingMappings && !tsc.isCreatingVs"
-          class="creation-container">Find terms in BioPortal or
-        <button type="button" class="btn btn-create-term"
-            ng-click="tsc.switchToCreate('classes')">Create New Terms
-        </button>
-        to constrain the values of the <span ng-if="tsc.fieldName.trim().length > 0" class="highlighted">'{{tsc.fieldName}}'</span>
-        field
-      </div>
-
-      <cedar-bioportal-search mode="mode" tsc="tsc" ctdc="ctdc"></cedar-bioportal-search>
+    <!-- search content -->
+    <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+      <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
+          current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
+          add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
+          is-loading-class-details="tsc.isLoadingClassDetails" is-creating-mappings="tsc.isCreatingMappings" is-creating-vs="tsc.isCreatingVs"
+          tree-visible="tsc.treeVisible"></cedar-bioportal-search>
     </div>
 
   </div>
 </div>
+
 
 
 

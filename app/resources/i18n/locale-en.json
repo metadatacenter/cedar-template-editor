@@ -68,6 +68,12 @@
     "IWantTo":"I want to..."
   },
   "GENERIC": {
+    "Property": "Property",
+    "Definition": "Definition",
+    "Source": "Source",
+    "Type": "Type",
+    "Identifier": "Identifier",
+    "Id": "ID",
     "Created": "Created",
     "Updated": "Saved",
     "AreYouSure": "Are you sure?",
@@ -159,8 +165,8 @@
     "unlimited": "unlimited",
     "Empty":"Empty",
     "Name":"Name",
-    "Source":"Source",
-    "Identifier":"Identifier"
+    "Count": "Count",
+    "Term": "Term"
   },
   "HELP": {
     "createFolder": "Create folder",

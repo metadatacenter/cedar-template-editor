@@ -1,51 +1,52 @@
-<div class="form-group menu-form">
+<div class="form-group menu-form" >
   <div class="controlled-terms controlled-term-options">
     <div class="class-container">
       <div class="added-field-classes">
         <div class="class-list-container">
-          <div class="class-list-table">
-            <table  class="table table-hover table-striped ">
+          <div class="search-results-headers">
+            <table class="table table-condensed results-headers-table search-results-headers-table">
               <thead>
               <tr>
-                <th>{{'GENERIC.Name' | translate}}</th>
-                <th>{{'GENERIC.Description' | translate}}</th>
-                <th>{{'GENERIC.Source' | translate}}</th>
-                <th>{{'GENERIC.Identifier' | translate}}</th>
-                <th><button class="close" style="left:0;color:#000" type="button"
-                    tooltip-append-to-body="true"
-                    uib-tooltip="{{'GENERIC.Close' | translate}}"
-                    aria-label="Close"><span
-                    aria-hidden="true" >&times;</span></button></th>
+                <th width="15%">{{'GENERIC.Term' | translate}}</th>
+                <th width="32%">{{'GENERIC.Definition' | translate}}</th>
+                <th width="11%">{{'GENERIC.Type' | translate}}</th>
+                <th width="14%">{{'GENERIC.Source' | translate}}</th>
+                <th width="13%">{{'GENERIC.Id' | translate}}</th>
+                <th width="15%"></th>
               </tr>
               </thead>
-              <tbody>
-              <tr ng-if="addedFieldKeys.length > 0" ng-repeat="key in addedFieldKeys">
-                <td>
-                  {{getPrefLabel(key)}}
-                </td>
-                <td>
-                  {{getClassDescription(key)}}
-                </td>
-                <td>
-                  {{parseOntologyName(key)}}
-                </td>
-                <td>
-                  {{getClassId(key)}}
-                </td>
-                <td>
-                  <div class="class-delete" ng-click="deleteFieldAddedItem(key);$event.stopPropagation();"
-                      tooltip-append-to-body="true"
-                      uib-tooltip="{{'GENERIC.Remove' | translate}}">
-                    <i class="fa fa-times-circle"></i>
-                  </div>
-                </td>
-              </tr>
-              <tr ng-if="addedFieldKeys.length == 0" class="empty">
-                <td colspan="5" >{{'GENERIC.Empty' | translate}}</td>
-              </tr>
-              </tbody>
             </table>
           </div>
+          <div class="search-results" style="max-height:190px;overflow-y:auto;background:white">
+            <div class="table-responsive results-table-container">
+              <table class="table table-hover results-table search-results-table" >
+                <tbody>
+                <tr ng-if="addedFieldKeys.length > 0" ng-repeat="key in addedFieldKeys">
+                  <td width="15%">{{getPrefLabel(key)}}</td>
+                  <td width="32%" style="font-size:0.9em">{{tsc.getShortText(getClassDescription(key), 120, '...', '-')}}
+                  </td>
+                  <td width="11%">{{getClassType(key)}}</td>
+                  <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{parseOntologyName(key)}}
+                  </td>
+                  <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
+                    {{tsc.getShortId(getClassId(key), 16)}}
+                  </td>
+                  <td width="13%">
+                    <div class="class-delete" ng-click="deleteFieldAddedItem(key);$event.stopPropagation();"
+                        tooltip-append-to-body="true"
+                        uib-tooltip="{{'GENERIC.Remove' | translate}}">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-if="!hasResults()" class="center empty">
+                  <td colspan="6" class="center empty">{{'GENERIC.Empty' | translate}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

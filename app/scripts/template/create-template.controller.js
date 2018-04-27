@@ -45,6 +45,7 @@ define([
         $scope.hasInstances;
         $scope.cannotWrite;
         $scope.documentTitle;
+        $scope.controlledTerms = {"mode" : "field", "range": ["field"]};
 
         $scope.isTemplate = true;
 
@@ -564,7 +565,7 @@ define([
             }
           }
           //UIUtilService.hideModal();
-          jQuery("#control-options-template-field").modal('hide');
+          //jQuery("#control-options-template-field").modal('hide');
         });
 
 

@@ -6,6 +6,7 @@ define([
   'cedar/template-editor/controlled-term/cedar-class-tree.directive',
   'cedar/template-editor/controlled-term/class-list.directive',
   'cedar/template-editor/controlled-term/property-list.directive',
+  'cedar/template-editor/controlled-term/cedar-value-list.directive',
   'cedar/template-editor/controlled-term/controlled-term.directive',
   'cedar/template-editor/controlled-term/controlled-term-search.directive',
   'cedar/template-editor/controlled-term/relation-type-selector.directive',
@@ -20,8 +21,9 @@ define([
   angular.module('cedar.templateEditor.controlledTerm', [
     'cedar.templateEditor.controlledTerm.cedarChildTreeDirective',
     'cedar.templateEditor.controlledTerm.cedarClassTreeDirective',
-    'cedar.templateEditor.controlledTerm.propertyListDirective',
     'cedar.templateEditor.controlledTerm.classListDirective',
+    'cedar.templateEditor.controlledTerm.propertyListDirective',
+    'cedar.templateEditor.controlledTerm.cedarValueListDirective',
     'cedar.templateEditor.controlledTerm.controlledTermDirective',
     'cedar.templateEditor.controlledTerm.controlledTermSearchDirective',
     'cedar.templateEditor.controlledTerm.relationTypeSelectorDirective',

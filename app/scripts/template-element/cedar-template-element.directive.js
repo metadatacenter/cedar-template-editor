@@ -423,7 +423,7 @@ define([
         var id = args[1];
         if (scope.getId() == id) {
 
-          scope.hideModal();
+          //scope.hideModal();
 
           var propertyId = args[0];
           var propertyLabel = args[2];

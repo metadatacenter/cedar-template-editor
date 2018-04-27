@@ -1,42 +1,47 @@
-<div class="form-group menu-form">
+<div class="form-group menu-form" >
   <div class="controlled-terms controlled-term-options">
     <div class="class-container">
       <div class="added-field-classes">
         <div class="class-list-container">
-          <div class="class-list-table">
-            <table class="table table-hover table-striped ">
+          <div class="search-results-headers">
+            <table class="table table-condensed results-headers-table search-results-headers-table ">
               <thead>
               <tr>
-                <th>Property</th>
-                <th>
-                  <button class="close" type="button" ng-click="dialogOpen = false"
-                      tooltip-append-to-body="true"
-                      uib-tooltip="{{'GENERIC.Close' | translate}}"
-                      aria-label="Close"><span
-                      aria-hidden="true">&times;</span></button>
-                </th>
+                <th>{{'GENERIC.Property' | translate}}</th>
+                <th>{{'GENERIC.Definition' | translate}}</th>
+                <th>{{'GENERIC.Type' | translate}}</th>
+                <th>{{'GENERIC.Source' | translate}}</th>
+                <th>{{'GENERIC.Id' | translate}}</th>
+                <th></th>
               </tr>
               </thead>
-              <tbody>
-              <!-- has non-CEDAR property assigned to field -->
-              <tr ng-if="hasPropertyId()">
-                <td>{{getPropertyId()}}</td>
-                <td>
-                  <div class="class-delete"
-                      ng-click="deleteProperty();$event.stopPropagation();"
-                      tooltip-append-to-body="true"
-                      uib-tooltip="{{'GENERIC.Remove' | translate}}">
-                    <i class="fa fa-times-circle"></i>
-                  </div>
-                </td>
-              </tr>
-              <!-- has CEDAR property assigned to field so don't display this -->
-              <tr ng-if="!hasPropertyId()">
-                <td class="center empty">Empty</td>
-                <td></td>
-              </tr>
-              </tbody>
             </table>
+          </div>
+          <div class="search-results" style="max-height:190px;overflow-y:auto;background:white">
+            <div class="table-responsive results-table-container">
+              <table class="table table-hover results-table search-results-table">
+                <tbody>
+                <tr ng-if="hasPropertyId()">
+                  <td>{{getLabel()}}</td>
+                  <td>{{getDescription()}}</td>
+                  <td>{{getType()}}</td>
+                  <td>{{getSource()}}</td>
+                  <td>{{getShortId(getPropertyId(),16)}}</td>
+                  <td style="width:20px">
+                    <div class="class-delete"
+                        ng-click="deleteProperty();$event.stopPropagation();"
+                        tooltip-append-to-body="true"
+                        uib-tooltip="{{'GENERIC.Remove' | translate}}">
+                      <i class="fa fa-times-circle"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-if="!hasPropertyId()" class="center empty">
+                  <td colspan="6">{{'GENERIC.Empty' | translate}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

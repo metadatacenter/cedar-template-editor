@@ -41,6 +41,7 @@ define([
     $scope.details;
     $scope.cannotWrite;
     $scope.lockReason = '';
+    $scope.controlledTerms = {"mode" : "field", "range": ["field"]};
 
 
     // can we write to this template?  if no details, then new element
@@ -539,7 +540,7 @@ define([
           dms.setDescription($scope.element, args[1]);
         }
       }
-      jQuery("#control-options-element-field").modal('hide');
+      //jQuery("#control-options-element-field").modal('hide');
     });
 
     // // update the property for a field

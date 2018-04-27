@@ -391,6 +391,7 @@ define([
     }
 
     function getPropertyById(acronym, propertyId) {
+      console.log('getPropertyById',acronym, propertyId)
       init();
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getPropertyById(acronym, propertyId),

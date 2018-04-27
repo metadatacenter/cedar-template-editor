@@ -3,11 +3,11 @@
   <div class="detail-options">
     <div class="element-toggles list table-style">
 
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
-          ng-class="{active: isTabActive('values')}"
-          ng-click="setTab('values');  $event.stopPropagation();">
-        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
-      </div>
+      <!--<div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"-->
+          <!--ng-class="{active: isTabActive('values')}"-->
+          <!--ng-click="setTab('values');  $event.stopPropagation();">-->
+        <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>-->
+      <!--</div>-->
       <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab"
           ng-class="{active: isTabActive('cardinality')}"
           ng-click="setTab('cardinality');  $event.stopPropagation();">
@@ -226,7 +226,13 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" salt="documentTitle" options='{"filterSelection":"field", "modalId":getModalId("field")}'></div>
+        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
+
+        <div class="class-actions">
+          <div class="class-action">
+            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -242,7 +248,13 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field"  salt="documentTitle" options='{"filterSelection":"values", "modalId":getModalId("values"), "salt":getTitle}'></div>
+        <div controlled-term field="field"  parent="parentElement" search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
+
+        <div class="class-actions">
+          <div class="class-action">
+            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -258,8 +270,13 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" salt="documentTitle"
-            options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
+        <div controlled-term field="field" parent="parentElement"  search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
+
+        <div class="class-actions">
+          <div class="class-action">
+            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

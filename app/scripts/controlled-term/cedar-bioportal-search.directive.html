@@ -1,12 +1,12 @@
 <!--search -->
-<div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
+<div  class="form-group floating-label-wrapper clearfix">
 
   <!-- search input -->
   <div class="form-group form-group-actions clearfix">
 
     <!-- Start over -->
     <div class="btn-start-over-group clearfix">
-      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false, false, true)">
+      <button type="button" class="btn btn-start-over" ng-click="cbs.reset(false, false, false, false, true)">
         {{'CONTROLLEDTERMS.StartOver' | translate}}
       </button>
     </div>
@@ -17,21 +17,21 @@
         <input id="field-search-input" type="text" class="form-control field-search-form-control"
             placeholder="{{'CONTROLLEDTERMS.SearchBioPortal' | translate}}"
             aria-label="{{'CONTROLLEDTERMS.SearchField' | translate}}"
-            ng-model="tsc.searchQuery"
-            ng-focus="tsc.showEmptyQueryMsg = false"
+            ng-model="cbs.searchQuery"
+            ng-focus="cbs.showEmptyQueryMsg = false"
             with-floating-label=""
             ng-model-options="{debounce: 700}"
-            ng-submit="tsc.search($event)"
-            ng-click="tsc.onTextClick($event)"
+            ng-submit="cbs.search($event)"
+            ng-click="cbs.onTextClick($event)"
             autocomplete="off"/>
-        <span class="input-group-addon" ng-click="tsc.changeSearchOptionsVisibility()"><i
-            ng-class="{'fa fa-cog': !tsc.searchOptionsVisible, 'fa fa-cog selected': tsc.searchOptionsVisible}"></i></span>
-        <span class="input-group-addon" ng-click="tsc.search()"><i class="fa fa-search"></i></span>
+        <span class="input-group-addon" ng-click="cbs.changeSearchOptionsVisibility()"><i
+            ng-class="{'fa fa-cog': !cbs.searchOptionsVisible, 'fa fa-cog selected': cbs.searchOptionsVisible}"></i></span>
+        <span class="input-group-addon" ng-click="cbs.search()"><i class="fa fa-search"></i></span>
       </div>
     </div>
 
     <!-- Advanced Search Options -->
-    <div ng-show="tsc.searchOptionsVisible" class="advanced-search">
+    <div ng-show="cbs.searchOptionsVisible" class="advanced-search">
       <p class="advanced-search-header">{{'CONTROLLEDTERMS.AdvancedSearchOptions' | translate}}</p>
 
       <div class="advanced-search-options">
@@ -39,37 +39,37 @@
 
         <div class="search-options">
           <div class="radio radio-primary radio-controlled-terms-search">
-            <div ng-if="tsc.isFieldPropertiesMode()" class="radio-option">
-              <input id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"
-                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+            <div ng-if="cbs.isFieldPropertiesMode()" class="radio-option">
+              <input id="search-scope-0" class="radio-option" type="radio" ng-model="cbs.searchScope" value="properties"
+                  ng-click="$event.stopPropagation()" ng-change="cbs.changeSearchScope()"/>
               <label>Search for a property in BioPortal </label></div>
-            <div ng-if="!tsc.isFieldPropertiesMode()" class="radio-option">
-              <input id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
-                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+            <div ng-if="!cbs.isFieldPropertiesMode()" class="radio-option">
+              <input id="search-scope-1" class="radio-option" type="radio" ng-model="cbs.searchScope" value="classes"
+                  ng-click="$event.stopPropagation()" ng-change="cbs.changeSearchScope()"/>
               <label>Search for a term in BioPortal (e.g. 'microarray analysis') </label></div>
             <div class="radio-option">
-              <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
-                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+              <input id="search-scope-2" class="radio-option" type="radio" ng-model="cbs.searchScope" value="ontologies"
+                  ng-click="$event.stopPropagation()" ng-change="cbs.changeSearchScope()"/>
               <label>Search for an ontology in BioPortal (e.g. OBI) and explore it</label>
             </div>
-            <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
-              <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
-                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+            <div ng-if="cbs.isFieldValuesMode()" class="radio-option">
+              <input id="search-scope-3" class="radio-option" type="radio" ng-model="cbs.searchScope" value="value-sets"
+                  ng-click="$event.stopPropagation()" ng-change="cbs.changeSearchScope()"/>
               <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and explore it</label>
             </div>
           </div>
         </div>
 
-        <div ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties() || tsc.isSearchingValueSets()">
+        <div ng-show="cbs.isSearchingClasses() || cbs.isSearchingProperties() || cbs.isSearchingValueSets()">
           <b>Narrow your search to specific ontologies</b>
           <div class="field-ontologies">
-            <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
+            <tags-input class="custom-tags-input" ng-model="cbs.selectedOntologies" display-property="id"
                 placeholder="Add ontologies" replace-spaces-with-dashes="false"
                 add-from-autocomplete-only="true"
-                on-tag-added="tsc.search()"
-                on-tag-removed="tsc.search()"
+                on-tag-added="cbs.search()"
+                on-tag-removed="cbs.search()"
                 min-length="2">
-              <auto-complete source="tsc.searchOntologies($query)"
+              <auto-complete source="cbs.searchOntologies($query)"
                   display-property="fullName"
                   min-length="0"
                   load-on-focus="false"
@@ -87,41 +87,41 @@
   </div>
 
   <!-- Search loading... -->
-  <div ng-if="tsc.showSearchPreloader">
+  <div ng-if="cbs.showSearchPreloader">
     <div class="loader2"></div>
   </div>
 
   <!-- Search messages, properties, classes, valuesets -->
   <div class="search-messages"
-      ng-if="tsc.isSearchingProperties()  || tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
-    <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
-    <div ng-if="tsc.searchFinished">
-      <div ng-if="tsc.resultsFound">
-        <span ng-if="tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results for the query '{{tsc.searchQuery}}'. </span>
-        <span ng-if="!tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results. </span>
-        <span class="search-msg" ng-if="tsc.isSearchingProperties()">Click on a property below to select it</span>
-        <span class="search-msg" ng-if="tsc.isSearchingClasses()">Click on a term below to select it</span>
-        <span class="search-msg" ng-if="tsc.isSearchingValueSets()">Click on a value set below to select it</span>
+      ng-if="cbs.isSearchingProperties()  || cbs.isSearchingClasses() || cbs.isSearchingValueSets()">
+    <span class="search-msg" ng-if="cbs.showEmptyQueryMsg">Please enter a search query</span>
+    <div ng-if="cbs.searchFinished">
+      <div ng-if="cbs.resultsFound">
+        <span ng-if="cbs.searchQuery" class="search-msg">{{cbs.searchResults.length}} results for the query '{{cbs.searchQuery}}'. </span>
+        <span ng-if="!cbs.searchQuery" class="search-msg">{{cbs.searchResults.length}} results. </span>
+        <span class="search-msg" ng-if="cbs.isSearchingProperties()">Click on a property below to select it</span>
+        <span class="search-msg" ng-if="cbs.isSearchingClasses()">Click on a term below to select it</span>
+        <span class="search-msg" ng-if="cbs.isSearchingValueSets()">Click on a value set below to select it</span>
       </div>
-      <span class="search-msg" ng-if="!tsc.resultsFound">No results</span>
+      <span class="search-msg" ng-if="!cbs.resultsFound">No results</span>
     </div>
   </div>
 
   <!-- search messages, ontologies -->
-  <div class="search-messages" ng-if="tsc.isSearchingOntologies()">
-    <div ng-if="tsc.ontologiesFound.length > 0 && !tsc.isCreatingMappings">
-      <span ng-if="tsc.searchQuery" class="search-msg">{{tsc.ontologiesFound.length}} ontologies found for the query '{{tsc.searchQuery}}'. </span>
-      <span ng-if="!tsc.searchQuery" class="search-msg">{{tsc.ontologiesFound.length}} ontologies. </span>
+  <div class="search-messages" ng-if="cbs.isSearchingOntologies()">
+    <div ng-if="cbs.ontologiesFound.length > 0 && !cbs.isCreatingMappings">
+      <span ng-if="cbs.searchQuery" class="search-msg">{{cbs.ontologiesFound.length}} ontologies found for the query '{{cbs.searchQuery}}'. </span>
+      <span ng-if="!cbs.searchQuery" class="search-msg">{{cbs.ontologiesFound.length}} ontologies. </span>
       <span class="search-msg">Click on an ontology below to explore it</span>
     </div>
-    <span class="search-msg" ng-if="tsc.ontologiesFound.length == 0">No results</span>
+    <span class="search-msg" ng-if="cbs.ontologiesFound.length == 0">No results</span>
   </div>
 
   <!-- Search Results and Ontology Tree -->
   <div class="clear search-results-section">
 
     <!-- Property results -->
-    <div ng-if="(tsc.isSearchingProperties()) && tsc.resultsFound && tsc.searchFinished">
+    <div ng-if="(cbs.isSearchingProperties()) && cbs.resultsFound && cbs.searchFinished">
 
       <div style="margin:20px">
         <div class="search-results-headers">
@@ -140,63 +140,63 @@
         </div>
 
         <div class="search-results">
-          <div class="no-search-results" ng-show="!tsc.resultsFound">No results.</div>
+          <div class="no-search-results" ng-show="!cbs.resultsFound">No results.</div>
           <div class="table-responsive results-table-container">
 
-            <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingProperties()">
+            <table class="table table-hover results-table search-results-table" ng-if="cbs.isSearchingProperties()">
               <tbody>
-              <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId, false)"
-                  ng-dblclick="tsc.selectResult(result, result.resultId, true)"
-                  ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
+              <tr ng-repeat="result in cbs.searchResults" ng-click="cbs.selectResult(result, result.resultId, false)"
+                  ng-dblclick="cbs.selectResult(result, result.resultId, true)"
+                  ng-class="{'selected-row':  (result.resultId == cbs.selectedResultId)}">
                 <td>{{result.prefLabel}}</td>
                 <td>{{result.details.definition || '-'}}</td>
-                <td>{{tsc.getTypeForUi(result.details.type) || '-'}}</td>
+                <td>{{cbs.getTypeForUi(result.details.type) || '-'}}</td>
                 <td>{{result.source.id}}</td>
-                <td>{{tsc.getShortId(result.details.id, 60)}}</td>
+                <td>{{cbs.getShortId(result.details.id, 60)}}</td>
                 <td>
               <span class="fa fa-sitemap"
-                  ng-if="(result.resultId == tsc.selectedResultId) "
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+                  ng-if="(result.resultId == cbs.selectedResultId) "
+                  ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()"></span>
                   <span class="show-details"
-                      ng-if="(result.resultId == tsc.selectedResultId)  && !tsc.treeVisible"
-                      ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
+                      ng-if="(result.resultId == cbs.selectedResultId)  && !cbs.treeVisible"
+                      ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
                   <span class="show-details"
-                      ng-if="(result.resultId == tsc.selectedResultId)  && tsc.treeVisible"
-                      ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
+                      ng-if="(result.resultId == cbs.selectedResultId)  && cbs.treeVisible"
+                      ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
                 </td>
               </tr>
               </tbody>
             </table>
 
             <table class="table table-hover results-table search-results-table"
-                ng-if="tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
+                ng-if="cbs.isSearchingClasses() || cbs.isSearchingValueSets()">
               <tbody>
 
-              <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-              <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
-                  ng-dblclick="tsc.selectResult(result, result.resultId, true)"
-                  ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
+              <!-- Note that the comparison (result.resultId == cbs.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == cbs.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
+              <tr ng-repeat="result in cbs.searchResults" ng-click="cbs.selectResult(result, result.resultId)"
+                  ng-dblclick="cbs.selectResult(result, result.resultId, true)"
+                  ng-class="{'selected-row':  (result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)}">
                 <td width="15%">{{result.prefLabel}}</td>
                 <td width="15%">{{result.prefLabel}}</td>
-                <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}
+                <td width="32%" style="font-size:0.9em">{{cbs.getShortText(result.details.definition, 120, '...', '-')}}
                 </td>
-                <td width="11%">{{tsc.getTypeForUi(result.details.type)}}</td>
+                <td width="11%">{{cbs.getTypeForUi(result.details.type)}}</td>
                 <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">
                   {{result.source.id}}
                 </td>
-                <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
-                  {{tsc.getShortId(result.details.id, 16)}}
+                <td width="14%" uib-tooltip="{{cbs.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
+                  {{cbs.getShortId(result.details.id, 16)}}
                 </td>
                 <td width="13%">
               <span class="fa fa-sitemap"
-                  ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)"
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+                  ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)"
+                  ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()"></span>
                   <span class="show-details"
-                      ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible"
-                      ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
+                      ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && !cbs.treeVisible"
+                      ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
                   <span class="show-details"
-                      ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible"
-                      ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
+                      ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && cbs.treeVisible"
+                      ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
                 </td>
               </tr>
               </tbody>
@@ -204,32 +204,18 @@
           </div>
         </div>
       </div>
-
-      <div class="class-actions">
-        <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
-          <div class="action-msg">
-            <span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
-          </div>
-          <div>
-            <button type="button" class="std-button btn btn-add-term"
-                ng-click="ctdc.addProperty(ctdc.selectedClass.id, ctdc.selectedClass.prefLabel,ctdc.selectedClass.definition); ctdc.startOver()">
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- classes results -->
-    <div ng-if="(tsc.isSearchingClasses()) && tsc.resultsFound && tsc.searchFinished">
+    <div ng-if="(cbs.isSearchingClasses()) && cbs.resultsFound && cbs.searchFinished">
       <div class="search-results-headers">
         <table class="table table-condensed results-headers-table search-results-headers-table">
           <thead>
           <tr>
-            <th width="15%" ng-if="tsc.isSearchingClasses()">Term</th>
-            <th width="15%" ng-if="tsc.isSearchingValueSets()">Value Set</th>
-            <th width="32%" ng-if="tsc.isSearchingClasses()">Definition</th>
-            <th width="32%" ng-if="tsc.isSearchingValueSets()">Description</th>
+            <th width="15%" ng-if="cbs.isSearchingClasses()">Term</th>
+            <th width="15%" ng-if="cbs.isSearchingValueSets()">Value Set</th>
+            <th width="32%" ng-if="cbs.isSearchingClasses()">Definition</th>
+            <th width="32%" ng-if="cbs.isSearchingValueSets()">Description</th>
             <th width="11%">Type</th>
             <th width="14%">Source</th>
             <th width="13%">Id</th>
@@ -239,35 +225,35 @@
         </table>
       </div>
       <div class="search-results">
-        <div class="no-search-results" ng-show="!tsc.resultsFound">No results.</div>
+        <div class="no-search-results" ng-show="!cbs.resultsFound">No results.</div>
         <div class="table-responsive results-table-container">
           <table class="table table-hover results-table search-results-table"
-              ng-if="tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
+              ng-if="cbs.isSearchingClasses() || cbs.isSearchingValueSets()">
             <tbody>
             <!-- ctdc.addProperty(ctdc.selectedClass.id, ctdc.selectedClass.prefLabel, ctdc.selectedClass.definition); ctdc.startOver()-->
-            <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-            <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
-                ng-dblclick="tsc.selectResult(result, result.resultId, true)"
-                ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
+            <!-- Note that the comparison (result.resultId == cbs.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == cbs.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
+            <tr ng-repeat="result in cbs.searchResults" ng-click="cbs.selectResult(result, result.resultId)"
+                ng-dblclick="cbs.selectResult(result, result.resultId, true)"
+                ng-class="{'selected-row':  (result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)}">
               <td width="15%">{{result.prefLabel}}</td>
-              <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}
+              <td width="32%" style="font-size:0.9em">{{cbs.getShortText(result.details.definition, 120, '...', '-')}}
               </td>
-              <td width="11%">{{tsc.getTypeForUi(result.details.type)}}</td>
+              <td width="11%">{{cbs.getTypeForUi(result.details.type)}}</td>
               <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{result.source.id}}
               </td>
-              <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
-                {{tsc.getShortId(result.details.id, 16)}}
+              <td width="14%" uib-tooltip="{{cbs.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
+                {{cbs.getShortId(result.details.id, 16)}}
               </td>
               <td width="13%">
               <span class="fa fa-sitemap"
-                  ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)"
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+                  ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)"
+                  ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()"></span>
                 <span class="show-details"
-                    ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible"
-                    ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
+                    ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && !cbs.treeVisible"
+                    ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
                 <span class="show-details"
-                    ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible"
-                    ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
+                    ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && cbs.treeVisible"
+                    ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
               </td>
             </tr>
             </tbody>
@@ -277,15 +263,15 @@
     </div>
 
     <!-- Value Sets results -->
-    <div ng-if="(tsc.isSearchingValueSets()) && tsc.resultsFound && tsc.searchFinished">
+    <div ng-if="(pc.isSearchingValueSets()) && pc.resultsFound && pc.searchFinished">
       <div class="search-results-headers">
         <table class="table table-condensed results-headers-table search-results-headers-table">
           <thead>
           <tr>
-            <th width="15%" ng-if="tsc.isSearchingClasses()">Term (value sets)</th>
-            <th width="15%" ng-if="tsc.isSearchingValueSets()">Value Set</th>
-            <th width="32%" ng-if="tsc.isSearchingClasses()">Definition</th>
-            <th width="32%" ng-if="tsc.isSearchingValueSets()">Description</th>
+            <th width="15%" ng-if="cbs.isSearchingClasses()">Term (value sets)</th>
+            <th width="15%" ng-if="cbs.isSearchingValueSets()">Value Set</th>
+            <th width="32%" ng-if="cbs.isSearchingClasses()">Definition</th>
+            <th width="32%" ng-if="cbs.isSearchingValueSets()">Description</th>
             <th width="11%">Type</th>
             <th width="14%">Source</th>
             <th width="13%">Id</th>
@@ -295,33 +281,33 @@
         </table>
       </div>
       <div class="search-results">
-        <div class="no-search-results" ng-show="!tsc.resultsFound">No results.</div>
+        <div class="no-search-results" ng-show="!cbs.resultsFound">No results.</div>
         <div class="table-responsive results-table-container">
           <table class="table table-hover results-table search-results-table"
-              ng-if="tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
+              ng-if="cbs.isSearchingClasses() || cbs.isSearchingValueSets()">
             <tbody>
-            <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-            <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
-                ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
+            <!-- Note that the comparison (result.resultId == cbs.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == cbs.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
+            <tr ng-repeat="result in cbs.searchResults" ng-click="cbs.selectResult(result, result.resultId)"
+                ng-class="{'selected-row':  (result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)}">
               <td width="15%">{{result.prefLabel}}</td>
-              <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}
+              <td width="32%" style="font-size:0.9em">{{cbs.getShortText(result.details.definition, 120, '...', '-')}}
               </td>
-              <td width="11%">{{tsc.getTypeForUi(result.details.type)}}</td>
+              <td width="11%">{{cbs.getTypeForUi(result.details.type)}}</td>
               <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{result.source.id}}
               </td>
-              <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
-                {{tsc.getShortId(result.details.id, 16)}}
+              <td width="14%" uib-tooltip="{{cbs.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
+                {{cbs.getShortId(result.details.id, 16)}}
               </td>
               <td width="13%">
               <span class="fa fa-sitemap"
-                  ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)"
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+                  ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id)"
+                  ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()"></span>
                 <span class="show-details"
-                    ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible"
-                    ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
+                    ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && !cbs.treeVisible"
+                    ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
                 <span class="show-details"
-                    ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible"
-                    ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
+                    ng-if="(result.resultId == cbs.selectedResultId) && (result.details.id == cbs.selectedClass.id) && cbs.treeVisible"
+                    ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
               </td>
             </tr>
             </tbody>
@@ -331,7 +317,7 @@
     </div>
 
     <!-- Ontologies results -->
-    <div ng-if="tsc.isSearchingOntologies() && tsc.ontologiesFound.length > 0 && tsc.searchFinished">
+    <div ng-if="pc.isSearchingOntologies() && pc.ontologiesFound.length > 0 && pc.searchFinished">
       <div class="search-results-headers">
         <table class="table table-condensed results-headers-table browse-results-headers-table">
           <thead>
@@ -347,8 +333,8 @@
         <div class="table-responsive results-table-container">
           <table class="table table-hover results-table browse-results-table">
             <tbody>
-            <tr ng-repeat="result in tsc.ontologiesFound" ng-click="tsc.selectOntology(result)"
-                ng-class="{'selected-row':  (result.id == tsc.currentOntology.info.id)}">
+            <tr ng-repeat="result in cbs.ontologiesFound" ng-click="cbs.selectOntology(result)"
+                ng-class="{'selected-row':  (result.id == cbs.currentOntology.info.id)}">
               <td width="45%">{{result.name}} ({{result.id}})</td>
               <td width="45%">{{result.details.categories.join(", ") || "-" }}</td>
               <td width="9%" ng-if="result.details.metricsAvailable">{{result.details.numberOfClasses | number}}</td>
@@ -361,166 +347,166 @@
     </div>
 
     <!-- loader -->
-    <div ng-if="tsc.treeVisible && (tsc.isLoadingClassDetails || tsc.isLoadingOntologyDetails)">
+    <div ng-if="pc.treeVisible && (pc.isLoadingClassDetails || pc.isLoadingOntologyDetails)">
       <div class="loader2"></div>
     </div>
 
     <!--Start new tree-->
     <div class="additional-details clear"
-        ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails && !tsc.isLoadingOntologyDetails">
+        ng-show="cbs.treeVisible && !cbs.isLoadingClassDetails && !cbs.isLoadingOntologyDetails">
       <!-- Ontology tree -->
       <div class="terminology-tree-container">
         <!-- Ontology tree header -->
-        <div class="tree-header" ng-if="tsc.isCurrentOntology()">
-          <h4 ng-if="(tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass) && !tsc.isFieldPropertiesMode()">
-            {{tsc.currentOntology.info.id}} classes:</h4>
-          <h4 ng-if="tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} properties:</h4>
-          <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set:
-            {{tsc.currentOntology.vs.prefLabel}}</h4>
+        <div class="tree-header" ng-if="cbs.isCurrentOntology()">
+          <h4 ng-if="(cbs.selectedClass.type=='OntologyClass' || !cbs.selectedClass) && !cbs.isFieldPropertiesMode()">
+            {{cbs.currentOntology.info.id}} classes:</h4>
+          <h4 ng-if="cbs.isFieldPropertiesMode()">{{cbs.currentOntology.info.id}} properties:</h4>
+          <h4 ng-if="cbs.selectedClass.type=='Value' || cbs.selectedClass.type=='ValueSet'">Value Set:
+            {{cbs.currentOntology.vs.prefLabel}}</h4>
         </div>
         <!-- Ontology tree content -->
         <div class="tree-content">
           <!-- Ontology Tree content -->
           <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
           <div class="ontology-tree pull-left"
-              ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
+              ng-if="cbs.isCurrentOntology() && cbs.treeVisible && !cbs.isLoadingClassDetails">
             <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
-                ng-if="!tsc.currentOntology.info.flat">
+                ng-if="!cbs.currentOntology.info.flat">
               <!--Class Tree-->
-              <cedar-class-tree ng-if="!tsc.isFieldPropertiesMode()"
-                  tree="tsc.currentOntology.tree"
-                  selected-node="tsc.selectedClass"
-                  is-selected-callback="tsc.checkIfSelected"
-                  get-class-details-callback="tsc.getClassDetails"
+              <cedar-class-tree ng-if="!cbs.isFieldPropertiesMode()"
+                  tree="cbs.currentOntology.tree"
+                  selected-node="cbs.selectedClass"
+                  is-selected-callback="cbs.checkIfSelected"
+                  get-class-details-callback="cbs.getClassDetails"
                   is-property-tree="false">
               </cedar-class-tree>
               <!--Property tree-->
-              <cedar-class-tree ng-if="tsc.isFieldPropertiesMode()"
-                  tree="tsc.currentOntology.tree"
-                  selected-node="tsc.selectedClass"
-                  is-selected-callback="tsc.checkIfSelected"
-                  get-class-details-callback="tsc.getPropertyDetails"
+              <cedar-class-tree ng-if="cbs.isFieldPropertiesMode()"
+                  tree="cbs.currentOntology.tree"
+                  selected-node="cbs.selectedClass"
+                  is-selected-callback="cbs.checkIfSelected"
+                  get-class-details-callback="cbs.getPropertyDetails"
                   is-property-tree="true">
               </cedar-class-tree>
             </div>
-            <div class="tree tree-view-message" ng-if="tsc.currentOntology.info.flat">Tree browsing not supported for
+            <div class="tree tree-view-message" ng-if="cbs.currentOntology.info.flat">Tree browsing not supported for
               this
               ontology
             </div>
           </div>
         </div>
       </div>
-      <div class="selection-details-container" ng-if="tsc.isCurrentOntology()">
+      <div class="selection-details-container" ng-if="cbs.isCurrentOntology()">
         <uib-tabset>
-          <uib-tab ng-if="!tsc.isFieldPropertiesMode()" index="0" heading="Term Details">
-            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
+          <uib-tab ng-if="!cbs.isFieldPropertiesMode()" index="0" heading="Term Details">
+            <div class="no-selected-class text-center" ng-hide="cbs.classDetails">Click on a term on the left to view
               details
             </div>
             <div class="table-responsive">
               <table class="table table-striped">
-                <tbody ng-show="tsc.classDetails">
+                <tbody ng-show="cbs.classDetails">
                 <tr>
                   <th>Name</th>
-                  <td>{{tsc.classDetails.prefLabel}}</td>
+                  <td>{{cbs.classDetails.prefLabel}}</td>
                 </tr>
                 <tr>
                   <th>Id</th>
-                  <td>{{tsc.classDetails['@id']}}</td>
+                  <td>{{cbs.classDetails['@id']}}</td>
                 </tr>
-                <tr ng-if="tsc.classDetails.definitions[0]">
+                <tr ng-if="cbs.classDetails.definitions[0]">
                   <th>Definition</th>
-                  <td>{{tsc.classDetails.definitions[0]}}</td>
+                  <td>{{cbs.classDetails.definitions[0]}}</td>
                 </tr>
                 </tbody>
               </table>
             </div>
           </uib-tab>
-          <uib-tab ng-if="tsc.isFieldPropertiesMode()" index="0" heading="Property Details">
-            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
+          <uib-tab ng-if="cbs.isFieldPropertiesMode()" index="0" heading="Property Details">
+            <div class="no-selected-class text-center" ng-hide="cbs.classDetails">Click on a term on the left to view
               details
             </div>
             <div class="table-responsive">
               <table class="table table-striped">
-                <tbody ng-show="tsc.classDetails">
+                <tbody ng-show="cbs.classDetails">
                 <tr>
                   <th>Name</th>
-                  <td>{{tsc.classDetails.prefLabel}}</td>
+                  <td>{{cbs.classDetails.prefLabel}}</td>
                 </tr>
                 <tr>
                   <th>Id</th>
-                  <td>{{tsc.classDetails['@id']}}</td>
+                  <td>{{cbs.classDetails['@id']}}</td>
                 </tr>
-                <tr ng-if="tsc.classDetails.definitions[0]">
+                <tr ng-if="cbs.classDetails.definitions[0]">
                   <th>Definition</th>
-                  <td>{{tsc.classDetails.definitions[0]}}</td>
+                  <td>{{cbs.classDetails.definitions[0]}}</td>
                 </tr>
                 </tbody>
               </table>
             </div>
           </uib-tab>
           <uib-tab
-              ng-if="tsc.isTypeClass(tsc.selectedClass.type) || tsc.isTypeProperty(tsc.selectedClass.type) || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
+              ng-if="cbs.isTypeClass(cbs.selectedClass.type) || cbs.isTypeProperty(cbs.selectedClass.type) || (!cbs.selectedClass.type && cbs.isCurrentOntology())"
               index="1" heading="Ontology Details">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>
                 <tr>
                   <th>Name</th>
-                  <td>{{tsc.currentOntology.info.name}}</td>
+                  <td>{{cbs.currentOntology.info.name}}</td>
                 </tr>
                 <tr>
                   <th>Acronym</th>
-                  <td>{{tsc.currentOntology.info.id}}</td>
+                  <td>{{cbs.currentOntology.info.id}}</td>
                 </tr>
                 <tr>
                   <th>Id</th>
                   <td>
-                    <a ng-href="{{tsc.currentOntology.info['@id']}}"
-                        target="_blank">{{tsc.currentOntology.info['@id']}}</a>
+                    <a ng-href="{{cbs.currentOntology.info['@id']}}"
+                        target="_blank">{{cbs.currentOntology.info['@id']}}</a>
                   </td>
                 </tr>
-                <tr ng-if="tsc.currentOntology.info.details.description">
+                <tr ng-if="cbs.currentOntology.info.details.description">
                   <th>Description</th>
-                  <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
+                  <td>{{(cbs.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
                 </tr>
                 <tr>
                   <th>No. Terms</th>
-                  <td ng-if="tsc.currentOntology.info.details.metricsAvailable">
-                    {{tsc.currentOntology.info.details.numberOfClasses | number}}
+                  <td ng-if="cbs.currentOntology.info.details.metricsAvailable">
+                    {{cbs.currentOntology.info.details.numberOfClasses | number}}
                   </td>
-                  <td ng-if="!tsc.currentOntology.info.details.metricsAvailable">n/a</td>
+                  <td ng-if="!cbs.currentOntology.info.details.metricsAvailable">n/a</td>
                 </tr>
                 </tbody>
               </table>
             </div>
           </uib-tab>
-          <uib-tab ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" index="1"
+          <uib-tab ng-if="cbs.selectedClass.type=='Value' || cbs.selectedClass.type=='ValueSet'" index="1"
               heading="Value Set Details">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>
                 <tr>
                   <th>Value Set</th>
-                  <td>{{tsc.currentOntology.vs.prefLabel}}</td>
+                  <td>{{cbs.currentOntology.vs.prefLabel}}</td>
                 </tr>
                 <tr>
                   <th>Id</th>
                   <td>
-                    <a ng-href="{{tsc.currentOntology.vs['@id']}}"
-                        target="_blank">{{tsc.currentOntology.vs['@id']}}</a>
+                    <a ng-href="{{cbs.currentOntology.vs['@id']}}"
+                        target="_blank">{{cbs.currentOntology.vs['@id']}}</a>
                   </td>
                 </tr>
                 <tr>
                   <th>Collection</th>
-                  <td>{{tsc.currentOntology.info.id}}</td>
+                  <td>{{cbs.currentOntology.info.id}}</td>
                 </tr>
-                <tr ng-if="tsc.classDetails.definitions[0]">
+                <tr ng-if="cbs.classDetails.definitions[0]">
                   <th>Description</th>
-                  <td>{{(tsc.currentOntology.vs.definitions[0] | htmlToPlainText) || '-'}}</td>
+                  <td>{{(cbs.currentOntology.vs.definitions[0] | htmlToPlainText) || '-'}}</td>
                 </tr>
                 <tr>
                   <th>No. Values</th>
-                  <td>{{tsc.currentOntology.tree.length | number}}</td>
+                  <td>{{cbs.currentOntology.tree.length | number}}</td>
                 </tr>
                 </tbody>
               </table>

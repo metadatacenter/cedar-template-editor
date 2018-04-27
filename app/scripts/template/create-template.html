@@ -136,8 +136,12 @@
                 src="/img/close_modal.png" width="22"/></span></button>
           </div>
           <div class="modal-body">
-            <div controlled-term field="form" salt="documentTitle"
-                options='{"filterSelection":"field", "modalId":"control-options-template-field"}'></div>
+            <div controlled-term field="form"  parentElement="" salt="documentTitle"  search-mode="controlledTerms.mode" search-range="controlledTerms.range"></div>
+            <div class="class-actions">
+              <div class="class-action">
+                <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

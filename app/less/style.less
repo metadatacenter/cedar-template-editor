@@ -3943,17 +3943,25 @@ section.dashboard-elements {
   .btn-back,
   .btn-create-term {
     color: @brand-primary;
-    background-color: transparent;
-    .activ-grotesk-bold;
+    background:none !important;
+    background-image: none;
     font-style: italic;
     font-size: 12px;
     font-weight: normal;
     float: none;
     padding: 0;
+    margin:0;
+    outline:none;
+    border:none;
 
+    &:active,
     &:hover,
     &:focus {
       color: @brand-primary-hover;
+      background:none !important;
+      background-image: none;
+      outline:none;
+      border:none;
     }
   }
 
@@ -3997,6 +4005,12 @@ section.dashboard-elements {
 
   }
 
+  .results-table-container .results-table, .results-headers-table {
+    td, th {
+      vertical-align: middle;
+    }
+  }
+
   .search-results-section {
     .search-results {
       min-height: 58px;
@@ -4018,6 +4032,7 @@ section.dashboard-elements {
       width: 100%;
       td, th {
         padding: 10px 10px;
+        vertical-align:middle;
 
         &:first-child {
           word-break: normal;

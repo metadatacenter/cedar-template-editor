@@ -56,17 +56,11 @@
   <p class="add-values-instructions">Use the options below to add existing BioPortal terms to the value set <span
       class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span></p>
 
-  <controlled-term-search
-      search-mode="tsc.searchMode"
-      reset-callback="pcc.startOverInner"
-      current-ontology="pcc.pickedCurrentOntology"
-      selected-class="pcc.pickedOntologyClass"
-      is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails"
-      is-creating-mappings="false"
-      is-creating-vs="true"
-      tree-visible="false"
-      search-for="classes">
-  </controlled-term-search>
+  <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="pcc.searchMode" action="pcc.action" selected-class="pcc.pickedOntologyClass"
+      current-ontology="pcc.pickedCurrentOntology" reset-callback="pcc.startOverInner" add-property-callback="tsc.addPropertyCallback"
+      add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
+      is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails" is-creating-mappings="false" is-creating-vs="true"
+      tree-visible="false"></cedar-bioportal-search>
 
   <br />
   <!-- Mapping types -->

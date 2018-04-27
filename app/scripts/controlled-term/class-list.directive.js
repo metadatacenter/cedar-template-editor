@@ -28,9 +28,21 @@ define([
       templateUrl     : 'scripts/controlled-term/class-list.directive.html',
       link    : function (scope, element, attrs) {
 
+
+        var fieldId = scope.field ? DataManipulationService.getId(scope.field) : '';
         scope.addedFieldKeys = [];
         scope.addedFields = new Map();
         scope.terms = null;
+        scope.location = ["mode", "classId", "classLabel", 'classDescription', "fieldId","classSource","classType"];
+        scope.value = ["field", "", "", "", fieldId,"", ""];
+
+        scope.isClassesMode = function (args) {
+          return args && (args[scope.location.indexOf('mode')] === scope.value[scope.location.indexOf('mode')]);
+        };
+
+        scope.isField = function(args) {
+          return args && (args[scope.location.indexOf('fieldId')] === DataManipulationService.getId(scope.field));
+        };
 
         // update terms when field changes
         scope.$watch("field", function(newValue, oldValue) {
@@ -45,8 +57,11 @@ define([
 
         // new class added
         scope.$on("field:controlledTermAdded", function (event,args) {
-          console.log('on field:controlledTermAdded',args);
-          scope.getType();
+          console.log('field:controlledTermAdded',args)
+          if (scope.isClassesMode(args) && scope.isField(args)) {
+            console.log('field:controlledTermAdded');
+            scope.getType();
+          }
         });
 
         var setResponse = function (item, ontologyName, className) {
@@ -61,11 +76,10 @@ define([
           scope.getType();
         };
 
-        // build the map of terms
+        // build the map of controlled terms
         scope.getType = function() {
 
           scope.terms = DataManipulationService.getFieldControlledTerms(scope.field);
-
           if (scope.terms) {
 
             // create a new map to avoid any duplicates coming from the modal
@@ -116,6 +130,11 @@ define([
             scope.addedFields = new Map();
             scope.addedFieldKeys = [];
           }
+          console.log('scope.addedFields',scope.addedFields,'scope.addedFieldKeys',scope.addedFieldKeys);
+        };
+
+        scope.hasResults = function () {
+          return scope.addedFieldKeys.length > 0;
         };
 
         scope.getClassDescription = function (item) {
