@@ -60,8 +60,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -78,6 +76,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -88,8 +87,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -103,6 +100,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -113,8 +111,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -128,6 +124,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -138,8 +135,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -153,6 +148,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -163,8 +159,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -178,6 +172,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -188,8 +183,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -203,6 +196,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -213,8 +207,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -228,6 +220,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -238,8 +231,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -253,6 +244,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -263,8 +255,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -278,6 +268,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -288,8 +279,6 @@ var httpData = {
             "schema:description"           : "schema:description",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -303,6 +292,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -314,8 +304,6 @@ var httpData = {
             "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -332,6 +320,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -342,8 +331,6 @@ var httpData = {
             "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -360,6 +347,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -370,8 +358,6 @@ var httpData = {
             "schema:description"           : "Home folder of Test User 2",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -388,6 +374,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -425,8 +412,6 @@ var httpData = {
               "schema:description"           : "schema:description",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -440,6 +425,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -453,8 +439,6 @@ var httpData = {
               "schema:description"           : "CEDAR Root Folder",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -471,6 +455,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -482,8 +467,6 @@ var httpData = {
               "schema:description"           : "CEDAR Users",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -500,6 +483,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -511,8 +495,6 @@ var httpData = {
               "schema:description"           : "Home folder of Test User 2",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -529,6 +511,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -566,8 +549,6 @@ var httpData = {
               "schema:description"           : "schema:description",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -581,6 +562,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -594,8 +576,6 @@ var httpData = {
               "schema:description"           : "CEDAR Root Folder",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -612,6 +592,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -623,8 +604,6 @@ var httpData = {
               "schema:description"           : "CEDAR Users",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/2d083642-f6b2-40af-ae62-2935be65f218",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -641,6 +620,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             },
@@ -652,8 +632,6 @@ var httpData = {
               "schema:description"           : "Home folder of Test User 2",
               "path"                  : null,
               "parentPath"            : null,
-              "displayPath"           : null,
-              "displayParentPath"     : null,
               "ownedBy"               : "https://metadatacenter.org/users/467ac575-c434-42ae-b991-e254adc8023e",
               "currentUserPermissions": [],
               "createdByUserName"     : null,
@@ -670,6 +648,7 @@ var httpData = {
               "@context"              : {
                 "schema": "http://schema.org/",
                 "pav"   : "http://purl.org/pav/",
+                "bibo"  : "http://purl.org/ontology/bibo/",
                 "oslc"  : "http://open-services.net/ns/core#"
               }
             }
@@ -701,8 +680,6 @@ var httpData = {
             "schema:description"           : null,
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -716,6 +693,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -727,8 +705,6 @@ var httpData = {
             "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -745,6 +721,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -755,8 +732,6 @@ var httpData = {
             "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -773,6 +748,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -783,8 +759,6 @@ var httpData = {
             "schema:description"           : "Home folder of Test User 1",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -801,6 +775,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -829,8 +804,6 @@ var httpData = {
             "schema:description"           : "Home folder of CEDAR Admin",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -847,6 +820,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -857,8 +831,6 @@ var httpData = {
             "schema:description"           : "Home folder of Debra Willrett",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/d39cf7ae-3d7a-4eb5-9669-f57e2ac02423",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -875,6 +847,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -885,8 +858,6 @@ var httpData = {
             "schema:description"           : "Home folder of Test User 1",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -903,6 +874,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -913,8 +885,6 @@ var httpData = {
             "schema:description"           : "Home folder of Test User 2",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/68dded17-153c-4660-b51f-ca48dfb8ae32",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -931,6 +901,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -942,8 +913,6 @@ var httpData = {
             "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -960,6 +929,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -970,8 +940,6 @@ var httpData = {
             "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -988,6 +956,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -1017,8 +986,6 @@ var httpData = {
             "schema:description"           : "CEDAR Root Folder",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -1035,6 +1002,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -1045,8 +1013,6 @@ var httpData = {
             "schema:description"           : "CEDAR Users",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -1063,6 +1029,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
@@ -1073,8 +1040,6 @@ var httpData = {
             "schema:description"           : "Home folder of CEDAR Admin",
             "path"                  : null,
             "parentPath"            : null,
-            "displayPath"           : null,
-            "displayParentPath"     : null,
             "ownedBy"               : "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName"     : null,
@@ -1091,6 +1056,7 @@ var httpData = {
             "@context"              : {
               "schema": "http://schema.org/",
               "pav"   : "http://purl.org/pav/",
+              "bibo"  : "http://purl.org/ontology/bibo/",
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }],
@@ -1120,8 +1086,6 @@ var httpData = {
             "schema:description": "CEDAR Root Folder",
             "path": null,
             "parentPath": null,
-            "displayPath": null,
-            "displayParentPath": null,
             "ownedBy": "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName": null,
@@ -1138,6 +1102,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
@@ -1148,8 +1113,6 @@ var httpData = {
             "schema:description": "CEDAR Users",
             "path": null,
             "parentPath": null,
-            "displayPath": null,
-            "displayParentPath": null,
             "ownedBy": "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName": null,
@@ -1166,6 +1129,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
@@ -1176,8 +1140,6 @@ var httpData = {
             "schema:description": "Home folder of CEDAR Admin",
             "path": null,
             "parentPath": null,
-            "displayPath": null,
-            "displayParentPath": null,
             "ownedBy": "https://metadatacenter.org/users/ab2a9696-291f-4705-b5e6-6c262266c506",
             "currentUserPermissions": [],
             "createdByUserName": null,
@@ -1194,6 +1156,7 @@ var httpData = {
             "@context": {
               "schema": "http://schema.org/",
               "pav": "http://purl.org/pav/",
+              "bibo": "http://purl.org/ontology/bibo/",
               "oslc": "http://open-services.net/ns/core#"
             }
           }],
