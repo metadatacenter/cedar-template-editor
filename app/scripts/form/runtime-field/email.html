@@ -11,26 +11,11 @@
         validate-on="blur"
         ng-pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"/>
 
-    <!-- show whether text entry is valid or not -->
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
-
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index)">
-
-    <!-- expanded view -->
-    <div ng-if="isListView()"
-        aria-label="{{getDescription()}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
-    </div>
-
-    <!-- paged view -->
-    <div ng-if="!isListView()"
-        aria-label="{{getDescription(field)}}"
-        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-    </div>
+    <div aria-label="{{getDescription(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 </div>

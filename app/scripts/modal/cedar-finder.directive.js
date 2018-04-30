@@ -74,6 +74,7 @@ define([
 
           vm.getResourceIconClass = getResourceIconClass;
           vm.getResourceTypeClass = getResourceTypeClass;
+          vm.canBeVersioned = canBeVersioned;
           vm.goToResource = goToResource;
           vm.goToFolder = goToFolder;
           vm.isResourceTypeActive = isResourceTypeActive;
@@ -318,6 +319,18 @@ define([
 
             }
             return result;
+          }
+
+          function canBeVersioned(resource) {
+            if (resource) {
+              switch (resource.nodeType) {
+                case CONST.resourceType.TEMPLATE:
+                  return true;
+                case CONST.resourceType.ELEMENT:
+                  return true;
+              }
+            }
+            return false;
           }
 
           function isTemplate() {

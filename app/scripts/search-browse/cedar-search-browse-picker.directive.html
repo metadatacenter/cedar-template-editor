@@ -60,6 +60,8 @@
                 go-to="dc.goToResource"
                 share="dc.showShareModal"
                 move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
+                publish="dc.publishResource" create-draft="dc.createDraftResource"
+                can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                 can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                 can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
             </cedar-dropdown-menu>
@@ -216,23 +218,74 @@
                 </ul>
 
               </li>
-              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
 
-                <div ng-if="dc.isFilterSection('author')">&nbsp;</div>
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication Status<i class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
+
+                <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Published' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="template"
+                            ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="element"
+                            ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="metadata"
+                            ng-click="dc.setResourcePublicationStatus('all')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('all') }"></i></button>
+                  </li>
+                </ul>
               </li>
-              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
 
-                <div ng-if="dc.isFilterSection('status')">&nbsp;</div>
-              </li>
-              <li class="hidden" ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <div ng-if="dc.isFilterSection('term')">&nbsp;</div>
-                <!--<ul ng-if="dc.isFilterSection('term')" ui-tree-nodes="" ng-model="dc.facets.term.nodes">
-                  <li ng-repeat="node in dc.facets.term.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
-                </ul>-->
+                <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.Latest' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="template"
+                            ng-click="dc.setResourceVersion('latest')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
+                        ng-class="{ active: dc.isResourceVersionActive('latest') }"></i></button>
+                  </li>
+                  <li>
+                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="top"
+                            data-toggle="tooltip"
+                            class="metadata"
+                            ng-click="dc.setResourceVersion('all')"><i
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
+                        ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
+                  </li>
+                </ul>
               </li>
             </ul>
           </div>
@@ -286,6 +339,8 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
                             copy="dc.showCopyModal" rename="dc.showRenameModal"
+                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
@@ -312,7 +367,12 @@
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-
+                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                        {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
+                      </div>
+                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                        {{ resource['pav:version'] }}
+                      </div>
                       <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
                           ng-class="dc.getResourceIconClass(resource)"></i>
 
@@ -333,6 +393,8 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
+                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
@@ -383,6 +445,8 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
+                          publish="dc.publishResource" create-draft="dc.createDraftResource"
+                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
                       </cedar-dropdown-menu>
@@ -416,6 +480,8 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
+                          publish="dc.publishResource" create-draft="dc.createDraftResource"
+                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
                       </cedar-dropdown-menu>
@@ -488,7 +554,7 @@
           </div>
           <div class="row">
             <div class="col-sm-4 ">Location</div>
-            <div class="col-sm-8 location">{{ dc.getSelectedNode().displayPath }}</div>
+            <div class="col-sm-8 location">{{ dc.getSelectedNode().path }}</div>
           </div>
           <div class="row">
             <div class="col-sm-4 left ">Owner</div>
@@ -521,6 +587,14 @@
           <div class="row">
             <div class="col-sm-4 left">Can change owner</div>
             <div class="col-sm-8 can-change-owner">{{ dc.canChangeOwner() }}</div>
+          </div>
+          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
+            <div class="col-sm-4 left">Version</div>
+            <div class="col-sm-8 can-change-owner">{{ dc.getResourceVersion() }}</div>
+          </div>
+          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
+            <div class="col-sm-4 left">Publication Status</div>
+            <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() | translate}}</div>
           </div>
         </div>
 

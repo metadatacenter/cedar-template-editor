@@ -36,6 +36,8 @@ define([
 
       var dms = DataManipulationService;
 
+      $scope.date = {dt:''};
+
 
       $scope.multipleDemo = {};
       $scope.multipleDemo.colors = ['Red', 'Green'];
@@ -51,6 +53,16 @@ define([
       $scope.getTitle = function (field) {
         return dms.getTitle(field || $scope.field);
       };
+
+      $scope.getPropertyLabel = function () {
+        if ($scope.labels && $scope.fieldKey) {
+          return $scope.labels[$scope.fieldKey];
+        } else {
+          return $scope.getTitle();
+        }
+      };
+
+
 
       // get the field description
       $scope.getDescription = function (field) {
@@ -308,6 +320,15 @@ define([
         // set it active or inactive
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
+        if (dms.isDateType($scope.field)) {
+          $scope.date.dt = $scope.valueArray[index]['@value'];
+
+            $timeout(function () {
+              $rootScope.$broadcast('runDateValidation');
+            }, 0);
+
+        }
+
         if (active) {
 
           $scope.index = index;
@@ -557,9 +578,20 @@ define([
 
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
+
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
         var attributeName;
+
+        if (dms.isDateType($scope.field)) {
+
+          $scope.valueArray[$scope.index]['@value'] = $scope.date.dt;
+          if ($scope.model.length > 0) {
+            $scope.model[$scope.index]['@value'] = $scope.date.dt;
+          } else {
+            $scope.model['@value'] = $scope.date.dt;
+          }
+        }
 
         if (dms.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
@@ -659,7 +691,7 @@ define([
             }
             // Single-choice list
             else {
-              $scope.model = {'@value': $scope.optionsUI.listSingleSelect.label};
+              $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect.label;
             }
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             dms.removeEmptyStrings($scope.field, $scope.model);
@@ -671,6 +703,10 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
+
+        if (dms.isDateType($scope.field)) {
+          $scope.date.dt = $scope.valueArray[$scope.index]['@value'];
+        }
 
         if ($scope.isMultiAnswer()) {
           $scope.optionsUI = {};
@@ -699,12 +735,14 @@ define([
 
               }
             } else {
-              if ($scope.model.length > 0) {
-                $scope.optionsUI.listSingleSelect = {"label": $scope.model[0][valueLocation]};
+              // For this field type only one selected option is possible
+              if ($scope.model) {
+                $scope.optionsUI.listSingleSelect = {"label": $scope.model[valueLocation]};
               }
             }
           }
         }
+
       };
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
@@ -890,6 +928,7 @@ define([
       //
       // watches
       //
+
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
@@ -1156,6 +1195,56 @@ define([
           $scope.cleanupSpreadsheet);
 
 
+      //
+      // date picker
+      //
+
+      $scope.parseDate = function (value) {
+
+        var result = null;
+        if (value && value.length > 0) {
+
+          var date = new Date(value);
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+
+          if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+            result = year + '-' + month + '-' + day;
+          }
+        }
+        return result || value;
+      };
+
+      $scope.setDate = function (year, month, day) {
+        $scope.date.dt = new Date(year, month, day);
+      };
+
+
+
+      $scope.setDateValue = function (value) {
+        if ($scope.model && $scope.model.length > 0) {
+          $scope.model[$scope.index]['@value'] = $scope.parseDate(value);
+        } else {
+          $scope.model['@value'] = $scope.parseDate(value);
+        }
+
+      };
+
+      $scope.isInvalidDate = function (value) {
+
+        var result = true;
+        if (value && value.length > 0) {
+
+          var date = new Date(value);
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+          result = (isNaN(year) || isNaN(month) || isNaN(day));
+        }
+        return result;
+      };
+
     };
 
     return {
@@ -1174,7 +1263,8 @@ define([
         fieldKey      : '=',
         parentKey     : '=',
         parentModel   : '=',
-        parentInstance: '='
+        parentInstance: '=',
+        labels: '='
 
       },
       controller : function ($scope, $element) {

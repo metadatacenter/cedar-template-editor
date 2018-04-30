@@ -129,6 +129,7 @@ var TemplateCreatorPage = function () {
     "@context"            : {
       "xsd"              : "http://www.w3.org/2001/XMLSchema#",
       "pav"              : "http://purl.org/pav/",
+      "bibo"             : "http://purl.org/ontology/bibo/",
       "oslc"             : "http://open-services.net/ns/core#",
       "schema"           : "http://schema.org/",
       "pav:createdOn"    : {
@@ -377,7 +378,9 @@ var TemplateCreatorPage = function () {
     "pav:lastUpdatedOn"   : null,
     "oslc:modifiedBy"     : null,
     "schema:schemaVersion": "1.1.0",
-    "additionalProperties": false
+    "additionalProperties": false,
+    "pav:version"         : "0.0.1",
+    "bibo:status"         : "bibo:draft"
   };
 
 
@@ -399,6 +402,7 @@ var TemplateCreatorPage = function () {
     "@context"            : {
       "xsd"              : "http://www.w3.org/2001/XMLSchema#",
       "pav"              : "http://purl.org/pav/",
+      "bibo"             : "http://purl.org/ontology/bibo/",
       "oslc"             : "http://open-services.net/ns/core#",
       "schema"           : "http://schema.org/",
       "pav:createdOn"    : {
@@ -465,7 +469,9 @@ var TemplateCreatorPage = function () {
     "schema:schemaVersion": "1.1.0",
     "additionalProperties": false,
     "schema:name"         : "Untitled",
-    "schema:description"  : "Description"
+    "schema:description"  : "Description",
+    "pav:version"         : "0.0.1",
+    "bibo:status"         : "bibo:draft"
   };
 
 

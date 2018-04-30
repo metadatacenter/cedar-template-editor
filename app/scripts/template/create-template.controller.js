@@ -539,33 +539,18 @@ define([
         };
 
         $scope.showModal = function (id) {
-          jQuery("#" + id).modal('show');
+          //jQuery("#" + id).modal('show');
+          console.log('showModal',id);
+          UIUtilService.showModal(id,'type');
         };
 
         //TODO this event resets modal state and closes modal
         $scope.$on("field:controlledTermAdded", function () {
-          jQuery("#control-options-template-field").modal('hide');
+          console.log('hideModal');
+          UIUtilService.hideModal();
+          //jQuery("#control-options-template-field").modal('hide');
         });
 
-        // update the property for a field
-        $scope.$on("property:propertyAdded", function (event, args) {
-
-          var property = args[0];
-          var id = args[1];
-
-          var props = DataManipulationService.propertiesOf($scope.form);
-
-          var fieldProp;
-          for (var prop in props) {
-            if (DataManipulationService.schemaOf(props[prop])['@id'] === id) {
-              fieldProp = prop;
-              break;
-            }
-          }
-          if (fieldProp) {
-            $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = property;
-          }
-        });
 
       }
 

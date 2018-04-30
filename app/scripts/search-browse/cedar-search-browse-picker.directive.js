@@ -88,6 +88,7 @@ define([
           vm.getSelectedNode = getSelectedNode;
           vm.getResourceIconClass = getResourceIconClass;
           vm.getResourceTypeClass = getResourceTypeClass;
+          vm.canBeVersioned = canBeVersioned;
           vm.goToResource = goToResource;
           vm.goToFolder = goToFolder;
           vm.isResourceTypeActive = isResourceTypeActive;
@@ -95,6 +96,8 @@ define([
           vm.launchInstance = launchInstance;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
+          vm.publishResource = publishResource;
+          vm.createDraftResource = createDraftResource;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -106,6 +109,8 @@ define([
           vm.canNotWrite = false;
           vm.canNotShare = false;
           vm.canNotPopulate = false;
+          vm.canNotPublish = false;
+          vm.canNotCreateDraft = false;
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
@@ -126,6 +131,12 @@ define([
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
+
+          vm.isResourcePublicationStatusActive = isResourcePublicationStatusActive;
+          vm.setResourcePublicationStatus = setResourcePublicationStatus;
+
+          vm.isResourceVersionActive = isResourceVersionActive;
+          vm.setResourceVersion = setResourceVersion;
 
           vm.isGridView = isGridView;
           vm.isListView = isListView;
@@ -150,6 +161,10 @@ define([
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
+          vm.canPublish = canPublish;
+          vm.canPublishStatic = canPublishStatic;
+          vm.canCreateDraft = canCreateDraft;
+          vm.canCreateDraftStatic = canCreateDraftStatic;
 
           vm.editingDescription = false;
           vm.isSharedMode = isSharedMode;
@@ -157,6 +172,10 @@ define([
           vm.isHomeMode = isHomeMode;
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
+
+          vm.versioningEnabled = function() {
+            return window.versioningEnabled;
+          }
 
           vm.hideModal = function (visible) {
             visible = false;
@@ -219,7 +238,8 @@ define([
           };
 
           vm.canSubmit = function () {
-            return CedarUser.hasPermission('permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+            return CedarUser.hasPermission(
+                'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
           };
 
 
@@ -234,6 +254,9 @@ define([
               resource = vm.getSelection();
             }
             var id = resource['@id'];
+            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotPublish = !vm.canPublishStatic();
+            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
@@ -242,6 +265,8 @@ define([
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
+                    vm.canNotPublish = !vm.canPublish();
+                    vm.canNotCreateDraft = !vm.canCreateDraft();
                   }
                 },
                 function (error) {
@@ -270,6 +295,30 @@ define([
             return resourceService.canWrite(vm.currentFolder);
           };
 
+          vm.getResourceVersion = function () {
+            var resource = vm.getSelection();
+            if (resource != null) {
+              return resource['pav:version'];
+            }
+          };
+
+          vm.getNextResourceVersion = function() {
+            var currentVersion = vm.getResourceVersion();
+            var parts = currentVersion.split(".");
+            if (parts.length == 3) {
+              parts[2] = parseInt(parts[2]) + 1;
+              return parts.join(".");
+            }
+            return null;
+          }
+
+          vm.getResourcePublicationStatus = function () {
+            var resource = vm.getSelection();
+            if (resource != null) {
+              return resource['bibo:status'];
+            }
+          };
+
           vm.updateDescription = function () {
             vm.editingDescription = false;
             var resource = vm.getSelection();
@@ -281,7 +330,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                     },
@@ -291,7 +340,7 @@ define([
                 );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
 
                       var title = DataManipulationService.getTitle(response.data);
@@ -304,7 +353,7 @@ define([
                 );
               } else if (nodeType == 'template') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
 
                       $scope.form = response.data;
@@ -318,7 +367,7 @@ define([
                 );
               } else if (nodeType == 'folder') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, nodeType, null, description),
+                    resourceService.renameNode(id, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
@@ -440,10 +489,11 @@ define([
             };
             vm.filterSections = {
               type  : true,
-              author: false,
-              status: false,
-              term  : false
+              publicationStatus: false,
+              version: false
             };
+            vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
+            vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "latest" : uip.resourceVersionFilter.version;
           }
 
           function init() {
@@ -522,7 +572,14 @@ define([
             var offset = vm.offset;
             resourceService.searchResources(
                 term,
-                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                {
+                  resourceTypes: resourceTypes,
+                  sort: sortField(),
+                  limit: limit,
+                  offset: offset,
+                  version: vm.resourceVersionFilterValue,
+                  publicationStatus: vm.resourcePublicationStatusFilterValue
+                },
                 function (response) {
                   vm.searchTerm = term;
                   vm.isSearching = true;
@@ -544,7 +601,14 @@ define([
             vm.offset = 0;
             var offset = vm.offset;
             resourceService.sharedWithMeResources(
-                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                {
+                  resourceTypes: resourceTypes,
+                  sort: sortField(),
+                  limit: limit,
+                  offset: offset,
+                  version: vm.resourceVersionFilterValue,
+                  publicationStatus: vm.resourcePublicationStatusFilterValue
+                },
                 function (response) {
                   vm.isSearching = true;
                   vm.resources = response.resources;
@@ -604,6 +668,52 @@ define([
             );
           }
 
+          function publishResource(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+            var newVersion = vm.getResourceVersion();
+            resourceService.publishResource(
+                resource,
+                newVersion,
+                function (response) {
+                  var title = DataManipulationService.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": title},
+                      'GENERIC.Published');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.publishResource.error', response);
+                }
+            );
+          }
+
+          function createDraftResource(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+            var folderId = vm.currentFolderId;
+            if (!folderId) {
+              folderId = CedarUser.getHomeFolderId();
+            }
+            var newVersion = vm.getNextResourceVersion();
+            var propagateSharing = true;
+            resourceService.createDraftResource(
+                resource,
+                folderId,
+                newVersion,
+                propagateSharing,
+                function (response) {
+                  var title = DataManipulationService.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
+                      'GENERIC.CreatedDraft');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.createDraftResource.error', response);
+                }
+            );
+          }
 
           function launchInstance(resource) {
 
@@ -749,7 +859,15 @@ define([
 
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  {
+                    folderId: folderId,
+                    resourceTypes: resourceTypes,
+                    sort: sortField(),
+                    limit: limit,
+                    offset: offset,
+                    version: vm.resourceVersionFilterValue,
+                    publicationStatus: vm.resourcePublicationStatusFilterValue
+                  },
                   function (response) {
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
@@ -856,6 +974,40 @@ define([
             return result;
           }
 
+          function canBeVersioned(resource) {
+            if (resource) {
+              switch (resource.nodeType) {
+                case CONST.resourceType.TEMPLATE:
+                  return true;
+                case CONST.resourceType.ELEMENT:
+                  return true;
+              }
+            }
+            return false;
+          }
+
+          function canPublish() {
+            return vm.versioningEnabled() && resourceService.canPublish(vm.getSelectedNode());
+          };
+
+          function canPublishStatic() {
+            return vm.versioningEnabled() && (hasSelection() &&
+                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource['bibo:status'] == 'bibo:draft');
+          }
+
+          function canCreateDraft() {
+            return vm.versioningEnabled() && resourceService.canCreateDraft(vm.getSelectedNode());
+          };
+
+          function canCreateDraftStatic() {
+            return vm.versioningEnabled() && (hasSelection() &&
+                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource['bibo:status'] == 'bibo:published');
+          }
+
           function isTemplate() {
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
           }
@@ -896,6 +1048,14 @@ define([
             return vm.resourceTypes[type];
           }
 
+          function isResourcePublicationStatusActive(publicationStatus) {
+            return vm.resourcePublicationStatusFilterValue  == publicationStatus;
+          }
+
+          function isResourceVersionActive(version) {
+            return vm.resourceVersionFilterValue  == version;
+          }
+
           function showOrHide(type) {
             return $translate.instant(isResourceTypeActive(type) ? 'GENERIC.Hide' : 'GENERIC.Show');
           }
@@ -909,7 +1069,7 @@ define([
           }
 
           function getUnreadMessageCount() {
-            return Math.min(MessagingService.unreadCount,9);
+            return Math.min(MessagingService.unreadCount, 9);
           }
 
           function openMessaging() {
@@ -920,7 +1080,6 @@ define([
             return vm.showFilters && onDashboard();
           }
 
-          // TBD this blows up the current user, not sure why
           function resetFilters() {
             var updates = {};
             for (var nodeType in vm.resourceTypes) {
@@ -928,6 +1087,11 @@ define([
               var key = 'resourceTypeFilters.' + nodeType;
               updates[key] = true;
             }
+            vm.resourcePublicationStatusFilterValue = "all";
+            vm.resourceVersionFilterValue = "latest";
+            updates['resourcePublicationStatusFilter.publicationStatus'] = vm.resourcePublicationStatusFilterValue;
+            updates['resourceVersionFilter.version'] = vm.resourceVersionFilterValue;
+
             UISettingsService.saveUIPreferences(updates);
             init();
           }
@@ -993,10 +1157,21 @@ define([
             return result;
           }
 
-
           function toggleResourceType(type) {
             vm.resourceTypes[type] = !vm.resourceTypes[type];
             UISettingsService.saveUIPreference('resourceTypeFilters.' + type, vm.resourceTypes[type]);
+            init();
+          }
+
+          function setResourcePublicationStatus(publicationStatus) {
+            vm.resourcePublicationStatusFilterValue = publicationStatus;
+            UISettingsService.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', publicationStatus);
+            init();
+          }
+
+          function setResourceVersion(version) {
+            vm.resourceVersionFilterValue = version;
+            UISettingsService.saveUIPreference('resourceVersionFilter.version', version);
             init();
           }
 
@@ -1182,7 +1357,7 @@ define([
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
                 [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                 CedarUser.getSort()]);
+                  CedarUser.getSort()]);
           }
 
           // open the move modal
@@ -1198,7 +1373,7 @@ define([
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
-                   CedarUser.getSort()]);
+                    CedarUser.getSort()]);
             }
           }
 

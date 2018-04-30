@@ -184,6 +184,7 @@ define([
         var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
 
         FullscreenDateEditor.prototype.open = function () {
+          console.log('open spreadsheet dateEditor');
 
           Handsontable.editors.DateEditor.prototype.open.apply(this, arguments);
 
@@ -218,7 +219,7 @@ define([
               break;
             case 'date':
               desc.type = 'date';
-              desc.dateFormat = 'MM/DD/YYYY';
+              desc.dateFormat = 'YYYY-MM-DD';
               desc.correctFormat = true;
               desc.editor = FullscreenDateEditor;
               break;
@@ -247,14 +248,9 @@ define([
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'list':
+            case 'radio':
               desc.type = 'dropdown';
               desc.source = extractOptionsForList(dms.getLiterals(node));
-              break;
-            case 'checkbox':
-              //   desc.type = 'checkboxes';
-              //   desc.renderer = service.customRendererCheckboxes;
-              //   desc.editor = 'checkboxes';//MultiCheckboxEditor;
-              //   desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
             case 'textfield':
               if (isConstrained(node)) {
