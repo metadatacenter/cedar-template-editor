@@ -2,9 +2,12 @@
   <div class="form-group floating-label-wrapper field-filter clearfix">
 
     <!-- breadcrumb -->
-    <span ng=-click="">{{ctdc.searchMode}}</span> <span ng-if="ctdc.action" ng=-click=""> > {{ctdc.action}} <span
-      ng-if="ctdc.searchScope" ng=-click=""> > {{ctdc.searchScope}}  <span ng-if="ctdc.isCreatingMappings" ng=-click=""> > Mapping</span> <span
-      ng-if="ctdc.isCreatingVs" ng=-click=""> > Value-sets </span></span></span>
+    <div>
+      <span ng-click="ctdc.action = 'search';ctdc.creatingObject = ''">{{ctdc.searchMode}}</span>
+      <span ng-click="ctdc.creatingObject = ''"> > {{ctdc.action}} </span>
+      <span ng-if="ctdc.creatingObject.length > 0"> > {{ctdc.creatingObject}}</span>
+      <span ng-if="ctdc.mappingObject"> > {{ctdc.mappingObject}}</span>
+    </div>
 
 
     <!-- Property | Fields | Values  selector-->
@@ -20,14 +23,17 @@
       </div>
     </div>
 
+
+
+
     <div style="margin:50px auto;max-width:800px" class="controlled-term-options">
       <div style="margin:20px 0">Add {{ctdc.searchMode}} selections by
         <div  class="btn btn-create-term"
-            ng-click="ctdc.switchScope('properties','search')">Searching
+            ng-click="ctdc.switchScope(ctdc.searchScope,'search')">Searching
         </div>
         for terms in BioPortal or
         <div  class="btn btn-create-term"
-            ng-click="ctdc.switchScope('properties','create')">Creating
+            ng-click="ctdc.switchScope(ctdc.searchScope,'create')">Creating
         </div>
         new terms
       </div>
@@ -53,7 +59,9 @@
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
-        action="ctdc.action">
+        action="ctdc.action"
+        creating-object="ctdc.creatingObject"
+        mapping-object="ctdc.mappingObject">
     </controlled-term-search>
 
 

@@ -29,7 +29,9 @@ define([
             isCreatingMappings   : '=',
             isCreatingVs         : '=',
             treeVisible          : '=',
-            action               : '='
+            action               : '=',
+            creatingObject:'=',
+            mappingObject:'='
           },
           controller      : controlledTermSearchDirectiveController,
           controllerAs    : 'tsc',
@@ -53,10 +55,11 @@ define([
           /* Variable declarations */
           var vm = this;
 
-          vm.action = ''; // Possible actions: search, create
+          //vm.action = vm.action || 'search'; // Possible actions: search, create
           vm.allOntologies = [];
-          vm.isCreatingValue = true;
-          vm.isCreatingValueSet = false;
+
+          // vm.isCreatingValue = true;
+          // vm.isCreatingValueSet = false;
           vm.isLoadingOntologyDetails = false;
           vm.loadingOntologies = false;
           vm.ontologiesFound = [];
@@ -231,6 +234,7 @@ define([
             vm.showEmptyQueryMsg = false;
             vm.showSearchPreloader = true;
             vm.action = 'search';
+
           }
 
           function endSearch() {
@@ -349,19 +353,20 @@ define([
           function setFieldPropertiesMode() {
             vm.searchMode = 'property';
             vm.searchScope = 'properties';
-            vm.action = '';
+            vm.action = 'search';
           }
 
           function setFieldTypesMode() {
             vm.searchMode = 'field';
             vm.searchScope = 'classes';
-            vm.action = '';
+            vm.action = 'search';
           }
 
           function setFieldValuesMode() {
             vm.searchMode = 'value';
             vm.searchScope = 'classes';
-            vm.action = '';
+            vm.action = 'search';
+            console.log('setFIeldValuesMode', vm.action);
           }
           //setTab('values');
 
@@ -561,13 +566,19 @@ define([
           // }
 
           function switchToCreateValue() {
-            vm.isCreatingValue = true;
-            vm.isCreatingValueSet = false;
+
+            vm.creatingObject = 'value';
+            // vm.isCreatingValue = true;
+            // vm.isCreatingValueSet = false;
+
+
           }
 
           function switchToCreateValueSet() {
-            vm.isCreatingValue = false;
-            vm.isCreatingValueSet = true;
+            vm.creatingObject = 'value-set';
+            // vm.isCreatingValue = false;
+            // vm.isCreatingValueSet = true;
+
           }
 
           /* This function is passed as a callback down through class tree and child tree directives */

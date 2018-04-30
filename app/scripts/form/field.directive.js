@@ -343,7 +343,7 @@ define([
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+         // $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 

@@ -3,8 +3,8 @@
 <div ng-if="tsc.isFieldPropertiesMode()" class="element-toggle-add-values">
 
   <!--- creating -->
-  <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
-    <span>Please provide the URI for the property you want to create</span>
+  <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
+    <div style="margin:20px 0">Please provide the URI for the property you want to create</div>
 
     <form name="propertyForm">
       <div class="form-group form-group-actions clearfix">
@@ -28,7 +28,7 @@
   </div>
 
   <!-- searching -->
-  <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+  <div ng-if="tsc.isSearching()" style="margin: 20px auto;max-width: 800px">
     <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
       current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
         add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
@@ -41,7 +41,7 @@
 <div ng-if="tsc.isFieldTypesMode()" class="element-toggle-add-values">
 
   <!-- creating -->
-  <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
+  <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
 
     <div class="clear form-group add-ontology-class"
         ng-controller="provisionalClassController as pcc">
@@ -61,7 +61,7 @@
   </div>
 
   <!-- searching -->
-  <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+  <div ng-if="tsc.isSearching()" style="margin: 20px auto;max-width: 800px">
     <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
         current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
         add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
@@ -77,40 +77,57 @@
   <div ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
 
     <!-- create content -->
-    <div ng-if="tsc.isCreating()" style="width:90%;margin:40px auto">
+    <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
 
       <!--create Term or Value Set -->
-      <div class="element-toggles">
-        <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValue}"
-            ng-click="tsc.switchToCreateValue()">
-          <span>Term</span>
-        </div>
-        <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValueSet}"
-            ng-click="tsc.switchToCreateValueSet()">
-          <span>Value Set</span>
-        </div>
-      </div>
+      <!--<div class="element-toggles">-->
+        <!--<div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValue}"-->
+            <!--ng-click="tsc.switchToCreateValue()">-->
+          <!--<span>Term</span>-->
+        <!--</div>-->
+        <!--<div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValueSet}"-->
+            <!--ng-click="tsc.switchToCreateValueSet()">-->
+          <!--<span>Value Set</span>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <p>Please provide the following information for the <span class="btn btn-create-term" ng-click="tsc.switchToCreateValue()"><span>Term</span></span> or
+        <span class="btn btn-create-term" ng-click="tsc.switchToCreateValueSet()"><span>Value Set</span></span>  to create.
+      <!--<span class="btn btn-create-term" ng-click="tsc.switchToCreateValue()"><span>Term</span></span> or-->
+      <!--<span class="btn btn-create-term" ng-click="tsc.switchToCreateValueSet()"><span>Value Set</span></span>-->
+      </p>
+
+      <!--<br/>-->
+      <!--<p class="instructions">-->
+        <!---->
+      <!--</p>-->
+      <!--<br/>-->
 
       <!-- Tabs content -->
       <div>
+        tsc.creatingObject {{tsc.creatingObject}}
         <!-- Create Term (Tab Content) -->
-        <div ng-if="tsc.isCreatingValue" class="clear form-group add-ontology-class"
+        <div ng-if="tsc.creatingObject == 'value'" class="clear form-group add-ontology-class"
             ng-controller="provisionalClassController as pcc">
           <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+          <p>The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template</p>
+          tsc.mappingObject{{tsc.mappingObject}}
           <div class="clear btn-create-term">
             <button type="button"
                 class="std-button btn"
                 ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)"
                 ng-disabled="!pcc.isValid()">Create Term
             </button>
-            <i class="cedar-svg-help-circle help-icon"
-                uib-tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+            <!--<i class="cedar-svg-help-circle help-icon"-->
+                <!--uib-tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>-->
           </div>
         </div>
         <!-- Create Value Set (Tab Content) -->
-        <div ng-if="tsc.isCreatingValueSet" class="clear form-group add-ontology-class"
+        <div ng-if="tsc.creatingObject == 'value-set'" class="clear form-group add-ontology-class"
             ng-controller="provisionalClassController as pcc">
           <ng-include src="'scripts/controlled-term/create-value-set.html'"></ng-include>
+          <p>The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template</p>
+          tsc.mappingObject{{tsc.mappingObject}}
           <div class="clear btn-create-term">
             <button type="button"
                 class="std-button btn"
@@ -118,8 +135,8 @@
                 ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">
               Value Set
             </button>
-            <i class="cedar-svg-help-circle help-icon"
-                uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
+            <!--<i class="cedar-svg-help-circle help-icon"-->
+                <!--uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>-->
           </div>
           <!--Create value set loader-->
           <div ng-if="pcc.showCreateVsLoader">
@@ -131,7 +148,7 @@
     </div>
 
     <!-- search content -->
-    <div ng-if="tsc.isSearching()" style="width:90%;margin:40px auto">
+    <div ng-if="tsc.isSearching()" style="margin: 20px auto;max-width: 800px">
       <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
           current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
           add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
