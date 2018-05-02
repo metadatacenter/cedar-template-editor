@@ -1,48 +1,48 @@
 <div class="template-container scrollable-content">
-  <div class="template-header element">
+  <div class="template-header field">
     <div class="container">
       <div class="row">
         <div class="left-sidebar col-sm-4 col-sm-offset-1">
-          <div id="element-name-container">
-            <i class="fa fa-sitemap" ></i>
+          <div id="field-name-container">
+            <i class="fa fa-file" ></i>
             <form>
               <div class="form-group floating-label-wrapper">
-                <input auto-focus type="text" class="form-control" id="element-name"
-                    placeholder="{{'GENERIC.ElementName' | translate}}"
-                    aria-label="{{'GENERIC.ElementName' | translate}}"
-                    ng-model="elementSchema['schema:name']" with-floating-label>
+                <input auto-focus type="text" class="form-control" id="field-name"
+                    placeholder="{{'GENERIC.FieldName' | translate}}"
+                    aria-label="{{'GENERIC.FieldName' | translate}}"
+                    ng-model="fieldSchema['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <div class="right-body col-sm-6">
-          <div id="element-description-container">
+          <div id="field-description-container">
             <form>
               <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control" id="element-description"
-                    placeholder="{{'GENERIC.ElementDescription' | translate}}"
-                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="elementSchema['schema:description']"
+                <input type="text" class="form-control" id="field-description"
+                    placeholder="{{'GENERIC.FieldDescription' | translate}}"
+                    aria-label="{{'GENERIC.FieldDescription' | translate}}" ng-model="fieldSchema['schema:description']"
                     with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-element-field')">
+            ng-click="showModal('control-options-field-field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
           <button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-caret-down  inline "></i></button>
           <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
-            <class-list field="element" view-type="viewType"></class-list>
+            <class-list field="field" view-type="viewType"></class-list>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="template-body element">
+  <div class="template-body field">
     <div class="container">
       <div class="row">
         <div class="right-body col-sm-10 col-sm-offset-1">
@@ -51,6 +51,8 @@
               <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
               <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
               <!--</div>-->
+
+
               <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
 
 
@@ -70,39 +72,40 @@
             </ul>
           </div>
 
-          <div ng-if="!isEmpty(invalidElementStates)" class="alert alert-danger" role="alert">
+          <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
             <p><i class="fa fa-exclamation-triangle"></i><span
-                translate>VALIDATION.groupHeader.invalidElementState</span>
+                translate>VALIDATION.groupHeader.invalidFieldState</span>
             </p>
             <ul>
-              <li ng-repeat="element in invalidElementStates">
-                <span ng-show="element">{{element}}</span>
-                <span ng-hide="element" translate>VALIDATION.noNameElement</span>
+              <li ng-repeat="field in invalidFieldStates">
+                <span ng-show="field">{{field}}</span>
+                <span ng-hide="field" translate>VALIDATION.noNameField</span>
               </li>
             </ul>
           </div>
 
-          <div class="element-actions"  ng-if="canWrite()" style="height:auto">
-            <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
-              <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+
+          <div class="field-actions"  ng-if="canWrite()" style="height:auto">
+            <div ng-if="fieldErrorMessages.length" class="alert alert-danger" role="alert">
+              <p ng-repeat="message in fieldErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
-            <div ng-if="elementSuccessMessages.length" class="alert alert-success" role="alert">
-              <p ng-repeat="message in elementSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
+            <div ng-if="fieldSuccessMessages.length" class="alert alert-success" role="alert">
+              <p ng-repeat="message in fieldSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
             </div>
             <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
             <!--</div>-->
             <div class="clear-save" >
-              <button type="button" id="button-clear-element" class="btn btn-clear element" ng-click="reset()"
+              <button type="button" id="button-clear-field" class="btn btn-clear field" ng-click="reset()"
                   ng-hide="isPropertiesEmpty()"
                   translate>
                 GENERIC.Clear
               </button>
-              <button type="button" id="button-cancel-element" class="btn btn-clear element" ng-click="cancelElement()"
+              <button type="button" id="button-cancel-field" class="btn btn-clear field" ng-click="cancelField()"
                   translate>GENERIC.Cancel
               </button>
-              <button type="button" ng-disabled="saveButtonDisabled" id="button-save-element"
-                  class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
+              <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
+                  class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
               </button>
             </div>
           </div>
@@ -128,18 +131,18 @@
       </div>
       <!-- /.row -->
 
-      <!-- element finder -->
-      <section>
-        <cedar-finder id="finder-modal" cedar-modal-show modal-visible="finderModalVisible" class="modal fade"
-            tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"
-            data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
-            pick-resource-callback="pickElementFromPicker" >
-        </cedar-finder>
-      </section>
+      <!-- field finder -->
+      <!--<section>-->
+        <!--<cedar-finder id="finder-modal" cedar-modal-show modal-visible="finderModalVisible" class="modal fade"-->
+            <!--tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"-->
+            <!--data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"-->
+            <!--pick-resource-callback="pickFieldFromPicker" >-->
+        <!--</cedar-finder>-->
+      <!--</section>-->
 
 
       <!-- field modal -->
-      <div class="modal fade controlled-terms-modal" id="control-options-element-field" data-backdrop="static">
+      <div class="modal fade controlled-terms-modal" id="control-options-field-field" data-backdrop="static">
         <div class="modal-dialog">
           <div class="modal-content" style="overflow:auto">
             <div class="modal-header">
@@ -148,8 +151,8 @@
                   src="/img/close_modal.png" width="22"/></span></button>
             </div>
             <div class="modal-body">
-              <div controlled-term field="element"
-                  options='{"filterSelection":"field", "modalId":"control-options-element-field"}'></div>
+              <div controlled-term field="field"
+                  options='{"filterSelection":"field", "modalId":"control-options-field-field"}'></div>
             </div>
           </div>
         </div>

@@ -764,6 +764,9 @@ define([
                 case CONST.resourceType.INSTANCE:
                   $location.path(FrontendUrlService.getInstanceEdit(id));
                   break;
+                case CONST.resourceType.FIELD:
+                  $location.path(FrontendUrlService.getFieldEdit(id));
+                  break;
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
@@ -936,11 +939,8 @@ define([
                   result += "fa-sitemap";
                   break;
                 case CONST.resourceType.FIELD:
-                  result += "fa-file-code-o";
+                  result += "fa-file";
                   break;
-                  result += "fa-sitemap";
-                  break;
-
               }
             }
             return result;

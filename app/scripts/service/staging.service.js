@@ -321,6 +321,35 @@ define([
       return field;
     };
 
+    service.addFieldToField = function (fieldType) {
+      var field = DataManipulationService.generateField(fieldType, true);
+      UIUtilService.setSelected(field);
+
+      // is it a checkbox, list, or radio field?
+      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+
+          field.items._valueConstraints.multipleChoice = true;
+          field.items._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+          console.log('checkbox',field);
+        }
+        else { // single choice field (radio or single-choice list)
+          field._valueConstraints.multipleChoice = false;
+          field._valueConstraints.literals = [
+            {
+              "label": ""
+            }
+          ];
+        }
+      }
+
+      return field;
+    };
+
     service.addElementToElement = function (element, elementId) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),

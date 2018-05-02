@@ -93,6 +93,11 @@ define([
       return service.schemaOf(node)['@id'];
     };
 
+    service.setId = function (node, id) {
+      return service.schemaOf(node)['@id'] = id;
+    };
+
+
     service.idOf = function (node) {
       return node && service.schemaOf(node)['@id'];
     };
@@ -736,8 +741,9 @@ define([
           } else {
             result.push(key);
           }
-        } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(field)) {
-            result.push(key);
+        } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(
+                field)) {
+          result.push(key);
         }
       });
       return result;
@@ -754,7 +760,7 @@ define([
       var result = '';
       var property;
       var prop;
-      var schema =  service.schemaOf(parent);
+      var schema = service.schemaOf(parent);
       var props = service.propertiesOf(parent);
       for (prop in props) {
         if (service.schemaOf(props[prop])['@id'] === id) {
@@ -776,7 +782,7 @@ define([
     service.deletePropertyId = function (parent, node) {
       var id = service.getId(node);
       var props = service.propertiesOf(parent);
-      var schema =  service.schemaOf(parent);
+      var schema = service.schemaOf(parent);
       for (var prop in props) {
         if (service.getId(props[prop]) === id) {
           var randomPropertyName = service.generateGUID();
@@ -824,21 +830,24 @@ define([
     };
 
     // Function that generates a basic field definition
-    service.generateField = function (inputType) {
+    service.generateField = function (inputType, container) {
       var valueType = ["string", "null"];
 
+
       var field;
-      if (FieldTypeService.isStaticField(inputType)) {
+
+      if (container) {
+        field = DataTemplateService.getContainerField(null);
+        field._ui.inputType = inputType;
+      } else if (FieldTypeService.isStaticField(inputType)) {
         field = DataTemplateService.getStaticField(this.generateTempGUID());
         field._ui.inputType = inputType;
+      } else if (FieldTypeService.isAttributeValueField(inputType)) {
+        field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
       } else {
-        if (FieldTypeService.isAttributeValueField(inputType)) {
-          field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
-        } else {
-          field = DataTemplateService.getField(this.generateTempGUID());
-          field.properties['@value'].type = valueType;
-          field._ui.inputType = inputType;
-        }
+        field = DataTemplateService.getField(this.generateTempGUID());
+        field.properties['@value'].type = valueType;
+        field._ui.inputType = inputType;
       }
       //field._ui.inputType = inputType;
 
@@ -1790,37 +1799,44 @@ define([
       });
     };
 
+    service.parentIsChild = function (parent, child) {
+      return (service.getId(parent) == service.getId(child));
+    };
+
     service.removeChild = function (parent, child) {
-      var id = service.getId(child);
-      var selectedKey;
-      var props = service.propertiesOf(parent);
-      angular.forEach(props, function (value, key) {
-        if (service.getId(value) == id) {
-          selectedKey = key;
+      if (!service.parentIsChild(parent, child)) {
+
+        var id = service.getId(child);
+        var selectedKey;
+        var props = service.propertiesOf(parent);
+        angular.forEach(props, function (value, key) {
+          if (service.getId(value) == id) {
+            selectedKey = key;
+          }
+        });
+
+        if (selectedKey) {
+          // Remove the key
+          delete props[selectedKey];
+
+          // Remove it from the order array
+          var idx = service.getOrder(parent).indexOf(selectedKey);
+          service.getOrder(parent).splice(idx, 1);
+
+          // Remove the property label (for elements)
+          if (service.getPropertyLabels(parent)[selectedKey]) {
+            delete service.getPropertyLabels(parent)[selectedKey];
+          }
+
+          // Remove it from the top-level 'required' array
+          service.removeKeyFromRequired(parent, selectedKey);
+
+          // Remove it from the context
+          service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
+
         }
-      });
-
-      if (selectedKey) {
-        // Remove the key
-        delete props[selectedKey];
-
-        // Remove it from the order array
-        var idx = service.getOrder(parent).indexOf(selectedKey);
-        service.getOrder(parent).splice(idx, 1);
-
-        // Remove the property label (for elements)
-        if (service.getPropertyLabels(parent)[selectedKey]) {
-          delete service.getPropertyLabels(parent)[selectedKey];
-        }
-
-        // Remove it from the top-level 'required' array
-        service.removeKeyFromRequired(parent, selectedKey);
-
-        // Remove it from the context
-        service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
-
+        return selectedKey;
       }
-      return selectedKey;
     };
 
     // Used in cedar-template-element.directive.js, form.directive

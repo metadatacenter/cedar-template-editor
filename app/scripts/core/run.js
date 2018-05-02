@@ -82,7 +82,7 @@ define([
     $rootScope.setHeader = function () {
 
       var e = jQuery("#top-navigation");
-      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element');
+      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
       //jQuery("body").css('overflow:scroll');
 
       if ($location.path().startsWith("/dashboard")) {
@@ -93,6 +93,9 @@ define([
 
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
+
+      } else if ($location.path().startsWith("/fields")) {
+        e.addClass('field');
 
       } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');

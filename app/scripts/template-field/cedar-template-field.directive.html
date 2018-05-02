@@ -1,0 +1,141 @@
+<div ng-if="model !== undefined" class="item-root element-root" style="padding:0 5px;" id="{{getDomId(element)}}"
+    ng-click="canSelect(isSelectable()); $event.preventDefault();"
+    ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(),  'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
+
+  cedar-template-field.directive
+
+  <div style="margin:0 16px">
+    <!-- header  -->
+    <div ng-if="!isRoot() && !nested" class="element-header input-type-container" style="position:relative;"
+        ng-class="{'sortable-handler': isSortable()}"
+        ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <!-- title and description  -->
+    <div ng-if="!isRoot() && !nested" class="definition-inputs"
+        ng-include="'scripts/form/partials/element-definition.partial.html'"></div>
+
+    <!-- content -->
+    <div ng-if="isExpanded()">
+
+      <!-- have an array with at least one element -->
+      <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
+          ng-class="['element-{{$index}}']">
+
+        <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+            class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+            <div ng-if="$root.propertiesOf(element)[key]">
+
+              <cedar-nested-template-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="m[key]"
+                  parent-element="element"
+                  delete="delete"
+                  rename-child-key="renameChildKey"
+                  is-edit-data="isEditData"
+                  is-root-element="false"
+                  nested="true">
+              </cedar-nested-template-element>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- have an array with no elements -->
+      <div ng-if="$root.isArray(model) && model.length == 0" class="element"
+          ng-class="['element-0']">
+
+        <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+
+            <cedar-nested-template-element key="key"
+                field="$root.propertiesOf(element)[key]"
+                model="m[key]"
+                parent-element="element"
+                preview="preview"
+                delete="delete"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                is-root-element="false"
+                nested="true">
+            </cedar-nested-template-element>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- not an array -->
+      <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
+          ng-model="element._ui.order">
+
+        <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+          <div ng-if="$root.propertiesOf(element)[key]">
+
+            <cedar-nested-template-element key="key"
+                field="$root.propertiesOf(element)[key]"
+                model="model[key]"
+                parent-element="element"
+                delete="removeChild"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                is-root-element="false"
+                nested="true">
+            </cedar-nested-template-element>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- options -->
+    <div ng-if="isEditState()">
+      <div class="detail-options">
+        <div class="element-toggles list table-style">
+          <div class="element-toggle cardinality-tab table-cell-style" ng-class="{active: showCardinality}"
+              ng-click="showCardinality = !showCardinality">
+            <span>Multiple</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cardinality tab  -->
+      <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="showCardinality">
+
+        <div class="type-toggle date">
+          <div class="d-option clear-value" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+            <span translate>GENERIC.No</span>
+          </div>
+          <div class="d-option set-value" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+            <span translate>GENERIC.Yes</span>
+          </div>
+        </div>
+
+        <div class="cardinality-selectors" ng-if="element.minItems > -1">
+          <cardinality-selector class="min" type="'min'" min-items="element.minItems"
+              max-items="element.maxItems"></cardinality-selector>
+          <cardinality-selector class="max" type="'max'" min-items="element.minItems"
+              max-items="element.maxItems"></cardinality-selector>
+        </div>
+
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <!-- property modal -->
+    <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content" style="overflow:auto">
+          <div class="modal-header">
+            <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true"><img
+                src="/img/close_modal.png" width="22"/></span></button>
+          </div>
+          <div class="modal-body">
+            <div controlled-term field="element"
+                options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": null,
+  "@type": "https://schema.metadatacenter.org/core/TemplateField",
+  "@context": {
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pav": "http://purl.org/pav/",
+    "bibo": "http://purl.org/ontology/bibo/",
+    "oslc": "http://open-services.net/ns/core#",
+    "schema": "http://schema.org/",
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
+    "pav:createdOn": {
+      "@type": "xsd:dateTime"
+    },
+    "pav:createdBy": {
+      "@type": "@id"
+    },
+    "pav:lastUpdatedOn": {
+      "@type": "xsd:dateTime"
+    },
+    "oslc:modifiedBy": {
+      "@type": "@id"
+    }
+  },
+  "type": "object",
+  "title": "",
+  "description": "",
+  "_ui": {
+    "inputType": "textfield"
+  },
+  "_valueConstraints": {
+    "requiredValue": false
+  },
+  "properties": {
+    "@type": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "@value": {
+      "type" : ["string", "null"]
+    },
+    "rdfs:label": {
+      "type" : ["string", "null"]
+    }
+  },
+  "required": [
+    "@value"
+  ],
+  "schema:name": "",
+  "schema:description": "",
+  "pav:createdOn": null,
+  "pav:createdBy": null,
+  "pav:lastUpdatedOn": null,
+  "pav:version"         : "0.0.1",
+  "bibo:status"         : "bibo:draft",
+  "oslc:modifiedBy": null,
+  "schema:schemaVersion": null,
+  "additionalProperties": false
+
+}

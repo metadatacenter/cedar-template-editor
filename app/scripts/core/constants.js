@@ -10,6 +10,7 @@ define([
       "pageId": {
         "TEMPLATE": "TEMPLATE",
         "ELEMENT": "ELEMENT",
+        "FIELD": "FIELD",
         "RUNTIME": "RUNTIME",
         "DASHBOARD": "DASHBOARD",
         "PROFILE": "PROFILE",

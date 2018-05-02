@@ -131,9 +131,15 @@ define([
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
-          dms.removeChild($scope.form, node);
-          var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
-          $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
+          if (dms.parentIsChild($scope.form,node)) {
+            $scope.form = {};
+          } else {
+            dms.removeChild($scope.form, node);
+            var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
+            $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
+          }
+
+
         };
 
         // // rename the key of a child in the form
@@ -382,6 +388,11 @@ define([
           $scope.forms.templateForm.$dirty = false;
 
         });
+
+        // $scope.$on("form:clear", function () {
+        //   $scope.forms.templateForm.$dirty = false;
+        //
+        // });
 
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;

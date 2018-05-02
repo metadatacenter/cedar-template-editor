@@ -6,8 +6,9 @@ define([
   'json!resources/field-static-empty.json',
   'json!resources/element-empty.json',
   'json!resources/template-empty.json',
-  'json!resources/field-attribute-value-empty.json'
-], function (angular, emptyField, emptyStaticField, emptyElement, emptyTemplate, emptyAttributeValue) {
+  'json!resources/field-attribute-value-empty.json',
+  'json!resources/field-container-empty.json'
+], function (angular, emptyField, emptyStaticField, emptyElement, emptyTemplate, emptyAttributeValue, emptyContainerField) {
   angular.module('cedar.templateEditor.service.dataTemplateService', [])
       .service('DataTemplateService', DataTemplateService);
 
@@ -26,6 +27,7 @@ define([
       dataTemplate.element = emptyElement;
       dataTemplate.template = emptyTemplate;
       dataTemplate.attributeValueField = emptyAttributeValue;
+      dataTemplate.containerField = emptyContainerField;
     };
 
     service.getField = function (tempId) {
@@ -37,6 +39,13 @@ define([
 
     service.getStaticField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.staticField);
+      clonedField['@id'] = tempId;
+      setSchemaVersion(clonedField);
+      return clonedField;
+    };
+
+    service.getContainerField = function (tempId) {
+      var clonedField = angular.copy(dataTemplate.containerField);
       clonedField['@id'] = tempId;
       setSchemaVersion(clonedField);
       return clonedField;
@@ -67,7 +76,7 @@ define([
      */
     var setSchemaVersion = function (schema) {
       // TODO: read it from config file
-      var SCHEMA_VERSION = '1.3.0';
+      var SCHEMA_VERSION = '1.4.0';
       schema['schema:schemaVersion'] = SCHEMA_VERSION;
     };
 

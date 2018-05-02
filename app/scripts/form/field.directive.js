@@ -76,7 +76,7 @@ define([
       };
 
       $scope.allowsHidden = function () {
-        return dms.allowsHidden($scope.field);
+        return dms.allowsHidden($scope.field) && !dms.parentIsChild($scope.parentElement,$scope.field);
       };
 
       // is this multiple cardinality?
@@ -191,11 +191,16 @@ define([
 
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
-        if ($scope.parentElement) {
+        if ($scope.parentElement ) {
           $scope.setDirty();
-          dms.removeChild($scope.parentElement, $scope.field);
-          $scope.$emit("invalidElementState",
-              ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+
+          if (dms.parentIsChild($scope.parentElement,$scope.field)) {
+            $rootScope.$broadcast("form:clear");
+
+          } else {
+            dms.removeChild($scope.parentElement, $scope.field);
+            $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+          }
         }
       };
 
@@ -227,7 +232,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsRequired;
+        return result.length > 0 && result[0].allowsRequired && !dms.parentIsChild($scope.parentElement,$scope.field);
       };
 
       // does this field allow multiple cardinality?
@@ -235,7 +240,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsMultiple;
+        return result.length > 0 && result[0].allowsMultiple  && !dms.parentIsChild($scope.parentElement,$scope.field);
       };
 
       // does the field support value recommendation?

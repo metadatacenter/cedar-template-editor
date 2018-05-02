@@ -20,7 +20,7 @@
           <ul class="col-xs-6 list-unstyled pull-left">
             <li role="menuitem" class="item"
                 ng-repeat="fieldType in otherFieldTypes"
-                ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || (isElement && fieldType.allowedInElement))">
+                ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
               <a  id='button-add-field-{{fieldType.cedarType}}'
                   ng-click="addField(fieldType.cedarType);setDirty()"
                   uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
@@ -31,7 +31,7 @@
           <ul class="row list-unstyled pull-right">
             <li role="menuitem" class="item"
                 ng-repeat="fieldType in otherFieldTypes"
-                ng-if="$index > otherFieldTypes.length/2  && (isTemplate || (isElement && fieldType.allowedInElement))">
+                ng-if="$index > otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
 
               <a  id='button-add-field-{{fieldType.cedarType}}'
                   ng-click="addField(fieldType.cedarType);toggleMore();;setDirty()"

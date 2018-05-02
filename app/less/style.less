@@ -11,39 +11,42 @@
  557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
  */
 
-@header-element: #557260;
-@button-element: #71977F;
-@hover-element: #557260;
-@accent-element: #6A8B92;
+//@header-template: #204039;
+@header-template: #021c1e;
+@button-template: #1995ad;
+@hover-template: #126d7f;
+@accent-template: #07575b;
 
-@header-template: #2e5365;
-/*@button-template:#5795ba;*/
-@button-template: #5097A5;
-@hover-template: #2f7dab;
-@accent-template: #00796B;
+//@header-element: #26373e;
+@header-element: #021c1e;
+@button-element: #6fb98f;
+@hover-element: #4f8466;
+@accent-element: #6fb98f;
 
-@header-metadata: #34626B;
-/*@header-metadata:#557260;
-@header-metadata:#9a9a75;*/
-@button-metadata: #6A8B92;
-@hover-metadata: #34626B;
-@accent-metadata: #3291B1;
+//@header-field: #293414;
+@header-field: #021c1e;
+@button-field: #86ac41;
+@hover-field: #627e30;
+@accent-field: #86ac41;
 
-@header-folder: #005d67;
-@button-folder: #9E9E9E;
-@hover-folder: #616161;
-@accent-folder: #9E9E9E;
+
+@header-metadata: #021c1e;
+@button-metadata: #7da3a1;
+@hover-metadata: #62807e;
+@accent-metadata: #7da3a1;
+
+@header-folder: #4a5969;
+@button-folder: #768594;
+@hover-folder: #4a5969;
+@accent-folder: #768594;
 
 @header-dashboard: #ffffff;
 @button-dashboard: #005d67;
 @hover-dashboard: #00796B;
 @accent-dashboard: #00796B;
 
-@header-navbar: #eaeaea;
-@header-bg-color: #2e5365;
-
-@primary-accent: #FF5722;
-@dark-accent: #E64A19;
+@primary-accent: #cb6318;
+@dark-accent: #7d4427;
 
 @primary-text: #212121;
 @secondary-text: #727272;
@@ -155,13 +158,25 @@ button {
 
 .navbar {
   color: @header-text-color;
-  background-color: @header-bg-color;
   margin-bottom: 0;
   height: 50px;
   border: none;
 
+  &.template {
+    background-color: @header-template;
+  }
+
+  &.element {
+     background-color: @header-element;
+   }
+
+  &.field {
+    background-color: @header-field;
+  }
+
   &.metadata {
     height: 50px;
+    background-color: @header-metadata;
   }
 
   #page-title {
@@ -359,12 +374,15 @@ button {
   #element-name-container,
   #element-controlled-term-container {
 
+
     .cedar-svg-element,
     .cedar-svg-metadata,
     .cedar-svg-controll-term {
       position: absolute;
       color: @brand-primary;
     }
+
+
 
     .form-control {
       padding-left: 30px;
@@ -405,12 +423,17 @@ button {
     margin-right: 10px;
   }
 
+  &.field {
+    background-color: @header-field;
+    margin-right: 10px;
+  }
+
   &.dashboard {
     background-color: @header-dashboard;
   }
 
   &.metadata {
-    background-color: @header-template;
+    background-color: @header-metadata;
   }
 
   .form-page {
@@ -428,7 +451,7 @@ button {
       margin: 0;
       color: @button-warning;
     }
-    i.errpr {
+    i.error {
       font-size: 0.8em;
       margin: 0;
       color: @button-error;
@@ -451,7 +474,7 @@ button {
 
 .controls-bar {
   padding: 10px 5px 0 5px;
-  background: @header-bg-color;
+  background: @header-template;
   color: @white;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
@@ -485,7 +508,7 @@ button {
 
   i {
     font-size: 16px;
-    visibility: none;
+    visibility: visible;
 
     .invisible {
       visibility: hidden;
@@ -905,6 +928,12 @@ button {
           }
         }
 
+        &.field {
+          i {
+            color: @button-field;
+          }
+        }
+
         &.metadata, &.instance {
           i {
             color: @button-metadata;
@@ -984,6 +1013,10 @@ button {
 
           &.element {
             background: @button-element;
+          }
+
+          &.field {
+            background: @button-field;
           }
 
           &.metadata, &.instance {
@@ -1100,6 +1133,10 @@ button {
             background: @button-element;
           }
 
+          &.field {
+            background: @button-field;
+          }
+
           &.metadata, &.instance {
             background: @button-metadata;
           }
@@ -1138,6 +1175,10 @@ button {
 
           &.element {
             color: @button-element;
+          }
+
+          &.field {
+            color: @button-field;
           }
 
           &.metadata, &.instance {
@@ -1331,6 +1372,11 @@ button {
           padding: 6px;
         }
 
+        &.field {
+          background: @button-field;
+          padding: 6px;
+        }
+
         &.metadata, &.instance {
           background: @button-metadata;
         }
@@ -1408,6 +1454,10 @@ button {
 
       &.element {
         background: @button-element;
+      }
+
+      &.field {
+        background: @button-field;
       }
 
       &.metadata, &.instance {
@@ -1667,6 +1717,37 @@ body.search-browse-modal {
   }
 }
 
+#field-name-container {
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @button-field;
+  }
+}
+
+#template-name-container {
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @button-template;
+  }
+}
+
+#element-name-container {
+
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @button-element;
+  }
+}
+
 .template-header {
   width: 100%;
   background-color: @header-bg-color;
@@ -1711,9 +1792,10 @@ body.search-browse-modal {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid @brand-primary;
+    border-bottom: 1px solid #ccc;
     border-radius: 0;
-    color: @white;
+    color: #ccc;
+
 
     &:before {
       font-family: "project-cedar" !important;
@@ -1725,7 +1807,7 @@ body.search-browse-modal {
   .floating-label {
     font-size: 16px;
     top: 10px;
-    color: @white;
+    color: #ccc;
   }
 
   .show-type {
@@ -1757,8 +1839,12 @@ body.search-browse-modal {
     right: 0;
   }
 
+
   #element-name-container,
+  #field-name-container,
+  #template-name-container,
   #element-controlled-term-container {
+
 
     .cedar-svg-element,
     .cedar-svg-metadata,
@@ -1793,6 +1879,10 @@ body.search-browse-modal {
 
 .template-header.element {
   background-color: @header-element;
+}
+
+.template-header.field {
+  background-color: @header-field;
 }
 
 .template-body {
@@ -2798,7 +2888,7 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    margin-left: 0 0 0 10px;
+    margin-left: 10px;
     padding: 0;
     position: relative;
   }
@@ -3615,6 +3705,12 @@ section.dashboard-elements {
     background-color: @button-element;
     &:hover {
       background-color: @hover-element;
+    }
+  }
+  .btn.btn-save.field {
+    background-color: @button-field;
+    &:hover {
+      background-color: @hover-field;
     }
   }
   .btn.btn-save.metadata {
@@ -4764,7 +4860,7 @@ p.instructions {
 
     &.true {
       i {
-        color: @brand-primary;
+        color: @button-element;
       }
     }
   }
@@ -4788,13 +4884,13 @@ p.instructions {
       }
 
       &.btn-clear {
-        color: @brand-primary;
+        color: @button-element;
         background-color: transparent;
         .activ-grotesk-bold;
 
         &:hover,
         &:focus {
-          color: @brand-primary-hover;
+          color: @hover-element;
         }
       }
 
@@ -4806,6 +4902,83 @@ p.instructions {
         &:hover,
         &:focus {
           background-color: @hover-element;
+        }
+      }
+    }
+  }
+}
+
+/*
+================================================
+=== Field Builder Actions
+================================================
+*/
+
+.field-actions {
+  padding-top: 40px;
+  border-top: 0px solid #ddd;
+  height: 300px;
+
+  .favorite {
+    float: left;
+    padding-top: 17px;
+    cursor: pointer;
+
+    span {
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    i {
+      padding-right: 10px;
+      .link-transition;
+      color: rgba(51, 51, 51, 0.43);
+    }
+
+    &.true {
+      i {
+        color: @button-field;
+      }
+    }
+  }
+
+  .search {
+    margin: 10px;
+  }
+
+  .clear-save {
+    float: right;
+
+    .btn {
+      text-transform: uppercase;
+      padding: 25px 40px;
+      border: none;
+      .link-transition;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &.btn-clear {
+        color: @button-field;
+        background-color: transparent;
+        .activ-grotesk-bold;
+
+        &:hover,
+        &:focus {
+          color: @hover-field;
+        }
+      }
+
+      &.btn-save {
+        color: @white;
+        background-color: @button-field;
+        font-size: 16px;
+
+        &:hover,
+        &:focus {
+          background-color: @hover-field;
         }
       }
     }
@@ -4863,24 +5036,24 @@ p.instructions {
       }
 
       &.btn-clear {
-        color: @brand-primary;
+        color: @button-template;
         background-color: transparent;
         .activ-grotesk-bold;
 
         &:hover,
         &:focus {
-          color: @brand-primary-hover;
+          color: @hover-template;
         }
       }
 
       &.btn-save {
         color: @white;
-        background-color: @brand-primary;
+        background-color: @button-template;
         font-size: 16px;
 
         &:hover,
         &:focus {
-          background-color: @brand-primary-hover;
+          background-color: @hover-template;
         }
       }
     }
@@ -6825,6 +6998,10 @@ table.apiKey {
               background: @button-element;
             }
 
+            &.field {
+              background: @button-field;
+            }
+
             &.metadata, &.instance {
               background: @button-metadata;
             }
@@ -6935,6 +7112,10 @@ table.apiKey {
                 color: @button-element;
               }
 
+              &.field {
+                color: @button-field;
+              }
+
               &.metadata, &.instance {
                 color: @button-metadata;
               }
@@ -7038,6 +7219,10 @@ table.apiKey {
                   background: @button-element;
                 }
 
+                &.field {
+                  background: @button-field;
+                }
+
                 &.metadata, &.instance {
                   background: @button-metadata;
                 }
@@ -7076,6 +7261,10 @@ table.apiKey {
 
                 &.element {
                   color: @button-element;
+                }
+
+                &.field {
+                  color: @button-field;
                 }
 
                 &.metadata, &.instance {
@@ -7360,6 +7549,10 @@ table.apiKey {
 
           &.element {
             background: @button-element;
+          }
+
+          &.field {
+            background: @button-field;
           }
 
           &.metadata, &.instance {

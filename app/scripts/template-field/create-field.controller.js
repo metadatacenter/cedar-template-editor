@@ -3,19 +3,19 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.templateElement.createElementController', [])
-      .controller('CreateElementController', CreateElementController);
+  angular.module('cedar.templateEditor.templateField.createFieldController', [])
+      .controller('CreateFieldController', CreateFieldController);
 
-  CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
+  CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                     "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
+                                     "FieldTypeService", "TemplateFieldService", "resourceService", "UIMessageService",
                                      "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
-  function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
+  function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService,
+                                   TemplateFieldService, resourceService, UIMessageService, DataManipulationService,
                                    DataUtilService,UIUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
@@ -26,7 +26,7 @@ define([
     $rootScope.finderModalId = "finder-modal";
 
     // Set page title variable when this controller is active
-    $rootScope.pageTitle = 'Element Designer';
+    $rootScope.pageTitle = 'Field Designer';
     // Setting default false flag for $scope.favorite
     //$scope.favorite = false;
     // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
@@ -35,12 +35,15 @@ define([
     //$scope.form = {};
     $scope.viewType = 'popup';
 
-    $scope.isElement = true;
+    $scope.isField = true;
+    $scope.field;
+    $scope.form = {};
 
     // template details
     $scope.details;
     $scope.cannotWrite;
     $scope.lockReason = '';
+
 
 
     // can we write to this template?  if no details, then new element
@@ -105,92 +108,79 @@ define([
       return result;
     };
 
+    // TODO this call does not work yet
     var getDetails = function (id) {
-      console.log('getDetails',id);
       resourceService.getResourceDetailFromId(
-          id, CONST.resourceType.ELEMENT,
+          id, CONST.resourceType.FIELD,
           function (response) {
             $scope.details = response;
             $scope.canWrite();
           },
           function (error) {
-            UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
+            UIMessageService.showBackendError('SERVER.' + 'FIELD' + '.load.error', error);
           }
       );
     };
 
-    var getElement = function () {
+    var getField = function () {
       $scope.form = {};
-      // Load existing element if $routeParams.id parameter is supplied
+      // Load existing field if $routeParams.id parameter is supplied
       if ($routeParams.id) {
         // Fetch existing element and assign to $scope.element property
         AuthorizedBackendService.doCall(
-            TemplateElementService.getTemplateElement($routeParams.id),
+            TemplateFieldService.getTemplateField($routeParams.id),
             function (response) {
-              $scope.element = response.data;
+              $scope.field = response.data;
 
-              var copiedForm = jQuery.extend(true, {}, $scope.element);
+              var copiedForm = jQuery.extend(true, {}, $scope.field);
               checkValidation(copiedForm);
 
-              HeaderService.dataContainer.currentObjectScope = $scope.element;
+              HeaderService.dataContainer.currentObjectScope = $scope.field;
 
-              var key = $scope.element["@id"];
+              $scope.form = $scope.field;
+              var key = dms.getId($scope.field);
               $rootScope.keyOfRootElement = key;
               $rootScope.rootElement = $scope.form;
-              $scope.form.properties = $scope.form.properties || {};
-              $scope.form.properties[key] = $scope.element;
-              $scope.form._ui = $scope.form._ui || {};
-              $scope.form._ui.order = $scope.form._ui.order || [];
-              $scope.form._ui.order.push(key);
-
-              $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
-
-              $rootScope.jsonToSave = $scope.element;
+              $rootScope.jsonToSave = $scope.field;
               $rootScope.documentTitle = dms.getTitle($scope.form);
 
-              dms.createDomIds($scope.element);
-
-              $scope.elementSchema = dms.schemaOf($scope.element);
-
+              dms.createDomIds($scope.field);
+              $scope.fieldSchema = dms.schemaOf($scope.field);
               $scope.setClean();
 
-              getDetails(key);
-
+              // TODO details don't work yet
+              //getDetails($scope.field['@id']);
             },
             function (err) {
-              UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+              UIMessageService.showBackendError('SERVER.FIELD.load.error', err);
               $rootScope.goToHome();
             }
         );
       } else {
         // If we're not loading an existing element then let's create a new empty $scope.element property
-        $scope.element = DataTemplateService.getElement();
+        $scope.field = DataTemplateService.getContainerField();
 
-        $rootScope.setValidation(true);
 
-        HeaderService.dataContainer.currentObjectScope = $scope.element;
+         $rootScope.setValidation(true);
 
-        var key = $scope.element["@id"] || dms.generateGUID();
+        HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+        $scope.form = $scope.field;
+        var key = dms.generateGUID();
         $rootScope.keyOfRootElement = key;
         $rootScope.rootElement = $scope.form;
-        $scope.form.properties = $scope.form.properties || {};
-        $scope.form.properties[key] = $scope.element;
-        $scope.form._ui = $scope.form._ui || {};
-        $scope.form._ui.order = $scope.form._ui.order || [];
-        $scope.form._ui.order.push(key);
-
-        $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
-
-        $rootScope.jsonToSave = $scope.element;
-        dms.createDomIds($scope.element);
-
-        $scope.elementSchema = dms.schemaOf($scope.element);
-
+        $rootScope.jsonToSave = $scope.field;
+        dms.createDomIds($scope.field);
+        $scope.fieldSchema = dms.schemaOf($scope.field);
         $scope.setClean();
 
       }
     };
-    getElement();
+    if ($routeParams.id) {
+      getField();
+    }
+
+
 
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
@@ -206,19 +196,41 @@ define([
     // *** proxied functions
     // Return true if element.properties object only contains default values
     $scope.isPropertiesEmpty = function () {
-      return DataUtilService.isPropertiesEmpty($scope.element);
+      //return DataUtilService.isPropertiesEmpty($scope.field);
+      return false;
     };
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
       console.log('addField',fieldType);
+
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addFieldToElement($scope.element, fieldType);
+        // $scope.getField(fieldType);
+        $scope.field = StagingService.addFieldToField(fieldType);
+        dms.setId($scope.field, $routeParams.id);
+        $scope.form = $scope.field;
+
+
+
+        $rootScope.setValidation(true);
+
+        HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+        $scope.form = $scope.field;
+        var key = dms.generateGUID();
+        $rootScope.keyOfRootElement = key;
+
+        $rootScope.rootElement = $scope.form;
+        $rootScope.jsonToSave = $scope.field;
+        dms.createDomIds($scope.field);
+        $scope.fieldSchema = dms.schemaOf($scope.field);
+
         $scope.toggleMore();
         $timeout(function () {
           $rootScope.$broadcast("form:dirty");
         });
+
       }
       $scope.showMenuPopover = false;
     };
@@ -229,14 +241,6 @@ define([
       $scope.moreIsOpen = !$scope.moreIsOpen;
     };
 
-    $scope.addElementToElement = function (element) {
-      populateCreatingFieldOrElement();
-      if (dontHaveCreatingFieldOrElement()) {
-        dms.createDomIds(element);
-        StagingService.addElementToElement($scope.element, element["@id"]);
-        $rootScope.$broadcast("form:update");
-      }
-    };
 
     $scope.backToFolder = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
@@ -258,20 +262,20 @@ define([
     };
 
     $scope.doReset = function () {
-      $scope.element = angular.copy($scope.resetElement);
-      $scope.elementSchema = dms.schemaOf($scope.element);
+      $scope.field = angular.copy($scope.field);
+      $scope.fieldSchema = dms.schemaOf($scope.field);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $rootScope.$broadcast('form:reset');
 
     };
 
-    $scope.saveElement = function () {
+    $scope.saveField = function () {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
             StagingService.isEmpty(),
             function () {
-              $scope.doSaveElement();
+              $scope.doSaveField();
             },
             'GENERIC.AreYouSure',
             'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
@@ -280,82 +284,88 @@ define([
       }
     };
 
-    // Stores the element into the database
-    $scope.doSaveElement = function () {
+    $rootScope.$on("form:clear", function () {
+      console.log('root form:clear');
+      $scope.form  = {};
+      $scope.field = null;
 
-      // First check to make sure Element Name, Element Description are not blank
-      $scope.elementErrorMessages = [];
-      $scope.elementSuccessMessages = [];
+    });
+
+    // Stores the field into the database
+    $scope.doSaveField = function () {
+
+      console.log('doSaveField',$routeParams.id, dms.getId($scope.field), $scope.field);
+
+      // First check to make sure Field Name, Field Description are not blank
+      $scope.fieldErrorMessages = [];
+      $scope.fieldSuccessMessages = [];
 
 
-      // // If Element Name is blank, produce error message
-      // var title = dms.getTitle($scope.element);
-      // if (!title.length) {
-      //   $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
-      // }
-
-      // If there are no Element level error messages
-      if ($scope.elementErrorMessages.length == 0) {
+      // If there are no Field level error messages
+      if ($scope.fieldErrorMessages.length == 0) {
 
         // If maxItems is N, then remove maxItems
-        dms.removeUnnecessaryMaxItems($scope.element.properties);
-        dms.defaultSchemaTitleAndDescription($scope.element);
+        dms.removeUnnecessaryMaxItems(dms.propertiesOf($scope.field));
+        dms.defaultSchemaTitleAndDescription($scope.field);
 
         this.disableSaveButton();
         var owner = this;
 
-        // Check if the element is already stored into the DB
+        // Check if the field is already stored into the DB
         if ($routeParams.id == undefined) {
-          dms.stripTmps($scope.element);
-          dms.updateKeys($scope.element);
+          dms.stripTmps($scope.field);
+          //dms.updateKeys($scope.field);
 
           AuthorizedBackendService.doCall(
-              TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
+              TemplateFieldService.saveTemplateField(QueryParamUtilsService.getFolderId(), $scope.field),
               function (response) {
 
                 UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                 // confirm message
                 var title = dms.getTitle(response.data);
-                UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
+                UIMessageService.flashSuccess('SERVER.FIELD.create.success',
                     {"title": title},
                     'GENERIC.Created');
-                // Reload page with element id
+                // Reload page with field id
                 var newId = response.data['@id'];
+                console.log('response',response.data);
                 dms.createDomIds(response.data);
-                $location.path(FrontendUrlService.getElementEdit(newId));
+                $location.path(FrontendUrlService.getFieldEdit(newId));
 
                 $scope.setClean();
               },
               function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+                UIMessageService.showBackendError('SERVER.FIELD.create.error', err);
                 owner.enableSaveButton();
               }
           );
         }
-        // Update element
-        else {
-          var id = $scope.element['@id'];
-          dms.updateKeys($scope.element);
-          $rootScope.jsonToSave = $scope.element;
 
-          var copiedForm = jQuery.extend(true, {}, $scope.element);
+        // Update field
+        else {
+          var id = dms.getId($scope.field);
+          console.log('update field',id);
+
+          $rootScope.jsonToSave = $scope.field;
+
+          var copiedForm = jQuery.extend(true, {}, $scope.field);
           if (copiedForm) {
             // strip the temps from the copied form only, and save the copy
             DataManipulationService.stripTmps(copiedForm);
 
-
+            console.log('update field',id, copiedForm);
 
             AuthorizedBackendService.doCall(
-                TemplateElementService.updateTemplateElement(id, copiedForm),
+                TemplateFieldService.updateTemplateField(id, copiedForm),
                 function (response) {
 
                   UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
 
                   // dms.createDomIds(response.data);
-                  // angular.extend($scope.element, response.data);
+                  // angular.extend($scope.field, response.data);
 
-                  UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                  UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": response.data.title},
                       'GENERIC.Updated');
 
                   owner.enableSaveButton();
@@ -364,7 +374,7 @@ define([
 
                 },
                 function (err) {
-                  UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                  UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
                   owner.enableSaveButton();
                 }
             );
@@ -374,9 +384,9 @@ define([
     };
 
     $scope.invalidFieldStates = {};
-    $scope.invalidElementStates = {};
+    $scope.invalidFieldStates = {};
     $scope.$on('invalidFieldState', function (event, args) {
-      if (args[2] != $scope.element["@id"]) {
+      if (args[2] != dms.getId($scope.field)) {
         if (args[0] == 'add') {
           $scope.invalidFieldStates[args[2]] = args[1];
         }
@@ -385,46 +395,24 @@ define([
         }
       }
     });
-    $scope.$on('invalidElementState', function (event, args) {
+    $scope.$on('invalidFieldState', function (event, args) {
       if (args[0] == 'add') {
-        $scope.invalidElementStates[args[2]] = args[1];
+        $scope.invalidFieldStates[args[2]] = args[1];
       }
       if (args[0] == 'remove') {
-        delete $scope.invalidElementStates[args[2]];
+        delete $scope.invalidFieldStates[args[2]];
       }
     });
 
-
-    // This function watches for changes in the title field and autogenerates the schema title and description fields
-    $scope.$watch('element["schema:name"]', function (v) {
-      if (!angular.isUndefined($scope.element)) {
-        var title = dms.getTitle($scope.element);
-        if (title && title.length > 0) {
-          var capitalizedTitle = $filter('capitalizeFirst')(title);
-          $scope.element.title = $translate.instant(
-              "GENERATEDVALUE.elementTitle",
-              {title: capitalizedTitle}
-          );
-          $scope.element.description = $translate.instant(
-              "GENERATEDVALUE.elementDescription",
-              {title: capitalizedTitle, version:window.cedarVersion}
-          );
-        } else {
-          $scope.element.title = "";
-          $scope.element.description = "";
-        }
-        $rootScope.documentTitle = title;
-      }
-    });
 
     // This function watches for changes in the form and defaults the title and description fields
-    $scope.$watch('$scope.element', function (v) {
-      if (dms.schemaOf($scope.element)) {
-        if (!dms.getTitle($scope.element)) {
-          dms.setTitle($scope.element, $translate.instant("VALIDATION.noNameElement"));
+    $scope.$watch('$scope.field', function (v) {
+      if (dms.schemaOf($scope.field)) {
+        if (!dms.getTitle($scope.field)) {
+          dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
         }
-        if (!dms.getDescription($scope.element)) {
-          dms.setDescription($scope.element, $translate.instant("VALIDATION.noDescriptionElement"));
+        if (!dms.getDescription($scope.field)) {
+          dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
         }
       }
     });
@@ -445,33 +433,33 @@ define([
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
-        dms.updateKeys(copiedForm);
+        //dms.updateKeys(copiedForm);
       }
       return copiedForm;
     };
 
-    $scope.cancelElement = function () {
+    $scope.cancelField = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
 
-    $scope.elementSearch = function () {
+    $scope.fieldSearch = function () {
       jQuery("body").trigger("click");
       jQuery("#" + $scope.searchBrowseModalId).modal("show");
     }
 
-    $scope.addElementFromPicker = function () {
+    $scope.addFieldFromPicker = function () {
       if ($scope.pickerResource) {
-        $scope.addElementToElement($scope.pickerResource);
+        $scope.addFieldToField($scope.pickerResource);
       }
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.pickElementFromPicker = function (resource) {
-      $scope.addElementToElement(resource);
+    $scope.pickFieldFromPicker = function (resource) {
+      $scope.addFieldtToField(resource);
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.selectElementFromPicker = function (resource) {
+    $scope.selectFieldFromPicker = function (resource) {
       $scope.pickerResource = resource;
     };
 
@@ -498,19 +486,6 @@ define([
     };
 
 
-    // $scope.addElementFromFinder = function () {
-    //   if ($scope.finderResource) {
-    //     $scope.addElementToTemplate($scope.finderResource);
-    //   }
-    //   $scope.hideFinder();
-    // };
-    //
-    // $scope.showFinder = function () {
-    //   $scope.finderResource = null;
-    // };
-
-
-
     $scope.enableSaveButton = function () {
       $timeout(function () {
         $scope.saveButtonDisabled = false;
@@ -528,21 +503,10 @@ define([
 
     //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function () {
-      jQuery("#control-options-element-field").modal('hide');
+      jQuery("#control-options-field-field").modal('hide');
     });
 
-    // // update the property for a field
-    // $scope.$on("property:propertyAdded", function (event, args) {
-    //
-    //   var propertyId = args[0];
-    //   var propertyLabel = args[2];
-    //   var id = args[1];
-    //   var propertyDescription = args[3];
-    //
-    //   dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.element);
-    //
-    //
-    // });
+
 
 
   }

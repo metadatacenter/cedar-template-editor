@@ -205,6 +205,18 @@
 
                   </li>
                   <li>
+                    <button uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="field"
+                        ng-click="dc.toggleResourceType('field')">
+                      <i class="btn btn-sm btn-info btn-circle fa large-icon  fa-file field"
+                        ng-class="{ active: dc.isResourceTypeActive('field') }"></i></button>
+
+                  </li>
+                  <li>
                     <button uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
@@ -645,6 +657,20 @@
               class="btn btn-sm btn-info btn-circle folder"
               ng-click="dc.showNewFolderModal()"><i
               class="fa fa-folder"></i></button>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+
+            <button type="button"
+                id="button-create-field"
+                uib-tooltip='{{"HELP.createField" | translate}}'
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle field"><i class="fa fa-file"></i>
+            </button>
+          </a>
         </li>
 
         <li ng-show="dc.showFloatingMenu">
