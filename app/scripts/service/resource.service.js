@@ -265,6 +265,9 @@ define([
             case CONST.resourceType.ELEMENT:
               url = urlService.getTemplateElement(id) + '/details';
               break;
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id) + '/details';
+              break;
             case CONST.resourceType.TEMPLATE:
               url = urlService.getTemplate(id) + '/details';
               break;

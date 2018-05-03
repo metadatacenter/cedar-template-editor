@@ -285,7 +285,7 @@ define([
                   result += "fa-sitemap";
                   break;
                 case CONST.resourceType.FIELD:
-                  result += "fa-file-code-o";
+                  result += "fa-file";
                   break;
               }
               result += ' ' + resource.nodeType;
@@ -392,6 +392,7 @@ define([
               resource = vm.getSelection();
             }
             var id = resource['@id'];
+            console.log('getResourceDetails',resource);
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
@@ -526,8 +527,8 @@ define([
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
 
-                // just elements can be selected
-                if (value == 'element') {
+                // just elements adn field can be selected
+                if (value == 'element' ||value == 'field') {
                   activeResourceTypes.push(value);
                 }
 

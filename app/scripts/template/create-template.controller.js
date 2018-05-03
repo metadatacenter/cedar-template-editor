@@ -245,6 +245,23 @@ define([
           }
         };
 
+        $scope.addStandAloneFieldToTemplate = function (node) {
+          populateCreatingFieldOrElement();
+          if (dontHaveCreatingFieldOrElement()) {
+
+            DataManipulationService.createDomIds(node);
+
+            var domId = DataManipulationService.createDomId();
+            StagingService.addStandAloneFieldToForm($scope.form, node["@id"], domId, function (e) {
+
+              // now we are sure that the element was successfully added, scroll to it and hide its nested contents
+              UIUtilService.scrollToDomId(domId);
+
+            });
+            $rootScope.$broadcast("form:update", node);
+          }
+        };
+
         // which details tab is open?
         $scope.showCardinality = false;
         $scope.isTabActive = function (item) {
@@ -497,8 +514,19 @@ define([
           $scope.hideSearchBrowsePicker();
         };
 
+        // $scope.pickElementFromPicker = function (resource) {
+        //   $scope.addElementToTemplate(resource);
+        //   $scope.hideSearchBrowsePicker();
+        // };
+
         $scope.pickElementFromPicker = function (resource) {
-          $scope.addElementToTemplate(resource);
+          console.log('pickFieldOrElementFromPicker',resource.nodeType);
+          if (resource.nodeType == 'element') {
+            $scope.addElementToTemplate(resource);
+          } else if (resource.nodeType == 'field') {
+            $scope.addStandAloneFieldToTemplate(resource);
+          }
+
           $scope.hideSearchBrowsePicker();
         };
 

@@ -7,13 +7,13 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService","DataManipulationService",
                             "UIUtilService",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
                             "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService, UIUtilService,
+  function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService, UIUtilService,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
                           AuthorizedBackendService, CONST) {
 
@@ -180,6 +180,51 @@ define([
     service.addElementToForm = function (form, elementId, divId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
+          function (response) {
+            var clonedElement = response.data;
+            UIUtilService.setSelected(clonedElement);
+
+            // Converting title for irregular character handling
+            var title = DataManipulationService.getTitle(clonedElement);
+            var elName = DataManipulationService.getFieldName(title);
+            elName = DataManipulationService.getAcceptableKey(form.properties, elName);
+
+            // Adding corresponding property type to @context
+            var randomPropertyName = DataManipulationService.generateGUID();
+            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
+                randomPropertyName);
+            form.properties["@context"].required.push(elName);
+
+            // Evaluate cardinality
+            DataManipulationService.cardinalizeField(clonedElement);
+
+            // Add field to the element.properties object
+            form.properties[elName] = clonedElement;
+
+            // Add element to the form.required array
+            form = DataManipulationService.addKeyToRequired(form, elName);
+
+            form._ui.order = form._ui.order || [];
+            form._ui.order.push(elName);
+
+            form._ui.propertyLabels = form._ui.propertyLabels || {};
+            form._ui.propertyLabels[elName] = title;
+
+
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            callback(clonedElement);
+
+
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
+      );
+    };
+
+    service.addStandAloneFieldToForm = function (form, elementId, divId, callback) {
+      AuthorizedBackendService.doCall(
+          TemplateFieldService.getTemplateField(elementId),
           function (response) {
             var clonedElement = response.data;
             UIUtilService.setSelected(clonedElement);

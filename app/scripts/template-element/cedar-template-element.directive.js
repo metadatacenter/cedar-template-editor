@@ -80,8 +80,13 @@ define([
       };
 
       scope.isEditState = function () {
-        return UIUtilService.isEditState(scope.element);
+        return (UIUtilService.isEditState(scope.element) && scope.isEditable());
       };
+
+      scope.isEditable = function () {
+        return true;
+      };
+
 
       scope.isSelectable = function () {
         return !scope.isNested() && !scope.isRoot();

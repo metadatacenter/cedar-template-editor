@@ -6,14 +6,17 @@
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
   <!-- default value -->
-  <div class="form-group floating-label-wrapper" >
+  <div  class="form-group floating-label-wrapper" >
     <input type="text" auto-focus
         class="form-control field-default-definition"
         placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
         aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
         ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
+        ng-disabled="!isEditState()"
         with-floating-label>
   </div>
+
+
 
   <!-- options -->
   <div  class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>

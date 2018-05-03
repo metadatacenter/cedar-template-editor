@@ -7,7 +7,8 @@
     <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}}
       .. {{getMaxItems() || "N"}}
     </div>
-    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"></i>
+    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue" style="margin:0 5px"></i>
+    <i class="fa fa-pencil-square-o editable" ng-show="isEditable()" style="margin:0 5px"></i>
   </div>
 
   <div class="configuration-actions" ng-init="childType='field'">

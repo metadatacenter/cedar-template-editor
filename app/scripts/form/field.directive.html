@@ -1,5 +1,5 @@
 <div class="item-root field-root" id="{{getDomId(field)}}"
-    ng-class="{'nested-element':isNested(), 'selected-field': isEditState(),  'selectable-field': isSelectable(),  'sortable-field': isSortable(),'root-element': false}"
+    ng-class="{'nested-element':isNested(), 'selected-field': isEditState(),  'selectable-field': isSelectable(),  'sortable-field': isSortable(),'root-element': false, 'editable-field': isEditable()}"
     ng-click="canSelect(isSelectable()); $event.preventDefault(); $event.stopPropagation()">
 
   <!--domId={{getDomId(field)}} nested={{isNested()}} selected={{isEditState()}} selectable={{isSelectable()}} sortable={{isSortable()}} root={{isRoot()}}-->

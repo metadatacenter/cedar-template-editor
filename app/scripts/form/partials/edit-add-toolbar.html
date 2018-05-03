@@ -28,7 +28,7 @@
                   ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
             </li>
           </ul>
-          <ul class="row list-unstyled pull-right">
+          <ul class="row list-unstyled pull-right" ng-if="!isField">
             <li role="menuitem" class="item"
                 ng-repeat="fieldType in otherFieldTypes"
                 ng-if="$index > otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">

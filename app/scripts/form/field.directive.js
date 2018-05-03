@@ -50,12 +50,16 @@ define([
         return $scope.isSelectable();
       };
 
+      $scope.isEditable = function () {
+        return dms.parentIsChild($scope.parentElement,$scope.field) || !dms.hasVersion($scope.field);
+      };
+
       $scope.isRoot = function () {
         return false;
       };
 
       $scope.isEditState = function () {
-        return (UIUtilService.isEditState($scope.field));
+        return (UIUtilService.isEditState($scope.field) && $scope.isEditable());
       };
 
       $scope.isNested = function () {

@@ -122,6 +122,10 @@ define([
       return service.schemaOf(node)._ui._size;
     };
 
+    service.hasVersion = function (node) {
+      return service.schemaOf(node).hasOwnProperty('pav:version');
+    };
+
     // node title and description
     service.getTitle = function (node) {
       if (service.schemaOf(node)) {
@@ -387,6 +391,7 @@ define([
     };
 
     service.cardinalizeField = function (field) {
+      var hasVersion = service.hasVersion(field);
       if (typeof(field.minItems) != 'undefined' && !field.items) {
 
         field.items = {
@@ -409,8 +414,15 @@ define([
           'oslc:modifiedBy'     : field['oslc:modifiedBy'],
           'schema:schemaVersion': field['schema:schemaVersion'],
           'schema:name'         : field['schema:name'],
-          'schema:description'  : field['schema:description']
+          'schema:description'  : field['schema:description'],
+          'pav:version'         : field['pav:version'],
+          'bibo:status'         : field['bibo:status']
         };
+        if (hasVersion) {
+          field.items['pav:version']   = field['pav:version'];
+          field.items['bibo:status']   = field['bibo:status'];
+        }
+
         field.type = 'array';
 
         delete field.$schema;
@@ -431,6 +443,8 @@ define([
         delete field['schema:schemaVersion'];
         delete field['schema:name'];
         delete field['schema:description'];
+        delete field['pav:version'];
+        delete field['bibo:status'];
 
         return true;
       } else {
@@ -439,6 +453,8 @@ define([
     };
 
     service.uncardinalizeField = function (field) {
+      var hasVersion = service.hasVersion(field);
+
       if (typeof field.minItems == 'undefined' && field.items) {
 
         field.$schema = field.items.$schema;
@@ -460,6 +476,10 @@ define([
         field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
         field['schema:name'] = field.items['schema:name'];
         field['schema:description'] = field.items['schema:description'];
+        if (hasVersion) {
+          field['pav:version'] = field.items['pav:version'];
+          field['bibo:status'] = field.items['bibo:status'];
+        }
 
         delete field.items;
         delete field.maxItems;
@@ -753,25 +773,34 @@ define([
     //  propertyId and propertyLabels
     //
 
+    service.parentIsChild = function(parent, child) {
+      var id = service.getId(node);
+      var parentId = service.getId(parent);
+      return id == parentId;
+    };
+
 
     // get the non-CEDAR propertyId for this node
     service.getPropertyId = function (parent, node) {
       var id = service.getId(node);
+      var parentId = service.getId(parent);
       var result = '';
-      var property;
-      var prop;
-      var schema = service.schemaOf(parent);
-      var props = service.propertiesOf(parent);
-      for (prop in props) {
-        if (service.schemaOf(props[prop])['@id'] === id) {
-          // only return non-cedar property values
-          if (schema.properties['@context'].properties[prop]) {
-            property = schema.properties['@context'].properties[prop]['enum'][0];
+      if (id != parentId) {
+        var property;
+        var prop;
+        var schema = service.schemaOf(parent);
+        var props = service.propertiesOf(parent);
+        for (prop in props) {
+          if (service.schemaOf(props[prop])['@id'] === id) {
+            // only return non-cedar property values
+            if (schema.properties['@context'].properties[prop]) {
+              property = schema.properties['@context'].properties[prop]['enum'][0];
 
-            if (property.indexOf(UrlService.schemaProperties()) == -1) {
-              result = property;
+              if (property.indexOf(UrlService.schemaProperties()) == -1) {
+                result = property;
+              }
+              break;
             }
-            break;
           }
         }
       }
@@ -781,14 +810,17 @@ define([
     // delete the non-CEDAR propertyId by using a CEDAR property
     service.deletePropertyId = function (parent, node) {
       var id = service.getId(node);
-      var props = service.propertiesOf(parent);
-      var schema = service.schemaOf(parent);
-      for (var prop in props) {
-        if (service.getId(props[prop]) === id) {
-          var randomPropertyName = service.generateGUID();
-          if (schema.properties['@context'].properties[prop]) {
-            schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
-            break;
+      var parentId = service.getId(parent);
+      if (id != parentId) {
+        var props = service.propertiesOf(parent);
+        var schema = service.schemaOf(parent);
+        for (var prop in props) {
+          if (service.getId(props[prop]) === id) {
+            var randomPropertyName = service.generateGUID();
+            if (schema.properties['@context'].properties[prop]) {
+              schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
+              break;
+            }
           }
         }
       }
