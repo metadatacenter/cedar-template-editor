@@ -84,7 +84,7 @@ define([
       };
 
       scope.isEditable = function () {
-        return true;
+        return false;
       };
 
 

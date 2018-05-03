@@ -59,7 +59,7 @@ define([
       };
 
       $scope.isEditState = function () {
-        return (UIUtilService.isEditState($scope.field) && $scope.isEditable());
+        return (UIUtilService.isEditState($scope.field));
       };
 
       $scope.isNested = function () {

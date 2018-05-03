@@ -123,6 +123,7 @@ define([
     };
 
     service.hasVersion = function (node) {
+      console.log('hasVersion',service.schemaOf(node).hasOwnProperty('pav:version'), node);
       return service.schemaOf(node).hasOwnProperty('pav:version');
     };
 
@@ -414,9 +415,7 @@ define([
           'oslc:modifiedBy'     : field['oslc:modifiedBy'],
           'schema:schemaVersion': field['schema:schemaVersion'],
           'schema:name'         : field['schema:name'],
-          'schema:description'  : field['schema:description'],
-          'pav:version'         : field['pav:version'],
-          'bibo:status'         : field['bibo:status']
+          'schema:description'  : field['schema:description']
         };
         if (hasVersion) {
           field.items['pav:version']   = field['pav:version'];

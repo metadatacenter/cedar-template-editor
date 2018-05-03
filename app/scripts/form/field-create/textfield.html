@@ -12,7 +12,7 @@
         placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
         aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
         ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
-        ng-disabled="!isEditState()"
+        ng-if="isEditable()"
         with-floating-label>
   </div>
 
