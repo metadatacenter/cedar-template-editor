@@ -238,6 +238,23 @@ define([
       }
     };
 
+    $scope.addStandAloneFieldToElement = function (node) {
+      console.log('addStandAloneFieldToElement',node, $scope.element);
+      populateCreatingFieldOrElement();
+      if (dontHaveCreatingFieldOrElement()) {
+        dms.createDomIds(node);
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addStandAloneFieldToForm($scope.element, dms.getId(node), domId, function (e) {
+
+          // now we are sure that the element was successfully added, scroll to it and hide its nested contents
+          UIUtilService.scrollToDomId(domId);
+
+        });
+        $rootScope.$broadcast("form:update", node);
+      }
+    };
+
     $scope.backToFolder = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
@@ -468,6 +485,18 @@ define([
 
     $scope.pickElementFromPicker = function (resource) {
       $scope.addElementToElement(resource);
+      $scope.hideSearchBrowsePicker();
+    };
+
+
+
+    $scope.pickElementFromPicker = function (resource) {
+      if (resource.nodeType == 'element') {
+        $scope.addElementToElement(resource);
+      } else if (resource.nodeType == 'field') {
+        $scope.addStandAloneFieldToElement(resource);
+      }
+
       $scope.hideSearchBrowsePicker();
     };
 

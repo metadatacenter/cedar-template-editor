@@ -223,10 +223,12 @@ define([
     };
 
     service.addStandAloneFieldToForm = function (form, elementId, divId, callback) {
+
       AuthorizedBackendService.doCall(
           TemplateFieldService.getTemplateField(elementId),
           function (response) {
             var clonedElement = response.data;
+            console.log('clonedElement',clonedElement);
             UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
@@ -234,11 +236,18 @@ define([
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
+            console.log('clonedElement',elName);
+            console.log('form.properties["@context"]',form.properties["@context"]);
+
             // Adding corresponding property type to @context
             var randomPropertyName = DataManipulationService.generateGUID();
             form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
                 randomPropertyName);
+
+            form.properties["@context"].required = form.properties["@context"].required || [];
             form.properties["@context"].required.push(elName);
+
+
 
             // Evaluate cardinality
             DataManipulationService.cardinalizeField(clonedElement);

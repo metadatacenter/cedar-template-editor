@@ -520,7 +520,6 @@ define([
         // };
 
         $scope.pickElementFromPicker = function (resource) {
-          console.log('pickFieldOrElementFromPicker',resource.nodeType);
           if (resource.nodeType == 'element') {
             $scope.addElementToTemplate(resource);
           } else if (resource.nodeType == 'field') {
