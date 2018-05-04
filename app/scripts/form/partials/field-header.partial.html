@@ -2,7 +2,7 @@
     ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
 
   <div class="flex-left">
-    <div class="sortable-icon"></div>
+    <div class="sortable-icon"><i class="fa fa-arrows"></i></div>
     <i class="{{getIconClass()}} field-icon"></i>
     <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}}
       .. {{getMaxItems() || "N"}}

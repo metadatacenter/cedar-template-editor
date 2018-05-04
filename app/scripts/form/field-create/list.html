@@ -27,18 +27,18 @@
         	<div class="form-group floating-label-wrapper">
             <input type="text" class="form-control"
                 id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                ng-disabled="!isEditState()"
+                ng-disabled="!isEditable()"
                 aria-label="Option" ng-model="getLiterals()[index]['label']" with-floating-label>
             <div class="checkbox checkbox-primary checkbox-circle">
               <input ng-click="cleanSelectedByDefault(index); $event.stopPropagation();"  type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                   name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                   ng-model="getLiterals()[index].selectedByDefault"
-                  ng-disabled="!isEditState()">
+                  ng-disabled="!isEditable()">
               <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
             </div>
           </div>
         </span>
-        <p class="add-another" ng-show="isEditState()" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+        <p class="add-another" ng-show="isEditState() && isEditable()" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
     </div>
   </div>

@@ -123,7 +123,6 @@ define([
     };
 
     service.hasVersion = function (node) {
-      console.log('hasVersion',service.schemaOf(node).hasOwnProperty('pav:version'), node);
       return service.schemaOf(node).hasOwnProperty('pav:version');
     };
 

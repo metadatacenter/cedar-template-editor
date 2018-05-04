@@ -479,6 +479,10 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
+        $scope.isFirstClassField = function(node) {
+          return dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField';
+        };
+
         $scope.isSectionBreak = function (item) {
           var properties = dms.propertiesOf($scope.form);
           var node = properties[item];

@@ -44,10 +44,10 @@
       </div>
     </div>
   </li>
-  <li class="divider">
+  <li ng-if="!isField" class="divider">
   </li>
-  <li>
-    <a ng-click="showFinderModal('finder-modal')"
+  <li ng-if="!isField">
+    <a  ng-click="showFinderModal('finder-modal')"
         id='button-search-element'
         uib-tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
         tooltip-placement="left"

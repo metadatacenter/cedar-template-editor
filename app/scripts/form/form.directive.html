@@ -95,7 +95,7 @@
   <!--At build time, the old form-->
   <div class="page build" ng-if="!isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
 
-    <div ng-if="form['@type']=='https://schema.metadatacenter.org/core/TemplateField'" >
+    <div ng-if="isFirstClassField(form)" >
       <field-directive parent-element="form" nested="false" field-key="" field="form"
           model="model"
           delete="removeChild"

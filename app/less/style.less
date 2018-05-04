@@ -11,55 +11,77 @@
  557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
  */
 
-//@header-template: #204039;
-@header-template: #021c1e;
-@button-template: #1995ad;
-@hover-template: #126d7f;
-@accent-template: #07575b;
-
-//@header-element: #26373e;
-@header-element: #021c1e;
-@button-element: #6fb98f;
-@hover-element: #4f8466;
-@accent-element: #6fb98f;
-
-//@header-field: #293414;
-@header-field: #021c1e;
-@button-field: #86ac41;
-@hover-field: #627e30;
-@accent-field: #86ac41;
 
 
-@header-metadata: #021c1e;
-@button-metadata: #7da3a1;
-@hover-metadata: #62807e;
-@accent-metadata: #7da3a1;
 
-@header-folder: #4a5969;
-@button-folder: #768594;
-@hover-folder: #4a5969;
-@accent-folder: #768594;
+////  Black 000000  DarkSlateGray 213F3D  SlateGray 5A6D7E DarkCyan  008b8b LightSeaGreen 0F7979  PaleTurquoise 97EBEA
+//@header-color:#213F3D;
+//@template-color:#5A6D7E;
+//@element-color:#008b8b;
+//@field-color:#0F7979;
+//@metadata-color:#97EBEA;
+//@folder-color:#5A6D7E;
+//
+////  Black 17252a DarkGreen 2b7a78 Turquoise 3aafa9  Silver def2f1 White F2F2F2
+//@header-color:#213F3D;
+//@template-color:#5A6D7E;
+//@element-color:#008b8b;
+//@field-color:#0F7979;
+//@metadata-color:#97EBEA;
+//@folder-color:#5A6D7E;
+//
+////  Black 112d32 Brown 4f4a41 LightBrown 6e6658 Blue 254e58 Blue 0F7686 Turquoise 88bdbc  White E7FEE1
+//@header-color:#4f4a41;
+//@template-color:#254e58;
+//@element-color:#0F7686;
+//@field-color:#88bdbc;
+//@metadata-color:#6e6658;
+//@folder-color:#112d32;
+//
+////  Brown 575439 DarkTurquoise 35755A MedTurquoise 52AA8E Turquoise 81D4BD  Silver BBBAB5
+//@header-color:#575439;
+//@template-color:#35755A;
+//@element-color:#52AA8E;
+//@field-color:#81D4BD;
+//@metadata-color:#81D4BD;
+//@folder-color:#575439;
 
-@header-dashboard: #ffffff;
-@button-dashboard: #005d67;
-@hover-dashboard: #00796B;
-@accent-dashboard: #00796B;
+//  Turquoise 81D4BD Blue 0F7686 LightGreen A2CF75 MedGreen 4C7C24
+@top-nav-color:@logo-dark-color;
+@header-color:#213F3D;
+@template-color:lighten(#4C7C24, 10%);
+@element-color:#81D4BD;
+@field-color:#E0A856;
+@metadata-color:#0F7686;
+@folder-color:#4E4B4A;
+
+
+
+@header-template: @top-nav-color;
+@header-element: @top-nav-color;
+@header-field: @top-nav-color;
+@header-metadata: @top-nav-color;
+@header-folder: @top-nav-color;
+@header-dashboard: @white;
 
 @primary-accent: #cb6318;
 @dark-accent: #7d4427;
 
-@primary-text: #212121;
-@secondary-text: #727272;
+@primary-text: #0F7686;
+@secondary-text: #5A6D7E;
 
-@divider: #B6B6B6;
 
-@very-lt-gray: #CCCCCC;
-@lt-gray-1: #FAFAFA;
-@lt-gray: #F0F0F0;
-@background-gray: #EEEEEE;
+@button-template: @template-color;
+@button-element: @element-color;
+@button-field: @field-color;
+@button-metadata: @metadata-color;
+@button-folder: @folder-color;
 
-@dark-gray: #616161;
-@med-gray: #9E9E9E;
+@hover-template: darken(@template-color, 10%);
+@hover-element: darken(@element-color, 10%);
+@hover-field: darken(@field-color, 10%);
+@hover-metadata: darken(@metadata-color, 10%);
+@hover-folder: darken(@folder-color, 10%);
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
@@ -70,6 +92,24 @@
 @button-resume: #5cb85c;
 @button-resume-hover: #50A050;
 @button-cancel: #9E9E9E;
+
+@divider: #B6B6B6;
+
+@very-lt-gray: #CCCCCC;
+@lt-gray-1: #FAFAFA;
+@lt-gray: #F0F0F0;
+@background-gray: #EEEEEE;
+@dark-gray: #616161;
+@med-gray: #9E9E9E;
+
+::selection {
+  background: lighten(@logo-light-color, 20%); /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: lighten(@logo-light-color, 20%); /* Gecko Browsers */
+}
+
+
 
 /* Definine local mixins */
 .activ-grotesk-regular {
@@ -210,7 +250,7 @@ button {
     right: 15px;
     margin: 20px;
     font-size: 22px;
-    color: #ccc;
+    color: @very-lt-gray;
   }
 
   .search-input {
@@ -282,7 +322,7 @@ button {
     .feedback-form {
       font-size: 20px;
       i {
-        margin: 0 10px;
+        margin: 0 5px;
         color: #fff;
       }
       i.fa.fa-lock, i.fa.fa-exclamation-triangle, i.fa.fa-circle-o {
@@ -352,7 +392,7 @@ button {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid @very-lt-gray;
     border-radius: 0;
     color: #000;
     padding-left: 0;
@@ -411,6 +451,9 @@ button {
   }
 }
 
+#headerCtrl {
+  //background:@top-nav-color;
+}
 #top-navigation {
 
   &.template {
@@ -468,7 +511,7 @@ button {
 }
 
 .link-disabled, .link-disabled:hover {
-  color: #ccc !important;
+  color: @very-lt-gray !important;
   background: #f8f8f8 !important;
 }
 
@@ -1750,7 +1793,7 @@ body.search-browse-modal {
 
 .template-header {
   width: 100%;
-  background-color: @header-bg-color;
+  //background-color: @header-bg-color;
   padding: 60px 0 20px 0;
   min-height: 130px;
 
@@ -6536,10 +6579,6 @@ body .template-header .controlled-terms-modal {
 }
 
 .sortable-icon {
-  background: url("/img/drag-me.png") no-repeat;
-  background-size: 18px auto;
-  text-indent: -1000px;
-  width: 0;
   height: 20px;
   padding: 0 12px;
 }
