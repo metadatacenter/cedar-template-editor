@@ -597,10 +597,8 @@ define([
       // use descendants
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getValuesInValueSet(acronym, vsId),
-          function (r) {
-            var response = {};
-            response["collection"] = r;
-            return response;
+          function (response) {
+            return response.data;
           },
           function (err) {
             return handleServerError(err);
