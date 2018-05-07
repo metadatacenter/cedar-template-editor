@@ -67,7 +67,7 @@ define([
      */
     var setSchemaVersion = function (schema) {
       // TODO: read it from config file
-      var SCHEMA_VERSION = '1.3.0';
+      var SCHEMA_VERSION = '1.4.0';
       schema['schema:schemaVersion'] = SCHEMA_VERSION;
     };
 

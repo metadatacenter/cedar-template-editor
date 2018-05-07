@@ -13,19 +13,6 @@
     "allowsRequired": true
   },
   {
-    "cedarType": "attribute-value",
-    "iconClass": "fa fa-plus-square",
-    "label": "Attribute Value",
-    "allowedInElement": true,
-    "primaryField": true,
-    "hasControlledTerms": false,
-    "staticField": false,
-    "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
-    "allowsRequired": false
-  },
-  {
     "cedarType": "link",
     "iconClass": "fa fa-link",
     "label": "link",
@@ -95,7 +82,7 @@
     "iconClass": "fa fa-envelope",
     "label": "Email",
     "allowedInElement": true,
-    "primaryField": false,
+    "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
@@ -141,6 +128,19 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
+  },
+  {
+    "cedarType": "attribute-value",
+    "iconClass": "fa fa-plus-square",
+    "label": "Attribute Value",
+    "allowedInElement": true,
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false,
+    "allowsRequired": false
   },
   {
     "cedarType": "page-break",

@@ -99,9 +99,11 @@ define([
             var ontologies = response.data;
             angular.forEach(ontologies, function (value) {
               // Ignore ontologies without submissions, except for CEDARPC
-              if ((value.details.hasSubmissions || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
-                value.fullName = value.name + ' (' + value.id + ')';
-                ontologiesCache[value.id] = value;
+              if (value.details != null) {
+                if ((value.details.hasSubmissions || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
+                  value.fullName = value.name + ' (' + value.id + ')';
+                  ontologiesCache[value.id] = value;
+                }
               }
             });
           },
@@ -595,10 +597,8 @@ define([
       // use descendants
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getValuesInValueSet(acronym, vsId),
-          function (r) {
-            var response = {};
-            response["collection"] = r;
-            return response;
+          function (response) {
+            return response.data;
           },
           function (err) {
             return handleServerError(err);
