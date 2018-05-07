@@ -131,7 +131,7 @@ define([
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
-          if (dms.parentIsChild($scope.form,node)) {
+          if (dms.firstClassField($scope.form,node)) {
             $scope.form = {};
           } else {
             dms.removeChild($scope.form, node);

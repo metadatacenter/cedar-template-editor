@@ -7,16 +7,21 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService","DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService",
+                            "DataManipulationService",
                             "UIUtilService",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
                             "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService, UIUtilService,
+  function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService,
+                          UIUtilService,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
+
+
                           AuthorizedBackendService, CONST) {
 
+    var dms = DataManipulationService;
     var service = {
       serviceId        : "StagingService",
       pageId           : null,
@@ -116,12 +121,13 @@ define([
       $scope.staging[field['@id']] = field;
     };
 
-    service.addFieldToForm = function (form, fieldType, divId, callback) {
-      var field = DataManipulationService.generateField(fieldType);
+    service.addFieldToForm = function (form, fieldType, firstClassField, divId, callback) {
+
+      var field = DataManipulationService.generateField(fieldType, firstClassField);
       UIUtilService.setSelected(field);
 
       // is it a checkbox, list, or radio field?
-      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
         if (fieldType == 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
@@ -156,13 +162,15 @@ define([
       }
 
       // Evaluate cardinality
-      DataManipulationService.cardinalizeField(field);
+      if (!DataManipulationService.firstClassField(form, field)) {
+        DataManipulationService.cardinalizeField(field);
+      }
 
       // Add field to the form.properties object
       form.properties[fieldName] = field;
 
       // Add field to the form.required array if it's not static
-      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
+      if (!DataManipulationService.isStaticField(field) && !DataManipulationService.isAttributeValueType(field)) {
         form = DataManipulationService.addKeyToRequired(form, fieldName);
       }
 
@@ -228,7 +236,7 @@ define([
           TemplateFieldService.getTemplateField(elementId),
           function (response) {
             var clonedElement = response.data;
-            console.log('clonedElement',clonedElement);
+            console.log('clonedField', clonedElement);
             UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
@@ -236,8 +244,8 @@ define([
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
-            console.log('clonedElement',elName);
-            console.log('form.properties["@context"]',form.properties["@context"]);
+
+            console.log('form.properties["@context"]', form.properties["@context"]);
 
             // Adding corresponding property type to @context
             var randomPropertyName = DataManipulationService.generateGUID();
@@ -248,8 +256,10 @@ define([
             form.properties["@context"].required.push(elName);
 
 
-
             // Evaluate cardinality
+            if (dms.isCheckboxType(clonedElement) || dms.isListMultiAnswerType(clonedElement) ) {
+              clonedElement.minItems = 1;
+            }
             DataManipulationService.cardinalizeField(clonedElement);
 
             // Add field to the element.properties object
@@ -319,7 +329,7 @@ define([
       UIUtilService.setSelected(field);
 
       // is it a checkbox, list, or radio field?
-      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
+      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
         if (fieldType == 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
@@ -364,7 +374,7 @@ define([
       element.properties[fieldName] = field;
 
       // Add field to the element.required array it it's not static
-      if (!DataManipulationService.isStaticField(field)  && !DataManipulationService.isAttributeValueType(field)) {
+      if (!DataManipulationService.isStaticField(field) && !DataManipulationService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
 
@@ -375,30 +385,21 @@ define([
       return field;
     };
 
+    // add a field to a firstClassField container
     service.addFieldToField = function (fieldType) {
+
       var field = DataManipulationService.generateField(fieldType, true);
       UIUtilService.setSelected(field);
 
-      // is it a checkbox, list, or radio field?
-      if (DataManipulationService.isMultiAnswerInputType(fieldType)) {
-        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+      //is it a checkbox, list, or radio field?
+      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
 
-          field.items._valueConstraints.multipleChoice = true;
-          field.items._valueConstraints.literals = [
-            {
-              "label": ""
-            }
-          ];
-          console.log('checkbox',field);
-        }
-        else { // single choice field (radio or single-choice list)
-          field._valueConstraints.multipleChoice = false;
-          field._valueConstraints.literals = [
-            {
-              "label": ""
-            }
-          ];
-        }
+        field._valueConstraints.multipleChoice = false;
+        field._valueConstraints.literals = [
+          {
+            "label": ""
+          }
+        ];
       }
 
       return field;

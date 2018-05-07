@@ -31,6 +31,15 @@ define([
         "LINK": "link",
         "FOLDER": "folder",
         "METADATA": "metadata",
+      },
+      "resourceIcon": {
+        "TEMPLATE": "fa fa-file-text",
+        "FIELD": "fa fa-cube",
+        "ELEMENT": "fa fa-cubes",
+        "INSTANCE":  "fa fa-tag",
+        "LINK": "fa fa-link",
+        "FOLDER":  "fa fa-folder",
+        "METADATA": "fa fa-tag",
       }
     });
 });

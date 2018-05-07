@@ -927,19 +927,19 @@ define([
 
               switch (resource.nodeType) {
                 case CONST.resourceType.FOLDER:
-                  result += "fa-folder";
+                  result += CONST.resourceIcon.FOLDER;
                   break;
                 case CONST.resourceType.TEMPLATE:
-                  result += "fa-file-text";
+                  result += CONST.resourceIcon.TEMPLATE;
                   break;
                 case CONST.resourceType.INSTANCE:
-                  result += "fa-tag";
+                  result += CONST.resourceIcon.INSTANCE;
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += "fa-sitemap";
+                  result += CONST.resourceIcon.ELEMENT ;
                   break;
                 case CONST.resourceType.FIELD:
-                  result += "fa-file";
+                  result += CONST.resourceIcon.FIELD ;
                   break;
               }
             }

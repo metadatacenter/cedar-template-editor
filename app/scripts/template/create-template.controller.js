@@ -208,7 +208,7 @@ define([
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             var domId = DataManipulationService.createDomId();
-            StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
+            StagingService.addFieldToForm($scope.form, fieldType, false, domId, function (el) {
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
               $scope.toggleMore();

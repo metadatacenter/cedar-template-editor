@@ -272,13 +272,22 @@ define([
       return (service.getInputType(node) == 'list');
     };
 
+    service.isListMultiAnswerType = function (node) {
+      return (service.getInputType(node) == 'list') && (service.schemaOf(node)._valueConstraints.multipleChoice);
+    };
+
     // is this a checkbox, radio or list question?
     service.isMultiAnswer = function (node) {
       var inputType = service.getInputType(node);
-      return service.isMultiAnswerInputType(inputType);
+      return service.isCheckboxListRadioType(inputType);
     };
 
-    service.isMultiAnswerInputType = function (inputType) {
+    service.isCheckboxListRadioType = function (inputType) {
+      return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+    };
+
+    service.isCheckboxListRadio = function (node) {
+      var inputType = service.getInputType(node);
       return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
     };
 
@@ -771,8 +780,10 @@ define([
     //  propertyId and propertyLabels
     //
 
-    service.parentIsChild = function(parent, child) {
-      var id = service.getId(node);
+
+
+    service.firstClassField = function(parent, child) {
+      var id = service.getId(child);
       var parentId = service.getId(parent);
       return id == parentId;
     };
@@ -901,7 +912,7 @@ define([
         field.properties['@type'] = valueAtType;
       }
 
-      if (inputType == "checkbox") {
+      if (!container && (inputType == "checkbox")) {
         field.minItems = 1;
         service.cardinalizeField(field);
       }
@@ -1829,12 +1840,10 @@ define([
       });
     };
 
-    service.parentIsChild = function (parent, child) {
-      return (service.getId(parent) == service.getId(child));
-    };
+
 
     service.removeChild = function (parent, child) {
-      if (!service.parentIsChild(parent, child)) {
+      if (!service.firstClassField(parent, child)) {
 
         var id = service.getId(child);
         var selectedKey;
