@@ -22,7 +22,7 @@ describe('template-creator', function () {
   var fieldTypes = [
     {
       "cedarType"                : "textfield",
-      "iconClass"                : "cedar-svg-text",
+      "iconClass"                : "fa-font",
       "label"                    : "Text",
       "allowedInElement"         : true,
       "primaryField"             : true,
@@ -33,7 +33,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "textarea",
-      "iconClass"                : "cedar-svg-paragraph",
+      "iconClass"                : "fa-paragraph",
       "label"                    : "Text Area",
       "allowedInElement"         : true,
       "primaryField"             : false,
@@ -44,7 +44,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "date",
-      "iconClass"                : "cedar-svg-calendar",
+      "iconClass"                : "fa-calendar",
       "label"                    : "Date",
       "allowedInElement"         : true,
       "primaryField"             : true,
@@ -55,7 +55,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "numeric",
-      "iconClass"                : "cedar-svg-numeric",
+      "iconClass"                : "fa-hashtag",
       "allowedInElement"         : true,
       "primaryField"             : true,
       "label"                    : "Number",
@@ -66,7 +66,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "radio",
-      "iconClass"                : "cedar-svg-multiple-choice",
+      "iconClass"                : "fa-dot-circle-o",
       "label"                    : "Multiple Choice",
       "allowedInElement"         : true,
       "primaryField"             : false,
@@ -77,7 +77,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "checkbox",
-      "iconClass"                : "cedar-svg-checkbox",
+      "iconClass"                : "fa-check-square-o",
       "label"                    : "Checkbox",
       "allowedInElement"         : true,
       "primaryField"             : false,
@@ -88,7 +88,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "email",
-      "iconClass"                : "cedar-svg-at",
+      "iconClass"                : "fa-envelope",
       "label"                    : "Email",
       "allowedInElement"         : true,
       "primaryField"             : true,
@@ -99,7 +99,7 @@ describe('template-creator', function () {
     },
     {
       "cedarType"                : "list",
-      "iconClass"                : "cedar-svg-list",
+      "iconClass"                : "fa-list",
       "allowedInElement"         : true,
       "primaryField"             : false,
       "label"                    : "List",
@@ -204,7 +204,7 @@ describe('template-creator', function () {
             if (!fieldType.staticField) {
 
 
-              xit("should add and delete a " + type + " in " + pageType, function () {
+              it("should add and delete a " + type + " in " + pageType, function () {
 
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
@@ -227,7 +227,7 @@ describe('template-creator', function () {
 
               });
 
-              xit("should select and deselect a " + type + " in " + pageType, function () {
+              it("should select and deselect a " + type + " in " + pageType, function () {
 
                 var firstField;
                 var lastField;
