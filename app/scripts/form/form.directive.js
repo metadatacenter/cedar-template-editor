@@ -480,7 +480,7 @@ define([
         };
 
         $scope.isFirstClassField = function(node) {
-          return dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField';
+          return node && (dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
         $scope.isSectionBreak = function (item) {

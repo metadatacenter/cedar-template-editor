@@ -204,7 +204,7 @@ describe('template-creator', function () {
             if (!fieldType.staticField) {
 
 
-              xit("should add and delete a " + type + " in " + pageType, function () {
+              it("should add and delete a " + type + " in " + pageType, function () {
 
                 templatePage.createPage(pageType);
                 templatePage.addField(type, isMore, title, description);
@@ -227,7 +227,7 @@ describe('template-creator', function () {
 
               });
 
-              xit("should select and deselect a " + type + " in " + pageType, function () {
+              it("should select and deselect a " + type + " in " + pageType, function () {
 
                 var firstField;
                 var lastField;

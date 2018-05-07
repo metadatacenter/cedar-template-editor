@@ -48,14 +48,12 @@
 
 //  Turquoise 81D4BD Blue 0F7686 LightGreen A2CF75 MedGreen 4C7C24
 @top-nav-color:@logo-dark-color;
-@header-color:#213F3D;
-@template-color:lighten(#4C7C24, 10%);
-@element-color:#81D4BD;
-@field-color:#E0A856;
+@header-color:#244152;
+@template-color:#408392;
+@element-color:#58797F;
+@field-color:#79A99E;
 @metadata-color:#0F7686;
 @folder-color:#4E4B4A;
-
-
 
 @header-template: @top-nav-color;
 @header-element: @top-nav-color;
@@ -71,7 +69,7 @@
 @secondary-text: #5A6D7E;
 
 
-@button-template: @template-color;
+@button-template:lighten(@template-color, 10%);
 @button-element: @element-color;
 @button-field: @field-color;
 @button-metadata: @metadata-color;
@@ -551,7 +549,7 @@ button {
 
   i {
     font-size: 16px;
-    visibility: visible;
+    //visibility: none;
 
     .invisible {
       visibility: hidden;
@@ -1835,7 +1833,7 @@ body.search-browse-modal {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
     border-radius: 0;
     color: #ccc;
 
@@ -2931,7 +2929,7 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    margin-left: 10px;
+    margin-left: 0 0 0 10px;
     padding: 0;
     position: relative;
   }
