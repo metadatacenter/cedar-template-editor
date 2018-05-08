@@ -68,7 +68,7 @@ define([
     function saveValue(vsId, newValue) {
       var payload = {
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
-        'definitions': newValue.definition,
+        'definitions': [newValue.definition],
         'prefLabel'  : newValue.prefLabel,
       };
       return controlledTermDataService.createValue(vsId, payload);
