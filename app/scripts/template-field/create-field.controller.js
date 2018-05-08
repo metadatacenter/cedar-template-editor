@@ -417,6 +417,27 @@ define([
       }
     });
 
+    $scope.$watch('field["schema:name"]', function (v) {
+      if (!angular.isUndefined($scope.field)) {
+        var title = dms.getTitle($scope.field);
+        if (title && title.length > 0) {
+          var capitalizedTitle = $filter('capitalizeFirst')(title);
+          $scope.field.title = $translate.instant(
+              "GENERATEDVALUE.fieldTitle",
+              {title: capitalizedTitle}
+          );
+          $scope.field.description = $translate.instant(
+              "GENERATEDVALUE.fieldDescription",
+              {title: capitalizedTitle, version:window.cedarVersion}
+          );
+        } else {
+          $scope.field.title = "";
+          $scope.field.description = "";
+        }
+        $rootScope.documentTitle = title;
+      }
+    });
+
     $scope.toRDF = function () {
       var jsonld = require('jsonld');
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
