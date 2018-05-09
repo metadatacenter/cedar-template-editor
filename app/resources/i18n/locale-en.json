@@ -64,7 +64,8 @@
     "SearchBioPortal":"Search in BioPortal",
     "SearchField":"Search Field",
     "AdvancedSearchOptions":"Advanced Search Options",
-    "IWantTo":"I want to..."
+    "IWantTo":"I want to...",
+    "SearchScope":"Search {{scope}} in BioPortal"
   },
   "GENERIC": {
     "Property": "Property",

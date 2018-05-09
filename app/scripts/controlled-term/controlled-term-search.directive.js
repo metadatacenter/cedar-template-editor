@@ -313,7 +313,7 @@ define([
             if (!keepSelectedOntologies) {
               vm.selectedOntologies = [];
             }
-            vm.action = 'search';
+            //vm.action = 'search';
             vm.ontologySearchRegexp = null;
             vm.resultsFound = null;
             vm.searchResults = [];
@@ -353,19 +353,19 @@ define([
           function setFieldPropertiesMode() {
             vm.searchMode = 'property';
             vm.searchScope = 'properties';
-            vm.action = 'search';
+            //vm.action = 'search';
           }
 
           function setFieldTypesMode() {
             vm.searchMode = 'field';
             vm.searchScope = 'classes';
-            vm.action = 'search';
+            //vm.action = 'search';
           }
 
           function setFieldValuesMode() {
             vm.searchMode = 'value';
             vm.searchScope = 'classes';
-            vm.action = 'search';
+            //vm.action = 'search';
             console.log('setFIeldValuesMode', vm.action);
           }
           //setTab('values');
@@ -548,8 +548,8 @@ define([
                 var scope = args[0];
                 var action = args[1];
                 reset(false, false, false, false, true);
-                vm.action = action;
-                vm.searchScope = scope;
+                // vm.action = action;
+                vm.creatingObject = (action == 'search') ? null :'value';
               }
           );
 

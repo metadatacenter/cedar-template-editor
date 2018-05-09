@@ -66,6 +66,7 @@ define([
 
       vm.searchScope = (vm.searchMode == 'property' ? 'properties' : 'classes');
       vm.isopen = true;
+      vm.searchLimitVisible = false;
 
 
       /* Function declarations */

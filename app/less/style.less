@@ -223,7 +223,7 @@ button {
 
     &:hover,
     &:focus {
-      background-color: @brand-primary;
+      background-color: darken(@brand-primary,%20);
     }
 
     .icon-bar {
@@ -3895,7 +3895,7 @@ section.dashboard-elements {
 
   &:hover,
   &:focus {
-    background-color: @brand-primary-hover;
+    background-color: darken(@brand-primary,20%);
     color: @white;
   }
 
@@ -3906,7 +3906,7 @@ section.dashboard-elements {
 }
 
 .std-button-active {
-  background-color: @brand-primary-hover;
+  background-color: darken(@brand-primary,20%);
 }
 
 .create-value-set-widget-actions {
@@ -3987,6 +3987,30 @@ section.dashboard-elements {
     vertical-align: inherit;
   }
 
+  .btn-add-create-term {
+    text-transform: uppercase;
+    padding: 12px;
+    border: none;
+    transition: all 0.3s 0.1s;
+    color: #ffffff;
+    background-color: #58797F;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    margin: 10px;
+    &:active, &:hover {
+      outline:none;
+      background-color:darken(#58797F, 20%);
+    }
+    &.selected {
+      outline:none;
+      background-color:@brand-primary;
+      &:active, &:hover {
+        background-color:darken(@brand-primary, 20%);
+      }
+    }
+
+  }
+
   .clear {
     clear: both;
   }
@@ -3995,6 +4019,8 @@ section.dashboard-elements {
     .form-control {
     }
   }
+
+
 
   .search-messages {
     text-align: center;
@@ -6710,19 +6736,19 @@ table.apiKey {
 
             &:hover,
             &:focus {
-              background-color: @brand-primary-hover;
+              background-color: darken(@brand-primary,20%);
             }
           }
           &.btn-pause {
             background-color: @button-pause;
             &:hover {
-              background-color: @button-pause-hover;
+              background-color: darken(@button-pause,20%) ;
             }
           }
           &.btn-resume {
             background-color: @button-resume;
             &:hover {
-              background-color: @button-resume-hover;
+              background-color: darken(@button-resume,20%) ;
             }
           }
 

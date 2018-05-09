@@ -84,11 +84,12 @@ define([
     vm.allowsValue = allowsValue;
     vm.switchScope = switchScope;
     vm.controlledTerm = {};
-    vm.action = vm.action || 'search';
+
     // vm.isCreatingValue=false;
     // vm.isCreatingValueSet=false;
     vm.creatingObject = '';
     vm.mappingObject = false;
+
 
 
 
@@ -126,18 +127,21 @@ define([
       vm.searchMode = 'property';
       vm.searchScope='properties';
       vm.action = 'search';
+      vm.creatingObject = null;
     }
 
     function setFieldTypesMode() {
       vm.searchMode = 'field';
       vm.searchScope='classes';
       vm.action = 'search';
+      vm.creatingObject = null;
     }
 
     function setFieldValuesMode() {
       vm.searchMode = 'value';
       vm.searchScope='classes';
       vm.action = 'search';
+      vm.creatingObject = null;
     }
 
     vm.setInitialFieldConstraints();
@@ -499,7 +503,6 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
-      console.log('startOver',vm.action);
       //vm.searchMode = vm.options && vm.options.searchMode || "";
       //vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;

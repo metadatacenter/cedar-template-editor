@@ -18,7 +18,9 @@ define([
         parent    : '=',
         searchMode: '=',
         searchRange: '=',
-        salt      : '='
+        salt      : '=',
+        action    : '=',
+        selections: "="
       },
       controller      : 'controlledTermDirectiveController',
       controllerAs    : 'ctdc',

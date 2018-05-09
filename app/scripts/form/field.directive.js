@@ -38,9 +38,16 @@ define([
 
       var dms = DataManipulationService;
       $scope.fieldSchema = dms.schemaOf($scope.field);
-      $scope.controlledTerms = {"mode" : "property", "range": ["property","value"]};
+      $scope.controlledTerms = {"mode" : "property", "range": ["property","value"], "action": "search", "selections": false};
 
 
+
+      $scope.switchScope = function(scope, action) {
+        console.log('switchScope',scope,action);
+        $scope.controlledTerms.action = action;
+        $rootScope.$broadcast("cedar.templateEditor.controlledTerm.switchScope",
+            [scope, action]);
+      };
 
 
       //

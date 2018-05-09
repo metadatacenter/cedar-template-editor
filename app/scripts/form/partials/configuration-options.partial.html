@@ -270,12 +270,32 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" parent="parentElement"  search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
+        <div controlled-term field="field" parent="parentElement"  search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" action="controlledTerms.action" selections="controlledTerms.selections"></div>
 
-        <div class="class-actions">
-          <div class="class-action">
+        <!-- search or create buttons -->
+        <div style="margin:20px auto;max-width:800px">
+        <div class="flex">
+        <div  style="" class="controlled-term-options">
+          <div ng-if="controlledTerms.action == 'search'" style="margin:20px 0">
+            Use BioPortal to
+            <button  class="std-btn btn btn-add-create-term" ng-click="switchScope('','create')">Create</button>
+            a {{controlledTerms.mode}} term.
+          </div>
+          <div ng-if="controlledTerms.action == 'create'" style="margin:20px 0">
+            Use BioPortal to
+            <button  class="std-btn btn btn-add-create-term "  ng-click="switchScope('','search')">Search</button>
+            for a {{controlledTerms.mode}} term.
+          </div>
+        </div>
+
+
+
+          <div style="">
             <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
           </div>
+
+      </div>
+        </div>
         </div>
       </div>
     </div>

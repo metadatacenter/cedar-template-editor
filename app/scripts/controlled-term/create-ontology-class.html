@@ -17,17 +17,15 @@
       with-floating-label=""></textarea>
 </div>
 
-tsc.mappingObject {{tsc.mappingObject}}
-<div class="mappings-toggle">
+<div class="mappings-toggle" ng-if="pcc.isValid()">
   <div ng-class="{'mappings-label-enabled': pcc.isValid(), 'mappings-label-disabled': !pcc.isValid()}">Link to existing terms (optional)</div>
-  <div class="mappings-switch"> <switch name="isMappingExistingClasses"
+  <div class="mappings-switch"> <switch name="tsc.isMappingExistingClasses"
       id="is-mapping-existing-classes-checkbox"
-      ng-model="tsc.mappingObject"
-      disabled="!pcc.isValid()">
+      ng-model="tsc.mappingObject">
   </switch></div>
 </div>
 
-<div class="map-existing-classes" ng-if="pcc.isMappingExistingClasses">
+<div class="map-existing-classes" ng-if="tsc.mappingObject">
 
   <ng-include src="'scripts/controlled-term/provisional-class-mappings.html'"></ng-include>
 

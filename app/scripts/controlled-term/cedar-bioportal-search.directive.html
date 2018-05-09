@@ -1,5 +1,5 @@
 <!--search -->
-<div  class="form-group floating-label-wrapper clearfix">
+<div class="form-group floating-label-wrapper clearfix">
 
   <!-- search input -->
   <div class="form-group form-group-actions clearfix">
@@ -12,7 +12,7 @@
     </div>
 
     <!-- Search Field -->
-    <div class="field-search">
+    <div>
       <div class="input-group field-search-input-group">
         <input id="field-search-input" type="text" class="form-control field-search-form-control"
             placeholder="{{'CONTROLLEDTERMS.SearchBioPortal' | translate}}"
@@ -28,7 +28,56 @@
             ng-class="{'fa fa-cog': !cbs.searchOptionsVisible, 'fa fa-cog selected': cbs.searchOptionsVisible}"></i></span>
         <span class="input-group-addon" ng-click="cbs.search()"><i class="fa fa-search"></i></span>
       </div>
+
+
+
+        <div class="element-toggles" style="font-size:smaller;width:80%;margin:auto">
+          <div ng-if="cbs.isFieldPropertiesMode()" class="element-toggle"
+              ng-class="{active: cbs.searchScope == 'properties'}"
+              ng-click="cbs.searchScope ='properties'"><span style="margin: 0 10px">Property</span></div>
+          <div class="element-toggle" ng-class="{active: cbs.searchScope == 'ontologies'}"
+              ng-click="cbs.searchScope ='ontologies';cbs.searchLimitVisible=false"><span style="margin: 0 10px">Ontology</span>
+          </div>
+          <div ng-if="!cbs.isFieldPropertiesMode()" class="element-toggle"
+              ng-class="{active: cbs.searchScope == 'classes'}"
+              ng-click="cbs.searchScope ='classes'"><span style="margin: 0 10px">Class</span>
+          </div>
+          <div ng-if="cbs.isFieldValuesMode()" class="element-toggle"
+              ng-class="{active: cbs.searchScope == 'value-sets'}"
+              ng-click="cbs.searchScope ='value-sets'"><span style="margin: 0 10px">ValueSet</span>
+          </div>
+        </div>
+
+
+      <!-- limit search to specific ontologies -->
+      <button style="color:#5795ba;font-weight:bold;margin:5px 0;background:transparent;white-space:nowrap;"
+          ng-click="cbs.searchLimitVisible = !cbs.searchLimitVisible">
+        <span ng-if="cbs.searchLimitVisible"><i class="fa fa-caret-down"></i></span>
+        <span ng-if="!cbs.searchLimitVisible"><i class="fa fa-caret-right"></i></span>
+        <span>Limit Search</span>
+      </button>
+      <div ng-if="cbs.searchLimitVisible" style="width:80%;margin:auto"
+          ng-show="cbs.isSearchingClasses() || cbs.isSearchingProperties() || cbs.isSearchingValueSets()">
+
+        <div>
+          <tags-input class="custom-tags-input" ng-model="cbs.selectedOntologies" display-property="id"
+              placeholder="Limit search to ontologies" replace-spaces-with-dashes="false"
+              add-from-autocomplete-only="true"
+              on-tag-added="cbs.search()"
+              on-tag-removed="cbs.search()"
+              min-length="2">
+            <auto-complete source="cbs.searchOntologies($query)"
+                display-property="fullName"
+                min-length="0"
+                load-on-focus="false"
+                load-on-empty="false"
+                max-results-to-show="2000"
+            </auto-complete>
+          </tags-input>
+        </div>
+      </div>
     </div>
+
 
     <!-- Advanced Search Options -->
     <div ng-show="cbs.searchOptionsVisible" class="advanced-search">
@@ -87,8 +136,8 @@
   </div>
 
   <!-- Search loading... -->
-  <div ng-if="cbs.showSearchPreloader">
-    <div class="loader2"></div>
+  <div ng-if="cbs.showSearchPreloader" style="height:330px;">
+    <div class="loader2" ></div>
   </div>
 
   <!-- Search messages, properties, classes, valuesets -->
@@ -123,7 +172,7 @@
     <!-- Property results -->
     <div ng-if="(cbs.isSearchingProperties()) && cbs.resultsFound && cbs.searchFinished">
 
-      <div >
+      <div>
         <div class="search-results-headers">
           <table class="table table-condensed results-headers-table search-results-headers-table">
             <thead>
@@ -263,7 +312,7 @@
     </div>
 
     <!-- Value Sets results -->
-    <div ng-if="(pc.isSearchingValueSets()) && pc.resultsFound && pc.searchFinished">
+    <div ng-if="(cbs.isSearchingValueSets()) && cbs.resultsFound && cbs.searchFinished">
       <div class="search-results-headers">
         <table class="table table-condensed results-headers-table search-results-headers-table">
           <thead>
@@ -317,7 +366,7 @@
     </div>
 
     <!-- Ontologies results -->
-    <div ng-if="pc.isSearchingOntologies() && pc.ontologiesFound.length > 0 && pc.searchFinished">
+    <div ng-if="cbs.isSearchingOntologies() && cbs.ontologiesFound.length > 0 && cbs.searchFinished">
       <div class="search-results-headers">
         <table class="table table-condensed results-headers-table browse-results-headers-table">
           <thead>
@@ -346,14 +395,23 @@
       </div>
     </div>
 
+    <button class="show-details" style="color:#5795ba;font-weight:bold;margin:5px 0;background:transparent"
+        ng-if="cbs.selectedResultId != null"
+        ng-click="cbs.changeTreeVisibility(); $event.stopPropagation()">
+      <span ng-if="cbs.treeVisible"><i class="fa fa-caret-down"></i></span>
+      <span ng-if="!cbs.treeVisible"><i class="fa fa-caret-right"></i></span>
+      Details
+    </button>
+
+
     <!-- loader -->
-    <div ng-if="pc.treeVisible && (pc.isLoadingClassDetails || pc.isLoadingOntologyDetails)">
+    <div ng-if="cbs.treeVisible && (cbs.isLoadingClassDetails || cbs.isLoadingOntologyDetails)" style="height:330px;">
       <div class="loader2"></div>
     </div>
 
     <!--Start new tree-->
     <div class="additional-details clear"
-        ng-show="cbs.treeVisible && !cbs.isLoadingClassDetails && !cbs.isLoadingOntologyDetails">
+        ng-show="cbs.treeVisible && cbs.isCurrentOntology() && !cbs.isLoadingClassDetails && !cbs.isLoadingOntologyDetails">
       <!-- Ontology tree -->
       <div class="terminology-tree-container">
         <!-- Ontology tree header -->
