@@ -2,9 +2,9 @@
   <div class="form-group floating-label-wrapper field-filter clearfix">
 
 
-    <div class="row">
+    <div class="row" >
       <div class="col-sm-1">
-        <ul class="nav nav-tabs nav-stacked nav-pills" role="tablist">
+        <ul class="nav nav-tabs nav-stacked nav-pills" role="tablist" >
           <li ng-class="{'active': ctdc.view_tab == 'tab1'}">
             <a class="btn" ng-click="ctdc.view_tab = 'tab1'" href="">Selections</a>
           </li>
@@ -14,7 +14,7 @@
         </ul>
       </div>
       <div class="col-sm-11">
-        <div class="tab-content">
+        <div class="tab-content" style="height:100%">
           <div class="tab-pane" style="display:block" ng-show="ctdc.view_tab == 'tab1'">
             <div style="width:80%;margin:0 auto;" class="controlled-term-options">
               <button class="show-details" ng-click="ctdc.selections = !ctdc.selections"
@@ -31,9 +31,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane" style="display:block" ng-show="ctdc.view_tab == 'tab2'">
-            This is tab 2 content
-
+          <div class="tab-pane" style="display:block;overflow:auto;height:100%;background:pink" ng-show="ctdc.view_tab == 'tab2'">
 
             <div ng-if="false" style="width:80%;margin:0 auto;" class="controlled-term-options">
               <button class="show-details" ng-click="ctdc.selections = !ctdc.selections"

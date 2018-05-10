@@ -55,7 +55,7 @@ define([
       };
 
       $scope.getPropertyLabel = function () {
-        if ($scope.labels && $scope.fieldKey) {
+        if ($scope.labels && $scope.fieldKey && $scope.labels[$scope.fieldKey]) {
           return $scope.labels[$scope.fieldKey];
         } else {
           return $scope.getTitle();
