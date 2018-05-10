@@ -485,7 +485,7 @@ button {
 
   i {
     font-size: 16px;
-    visibility: none;
+    //visibility: none;
 
     .invisible {
       visibility: hidden;
@@ -2798,7 +2798,7 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    margin-left: 0 0 0 10px;
+    margin-left: 0;
     padding: 0;
     position: relative;
   }
@@ -4024,7 +4024,6 @@ section.dashboard-elements {
 
   .search-messages {
     text-align: center;
-    margin-top: 30px;
     .search-msg {
       color: @brand-primary;
     }
@@ -4143,7 +4142,6 @@ section.dashboard-elements {
 
     .terminology-tree-container {
       width: 35%;
-      height: 330px;
       float: left;
 
       .tree-header {
@@ -4167,7 +4165,6 @@ section.dashboard-elements {
 
     .selection-details-container {
       width: 63%;
-      height: 330px;
       float: right;
 
       .nav-tabs {
@@ -5003,7 +5000,7 @@ p.instructions {
 
 .loader2 {
   font-size: 10px;
-  margin: 50px auto;
+  margin: 0 auto;
   text-indent: -9999em;
   width: 4em;
   height: 4em;
@@ -5262,7 +5259,9 @@ p.instructions {
 
 .element-toggles, .element-toggles-values {
   text-align: center;
-  margin: 0 0 10px 0;
+  margin: 0 0 0 0;
+
+
   .element-toggle {
     color: @gray;
     display: inline-block;
@@ -5270,11 +5269,16 @@ p.instructions {
     border-bottom: 5px solid #DDD;
     border-color: #DDD;
     transition: all 0.3s ease 0.1s;
+    cursor:pointer;
 
     &.active {
       color: @brand-primary;
       font-weight: bold;
       border-color: @brand-primary;
+      &.minor {
+        color: #79A99E;
+        border-color: #79A99E;
+      }
     }
 
     span {
@@ -5284,6 +5288,12 @@ p.instructions {
 
     &.active span {
       cursor: default;
+    }
+
+    &.minor {
+      padding:10px;
+      margin:0 20px;
+      border-color:transparent;
     }
   }
 
@@ -5319,6 +5329,13 @@ p.instructions {
       }
     }
   }
+}
+
+.element-toggles > hr {
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0;
+  border-top: 1px solid #CCC;
 }
 
 #form-item-config-section {
@@ -5996,7 +6013,8 @@ p.instructions {
 
   .modal-dialog {
     width: 80%;
-    height: 100%;
+    height:90%;
+    max-height:90%;
     padding: 0;
     margin: 0 auto;
   }
@@ -6012,19 +6030,27 @@ p.instructions {
   }
 
   .modal-header {
-    border-bottom: none;
-    padding: 30px 20px;
+    height:50px;
+    overflow:hidden;
+    padding: 0;
     .close {
-      margin-top: -20px;
+      position:fixed;
+      top:10px;
+      right:10px;
     }
   }
 
+  .modal-footer {
+    height:50px;
+    padding:0;
+  }
+
   .modal-body {
-    padding: 0 40px 40px;
-    height: calc(~"100% - 60px");
+    padding: 0;
+    height: calc(~"100% - 100px");
     overflow-y: auto;
     .class-actions {
-      margin-top: 30px;
+      padding-top:30px;
       font-size: 1em;
       text-align: center;
     }
@@ -6419,7 +6445,7 @@ body .template-header .controlled-terms-modal {
 }
 
 .sortable-icon {
-  background: url("/img/drag-me.png") no-repeat;
+  //background: url("/img/drag-me.png") no-repeat;
   background-size: 18px auto;
   text-indent: -1000px;
   width: 0;

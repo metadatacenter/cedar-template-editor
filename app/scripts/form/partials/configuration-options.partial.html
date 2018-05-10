@@ -13,7 +13,8 @@
           ng-click="setTab('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
-      <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
+      <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab"
+          ng-class="{active: isTabActive('required')}"
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
@@ -68,7 +69,8 @@
   </div>
 
   <!-- Cardinality tab  -->
-  <div id="cardinality-options"  class="cardinality-options " ng-model="field.minItems" ng-show="isTabActive('cardinality')" >
+  <div id="cardinality-options" class="cardinality-options " ng-model="field.minItems"
+      ng-show="isTabActive('cardinality')">
 
     <div class="type-toggle date">
       <div class="d-option" ng-class="{active: !hasMin()}" ng-click="setDirty();clearMinMax();">
@@ -81,15 +83,17 @@
 
 
     <div class="cardinality-selectors" ng-if="field.minItems > -1">
-      <cardinality-selector required="isRequired()"  type="'min'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
-      <cardinality-selector required="isRequired()"  type="'max'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()" type="'min'" min-items="field.minItems"
+          max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()" type="'max'" min-items="field.minItems"
+          max-items="field.maxItems"></cardinality-selector>
     </div>
   </div>
 
   <!-- Field tab -->
   <div ng-show="isTabActive('field')">
     <class-list field="field" view-type="viewType"></class-list>
-    <div class="center search" >
+    <div class="center search">
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
       <button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"
@@ -188,7 +192,8 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
+            <button type="button" class="std-button btn search-ontologies-button"
+                ng-click="showModal('values'); $event.stopPropagation();">Search
             </button>
           </div>
         </div>
@@ -197,7 +202,7 @@
   </div>
 
   <!-- Hidden tab  -->
-  <div id="hidden"  ng-show="isTabActive('hidden')">
+  <div id="hidden" ng-show="isTabActive('hidden')">
     <div class="type-toggle date">
       <div class="single-date d-option"
           ng-click="setDirty();setHidden(false); $event.stopPropagation();"
@@ -219,15 +224,17 @@
 <!-- field modal -->
 <div class="modal fade controlled-terms-modal" id="{{getModalId('field')}}" data-backdrop="static">
   <div class="modal-dialog">
-    <div class="modal-content" style="overflow:auto">
+    <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-field-close"  data-dismiss="modal"
+        <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
-
+        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"
+            search-range="controlledTerms.range" salt="documentTitle"></div>
+      </div>
+      <div class="modal-footer">
         <div class="class-actions">
           <div class="class-action">
             <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
@@ -243,12 +250,13 @@
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-value-close"  data-dismiss="modal"
+        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field"  parent="parentElement" search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" ></div>
+        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"
+            search-range="controlledTerms.range" salt="documentTitle"></div>
 
         <div class="class-actions">
           <div class="class-action">
@@ -263,42 +271,68 @@
 <!-- property modal -->
 <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
   <div class="modal-dialog">
-    <div class="modal-content" style="overflow:auto">
+    <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-            aria-label="Close"><span aria-hidden="true"><img
-            src="/img/close_modal.png" width="22"/></span></button>
-      </div>
-      <div class="modal-body">
-        <div controlled-term field="field" parent="parentElement"  search-mode="controlledTerms.mode" search-range="controlledTerms.range" salt="documentTitle" action="controlledTerms.action" selections="controlledTerms.selections"></div>
 
-        <!-- search or create buttons -->
-        <div style="margin:20px auto;max-width:800px">
-        <div class="flex">
-        <div  style="" class="controlled-term-options">
-          <div ng-if="controlledTerms.action == 'search'" style="margin:20px 0">
-            Use BioPortal to
-            <button  class="std-btn btn btn-add-create-term" ng-click="switchScope('','create')">Create</button>
-            a {{controlledTerms.mode}} term.
+
+        <!-- Property | Fields | Values  selector-->
+        <div  id="controlled-term-tabs" class="element-toggles " style="margin: auto;padding:10px">
+          <div ng-if="allowsProperty()" class="element-toggle" ng-class="{active: isFieldPropertiesMode()}"
+              ng-click="setFieldPropertiesMode()"><span style="margin: 0 10px">Property</span></div>
+          <div ng-if="allowsField()" class="element-toggle" ng-class="{active: isFieldTypesMode()}"
+              ng-click="setFieldTypesMode()"><span style="margin: 0 10px">Fields</span>
           </div>
-          <div ng-if="controlledTerms.action == 'create'" style="margin:20px 0">
-            Use BioPortal to
-            <button  class="std-btn btn btn-add-create-term "  ng-click="switchScope('','search')">Search</button>
-            for a {{controlledTerms.mode}} term.
+          <div ng-if="allowsValue()" class="element-toggle" ng-class="{active: isFieldValuesMode()}"
+              ng-click="setFieldValuesMode()"><span style="margin: 0 10px">Values</span>
           </div>
         </div>
 
+            <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true"><img
+                src="/img/close_modal.png" width="22"/></span></button>
 
 
-          <div style="">
+      </div>
+
+
+
+    <div class="modal-body">
+      <div controlled-term field="field" parent="parentElement" search-scope="controlledTerms.mode" search-mode="controlledTerms.mode"
+          search-range="controlledTerms.range" salt="documentTitle" action="controlledTerms.action"
+          selections="controlledTerms.selections"></div>
+    </div>
+
+    <div class="modal-footer">
+
+      <!-- search or create buttons -->
+
+        <div style="width:80%;margin:0 auto;">
+          <div class="flex">
+            <div class="controlled-term-options">
+              <div ng-if="controlledTerms.action == 'search'" style="margin:0">
+                Use BioPortal to
+                <button class="std-btn btn btn-add-create-term" ng-click="switchScope('','create')">Create</button>
+                a {{controlledTerms.mode}} term.
+              </div>
+              <div ng-if="controlledTerms.action == 'create'" style="margin:20px 0">
+                Use BioPortal to
+                <button class="std-btn btn btn-add-create-term " ng-click="switchScope('','search')">Search</button>
+                for a {{controlledTerms.mode}} term.
+              </div>
+            </div>
+
+
             <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
-          </div>
 
-      </div>
+
+          </div>
         </div>
-        </div>
-      </div>
+
+
+
     </div>
   </div>
 </div>
+</div>
+
 

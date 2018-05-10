@@ -17,6 +17,7 @@ define([
         field     : '=',
         parent    : '=',
         searchMode: '=',
+        searchScope: '=',
         searchRange: '=',
         salt      : '=',
         action    : '=',

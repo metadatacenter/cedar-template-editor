@@ -3,7 +3,7 @@
 <div ng-if="tsc.isFieldPropertiesMode()" class="element-toggle-add-values">
 
   <!--- creating properties -->
-  <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
+  <div ng-if="tsc.isCreating()" style="margin: 20px auto;">
 
     <form name="propertyForm">
       <div class="btn-start-over-group clearfix" style="visibility: hidden;">
@@ -40,7 +40,7 @@
   </div>
 
   <!-- searching properties -->
-  <div ng-if="tsc.isSearching()" style="margin: 20px auto;max-width: 800px">
+  <div ng-if="tsc.isSearching()" style="margin: 0 auto;">
     <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
       current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
         add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
@@ -90,9 +90,6 @@
 
     <!-- create values -->
     <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
-
-      <!-- break -->
-      <!--<hr style="margin:0 auto;max-width:800px;background:#ccc;height:1px"/>-->
 
       <!-- term or value set buttons -->
         <div style="text-align:center;margin:20px 0" >
@@ -145,7 +142,7 @@
     </div>
 
     <!-- search content -->
-    <div ng-if="tsc.isSearching()" style="margin: 20px auto;max-width: 800px">
+    <div ng-if="tsc.isSearching()" style="margin: 20px auto;">
       <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
           current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
           add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"

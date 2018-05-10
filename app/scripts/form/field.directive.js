@@ -38,7 +38,7 @@ define([
 
       var dms = DataManipulationService;
       $scope.fieldSchema = dms.schemaOf($scope.field);
-      $scope.controlledTerms = {"mode" : "property", "range": ["property","value"], "action": "search", "selections": false};
+      $scope.controlledTerms = {"mode" : "property","scope" : "properties",  "range": ["property","value"], "action": "search", "selections": false};
 
 
 
@@ -48,6 +48,51 @@ define([
         $rootScope.$broadcast("cedar.templateEditor.controlledTerm.switchScope",
             [scope, action]);
       };
+
+      $scope.allowsProperty = function() {
+        return $scope.controlledTerms.range && $scope.controlledTerms.range.includes("property") ;
+      };
+
+      $scope.allowsField= function() {
+        return $scope.controlledTerms.range  && $scope.controlledTerms.range .includes("field");
+      }
+
+      $scope.allowsValue= function() {
+        return $scope.controlledTerms.range  && $scope.controlledTerms.range .includes("value");
+      }
+
+      $scope.isFieldPropertiesMode= function() {
+        return $scope.controlledTerms.mode  == 'property';
+      }
+
+      $scope.isFieldTypesMode= function() {
+        return $scope.controlledTerms.mode == 'field';
+      }
+
+      $scope.isFieldValuesMode= function() {
+        return $scope.controlledTerms.mode == 'value';
+      }
+
+      $scope.setFieldPropertiesMode= function() {
+        $scope.controlledTerms.mode = 'property';
+        $scope.controlledTerms.scope ='properties';
+        $scope.controlledTerms.action = 'search';
+        //vm.creatingObject = null;
+      }
+
+      $scope.setFieldTypesMode= function() {
+        $scope.controlledTerms.mode = 'field';
+        $scope.controlledTerms.scope ='classes';
+        $scope.controlledTerms.action = 'search';
+        //vm.creatingObject = null;
+      }
+
+      $scope.setFieldValuesMode= function() {
+        $scope.controlledTerms.mode = 'value';
+        $scope.controlledTerms.scope ='classes';
+        $scope.controlledTerms.action = 'search';
+        //vm.creatingObject = null;
+      }
 
 
       //
