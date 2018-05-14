@@ -539,16 +539,14 @@ define([
         };
 
         $scope.showModal = function (id) {
-          //jQuery("#" + id).modal('show');
-          console.log('showModal',id);
-          UIUtilService.showModal(id,'type');
+          jQuery("#" + id).modal('show');
+          //UIUtilService.showModal(id,'template');
         };
 
         //TODO this event resets modal state and closes modal
         $scope.$on("field:controlledTermAdded", function () {
-          console.log('hideModal');
-          UIUtilService.hideModal();
-          //jQuery("#control-options-template-field").modal('hide');
+          //UIUtilService.hideModal();
+          jQuery("#control-options-template-field").modal('hide');
         });
 
 
