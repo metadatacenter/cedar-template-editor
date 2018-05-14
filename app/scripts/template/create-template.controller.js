@@ -539,9 +539,8 @@ define([
         };
 
         $scope.showModal = function (id) {
-          //jQuery("#" + id).modal('show');
-          console.log('showModal',id);
-          UIUtilService.showModal(id,'type');
+          jQuery("#" + id).modal('show');
+          //UIUtilService.showModal(id,'type');
         };
 
         //TODO this event resets modal state and closes modal
