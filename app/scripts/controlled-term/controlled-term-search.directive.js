@@ -13,25 +13,20 @@ define([
       function controlledTermSearchDirective(StringUtilsService) {
         var directive = {
           bindToController: {
-            fieldName            : '=',
-            field                : '=',
-            parent               : '=',
-            searchMode           : '=', // Search modes: properties, field, values
-            searchRange          : '=', // Search modes: properties, field, values
-            selectedClass        : '=',
-            currentOntology      : '=',
-            resetCallback        : '=?',
-            addPropertyCallback  : '=?',
-            addClassCallback     : '=?',
-            addValueCallback     : '=?',
-            addValueSetCallback  : '=?',
+            model: '=',
+
             isLoadingClassDetails: '=',
             isCreatingMappings   : '=',
             isCreatingVs         : '=',
             treeVisible          : '=',
-            action               : '=',
-            creatingObject:'=',
-            mappingObject:'='
+            creatingObject       : '=',
+            mappingObject        : '=',
+
+            resetCallback      : '=?',
+            addPropertyCallback: '=?',
+            addClassCallback   : '=?',
+            addValueCallback   : '=?',
+            addValueSetCallback: '=?',
           },
           controller      : controlledTermSearchDirectiveController,
           controllerAs    : 'tsc',
@@ -73,7 +68,9 @@ define([
           vm.showSearchPreloader = false;
           vm.showEmptyQueryMsg = false;
 
-          vm.searchScope = (vm.searchMode == 'property' ? 'properties' : 'classes');
+
+          vm.model.scope = (vm.model.mode == 'property' ? 'properties' : 'classes');
+
           vm.isopen = true;
 
 
@@ -124,22 +121,22 @@ define([
           vm.allowsValue = allowsValue;
 
 
-          vm.propertyUri = '';
+
           vm.propertyLabel = '';
           vm.propertyDescription = '';
-          vm.addPropertyUri = addPropertyUri;
+
 
 
           function allowsProperty() {
-            return vm.searchRange && vm.searchRange.includes("property");
+            return vm.model.range && vm.model.range.includes("property");
           }
 
           function allowsField() {
-            return vm.searchRange && vm.searchRange.includes("field");
+            return vm.model.range && vm.model.range.includes("field");
           }
 
           function allowsValue() {
-            return vm.searchRange && vm.searchRange.includes("value");
+            return vm.model.range && vm.model.range.includes("value");
 
           }
 
@@ -233,7 +230,7 @@ define([
             vm.resultsFound = null;
             vm.showEmptyQueryMsg = false;
             vm.showSearchPreloader = true;
-            vm.action = 'search';
+            vm.model.action = 'search';
 
           }
 
@@ -274,7 +271,7 @@ define([
           };
 
           function getDefaultSearchQuery() {
-            return vm.fieldName;
+            return vm.model.salt;
           }
 
           function changeSearchScope() {
@@ -295,7 +292,7 @@ define([
           function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
             console.log('reset');
             if (!keepSearchScope) {
-              vm.searchScope = (vm.searchMode == 'property' ? "properties" : "classes");
+              vm.model.scope = (vm.model.mode == 'property' ? "properties" : "classes");
               vm.searchOptionsVisible = false;
             }
             if (!keepCreationMode) {
@@ -322,14 +319,14 @@ define([
             vm.showEmptyQueryMsg = false;
             vm.showSearchPreloader = false;
             vm.treeVisible = false;
-            vm.selectedClass = null;
+            vm.model.selectedClass = null;
             vm.isLoadingOntologyDetails = false;
             vm.loadingOntologies = false;
 
             if (typeof vm.resetCallback === "function") {
               vm.resetCallback();
             }
-            vm.propertyUri = '';
+
             vm.propertyLabel = '';
             vm.propertyDescription = '';
           }
@@ -339,59 +336,60 @@ define([
            */
 
           function isFieldPropertiesMode() {
-            return vm.searchMode == 'property';
+            return vm.model.mode == 'property';
           }
 
           function isFieldTypesMode() {
-            return vm.searchMode == 'field';
+            return vm.model.mode == 'field';
           }
 
           function isFieldValuesMode() {
-            return vm.searchMode == 'value';
+            return vm.model.mode == 'value';
           }
 
           function setFieldPropertiesMode() {
-            vm.searchMode = 'property';
-            vm.searchScope = 'properties';
+            vm.model.mode = 'property';
+            vm.model.scope = 'properties';
             //vm.action = 'search';
           }
 
           function setFieldTypesMode() {
-            vm.searchMode = 'field';
-            vm.searchScope = 'classes';
+            vm.model.mode = 'field';
+            vm.model.scope = 'classes';
             //vm.action = 'search';
           }
 
           function setFieldValuesMode() {
-            vm.searchMode = 'value';
-            vm.searchScope = 'classes';
+            vm.model.mode = 'value';
+            vm.model.scope = 'classes';
             //vm.action = 'search';
-            console.log('setFIeldValuesMode', vm.action);
+            console.log('setFIeldValuesMode', vm.model.action);
           }
+
           //setTab('values');
 
           function isSearching() {
-            return (vm.action == 'search');
+            return (vm.model.action == 'search');
           }
 
           function isSearchingClasses() {
-            return (vm.action == 'search' && vm.searchScope == 'classes');
+            return (vm.model.action == 'search' && vm.model.scope == 'classes');
           }
 
           function isSearchingOntologies() {
-            return (vm.action == 'search' && vm.searchScope == 'ontologies');
+            return (vm.model.action == 'search' && vm.model.scope == 'ontologies');
           }
 
           function isSearchingValueSets() {
-            return (vm.action == 'search' && vm.searchScope == 'value-sets');
+            return (vm.model.action == 'search' && vm.model.scope == 'value-sets');
           }
 
           function isSearchingProperties() {
-            return (vm.action == 'search' && vm.searchScope == 'properties');
+            return (vm.model.action == 'search' && vm.model.scope == 'properties');
           }
 
           function isCreating() {
-            return (vm.action == 'create');
+            return (vm.model.action == 'create');
           }
 
           function isEmptySearchQuery() {
@@ -433,14 +431,15 @@ define([
             if (close) {
               if (vm.isSearchingClasses()) {
                 if (vm.isFieldTypesMode() && (typeof vm.addClassCallback === "function")) {
-                  vm.addClassCallback(vm.selectedClass, vm.currentOntology);
+                  vm.addClassCallback(vm.model.selectedClass, vm.model.currentOntology);
                 } else if (vm.isFieldValuesMode() && (typeof vm.addValueCallback === "function")) {
                   vm.addValueCallback();
                 }
               }
 
               if (vm.isSearchingProperties() && (typeof vm.addPropertyCallback === "function")) {
-                vm.addPropertyCallback(vm.selectedClass.id, vm.selectedClass.prefLabel, vm.selectedClass.definition);
+                vm.addPropertyCallback(vm.model.selectedClass.id, vm.model.selectedClass.prefLabel,
+                    vm.model.selectedClass.definition);
               }
 
               if (vm.isSearchingValueSets() && (typeof vm.addValueSetCallback === "function")) {
@@ -457,14 +456,14 @@ define([
           // select this thingy, then optionally close(clear) the dialog
           function selectResult(selection, resultId, close) {
             // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
-            vm.selectedClass = {};
-            vm.currentOntology = {};
-            vm.currentOntology.info = {};
+            vm.model.selectedClass = {};
+            vm.model.currentOntology = {};
+            vm.model.currentOntology.info = {};
             console.log('selectResult', vm.isSearchingProperties(), vm.isSearchingClasses(), vm.isSearchingValueSets());
 
             if (vm.isSearchingClasses()) {
-              vm.selectedClass.prefLabel = selection.prefLabel;
-              vm.currentOntology.info.id = selection.source.id;
+              vm.model.selectedClass.prefLabel = selection.prefLabel;
+              vm.model.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
               if (selection.details.type == 'OntologyClass') {
                 controlledTermService.loadTreeOfClass(selection.details, vm);
@@ -476,18 +475,18 @@ define([
             }
 
             if (vm.isSearchingProperties()) {
-              vm.selectedClass.id = selection.details.id;
-              vm.selectedClass.prefLabel = selection.prefLabel;
-              vm.selectedClass.definition = selection.details.definition;
-              vm.currentOntology.info.id = selection.source.id;
+              vm.model.selectedClass.id = selection.details.id;
+              vm.model.selectedClass.prefLabel = selection.prefLabel;
+              vm.model.selectedClass.definition = selection.details.definition;
+              vm.model.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
               controlledTermService.loadTreeOfProperty(selection.details, vm);
               handleClose(close);
             }
 
             if (vm.isSearchingValueSets()) {
-              vm.selectedClass.prefLabel = selection.prefLabel;
-              vm.currentOntology.info.id = selection.source.id;
+              vm.model.selectedClass.prefLabel = selection.prefLabel;
+              vm.model.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
               if (selection.details.type == 'ValueSet') {
                 controlledTermService.loadTreeOfValueSet(selection.details, vm);
@@ -497,9 +496,9 @@ define([
           }
 
           function selectOntology(selection) {
-            vm.currentOntology = selection;
+            vm.model.currentOntology = selection;
             vm.isLoadingOntologyDetails = true;
-            vm.selectedClass = null;
+            vm.model.selectedClass = null;
             vm.classDetails = null;
             vm.treeVisible = true;
             if (!isFieldPropertiesMode()) {
@@ -515,7 +514,7 @@ define([
           }
 
           function isCurrentOntology() {
-            return vm.currentOntology && vm.currentOntology != '';
+            return vm.model.currentOntology && vm.model.currentOntology != '';
           }
 
           /* Used in ontology tree directive. */
@@ -526,8 +525,8 @@ define([
             }
             var spl = subtree["@id"];
             var st;
-            if (vm.selectedClass && vm.selectedClass["@id"]) {
-              st = vm.selectedClass["@id"];
+            if (vm.smodel.electedClass && vm.model.selectedClass["@id"]) {
+              st = vm.model.selectedClass["@id"];
             }
             return spl == st;
           }
@@ -545,11 +544,12 @@ define([
           }
 
           $scope.$on('cedar.templateEditor.controlledTerm.switchScope', function (event, args) {
+                console.log('switchScope');
                 var scope = args[0];
                 var action = args[1];
                 reset(false, false, false, false, true);
                 // vm.action = action;
-                vm.creatingObject = (action == 'search') ? null :'value';
+                vm.creatingObject = (action == 'search') ? null : 'value';
               }
           );
 
@@ -587,7 +587,7 @@ define([
             var classId = subtree['@id'];
 
             // Get selected class details from the links.self endpoint provided.
-            vm.selectedClass = subtree;
+            vm.model.selectedClass = subtree;
             controlledTermDataService.getClassById(acronym, classId).then(function (response) {
               vm.classDetails = response;
             });
@@ -600,7 +600,7 @@ define([
           /* Hide Ontology Tree and Details */
           function hideTree() {
             vm.treeVisible = false;
-            vm.currentOntology = '';
+            vm.model.currentOntology = '';
             vm.classDetails = '';
           }
 
@@ -612,7 +612,7 @@ define([
 
             // Get selected class details from the links.self endpoint provided.
             // TODO: fix naming of variables. We are using class in some places where we should use property. An example is the following line
-            vm.selectedClass = subtree;
+            vm.model.selectedClass = subtree;
 
             controlledTermDataService.getPropertyById(acronym, classId).then(function (response) {
               vm.classDetails = response;
@@ -626,7 +626,7 @@ define([
           /* Hide Ontology Tree and Details */
           function hideTree() {
             vm.treeVisible = false;
-            vm.currentOntology = '';
+            vm.model.currentOntology = '';
             vm.classDetails = '';
           }
 
@@ -636,10 +636,10 @@ define([
 
           /* Ensures that the fieldName search query is updated when the field name is updated */
           $scope.$watch(function () {
-                return vm.fieldName;
+                return vm.model.salt;
               },
               function (value) {
-                vm.fieldName = value;
+                vm.model.salt = value;
                 vm.searchQuery = value;
               });
 
@@ -713,25 +713,8 @@ define([
             event.target.select();
           }
 
-          function addPropertyUri() {
-            console.log('addPropertyUri');
-            // tell parent to update the property for this field
 
-            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated",
-                [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
-          }
 
-          //
-          // init
-          //
-
-          // if (vm.searchMode == 'property') {
-          //   $scope.activeTab = 0;
-          // } else if (vm.searchMode == 'field') {
-          //   $scope.activeTab = 1;
-          // } else {
-          //   $scope.activeTab = 2;
-          // }
 
         }
       }

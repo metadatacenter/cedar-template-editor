@@ -41,7 +41,7 @@ define([
     vm.addOntologyToValueConstraint = addOntologyToValueConstraint;
     vm.addValueConstraint = addValueConstraint;
     vm.addValueSetToValueConstraint = addValueSetToValueConstraint;
-    vm.currentOntology = null;
+    vm.model.currentOntology = null;
     vm.currentValueSet = null;
     vm.deleteFieldAddedBranch = deleteFieldAddedBranch;
     vm.deleteFieldAddedClass = deleteFieldAddedClass;
@@ -83,7 +83,7 @@ define([
     vm.allowsField = allowsField;
     vm.allowsValue = allowsValue;
     vm.switchScope = switchScope;
-    vm.controlledTerm = {};
+    //vm.controlledTerm = {};
 
     // vm.isCreatingValue=false;
     // vm.isCreatingValueSet=false;
@@ -187,7 +187,8 @@ define([
 
     function addProperty(property, label, definition, source, type) {
       console.log('addProperty',vm.searchMode);
-      $rootScope.$broadcast('property:propertyAdded', [vm.searchMode, property, label, definition, DataManipulationService.getId(vm.field), source, vm.getTypeForUi(type)]);
+      $rootScope.$broadcast('property:propertyAdded',
+          [vm.searchMode, property, label, definition, DataManipulationService.getId(vm.model.field), source, vm.getTypeForUi(type)]);
     };
 
     function addBranchToValueConstraint() {
@@ -230,7 +231,7 @@ define([
       var label = selection.prefLabel;
       var definition = selection.definition;
       var type = selection.type;
-      var fieldId = DataManipulationService.getId(vm.field);
+      var fieldId = DataManipulationService.getId(vm.model.field);
 
       // has this selection been added yet?
       var alreadyAdded = false;
@@ -265,7 +266,7 @@ define([
         /**
          * Add ontology type to JSON.
          */
-        var properties = $rootScope.propertiesOf(vm.field);
+        var properties = $rootScope.propertiesOf(vm.model.field);
         var selfUrl = controlledTermService.getSelfUrl(selection);
         //var selfUrl = selection['@id'];
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
@@ -302,9 +303,9 @@ define([
         addValueSetToValueConstraint();
       }
       // Updates the field schema according to whether the field is controlled or not
-      DataManipulationService.initializeSchema(vm.field);
+      DataManipulationService.initializeSchema(vm.model.field);
 
-      $rootScope.$broadcast('value:controlledTermAdded',[DataManipulationService.getId(vm.field)]);
+      $rootScope.$broadcast('value:controlledTermAdded',[DataManipulationService.getId(vm.model.field)]);
     }
 
     /**
@@ -431,7 +432,7 @@ define([
 
     function deleteFieldAddedItem(itemData) {
       console.log('deleteFieldAddedItem');
-      var properties = $rootScope.propertiesOf(vm.field);
+      var properties = $rootScope.propertiesOf(vm.model.field);
       for (var i = 0, len = vm.addedFieldItems.length; i < len; i += 1) {
         if (vm.addedFieldItems[i] == itemData) {
           var itemDataId = itemData["@id"];
@@ -484,15 +485,15 @@ define([
       vm.stagedOntologyValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function (ontologyValueConstraint) {
-        existed = existed || ontologyValueConstraint.uri == vm.currentOntology.info["@id"];
+        existed = existed || ontologyValueConstraint.uri == vm.model.currentOntology.info["@id"];
       });
 
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
-          'numTerms': vm.currentOntology.info.details.numberOfClasses,
-          'acronym' : vm.currentOntology.info.id,
-          'name'    : vm.currentOntology.info.name,
-          'uri'     : vm.currentOntology.info['@id']
+          'numTerms': vm.model.currentOntology.info.details.numberOfClasses,
+          'acronym' : vm.model.currentOntology.info.id,
+          'name'    : vm.model.currentOntology.info.name,
+          'uri'     : vm.model.currentOntology.info['@id']
         });
       }
 
@@ -505,13 +506,13 @@ define([
     function startOver() {
       //vm.searchMode = vm.options && vm.options.searchMode || "";
       //vm.modalId = vm.options && vm.options.modalId || "";
-      vm.currentOntology = null;
+      vm.model.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
       vm.stagedOntologyClassValueConstraints = [];
       vm.stagedOntologyValueConstraints = [];
       vm.stageValueConstraintAction = null;
-      vm.selectedClass = null;
+      vm.model.selectedClass = null;
       vm.classDetails = null;
       vm.selectedProperty = null;
       vm.propertyDetails = null;
@@ -554,8 +555,8 @@ define([
 
       if (!existed) {
         vm.stagedBranchesValueConstraints.push({
-          'source'  : vm.currentOntology.info.name + ' (' + vm.currentOntology.info.id + ')',
-          'acronym' : vm.currentOntology.info.id,
+          'source'  : vm.model.currentOntology.info.name + ' (' + vm.model.currentOntology.info.id + ')',
+          'acronym' : vm.model.currentOntology.info.id,
           'uri'     : selection['@id'],
           'name'    : selection.prefLabel,
           'maxDepth': vm.depthOptions[0].value
@@ -566,7 +567,7 @@ define([
 
     function stageOntologyClassSiblingsValueConstraint(selection) {
       vm.stagedOntologyClassValueConstraints = [];
-      var acronym = vm.currentOntology.info.id;
+      var acronym = vm.model.currentOntology.info.id;
       controlledTermDataService.getClassParents(acronym, selection['@id']).then(function (response) {
         if (response && angular.isArray(response) && response.length > 0) {
           controlledTermDataService.getClassChildren(acronym, response[0]['@id']).then(function (childResponse) {
@@ -594,7 +595,7 @@ define([
     };
 
     function stageOntologyClass(selection, type) {
-      if (selection && vm.currentOntology) {
+      if (selection && vm.model.currentOntology) {
         if (type === undefined) {
           type = 'OntologyClass';
         }
@@ -606,7 +607,7 @@ define([
           //'default'  : false
         };
         if (type == 'OntologyClass') {
-          klass['source'] = vm.currentOntology.info.id;
+          klass['source'] = vm.model.currentOntology.info.id;
         } else {
           klass['source'] = vm.currentValueSet.prefLabel;
         }
@@ -620,10 +621,10 @@ define([
     function stageValueSetValueConstraint() {
       vm.stagedValueSetValueConstraints = [];
       vm.stagedValueSetValueConstraints.push({
-        'name'        : vm.currentOntology.vs.prefLabel,
-        'vsCollection': vm.currentOntology.info.id,
-        'uri'         : vm.currentOntology.vs['@id'],
-        'numTerms'    : vm.currentOntology.tree.length
+        'name'        : vm.model.currentOntology.vs.prefLabel,
+        'vsCollection': vm.model.currentOntology.info.id,
+        'uri'         : vm.model.currentOntology.vs['@id'],
+        'numTerms'    : vm.model.currentOntology.tree.length
       });
       vm.stageValueConstraintAction = "add_entire_value_set";
     };
@@ -667,7 +668,7 @@ define([
             var label = args[1];
             var description = args[2];
 
-            $rootScope.$broadcast('property:propertyAdded', [vm.searchMode,property, label, description, DataManipulationService.getId(vm.field)]);
+            $rootScope.$broadcast('property:propertyAdded', [vm.searchMode,property, label, description, DataManipulationService.getId(vm.model.field)]);
           }
         }
     );
@@ -714,8 +715,8 @@ define([
 
     $scope.$watch("field", function (newValue, oldValue) {
       var i, classId, acronym, properties;
-      if (vm.field) {
-        properties = $rootScope.propertiesOf(vm.field);
+      if (vm.model.field) {
+        properties = $rootScope.propertiesOf(vm.model.field);
       }
 
       if (newValue !== undefined) {
@@ -784,7 +785,7 @@ define([
 
     // If the selected class changes, the constraints need to be updated
     $scope.$watch(function () {
-          return vm.selectedClass;
+          return vm.model.selectedClass;
         },
         function (value) {
           if (!value) {
@@ -833,20 +834,20 @@ define([
 
     // If the selected ontology changes, the constraints need to be updated
     $scope.$watch(function () {
-          return vm.currentOntology;
+          return vm.model.currentOntology;
         },
         function (value) {
-          if (!vm.selectedClass || vm.stageValueConstraintAction == 'add_ontology') {
+          if (!vm.model.selectedClass || vm.stageValueConstraintAction == 'add_ontology') {
             if (value && value.info && value.info.details) {
               vm.stageOntologyValueConstraint();
             }
-            if (!vm.selectedClass) {
+            if (!vm.model.selectedClass) {
               vm.stageValueConstraintAction = 'add_ontology'
             }
           }
 
-          if (vm.selectedClass && vm.stageValueConstraintAction == 'add_entire_value_set') {
-            if (vm.currentOntology.vs) {
+          if (vm.model.selectedClass && vm.stageValueConstraintAction == 'add_entire_value_set') {
+            if (vm.model.currentOntology.vs) {
               vm.stageValueSetValueConstraint();
             }
           }
@@ -858,8 +859,8 @@ define([
 
     function assignValueConstraintToField() {
       console.log('assignValueConstraintToField');
-      $rootScope.schemaOf(vm.field)._valueConstraints =
-          angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
+      $rootScope.schemaOf(vm.model.field)._valueConstraints =
+          angular.extend($rootScope.schemaOf(vm.model.field)._valueConstraints, vm.valueConstraint)
 
       delete vm.stageValueConstraintAction;
       vm.stagedOntologyValueConstraints = [];
@@ -869,13 +870,13 @@ define([
       vm.stagedBranchesValueConstraints = [];
       //vm.startOver();
 
-      $rootScope.$broadcast('field:controlledTermAdded', [vm.searchMode,DataManipulationService.getId(vm.field)]);
+      $rootScope.$broadcast('field:controlledTermAdded', [vm.searchMode,DataManipulationService.getId(vm.model.field)]);
 
     }
 
     function setInitialFieldConstraints() {
-      if (vm.field) {
-        vm.valueConstraint = angular.copy($rootScope.schemaOf(vm.field)._valueConstraints) || {};
+      if (vm.model.field) {
+        vm.valueConstraint = angular.copy($rootScope.schemaOf(vm.model.field)._valueConstraints) || {};
         vm.valueConstraint.ontologies = vm.valueConstraint.ontologies || [];
         vm.valueConstraint.valueSets = vm.valueConstraint.valueSets || [];
         vm.valueConstraint.classes = vm.valueConstraint.classes || [];

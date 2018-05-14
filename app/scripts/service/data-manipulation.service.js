@@ -1477,6 +1477,7 @@ define([
         } else {
           props['@context'].properties[fieldProp]['enum'][0] = propertyId;
         }
+        console.log('updateProperty',fieldProp, propertyId, props['@context'].properties[fieldProp]);
       }
     };
 

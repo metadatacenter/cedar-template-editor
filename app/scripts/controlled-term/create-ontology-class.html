@@ -3,6 +3,7 @@
   <!--Please provide the following information for the term you want to create-->
 <!--</p>-->
 <!--<br/>-->
+<div style="margin:0 20px;">
 <div class="floating-label-wrapper">
   <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Name"
       ng-model="pcc.provisionalClass.prefLabel" with-floating-label=""/>
@@ -15,6 +16,7 @@
       placeholder="Definition"
       ng-model="pcc.provisionalClass.description"
       with-floating-label=""></textarea>
+</div>
 </div>
 
 <div class="mappings-toggle" ng-if="pcc.isValid()">

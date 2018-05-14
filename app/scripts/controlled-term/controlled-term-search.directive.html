@@ -1,9 +1,9 @@
-
 <!-- properties | fields | values  content-->
 <div ng-if="tsc.isFieldPropertiesMode()" class="element-toggle-add-values">
 
   <!--- creating properties -->
   <div ng-if="tsc.isCreating()" style="margin: 20px auto;">
+
 
     <form name="propertyForm">
       <div class="btn-start-over-group clearfix" style="visibility: hidden;">
@@ -16,33 +16,19 @@
           <div class="input-group field-search-input-group" style="width:100%">
             <input type="url" class="form-control field-search-form-control" name="propertyURI"
                 placeholder="property URI" aria-label="property URI"
-                ng-model="tsc.propertyUri" with-floating-label=""
-                ng-submit="tsc.addPropertyUri()"/>
+                ng-model="tsc.model.propertyUri" with-floating-label=""
+                ng-submit="tsc.model.addPropertyUri()"/>
           </div>
         </div>
 
-        <div class="search-messages" >
-          <div class="search-msg" ng-show="!tsc.propertyUri">Please enter a URI</div>
-        </div>
-
-        <div class="search-messages" >
-          <div class="search-msg" ng-show="tsc.propertyUri">Click OK to create the property</div>
-        </div>
-
-        <div class="clear btn-create-term" ng-show="tsc.propertyUri">
-          <button  type="button"
-              class="std-button btn"
-              ng-click="tsc.addPropertyUri()">Ok
-          </button>
-        </div>
       </div>
     </form>
   </div>
 
   <!-- searching properties -->
   <div ng-if="tsc.isSearching()" style="margin: 0 auto;">
-    <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
-      current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
+    <cedar-bioportal-search model="tsc.model" field-name="tsc.model.salt"  search-mode="tsc.model.mode" action="tsc.model.action" selected-class="tsc.model.selectedClass"
+      current-ontology="tsc.model.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
         add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
         is-loading-class-details="tsc.isLoadingClassDetails" is-creating-mappings="tsc.isCreatingMappings" is-creating-vs="tsc.isCreatingVs"
         tree-visible="tsc.treeVisible"></cedar-bioportal-search>
@@ -85,11 +71,10 @@
 
 <div ng-if="tsc.isFieldValuesMode()" class="element-toggle-add-values">
 
-
   <div ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
 
     <!-- create values -->
-    <div ng-if="tsc.isCreating()" style="margin: 20px auto;max-width: 800px">
+    <div ng-if="tsc.isCreating()">
 
       <!-- term or value set buttons -->
         <div style="text-align:center;margin:20px 0" >
@@ -107,6 +92,7 @@
         <div ng-if="tsc.creatingObject == 'value'" class="clear form-group add-ontology-class"
             ng-controller="provisionalClassController as pcc">
           <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+
           <div class="search-messages"><div class="search-msg">The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template.</div></div>
 
           <div class="clear btn-create-term" ng-ifd="pcc.isValid()">
@@ -142,9 +128,9 @@
     </div>
 
     <!-- search content -->
-    <div ng-if="tsc.isSearching()" style="margin: 20px auto;">
-      <cedar-bioportal-search field-name="tsc.fieldName"  search-mode="tsc.searchMode" action="tsc.action" selected-class="tsc.selectedClass"
-          current-ontology="tsc.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
+    <div ng-if="tsc.isSearching()" >
+      <cedar-bioportal-search model="tsc.model" field-name="tsc.model.salt"  search-mode="tsc.model.mode" action="tsc.model.action" selected-class="tsc.model.selectedClass"
+          current-ontology="tsc.model.currentOntology" reset-callback="tsc.resetCallback" add-property-callback="tsc.addPropertyCallback"
           add-class-callback="tsc.addClassCallback" add-value-callback="tsc.addValueCallback" add-value-set-callback="tsc.addValueSetCallback"
           is-loading-class-details="tsc.isLoadingClassDetails" is-creating-mappings="tsc.isCreatingMappings" is-creating-vs="tsc.isCreatingVs"
           tree-visible="tsc.treeVisible"></cedar-bioportal-search>

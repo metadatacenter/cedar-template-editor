@@ -10,6 +10,7 @@ define([
   function cedarBioportalSearch(controlledTermDataService, StringUtilsService) {
     var directive = {
       bindToController: {
+        model:'=',
         fieldName            : '=',
         searchMode           : '=', // Search modes: properties, field, values
         action               : '=',
@@ -291,7 +292,7 @@ define([
         vm.selectedResultId = null;
         vm.showEmptyQueryMsg = false;
         vm.showSearchPreloader = false;
-        vm.treeVisible = false;
+        vm.treeVisible = true;
         vm.selectedClass = null;
         vm.isLoadingOntologyDetails = false;
         vm.loadingOntologies = false;

@@ -41,7 +41,21 @@ define([
     $scope.details;
     $scope.cannotWrite;
     $scope.lockReason = '';
-    $scope.controlledTerms = {"mode" : "field", "range": ["field"]};
+    $scope.controlledTerms = {
+      "mode"      : "field",
+      "scope"     : "classes",
+      "range"     : ["field"],
+      "action"    : "search",
+      "selectedClass": null,
+      "currentOntology": null,
+      "selections": false,
+      "view_tab": "search",
+      "stageValueConstraintAction" : null,
+      "stageOntologyClassValueConstraint": null,
+      "stageBranchValueConstraint": null,
+      "stageOntologyValueConstraint": null,
+      "addedFieldItems": []
+    };
 
 
     // can we write to this template?  if no details, then new element
@@ -513,7 +527,15 @@ define([
     //   $scope.finderResource = null;
     // };
 
+    $scope.showControlledTermsModal = function () {
+      // open and activate the modal
+      $scope.controlledTermsModalVisible = true;
+      $rootScope.$broadcast('controlledTermsModalVisible',[$scope.controlledTermsModalVisible,'field','classes',['field'],'search',$scope.element, $scope.element, dms.getTitle($scope.element)]);
+    };
 
+    $scope.hideControlledTermsModal = function () {
+      jQuery("#cedar-controlled-terms-modal").modal('hide');
+    };
 
     $scope.enableSaveButton = function () {
       $timeout(function () {

@@ -14,14 +14,7 @@ define([
 
     var directive = {
       bindToController: {
-        field     : '=',
-        parent    : '=',
-        searchMode: '=',
-        searchScope: '=',
-        searchRange: '=',
-        salt      : '=',
-        action    : '=',
-        selections: "="
+        model : '='
       },
       controller      : 'controlledTermDirectiveController',
       controllerAs    : 'ctdc',

@@ -28,7 +28,7 @@
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-template-field')">
+            ng-click="showControlledTermsModal();">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -125,28 +125,13 @@
       </cedar-finder>
     </section>
 
-
     <section>
-    <div class="modal fade controlled-terms-modal" id="control-options-template-field" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content" style="overflow:auto">
-          <div class="modal-header">
-            <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                aria-label="Close"><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-          </div>
-          <div class="modal-body">
-            <div controlled-term field="form"  parentElement="" salt="documentTitle"  search-mode="controlledTerms.mode" search-range="controlledTerms.range"></div>
-            <div class="class-actions">
-              <div class="class-action">
-                <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <cedar-controlled-terms-modal cedar-modal-show modal-visible="controlledTermsModalVisible" class="modal fade controlled-terms-modal" id="cedar-controlled-terms-modal"
+          tabindex="-1" role="dialog" aria-labelledby="controlledTermsModalHeader"
+          data-keyboard="true" data-backdrop="static" >
+      </cedar-controlled-terms-modal>
     </section>
+
   </div>
 
 

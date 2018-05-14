@@ -4033,6 +4033,9 @@ section.dashboard-elements {
   .results-table-container .results-table, .results-headers-table {
     td, th {
       vertical-align: middle;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 
@@ -5292,8 +5295,9 @@ p.instructions {
 
     &.minor {
       padding:10px;
-      margin:0 20px;
+      margin:0 10px;
       border-color:transparent;
+      min-width:80px;
     }
   }
 
@@ -6012,7 +6016,7 @@ p.instructions {
 .controlled-terms-modal {
 
   .modal-dialog {
-    width: 80%;
+    width: 90%;
     height:90%;
     max-height:90%;
     padding: 0;

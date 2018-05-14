@@ -221,118 +221,53 @@
 
 <div class="clearfix"></div>
 
-<!-- field modal -->
-<div class="modal fade controlled-terms-modal" id="{{getModalId('field')}}" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-            aria-label="Close"><span aria-hidden="true"><img
-            src="/img/close_modal.png" width="22"/></span></button>
-      </div>
-      <div class="modal-body">
-        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"
-            search-range="controlledTerms.range" salt="documentTitle"></div>
-      </div>
-      <div class="modal-footer">
-        <div class="class-actions">
-          <div class="class-action">
-            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--&lt;!&ndash; field modal &ndash;&gt;-->
+<!--<div class="modal fade controlled-terms-modal" id="{{getModalId('field')}}" data-backdrop="static">-->
+  <!--<div class="modal-dialog">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"-->
+            <!--aria-label="Close"><span aria-hidden="true"><img-->
+            <!--src="/img/close_modal.png" width="22"/></span></button>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"-->
+            <!--search-range="controlledTerms.range" salt="documentTitle"></div>-->
+      <!--</div>-->
+      <!--<div class="modal-footer">-->
+        <!--<div class="class-actions">-->
+          <!--<div class="class-action">-->
+            <!--<button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; value modal &ndash;&gt;-->
+<!--<div class="modal fade controlled-terms-modal" id="{{getModalId('values')}}" data-backdrop="static">-->
+  <!--<div class="modal-dialog">-->
+    <!--<div class="modal-content" style="overflow:auto">-->
+      <!--<div class="modal-header">-->
+        <!--<button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"-->
+            <!--aria-label="Close"><span aria-hidden="true"><img-->
+            <!--src="/img/close_modal.png" width="22"/></span></button>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"-->
+            <!--search-range="controlledTerms.range" salt="documentTitle"></div>-->
+
+        <!--<div class="class-actions">-->
+          <!--<div class="class-action">-->
+            <!--<button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+
+
 </div>
-
-<!-- value modal -->
-<div class="modal fade controlled-terms-modal" id="{{getModalId('values')}}" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content" style="overflow:auto">
-      <div class="modal-header">
-        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-            aria-label="Close"><span aria-hidden="true"><img
-            src="/img/close_modal.png" width="22"/></span></button>
-      </div>
-      <div class="modal-body">
-        <div controlled-term field="field" parent="parentElement" search-mode="controlledTerms.mode"
-            search-range="controlledTerms.range" salt="documentTitle"></div>
-
-        <div class="class-actions">
-          <div class="class-action">
-            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- property modal -->
-<div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-
-
-        <!-- Property | Fields | Values  selector-->
-        <div  id="controlled-term-tabs" class="element-toggles " style="margin: auto;padding:10px">
-          <div ng-if="allowsProperty()" class="element-toggle" ng-class="{active: isFieldPropertiesMode()}"
-              ng-click="setFieldPropertiesMode()"><span style="margin: 0 10px">Property</span></div>
-          <div ng-if="allowsField()" class="element-toggle" ng-class="{active: isFieldTypesMode()}"
-              ng-click="setFieldTypesMode()"><span style="margin: 0 10px">Fields</span>
-          </div>
-          <div ng-if="allowsValue()" class="element-toggle" ng-class="{active: isFieldValuesMode()}"
-              ng-click="setFieldValuesMode()"><span style="margin: 0 10px">Values</span>
-          </div>
-        </div>
-
-            <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-                aria-label="Close"><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-
-
-      </div>
-
-
-
-    <div class="modal-body">
-      <div controlled-term field="field" parent="parentElement" search-scope="controlledTerms.mode" search-mode="controlledTerms.mode"
-          search-range="controlledTerms.range" salt="documentTitle" action="controlledTerms.action"
-          selections="controlledTerms.selections"></div>
-    </div>
-
-    <div class="modal-footer">
-
-      <!-- search or create buttons -->
-
-        <div style="width:80%;margin:0 auto;">
-          <div class="flex">
-            <div class="controlled-term-options">
-              <div ng-if="controlledTerms.action == 'search'" style="margin:0">
-                Use BioPortal to
-                <button class="std-btn btn btn-add-create-term" ng-click="switchScope('','create')">Create</button>
-                a {{controlledTerms.mode}} term.
-              </div>
-              <div ng-if="controlledTerms.action == 'create'" style="margin:20px 0">
-                Use BioPortal to
-                <button class="std-btn btn btn-add-create-term " ng-click="switchScope('','search')">Search</button>
-                for a {{controlledTerms.mode}} term.
-              </div>
-            </div>
-
-
-            <button type="button" data-dismiss="modal" class="std-button btn btn-add-term">DONE</button>
-
-
-          </div>
-        </div>
-
-
-
-    </div>
-  </div>
-</div>
-</div>
-
-

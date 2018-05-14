@@ -9,19 +9,19 @@ define([
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
                             "SpreadsheetService",
-                            "DataManipulationService", "FieldTypeService", "controlledTermDataService",
+                            "DataManipulationService", "FieldTypeService", "controlledTermDataService","controlledTermService",
                             "StringUtilsService", "UIUtilService"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService,
                           DataManipulationService,
-                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
+                          FieldTypeService, controlledTermDataService, controlledTermService, StringUtilsService, UIUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
       $scope.errorMessages;
       //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
-      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden","field"];
+      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -32,67 +32,28 @@ define([
       $scope.documentTitle = '';
 
 
-
       $scope.addedFields = new Map();
       $scope.addedFieldKeys = [];
 
       var dms = DataManipulationService;
       $scope.fieldSchema = dms.schemaOf($scope.field);
-      $scope.controlledTerms = {"mode" : "property","scope" : "properties",  "range": ["property","value"], "action": "search", "selections": false};
-
-
-
-      $scope.switchScope = function(scope, action) {
-        console.log('switchScope',scope,action);
-        $scope.controlledTerms.action = action;
-        $rootScope.$broadcast("cedar.templateEditor.controlledTerm.switchScope",
-            [scope, action]);
+      $scope.controlledTerms = {
+        "mode"      : "property",
+        "scope"     : "properties",
+        "range"     : ["property", "value"],
+        "action"    : "search",
+        "selectedClass": null,
+        "currentOntology": null,
+        "selections": false,
+        "view_tab": "search",
+        "stageValueConstraintAction" : null,
+        "stageOntologyClassValueConstraint": null,
+        "stageBranchValueConstraint": null,
+        "stageOntologyValueConstraint": null,
+        "addedFieldItems": []
       };
 
-      $scope.allowsProperty = function() {
-        return $scope.controlledTerms.range && $scope.controlledTerms.range.includes("property") ;
-      };
 
-      $scope.allowsField= function() {
-        return $scope.controlledTerms.range  && $scope.controlledTerms.range .includes("field");
-      }
-
-      $scope.allowsValue= function() {
-        return $scope.controlledTerms.range  && $scope.controlledTerms.range .includes("value");
-      }
-
-      $scope.isFieldPropertiesMode= function() {
-        return $scope.controlledTerms.mode  == 'property';
-      }
-
-      $scope.isFieldTypesMode= function() {
-        return $scope.controlledTerms.mode == 'field';
-      }
-
-      $scope.isFieldValuesMode= function() {
-        return $scope.controlledTerms.mode == 'value';
-      }
-
-      $scope.setFieldPropertiesMode= function() {
-        $scope.controlledTerms.mode = 'property';
-        $scope.controlledTerms.scope ='properties';
-        $scope.controlledTerms.action = 'search';
-        //vm.creatingObject = null;
-      }
-
-      $scope.setFieldTypesMode= function() {
-        $scope.controlledTerms.mode = 'field';
-        $scope.controlledTerms.scope ='classes';
-        $scope.controlledTerms.action = 'search';
-        //vm.creatingObject = null;
-      }
-
-      $scope.setFieldValuesMode= function() {
-        $scope.controlledTerms.mode = 'value';
-        $scope.controlledTerms.scope ='classes';
-        $scope.controlledTerms.action = 'search';
-        //vm.creatingObject = null;
-      }
 
 
       //
@@ -167,14 +128,14 @@ define([
 
       $scope.getCount = function () {
         var min = dms.getMinItems($scope.field) || 0;
-        return new Array(Math.max(1,min));
+        return new Array(Math.max(1, min));
       };
 
-      $scope.getMinItems = function() {
+      $scope.getMinItems = function () {
         return dms.getMinItems($scope.field);
       };
 
-      $scope.getMaxItems = function() {
+      $scope.getMaxItems = function () {
         return dms.getMaxItems($scope.field);
       };
 
@@ -187,9 +148,9 @@ define([
         return dms.isRequired($scope.field);
       };
 
-      $scope.setRequired = function(value) {
-        dms.setRequired($scope.field,value);
-        if (value && $scope.isMultiple() && dms.getMinItems($scope.field)  == 0) {
+      $scope.setRequired = function (value) {
+        dms.setRequired($scope.field, value);
+        if (value && $scope.isMultiple() && dms.getMinItems($scope.field) == 0) {
           $scope.field.minItems = 1;
         }
       };
@@ -246,8 +207,8 @@ define([
         return dms.getContent(field || $scope.field);
       };
 
-      $scope.setDirty = function() {
-          $rootScope.$broadcast("form:dirty");
+      $scope.setDirty = function () {
+        $rootScope.$broadcast("form:dirty");
       };
 
       // check for delete;  we should have a parentElement
@@ -325,7 +286,7 @@ define([
 
       // does the field support using instance type term
       $scope.getInstanceType = function () {
-       return dms.getFieldControlledTerms($scope.field);
+        return dms.getFieldControlledTerms($scope.field);
       };
 
       // Retrieve appropriate field templates
@@ -367,7 +328,7 @@ define([
         }
       };
 
-      $scope.relabelField = function(newTitle) {
+      $scope.relabelField = function (newTitle) {
         dms.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
       };
 
@@ -385,34 +346,44 @@ define([
         return dms.getId($scope.field);
       };
 
+      $scope.showControlledTermsModal = function () {
+        // open and activate the modal
+        $scope.controlledTermsModalVisible = true;
+        $rootScope.$broadcast('controlledTermsModalVisible',[$scope.controlledTermsModalVisible,'property','properties',['property','value'],'search', $scope.field, $scope.parentElement, $scope.getTitle()]);
+      };
+
+      $scope.hideControlledTermsModal = function () {
+        jQuery("#cedar-controlled-terms-modal").modal('hide');
+      };
 
 
       // show the controlled terms modal
       $scope.showModal = function (type) {
+        console.log('showModal',type)
         if (type) {
           // TODO don't pass the search string through rootScope
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-         // $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          // $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
         }
       };
 
       // show the controlled terms modal
       $scope.hideModal = function () {
         UIUtilService.hideModal();
-       //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+        //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
 
       };
 
       // controlled terms modal has an outcome
-      $scope.$on("field:controlledTermAdded", function (event,args) {
+      $scope.$on("field:controlledTermAdded", function (event, args) {
 
 
         if (args && args[1] && (args[1] == $scope.getId())) {
 
-          console.log('field:controlledTermAdded',args);
+          console.log('field:controlledTermAdded', args);
           //$scope.hideModal();
 
           // build the added fields map in this case
@@ -421,25 +392,6 @@ define([
 
       });
 
-      // update the property for a field with controlled terms modal selection
-      $scope.$on("property:propertyAdded", function (event, args) {
-        console.log('propertyAdded',args);
-
-        if (args && args[3] && (args[3] == $scope.getId())) {
-          if (args[0] == 'property') {
-
-            console.log('propertyAdded', args[3]);
-            //$scope.hideModal();
-
-            var propertyId = args[1];
-            var propertyLabel = args[2];
-            var propertyDescription = args[3];
-            var id = args[4];
-
-            dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
-          }
-        }
-      });
 
 
 
@@ -799,8 +751,8 @@ define([
             angular.forEach($scope.modelValue, function (m, i) {
               if (m && m['@value'] && m['@value']['@id']) {
                 $scope.model[i] = {
-                  "@value"   : m['@value']['@id'],
-                  "rdfs:label" : m['@value'].label
+                  "@value"    : m['@value']['@id'],
+                  "rdfs:label": m['@value'].label
                 };
               }
             });
@@ -884,15 +836,15 @@ define([
         }
       };
 
-      $scope.isMultipleChoice = function(field) {
+      $scope.isMultipleChoice = function (field) {
         return dms.isMultipleChoice(field);
       };
 
-      $scope.isMultiAnswer = function(field) {
+      $scope.isMultiAnswer = function (field) {
         return dms.isMultiAnswer(field);
       };
 
-      $scope.setMultipleChoice = function(field, multipleChoice) {
+      $scope.setMultipleChoice = function (field, multipleChoice) {
         dms.setMultipleChoice(field, multipleChoice);
       };
 
@@ -1067,12 +1019,7 @@ define([
       /* end of Value Recommendation functionality */
 
 
-
-
-
-
     };
-
 
 
     return {

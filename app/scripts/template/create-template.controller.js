@@ -517,6 +517,21 @@ define([
         };
 
         //
+        //  controlled terms modal
+        //
+
+        $scope.showControlledTermsModal = function () {
+          // open and activate the modal
+          $scope.controlledTermsModalVisible = true;
+          $rootScope.$broadcast('controlledTermsModalVisible',
+              [$scope.controlledTermsModalVisible,'field','classes',['field'],'search',$scope.form, $scope.form, dms.getTitle($scope.form)]);
+        };
+
+        $scope.hideControlledTermsModal = function () {
+          jQuery("#cedar-controlled-terms-modal").modal('hide');
+        };
+
+        //
         // finder
         //
 
@@ -549,6 +564,7 @@ define([
         // };
 
         $scope.showModal = function (id) {
+          console.log('showModal',id, jQuery("#" + id))
           jQuery("#" + id).modal('show');
         };
 

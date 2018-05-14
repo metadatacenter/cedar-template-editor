@@ -17,7 +17,7 @@
       <div class="flex">
         <i  uib-tooltip-placement="left" tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
-            ng-click="showModal('property')"
+            ng-click="showControlledTermsModal('cedar-controlled-terms-modal')"
             class="cedar-svg-controll-term"></i>
 
         <div  ng-if="hasPropertyId()" class="class-dropdown " uib-dropdown
