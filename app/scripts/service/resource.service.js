@@ -567,6 +567,9 @@ define([
             case CONST.resourceType.INSTANCE:
               url = urlService.templateInstancePermission(id);
               break;
+            case CONST.resourceType.FIELD:
+              url = urlService.templateFieldPermission(id);
+              break;
           }
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
@@ -578,8 +581,6 @@ define([
         }
 
         function setResourceShare(resource, permissions, successCallback, errorCallback) {
-          //console.log('setResourceShare');
-          //console.log(permissions);
           var url;
           var id = resource['@id'];
           switch (resource.nodeType) {
@@ -594,6 +595,9 @@ define([
               break;
             case CONST.resourceType.INSTANCE:
               url = urlService.templateInstancePermission(id);
+              break;
+            case CONST.resourceType.FIELD:
+              url = urlService.templateFieldPermission(id);
               break;
           }
           authorizedBackendService.doCall(

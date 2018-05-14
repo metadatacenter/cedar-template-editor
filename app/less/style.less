@@ -7207,12 +7207,58 @@ table.apiKey {
               width: 100%;
               white-space: nowrap;
               overflow: hidden;
-
               .cell {
                 display: inline-block;
                 padding: 5px;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
+                &.icon {
+                  display: inline-block;
+                  margin: 0px;
+                  margin: 0px;
+                  border-radius: 50%;
+                  padding: 0px;
+                  &.field {
+                    background-color: @field-color;
+                  }
+                  &.element {
+                    background-color: @element-color;
+                  }
+                  i {
+                    color: @white;
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: center;
+                    height: 30px;
+                    width: 30px;
+                  }
+                }
+
+              }
+              &.selected {
+                background:red;
+
+                .cell {
+                  &.icon {
+                    &.field {
+                      background-color: @white;
+                      i {
+                        color: @field-color;
+                      }
+                    }
+                    &.element {
+                      background-color: @white;
+                      i {
+                        color: @element-color;
+                      }
+                    }
+                  }
+                }
+
+
+
+
 
                 i.large-icon {
                   color: #fff;
