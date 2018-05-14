@@ -372,7 +372,8 @@
         "folder": "Are you sure you want to remove the selected folder?",
         "template": "Are you sure you want to remove the selected template?",
         "element": "Are you sure you want to remove the selected element?",
-        "instance": "Are you sure you want to remove the selected metadata?"
+        "instance": "Are you sure you want to remove the selected metadata?",
+        "field": "Are you sure you want to remove the selected field?"
       }
     },
     "sort": {

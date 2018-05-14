@@ -82,6 +82,9 @@ define([
           var url;
           var id = resource['@id'];
           switch (resource.nodeType) {
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id);
+              break;
             case CONST.resourceType.FOLDER:
               url = urlService.getFolder(id);
               break;
