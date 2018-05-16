@@ -179,9 +179,9 @@
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('type'), 'fa-caret-left': !dc.isFilterSection('type') }"
                   aria-hidden="true"></i></a>
 
-                <div ng-if="dc.isFilterSection('type')" class="flex filter-type">
+                <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
-                    <cedar-resource-icon resource-type="'template'"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
                         uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
@@ -191,7 +191,7 @@
                         ng-class="{ selected: !dc.isResourceTypeActive('template') }">
                         </cedar-resource-icon>
 
-                    <cedar-resource-icon resource-type="'element'"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
                         uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
@@ -200,7 +200,7 @@
                         ng-click="dc.toggleResourceType('element')"
                         ng-class="{ selected: !dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
-                    <cedar-resource-icon resource-type="'field'"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
                         uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
@@ -209,7 +209,7 @@
                         ng-click="dc.toggleResourceType('field')"
                         ng-class="{ selected: !dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
-                    <cedar-resource-icon resource-type="'metadata'"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
                         uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
@@ -432,13 +432,10 @@
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <!--<div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"-->
-                    <!--class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>-->
                   <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
                     <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -458,7 +455,6 @@
                   </div>
                 </div>
 
-
                 <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
                     offsetx="0" offsety="0"
                     dropdownId="{{getId(resource, 'list')}}"
@@ -471,7 +467,6 @@
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
                     <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i

@@ -354,7 +354,7 @@ define(['app', 'angular'], function (app) {
       }; // mock the callback function
 
       // Create field and add it to the template
-      $fieldDirectiveScope.field = StagingService.addFieldToForm(createdTemplate, fieldType, domId, callback);
+      $fieldDirectiveScope.field = StagingService.addFieldToForm(createdTemplate, fieldType, false, domId, callback);
       fieldId = $fieldDirectiveScope.field['@id'];
       // Compile field directive
       var fieldDirective = "<field-directive nested='false' field='field' model='model'></field-directive>";
