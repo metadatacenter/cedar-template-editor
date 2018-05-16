@@ -348,7 +348,7 @@ define(['app', 'angular'], function (app) {
 
       // Define the variables needed to add the field to the template
       createdTemplate = $createTemplateControllerScope.form;
-      $fieldDirectiveScope = $rootScope.$new(true) // create a new, isolated scope
+      $fieldDirectiveScope = $rootScope.$new(true); // create a new, isolated scope
       var domId = DataManipulationService.createDomId();
       var callback = function () {
       }; // mock the callback function
@@ -359,7 +359,7 @@ define(['app', 'angular'], function (app) {
       // Compile field directive
       var fieldDirective = "<field-directive parent-element='createdTemplate' nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);
-      console.log(compiledDirective);
+      console.log('createdTemplate',createdTemplate);
       // Now run a $digest cycle
       $fieldDirectiveScope.$digest();
     };

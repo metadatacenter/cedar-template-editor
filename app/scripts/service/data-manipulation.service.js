@@ -783,8 +783,9 @@ define([
 
 
     service.firstClassField = function(parent, child) {
-      var id = service.getId(child);
-      var parentId = service.getId(parent);
+      console.log('firstClassField',parent, child);
+      var id = child ? service.getId(child) : '';
+      var parentId = parent ? service.getId(parent) : '';
       return id == parentId;
     };
 
