@@ -795,6 +795,7 @@ define([
             var prop;
             var schema = service.schemaOf(parent);
             var props = service.propertiesOf(parent);
+            var id = service.getId(node);
             for (prop in props) {
               if (service.schemaOf(props[prop])['@id'] === id) {
                 // only return non-cedar property values
