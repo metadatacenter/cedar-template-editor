@@ -355,7 +355,9 @@ define(['app', 'angular'], function (app) {
 
       // Create field and add it to the template
       $fieldDirectiveScope.field = StagingService.addFieldToForm(createdTemplate, fieldType, false, domId, callback);
+      console.log($fieldDirectiveScope.field);
       fieldId = $fieldDirectiveScope.field['@id'];
+      console.log('fieldId',fieldId);
       // Compile field directive
       var fieldDirective = "<field-directive nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);
