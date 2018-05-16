@@ -27,6 +27,7 @@ define([
 
     vm.path = $location.path();
 
+
     // vm.console = function(value) {
     //   console.log(value);
     // };
@@ -164,12 +165,39 @@ define([
       return $rootScope.pageTitle;
     };
 
+    vm.getResourceType = function () {
+      var result;
+      var base = vm.path.split('/');
+      if (base && base[1]){
+
+      switch (base[1]) {
+        case "templates":
+          result = 'template';
+          break;
+        case "elements":
+          result = 'element';
+          break;
+        case "fields":
+          result = 'field';
+          break;
+        case "instances":
+          result = 'metadata';
+          break;
+      }
+      }
+      return result;
+    };
+
     vm.isTemplate = function () {
       return (vm.path === "/templates");
     };
 
     vm.isElement = function () {
       return (vm.path === "/elements");
+    };
+
+    vm.isField = function () {
+      return (vm.path === "/fields");
     };
 
     vm.isMetadata = function () {
@@ -222,6 +250,7 @@ define([
 
       vm.searchTerm = $location.search().search;
       vm.path = $location.path();
+      vm.resourceType = vm.getResourceType();
       $rootScope.setHeader();
       $document.unbind('keypress');
       $document.unbind('keyup');

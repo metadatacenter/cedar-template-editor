@@ -920,6 +920,10 @@ define([
             return result;
           }
 
+          function getNodeType(resource) {
+            return resource ? resource.nodeType : '';
+          }
+
           function getResourceIconClass(resource) {
             var result = "";
             if (resource) {

@@ -389,7 +389,7 @@ define([
       };
 
       scope.getIconClass = function () {
-        return 'fa fa-sitemap';
+        return 'fa fa-cubes';
       };
 
 
