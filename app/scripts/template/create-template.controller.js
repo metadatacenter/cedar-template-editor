@@ -564,7 +564,6 @@ define([
         // };
 
         $scope.showModal = function (id) {
-          console.log('showModal',id, jQuery("#" + id))
           jQuery("#" + id).modal('show');
         };
 
@@ -581,7 +580,7 @@ define([
             }
           }
           //UIUtilService.hideModal();
-          //jQuery("#control-options-template-field").modal('hide');
+          jQuery("#control-options-template-field").modal('hide');
         });
 
 

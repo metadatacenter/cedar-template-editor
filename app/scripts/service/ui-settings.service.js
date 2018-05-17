@@ -108,6 +108,10 @@ define([
       service.saveUIPreference('infoPanel.opened', prefValue);
     };
 
+    service.saveResourceType = function(type, prefValue) {
+      service.saveUIPreference('resourceTypeFilters.' + type, prefValue);
+    };
+
     service.saveSort = function(prefValue) {
       service.saveUIPreference('folderView.sortBy', prefValue);
     };

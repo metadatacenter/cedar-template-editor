@@ -45,10 +45,14 @@ define([
     }
 
     function saveClass(newClass, mappings) {
+      var definitions = []
+      if (newClass.description != null) {
+        definitions.push(newClass.description)
+      }
       var payload = {
         'prefLabel'  : newClass.prefLabel,
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
-        "definitions": [newClass.description],
+        "definitions": definitions,
         "synonyms"   : [],
         "subclassOf" : null,
         "relations"  : []
@@ -66,18 +70,26 @@ define([
     }
 
     function saveValue(vsId, newValue) {
+      var definitions = []
+      if (newValue.definition != null) {
+        definitions.push(newValue.definition)
+      }
       var payload = {
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
-        'definitions': [newValue.definition],
+        'definitions': definitions,
         'prefLabel'  : newValue.prefLabel,
       };
       return controlledTermDataService.createValue(vsId, payload);
     }
 
     function saveValueSet(newValueSet, newValues) {
+      var definitions = []
+      if (newValueSet.description != null) {
+        definitions.push(newValueSet.description)
+      }
       var payload = {
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
-        'definitions': [newValueSet.description],
+        'definitions': definitions,
         'prefLabel'  : newValueSet.prefLabel,
       };
       return controlledTermDataService.createValueSet(payload).then(function (valueSetCreateResponse) {
