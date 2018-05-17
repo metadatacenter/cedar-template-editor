@@ -157,14 +157,12 @@ define([
                           // }
                         },
                         function (error) {
-                          console.log('validateError err',err);
                           UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                         }
                     );
                   }
                 },
                 function (err) {
-                  console.log('getError',err);
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
                 }
             );
@@ -353,7 +351,6 @@ define([
                     $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
-                    console.log('err',err);
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
                     owner.enableSaveButton();
                   }
