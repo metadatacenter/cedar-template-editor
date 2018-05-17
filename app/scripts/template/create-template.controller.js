@@ -92,7 +92,6 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                console.log('hasMetadata',id,response);
                 $scope.checkLocking();
                 $scope.hasInstances = response.totalCount > 0;
                 if ($scope.hasInstances) {
