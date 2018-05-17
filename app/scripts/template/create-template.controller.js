@@ -92,6 +92,7 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
+                console.log('hasMetadata',id,response);
                 $scope.checkLocking();
                 $scope.hasInstances = response.totalCount > 0;
                 if ($scope.hasInstances) {
@@ -157,12 +158,14 @@ define([
                           // }
                         },
                         function (error) {
+                          console.log('validateError err',err);
                           UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                         }
                     );
                   }
                 },
                 function (err) {
+                  console.log('getError',err);
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
                 }
             );
@@ -351,6 +354,7 @@ define([
                     $rootScope.$broadcast('form:clean');
                   },
                   function (err) {
+                    console.log('err',err);
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
                     owner.enableSaveButton();
                   }
