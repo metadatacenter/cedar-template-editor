@@ -104,7 +104,7 @@ define([
     };
 
     $rootScope.$on("form:validation", function (even, options) {
-      $rootScope.setValidation(options.state);
+      $rootScope.documentState.valid = options.state;
     });
 
     $rootScope.setValidation = function (value) {
