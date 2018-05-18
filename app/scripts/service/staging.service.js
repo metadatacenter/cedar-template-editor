@@ -17,8 +17,6 @@ define([
   function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService,
                           UIUtilService,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
-
-
                           AuthorizedBackendService, CONST) {
 
     var dms = DataManipulationService;
@@ -93,7 +91,6 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
-      console.log('addFieldToStaging');
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 0;
@@ -236,7 +233,6 @@ define([
           TemplateFieldService.getTemplateField(elementId),
           function (response) {
             var clonedElement = response.data;
-            console.log('clonedField', clonedElement);
             UIUtilService.setSelected(clonedElement);
 
             // Converting title for irregular character handling
@@ -245,7 +241,6 @@ define([
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
 
-            console.log('form.properties["@context"]', form.properties["@context"]);
 
             // Adding corresponding property type to @context
             var randomPropertyName = DataManipulationService.generateGUID();

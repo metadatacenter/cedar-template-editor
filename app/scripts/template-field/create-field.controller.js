@@ -7,51 +7,62 @@ define([
       .controller('CreateFieldController', CreateFieldController);
 
   CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                     "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                     "FieldTypeService", "TemplateFieldService", "resourceService", "UIMessageService",
-                                     "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
-                                     "FrontendUrlService", "QueryParamUtilsService", "CONST"];
+                                   "$filter", "HeaderService", "StagingService", "DataTemplateService",
+                                   "FieldTypeService", "TemplateFieldService", "resourceService", "UIMessageService",
+                                   "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
+                                   "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                   HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateFieldService, resourceService, UIMessageService, DataManipulationService,
-                                   DataUtilService,UIUtilService,
-                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
+                                 HeaderService, StagingService, DataTemplateService, FieldTypeService,
+                                 TemplateFieldService, resourceService, UIMessageService, DataManipulationService,
+                                 UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
+                                 CONST) {
 
+    // shortcut
     var dms = DataManipulationService;
-
-    $rootScope.showSearch = true;
-    $rootScope.searchBrowseModalId = "search-browse-modal";
-    $rootScope.finderModalId = "finder-modal";
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Field Designer';
-    // Setting default false flag for $scope.favorite
-    //$scope.favorite = false;
-    // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
-    $scope.volatile = {};
-    // Setting form preview setting to false by default
-    //$scope.form = {};
+    var pageId = CONST.pageId.FIELD;
+    HeaderService.configure(pageId);
+    StagingService.configure(pageId);
+
+    $rootScope.showSearch = false;
+
+    // property class popup
     $scope.viewType = 'popup';
 
+    // first class field
     $scope.isField = true;
     $scope.field;
     $scope.form = {};
+    $scope.saveButtonDisabled = false;
 
-    // template details
+    // for the field type picker
+    $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
+    $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
+    $scope.moreIsOpen = false;
+
+    // field details - can read or write
     $scope.details;
     $scope.cannotWrite;
     $scope.lockReason = '';
 
 
-
     // can we write to this template?  if no details, then new element
     $scope.canWrite = function () {
-      var result =  !$scope.details || resourceService.canWrite($scope.details);
-      $scope.cannotWrite  =!result;
+      var result = !$scope.details || resourceService.canWrite($scope.details);
+      $scope.cannotWrite = !result;
       return result;
       $scope.lockReason = 'no write permission';
+    };
+
+    // is this field locked?
+    $scope.checkLocking = function () {
+      var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
+      $scope.cannotWrite = !result;
+      return result;
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
@@ -59,23 +70,12 @@ define([
       $rootScope.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
-    $scope.showCreateEditForm = true;
-
-    var pageId = CONST.pageId.ELEMENT;
-    HeaderService.configure(pageId);
-    StagingService.configure(pageId);
-
-    $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
-    $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 
 
-    $scope.saveButtonDisabled = false;
-
-    $scope.setClean = function() {
+    $scope.setClean = function () {
       $rootScope.$broadcast('form:clean');
       $rootScope.setDirty(false);
     };
-
 
 
     // validate the resource
@@ -91,7 +91,7 @@ define([
               UIUtilService.logValidation(status, json);
 
               $timeout(function () {
-                $rootScope.$broadcast("form:validation", { state: status });
+                $rootScope.$broadcast("form:validation", {state: status});
               });
 
             },
@@ -102,13 +102,6 @@ define([
       }
     };
 
-    $scope.checkLocking = function () {
-      var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-      $scope.cannotWrite = !result;
-      return result;
-    };
-
-    // TODO this call does not work yet
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(
           id, CONST.resourceType.FIELD,
@@ -149,7 +142,7 @@ define([
               $scope.setClean();
 
               // TODO details don't work yet
-              //getDetails($scope.field['@id']);
+              getDetails($scope.field['@id']);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.FIELD.load.error', err);
@@ -161,7 +154,7 @@ define([
         $scope.field = DataTemplateService.getContainerField();
 
 
-         $rootScope.setValidation(true);
+        $rootScope.setValidation(true);
 
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
@@ -176,11 +169,11 @@ define([
 
       }
     };
+
+    // init
     if ($routeParams.id) {
       getField();
     }
-
-
 
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
@@ -202,15 +195,14 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
-      console.log('addField',fieldType);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
+
         // $scope.getField(fieldType);
         $scope.field = StagingService.addFieldToField(fieldType);
         dms.setId($scope.field, $routeParams.id);
         $scope.form = $scope.field;
-
 
 
         $rootScope.setValidation(true);
@@ -235,12 +227,9 @@ define([
       $scope.showMenuPopover = false;
     };
 
-
-    $scope.moreIsOpen = false;
-    $scope.toggleMore = function() {
+    $scope.toggleMore = function () {
       $scope.moreIsOpen = !$scope.moreIsOpen;
     };
-
 
     $scope.backToFolder = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
@@ -266,7 +255,6 @@ define([
       $scope.fieldSchema = dms.schemaOf($scope.field);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $rootScope.$broadcast('form:reset');
-
     };
 
     $scope.saveField = function () {
@@ -285,16 +273,14 @@ define([
     };
 
     $rootScope.$on("form:clear", function () {
-      console.log('root form:clear');
-      $scope.form  = {};
+      $scope.form = {};
       $scope.field = null;
 
     });
 
-    // Stores the field into the database
+    // Saves the field in the database
     $scope.doSaveField = function () {
 
-      console.log('doSaveField',$routeParams.id, dms.getId($scope.field), $scope.field);
 
       // First check to make sure Field Name, Field Description are not blank
       $scope.fieldErrorMessages = [];
@@ -329,7 +315,6 @@ define([
                     'GENERIC.Created');
                 // Reload page with field id
                 var newId = response.data['@id'];
-                console.log('response',response.data);
                 dms.createDomIds(response.data);
                 $location.path(FrontendUrlService.getFieldEdit(newId));
 
@@ -345,16 +330,14 @@ define([
         // Update field
         else {
           var id = dms.getId($scope.field);
-          console.log('update field',id);
 
           $rootScope.jsonToSave = $scope.field;
 
           var copiedForm = jQuery.extend(true, {}, $scope.field);
           if (copiedForm) {
             // strip the temps from the copied form only, and save the copy
-            DataManipulationService.stripTmps(copiedForm);
+            dms.stripTmps(copiedForm);
 
-            console.log('update field',id, copiedForm);
 
             AuthorizedBackendService.doCall(
                 TemplateFieldService.updateTemplateField(id, copiedForm),
@@ -404,7 +387,6 @@ define([
       }
     });
 
-
     // This function watches for changes in the form and defaults the title and description fields
     $scope.$watch('$scope.field', function (v) {
       if (dms.schemaOf($scope.field)) {
@@ -428,7 +410,7 @@ define([
           );
           $scope.field.description = $translate.instant(
               "GENERATEDVALUE.fieldDescription",
-              {title: capitalizedTitle, version:window.cedarVersion}
+              {title: capitalizedTitle, version: window.cedarVersion}
           );
         } else {
           $scope.field.title = "";
@@ -442,7 +424,7 @@ define([
       var jsonld = require('jsonld');
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
-        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
           $rootScope.jsonToRDF = nquads;
           return nquads;
         });
@@ -463,11 +445,6 @@ define([
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
 
-    $scope.fieldSearch = function () {
-      jQuery("body").trigger("click");
-      jQuery("#" + $scope.searchBrowseModalId).modal("show");
-    }
-
     $scope.addFieldFromPicker = function () {
       if ($scope.pickerResource) {
         $scope.addFieldToField($scope.pickerResource);
@@ -475,37 +452,9 @@ define([
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.pickFieldFromPicker = function (resource) {
-      $scope.addFieldtToField(resource);
-      $scope.hideSearchBrowsePicker();
-    };
-
     $scope.selectFieldFromPicker = function (resource) {
       $scope.pickerResource = resource;
     };
-
-    $scope.showSearchBrowsePicker = function () {
-      $scope.pickerResource = null;
-    };
-
-    $scope.hideSearchBrowsePicker = function () {
-      jQuery("#" + $scope.searchBrowseModalId).modal('hide')
-    };
-
-    //
-    // finder
-    //
-
-    $scope.showFinderModal = function () {
-      // open and activate the modal
-      $scope.finderModalVisible = true;
-      $rootScope.$broadcast('finderModalVisible');
-    };
-
-    $scope.hideFinder = function () {
-      jQuery("#finder-modal").modal('hide')
-    };
-
 
     $scope.enableSaveButton = function () {
       $timeout(function () {
@@ -518,18 +467,11 @@ define([
     };
 
     $scope.showModal = function (id) {
-      console.log('showModal',id);
       jQuery("#" + id).modal('show');
     };
 
-    //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function () {
       jQuery("#control-options-field-field").modal('hide');
     });
-
-
-
-
   }
-
 });

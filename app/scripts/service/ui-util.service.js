@@ -276,7 +276,6 @@ define([
     service.toggleElement = function (id) {
 
       $timeout(function () {
-            console.log('toggleElement', id);
 
             var target = angular.element('#' + id);
             if (target) {
@@ -349,7 +348,6 @@ define([
 
     // hide the modal
     service.hideModal = function () {
-      console.log('modal',jQuery("#" + service.modalId));
       jQuery("#" + service.modalId).modal('hide');
       service.modalType = null;
       service.modalId = null;

@@ -239,6 +239,9 @@ define([
             case CONST.resourceType.FOLDER:
               url = urlService.folders() + '/' + encodeURIComponent(id);
               break;
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id) + '/details';
+              break;
             case CONST.resourceType.ELEMENT:
               url = urlService.getTemplateElement(id) + '/details';
               break;

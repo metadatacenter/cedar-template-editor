@@ -393,7 +393,6 @@ define([
               resource = vm.getSelection();
             }
             var id = resource['@id'];
-            console.log('getResourceDetails',resource);
             resourceService.getResourceDetail(
                 resource,
                 function (response) {

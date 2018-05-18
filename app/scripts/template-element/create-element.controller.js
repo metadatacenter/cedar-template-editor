@@ -106,7 +106,6 @@ define([
     };
 
     var getDetails = function (id) {
-      console.log('getDetails',id);
       resourceService.getResourceDetailFromId(
           id, CONST.resourceType.ELEMENT,
           function (response) {
@@ -211,7 +210,7 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
-      console.log('addField',fieldType);
+
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);

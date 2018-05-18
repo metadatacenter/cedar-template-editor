@@ -10,6 +10,10 @@
     "enabled": true,
     "scrollLimit": 180
   },
+  "FIELD": {
+    "enabled": true,
+    "scrollLimit": 180
+  },
   "TEMPLATE": {
     "enabled": true,
     "scrollLimit": 140

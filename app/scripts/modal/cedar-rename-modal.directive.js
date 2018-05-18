@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarRenameModal', cedarRenameModalDirective);
 
-      cedarRenameModalDirective.$inject = ['CedarUser',"DataManipulationService"];
+      cedarRenameModalDirective.$inject = ['CedarUser', "DataManipulationService"];
 
-      function cedarRenameModalDirective(CedarUser,DataManipulationService) {
+      function cedarRenameModalDirective(CedarUser, DataManipulationService) {
 
         var directive = {
           bindToController: {
@@ -50,66 +50,23 @@ define([
           function updateResource() {
             var resource = vm.renameResource;
             if (resource != null) {
-              var postData = {};
               var id = resource['@id'];
-              var nodeType = resource.nodeType;
+              var type = resource.nodeType.toUpperCase();
               var name = resource['schema:name'];
 
-              if (nodeType == 'instance') {
-                AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, name, null),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-                      refresh();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'element') {
-                AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, name, null),
-                    function (response) {
-
-                      var title = dms.getTitle(response.data);
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": title},
-                          'GENERIC.Updated');
-                      refresh();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'template') {
-                AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, name, null),
-                    function (response) {
-
-                      var title = dms.getTitle(response.data);
-                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": title}, 'GENERIC.Updated');
-                      refresh();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'folder') {
-                AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, name, null),
-                    function (response) {
-
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource['schema:name']},
-                          'GENERIC.Updated');
-                      refresh();
-                    },
-                    function (response) {
-                      UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-                    }
-                );
-              }
+              AuthorizedBackendService.doCall(
+                  resourceService.renameNode(id, name, null),
+                  function (response) {
+                    var title = dms.getTitle(response.data);
+                    UIMessageService.flashSuccess('SERVER.' + type + '.update.success', {"title": title},
+                        'GENERIC.Updated');
+                    refresh();
+                  },
+                  function (err) {
+                    UIMessageService.showBackendError('SERVER.' + type + '.update.error', err);
+                  }
+              );
             }
-
           }
 
           function refresh() {
