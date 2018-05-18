@@ -199,6 +199,7 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.selectedResource = null;
+                  vm.totalCount = response.totalCount;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
