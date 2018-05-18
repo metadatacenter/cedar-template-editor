@@ -1163,7 +1163,8 @@ define([
 
           function toggleResourceType(type) {
             vm.resourceTypes[type] = !vm.resourceTypes[type];
-            UISettingsService.saveUIPreference('resourceTypeFilters.' + type, vm.resourceTypes[type]);
+            CedarUser.toggleResourceType(type);
+            UISettingsService.saveResourceType(type, vm.resourceTypes[type]);
             init();
           }
 

@@ -26,18 +26,20 @@ define([
     var vm = this;
 
     vm.path = $location.path();
+    vm.valid = true;
 
 
-    // vm.console = function(value) {
-    //   console.log(value);
-    // };
+    $rootScope.$on("form:validation", function (even, options) {
+      vm.valid = options.state;
+    });
+
 
     vm.dirtyCleanTip = function() {
       return $translate.instant(($rootScope.dirty? "Save required": "No save required"));
     };
 
     vm.validInvalidTip = function() {
-      return $translate.instant('Document is ' + ($rootScope.documentState.valid? "valid": "invalid"));
+      return $translate.instant('Document is ' + (vm.valid ? "valid": "invalid"));
     };
 
     vm.lockUnlockTip = function() {
