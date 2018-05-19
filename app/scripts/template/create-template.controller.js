@@ -80,7 +80,7 @@ define([
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
-          $rootScope.setLocked($scope.cannotWrite);
+          UIUtilService.setLocked($scope.cannotWrite);
         });
 
         var doSearchTemplateInstances = function (id) {
@@ -170,7 +170,7 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
 
-            $rootScope.setValidation(true);
+            UIUtilService.setValidation(true);
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
@@ -213,7 +213,7 @@ define([
               UIUtilService.scrollToDomId(domId);
               $scope.toggleMore();
               $timeout(function () {
-                $rootScope.$broadcast("form:dirty");
+                UIUtilService.setDirty();
               });
             });
           }

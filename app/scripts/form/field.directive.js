@@ -189,7 +189,7 @@ define([
       };
 
       $scope.setDirty = function () {
-        $rootScope.$broadcast("form:dirty");
+        UIUtilService.setDirty(true);
       };
 
       // check for delete;  we should have a parentElement

@@ -13,20 +13,67 @@ define([
                          ClientSideValidationService, $translate) {
 
     var service = {
-      serviceId     : "UIUtilService",
-      showOutput    : false,
-      showOutputTab : 0,
-      metaToRDF     : null,
-      metaToRDFError: null,
-      instance      : null,
-      modalType     : null
+      serviceId             : "UIUtilService",
+      showOutput            : false,
+      showOutputTab         : 0,
+      metaToRDF             : null,
+      metaToRDFError        : null,
+      instance              : null,
+      modalType             : null,
+      selectedFieldOrElement: null,
+      instanceToSave        : null,
+      documentState         : {valid: true, dirty: false, locked: false}
     };
 
     var jsonld = require('jsonld');
     var dms = DataManipulationService;
 
+    //
+    // document state
+    //
+
+
+    $rootScope.$on("form:validation", function (event, options) {
+      console.log('on form:validation');
+      service.documentState.valid = options.state;
+    });
+
+    $rootScope.$on("form:dirty", function (event, options) {
+      console.log('form:dirty', options);
+      service.setDirty(true);
+    });
+
+    service.setValidation = function (value) {
+      service.documentState.valid = value;
+    };
+    service.isValid = function () {
+      return service.documentState.valid;
+    };
+
+    service.setDirty = function (value) {
+      console.log('setDirty', value);
+      service.documentState.dirty = value;
+    };
+    service.isDirty = function () {
+      return service.documentState.dirty;
+    };
+
+    service.isLocked = function () {
+      return service.documentState.locked;
+    };
+
+    service.setLocked = function (value) {
+      service.documentState.locked = value;
+    };
+
+
+    //
+    //  json and rdf output
+    //
+
+    // create the RDF from the current metadata instance
     service.toRDF = function () {
-      var instance = $rootScope.instanceToSave;
+      var instance = service.instanceToSave;
       var copiedForm = jQuery.extend(true, {}, instance);
       if (copiedForm) {
         jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
@@ -38,10 +85,12 @@ define([
       }
     };
 
+    // get the RDF
     service.getRDF = function () {
       return service.metaToRDF;
     };
 
+    // get any RDF conversion errors
     service.getRDFError = function () {
       var result = $translate.instant('SERVER.RDF.SaveFirst');
       if (service.metaToRDFError) {
@@ -106,9 +155,9 @@ define([
     service.isSpreadsheetable = function (node) {
 
       var schema = dms.schemaOf(node);
-      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) &&  !dms.isAttributeValueType(node);
+      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) && !dms.isAttributeValueType(node);
       if (DataUtilService.isElement(schema) && dms.isCardinalElement(node)) {
-        result =  dms.getFlatSpreadsheetOrder(node).length > 0;
+        result = dms.getFlatSpreadsheetOrder(node).length > 0;
       }
       return result;
       //return false;
@@ -117,10 +166,10 @@ define([
     // is this an element that can be expanded?
     service.isExpandable = function (node) {
       var result = false;
-      if (DataUtilService.isElement(DataManipulationService.schemaOf(node))) {
-        var props = DataManipulationService.propertiesOf(node);
+      if (DataUtilService.isElement(dms.schemaOf(node))) {
+        var props = dms.propertiesOf(node);
         angular.forEach(props, function (value, key) {
-          if (DataUtilService.isElement(DataManipulationService.schemaOf(value))) {
+          if (DataUtilService.isElement(dms.schemaOf(value))) {
             result = true;
           }
         });
@@ -151,41 +200,9 @@ define([
       return $rootScope.pageId == 'RUNTIME';
     };
 
-    service.isShowOutput = function () {
-      return service.showOutput;
-    };
-
-    service.setShowOutput = function (value) {
-      service.showOutput = value;
-    };
-
-    service.toggleShowOutput = function () {
-      service.setShowOutput(!service.isShowOutput());
-    };
-
-    service.isShowMetadata = function () {
-      return service.isRuntime() && service.isShowOutput();
-    };
-
-    service.getShowOutputTab = function () {
-      return service.showOutputTab;
-    };
-
-    service.setShowOutputTab = function (index) {
-      service.showOutputTab = index;
-    };
-
-    service.toggleShowOutputTab = function (index) {
-      if (service.showOutputTab == index) {
-        service.showOutputTab = -1;
-      } else {
-        service.showOutputTab = index;
-      }
-    };
-
     service.formatTitle = function (node) {
       if (node) {
-        var title = DataManipulationService.getTitle(node);
+        var title = dms.getTitle(node);
         if (title) {
           return title.substring(0, 40) + (title.length > 40 ? '...' : '');
         }
@@ -221,28 +238,6 @@ define([
         result = target[0].value;
       }
       return result;
-    };
-
-    // set this field instance active
-    service.setActive = function (field, index, path, uid, value) {
-      if (value) {
-        $rootScope.activeLocator = service.getLocator(field, index, path, uid);
-        $rootScope.activeZeroLocator = service.getLocator(field, 0, path, uid);
-      } else {
-        $rootScope.activeLocator = null;
-        $rootScope.activeZeroLocator = null;
-      }
-
-    };
-
-    // is this field active
-    service.isActive = function (locator) {
-      return ($rootScope.activeLocator === locator);
-    };
-
-    // is some other field active
-    service.isInactive = function (locator) {
-      return ($rootScope.activeLocator && $rootScope.activeLocator != locator);
     };
 
     service.scrollToAnchor = function (hash) {
@@ -293,12 +288,12 @@ define([
     service.getYouTubeEmbedFrame = function (field) {
       var width = 560;
       var height = 315;
-      var content = DataManipulationService.getContent(field);
+      var content = dms.getContent(field);
       if (content) {
         content = content.replace(/<(?:.|\n)*?>/gm, '');
       }
 
-      var size = DataManipulationService.getSize(field);
+      var size = dms.getSize(field);
 
       if (size && size.width && Number.isInteger(size.width)) {
         width = size.width;
@@ -320,8 +315,8 @@ define([
 
     service.cardinalityString = function (node) {
       var result = '';
-      if (DataManipulationService.isMultipleCardinality(node)) {
-        result = '[' + DataManipulationService.getMinItems(node) + '...' + (DataManipulationService.getMaxItems(
+      if (dms.isMultipleCardinality(node)) {
+        result = '[' + dms.getMinItems(node) + '...' + (dms.getMaxItems(
                 node) || 'N') + ']';
       }
       return result;
@@ -358,35 +353,56 @@ define([
     //  editing fields
     //
 
+    // is this field active
+    service.isActive = function (locator) {
+      return (service.activeLocator === locator);
+    };
+
+    // is some other field active
+    service.isInactive = function (locator) {
+      return (service.activeLocator && service.activeLocator != locator);
+    };
+
+    // set this field instance active
+    service.setActive = function (field, index, path, uid, value) {
+      if (value) {
+        service.activeLocator = service.getLocator(field, index, path, uid);
+        service.activeZeroLocator = service.getLocator(field, 0, path, uid);
+      } else {
+        service.activeLocator = null;
+        service.activeZeroLocator = null;
+      }
+    };
+
     // are we editing this field?
     service.isEditState = function (node) {
-      return DataManipulationService.isTmpState(node, "creating");
+      return dms.isTmpState(node, "creating");
     };
 
     service.clearEditState = function (node) {
-      return DataManipulationService.clearTmpState(node);
+      return dms.clearTmpState(node);
     };
 
     // set edit mode
     service.setSelected = function (node) {
-      DataManipulationService.setTmpState(node, "creating");
-      $rootScope.selectedFieldOrElement = node;
+      dms.setTmpState(node, "creating");
+      service.selectedFieldOrElement = node;
     };
 
     // set as selected
-    service.setSelected = function (field) {
-      var schema = DataManipulationService.schemaOf(field);
+    service.setSelected = function (node) {
+      var schema = dms.schemaOf(node);
       schema._tmp = schema._tmp || {};
       schema._tmp.state = "creating";
-      $rootScope.selectedFieldOrElement = field;
+      service.selectedFieldOrElement = node;
     };
 
     // deselect any current selected items, then select this one
     service.canSelect = function (node) {
       var result = true;
       if (!service.isEditState(node)) {
-        if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
-          result = service.canDeselect($rootScope.selectedFieldOrElement);
+        if (service.selectedFieldOrElement && service.isEditState(service.selectedFieldOrElement)) {
+          result = service.canDeselect(service.selectedFieldOrElement);
         }
         if (result) service.setSelected(node);
       }
@@ -400,7 +416,7 @@ define([
         return;
       }
 
-      DataManipulationService.setMinMax(node);
+      dms.setMinMax(node);
       service.setDefaults(node);
 
       var errorMessages = jQuery.merge(ClientSideValidationService.checkFieldConditions(node),
@@ -408,17 +424,17 @@ define([
 
       // don't continue with errors
       if (errorMessages.length == 0) {
-        //DataManipulationService.stripTmpIfPresent(node);
-        DataManipulationService.clearEditState(node);
+        //dms.stripTmpIfPresent(node);
+        dms.clearEditState(node);
 
         if (renameChildKey) {
-          var key = DataManipulationService.getFieldName(DataManipulationService.getTitle(node));
+          var key = dms.getFieldName(dms.getTitle(node));
           renameChildKey(node, key);
         }
 
         var event = DataUtilService.isElement(node) ? "invalidElementState" : "invalidFieldState";
         $rootScope.$emit(event,
-            ["remove", DataManipulationService.getTitle(node), DataManipulationService.getId(node)]);
+            ["remove", dms.getTitle(node), dms.getId(node)]);
       }
 
       $rootScope.$broadcast("deselect", [node, errorMessages]);
@@ -428,17 +444,22 @@ define([
 
     // default the title and options if necessary
     service.setDefaults = function (node) {
-      DataManipulationService.defaultTitle(node);
-      if (DataManipulationService.isMultiAnswer(node)) {
-        DataManipulationService.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
+      dms.defaultTitle(node);
+      if (dms.isMultiAnswer(node)) {
+        dms.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
       }
     };
 
-    //report validation status, errors and warnings
+
+    //
+    // validation
+    //
+
+    // report validation status, errors and warnings
     service.logValidation = function (status, report) {
 
       // tell the user about the status
-      $rootScope.setValidation(status);
+      service.setValidation(status);
 
       // try to parse the report
       if (report) {

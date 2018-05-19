@@ -26,28 +26,38 @@ define([
     var vm = this;
 
     vm.path = $location.path();
-    vm.valid = true;
 
 
-    $rootScope.$on("form:validation", function (even, options) {
-      vm.valid = options.state;
-    });
 
+    // $rootScope.$on("form:validation", function (even, options) {
+    //   vm.valid = options.state;
+    // });
+
+
+    vm.isDirty = function() {
+      return UIUtilService.isDirty();
+    };
+    vm.isValid =  function() {
+      return UIUtilService.isValid();
+    };
+    vm.isLocked =  function() {
+      return UIUtilService.isLocked();
+    };
 
     vm.dirtyCleanTip = function() {
-      return $translate.instant(($rootScope.dirty? "Save required": "No save required"));
+      return $translate.instant((UIUtilService.isDirty() ? "Save required": "No save required"));
     };
 
     vm.validInvalidTip = function() {
-      return $translate.instant('Document is ' + (vm.valid ? "valid": "invalid"));
+      return $translate.instant('Document is ' + (UIUtilService.isValid() ? "valid": "invalid"));
     };
 
     vm.lockUnlockTip = function() {
-      return $translate.instant('Document is ' + ($rootScope.locked? "locked": "unlocked"));
+      return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
     };
 
     vm.confirmBack = function () {
-      if ($rootScope.isLocked() || !$rootScope.isDirty() || !$rootScope.isValid()) {
+      if (UIUtilService.isLocked() || !UIUtilService.isDirty() || !UIUtilService.isValid()) {
         vm.goToDashboardOrBack();
       } else {
 
@@ -55,8 +65,8 @@ define([
             function () {
               $timeout(function () {
                 vm.goToDashboardOrBack();
-                $rootScope.setDirty(false);
-                $rootScope.setValidation(true);
+                UIUtilService.setDirty(false);
+                UIUtilService.setValidation(true);
               });
 
             },
@@ -69,8 +79,8 @@ define([
 
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
-      $rootScope.activeLocator = null;
-      $rootScope.activeZeroLocator = null;
+      UIUtilService.activeLocator = null;
+      UIUtilService.activeZeroLocator = null;
       var path = $location.path();
       var hash = $location.hash();
       var baseUrl = '/dashboard';
@@ -99,8 +109,8 @@ define([
 
     vm.goToHome = function () {
       vm.searchTerm = null;
-      $rootScope.activeLocator = null;
-      $rootScope.activeZeroLocator = null;
+      UIUtilService.activeLocator = null;
+      UIUtilService.activeZeroLocator = null;
       var path = $location.path();
       var hash = $location.hash();
       var baseUrl = '/dashboard';
@@ -257,7 +267,7 @@ define([
       $document.unbind('keypress');
       $document.unbind('keyup');
 
-      if ($rootScope.isDirty()) {
+      if (UIUtilService.isDirty()) {
 
         event.preventDefault();
         //vm.confirmBack();

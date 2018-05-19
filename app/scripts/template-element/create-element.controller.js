@@ -53,7 +53,7 @@ define([
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      $rootScope.setLocked($scope.cannotWrite, $scope.lockReason);
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
     $scope.showCreateEditForm = true;
@@ -70,7 +70,7 @@ define([
 
     $scope.setClean = function() {
       $rootScope.$broadcast('form:clean');
-      $rootScope.setDirty(false);
+      UIUtilService.setDirty(false);
     };
 
 
@@ -165,7 +165,7 @@ define([
         // If we're not loading an existing element then let's create a new empty $scope.element property
         $scope.element = DataTemplateService.getElement();
 
-        $rootScope.setValidation(true);
+        UIUtilService.setValidation(true);
 
         HeaderService.dataContainer.currentObjectScope = $scope.element;
 
@@ -216,7 +216,7 @@ define([
         StagingService.addFieldToElement($scope.element, fieldType);
         $scope.toggleMore();
         $timeout(function () {
-          $rootScope.$broadcast("form:dirty");
+          UIUtilService.setDirty(true);
         });
       }
       $scope.showMenuPopover = false;

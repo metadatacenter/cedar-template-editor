@@ -1105,7 +1105,7 @@ define([
       // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
       $scope.$watch(
           function () {
-            return ( $rootScope.activeLocator);
+            return ( UIUtilService.activeLocator);
           },
           function (newValue, oldValue) {
 

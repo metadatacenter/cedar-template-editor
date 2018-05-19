@@ -67,14 +67,14 @@ define([
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      $rootScope.setLocked($scope.cannotWrite, $scope.lockReason);
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
 
 
     $scope.setClean = function () {
       $rootScope.$broadcast('form:clean');
-      $rootScope.setDirty(false);
+      UIUtilService.setDirty(false);
     };
 
 
@@ -152,9 +152,8 @@ define([
       } else {
         // If we're not loading an existing element then let's create a new empty $scope.element property
         $scope.field = DataTemplateService.getContainerField();
-
-
-        $rootScope.setValidation(true);
+        checkValidation($scope.field);
+        $scope.setClean();
 
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
@@ -165,7 +164,7 @@ define([
         $rootScope.jsonToSave = $scope.field;
         dms.createDomIds($scope.field);
         $scope.fieldSchema = dms.schemaOf($scope.field);
-        $scope.setClean();
+
 
       }
     };
@@ -205,7 +204,8 @@ define([
         $scope.form = $scope.field;
 
 
-        $rootScope.setValidation(true);
+        checkValidation($scope.form);
+        UIUtilService.setDirty(true);
 
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
@@ -219,10 +219,6 @@ define([
         $scope.fieldSchema = dms.schemaOf($scope.field);
 
         $scope.toggleMore();
-        $timeout(function () {
-          $rootScope.$broadcast("form:dirty");
-        });
-
       }
       $scope.showMenuPopover = false;
     };

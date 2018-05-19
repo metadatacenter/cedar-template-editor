@@ -30,6 +30,8 @@ define([
       },
       controller : function ($scope) {
 
+        var dms = DataManipulationService;
+
         $scope.directiveName = 'form';
         $scope.forms = {};
         $scope.model = $scope.model || {};
@@ -47,7 +49,6 @@ define([
         $scope.metaToRDF = null;
         $scope.metaToRDFError = null;
 
-        var dms = DataManipulationService;
 
         $scope.isRuntime = function () {
           return UIUtilService.isRuntime();
@@ -78,7 +79,6 @@ define([
         };
 
         $scope.relabel = function (key) {
-          console.log('relabel',key);
           // operates on templates and elements, so use the root scope json which
           // is element or form
           dms.relabel($rootScope.jsonToSave, key);
@@ -373,7 +373,6 @@ define([
         // watches
         //
 
-
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
@@ -381,33 +380,24 @@ define([
 
         // watch the dirty flag on the form and pass it up to root
         $scope.$watch('forms.templateForm.$dirty', function () {
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          UIUtilService.setDirty($scope.forms.templateForm.$dirty);
         });
 
         $scope.$on("form:clean", function () {
           $scope.forms.templateForm.$dirty = false;
-
         });
-
-        // $scope.$on("form:clear", function () {
-        //   $scope.forms.templateForm.$dirty = false;
-        //
-        // });
 
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
         });
 
-
         $scope.$on("form:update", function () {
           startParseForm();
           $scope.forms.templateForm.$dirty = true;
-          $rootScope.setDirty(true);
         });
 
         $scope.$on("form:reset", function () {
           $scope.forms.templateForm.$dirty = true;
-          $rootScope.setDirty(true);
         });
 
         // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
@@ -591,7 +581,7 @@ define([
           }, 0);
         };
 
-        $scope.uid = 'form';
+
 
         // find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
@@ -616,6 +606,13 @@ define([
             return next;
           }
         };
+
+        //
+        // init
+        //
+
+        $scope.uid = 'form';
+
 
       }
     };
