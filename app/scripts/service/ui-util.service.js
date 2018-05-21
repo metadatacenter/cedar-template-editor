@@ -38,11 +38,6 @@ define([
       service.documentState.valid = options.state;
     });
 
-    $rootScope.$on("form:dirty", function (event, options) {
-      console.log('form:dirty', options);
-      service.setDirty(true);
-    });
-
     service.setValidation = function (value) {
       service.documentState.valid = value;
     };
@@ -51,7 +46,6 @@ define([
     };
 
     service.setDirty = function (value) {
-      console.log('setDirty', value);
       service.documentState.dirty = value;
     };
     service.isDirty = function () {
