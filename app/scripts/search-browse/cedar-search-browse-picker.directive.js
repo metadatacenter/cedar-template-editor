@@ -167,58 +167,61 @@ define([
           vm.canCreateDraftStatic = canCreateDraftStatic;
 
           vm.editingDescription = false;
+          vm.editingDescriptionSelection = null;
+          vm.editingDescriptionInitialValue = null;
+
           vm.isSharedMode = isSharedMode;
           vm.isSearchMode = isSearchMode;
           vm.isHomeMode = isHomeMode;
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
+          vm.forms = null;
 
           vm.versioningEnabled = function () {
             return window.versioningEnabled;
-          }
+          };
 
           vm.hideModal = function (visible) {
             visible = false;
           };
 
-          vm.startDescriptionEditing = function () {
-            var resource = vm.getSelection();
-            if (resource != null) {
-              vm.editingDescription = true;
-              $timeout(function () {
-                var jqDescriptionField = $('#edit-description');
-                jqDescriptionField.focus();
-                var l = jqDescriptionField.val().length;
-                jqDescriptionField[0].setSelectionRange(0, l);
-              });
-            }
-          };
-
           vm.toggleDescriptionEditing = function () {
-            console.log('toggleDescriptionEditing');
-            if (vm.getSelection() != null) {
-
+            if (vm.getSelection()) {
               vm.editingDescription = !vm.editingDescription;
 
+
               if (vm.editingDescription) {
+                vm.editingDescriptionSelection = vm.getSelection();
+                vm.editingDescriptionInitialValue = vm.selectedResource['schema:description'];
+
                 $timeout(function () {
-
                   var jqDescriptionField = $('#edit-description');
-                  console.log('jqDescriptionField',jqDescriptionField.val());
-
-                  jqDescriptionField.focus();
-                  var l = jqDescriptionField.val().length;
-                  jqDescriptionField[0].setSelectionRange(0, l);
+                  if (jqDescriptionField) {
+                    jqDescriptionField.focus();
+                    if (jqDescriptionField.val()) {
+                      var l = jqDescriptionField.val().length;
+                      jqDescriptionField[0].setSelectionRange(0, l);
+                    }
+                  }
 
                   $window.onclick = function (event) {
-                    console.log('close search when clicking elsewhere', vm.editingDescription);
-                    vm.updateDescription();
-                    jqDescriptionField.blur();
-                    $scope.$apply();
+                    // make sure we are hitting something else
+                    if (event.target.id != 'edit-description') {
+                      vm.editingDescription = false;
+
+                      var jqDescriptionField = $('#edit-description');
+                      if (jqDescriptionField) {
+                        jqDescriptionField.blur();
+                      }
+                      if ( vm.editingDescriptionInitialValue != vm.editingDescriptionSelection['schema:description']) {
+                        vm.updateDescription();
+                      }
+                      $window.onclick = null;
+                      $scope.$apply();
+                    }
                   };
                 });
               } else {
-                console.log('not editing description', vm.editingDescription);
                 $window.onclick = null;
                 $scope.$apply();
 
@@ -226,12 +229,8 @@ define([
             }
           };
 
-          vm.cancelDescriptionEditing = function () {
-            vm.editingDescription = false;
-          };
-
           vm.selectResource = function (resource) {
-            vm.cancelDescriptionEditing();
+            vm.editingDescription = false;
             vm.selectedResource = resource;
             //TODO: hide the write/read/share boolean vars in the info panel
 
@@ -351,11 +350,11 @@ define([
           };
 
           vm.updateDescription = function () {
-            console.log('updateDescription',vm.editingDescription);
+            console.log('updateDescription', vm.editingDescription, vm.editingDescriptionSelection);
 
-            var resource = vm.getSelection();
+            var resource = vm.editingDescriptionSelection;
             if (resource != null) {
-              //vm.editingDescription = false;
+
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
