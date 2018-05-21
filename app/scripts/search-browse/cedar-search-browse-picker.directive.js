@@ -31,7 +31,7 @@ define([
           '$location',
           '$timeout',
           '$scope',
-          '$rootScope',
+          '$window',
           '$translate',
           'CedarUser',
           'resourceService',
@@ -45,7 +45,7 @@ define([
           'MessagingService'
         ];
 
-        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $translate, CedarUser,
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $window, $translate, CedarUser,
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService,
@@ -173,7 +173,7 @@ define([
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
 
-          vm.versioningEnabled = function() {
+          vm.versioningEnabled = function () {
             return window.versioningEnabled;
           }
 
@@ -194,6 +194,37 @@ define([
             }
           };
 
+          vm.toggleDescriptionEditing = function () {
+            console.log('toggleDescriptionEditing');
+            if (vm.getSelection() != null) {
+
+              vm.editingDescription = !vm.editingDescription;
+
+              if (vm.editingDescription) {
+                $timeout(function () {
+
+                  var jqDescriptionField = $('#edit-description');
+                  console.log('jqDescriptionField',jqDescriptionField.val());
+
+                  jqDescriptionField.focus();
+                  var l = jqDescriptionField.val().length;
+                  jqDescriptionField[0].setSelectionRange(0, l);
+
+                  $window.onclick = function (event) {
+                    console.log('close search when clicking elsewhere', vm.editingDescription);
+                    vm.updateDescription();
+                    jqDescriptionField.blur();
+                    $scope.$apply();
+                  };
+                });
+              } else {
+                console.log('not editing description', vm.editingDescription);
+                $window.onclick = null;
+                $scope.$apply();
+
+              }
+            }
+          };
 
           vm.cancelDescriptionEditing = function () {
             vm.editingDescription = false;
@@ -239,7 +270,7 @@ define([
 
           vm.canSubmit = function () {
             return CedarUser.hasPermission(
-                'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+                    'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
           };
 
 
@@ -302,7 +333,7 @@ define([
             }
           };
 
-          vm.getNextResourceVersion = function() {
+          vm.getNextResourceVersion = function () {
             var currentVersion = vm.getResourceVersion();
             var parts = currentVersion.split(".");
             if (parts.length == 3) {
@@ -320,9 +351,11 @@ define([
           };
 
           vm.updateDescription = function () {
-            vm.editingDescription = false;
+            console.log('updateDescription',vm.editingDescription);
+
             var resource = vm.getSelection();
             if (resource != null) {
+              //vm.editingDescription = false;
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
@@ -488,9 +521,9 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type  : true,
+              type             : true,
               publicationStatus: false,
-              version: false
+              version          : false
             };
             vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
             vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "latest" : uip.resourceVersionFilter.version;
@@ -573,11 +606,11 @@ define([
             resourceService.searchResources(
                 term,
                 {
-                  resourceTypes: resourceTypes,
-                  sort: sortField(),
-                  limit: limit,
-                  offset: offset,
-                  version: vm.resourceVersionFilterValue,
+                  resourceTypes    : resourceTypes,
+                  sort             : sortField(),
+                  limit            : limit,
+                  offset           : offset,
+                  version          : vm.resourceVersionFilterValue,
                   publicationStatus: vm.resourcePublicationStatusFilterValue
                 },
                 function (response) {
@@ -602,11 +635,11 @@ define([
             var offset = vm.offset;
             resourceService.sharedWithMeResources(
                 {
-                  resourceTypes: resourceTypes,
-                  sort: sortField(),
-                  limit: limit,
-                  offset: offset,
-                  version: vm.resourceVersionFilterValue,
+                  resourceTypes    : resourceTypes,
+                  sort             : sortField(),
+                  limit            : limit,
+                  offset           : offset,
+                  version          : vm.resourceVersionFilterValue,
                   publicationStatus: vm.resourcePublicationStatusFilterValue
                 },
                 function (response) {
@@ -860,12 +893,12 @@ define([
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
                   {
-                    folderId: folderId,
-                    resourceTypes: resourceTypes,
-                    sort: sortField(),
-                    limit: limit,
-                    offset: offset,
-                    version: vm.resourceVersionFilterValue,
+                    folderId         : folderId,
+                    resourceTypes    : resourceTypes,
+                    sort             : sortField(),
+                    limit            : limit,
+                    offset           : offset,
+                    version          : vm.resourceVersionFilterValue,
                     publicationStatus: vm.resourcePublicationStatusFilterValue
                   },
                   function (response) {
@@ -993,7 +1026,7 @@ define([
           function canPublishStatic() {
             return vm.versioningEnabled() && (hasSelection() &&
                 (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
                 vm.selectedResource['bibo:status'] == 'bibo:draft');
           }
 
@@ -1004,7 +1037,7 @@ define([
           function canCreateDraftStatic() {
             return vm.versioningEnabled() && (hasSelection() &&
                 (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
                 vm.selectedResource['bibo:status'] == 'bibo:published');
           }
 
@@ -1049,11 +1082,11 @@ define([
           }
 
           function isResourcePublicationStatusActive(publicationStatus) {
-            return vm.resourcePublicationStatusFilterValue  == publicationStatus;
+            return vm.resourcePublicationStatusFilterValue == publicationStatus;
           }
 
           function isResourceVersionActive(version) {
-            return vm.resourceVersionFilterValue  == version;
+            return vm.resourceVersionFilterValue == version;
           }
 
           function showOrHide(type) {
@@ -1358,7 +1391,7 @@ define([
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
                 [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                  CedarUser.getSort()]);
+                 CedarUser.getSort()]);
           }
 
           // open the move modal
@@ -1374,7 +1407,7 @@ define([
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
-                    CedarUser.getSort()]);
+                   CedarUser.getSort()]);
             }
           }
 

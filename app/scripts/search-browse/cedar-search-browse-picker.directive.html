@@ -598,15 +598,17 @@
           </div>
         </div>
 
+        dc.editingDescription {{dc.editingDescription}}
 
         <div class="description" ng-if="dc.getSelectedNode()">
+
           <div ng-if="dc.editingDescription" class="editing">
 
             <form class="form-inline" ng-submit="dc.updateDescription()">
               <fieldset>
-                <input id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
-                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
-                <button type="submit" style=" display:none">Add</button>
+                <textarea  style="width:100%" id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
+                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
+                <button type="submit" style=" display:block">Add</button>
               </fieldset>
             </form>
 
@@ -614,7 +616,7 @@
           <div ng-if="!dc.editingDescription" class="title">
             {{ dc.selectedResource['schema:description'] }}
           </div>
-          <div ng-if="!dc.editingDescription" class="edit pull-right">
+          <div ng-if="!dc.editingDescription && dc.hasSelection()" class="edit pull-right">
             <button
                 type="button"
                 uib-tooltip='{{"HELP.editDescription" | translate}}'
@@ -623,7 +625,7 @@
                 tooltip-placement="left"
                 data-toggle="tooltip"
                 ng-show="dc.canWrite()"
-                ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+                ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
         </div>
       </div>
