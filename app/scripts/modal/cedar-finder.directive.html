@@ -169,11 +169,10 @@
                 <div class="title" ng-class="finder.selectedResource.nodeType">
                   {{ finder.selectedResource['schema:name'] }}
                 </div>
-                <table class="table-details">
+                <table class="table-details" >
 
                   <tbody>
                   <tr>
-
                     <td class="label">Location</td>
                     <td>{{ finder.selectedResource.path }}</td>
                   </tr>
@@ -197,24 +196,27 @@
                       <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr >
                     <td class="label">Publicly readable</td>
                     <td>{{ finder.selectedResource.isPubliclyReadable }}</td>
                     </td>
                   </tr>
-                  <tr>
+                  <tr >
+
                     <td class="label">Publicly writable</td>
                     <td>{{ finder.selectedResource.isPubliclyWritable }}</td>
                     </td>
                   </tr>
+                  <tr>
+                    <td  colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>
+                  </tr>
                   </tbody>
                 </table>
-                <div class="description">
-
-                  <div ng-if="!finder.editingDescription" class="description-text">
-                    {{ finder.selectedResource['schema:description'] }}
-                  </div>
-                </div>
+                <!--<div class="description">-->
+                  <!--<div class="description-text">-->
+                    <!--{{ finder.selectedResource['schema:description'] }}-->
+                  <!--</div>-->
+                <!--</div>-->
               </div>
               <div class="info" ng-if="!finder.selectedResource">
                 <div class="no-title" translate>GENERIC.SelectToViewDetails</div>

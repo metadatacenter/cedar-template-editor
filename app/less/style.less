@@ -7186,6 +7186,7 @@ table.apiKey {
               width: calc(~"50% - 10px");
               background: @white;
               height: 399px;
+              overflow:hidden;
               .no-title {
                 padding-top: 100px;
                 text-align: center;
@@ -7223,25 +7224,19 @@ table.apiKey {
               text-align: center;
             }
             .description {
-              text-align: center;
-              padding: 10px 0 20px;
+              text-align:left;
+              padding:1em .4em;
             }
-
             .table-details {
-
-              padding: 0;
-              margin: auto;
+              margin: 0 20px;
               font-size: 1em;
-
               .label {
                 text-transform: uppercase;
                 color: #888888;
                 font-size: .9em;
                 font-weight: normal;
               }
-
             }
-
           }
 
           .list-side {
@@ -8011,6 +8006,14 @@ table.message {
       }
     }
   }
+}
+
+.flex-top {
+  display:flex;
+  justify-content:flex-end;
+  align-items: top;
+  width:100%;
+  height:100%;
 }
 
 .flex-right {

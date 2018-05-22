@@ -29,8 +29,9 @@
       <ul class="list-inline">
 
         <li id="messaging">
-          <button class="inline"  uib-tooltip='{{"HELP.message" | translate}}'  tooltip-placement="bottom" type="button" ng-click="dc.openMessaging()"><i class="fa fa-bell inline"></i></button>
-          <div id="messaging-number" ng-show="dc.hasUnreadMessages()" >
+          <button class="inline" uib-tooltip='{{"HELP.message" | translate}}' tooltip-placement="bottom" type="button"
+              ng-click="dc.openMessaging()"><i class="fa fa-bell inline"></i></button>
+          <div id="messaging-number" ng-show="dc.hasUnreadMessages()">
             <button type="button"
                 uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
                 tooltip-placement="bottom"
@@ -222,69 +223,71 @@
 
               </li>
 
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication Status<i class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication
+                Status<i class="fa pull-right"
+                    ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
 
                 <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
                   <li>
                     <button uib-tooltip="{{'GENERIC.Published' | translate}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            class="template"
-                            ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="template"
+                        ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
                         ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }"></i></button>
                   </li>
                   <li>
                     <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            class="element"
-                            ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="element"
+                        ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
                         ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }"></i></button>
                   </li>
                   <li>
                     <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            class="metadata"
-                            ng-click="dc.setResourcePublicationStatus('all')"><i
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="metadata"
+                        ng-click="dc.setResourcePublicationStatus('all')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
                         ng-class="{ active: dc.isResourcePublicationStatusActive('all') }"></i></button>
                   </li>
                 </ul>
               </li>
 
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i class="fa pull-right"
+              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i
+                  class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
                 <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
                   <li>
                     <button uib-tooltip="{{'GENERIC.Latest' | translate}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            class="template"
-                            ng-click="dc.setResourceVersion('latest')"><i
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="template"
+                        ng-click="dc.setResourceVersion('latest')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
                         ng-class="{ active: dc.isResourceVersionActive('latest') }"></i></button>
                   </li>
                   <li>
                     <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            class="metadata"
-                            ng-click="dc.setResourceVersion('all')"><i
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        class="metadata"
+                        ng-click="dc.setResourceVersion('all')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
                         ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
                   </li>
@@ -370,10 +373,12 @@
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                      <div ng-if="dc.versioningEnabled()"
+                          style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
                         {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
                       </div>
-                      <div ng-if="dc.versioningEnabled()" style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
+                      <div ng-if="dc.versioningEnabled()"
+                          style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
                         {{ resource['pav:version'] }}
                       </div>
                       <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
@@ -591,28 +596,34 @@
           </div>
           <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
             <div class="col-sm-4 left">Publication Status</div>
-            <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() | translate}}</div>
+            <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() |
+              translate}}
+            </div>
           </div>
         </div>
 
+        <div class="description flex-top " ng-if="dc.hasSelection()">
+          <div style="width:100%;">
+            <div ng-if="dc.editingDescription">
+              <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
+                <fieldset>
+                <textarea style="width:100%;resize:both" id="edit-description" type="text"
+                    ng-model="dc.selectedResource['schema:description']"
+                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
+                  <button type="submit" style=" display:none">Add</button>
+                </fieldset>
+              </form>
 
-        <div class="description" ng-if="dc.getSelectedNode()">
-          <div ng-if="dc.editingDescription" class="editing">
-
-            <form class="form-inline" ng-submit="dc.updateDescription()">
-              <fieldset>
-                <input id="edit-description" type="text" ng-model="dc.selectedResource['schema:description']"
-                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
-                <button type="submit" style=" display:none">Add</button>
-              </fieldset>
-            </form>
-
+            </div>
+            <div ng-if="!dc.editingDescription" class="title">
+              {{ dc.selectedResource['schema:description'] }}
+            </div>
           </div>
-          <div ng-if="!dc.editingDescription" class="title">
-            {{ dc.selectedResource['schema:description'] }}
-          </div>
-          <div ng-if="!dc.editingDescription" class="edit pull-right">
+
+          <div>
             <button
+                style="background:transparent"
+                ng-show="!dc.editingDescription"
                 type="button"
                 uib-tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
@@ -620,8 +631,9 @@
                 tooltip-placement="left"
                 data-toggle="tooltip"
                 ng-show="dc.canWrite()"
-                ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+                ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
+
         </div>
       </div>
     </div>
