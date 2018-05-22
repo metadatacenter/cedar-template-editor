@@ -1,9 +1,9 @@
 <!-- tabs -->
 <div>
-  <div class="detail-options"  ng-if="isEditable()">
+  <div class="detail-options"  >
     <div class="element-toggles list table-style">
 
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
+      <div ng-if="hasControlledTerms() && isEditable()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
