@@ -406,6 +406,18 @@ define([
           'schema:name'         : field['schema:name'],
           'schema:description'  : field['schema:description']
         };
+
+        // may have versioning fields
+        if (field.hasOwnProperty('bibo:status')) {
+          field.items['bibo:status'] = field['bibo:status'];
+        }
+        if (field.hasOwnProperty('pav:version')) {
+          field.items['pav:version'] = field['pav:version'];
+        }
+        if (field.hasOwnProperty('pav:derivedFrom')) {
+          field.items['pav:derivedFrom'] = field['pav:derivedFrom'];
+        }
+
         field.type = 'array';
 
         delete field.$schema;
@@ -426,6 +438,9 @@ define([
         delete field['schema:schemaVersion'];
         delete field['schema:name'];
         delete field['schema:description'];
+        delete field['bibo:status'];
+        delete field['pav:version'];
+        delete field['pav:derivedFrom'];
 
         return true;
       } else {
@@ -455,6 +470,17 @@ define([
         field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
         field['schema:name'] = field.items['schema:name'];
         field['schema:description'] = field.items['schema:description'];
+
+        // may have versioning fields
+        if (field.items.hasOwnProperty('bibo:status')) {
+          field['bibo:status'] = field.items['bibo:status'];
+        }
+        if (field.items.hasOwnProperty('pav:version')) {
+          field['pav:version'] = field.items['pav:version'];
+        }
+        if (field.items.hasOwnProperty('pav:derivedFrom')) {
+          field['pav:derivedFrom'] = field.items['pav:derivedFrom'];
+        }
 
         delete field.items;
         delete field.maxItems;
