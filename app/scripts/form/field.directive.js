@@ -50,7 +50,8 @@ define([
       };
 
       $scope.isEditable = function () {
-        return dms.firstClassField($scope.parentElement, $scope.field) || !dms.hasVersion($scope.field);
+        return dms.isDraft($scope.field);
+        //return dms.firstClassField($scope.parentElement, $scope.field) || !dms.hasVersion($scope.field);
       };
 
       $scope.isRoot = function () {
@@ -264,10 +265,11 @@ define([
 
       // does the field support using instance type term
       $scope.hasInstanceType = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == dms.getInputType($scope.field);
-        });
-        return result.length > 0 && result[0].hasInstanceTerm;
+        // var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+        //   return obj.cedarType == dms.getInputType($scope.field);
+        // });
+        // return result.length > 0 && result[0].hasInstanceTerm;
+        return false;
       };
 
       // does the field support using instance type term

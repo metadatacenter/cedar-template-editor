@@ -89,6 +89,18 @@ define([
           }
         };
 
+        service.isDraft = function (node) {
+          var schema = service.schemaOf(node);
+          var hasBiboStatus = schema.hasOwnProperty('bibo:status');
+          return !hasBiboStatus || schema['bibo:status'] == 'bibo:draft';
+        };
+
+        service.isPublished = function (node) {
+          var schema = service.schemaOf(node);
+          var hasBiboStatus = schema.hasOwnProperty('bibo:status');
+          return hasBiboStatus && schema['bibo:status'] == 'bibo:published';
+        };
+
         service.getId = function (node) {
           return service.schemaOf(node)['@id'];
         };

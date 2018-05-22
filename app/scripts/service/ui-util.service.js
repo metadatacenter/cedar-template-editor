@@ -34,7 +34,6 @@ define([
 
 
     $rootScope.$on("form:validation", function (event, options) {
-      console.log('on form:validation');
       service.documentState.valid = options.state;
     });
 
