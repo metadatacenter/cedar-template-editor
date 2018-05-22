@@ -3,7 +3,7 @@
   <div class="detail-options"  >
     <div class="element-toggles list table-style">
 
-      <div ng-if="hasControlledTerms() && isEditable()" class="element-toggle table-cell-style value-controlled-terms-tab"
+      <div ng-if="(allowsControlledTerms() && isDraft()) || (hasValueConstraint() && isPublished())" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
@@ -17,7 +17,7 @@
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
-      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
+      <div ng-if="allowsValueRecommendation() && isDraft()" class="element-toggle table-cell-style value-recommendation-tab"
           ng-class="{active: isTabActive('value-recommendation')}"
           ng-click="setTab('value-recommendation');  $event.stopPropagation();">
         <span>Suggestions</span>
@@ -131,7 +131,7 @@
                     </td>
                     <td>1</td>
                     <td>
-                      <div class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
+                      <div ng-if="isDraft()" class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
                       </div>
                     </td>
@@ -188,7 +188,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
+            <button ng-if="isDraft()" type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
             </button>
           </div>
         </div>

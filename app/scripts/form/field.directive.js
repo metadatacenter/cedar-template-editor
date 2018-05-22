@@ -49,6 +49,14 @@ define([
         return $scope.isSelectable();
       };
 
+      $scope.isDraft = function () {
+        return dms.isDraft($scope.field);
+      };
+
+      $scope.isPublished = function () {
+        return dms.isPublished($scope.field);
+      };
+
       $scope.isEditable = function () {
         return dms.isDraft($scope.field);
         //return dms.firstClassField($scope.parentElement, $scope.field) || !dms.hasVersion($scope.field);
@@ -256,11 +264,15 @@ define([
       };
 
       // does the field support using controlled terms
-      $scope.hasControlledTerms = function () {
+      $scope.allowsControlledTerms = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
         return result.length > 0 && result[0].hasControlledTerms;
+      };
+
+      $scope.hasValueConstraint = function () {
+        return dms.hasValueConstraint($scope.field);
       };
 
       // does the field support using instance type term
