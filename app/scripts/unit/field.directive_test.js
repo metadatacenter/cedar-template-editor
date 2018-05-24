@@ -99,7 +99,7 @@ define(['app', 'angular'], function (app) {
       });
 
 
-      xdescribe('an attribute-value field', function () {
+      describe('an attribute-value field', function () {
 
         beforeEach(function () {
           addFieldToTemplate('attribute-value');
@@ -107,7 +107,7 @@ define(['app', 'angular'], function (app) {
         attributeValueTests();
       });
 
-      xdescribe('a checkbox field', function () {
+      describe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplate('checkbox');
         });
@@ -118,7 +118,7 @@ define(['app', 'angular'], function (app) {
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
-    xdescribe('In a template element,', function () {
+    describe('In a template element,', function () {
 
       describe('a text field', function () {
         beforeEach(function () {
@@ -231,14 +231,11 @@ define(['app', 'angular'], function (app) {
       var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
-        var elm = compiledDirective[0];
-        console.log(elm);
-
-        // expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
-        // expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
-        // expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
-        // expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
-        // expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
+        expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
       });
 
       it("should have the correct icon and two input fields", function () {

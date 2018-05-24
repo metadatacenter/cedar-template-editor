@@ -32,7 +32,8 @@
   "description": "",
   "_ui": {
     "order": [],
-    "propertyLabels": {}
+    "propertyLabels": {},
+    "propertyDescriptions": {}
   },
   "properties": {
     "@context": {

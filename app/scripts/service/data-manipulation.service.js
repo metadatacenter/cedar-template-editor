@@ -855,12 +855,16 @@ define([
 
         // get the propertyLabel out of this node
         service.getPropertyLabels = function (node) {
-          return service.schemaOf(node)['_ui']['propertyLabels'];
+          if (node) {
+            return service.schemaOf(node)['_ui']['propertyLabels'];
+          }
         };
 
         // get the propertyLabel out of this node
         service.getPropertyDescriptions = function (node) {
-          return service.schemaOf(node)['_ui']['propertyDescriptions'];
+          if (node) {
+            return service.schemaOf(node)['_ui']['propertyDescriptions'];
+          }
         };
 
 
