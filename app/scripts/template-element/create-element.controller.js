@@ -231,9 +231,17 @@ define([
     $scope.addElementToElement = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        dms.createDomIds(element);
-        StagingService.addElementToElement($scope.element, element["@id"]);
-        $rootScope.$broadcast("form:update");
+
+        DataManipulationService.createDomIds(element);
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addElementToForm($scope.element, element["@id"], domId, function (e) {
+
+          // now we are sure that the element was successfully added, scroll to it and hide its nested contents
+          UIUtilService.scrollToDomId(domId);
+
+        });
+        $rootScope.$broadcast("form:update", element);
       }
     };
 
