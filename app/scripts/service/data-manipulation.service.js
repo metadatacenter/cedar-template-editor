@@ -89,12 +89,14 @@ define([
           }
         };
 
+        // is a draft if status is draft or has no status
         service.isDraft = function (node) {
           var schema = service.schemaOf(node);
           var hasBiboStatus = schema.hasOwnProperty('bibo:status');
-          return !hasBiboStatus || schema['bibo:status'] == 'bibo:draft';
+          return hasBiboStatus && schema['bibo:status'] == 'bibo:draft';
         };
 
+        // is published if has status and it is published
         service.isPublished = function (node) {
           var schema = service.schemaOf(node);
           var hasBiboStatus = schema.hasOwnProperty('bibo:status');
@@ -186,7 +188,7 @@ define([
         };
 
         service.setDescription = function (node, value) {
-          var schema = service.schemaOf(node)
+          var schema = service.schemaOf(node);
           if (schema) {
             service.schemaOf(node)['schema:description'] = value;
             //service.schemaOf(node)._ui.description = value;
@@ -561,37 +563,35 @@ define([
         };
 
         service.updateKey = function (key, node, parent) {
-          if (parent && node && (service.getId(node) != service.getId(parent))) {
-
-            var title = service.getTitle(node);
-            var labels = service.getPropertyLabels(parent);
-            var label = labels[key];
-            // relabel key and rebuild propertyLabel using title
-            // TODO use title for the propertyLabel?
-            //service.relabel(parent, key, title, label);
-            service.relabel(parent, key, title, title);
+          if (!service.isRootNode(parent,node) && !service.hasVersion(node)) {
+              var title = service.getTitle(node);
+              var labels = service.getPropertyLabels(parent);
+              var label = labels[key];
+              var descriptions = service.getPropertyDescriptions(parent);
+              var description = descriptions[key];
+              service.relabel(parent, key, title, label, description);
           }
         };
 
         // Relabel the element key with a new value from the propertyLabels
-        service.relabel = function (parent, key, title, label) {
+        service.relabel = function (parent, key, title, label, description) {
           if (key != title) {
 
             var schema = service.schemaOf(parent);
             var properties = service.propertiesOf(parent);
             var labels = service.getPropertyLabels(parent);
-            var newKey = service.getAcceptableKey(properties, title);
+            var newKey = service.getAcceptableKey(properties, label);
 
             angular.forEach(properties, function (value, k) {
               if (value && key == k) {
-                service.relabelField(schema, key, newKey, label);
+                service.relabelField(schema, key, newKey, label, description);
               }
             });
           }
         };
 
         // Relabel the field key with the field title
-        service.relabelField = function (schema, key, newKey, label) {
+        service.relabelField = function (schema, key, newKey, label, description) {
           if (!label) {
             console.log('Error: relabelField missing label');
           }
@@ -627,6 +627,12 @@ define([
             if (schema['_ui']['propertyLabels']) {
               delete schema['_ui']['propertyLabels'][key];
               schema['_ui']['propertyLabels'][newKey] = label;
+            }
+
+            // Rename key in the 'propertyDescriptions' array
+            if (schema['_ui']['propertyDescriptions']) {
+              delete schema['_ui']['propertyDescriptions'][key];
+              schema['_ui']['propertyDescriptions'][newKey] = description;
             }
           }
         };
@@ -793,7 +799,11 @@ define([
         //
 
 
-        service.firstClassField = function (parent, child) {
+        service.firstClassField = function (node) {
+          return service.hasVersion(node);
+        };
+
+        service.isRootNode = function (parent, child) {
           return parent && child && service.getId(child) == service.getId(parent);
         };
 
@@ -828,7 +838,7 @@ define([
         // delete the non-CEDAR propertyId by using a CEDAR property
         service.deletePropertyId = function (parent, node) {
           if (parent && node && (service.getId(node) != service.getId(parent))) {
-
+            var id = service.getId(node);
             var props = service.propertiesOf(parent);
             var schema = service.schemaOf(parent);
             for (var prop in props) {
@@ -847,6 +857,13 @@ define([
         service.getPropertyLabels = function (node) {
           return service.schemaOf(node)['_ui']['propertyLabels'];
         };
+
+        // get the propertyLabel out of this node
+        service.getPropertyDescriptions = function (node) {
+          return service.schemaOf(node)['_ui']['propertyDescriptions'];
+        };
+
+
 
 
         //
@@ -1850,7 +1867,7 @@ define([
 
 
         service.removeChild = function (parent, child) {
-          if (!service.firstClassField(parent, child)) {
+          if (!service.isRootNode(parent, child)) {
 
             var id = service.getId(child);
             var selectedKey;

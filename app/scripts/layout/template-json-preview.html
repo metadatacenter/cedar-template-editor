@@ -28,10 +28,10 @@
           ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
       </uib-accordion-heading>
       <div ng-if="openStatus">
-      <pre id='form-json-preview'
-          style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>
-        <!--<pre id='form-json-preview'-->
-            <!--style="background:white;border:0px;border-radius: 0px;">{{ $root.jsonToSave | json }}</pre>-->
+      <!--<pre id='form-json-preview'-->
+          <!--style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>-->
+        <pre id='form-json-preview'
+            style="background:white;border:0px;border-radius: 0px;">{{ $root.jsonToSave | json }}</pre>
       </div>
     </div>
 

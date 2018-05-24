@@ -57,8 +57,16 @@ define([
         return dms.isPublished($scope.field);
       };
 
+      $scope.isRootNode = function () {
+        return dms.isRootNode($scope.parentElement,$scope.field);
+      };
+
+      $scope.hasVersion = function () {
+        return dms.hasVersion($scope.field);
+      };
+
       $scope.isEditable = function () {
-        return dms.isDraft($scope.field);
+        return !dms.hasVersion($scope.field) || dms.isDraft($scope.field);
         //return dms.firstClassField($scope.parentElement, $scope.field) || !dms.hasVersion($scope.field);
       };
 
@@ -170,6 +178,20 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
+
+      $scope.canViewTerms = function () {
+        var allowed = $scope.allowsControlledTerms();
+        var noVersion = !$scope.hasVersion();
+        var versionAndTermsOrRoot = $scope.hasVersion() && ($scope.hasValueConstraint() || $scope.isRootNode());
+        return allowed && (noVersion ||  versionAndTermsOrRoot);
+      };
+
+      $scope.canAddTerms = function () {
+        var noVersion = !$scope.hasVersion();
+        var draftAndRoot = $scope.isDraft() && $scope.isRootNode();
+        return noVersion ||  draftAndRoot;
+      };
+
       $scope.getLiterals = function () {
         return dms.getLiterals($scope.field);
       };
@@ -203,10 +225,11 @@ define([
 
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
+        console.log('ckDelete',dms.isRootNode($scope.parentElement, $scope.field));
         if ($scope.parentElement) {
           $scope.setDirty();
 
-          if (dms.firstClassField($scope.parentElement, $scope.field)) {
+          if (dms.isRootNode($scope.parentElement, $scope.field)) {
             $rootScope.$broadcast("form:clear");
 
           } else {
@@ -401,7 +424,6 @@ define([
           dms.setFieldSchemaTitleAndDescription(newField, dms.getTitle(newField));
         }
 
-        // update fieldSchema
         $scope.fieldSchema = dms.schemaOf($scope.field);
 
         setDirectory();
@@ -1005,6 +1027,10 @@ define([
         return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
       };
 
+      $scope.getPropertyDescription = function () {
+        return dms.getPropertyDescriptions($scope.parentElement)[$scope.fieldKey];
+      };
+
       $scope.getPropertyId = function () {
         return dms.getPropertyId($scope.parentElement, $scope.field);
       };
@@ -1036,7 +1062,23 @@ define([
 
       /* end of controlled terms functionality */
 
+      //
+      // init
+      //
       $scope.fieldSchema = dms.schemaOf($scope.field);
+      if (dms.isRootNode($scope.parentElement, $scope.field)) {
+        $scope.fieldLabelKey = 'schema:name';
+        $scope.fieldDescriptionKey = 'schema:description';
+        $scope.fieldLabel = $scope.field;
+        $scope.fieldDescription = $scope.field;
+      } else {
+        $scope.fieldLabelKey = $scope.fieldKey;
+        $scope.fieldDescriptionKey = $scope.fieldKey;
+        $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
+        $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
+      }
+
+
 
     };
 

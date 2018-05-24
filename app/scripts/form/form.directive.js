@@ -175,7 +175,8 @@ define([
 
 
         $scope.pageTitle = function () {
-          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex + 1) + '. ' : '') + $scope.pageTitles[$scope.pageIndex];
+          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex + 1) + '. ' : '') +
+              $scope.pageTitles ?  $scope.pageTitles[$scope.pageIndex]: '';
         };
 
 
@@ -551,6 +552,11 @@ define([
         $scope.getTitle = function () {
           return dms.getTitle($scope.form);
         };
+
+        $scope.getFormTitle = function (item) {
+          return dms.getTitle($scope.form.properties[item]);
+        };
+
 
         $scope.formatTitle = function () {
           return UIUtilService.formatTitle($scope.form);

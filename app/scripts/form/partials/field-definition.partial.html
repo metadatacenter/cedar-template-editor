@@ -7,14 +7,14 @@
           id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
           placeholder="{{'CREATOR.enterFieldKey' | translate}}"
           aria-label="{{'CREATOR.enterFieldKey' | translate}}"
-          ng-model="fieldSchema['schema:name']"
+          ng-model="fieldLabel[fieldLabelKey]"
           ng-model-options="{ debounce: 1000, allowInvalid:true }"
+          ng-disabled="isPublished()"
           autocomplete="off"
-          ng-disabled="!isEditable()"
           with-floating-label>
     </div>
     <!-- property button -->
-    <div class="property" ng-if="!isStatic() && isEditable()">
+    <div class="property" ng-if="!isStatic()">
       <div class="flex">
         <i  uib-tooltip-placement="left" tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
@@ -41,10 +41,10 @@
         id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
         placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
         aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
-        ng-model="fieldSchema['schema:description']"
+        ng-model="fieldDescription[fieldDescriptionKey]"
         ng-model-options="{ debounce: 1000, allowInvalid:true }"
         autocomplete="off"
-        ng-disabled="!isEditable()"
+        ng-disabled="isPublished()"
         with-floating-label>
   </div>
 </div>
@@ -56,7 +56,7 @@
 
       <input type="text"
           class="form-control"
-          placeholder="{{getTitle()}}"
+          ng-model="fieldLabel[fieldLabelKey]"
           aria-label="{{getDescription()}}"
           ng-disabled="true"
           style="border-width:0px;"

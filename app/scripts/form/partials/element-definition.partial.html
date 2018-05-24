@@ -9,7 +9,7 @@
           id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
           placeholder="{{'CREATOR.enterElementTitle' | translate}}"
           aria-label="{{'CREATOR.enterElementTitle' | translate}}"
-          ng-model="elementSchema['schema:name']"
+          ng-model="elementLabel[key]"
           ng-model-options="{ debounce: 1000, allowInvalid:true }"
           autocomplete="off"
           with-floating-label>
@@ -40,7 +40,7 @@
         id="help-text-{{getId().substring(getId().lastIndexOf('/')+1)}}"
         placeholder="{{'CREATOR.enterElementDescription' | translate}}"
         aria-label="{{'CREATOR.enterElementDescription' | translate}}"
-        ng-model="elementSchema['schema:description']"
+        ng-model="elementDescription[key]"
         ng-model-options="{ debounce: 1000, allowInvalid:true }"
         with-floating-label>
   </div>
@@ -52,7 +52,7 @@
     <div class="form-group floating-label-wrapper" style="margin-bottom:0;width:100%;">
       <input type="text"
           class="form-control"
-          placeholder="{{getTitle()}}"
+          placeholder="{{elementLabel[key]}}"
           aria-label="{{getDescription()}}"
           ng-disabled="true"
           style="border-width:0px;"

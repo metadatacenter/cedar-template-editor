@@ -119,6 +119,7 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType, firstClassField, divId, callback) {
+      console.log('addFIeldToForm');
 
       var field = DataManipulationService.generateField(fieldType, firstClassField);
       UIUtilService.setSelected(field);
@@ -175,6 +176,10 @@ define([
       form._ui.order.push(fieldName);
 
       form._ui.propertyLabels = form._ui.propertyLabels || {};
+      form._ui.propertyLabels[fieldName] = "Untitled";
+      form._ui.propertyDescriptions = form._ui.propertyDescriptions || {};
+      form._ui.propertyDescriptions[fieldName] = "Help Text";
+      console.log(form._ui.propertyLabels,form._ui.propertyDescriptions);
 
       DataManipulationService.addDomIdIfNotPresent(field, divId);
       callback(field);
@@ -183,6 +188,7 @@ define([
     };
 
     service.addElementToForm = function (form, elementId, divId, callback) {
+      console.log('addElementToForm');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -191,8 +197,12 @@ define([
 
             // Converting title for irregular character handling
             var title = DataManipulationService.getTitle(clonedElement);
+            var description = DataManipulationService.getDescription(clonedElement);
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
+
+            console.log('addElementToForm', title, description, elName);
+
 
             // Adding corresponding property type to @context
             var randomPropertyName = DataManipulationService.generateGUID();
@@ -214,6 +224,8 @@ define([
 
             form._ui.propertyLabels = form._ui.propertyLabels || {};
             form._ui.propertyLabels[elName] = title;
+            form._ui.propertyDescriptions = form._ui.propertyDescriptions || {};
+            form._ui.propertyDescriptions[elName] = description;
 
 
             DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
@@ -237,6 +249,7 @@ define([
 
             // Converting title for irregular character handling
             var title = DataManipulationService.getTitle(clonedElement);
+            var description = DataManipulationService.getDescription(clonedElement);
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
@@ -268,6 +281,9 @@ define([
 
             form._ui.propertyLabels = form._ui.propertyLabels || {};
             form._ui.propertyLabels[elName] = title;
+            form._ui.propertyDescriptions = form._ui.propertyDescriptions || {};
+            form._ui.propertyDescriptions[elName] = description;
+
 
 
             DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
@@ -287,6 +303,7 @@ define([
 
       // Converting title for irregular character handling
       var title = DataManipulationService.getTitle(clonedElement);
+      var description = DataManipulationService.getDescription(clonedElement);
       var elName = DataManipulationService.getFieldName(title);
       elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
@@ -309,7 +326,9 @@ define([
       form._ui.order.push(elName);
 
       form._ui.propertyLabels = form._ui.propertyLabels || {};
-      form._ui.propertyLabels[elName] = elName;
+      form._ui.propertyLabels[elName] = title;
+      form._ui.propertyDescriptions = form._ui.propertyDescriptions || {};
+      form._ui.propertyDescriptions[elName] = description;
 
 
       DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
@@ -376,6 +395,9 @@ define([
       element._ui.order.push(fieldName);
 
       element._ui.propertyLabels = element._ui.propertyLabels || {};
+      element._ui.propertyLabels[fieldName] = "Untitled";
+      element._ui.propertyDescriptions = element._ui.propertyDescriptions || {};
+      element._ui.propertyDescriptions[fieldName] = "Help Text";
 
       return field;
     };
@@ -408,6 +430,7 @@ define([
             UIUtilService.setSelected(el);
 
             var title = DataManipulationService.getTitle(el);
+            var description = DataManipulationService.getDescription(el);
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
             var randomPropertyName = DataManipulationService.generateGUID();
@@ -430,6 +453,8 @@ define([
             element._ui.order.push(elName);
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
+            element._ui.propertyDescriptions = element._ui.propertyDescriptions || {};
+            element._ui.propertyDescriptions[fieldName] = description;
 
             DataManipulationService.createDomIds(element);
           },

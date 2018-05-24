@@ -38,6 +38,8 @@ define([
 
       scope.directiveName = 'cedarTemplateElement';
       scope.elementSchema = dms.schemaOf(scope.element);
+      scope.elementLabel = dms.getPropertyLabels(scope.parentElement);
+      scope.elementDescription = dms.getPropertyDescriptions(scope.parentElement);
 
       scope.isFirstLevel = function () {
         return (scope.$parent.directiveName === 'form');
