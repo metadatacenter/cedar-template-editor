@@ -99,7 +99,7 @@ define(['app', 'angular'], function (app) {
       });
 
 
-      describe('an attribute-value field', function () {
+      xdescribe('an attribute-value field', function () {
 
         beforeEach(function () {
           addFieldToTemplate('attribute-value');
@@ -107,7 +107,7 @@ define(['app', 'angular'], function (app) {
         attributeValueTests();
       });
 
-      describe('a checkbox field', function () {
+      xdescribe('a checkbox field', function () {
         beforeEach(function () {
           addFieldToTemplate('checkbox');
         });
@@ -118,7 +118,7 @@ define(['app', 'angular'], function (app) {
 
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
-    describe('In a template element,', function () {
+    xdescribe('In a template element,', function () {
 
       describe('a text field', function () {
         beforeEach(function () {
@@ -364,8 +364,6 @@ define(['app', 'angular'], function (app) {
       // Compile field directive
       var fieldDirective = "<field-directive parent-element='createdTemplate' nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);
-      console.log('createdTemplate', createdTemplate);
-      // Now run a $digest cycle
       $fieldDirectiveScope.$digest();
     };
 
