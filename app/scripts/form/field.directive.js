@@ -89,7 +89,6 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       };
 
-
       $scope.getHidden = function () {
         return dms.getHidden($scope.field);
       };
@@ -177,7 +176,6 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-
       $scope.canViewTerms = function () {
         var allowed = $scope.allowsControlledTerms();
         var noVersion = !$scope.hasVersion();
@@ -224,7 +222,6 @@ define([
 
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
-        console.log('ckDelete',dms.isRootNode($scope.parentElement, $scope.field));
         if ($scope.parentElement) {
           $scope.setDirty();
 
@@ -297,7 +294,7 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-      // does the field support using instance type term
+      // for now, turn this option off. does the field support using instance type term
       $scope.hasInstanceType = function () {
         // var result = FieldTypeService.getFieldTypes().filter(function (obj) {
         //   return obj.cedarType == dms.getInputType($scope.field);

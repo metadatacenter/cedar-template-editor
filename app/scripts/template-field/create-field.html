@@ -1,45 +1,45 @@
 <div class="template-container scrollable-content">
-  <div class="template-header field">
-    <div class="container">
-      <div class="row">
-        <div class="left-sidebar col-sm-4 col-sm-offset-1">
-          <div id="field-name-container">
-            <form>
-              <div class="form-group floating-label-wrapper">
-                <input auto-focus type="text" class="form-control" id="field-name"
-                    placeholder="{{'GENERIC.FieldName' | translate}}"
-                    aria-label="{{'GENERIC.FieldName' | translate}}"
-                    ng-model="fieldSchema['schema:name']" with-floating-label>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="right-body col-sm-6">
-          <div id="field-description-container">
-            <form>
-              <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control" id="field-description"
-                    placeholder="{{'GENERIC.FieldDescription' | translate}}"
-                    aria-label="{{'GENERIC.FieldDescription' | translate}}" ng-model="fieldSchema['schema:description']"
-                    with-floating-label>
-              </div>
-            </form>
-          </div>
-        </div>
-        <button type="button" class="show-type"
-            ng-click="showModal('control-options-field-field')">
-          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
-        </button>
-        <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
-          <button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">
-            <i class="fa fa-caret-down  inline "></i></button>
-          <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
-            <class-list field="field" view-type="viewType"></class-list>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!--<div class="template-header field">-->
+    <!--<div class="container">-->
+      <!--<div class="row">-->
+        <!--<div class="left-sidebar col-sm-4 col-sm-offset-1">-->
+          <!--<div id="field-name-container">-->
+            <!--<form>-->
+              <!--<div class="form-group floating-label-wrapper">-->
+                <!--<input auto-focus type="text" class="form-control" id="field-name"-->
+                    <!--placeholder="{{'GENERIC.FieldName' | translate}}"-->
+                    <!--aria-label="{{'GENERIC.FieldName' | translate}}"-->
+                    <!--ng-model="fieldSchema['schema:name']" with-floating-label>-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="right-body col-sm-6">-->
+          <!--<div id="field-description-container">-->
+            <!--<form>-->
+              <!--<div class="form-group floating-label-wrapper">-->
+                <!--<input type="text" class="form-control" id="field-description"-->
+                    <!--placeholder="{{'GENERIC.FieldDescription' | translate}}"-->
+                    <!--aria-label="{{'GENERIC.FieldDescription' | translate}}" ng-model="fieldSchema['schema:description']"-->
+                    <!--with-floating-label>-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<button type="button" class="show-type"-->
+            <!--ng-click="showModal('control-options-field-field')">-->
+          <!--<i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>-->
+        <!--</button>-->
+        <!--<div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">-->
+          <!--<button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">-->
+            <!--<i class="fa fa-caret-down  inline "></i></button>-->
+          <!--<div uib-dropdown-menu class="class-list pull-right dropdown-menu">-->
+            <!--<class-list field="field" view-type="viewType"></class-list>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <div class="template-body field">
     <div class="container">
@@ -47,18 +47,9 @@
         <div class="right-body col-sm-10 col-sm-offset-1">
           <div id="form-preview-section">
             <div class="form-preview collapse in">
-              <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
-              <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
-              <!--</div>-->
-
-
               <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
-
-
             </div>
-            <!-- /.form-preview -->
           </div>
-          <!-- /#form-preview-section -->
 
           <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
             <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span>
@@ -110,10 +101,8 @@
           </div>
 
           <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
-
-
         </div>
-        <!-- /.right-body -->
+
 
         <div class="left-sidebar col-sm-1 pull-right">
           <div id="stickyFix"></div>
@@ -123,12 +112,9 @@
             <ng-include src="'scripts/form/partials/edit-add-toolbar.html'"></ng-include>
 
           </div>
-          <!-- /.sticky-list -->
         </div>
-        <!-- /.left-sidebar -->
-
       </div>
-      <!-- /.row -->
+
 
       <!-- field finder -->
       <!--<section>-->
@@ -159,10 +145,9 @@
 
 
     </div>
-    <!-- /.container -->
-  </div> <!-- /.template-body -->
+  </div>
 
 
-</div> <!-- /.row -->
+</div>
 
 
