@@ -119,7 +119,6 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType, firstClassField, divId, callback) {
-      console.log('addFIeldToForm');
 
       var field = DataManipulationService.generateField(fieldType, firstClassField);
       UIUtilService.setSelected(field);
@@ -179,7 +178,6 @@ define([
       form._ui.propertyLabels[fieldName] = "Untitled";
       form._ui.propertyDescriptions = form._ui.propertyDescriptions || {};
       form._ui.propertyDescriptions[fieldName] = "Help Text";
-      console.log(form._ui.propertyLabels,form._ui.propertyDescriptions);
 
       DataManipulationService.addDomIdIfNotPresent(field, divId);
       callback(field);
@@ -188,7 +186,6 @@ define([
     };
 
     service.addElementToForm = function (form, elementId, divId, callback) {
-      console.log('addElementToForm');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -201,7 +198,6 @@ define([
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
-            console.log('addElementToForm', title, description, elName);
 
 
             // Adding corresponding property type to @context

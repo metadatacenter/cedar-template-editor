@@ -67,7 +67,6 @@ define([
 
       $scope.isEditable = function () {
         return !dms.hasVersion($scope.field) || dms.isDraft($scope.field);
-        //return dms.firstClassField($scope.parentElement, $scope.field) || !dms.hasVersion($scope.field);
       };
 
       $scope.isRoot = function () {
@@ -96,7 +95,7 @@ define([
       };
 
       $scope.allowsHidden = function () {
-        return dms.allowsHidden($scope.field) && !dms.firstClassField($scope.parentElement, $scope.field);
+        return dms.allowsHidden($scope.field) && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // is this multiple cardinality?
@@ -267,7 +266,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsRequired && !dms.firstClassField($scope.parentElement, $scope.field);
+        return result.length > 0 && result[0].allowsRequired && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does this field allow multiple cardinality?
@@ -275,7 +274,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsMultiple && !dms.firstClassField($scope.parentElement, $scope.field);
+        return result.length > 0 && result[0].allowsMultiple && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does the field support value recommendation?
@@ -702,7 +701,7 @@ define([
       // };
 
       $scope.setMultipleChoice = function (field, multipleChoice) {
-        if (!dms.firstClassField($scope.parentElement, field)) {
+        if (!dms.isRootNode($scope.parentElement, field)) {
           dms.setMultipleChoice(field, multipleChoice);
         } else if (dms.isListType(field) || dms.isCheckboxType(field)) {
             field._valueConstraints.multipleChoice = multipleChoice;

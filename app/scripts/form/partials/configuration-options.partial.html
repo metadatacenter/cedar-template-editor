@@ -17,7 +17,7 @@
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
-      <div ng-if="allowsValueRecommendation() && isDraft()" class="element-toggle table-cell-style value-recommendation-tab"
+      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
           ng-class="{active: isTabActive('value-recommendation')}"
           ng-click="setTab('value-recommendation');  $event.stopPropagation();">
         <span>Suggestions</span>
