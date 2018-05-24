@@ -450,7 +450,7 @@ define([
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
             element._ui.propertyDescriptions = element._ui.propertyDescriptions || {};
-            element._ui.propertyDescriptions[fieldName] = description;
+            element._ui.propertyDescriptions[elName] = description;
 
             DataManipulationService.createDomIds(element);
           },
