@@ -44,9 +44,12 @@ define(['app', 'angular'], function (app) {
       $provide.service('UserService', function mockUserService() {
         var userHandler = null;
         var service = {serviceId: "UserService"};
-        service.getToken = function() {};
-        service.injectUserHandler = function (userHandler) {};
-        service.updateOwnUser = function (instance) {};
+        service.getToken = function () {
+        };
+        service.injectUserHandler = function (userHandler) {
+        };
+        service.updateOwnUser = function (instance) {
+        };
         return service;
       });
     }));
@@ -228,13 +231,12 @@ define(['app', 'angular'], function (app) {
       var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
-        console.log(
-            $(compiledDirective).find(cardinalityTabSelector).length,
-            $(compiledDirective).find(hiddenTabSelector).length,
-            $(compiledDirective).find(suggestionsTabSelector).length,
-            $(compiledDirective).find(valuesTabSelector).length,
-            $(compiledDirective).find(requiredTabSelector).length);
-        )
+      
+        console.log($(compiledDirective).find(cardinalityTabSelector).length);
+        console.log($(compiledDirective).find(hiddenTabSelector).length);
+        console.log($(compiledDirective).find(suggestionsTabSelector).length);
+        console.log($(compiledDirective).find(valuesTabSelector).length);
+        console.log($(compiledDirective).find(requiredTabSelector).length);
         // expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
         // expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
         // expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
@@ -261,7 +263,7 @@ define(['app', 'angular'], function (app) {
         titleElm.val("my title");
         titleElm.triggerHandler('change');
         $timeout.flush();
-        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+        expect(DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
 
         var description = elm.querySelector(inputHelpSelector);
         var descriptionElm = angular.element(description);
@@ -269,20 +271,20 @@ define(['app', 'angular'], function (app) {
         descriptionElm.val("my description");
         descriptionElm.triggerHandler('change');
         $timeout.flush();
-        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+        expect(DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
 
         var defaultElm = angular.element(elm.querySelector(inputDefaultSelector));
         defaultElm.triggerHandler('click');
         defaultElm.val("my default value");
         defaultElm.triggerHandler('change');
-        expect ($fieldDirectiveScope.field._valueConstraints.defaultValue === "my default value");
+        expect($fieldDirectiveScope.field._valueConstraints.defaultValue === "my default value");
       });
 
       it("should be able to set multiple", function () {
         var elm = compiledDirective[0];
 
         // multiple instance is hidden
-        expect (elm.querySelector(multipleInstanceHiddenSelector));
+        expect(elm.querySelector(multipleInstanceHiddenSelector));
 
         var noElm = angular.element(elm.querySelectorAll(cardinalityTabsSelector)[2]);
         noElm.triggerHandler('click');
@@ -290,7 +292,7 @@ define(['app', 'angular'], function (app) {
         yesElm.triggerHandler('click');
 
         // multiple instance is visible
-        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
+        expect(elm.querySelector(multipleInstanceHiddenSelector == null));
       });
     }
 
@@ -319,7 +321,7 @@ define(['app', 'angular'], function (app) {
         titleElm.val("my title");
         titleElm.triggerHandler('change');
         $timeout.flush();
-        expect (DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
+        expect(DataManipulationService.getTitle($fieldDirectiveScope.field) === "my title");
 
         var description = elm.querySelector(inputHelpSelector);
         var descriptionElm = angular.element(description);
@@ -327,7 +329,7 @@ define(['app', 'angular'], function (app) {
         descriptionElm.val("my description");
         descriptionElm.triggerHandler('change');
         $timeout.flush();
-        expect (DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
+        expect(DataManipulationService.getDescription($fieldDirectiveScope.field) === "my description");
 
       });
 
@@ -336,7 +338,7 @@ define(['app', 'angular'], function (app) {
         var elm = compiledDirective[0];
 
         // multiple instance is visible
-        expect (elm.querySelector(multipleInstanceHiddenSelector == null));
+        expect(elm.querySelector(multipleInstanceHiddenSelector == null));
       });
     }
 
@@ -365,7 +367,7 @@ define(['app', 'angular'], function (app) {
       // Compile field directive
       var fieldDirective = "<field-directive parent-element='createdTemplate' nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);
-      console.log('createdTemplate',createdTemplate);
+      console.log('createdTemplate', createdTemplate);
       // Now run a $digest cycle
       $fieldDirectiveScope.$digest();
     };
