@@ -231,12 +231,9 @@ define(['app', 'angular'], function (app) {
       var inputDefaultSelector = "input.field-default-definition";
 
       it("should show only the correct tabs", function () {
-      
-        console.log($(compiledDirective).find(cardinalityTabSelector).length);
-        console.log($(compiledDirective).find(hiddenTabSelector).length);
-        console.log($(compiledDirective).find(suggestionsTabSelector).length);
-        console.log($(compiledDirective).find(valuesTabSelector).length);
-        console.log($(compiledDirective).find(requiredTabSelector).length);
+        var elm = compiledDirective[0];
+        console.log(elm);
+
         // expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
         // expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
         // expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
