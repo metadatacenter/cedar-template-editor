@@ -128,6 +128,7 @@ define([
           'results': []
         };
       }
+      return service.autocompleteResultsCache[id][term].results;
     };
 
     // Used in textfield.html

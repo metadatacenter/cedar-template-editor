@@ -6,14 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$rootScope', '$window', '$document', '$filter', 'DataManipulationService',
+      SpreadsheetService.$inject = ['$document', '$timeout', 'DataManipulationService',
                                     'DataUtilService',
-                                    'AuthorizedBackendService', 'HttpBuilderService', 'UrlService',
-                                    'ValueRecommenderService', 'autocompleteService'];
+                                    'autocompleteService'];
 
-      function SpreadsheetService($rootScope, $window, $document, $filter, DataManipulationService, DataUtilService,
-                                  AuthorizedBackendService,
-                                  HttpBuilderService, UrlService, ValueRecommenderService, autocompleteService) {
+      function SpreadsheetService($document, $timeout, DataManipulationService, DataUtilService, autocompleteService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -55,28 +52,63 @@ define([
 
 
         // if we don't have an id and label for a controlled term, go get it
-        var lazyUpdate = function ($scope, schema, id, term, model) {
-          if (!model['@id'] || !model['rdfs:label']) {
+        var lazyUpdate = function ($scope, schema, id, term, row, col) {
 
-            autocompleteService.updateFieldAutocomplete(schema, term);
-            if (autocompleteService.autocompleteResultsCache[id][term]) {
-
-              var results = autocompleteService.autocompleteResultsCache[id][term].results;
-
-              var unbindWatcher = $scope.$watchCollection(function () {
-                return results;
-              }, function () {
-
-                for (var i = 0; i < results.length; i++) {
-                  if (results[i].label == term) {
-                    model['@id'] = results[i]['@id'];
-                    model['rdfs:label'] = results[i]['label'];
-                    unbindWatcher();
-                    break;
-                  }
-                }
-              });
+          // may need to add more rows to the model
+          if ($scope.model.length <= row) {
+            var maxItems = dms.getMaxItems($scope.field);
+            if ((!maxItems || $scope.model.length < maxItems)) {
+              $scope.model.push({'@id': null});
             }
+          }
+
+          var model = $scope.model[row];
+
+          // is the term in the cache?
+          if (autocompleteService.autocompleteResultsCache[id][term] ) {
+            var results = autocompleteService.autocompleteResultsCache[id][term].results;
+            for (var i = 0; i < results.length; i++) {
+              if (results[i].label == term) {
+                model['@id'] = results[i]['@id'];
+                model['rdfs:label'] = results[i]['label'];
+                break;
+              }
+            }
+          }
+
+          else {
+
+            // go get the term
+            var results = autocompleteService.initResults(id, term);
+            autocompleteService.updateFieldAutocomplete(schema, term);
+
+            var unbindWatcher = $scope.$watchCollection(function () {
+              return results;
+            }, function () {
+              for (var i = 0; i < results.length; i++) {
+                if (results[i].label == term) {
+
+                  model['@id'] = results[i]['@id'];
+                  model['rdfs:label'] = results[i]['label'];
+
+                  // update all the model entries with the same term
+                  var sds = $scope.spreadsheetDataScope;
+
+                  for (var r in sds.tableData) {
+                    for (var c in sds.tableData[row]) {
+                      if (sds.tableData[r][c] == term) {
+                        var m = $scope.model[r];
+                        m['@id'] = results[i]['@id'];
+                        m['rdfs:label'] = results[i]['label'];
+                      }
+                    }
+                  }
+                  // remove the watcher
+                  unbindWatcher();
+                  break;
+                }
+              }
+            });
           }
         };
 
@@ -107,7 +139,7 @@ define([
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               } else if (cedarType == 'attribute-value') {
 
-                  sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+                sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
 
               } else if (cedarType == 'checkbox') {
                 var valueObject = JSON.parse(sds.tableData[row][col]);
@@ -138,7 +170,7 @@ define([
                   if (isConstrained(schema)) {
                     var id = sds.columnDescriptors[col].nodeId;
                     var term = sds.tableData[row][col];
-                    lazyUpdate($scope, schema, id, term, sds.tableDataSource[row][col]);
+                    lazyUpdate($scope, schema, id, term, row, col);
                   }
                 }
               } else {
@@ -258,16 +290,14 @@ define([
                 desc.trimDropdown = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-                desc.validator = customValidator;
-                desc.allowInvalid = false;
-                desc.strict = true;
+                //desc.validator = customValidator;
+                desc.allowInvalid = true;
+                desc.strict = false;
                 desc.source = function (query, process) {
 
-                  var results = [];
+                  var query = query || '*';
+                  var results = autocompleteService.initResults(desc.nodeId, query);
                   autocompleteService.updateFieldAutocomplete(desc.schema, query);
-                  if (autocompleteService.autocompleteResultsCache[id][query]) {
-                    results = autocompleteService.autocompleteResultsCache[id][query].results;
-                  }
 
                   $scope.$watchCollection(function () {
                     return results;
@@ -468,9 +498,8 @@ define([
           };
 
           hooks.forEach(function (hook) {
-            //console.log('hook',hook)
             var checked = '';
-            if (hook === 'beforePaste' || hook === 'afterPaste' || hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
+            if (hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
                 hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
               checked = 'checked';
             }
