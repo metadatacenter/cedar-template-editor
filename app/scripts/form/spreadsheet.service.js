@@ -6,11 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$document', '$timeout', 'DataManipulationService',
+      SpreadsheetService.$inject = ['$document', '$translate', 'DataManipulationService',
                                     'DataUtilService',
                                     'autocompleteService'];
 
-      function SpreadsheetService($document, $timeout, DataManipulationService, DataUtilService, autocompleteService) {
+      function SpreadsheetService($document, $translate, DataManipulationService, DataUtilService, autocompleteService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -51,26 +51,61 @@ define([
         // Handsontable.renderers.registerRenderer('deepObject', service.customRendererDeepObject);
 
 
+        // may need to add more rows to the model
+        var addMoreRows = function ($scope, row) {
+          if ($scope.model.length <= row) {
+            if ($scope.spreadsheetContext.isField()) {
+              // this is a field
+              var maxItems = dms.getMaxItems($scope.field);
+              if ((!maxItems || $scope.model.length < maxItems)) {
+                $scope.model.push({'@id': null});
+              }
+
+            } else {
+              // this is an element
+              var maxItems = dms.getMaxItems($scope.element);
+              if ((!maxItems || $scope.model.length < maxItems)) {
+                $scope.addElement();
+              }
+            }
+          }
+        };
+
+        var getModel = function ($scope, id, row, col) {
+          var model;
+          var key;
+          var colOrder = $scope.spreadsheetContext.colHeaderOrder;
+
+          if ($scope.spreadsheetContext.isField()) {
+              model = $scope.model[row];
+          } else {
+            key = colOrder[col];
+            model =  $scope.model[row][key];
+          }
+
+          return model;
+        };
+
         // if we don't have an id and label for a controlled term, go get it
         var lazyUpdate = function ($scope, schema, id, term, row, col) {
 
-          // may need to add more rows to the model
-          if ($scope.model.length <= row) {
-            var maxItems = dms.getMaxItems($scope.field);
-            if ((!maxItems || $scope.model.length < maxItems)) {
-              $scope.model.push({'@id': null});
-            }
-          }
+          var noResults = $translate.instant('GENERIC.NoResults');
+          var schema = schema;
+          var row = parseInt(row);
+          var col = parseInt(col);
+          var id = id;
+          var term = term;
 
-          var model = $scope.model[row];
+          addMoreRows($scope,row);
+          var model = getModel($scope,id, row, col);
 
           // is the term in the cache?
-          if (autocompleteService.autocompleteResultsCache[id][term] ) {
-            var results = autocompleteService.autocompleteResultsCache[id][term].results;
-            for (var i = 0; i < results.length; i++) {
-              if (results[i].label == term) {
-                model['@id'] = results[i]['@id'];
-                model['rdfs:label'] = results[i]['label'];
+          if (autocompleteService.autocompleteResultsCache[id] && autocompleteService.autocompleteResultsCache[id][term]) {
+            var cachedResults = autocompleteService.autocompleteResultsCache[id][term].results;
+            for (var i = 0; i < cachedResults.length; i++) {
+              if (cachedResults[i].label == term) {
+                model['@id'] = cachedResults[i]['@id'];
+                model['rdfs:label'] = cachedResults[i]['label'];
                 break;
               }
             }
@@ -79,35 +114,63 @@ define([
           else {
 
             // go get the term
-            var results = autocompleteService.initResults(id, term);
+            var foundResults = autocompleteService.initResults(id, term);
             autocompleteService.updateFieldAutocomplete(schema, term);
 
             var unbindWatcher = $scope.$watchCollection(function () {
-              return results;
+              return foundResults;
             }, function () {
-              for (var i = 0; i < results.length; i++) {
-                if (results[i].label == term) {
 
-                  model['@id'] = results[i]['@id'];
-                  model['rdfs:label'] = results[i]['label'];
+              var k = 0;
+              // if the term has no results, wipe it out
+              if (foundResults.length == 1 && foundResults[k].label == noResults) {
 
-                  // update all the model entries with the same term
-                  var sds = $scope.spreadsheetDataScope;
+                model['@id'] = null;
+                model['rdfs:label'] = null;
+                $scope.spreadsheetContext.getTable().setDataAtCell(row, col, null);
 
-                  for (var r in sds.tableData) {
-                    for (var c in sds.tableData[row]) {
-                      if (sds.tableData[r][c] == term) {
-                        var m = $scope.model[r];
-                        m['@id'] = results[i]['@id'];
-                        m['rdfs:label'] = results[i]['label'];
-                      }
+                // update all the model entries with the same term
+                var sds = $scope.spreadsheetDataScope;
+                for (var r in sds.tableData) {
+                  for (var c in sds.tableData[row]) {
+                    if (sds.tableData[r][c] == term) {
+                      var m = getModel($scope, id, r, c);
+                      m['@id'] = null;
+                      m['rdfs:label'] = null;
+                      sds.tableData[r][c] = null;
+                      $scope.spreadsheetContext.getTable().setDataAtCell(parseInt(r), parseInt(c), null);
                     }
                   }
-                  // remove the watcher
-                  unbindWatcher();
-                  break;
                 }
               }
+
+              else {
+
+                // look at the results, save them in the model
+                for (var i = 0; i < foundResults.length; i++) {
+                  if (foundResults[i].label == term) {
+
+                    model['@id'] = foundResults[i]['@id'];
+                    model['rdfs:label'] = foundResults[i]['label'];
+
+                    // update all the model entries with the same term
+                    var sds = $scope.spreadsheetDataScope;
+                    for (var r in sds.tableData) {
+                      for (var c in sds.tableData[r]) {
+                        if (sds.tableData[r][c] == term) {
+                          var m = getModel($scope,id, r, c);
+                          m['@id'] = foundResults[i]['@id'];
+                          m['rdfs:label'] = foundResults[i]['label'];
+                        }
+                      }
+                    }
+                    // remove the watcher
+                    unbindWatcher();
+                    break;
+                  }
+                }
+              }
+
             });
           }
         };
@@ -116,7 +179,6 @@ define([
         var updateDataModel = function ($scope, $element) {
 
           var sds = $scope.spreadsheetDataScope;
-
           for (var row in sds.tableData) {
             for (var col in sds.tableData[row]) {
 
@@ -163,14 +225,15 @@ define([
                   delete sds.tableDataSource[row][col]['@id'];
                 }
               } else if (inputType == 'autocomplete') {
-                // console.log('inputType', inputType);
                 if (sds.tableData[row][col]) {
 
                   var schema = sds.columnDescriptors[col].schema;
                   if (isConstrained(schema)) {
                     var id = sds.columnDescriptors[col].nodeId;
                     var term = sds.tableData[row][col];
+
                     lazyUpdate($scope, schema, id, term, row, col);
+
                   }
                 }
               } else {
@@ -216,7 +279,6 @@ define([
         var FullscreenDateEditor = Handsontable.editors.DateEditor.prototype.extend();
 
         FullscreenDateEditor.prototype.open = function () {
-          console.log('open spreadsheet dateEditor');
 
           Handsontable.editors.DateEditor.prototype.open.apply(this, arguments);
 
@@ -628,6 +690,8 @@ define([
               headerTooltips    : true
             };
 
+            context.colHeaderOrder = columnHeaderOrder;
+
 
             // push spreadsheet data to parent scope
             $scope.spreadsheetDataScope = {
@@ -774,4 +838,5 @@ define([
       };
 
     }
-);
+)
+;
