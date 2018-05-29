@@ -131,6 +131,98 @@ define([
       return service.autocompleteResultsCache[id][term].results;
     };
 
+    // returns an array of promises
+    service.updateFieldAutocompleteAll = function (field, term) {
+
+      var query = term || '*';
+      var results = [];
+      var vcst = DataManipulationService.getValueConstraint(field);
+      var id = DataManipulationService.getId(field);
+      var promises = [];
+      service.initResults(id,term);
+
+      // are we searching for classes?
+      if (vcst.classes && vcst.classes.length > 0) {
+        service.removeAutocompleteResultsForSource(id, query, 'template');
+        angular.forEach(vcst.classes, function (klass) {
+          if (query == '*') {
+            service.autocompleteResultsCache[id][query].results.push(
+                {
+                  '@id'      : klass.uri,
+                  'label'    : klass.label,
+                  'type'     : 'Ontology Class',
+                  'sourceUri': 'template'
+                }
+            );
+          } else {
+            if (klass && klass.label && klass.label.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+              service.autocompleteResultsCache[id][query].results.push(
+                  {
+                    '@id'      : klass.uri,
+                    'label'    : klass.label,
+                    'type'     : 'Ontology Class',
+                    'sourceUri': 'template'
+                  }
+              );
+            }
+          }
+        });
+        if (query !== '*') {
+          if (service.autocompleteResultsCache[id][query].results.length === 0) {
+            service.autocompleteResultsCache[id][query].results.push({
+              'label'    : $translate.instant('GENERIC.NoResults'),
+              'sourceUri': 'template'
+            });
+          }
+        }
+      }
+
+      if (vcst.valueSets && vcst.valueSets.length > 0) {
+        angular.forEach(vcst.valueSets, function (valueSet) {
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
+          }
+          var promise =
+              controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
+                  valueSet.uri).then(function (childResponse) {
+                service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
+              });
+          promises.push(promise);
+        });
+      }
+
+      if (vcst.ontologies && vcst.ontologies.length > 0) {
+        angular.forEach(vcst.ontologies, function (ontology) {
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, ontology.uri);
+          }
+          var promise = controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(
+              function (childResponse) {
+                service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
+              });
+          promises.push(promise);
+        });
+      }
+
+      if (vcst.branches && vcst.branches.length > 0) {
+        angular.forEach(vcst.branches, function (branch) {
+          if (query == '*') {
+            service.removeAutocompleteResultsForSource(id, query, branch.uri);
+          }
+          var promise = controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
+              branch.maxDepth).then(
+              function (childResponse) {
+                service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
+              }
+          );
+          promises.push(promise);
+        });
+      }
+
+      return promises;
+    };
+
+
     // Used in textfield.html
     service.updateFieldAutocomplete = function (field, term) {
 

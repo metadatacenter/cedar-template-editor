@@ -6,11 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$document', '$translate', 'DataManipulationService',
+      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService',
                                     'DataUtilService',
                                     'autocompleteService'];
 
-      function SpreadsheetService($document, $translate, DataManipulationService, DataUtilService, autocompleteService) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService, DataUtilService, autocompleteService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -115,18 +115,14 @@ define([
 
             // go get the term
             var foundResults = autocompleteService.initResults(id, term);
-            autocompleteService.updateFieldAutocomplete(schema, term);
+            var promises = autocompleteService.updateFieldAutocompleteAll(schema, term);
 
-            var unbindWatcher = $scope.$watchCollection(function () {
-              return foundResults;
-            }, function () {
+            $q.all(promises).then(values => {
 
-              var k = 0;
-              // if the term has no results, wipe it out
-              if (foundResults.length == 1 && foundResults[k].label == noResults) {
+              if ((foundResults.length == 0) || (foundResults.length == 1 && foundResults[0].label == noResults)) {
 
-                model['@id'] = null;
-                model['rdfs:label'] = null;
+                delete model['@id'];
+                delete model['rdfs:label'];
                 $scope.spreadsheetContext.getTable().setDataAtCell(row, col, null);
 
                 // update all the model entries with the same term
@@ -135,8 +131,8 @@ define([
                   for (var c in sds.tableData[row]) {
                     if (sds.tableData[r][c] == term) {
                       var m = getModel($scope, id, r, c);
-                      m['@id'] = null;
-                      m['rdfs:label'] = null;
+                      delete m['@id'];
+                      delete m['rdfs:label'];
                       sds.tableData[r][c] = null;
                       $scope.spreadsheetContext.getTable().setDataAtCell(parseInt(r), parseInt(c), null);
                     }
@@ -146,8 +142,12 @@ define([
 
               else {
 
+                console.log('foundResults',term, foundResults);
+
                 // look at the results, save them in the model
                 for (var i = 0; i < foundResults.length; i++) {
+
+
                   if (foundResults[i].label == term) {
 
                     model['@id'] = foundResults[i]['@id'];
@@ -158,14 +158,12 @@ define([
                     for (var r in sds.tableData) {
                       for (var c in sds.tableData[r]) {
                         if (sds.tableData[r][c] == term) {
-                          var m = getModel($scope,id, r, c);
+                          var m = getModel($scope, id, r, c);
                           m['@id'] = foundResults[i]['@id'];
                           m['rdfs:label'] = foundResults[i]['label'];
                         }
                       }
                     }
-                    // remove the watcher
-                    unbindWatcher();
                     break;
                   }
                 }
@@ -569,7 +567,6 @@ define([
             hot.addHook(hook, function () {
 
               if (hook === 'afterSelection') {
-                //console.log('afterSelection');
               }
 
               if (hook === 'afterChange') {
@@ -577,11 +574,9 @@ define([
               }
 
               if (hook === 'beforeChange') {
-                //console.log('beforeChange');
               }
 
               if (hook === 'afterCreateRow') {
-                //console.log('afterCreateRow');
                 $scope.spreadsheetDataScope.addCallback();
                 $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope,
                     columnHeaderOrder);
