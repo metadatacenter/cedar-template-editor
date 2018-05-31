@@ -195,6 +195,15 @@ define([
           }
         };
 
+        // min/max string length
+        service.getMinLength = function (node) {
+          return service.propertiesOf(node)['@value'].minLength;
+        }
+
+        service.getMaxLength = function (node) {
+          return service.propertiesOf(node)['@value'].maxLength;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;

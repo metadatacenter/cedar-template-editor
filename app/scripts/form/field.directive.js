@@ -167,6 +167,22 @@ define([
         return dms.getDescription($scope.field);
       };
 
+      $scope.hasMinLength = function () {
+        return dms.hasMinLength($scope.field);
+      }
+
+      $scope.getMinLength = function () {
+        return dms.getMinLength($scope.field);
+      }
+
+      $scope.hasMaxLength = function () {
+        return dms.hasMaxLength($scope.field);
+      }
+
+      $scope.getMaxLength = function () {
+        return dms.getMaxLength($scope.field);
+      }
+
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
         return description && description.length > 0;

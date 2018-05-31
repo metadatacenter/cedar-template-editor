@@ -16,7 +16,27 @@
         with-floating-label>
   </div>
 
+  <!-- min string length constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text" auto-focus
+        class="form-control field-min-max-definition"
+        placeholder="{{'CREATOR.enterMinLength' | translate}}"
+        aria-label="{{'CREATOR.enterMinLength' | translate}}"
+        ng-model="$root.propertiesOf(field)['@value'].minLength"
+        ng-if="isEditable()"
+        with-floating-label>
+  </div>
 
+  <!-- max string length constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text" auto-focus
+        class="form-control field-min-max-definition"
+        placeholder="{{'CREATOR.enterMaxLength' | translate}}"
+        aria-label="{{'CREATOR.enterMaxLength' | translate}}"
+        ng-model="$root.propertiesOf(field)['@value'].maxLength"
+        ng-if="isEditable()"
+        with-floating-label>
+  </div>
 
   <!-- options -->
   <div  class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>

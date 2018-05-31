@@ -74,6 +74,23 @@ define([
         return dms.getDescription($scope.field).length > 0;
       };
 
+      // get the field min/max length
+      $scope.getMinLength = function (field) {
+        return dms.getMinLength(field || $scope.field);
+      }
+
+      $scope.hasMinLength = function () {
+        return dms.getMinLength($scope.field) && dms.getMinLength($scope.field).length > 0;
+      }
+
+      $scope.getMaxLength = function (field) {
+        return dms.getMaxLength(field || $scope.field);
+      }
+
+      $scope.hasMaxLength = function () {
+        return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
+      }
+
       $scope.getContent = function (field) {
         return dms.getContent(field || $scope.field);
       };
