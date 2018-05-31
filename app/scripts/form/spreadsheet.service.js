@@ -8,9 +8,9 @@ define([
 
       SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService',
                                     'DataUtilService',
-                                    'autocompleteService'];
+                                    'autocompleteService','UIMessageService'];
 
-      function SpreadsheetService($document, $q, $translate, DataManipulationService, DataUtilService, autocompleteService) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService, DataUtilService, autocompleteService,UIMessageService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -89,6 +89,29 @@ define([
         // if we don't have an id and label for a controlled term, go get it
         var lazyUpdate = function ($scope, schema, id, term, row, col) {
 
+          var clearTerm = function(model,row,col,term) {
+            var msg = $translate.instant('METADATAEDITOR.invalidTerm');
+            UIMessageService.flashWarning(msg + " "  + term);
+
+            delete model['@id'];
+            delete model['rdfs:label'];
+            $scope.spreadsheetContext.getTable().setDataAtCell(row, col, null);
+
+            // update all the model entries with the same term
+            var sds = $scope.spreadsheetDataScope;
+            for (var r in sds.tableData) {
+              for (var c in sds.tableData[row]) {
+                if (sds.tableData[r][c] == term) {
+                  var m = getModel($scope, id, r, c);
+                  delete m['@id'];
+                  delete m['rdfs:label'];
+                  sds.tableData[r][c] = null;
+                  $scope.spreadsheetContext.getTable().setDataAtCell(parseInt(r), parseInt(c), null);
+                }
+              }
+            }
+          };
+
           var noResults = $translate.instant('GENERIC.NoResults');
           var schema = schema;
           var row = parseInt(row);
@@ -102,10 +125,12 @@ define([
           // is the term in the cache?
           if (autocompleteService.autocompleteResultsCache[id] && autocompleteService.autocompleteResultsCache[id][term]) {
             var cachedResults = autocompleteService.autocompleteResultsCache[id][term].results;
+            var found = false;
             for (var i = 0; i < cachedResults.length; i++) {
               if (cachedResults[i].label == term) {
                 model['@id'] = cachedResults[i]['@id'];
                 model['rdfs:label'] = cachedResults[i]['label'];
+                found = true;
                 break;
               }
             }
@@ -120,38 +145,20 @@ define([
             $q.all(promises).then(values => {
 
               if ((foundResults.length == 0) || (foundResults.length == 1 && foundResults[0].label == noResults)) {
-
-                delete model['@id'];
-                delete model['rdfs:label'];
-                $scope.spreadsheetContext.getTable().setDataAtCell(row, col, null);
-
-                // update all the model entries with the same term
-                var sds = $scope.spreadsheetDataScope;
-                for (var r in sds.tableData) {
-                  for (var c in sds.tableData[row]) {
-                    if (sds.tableData[r][c] == term) {
-                      var m = getModel($scope, id, r, c);
-                      delete m['@id'];
-                      delete m['rdfs:label'];
-                      sds.tableData[r][c] = null;
-                      $scope.spreadsheetContext.getTable().setDataAtCell(parseInt(r), parseInt(c), null);
-                    }
-                  }
-                }
+                clearTerm(model,row,col,term);
               }
 
               else {
 
-                console.log('foundResults',term, foundResults);
-
+                var found = false;
                 // look at the results, save them in the model
                 for (var i = 0; i < foundResults.length; i++) {
-
 
                   if (foundResults[i].label == term) {
 
                     model['@id'] = foundResults[i]['@id'];
                     model['rdfs:label'] = foundResults[i]['label'];
+                    found = true;
 
                     // update all the model entries with the same term
                     var sds = $scope.spreadsheetDataScope;
@@ -166,6 +173,11 @@ define([
                     }
                     break;
                   }
+
+                }
+                if (!found) {
+                  autocompleteService.initResults(id, term);
+                  clearTerm(model,row,col,term);
                 }
               }
 
