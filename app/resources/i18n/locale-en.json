@@ -244,7 +244,8 @@
     "INSTANCE": {
       "create": {
         "success": "The metadata have been created.",
-        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "homeFolder":"Couldn't save to current location. Saved to your workspace."
       },
       "update": {
         "success": "The metadata have been saved.",
