@@ -9,13 +9,15 @@ define([
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService", "ValueRecommenderService", "UIUtilService", "DataManipulationService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
+                                      "ValueRecommenderService", "UIUtilService", "DataManipulationService",
+                                      "CedarUser"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService,TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
-                                    ValueRecommenderService, UIUtilService, DataManipulationService) {
+                                    ValueRecommenderService, UIUtilService, DataManipulationService,CedarUser) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -188,7 +190,7 @@ define([
                 "GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(
-            TemplateInstanceService.saveTemplateInstance(QueryParamUtilsService.getFolderId(), $scope.instance),
+            TemplateInstanceService.saveTemplateInstance((QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
 
               UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
@@ -207,7 +209,40 @@ define([
 
             },
             function (err) {
-              UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+
+              if (err.data.errorKey == "noWriteAccessToFolder") {
+                AuthorizedBackendService.doCall(
+                    TemplateInstanceService.saveTemplateInstance(CedarUser.getHomeFolderId(), $scope.instance),
+                    function (response) {
+
+                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+                      UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+
+                      // tell user where you put the instance
+                      UIMessageService.flashWarning('SERVER.INSTANCE.create.homeFolder');
+
+                      // Reload page with element id
+                      var newId = response.data['@id'];
+                      $location.path(FrontendUrlService.getInstanceEdit(newId));
+                      $rootScope.$broadcast("form:clean");
+                      $rootScope.$broadcast("form:validation", {state: true});
+
+                      $timeout(function () {
+                        // don't show validation errors until after any redraws are done
+                        // thus, call this within a timeout
+                        $rootScope.$broadcast('submitForm');
+                      }, 1000);
+
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+                      owner.enableSaveButton();
+                    }
+                );
+
+              } else {
+                UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+              }
               owner.enableSaveButton();
             }
         );
