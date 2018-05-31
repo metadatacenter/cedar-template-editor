@@ -140,7 +140,7 @@ define([
 
             // go get the term
             var foundResults = autocompleteService.initResults(id, term);
-            var promises = autocompleteService.updateFieldAutocompleteAll(schema, term);
+            var promises = autocompleteService.updateFieldAutocomplete(schema, term);
 
             $q.all(promises).then(values => {
 
