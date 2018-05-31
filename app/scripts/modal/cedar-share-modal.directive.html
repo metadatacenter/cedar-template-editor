@@ -1,6 +1,8 @@
 <div class="modal-dialog">
   <div class="modal-content" ng-if="dc.shareModalVisible" ng-class="share.canWrite() ? '' : 'cannotWrite'">
     <div class="modal-header" id="shareModalHeader">
+      <button type="button" class="close" ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
       <div ng-if="!share.showGroups"><h4><span translate>DASHBOARD.share.share</span> <i class="fa fa-share"></i></h4>
       </div>
       <div ng-if="share.showGroups"><h4><span translate>DASHBOARD.share.groups</span> <i class="fa fa-users"></i></h4>
