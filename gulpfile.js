@@ -138,7 +138,7 @@ gulp.task('karma-tests', function (done) {
 });
 
 gulp.task('test-env', function (done) {
-  gulp.src(['tests/config/src/test-env.js'])
+  gulp.src(['tests/config/src/test-env.js'], {allowEmpty:true})
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarUIHost))
       .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
       .pipe(replace('protractorTestUser1Password', cedarTestUser1Password))
