@@ -971,6 +971,7 @@ define([
           service.setFieldSchemaTitleAndDescription(field, defaultTitle);
 
           return field;
+//<<<<<<< HEAD
         };
 
 
@@ -1009,6 +1010,462 @@ define([
           var enumeration = {};
           if (angular.isUndefined(schemaType.oneOf)) {
             enumeration = schemaType.enum;
+//=======
+//         }
+//       }
+//     };
+//
+//     // Returns the field schema. If the field is defined as an array, this function will return field.items, because the schema is defined at that level.
+//     service.schemaOf = function (node) {
+//       return service.getFieldSchema(node);
+//     };
+//
+//
+//     // returns the properties of a template, element, or field schema
+//     service.propertiesOf = function (node) {
+//       if (node) {
+//         return service.schemaOf(node).properties;
+//       }
+//     };
+//
+//
+//     // does the node have this property in its property array?
+//     service.hasProperty = function (node, key) {
+//       return node && service.propertiesOf(node).hasOwnProperty(key)
+//     };
+//
+//     service.getPropertyNode = function (node, key) {
+//       if (service.hasProperty(node, key)) {
+//         return service.propertiesOf(node)[key];
+//       }
+//     };
+//
+//     service.getType = function (node) {
+//       var schema = service.schemaOf(node);
+//       return schema['@type'];
+//     };
+//
+//     service.getKeyFromId = function (node) {
+//       if (node && service.getId(node)) {
+//         var id = service.getId(node);
+//         return id.substring(id.lastIndexOf("/") + 1);
+//       }
+//     };
+//
+//     service.getId = function (node) {
+//       return service.schemaOf(node)['@id'];
+//     };
+//
+//     service.idOf = function (node) {
+//       return node && service.schemaOf(node)['@id'];
+//     };
+//
+//     // is this a required field or element?
+//     service.isRequired = function (node) {
+//
+//       if (service.schemaOf(node)._valueConstraints) {
+//         return service.schemaOf(node)._valueConstraints.requiredValue;
+//       }
+//     };
+//
+//     service.setRequired = function (node, value) {
+//       service.schemaOf(node)._valueConstraints.requiredValue = value;
+//     };
+//
+//     service.getContent = function (node) {
+//       return service.schemaOf(node)._ui._content;
+//     };
+//
+//     service.getSize = function (node) {
+//       return service.schemaOf(node)._ui._size;
+//     };
+//
+//     // node title and description
+//     service.getTitle = function (node) {
+//       if (service.schemaOf(node)) {
+//         return service.schemaOf(node)['schema:name'];
+//       }
+//     };
+//
+//     service.hasTitle = function (node) {
+//       return service.schemaOf(node).hasOwnProperty('schema:name') && service.schemaOf(node)['schema:name'].length > 0;
+//     };
+//
+//     service.setTitle = function (node, value) {
+//       var schema = service.schemaOf(node);
+//       if (schema) {
+//         service.schemaOf(node)['schema:name'] = value;
+//       }
+//     };
+//
+//     service.defaultTitle = function (node) {
+//       if (!service.hasTitle(node)) {
+//         service.setTitle(node, $translate.instant("GENERIC.Untitled"));
+//       }
+//     };
+//
+//     // set a title and description in the object if there is none
+//     service.defaultTitleAndDescription = function (obj) {
+//       if (obj) {
+//         if (!obj.title || !obj.title.length) {
+//           obj.title = $translate.instant("GENERIC.Untitled");
+//         }
+//         if (!obj.description || !obj.description.length) {
+//           obj.description = $translate.instant("GENERIC.Description");
+//         }
+//       }
+//     };
+//
+//     service.getDescription = function (node) {
+//       if (service.schemaOf(node)) {
+//         return service.schemaOf(node)['schema:description'];
+//       }
+//     };
+//
+//     service.hasDescription = function (node) {
+//       return service.schemaOf(node).hasOwnProperty('schema:description') && service.schemaOf(
+//               node)['schema:description'].length > 0;
+//     };
+//
+//     service.setDescription = function (node, value) {
+//       var schema = service.schemaOf(node)
+//       if (schema) {
+//         service.schemaOf(node)['schema:description'] = value;
+//         //service.schemaOf(node)._ui.description = value;
+//       }
+//     };
+//
+//     // schema title and description
+//     service.setSchemaTitle = function (node, value) {
+//       service.schemaOf(node).title = value;
+//     };
+//
+//     service.setSchemaDescription = function (node, value) {
+//       service.schemaOf(node).description = value;
+//     };
+//
+//     service.defaultSchemaTitleAndDescription = function (node) {
+//       if (!node.title || !node.title.length) {
+//         node.title = $translate.instant("GENERIC.Untitled");
+//       }
+//       if (!node.description || !node.description.length) {
+//         node.description = $translate.instant("GENERIC.Description");
+//       }
+//     };
+//
+//     service.setFieldSchemaTitleAndDescription = function (field, fieldTitle) {
+//       service.setSchemaTitle(field,
+//           $translate.instant("GENERATEDVALUE.fieldTitle", {title: fieldTitle, version: window.cedarVersion}));
+//       service.setSchemaDescription(field,
+//           $translate.instant("GENERATEDVALUE.fieldDescription", {title: fieldTitle, version: window.cedarVersion}));
+//     };
+//
+//     //
+//     // inputType
+//     //
+//
+//     // what is the field inputType?
+//     service.getInputType = function (node) {
+//       var result = null;
+//       var schema = service.schemaOf(node);
+//       if (schema && schema._ui && schema._ui.inputType) {
+//         result = schema._ui.inputType;
+//       }
+//       return result;
+//     };
+//
+//     service.setInputType = function (node, value) {
+//       service.schemaOf(node)._ui.inputType = value;
+//     };
+//
+//     // Function that generates a basic field definition
+//     service.isStaticField = function (node) {
+//       return FieldTypeService.isStaticField(service.getInputType(node));
+//     };
+//
+//     // is this a numeric field?
+//     service.isNumericField = function (node) {
+//       return (service.getInputType(node) == 'numeric');
+//     };
+//
+//     // is this a date field?
+//     service.isDateField = function (node) {
+//       return (service.getInputType(node) == 'date');
+//     };
+//
+//     // is this a date range?
+//     service.isDateRange = function (node) {
+//       return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+//     };
+//
+//     service.isAttributeValueType = function (node) {
+//       return (service.getInputType(node) == 'attribute-value');
+//     };
+//
+//     service.isTextFieldType = function (node) {
+//       return (service.getInputType(node) == 'textField');
+//     };
+//
+//     service.isDateType = function (node) {
+//       return (service.getInputType(node) == 'date');
+//     };
+//
+//     service.isLinkType = function (node) {
+//       return (service.getInputType(node) == 'link');
+//     };
+//
+//     service.isCheckboxType = function (node) {
+//       return (service.getInputType(node) == 'checkbox');
+//     };
+//
+//     service.isRadioType = function (node) {
+//       return (service.getInputType(node) == 'radio');
+//     };
+//
+//     service.isListType = function (node) {
+//       return (service.getInputType(node) == 'list');
+//     };
+//
+//     // is this a checkbox, radio or list question?
+//     service.isMultiAnswer = function (node) {
+//       var inputType = service.getInputType(node);
+//       return service.isMultiAnswerInputType(inputType);
+//     };
+//
+//     service.isMultiAnswerInputType = function (inputType) {
+//       return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+//     };
+//
+//
+//     // is this a multiple choice list?
+//     // service.isMultipleChoice = function (node) {
+//     //   if (service.schemaOf(node)._valueConstraints) {
+//     //     return service.schemaOf(node)._valueConstraints.multipleChoice;
+//     //   }
+//     // };
+//
+//     // is this a multiple choice list?
+//     service.isMultipleChoice = function (node) {
+//       if (service.schemaOf(node)._valueConstraints) {
+//         return service.schemaOf(node)._valueConstraints.multipleChoice;
+//       }
+//       else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
+//         return service.schemaOf(node).items._valueConstraints.multipleChoice;
+//       }
+//     };
+//
+//     // is this a checkbox, or a multiple choice list field?
+//     service.isMultipleChoiceField = function (node) {
+//       return ((service.getInputType(node) == 'checkbox') || (service.isMultipleChoice(node)));
+//     };
+//
+//     // is this a radio, or a sigle-choice ?
+//     service.isSingleChoiceListField = function (node) {
+//       var inputType = service.getInputType(node);
+//       return ((inputType == 'radio') || ((inputType == 'list') && !service.isMultipleChoice(node)));
+//     };
+//
+//     // is this a youTube field?
+//     service.isYouTube = function (node) {
+//       return (service.getInputType(node) === 'youtube');
+//     };
+//
+//     // is this richText?
+//     service.isRichText = function (node) {
+//       return (service.getInputType(node) === 'richtext');
+//     };
+//
+//     // Used in richtext.html
+//     service.getUnescapedContent = function (node) {
+//       return $sce.trustAsHtml(service.getContent(node));
+//     };
+//
+//     // is this an image?
+//     service.isImage = function (node) {
+//       return (service.getInputType(node) === 'image');
+//     };
+//
+//     // is this a section break?
+//     service.isSectionBreak = function (node) {
+//       return (service.getInputType(node) === 'section-break');
+//     };
+//
+//     // is this a page break?
+//     service.isPageBreak = function (node) {
+//       return (service.getInputType(node) === 'page-break');
+//     };
+//
+//     //
+//     //  cardinality
+//     //
+//
+//     service.getMaxItems = function (node) {
+//       return node.maxItems;
+//     };
+//
+//     service.getMinItems = function (node) {
+//       return node.minItems;
+//     };
+//
+//     service.defaultMinMax = function (node) {
+//       node.minItems = 1;
+//       node.maxItems = 0;
+//     };
+//
+//     service.clearMinMax = function (node) {
+//       delete node.minItems;
+//       delete node.maxItems;
+//     };
+//
+//     service.isCardinalElement = function (node) {
+//       return node.type == 'array';
+//     };
+//
+//     service.elementIsMultiInstance = function (element) {
+//       return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
+//     };
+//
+//     // is the field multiple cardinality?
+//     service.isMultipleCardinality = function (node) {
+//       return node.items;
+//     };
+//
+//     // resolve min or max as necessary and cardinalize or uncardinalize field
+//     service.setMinMax = function (field) {
+//       if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
+//         delete field.minItems;
+//         delete field.maxItems;
+//       } else if (field.hasOwnProperty('maxItems') && field.maxItems < 0) {
+//         delete field.maxItems;
+//       }
+//
+//       if (!service.uncardinalizeField(field)) {
+//         service.cardinalizeField(field);
+//       }
+//     };
+//
+//     service.cardinalizeField = function (field) {
+//       if (typeof(field.minItems) != 'undefined' && !field.items) {
+//
+//         field.items = {
+//           '$schema'             : field.$schema,
+//           'type'                : field.type,
+//           '@id'                 : field['@id'],
+//           '@type'               : field['@type'],
+//           '@context'            : field['@context'],
+//           'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
+//           'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
+//               {title: field['schema:name'], version: window.cedarVersion}),
+//           '_ui'                 : field._ui,
+//           '_valueConstraints'   : field._valueConstraints,
+//           'properties'          : field.properties,
+//           'required'            : field.required,
+//           'additionalProperties': field.additionalProperties,
+//           'pav:createdOn'       : field['pav:createdOn'],
+//           'pav:createdBy'       : field['pav:createdBy'],
+//           'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
+//           'oslc:modifiedBy'     : field['oslc:modifiedBy'],
+//           'schema:schemaVersion': field['schema:schemaVersion'],
+//           'schema:name'         : field['schema:name'],
+//           'schema:description'  : field['schema:description']
+//         };
+//
+//         // may have versioning fields
+//         if (field.hasOwnProperty('bibo:status')) {
+//           field.items['bibo:status'] = field['bibo:status'];
+//         }
+//         if (field.hasOwnProperty('pav:version')) {
+//           field.items['pav:version'] = field['pav:version'];
+//         }
+//         if (field.hasOwnProperty('pav:derivedFrom')) {
+//           field.items['pav:derivedFrom'] = field['pav:derivedFrom'];
+//         }
+//
+//         field.type = 'array';
+//
+//         delete field.$schema;
+//         delete field['@id'];
+//         delete field['@type'];
+//         delete field['@context'];
+//         delete field.properties;
+//         delete field.title;
+//         delete field.description;
+//         delete field._ui;
+//         delete field._valueConstraints;
+//         delete field.required;
+//         delete field.additionalProperties;
+//         delete field['pav:createdOn'];
+//         delete field['pav:createdBy'];
+//         delete field['pav:lastUpdatedOn'];
+//         delete field['oslc:modifiedBy'];
+//         delete field['schema:schemaVersion'];
+//         delete field['schema:name'];
+//         delete field['schema:description'];
+//         delete field['bibo:status'];
+//         delete field['pav:version'];
+//         delete field['pav:derivedFrom'];
+//
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     };
+//
+//     service.uncardinalizeField = function (field) {
+//       if (typeof field.minItems == 'undefined' && field.items) {
+//
+//         field.$schema = field.items.$schema;
+//         field.type = 'object';
+//         field['@id'] = field.items["@id"];
+//         field['@type'] = field.items["@type"];
+//         field['@context'] = field.items["@context"];
+//         field.title = field.items.title;
+//         field.description = field.items.description;
+//         field._ui = field.items._ui;
+//         field._valueConstraints = field.items._valueConstraints;
+//         field.properties = field.items.properties;
+//         field.required = field.items.required;
+//         field.additionalProperties = field.items.additionalProperties;
+//         field['pav:createdOn'] = field.items['pav:createdOn'];
+//         field['pav:createdBy'] = field.items['pav:createdBy'];
+//         field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
+//         field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
+//         field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
+//         field['schema:name'] = field.items['schema:name'];
+//         field['schema:description'] = field.items['schema:description'];
+//
+//         // may have versioning fields
+//         if (field.items.hasOwnProperty('bibo:status')) {
+//           field['bibo:status'] = field.items['bibo:status'];
+//         }
+//         if (field.items.hasOwnProperty('pav:version')) {
+//           field['pav:version'] = field.items['pav:version'];
+//         }
+//         if (field.items.hasOwnProperty('pav:derivedFrom')) {
+//           field['pav:derivedFrom'] = field.items['pav:derivedFrom'];
+//         }
+//
+//         delete field.items;
+//         delete field.maxItems;
+//
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     };
+//
+//     // If Max Items is N, its value will be 0, then need to remove it from schema
+//     // if Min and Max are both 1, remove them
+//     service.removeUnnecessaryMaxItems = function (properties) {
+//       angular.forEach(properties, function (value, key) {
+//         if (!DataUtilService.isSpecialKey(key)) {
+//           if ((value.minItems == 1 && value.maxItems == 1)) {
+//             delete value.minItems;
+//             delete value.maxItems;
+//           }
+//           if (value.maxItems == 0) {
+//             delete value.maxItems;
+// >>>>>>> develop
           }
           else {
             enumeration = schemaType.oneOf[0].enum;

@@ -185,6 +185,9 @@ define([
             visible = false;
           };
 
+          vm.cancelDescriptionEditing = function() {
+          };
+
           vm.toggleDescriptionEditing = function () {
             if (vm.getSelection()) {
               vm.editingDescription = !vm.editingDescription;
@@ -350,7 +353,6 @@ define([
           };
 
           vm.updateDescription = function () {
-            console.log('updateDescription', vm.editingDescription, vm.editingDescriptionSelection);
 
             var resource = vm.editingDescriptionSelection;
             if (resource != null) {
