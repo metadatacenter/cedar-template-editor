@@ -122,6 +122,17 @@ define([
       return service.getUIPreferences().folderView.viewMode === 'list';
     };
 
+
+    service.getResourceType = function (type) {
+      return service.getUIPreferences().resourceTypeFilters[type];
+    };
+
+    service.toggleResourceType = function(type) {
+      var value = !service.getResourceType(type);
+      service.saveUIPreference('resourceTypeFilters', type, value);
+      return value;
+    };
+
     service.toggleView = function () {
       var value = service.isGridView() ? 'list' : 'grid';
       service.saveUIPreference('folderView', 'viewMode', value);
@@ -175,6 +186,8 @@ define([
       service.saveUIPreference('folderView', 'sortBy', 'createdOnTS');
       return service.getSort();
     };
+
+
 
     service.setSortByUpdated = function () {
       service.saveUIPreference('folderView', 'sortBy', 'lastUpdatedOnTS');

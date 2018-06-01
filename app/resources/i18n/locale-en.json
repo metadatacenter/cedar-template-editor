@@ -244,7 +244,8 @@
     "INSTANCE": {
       "create": {
         "success": "The metadata have been created.",
-        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "homeFolder":"Couldn't save to current location. Saved to your workspace."
       },
       "update": {
         "success": "The metadata have been saved.",
@@ -403,6 +404,9 @@
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the element now, you will loose the content of the staging area! Are you sure you want to save the element this way?"
     }
+  },
+  "METADATAEDITOR": {
+    "invalidTerm": "Invalid term"
   },
   "TEMPLATEEDITOR": {
     "clear": {

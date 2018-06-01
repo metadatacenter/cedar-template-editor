@@ -68,13 +68,12 @@
 
           <span class="document-title text-nowrap" >{{hc.formatDocumentTitle()}}</span>
 
+
           <span ng-if="!hc.isMessaging()" class="pull-right feedback-form">
             <span uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': dirty, 'fa-circle': !dirty}"></i></span>
             <span uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': locked, 'fa-unlock': !locked}"></i></span>
-            <!-- TODO for the moment, take out the tooltip -->
-            <!--<span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "-->
-                <!--ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>-->
-            <span><i class="fa " ng-class="{'fa-exclamation-triangle': !documentState.valid, 'fa-check': documentState.valid}"></i></span>
+            <span uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
+                ng-class="{'fa-exclamation-triangle': !hc.valid, 'fa-check': hc.valid}"></i></span>
           </span>
 
         </div>

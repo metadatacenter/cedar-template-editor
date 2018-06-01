@@ -136,15 +136,16 @@ define([
                           //TODO turn this off for now
                           //if (response.validates == "true") {
 
-                            $rootScope.setValidation(true);
-                            HeaderService.dataContainer.currentObjectScope = $scope.form;
-                            $rootScope.keyOfRootElement = $scope.form["@id"];
-                            $rootScope.rootElement = $scope.form;
-                            $rootScope.jsonToSave = $scope.form;
-                            DataManipulationService.createDomIds($scope.form);
-                            //$scope.getType();
-                            $rootScope.$broadcast('form:clean');
-                            getDetails($scope.form["@id"]);
+
+                          HeaderService.dataContainer.currentObjectScope = $scope.form;
+                          $rootScope.keyOfRootElement = $scope.form["@id"];
+                          $rootScope.rootElement = $scope.form;
+                          $rootScope.jsonToSave = $scope.form;
+                          DataManipulationService.createDomIds($scope.form);
+                          //$scope.getType();
+                          $rootScope.$broadcast('form:clean');
+                          $rootScope.$broadcast("form:validation", {state: true});
+                          getDetails($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller
                           //   $rootScope.goToHome();
@@ -539,16 +540,14 @@ define([
         };
 
         $scope.showModal = function (id) {
-          //jQuery("#" + id).modal('show');
-          console.log('showModal',id);
-          UIUtilService.showModal(id,'type');
+          jQuery("#" + id).modal('show');
+          //UIUtilService.showModal(id,'template');
         };
 
         //TODO this event resets modal state and closes modal
         $scope.$on("field:controlledTermAdded", function () {
-          console.log('hideModal');
-          UIUtilService.hideModal();
-          //jQuery("#control-options-template-field").modal('hide');
+          //UIUtilService.hideModal();
+          jQuery("#control-options-template-field").modal('hide');
         });
 
 

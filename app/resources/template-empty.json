@@ -248,9 +248,7 @@
     "pav:createdOn",
     "pav:createdBy",
     "pav:lastUpdatedOn",
-    "oslc:modifiedBy",
-    "pav:version",
-    "bibo:status"
+    "oslc:modifiedBy"
   ],
   "schema:name": "",
   "schema:description": "",
