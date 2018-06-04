@@ -71,7 +71,8 @@ define([
 
 
       $scope.hasDescription = function () {
-        return dms.getDescription($scope.field).length > 0;
+        var description = dms.getDescription($scope.field);
+        return description && description.length > 0;
       };
 
       $scope.getContent = function (field) {
