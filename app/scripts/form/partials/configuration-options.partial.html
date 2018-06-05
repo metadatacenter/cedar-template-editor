@@ -1,9 +1,9 @@
 <!-- tabs -->
 <div>
-  <div class="detail-options">
+  <div class="detail-options"  >
     <div class="element-toggles list table-style">
 
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
+      <div ng-if="canViewTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
@@ -188,7 +188,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
+            <button ng-if="canAddTerms()" type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();">Search
             </button>
           </div>
         </div>

@@ -3,20 +3,20 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
-      .directive('cedarTemplateElement', cedarTemplateElementDirective);
+  angular.module('cedar.templateEditor.templateField.cedarTemplateFieldDirective', [])
+      .directive('cedarTemplateField', cedarTemplateFieldDirective);
 
-  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+  cedarTemplateFieldDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
                                            'SpreadsheetService', 'UIUtilService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService,
+  function cedarTemplateFieldDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService,
                                          UIUtilService) {
 
     var directive = {
       restrict   : 'EA',
       scope      : {
         key           : '=',
-        element       : '=',
+        field       : '=',
         delete        : '&',
         model         : '=',
         isEditData    : "=",
@@ -24,7 +24,7 @@ define([
         parentElement : '=',
         nested        : '='
       },
-      templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
+      templateUrl: 'scripts/template-field/cedar-template-field.directive.html',
       link       : linker
     };
 
@@ -36,37 +36,35 @@ define([
 
       var dms = DataManipulationService;
 
-      scope.directiveName = 'cedarTemplateElement';
-      scope.elementSchema = dms.schemaOf(scope.element);
-      scope.elementLabel = dms.getPropertyLabels(scope.parentElement);
-      scope.elementDescription = dms.getPropertyDescriptions(scope.parentElement);
+      scope.directiveName = 'cedarTemplateField';
+      scope.fieldSchema = dms.schemaOf(scope.field);
 
       scope.isFirstLevel = function () {
         return (scope.$parent.directiveName === 'form');
       };
 
       scope.getKeyFromId = function () {
-        return dms.getKeyFromId(scope.element);
+        return dms.getKeyFromId(scope.field);
       };
 
       scope.isRoot = function () {
-        return !dms.getId(scope.element) || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
+        return !dms.getId(scope.field) || (dms.getId(scope.field) === $rootScope.keyOfRootElement);
       };
 
       scope.getTitle = function () {
-        return dms.getTitle(scope.element);
+        return dms.getTitle(scope.field);
       };
 
       scope.hasDescription = function () {
-        return scope.element && dms.getDescription(scope.element).length > 0;
+        return scope.field && dms.getDescription(scope.field).length > 0;
       };
 
       scope.getDescription = function () {
-        return dms.getDescription(scope.element);
+        return dms.getDescription(scope.field);
       };
 
       scope.getId = function () {
-        return dms.getId(scope.element);
+        return dms.getId(scope.field);
       };
 
       scope.getDomId = function (node) {
@@ -82,22 +80,17 @@ define([
       };
 
       scope.isEditState = function () {
-        return (UIUtilService.isEditState(scope.element) && scope.isEditable());
+        return UIUtilService.isEditState(scope.field);
       };
-
-      scope.isEditable = function () {
-        return false;
-      };
-
 
       scope.isSelectable = function () {
         return !scope.isNested() && !scope.isRoot();
       };
 
-      // try to select this element
+      // try to select this field
       scope.canSelect = function (selectable) {
         if (selectable) {
-          UIUtilService.canSelect(scope.element);
+          UIUtilService.canSelect(scope.field);
         }
       };
 
@@ -107,14 +100,14 @@ define([
             !scope.isRoot() &&
             !UIUtilService.isRuntime() &&
             !scope.isNested() &&
-            UIUtilService.isEditState(scope.element);
+            UIUtilService.isEditState(scope.field);
 
         return result;
       };
 
-      scope.elementId = dms.idOf(scope.element) || dms.generateGUID();
+      scope.fieldId = dms.idOf(scope.field) || dms.generateGUID();
 
-      var resetElement = function (el, settings) {
+      var resetField = function (el, settings) {
         angular.forEach(el, function (model, key) {
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
             model.splice(settings[key].minItems, model.length);
@@ -144,7 +137,7 @@ define([
               }
             } else {
               if (settings[key]) {
-                resetElement(model, settings[key]);
+                resetField(model, settings[key]);
               } else {
                 // This case el is an array
                 angular.forEach(model, function (v, k) {
@@ -178,7 +171,7 @@ define([
                   }
                   else if (k !== '@type') {
                     if (settings[k]) {
-                      resetElement(v, settings[k]);
+                      resetField(v, settings[k]);
                     }
                   }
                 });
@@ -202,33 +195,33 @@ define([
         }
       };
 
-      var parseElement = function () {
-        if (!UIUtilService.isRuntime() && scope.element) {
+      var parseField = function () {
+        if (!UIUtilService.isRuntime() && scope.field) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
-              dms.findChildren(dms.propertiesOf(scope.element), m);
+              dms.findChildren(dms.propertiesOf(scope.field), m);
             });
           } else {
-            dms.findChildren(dms.propertiesOf(scope.element), scope.model);
+            dms.findChildren(dms.propertiesOf(scope.field), scope.model);
           }
         }
       };
 
       if (!UIUtilService.isRuntime()) {
         if (!scope.model) {
-          if (scope.element.items) {
+          if (scope.field.items) {
             scope.model = [];
           } else {
             scope.model = {};
           }
         }
 
-        parseElement();
+        parseField();
         setLabels();
       }
 
       if (!scope.state) {
-        if (scope.element && dms.schemaOf(scope.element)._ui && dms.getTitle(scope.element)) {
+        if (scope.field && dms.schemaOf(scope.field)._ui && dms.getTitle(scope.field)) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -242,41 +235,41 @@ define([
 
 
       scope.isEditState = function () {
-        return (UIUtilService.isEditState(scope.element));
+        return (UIUtilService.isEditState(scope.field));
       };
 
 
-      // add a multiple cardinality element
+      // add a multiple cardinality field
       scope.selectedTab = 0;
-      scope.addElement = function () {
+      scope.addField = function () {
         if (UIUtilService.isRuntime()) {
-          if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+          if ((!scope.field.maxItems || scope.model.length < scope.field.maxItems)) {
             var seed = {};
 
             if (scope.model.length > 0) {
               seed = angular.copy(scope.model[0]);
-              resetElement(seed, scope.element);
+              resetField(seed, scope.field);
               scope.model.push(seed);
             } else {
 
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
-                  dms.findChildren(dms.propertiesOf(scope.element), m);
+                  dms.findChildren(dms.propertiesOf(scope.field), m);
                 });
               } else {
-                dms.findChildren(dms.propertiesOf(scope.element), scope.model);
+                dms.findChildren(dms.propertiesOf(scope.field), scope.model);
               }
-              resetElement(seed, scope.element);
+              resetField(seed, scope.field);
             }
             scope.selectedTab = scope.model.length - 1;
           }
         }
       };
 
-      // remove a multiple cardinality element
-      scope.removeElement = function (index) {
-        if (scope.model.length > scope.element.minItems) {
+      // remove a multiple cardinality field
+      scope.removeField = function (index) {
+        if (scope.model.length > scope.field.minItems) {
           scope.model.splice(index, 1);
           if (index + 1 > scope.model.length) {
             scope.selectedTab = scope.model.length - 1;
@@ -285,29 +278,29 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, element);
+        SpreadsheetService.switchToSpreadsheetField(scope, field);
       };
 
       scope.isExpanded = function () {
-        return dms.isExpanded(scope.element);
+        return dms.isExpanded(scope.field);
       };
 
       scope.switchExpandedState = function () {
-        dms.setExpanded(scope.element, !dms.isExpanded(scope.element));
-        //UIUtilService.toggleElement(scope.getDomId(scope.element));
+        dms.setExpanded(scope.field, !dms.isExpanded(scope.field));
+        //UIUtilService.toggleField(scope.getDomId(scope.field));
       };
 
       scope.removeChild = function (node) {
         dms.removeChild(scope.parentElement, node);
-        scope.$emit("invalidElementState",
+        scope.$emit("invalidEFieldState",
             ["remove", scope.getTitle(), scope.getId()]);
 
       };
 
-      // remove the element from the form
+      // remove the field from the form
       scope.ckDelete = function () {
-        dms.removeChild(scope.parentElement, scope.element);
-        scope.$emit("invalidElementState",
+        dms.removeChild(scope.parentElement, scope.field);
+        scope.$emit("invalidFieldtState",
             ["remove", scope.getTitle(), scope.getId()]);
       };
 
@@ -315,7 +308,7 @@ define([
       scope.showCardinality = false;
 
       scope.isCardinal = function () {
-        return dms.isCardinalElement(scope.element);
+        return dms.isCardinalField(scope.field);
       };
 
       // try to deselect this element
@@ -323,11 +316,11 @@ define([
         return UIUtilService.canDeselect(element);
       };
 
-      // when element is deseleted, look at errors and parse if none
-      scope.$on('deselect', function (event, element, errorMessages) {
-        if (element == scope.element) {
+      // when field is deseleted, look at errors and parse if none
+      scope.$on('deselect', function (event, field, errorMessages) {
+        if (field == scope.field) {
           scope.errorMessages = errorMessages;
-          if (errorMessages.length == 0) parseElement();
+          if (errorMessages.length == 0) parseField();
         }
       });
 
@@ -336,8 +329,8 @@ define([
         return UIUtilService.canDeselect(field, scope.renameChildKey);
       };
 
-      scope.elementIsMultiInstance = function (node) {
-        return dms.elementIsMultiInstance(node);
+      scope.fieldIsMultiInstance = function (node) {
+        return dms.fieldIsMultiInstance(node);
       };
 
       scope.$on('saveForm', function (event) {
@@ -346,52 +339,52 @@ define([
         //   dms.relabel(schema, scope.key, scope.labels[scope.key]);
         // }
 
-        if (scope.isEditState() && !scope.canDeselect(scope.element)) {
+        if (scope.isEditState() && !scope.canDeselect(scope.field)) {
 
-          scope.$emit("invalidElementState",
+          scope.$emit("invalidFieldState",
               ["add", scope.getTitle(), scope.getId()]);
         } else {
-          scope.$emit("invalidElementState",
+          scope.$emit("invalidFieldState",
               ["remove", scope.getTitle(), scope.getId()]);
         }
       });
 
-      scope.$watchCollection("element.properties['@context'].properties", function () {
-        parseElement();
+      scope.$watchCollection("field.properties['@context'].properties", function () {
+        parseFieldt();
       });
 
-      scope.$watchCollection("element.properties", function () {
+      scope.$watchCollection("field.properties", function () {
         setLabels();
-        parseElement();
+        parseField();
       });
 
-      scope.$watchCollection("element.items.properties", function () {
+      scope.$watchCollection("field.items.properties", function () {
         setLabels();
-        parseElement();
+        parseField();
       });
 
 
       scope.defaultMinMax = function () {
-        scope.element.minItems = 1;
-        scope.element.maxItems = 0;
+        scope.field.minItems = 1;
+        scope.field.maxItems = 0;
       };
 
 
       scope.clearMinMax = function () {
-        delete scope.element.minItems;
-        delete scope.element.maxItems;
+        delete scope.field.minItems;
+        delete scope.field.maxItems;
       };
 
       scope.isMultiple = function () {
-        return scope.element.minItems != null;
+        return scope.field.minItems != null;
       };
 
-      scope.isCardinalElement = function () {
-        return dms.isCardinalElement(scope.element);
+      scope.isCardinalField = function () {
+        return dms.isCardinalField(scope.field);
       };
 
       scope.getIconClass = function () {
-        return 'fa fa-cubes';
+        return 'fa fa-sitemap';
       };
 
 
@@ -412,7 +405,7 @@ define([
         if (type) {
           $rootScope.finalTitle = scope.getTitle();
           scope.modalType = type;
-          UIUtilService.showModal(dms.getId(scope.element), type);
+          UIUtilService.showModal(dms.getId(scope.field), type);
 
           // initialize the controlled term modal
           $rootScope.$broadcast("ctdc:init", [scope.getTitle()]);
@@ -449,12 +442,12 @@ define([
 
       // get the propertyId for this node from its parent
       scope.getPropertyId = function () {
-        return dms.getPropertyId(scope.parentElement, scope.element);
+        return dms.getPropertyId(scope.parentElement, scope.field);
       };
 
       // get the propertyId for this node from its parent
       scope.hasPropertyId = function () {
-        return dms.getPropertyId(scope.parentElement, scope.element).length > 0;
+        return dms.getPropertyId(scope.parentElement, scope.field).length > 0;
       };
 
       // scope.hasProperty = function () {
@@ -463,16 +456,16 @@ define([
 
       // delete propertyId and propertyLabel for this node
       scope.deleteProperty = function () {
-        dms.deletePropertyId(scope.parentElement, scope.element);
+        dms.deletePropertyId(scope.parentElement, scope.field);
         dms.updateProperty('', '', '', scope.getId(), scope.parentElement);
       };
 
       scope.getMinItems = function () {
-        return dms.getMinItems(scope.element);
+        return dms.getMinItems(scope.field);
       };
 
       scope.getMaxItems = function () {
-        return dms.getMaxItems(scope.element);
+        return dms.getMaxItems(scope.field);
       };
 
     }

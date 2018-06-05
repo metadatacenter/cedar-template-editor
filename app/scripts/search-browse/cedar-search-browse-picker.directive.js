@@ -798,6 +798,9 @@ define([
                 case CONST.resourceType.INSTANCE:
                   $location.path(FrontendUrlService.getInstanceEdit(id));
                   break;
+                case CONST.resourceType.FIELD:
+                  $location.path(FrontendUrlService.getFieldEdit(id));
+                  break;
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
@@ -951,6 +954,10 @@ define([
             return result;
           }
 
+          function getNodeType(resource) {
+            return resource ? resource.nodeType : '';
+          }
+
           function getResourceIconClass(resource) {
             var result = "";
             if (resource) {
@@ -958,23 +965,20 @@ define([
 
               switch (resource.nodeType) {
                 case CONST.resourceType.FOLDER:
-                  result += "fa-folder";
+                  result += CONST.resourceIcon.FOLDER;
                   break;
                 case CONST.resourceType.TEMPLATE:
-                  result += "fa-file-text";
+                  result += CONST.resourceIcon.TEMPLATE;
                   break;
                 case CONST.resourceType.INSTANCE:
-                  result += "fa-tag";
+                  result += CONST.resourceIcon.INSTANCE;
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += "fa-sitemap";
+                  result += CONST.resourceIcon.ELEMENT ;
                   break;
                 case CONST.resourceType.FIELD:
-                  result += "fa-file-code-o";
+                  result += CONST.resourceIcon.FIELD ;
                   break;
-                  result += "fa-sitemap";
-                  break;
-
               }
             }
             return result;

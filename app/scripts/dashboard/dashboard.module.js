@@ -15,7 +15,8 @@ define([
   'cedar/template-editor/modal/cedar-new-folder-modal.directive',
   'cedar/template-editor/search-browse/cedar-live-search.directive',
   'cedar/template-editor/form/auto-focus.directive',
-  'cedar/template-editor/search-browse/flow-modal.directive'
+  'cedar/template-editor/search-browse/flow-modal.directive',
+  'cedar/template-editor/widget/cedar-resource-icon.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.dashboard', [
     'cedar.templateEditor.dashboard.routes',
@@ -31,6 +32,7 @@ define([
     'cedar.templateEditor.modal.cedarNewFolderModalDirective',
     'cedar.templateEditor.searchBrowse.cedarLiveSearchDirective',
     'cedar.templateEditor.form.autoFocusDirective',
-    'cedar.templateEditor.searchBrowse.flowModal'
+    'cedar.templateEditor.searchBrowse.flowModal',
+    'cedar.templateEditor.widget.cedarResourceIconDirective'
   ]);
 });

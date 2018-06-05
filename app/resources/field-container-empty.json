@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
-  "@type": "https://schema.metadatacenter.org/core/TemplateElement",
+  "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "pav": "http://purl.org/pav/",
@@ -31,20 +31,12 @@
   "title": "",
   "description": "",
   "_ui": {
-    "order": [],
-    "propertyLabels": {},
-    "propertyDescriptions": {}
+    "inputType": "textfield"
+  },
+  "_valueConstraints": {
+    "requiredValue": false
   },
   "properties": {
-    "@context": {
-      "type": "object",
-      "properties": {},
-      "additionalProperties": false
-    },
-    "@id": {
-      "type": "string",
-      "format": "uri"
-    },
     "@type": {
       "oneOf": [
         {
@@ -61,17 +53,26 @@
           "uniqueItems": true
         }
       ]
+    },
+    "@value": {
+      "type" : ["string", "null"]
+    },
+    "rdfs:label": {
+      "type" : ["string", "null"]
     }
   },
+  "required": [
+    "@value"
+  ],
   "schema:name": "",
   "schema:description": "",
-  "required": [ "@context", "@id" ],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
+  "pav:version"         : "0.0.1",
+  "bibo:status"         : "bibo:draft",
   "oslc:modifiedBy": null,
   "schema:schemaVersion": null,
-  "additionalProperties": false,
-  "pav:version"         : "0.0.1",
-  "bibo:status"         : "bibo:draft"
+  "additionalProperties": false
+
 }

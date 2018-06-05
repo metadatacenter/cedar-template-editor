@@ -96,6 +96,10 @@
       "labelKey": "view.resourceTypeFilter.template"
     },
     {
+      "resourceType": "field",
+      "labelKey": "view.resourceTypeFilter.field"
+    },
+    {
       "resourceType": "instance",
       "labelKey": "view.resourceTypeFilter.instance"
     },

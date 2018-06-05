@@ -25,6 +25,10 @@ define([
       return "/elements/edit/" + id;
     };
 
+    service.getFieldEdit = function (id) {
+      return "/fields/edit/" + id;
+    };
+
     service.getInstanceCreate = function (id, folderId) {
       return '/instances/create/' + id + '?folderId=' + encodeURIComponent(folderId);
     };

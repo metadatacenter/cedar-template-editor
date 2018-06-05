@@ -21,7 +21,7 @@ define([
 
       $scope.errorMessages;
       //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
-      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation","hidden","field"];
+      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -31,7 +31,6 @@ define([
       };
 
       var dms = DataManipulationService;
-
 
 
       //
@@ -48,6 +47,26 @@ define([
 
       $scope.isSortable = function () {
         return $scope.isSelectable();
+      };
+
+      $scope.isDraft = function () {
+        return dms.isDraft($scope.field);
+      };
+
+      $scope.isPublished = function () {
+        return dms.isPublished($scope.field);
+      };
+
+      $scope.isRootNode = function () {
+        return dms.isRootNode($scope.parentElement,$scope.field);
+      };
+
+      $scope.hasVersion = function () {
+        return dms.hasVersion($scope.field);
+      };
+
+      $scope.isEditable = function () {
+        return !dms.hasVersion($scope.field) || dms.isDraft($scope.field);
       };
 
       $scope.isRoot = function () {
@@ -70,13 +89,12 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       };
 
-
       $scope.getHidden = function () {
         return dms.getHidden($scope.field);
       };
 
       $scope.allowsHidden = function () {
-        return dms.allowsHidden($scope.field);
+        return dms.allowsHidden($scope.field) && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // is this multiple cardinality?
@@ -106,14 +124,14 @@ define([
 
       $scope.getCount = function () {
         var min = dms.getMinItems($scope.field) || 0;
-        return new Array(Math.max(1,min));
+        return new Array(Math.max(1, min));
       };
 
-      $scope.getMinItems = function() {
+      $scope.getMinItems = function () {
         return dms.getMinItems($scope.field);
       };
 
-      $scope.getMaxItems = function() {
+      $scope.getMaxItems = function () {
         return dms.getMaxItems($scope.field);
       };
 
@@ -126,9 +144,9 @@ define([
         return dms.isRequired($scope.field);
       };
 
-      $scope.setRequired = function(value) {
-        dms.setRequired($scope.field,value);
-        if (value && $scope.isMultiple() && dms.getMinItems($scope.field)  == 0) {
+      $scope.setRequired = function (value) {
+        dms.setRequired($scope.field, value);
+        if (value && $scope.isMultiple() && dms.getMinItems($scope.field) == 0) {
           $scope.field.minItems = 1;
         }
       };
@@ -158,6 +176,19 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
+      $scope.canViewTerms = function () {
+        var allowed = $scope.allowsControlledTerms();
+        var noVersion = !$scope.hasVersion();
+        var versionAndTermsOrRoot = $scope.hasVersion() && ($scope.hasValueConstraint() || $scope.isRootNode());
+        return allowed && (noVersion ||  versionAndTermsOrRoot);
+      };
+
+      $scope.canAddTerms = function () {
+        var noVersion = !$scope.hasVersion();
+        var draftAndRoot = $scope.isDraft() && $scope.isRootNode();
+        return noVersion ||  draftAndRoot;
+      };
+
       $scope.getLiterals = function () {
         return dms.getLiterals($scope.field);
       };
@@ -185,17 +216,22 @@ define([
         return dms.getContent(field || $scope.field);
       };
 
-      $scope.setDirty = function() {
-          $rootScope.$broadcast("form:dirty");
+      $scope.setDirty = function () {
+        UIUtilService.setDirty(true);
       };
 
       // check for delete;  we should have a parentElement
       $scope.ckDelete = function () {
         if ($scope.parentElement) {
           $scope.setDirty();
-          dms.removeChild($scope.parentElement, $scope.field);
-          $scope.$emit("invalidElementState",
-              ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+
+          if (dms.isRootNode($scope.parentElement, $scope.field)) {
+            $rootScope.$broadcast("form:clear");
+
+          } else {
+            dms.removeChild($scope.parentElement, $scope.field);
+            $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
+          }
         }
       };
 
@@ -227,7 +263,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsRequired;
+        return result.length > 0 && result[0].allowsRequired && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does this field allow multiple cardinality?
@@ -235,7 +271,7 @@ define([
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
-        return result.length > 0 && result[0].allowsMultiple;
+        return result.length > 0 && result[0].allowsMultiple && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does the field support value recommendation?
@@ -247,24 +283,29 @@ define([
       };
 
       // does the field support using controlled terms
-      $scope.hasControlledTerms = function () {
+      $scope.allowsControlledTerms = function () {
         var result = FieldTypeService.getFieldTypes().filter(function (obj) {
           return obj.cedarType == dms.getInputType($scope.field);
         });
         return result.length > 0 && result[0].hasControlledTerms;
       };
 
-      // does the field support using instance type term
+      $scope.hasValueConstraint = function () {
+        return dms.hasValueConstraint($scope.field);
+      };
+
+      // for now, turn this option off. does the field support using instance type term
       $scope.hasInstanceType = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == dms.getInputType($scope.field);
-        });
-        return result.length > 0 && result[0].hasInstanceTerm;
+        // var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+        //   return obj.cedarType == dms.getInputType($scope.field);
+        // });
+        // return result.length > 0 && result[0].hasInstanceTerm;
+        return false;
       };
 
       // does the field support using instance type term
       $scope.getInstanceType = function () {
-       return dms.getFieldControlledTerms($scope.field);
+        return dms.getFieldControlledTerms($scope.field);
       };
 
       // Retrieve appropriate field templates
@@ -306,7 +347,7 @@ define([
         }
       };
 
-      $scope.relabelField = function(newTitle) {
+      $scope.relabelField = function (newTitle) {
         dms.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
       };
 
@@ -325,7 +366,6 @@ define([
       };
 
 
-
       // show the controlled terms modal
       $scope.showModal = function (type) {
         if (type) {
@@ -342,7 +382,7 @@ define([
       // show the controlled terms modal
       $scope.hideModal = function () {
         UIUtilService.hideModal();
-       //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+        //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
 
       };
 
@@ -354,7 +394,6 @@ define([
         $scope.setAddedFieldMap();
 
       });
-
 
 
       //
@@ -381,7 +420,6 @@ define([
           dms.setFieldSchemaTitleAndDescription(newField, dms.getTitle(newField));
         }
 
-        // update fieldSchema
         $scope.fieldSchema = dms.schemaOf($scope.field);
 
         setDirectory();
@@ -389,7 +427,6 @@ define([
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
-
 
 
         $scope.addOption = function () {
@@ -559,8 +596,8 @@ define([
             angular.forEach($scope.modelValue, function (m, i) {
               if (m && m['@value'] && m['@value']['@id']) {
                 $scope.model[i] = {
-                  "@value"   : m['@value']['@id'],
-                  "rdfs:label" : m['@value'].label
+                  "@value"    : m['@value']['@id'],
+                  "rdfs:label": m['@value'].label
                 };
               }
             });
@@ -644,16 +681,29 @@ define([
         }
       };
 
-      $scope.isMultipleChoice = function(field) {
+      $scope.isMultipleChoice = function (field) {
         return dms.isMultipleChoice(field);
       };
 
-      $scope.isMultiAnswer = function(field) {
+      $scope.isMultiAnswer = function (field) {
         return dms.isMultiAnswer(field);
       };
 
-      $scope.setMultipleChoice = function(field, multipleChoice) {
-        dms.setMultipleChoice(field, multipleChoice);
+      $scope.isCheckboxListRadio = function() {
+        return dms.isCheckboxListRadio($scope.field);
+      };
+
+      // $scope.setMultipleChoice = function (field, multipleChoice) {
+      //   dms.setMultipleChoice(field, multipleChoice);
+      // };
+
+      $scope.setMultipleChoice = function (field, multipleChoice) {
+        if (!dms.isRootNode($scope.parentElement, field)) {
+          dms.setMultipleChoice(field, multipleChoice);
+        } else if (dms.isListType(field) || dms.isCheckboxType(field)) {
+            field._valueConstraints.multipleChoice = multipleChoice;
+        }
+        console.log('setMultipleChoice',field);
       };
 
       // Initializes model for fields constrained using controlled terms
@@ -973,6 +1023,10 @@ define([
         return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
       };
 
+      $scope.getPropertyDescription = function () {
+        return dms.getPropertyDescriptions($scope.parentElement)[$scope.fieldKey];
+      };
+
       $scope.getPropertyId = function () {
         return dms.getPropertyId($scope.parentElement, $scope.field);
       };
@@ -1004,10 +1058,25 @@ define([
 
       /* end of controlled terms functionality */
 
+      //
+      // init
+      //
       $scope.fieldSchema = dms.schemaOf($scope.field);
+      if (dms.isRootNode($scope.parentElement, $scope.field)) {
+        $scope.fieldLabelKey = 'schema:name';
+        $scope.fieldDescriptionKey = 'schema:description';
+        $scope.fieldLabel = $scope.field;
+        $scope.fieldDescription = $scope.field;
+      } else {
+        $scope.fieldLabelKey = $scope.fieldKey;
+        $scope.fieldDescriptionKey = $scope.fieldKey;
+        $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
+        $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
+      }
+
+
 
     };
-
 
 
     return {

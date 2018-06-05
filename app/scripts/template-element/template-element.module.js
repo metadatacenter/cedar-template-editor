@@ -7,6 +7,7 @@ define([
   'cedar/template-editor/template-element/cedar-runtime-nested-element.directive',
   'cedar/template-editor/template-element/cedar-template-element.directive',
   'cedar/template-editor/template-element/cedar-runtime-element.directive',
+  'cedar/template-editor/widget/cedar-resource-icon.directive',
   'cedar/template-editor/template-element/create-element.controller',
   'cedar/template-editor/template-element/template-element.routes',
 ], function(angular) {
@@ -16,6 +17,7 @@ define([
     'cedar.templateEditor.templateElement.cedarRuntimeNestedElementDirective',
     'cedar.templateEditor.templateElement.cedarTemplateElementDirective',
     'cedar.templateEditor.templateElement.cedarRuntimeElement',
+    'cedar.templateEditor.widget.cedarResourceIconDirective',
     'cedar.templateEditor.templateElement.createElementController',
     'cedar.templateEditor.templateElement.routes',
   ]);

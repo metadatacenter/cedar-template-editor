@@ -1,28 +1,17 @@
-<div class="configuration-options field-header sortable-handler flex"
-    ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
+<div class="configuration-options field-header sortable-handler flex" ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
 
   <div class="flex-left">
-    <div class="sortable-icon"></div>
+    <div ng-if="!isRootNode()" class="sortable-icon"><i class="fa fa-arrows"></i></div>
     <i class="{{getIconClass()}} field-icon"></i>
-    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="isCardinalElement()">{{getMinItems()}}
+    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="!isCheckboxListRadio() && isCardinalElement()">{{getMinItems()}}
       .. {{getMaxItems() || "N"}}
     </div>
-    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"></i>
+    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue" style="margin:0 5px"></i>
+    <i class="fa fa-pencil-square-o editable" ng-show="isEditable()" style="margin:0 5px"></i>
   </div>
 
   <div class="configuration-actions" ng-init="childType='field'">
-    <div ng-if="!isRuntime() &&  !isNested() " class="preview-container flex-right" style="width:100px">
-
-
-      <!--<div ng-if="hasPropertyId()" tooltip-placement="top" tooltip-append-to-body="true"-->
-          <!--uib-tooltip="{{getPropertyId() || 'Add property'}}"><i-->
-          <!--class="cedar-svg-controll-term"-->
-          <!--ng-click="ckDelete(); $event.stopPropagation();"-->
-          <!--style="position:relative;top:-5px;cursor: pointer;color: #9E9E9E;font-size: 26px;margin-right:10px"></i></div>-->
-
-      <!--<div><i class="cedar-svg-help-circle" style="position:relative;top:-5px;cursor: pointer;color: #9E9E9E;font-size: 26px;" uib-tooltip="{{getDescription()}}" tooltip-append-to-body="true"-->
-          <!--tooltip-placement="top" ng-if="hasDescription()"></i>-->
-      <!--</div>-->
+    <div class="preview-container flex-right" style="width:100px">
 
       <div class="preview-edit-options ">
         <div class="save-options">

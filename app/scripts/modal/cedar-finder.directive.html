@@ -142,20 +142,19 @@
                   ng-dblclick="finder.openResource(resource)"
                   ng-repeat="(index, resource) in finder.getFolders()">
 
-                <span class="cell">
+                <span class="cell icon">
                   <i class="btn btn-sm btn-info btn-circle large-icon fa " ng-class="finder.getResourceIconClass(resource)" aria-hidden="true"></i></span>
                 <span class="cell resource">{{ resource['schema:name'] }}</span>
               </div>
-              <!-- elements -->
-              <div ng-show="finder.hasElements()" class="category" translate>GENERIC.Elements</div>
+              <!-- elements and fields -->
+              <div ng-show="finder.hasElementsOrFields()" class="category" translate>GENERIC.Elements</div>
               <div ng-if="!finder.isFolder(resource)" class="box-row"
                   ng-class="{ selected: finder.isResourceSelected(resource) }"
                   ng-click="finder.selectResource(resource)"
                   ng-dblclick="finder.openResource(resource)"
-                  ng-repeat="(index, resource) in finder.getElements()">
+                  ng-repeat="(index, resource) in finder.getElementsAndFields()">
 
-                <span class="cell">
-                  <i class="btn btn-sm btn-info btn-circle large-icon fa "  ng-class="finder.getResourceIconClass(resource)" aria-hidden="true"></i></span>
+                <span class="cell icon" ng-class="finder.getResourceTypeClass(resource)" ><i class="fa "  ng-class="finder.getResourceIconClass(resource)" aria-hidden="true"></i></span>
                 <span class="cell resource">{{ resource['schema:name'] }}</span>
               </div>
             </div>

@@ -91,7 +91,7 @@ define([
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      $rootScope.setLocked($scope.cannotWrite);
+      UIUtilService.setLocked($scope.cannotWrite);
     });
 
     var getDetails = function (id) {
@@ -139,7 +139,7 @@ define([
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
             checkValidation($scope.instance);
-            $rootScope.instanceToSave = $scope.instance;
+            UIUtilService.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
@@ -288,7 +288,8 @@ define([
     // Create empty instance object
     $scope.form = {};
     $scope.instance = {};
-    $rootScope.instanceToSave = $scope.instance;
+    UIUtilService.instanceToSave = $scope.instance;
+
 
     // Create new instance
     if (!angular.isUndefined($routeParams.templateId)) {

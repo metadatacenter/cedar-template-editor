@@ -54,9 +54,11 @@ define([
 
     service.removeAutocompleteResultsForSource = function (id, query, source_uri) {
       // remove results for this source
-      for (var i = service.autocompleteResultsCache[id][query].results.length - 1; i >= 0; i--) {
-        if (service.autocompleteResultsCache[id][query].results[i].sourceUri === source_uri) {
-          service.autocompleteResultsCache[id][query].results.splice(i, 1);
+      if (service.autocompleteResultsCache[id][query]) {
+        for (var i = service.autocompleteResultsCache[id][query].results.length - 1; i >= 0; i--) {
+          if (service.autocompleteResultsCache[id][query].results[i].sourceUri === source_uri) {
+            service.autocompleteResultsCache[id][query].results.splice(i, 1);
+          }
         }
       }
     };
@@ -139,7 +141,7 @@ define([
       var vcst = DataManipulationService.getValueConstraint(field);
       var id = DataManipulationService.getId(field);
       var promises = [];
-      service.initResults(id,term);
+      service.initResults(id, query);
 
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {

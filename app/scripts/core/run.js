@@ -82,7 +82,7 @@ define([
     $rootScope.setHeader = function () {
 
       var e = jQuery("#top-navigation");
-      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element');
+      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
       //jQuery("body").css('overflow:scroll');
 
       if ($location.path().startsWith("/dashboard")) {
@@ -94,49 +94,13 @@ define([
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
 
+      } else if ($location.path().startsWith("/fields")) {
+        e.addClass('field');
+
       } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');
       }
     };
-
-    $rootScope.documentState = {
-      valid: true
-    };
-
-    $rootScope.$on("form:validation", function (even, options) {
-      $rootScope.documentState.valid = options.state;
-    });
-
-    $rootScope.setValidation = function (value) {
-      $rootScope.documentState.valid = value;
-    };
-    $rootScope.isValid = function () {
-      return $rootScope.documentState.valid;
-    };
-
-    $rootScope.$on("form:dirty", function () {
-      $rootScope.setDirty(true);
-    });
-
-    // keeping track of dirty, locked, and valid documents
-    $rootScope.dirty = false;
-    $rootScope.setDirty = function (value) {
-      $rootScope.dirty = value;
-    };
-    $rootScope.isDirty = function () {
-      return $rootScope.dirty;
-    };
-
-    $rootScope.locked = false;
-    $rootScope.setLocked = function (value) {
-      $rootScope.locked = value;
-    };
-    $rootScope.isLocked = function () {
-      return $rootScope.locked;
-    };
-
-
-
 
 
   }

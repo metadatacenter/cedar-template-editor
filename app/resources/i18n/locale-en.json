@@ -85,7 +85,10 @@
     "Previous": "Previous",
     "ElementName": "Element Name",
     "ElementDescription": "Element Description",
+    "FieldName": "Field Name",
+    "FieldDescription": "Field Description",
     "SaveElement": "Save Element",
+    "SaveField": "Save Field",
     "AddAnElement": "Add an Element",
     "MultipleMinMaxMsg": "Min Entries: {{min}}, Max Entries: {{max}}",
     "Remove": "Remove",
@@ -148,12 +151,14 @@
     "CreatedDraft": "Draft Created",
     "Draft": "Draft",
     "Latest": "Latest",
-    "All": "All"
+    "All": "All",
+    "Field": "Field"
   },
   "HELP": {
     "createFolder": "Create folder",
     "createTemplate": "Create template",
     "createElement": "Create element",
+    "createField": "Create field",
     "viewDetails": "View details",
     "hideDetails": "Hide details",
     "toggleDetails": "{{toggle}} details",
@@ -214,11 +219,28 @@
         "error": "There was an error while saving the element!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the template element!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the element!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
-        "success": "The template element has been deleted.",
-        "error": "There was an error while deleting the template element!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The element has been deleted.",
+        "error": "There was an error while deleting the element!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "FIELD": {
+      "create": {
+        "success": "The field <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the field!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The field <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the field!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the field!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The v has been deleted.",
+        "error": "There was an error while deleting the field!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "TEMPLATE": {
@@ -351,7 +373,8 @@
         "folder": "Are you sure you want to remove the selected folder?",
         "template": "Are you sure you want to remove the selected template?",
         "element": "Are you sure you want to remove the selected element?",
-        "instance": "Are you sure you want to remove the selected metadata?"
+        "instance": "Are you sure you want to remove the selected metadata?",
+        "field": "Are you sure you want to remove the selected field?"
       }
     },
     "sort": {
