@@ -206,6 +206,17 @@ define([
               && service.getValueConstraint(node).maxLength;
         }
 
+        // min/max numeric value
+        service.getMinValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('minValue')
+              && service.getValueConstraint(node).minValue;
+        }
+
+        service.getMaxValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('maxValue')
+              && service.getValueConstraint(node).maxValue;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;

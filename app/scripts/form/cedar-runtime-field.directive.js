@@ -1274,6 +1274,15 @@ define([
             (value.length > minLength) && (value.length < maxLength));
       };
 
+      // Check the numeric value of the input value
+      $scope.checkNumberValue = function () {
+        var value = Number($scope.valueArray[$scope.index]['@value']);
+        var minValue = dms.getMinValue($scope.field) || Number.MIN_SAFE_INTEGER;
+        var maxValue = dms.getMaxValue($scope.field) || Number.MAX_SAFE_INTEGER;
+        $scope.forms['fieldEditForm'+$scope.index].activeNumericField.$setValidity('numberValue',
+            (value > minValue) && (value < maxValue));
+      };
+
       /* end of value constraints functionality */
 
     };

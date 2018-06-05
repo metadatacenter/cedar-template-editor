@@ -4,6 +4,29 @@
   <div ng-include="'scripts/form/partials/field-header.partial.html'"></div>
   <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+
+  <!-- min number value constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text" auto-focus
+        class="form-control field-min-max-definition"
+        placeholder="{{'CREATOR.enterMinValue' | translate}}"
+        aria-label="{{'CREATOR.enterMinValue' | translate}}"
+        ng-model="$root.schemaOf(field)._valueConstraints.minValue"
+        ng-if="isEditable()"
+        with-floating-label>
+  </div>
+
+  <!-- max number value constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text" auto-focus
+        class="form-control field-min-max-definition"
+        placeholder="{{'CREATOR.enterMaxValue' | translate}}"
+        aria-label="{{'CREATOR.enterMaxValue' | translate}}"
+        ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
+        ng-if="isEditable()"
+        with-floating-label>
+  </div>
+
   <!-- options -->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 

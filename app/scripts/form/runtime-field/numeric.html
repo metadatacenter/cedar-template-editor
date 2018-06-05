@@ -3,6 +3,7 @@
   <!-- actively editing the field --->
   <div ng-if="isActive(index)" class="form-group  has-feedback ">
     <input type="text"
+        name="activeNumericField"
         ng-click="setActive(index, true)"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
@@ -11,7 +12,8 @@
         aria-label="{{getDescription()}}"
         validate-on="blur"
         ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
-        ng-model="valueElement['@value']">
+        ng-model="valueElement['@value']"
+        ng-change="checkNumberValue()">
     </input>
 
     <div ng-if="isActive(index)" class="input-indicator-icons"
