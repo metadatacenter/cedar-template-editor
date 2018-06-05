@@ -511,7 +511,8 @@
     "enterMaxLength": "Max String Length",
     "enterMinValue": "Enter Min Value",
     "enterMaxValue": "Enter Max Value",
-    "enterNumberType": "Enter Number Type"
+    "enterNumberType": "Enter Number Type",
+    "enterDecimalPlace": "Enter Decimal Place"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

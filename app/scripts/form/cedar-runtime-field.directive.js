@@ -1283,6 +1283,19 @@ define([
             (value > minValue) && (value < maxValue));
       };
 
+      // Check the decimal place of the input value
+      $scope.checkDecimalPlace = function () {
+        var value = Number($scope.valueArray[$scope.index]['@value']);
+        var decimalPlace = dms.getDecimalPlace($scope.field) || 0;
+        $scope.forms['fieldEditForm'+$scope.index].activeNumericField.$setValidity('decimalPlace',
+            (countDecimals(value) <= decimalPlace));
+      };
+
+      var countDecimals = function (value) {
+        if(Math.floor(value) === value) return 0;
+        return value.toString().split(".")[1].length || 0;
+      }
+
       /* end of value constraints functionality */
 
     };

@@ -45,6 +45,17 @@
         with-floating-label>
   </div>
 
+  <!-- decimal place constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text" auto-focus
+        class="form-control"
+        placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
+        aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
+        ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
+        ng-if="isEditable()"
+        with-floating-label>
+  </div>
+
   <!-- options -->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 

@@ -217,6 +217,11 @@ define([
               && service.getValueConstraint(node).maxValue;
         }
 
+        service.getDecimalPlace = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('decimalPlace')
+              && service.getValueConstraint(node).decimalPlace;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;
