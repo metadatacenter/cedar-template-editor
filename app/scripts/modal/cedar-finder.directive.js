@@ -100,8 +100,8 @@ define([
 
           vm.hasFolders = hasFolders;
           vm.getFolders = getFolders;
-          vm.hasElements = hasElements;
-          vm.getElements = getElements;
+          vm.hasElementsOrFields = hasElementsOrFields;
+          vm.getElementsAndFields = getElementsAndFields;
 
           vm.selectResource = selectResource;
           vm.isResourceSelected = isResourceSelected;
@@ -283,10 +283,10 @@ define([
                   result += "fa-tag";
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += "fa-sitemap";
+                  result += "fa-cubes";
                   break;
                 case CONST.resourceType.FIELD:
-                  result += "fa-file-code-o";
+                  result += "fa-cube";
                   break;
               }
               result += ' ' + resource.nodeType;
@@ -527,8 +527,8 @@ define([
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
 
-                // just elements can be selected
-                if (value == 'element') {
+                // just elements adn field can be selected
+                if (value == 'element' ||value == 'field') {
                   activeResourceTypes.push(value);
                 }
 
@@ -624,8 +624,23 @@ define([
             return result;
           }
 
-          function hasElements() {
+          function hasElementsOrFields() {
             return getElements().length > 0;
+          }
+
+          function getElementsAndFields() {
+            var result = [];
+
+            if (vm.resources) {
+              var result = vm.resources.filter(function (obj) {
+                return obj.nodeType == CONST.resourceType.FIELD || obj.nodeType == CONST.resourceType.ELEMENT;
+              });
+            }
+            return result;
+          }
+
+          function hasFields() {
+            return getFields().length > 0;
           }
 
         }

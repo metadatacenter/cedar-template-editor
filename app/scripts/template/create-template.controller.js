@@ -80,7 +80,7 @@ define([
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
-          $rootScope.setLocked($scope.cannotWrite);
+          UIUtilService.setLocked($scope.cannotWrite);
         });
 
         var doSearchTemplateInstances = function (id) {
@@ -170,7 +170,7 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
 
-            $rootScope.setValidation(true);
+            UIUtilService.setValidation(true);
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
@@ -204,16 +204,16 @@ define([
         };
 
         // Add newly configured field to the element object
-        $scope.addField = function (fieldType) {
+        $scope.addField = function ( fieldType) {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             var domId = DataManipulationService.createDomId();
-            StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
+            StagingService.addFieldToForm($scope.form, fieldType, false, domId, function (el) {
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
               $scope.toggleMore();
               $timeout(function () {
-                $rootScope.$broadcast("form:dirty");
+                UIUtilService.setDirty();
               });
             });
           }
@@ -242,6 +242,23 @@ define([
 
             });
             $rootScope.$broadcast("form:update", element);
+          }
+        };
+
+        $scope.addStandAloneFieldToTemplate = function (node) {
+          populateCreatingFieldOrElement();
+          if (dontHaveCreatingFieldOrElement()) {
+
+            DataManipulationService.createDomIds(node);
+
+            var domId = DataManipulationService.createDomId();
+            StagingService.addStandAloneFieldToForm($scope.form, node["@id"], domId, function (e) {
+
+              // now we are sure that the element was successfully added, scroll to it and hide its nested contents
+              UIUtilService.scrollToDomId(domId);
+
+            });
+            $rootScope.$broadcast("form:update", node);
           }
         };
 
@@ -497,8 +514,18 @@ define([
           $scope.hideSearchBrowsePicker();
         };
 
+        // $scope.pickElementFromPicker = function (resource) {
+        //   $scope.addElementToTemplate(resource);
+        //   $scope.hideSearchBrowsePicker();
+        // };
+
         $scope.pickElementFromPicker = function (resource) {
-          $scope.addElementToTemplate(resource);
+          if (resource.nodeType == 'element') {
+            $scope.addElementToTemplate(resource);
+          } else if (resource.nodeType == 'field') {
+            $scope.addStandAloneFieldToTemplate(resource);
+          }
+
           $scope.hideSearchBrowsePicker();
         };
 

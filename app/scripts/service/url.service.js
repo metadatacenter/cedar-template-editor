@@ -63,6 +63,18 @@ define([
       return this.templateElements() + '?folder_id=' + encodeURIComponent(folderId);
     };
 
+    service.templateFields = function () {
+      return this.base() + '/template-fields';
+    };
+
+    service.getTemplateField = function (id) {
+      return this.templateFields() + '/' + encodeURIComponent(id);
+    };
+
+    service.postTemplateField = function (folderId) {
+      return this.templateFields() + '?folder_id=' + encodeURIComponent(folderId);
+    };
+
     service.templateInstances = function () {
       return this.base() + '/template-instances';
     };
@@ -173,6 +185,10 @@ define([
 
     service.getGroups = function () {
       return this.groupBase() + "/groups";
+    };
+
+    service.templateFieldPermission = function (id) {
+      return this.resourceBase() + '/template-fields/' + encodeURIComponent(id) + "/permissions";
     };
 
     service.templateElementPermission = function (id) {

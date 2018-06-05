@@ -30,6 +30,8 @@ define([
       },
       controller : function ($scope) {
 
+        var dms = DataManipulationService;
+
         $scope.directiveName = 'form';
         $scope.forms = {};
         $scope.model = $scope.model || {};
@@ -47,7 +49,6 @@ define([
         $scope.metaToRDF = null;
         $scope.metaToRDFError = null;
 
-        var dms = DataManipulationService;
 
         $scope.isRuntime = function () {
           return UIUtilService.isRuntime();
@@ -78,7 +79,6 @@ define([
         };
 
         $scope.relabel = function (key) {
-          console.log('relabel',key);
           // operates on templates and elements, so use the root scope json which
           // is element or form
           dms.relabel($rootScope.jsonToSave, key);
@@ -131,9 +131,15 @@ define([
 
         // remove the child node from the form
         $scope.removeChild = function (node) {
-          dms.removeChild($scope.form, node);
-          var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
-          $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
+          if (dms.firstClassField($scope.form,node)) {
+            $scope.form = {};
+          } else {
+            dms.removeChild($scope.form, node);
+            var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
+            $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
+          }
+
+
         };
 
         // // rename the key of a child in the form
@@ -169,7 +175,8 @@ define([
 
 
         $scope.pageTitle = function () {
-          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex + 1) + '. ' : '') + $scope.pageTitles[$scope.pageIndex];
+          return ($scope.pagesArray.length > 1 ? ($scope.pageIndex + 1) + '. ' : '') +
+              $scope.pageTitles ?  $scope.pageTitles[$scope.pageIndex]: '';
         };
 
 
@@ -367,7 +374,6 @@ define([
         // watches
         //
 
-
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
@@ -375,28 +381,24 @@ define([
 
         // watch the dirty flag on the form and pass it up to root
         $scope.$watch('forms.templateForm.$dirty', function () {
-          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+          UIUtilService.setDirty($scope.forms.templateForm.$dirty);
         });
 
         $scope.$on("form:clean", function () {
           $scope.forms.templateForm.$dirty = false;
-
         });
 
         $scope.$on("form:dirty", function () {
           $scope.forms.templateForm.$dirty = true;
         });
 
-
         $scope.$on("form:update", function () {
           startParseForm();
           $scope.forms.templateForm.$dirty = true;
-          $rootScope.setDirty(true);
         });
 
         $scope.$on("form:reset", function () {
           $scope.forms.templateForm.$dirty = true;
-          $rootScope.setDirty(true);
         });
 
         // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
@@ -466,6 +468,10 @@ define([
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+        $scope.isFirstClassField = function(node) {
+          return node && (dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
         $scope.isSectionBreak = function (item) {
@@ -547,6 +553,11 @@ define([
           return dms.getTitle($scope.form);
         };
 
+        $scope.getFormTitle = function (item) {
+          return dms.getTitle($scope.form.properties[item]);
+        };
+
+
         $scope.formatTitle = function () {
           return UIUtilService.formatTitle($scope.form);
         };
@@ -576,7 +587,7 @@ define([
           }, 0);
         };
 
-        $scope.uid = 'form';
+
 
         // find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
@@ -601,6 +612,13 @@ define([
             return next;
           }
         };
+
+        //
+        // init
+        //
+
+        $scope.uid = 'form';
+
 
       }
     };

@@ -1,0 +1,153 @@
+<div class="template-container scrollable-content">
+  <!--<div class="template-header field">-->
+    <!--<div class="container">-->
+      <!--<div class="row">-->
+        <!--<div class="left-sidebar col-sm-4 col-sm-offset-1">-->
+          <!--<div id="field-name-container">-->
+            <!--<form>-->
+              <!--<div class="form-group floating-label-wrapper">-->
+                <!--<input auto-focus type="text" class="form-control" id="field-name"-->
+                    <!--placeholder="{{'GENERIC.FieldName' | translate}}"-->
+                    <!--aria-label="{{'GENERIC.FieldName' | translate}}"-->
+                    <!--ng-model="fieldSchema['schema:name']" with-floating-label>-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="right-body col-sm-6">-->
+          <!--<div id="field-description-container">-->
+            <!--<form>-->
+              <!--<div class="form-group floating-label-wrapper">-->
+                <!--<input type="text" class="form-control" id="field-description"-->
+                    <!--placeholder="{{'GENERIC.FieldDescription' | translate}}"-->
+                    <!--aria-label="{{'GENERIC.FieldDescription' | translate}}" ng-model="fieldSchema['schema:description']"-->
+                    <!--with-floating-label>-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<button type="button" class="show-type"-->
+            <!--ng-click="showModal('control-options-field-field')">-->
+          <!--<i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>-->
+        <!--</button>-->
+        <!--<div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">-->
+          <!--<button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">-->
+            <!--<i class="fa fa-caret-down  inline "></i></button>-->
+          <!--<div uib-dropdown-menu class="class-list pull-right dropdown-menu">-->
+            <!--<class-list field="field" view-type="viewType"></class-list>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <div class="template-body field">
+    <div class="container">
+      <div class="row">
+        <div class="right-body col-sm-10 col-sm-offset-1">
+          <div id="form-preview-section">
+            <div class="form-preview collapse in">
+              <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
+            </div>
+          </div>
+
+          <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
+            <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span>
+            </p>
+            <ul>
+              <li ng-repeat="field in invalidFieldStates">
+                <span ng-show="field">{{field}}</span>
+                <span ng-hide="field" translate>VALIDATION.noNameField</span>
+              </li>
+            </ul>
+          </div>
+
+          <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
+            <p><i class="fa fa-exclamation-triangle"></i><span
+                translate>VALIDATION.groupHeader.invalidFieldState</span>
+            </p>
+            <ul>
+              <li ng-repeat="field in invalidFieldStates">
+                <span ng-show="field">{{field}}</span>
+                <span ng-hide="field" translate>VALIDATION.noNameField</span>
+              </li>
+            </ul>
+          </div>
+
+
+          <div class="field-actions"  ng-if="canWrite()" style="height:auto">
+            <div ng-if="fieldErrorMessages.length" class="alert alert-danger" role="alert">
+              <p ng-repeat="message in fieldErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+            </div>
+            <div ng-if="fieldSuccessMessages.length" class="alert alert-success" role="alert">
+              <p ng-repeat="message in fieldSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
+            </div>
+            <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
+            <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
+            <!--</div>-->
+            <div class="clear-save" >
+              <button type="button" id="button-clear-field" class="btn btn-clear field" ng-click="reset()"
+                  ng-hide="isPropertiesEmpty()"
+                  translate>
+                GENERIC.Clear
+              </button>
+              <button type="button" id="button-cancel-field" class="btn btn-clear field" ng-click="cancelField()"
+                  translate>GENERIC.Cancel
+              </button>
+              <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
+                  class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
+              </button>
+            </div>
+          </div>
+
+          <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
+        </div>
+
+
+        <div class="left-sidebar col-sm-1 pull-right">
+          <div id="stickyFix"></div>
+          <div class="sidebar-inner" cedar-sticky-left-menu="true">
+
+            <!-- toolbar -->
+            <ng-include src="'scripts/form/partials/edit-add-toolbar.html'"></ng-include>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- field finder -->
+      <!--<section>-->
+        <!--<cedar-finder id="finder-modal" cedar-modal-show modal-visible="finderModalVisible" class="modal fade"-->
+            <!--tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"-->
+            <!--data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"-->
+            <!--pick-resource-callback="pickFieldFromPicker" >-->
+        <!--</cedar-finder>-->
+      <!--</section>-->
+
+
+      <!-- field modal -->
+      <div class="modal fade controlled-terms-modal" id="control-options-field-field" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content" style="overflow:auto">
+            <div class="modal-header">
+              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                  aria-label="Close"><span aria-hidden="true"><img
+                  src="/img/close_modal.png" width="22"/></span></button>
+            </div>
+            <div class="modal-body">
+              <div controlled-term field="field"
+                  options='{"filterSelection":"field", "modalId":"control-options-field-field"}'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+</div>
+
+

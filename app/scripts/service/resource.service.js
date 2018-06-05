@@ -82,6 +82,9 @@ define([
           var url;
           var id = resource['@id'];
           switch (resource.nodeType) {
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id);
+              break;
             case CONST.resourceType.FOLDER:
               url = urlService.getFolder(id);
               break;
@@ -236,6 +239,9 @@ define([
             case CONST.resourceType.FOLDER:
               url = urlService.folders() + '/' + encodeURIComponent(id);
               break;
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id) + '/details';
+              break;
             case CONST.resourceType.ELEMENT:
               url = urlService.getTemplateElement(id) + '/details';
               break;
@@ -264,6 +270,9 @@ define([
               break;
             case CONST.resourceType.ELEMENT:
               url = urlService.getTemplateElement(id) + '/details';
+              break;
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id) + '/details';
               break;
             case CONST.resourceType.TEMPLATE:
               url = urlService.getTemplate(id) + '/details';
@@ -561,6 +570,9 @@ define([
             case CONST.resourceType.INSTANCE:
               url = urlService.templateInstancePermission(id);
               break;
+            case CONST.resourceType.FIELD:
+              url = urlService.templateFieldPermission(id);
+              break;
           }
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
@@ -572,8 +584,6 @@ define([
         }
 
         function setResourceShare(resource, permissions, successCallback, errorCallback) {
-          //console.log('setResourceShare');
-          //console.log(permissions);
           var url;
           var id = resource['@id'];
           switch (resource.nodeType) {
@@ -588,6 +598,9 @@ define([
               break;
             case CONST.resourceType.INSTANCE:
               url = urlService.templateInstancePermission(id);
+              break;
+            case CONST.resourceType.FIELD:
+              url = urlService.templateFieldPermission(id);
               break;
           }
           authorizedBackendService.doCall(

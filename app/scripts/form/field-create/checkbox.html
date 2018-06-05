@@ -14,17 +14,19 @@
           <div class="checkbox checkbox-primary">
             <input ng-click="cleanSelectedByDefault(index); $event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                 name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="getLiterals()[index].selectedByDefault">
+                ng-model="getLiterals()[index].selectedByDefault"
+                ng-disabled="!isEditState()">
             <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                    aria-label="Option" ng-model="getLiterals()[index]['label']" with-floating-label>
+                    aria-label="Option" ng-model="getLiterals()[index]['label']" with-floating-label
+                    ng-disabled="!isEditState()">
               </div>
             </label>
           </div>
         </span>
-        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+        <p class="add-another" ng-if="isEditState()" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
       <p class="instructions">Click choice to set as default</p>
     </div>

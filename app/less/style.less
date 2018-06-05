@@ -11,52 +11,75 @@
  557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
  */
 
-@header-element: #557260;
-@button-element: #71977F;
-@hover-element: #557260;
-@accent-element: #6A8B92;
 
-@header-template: #2e5365;
-/*@button-template:#5795ba;*/
-@button-template: #5097A5;
-@hover-template: #2f7dab;
-@accent-template: #00796B;
 
-@header-metadata: #34626B;
-/*@header-metadata:#557260;
-@header-metadata:#9a9a75;*/
-@button-metadata: #6A8B92;
-@hover-metadata: #34626B;
-@accent-metadata: #3291B1;
 
-@header-folder: #005d67;
-@button-folder: #9E9E9E;
-@hover-folder: #616161;
-@accent-folder: #9E9E9E;
+////  Black 000000  DarkSlateGray 213F3D  SlateGray 5A6D7E DarkCyan  008b8b LightSeaGreen 0F7979  PaleTurquoise 97EBEA
+//@header-color:#213F3D;
+//@template-color:#5A6D7E;
+//@element-color:#008b8b;
+//@field-color:#0F7979;
+//@metadata-color:#97EBEA;
+//@folder-color:#5A6D7E;
+//
+////  Black 17252a DarkGreen 2b7a78 Turquoise 3aafa9  Silver def2f1 White F2F2F2
+//@header-color:#213F3D;
+//@template-color:#5A6D7E;
+//@element-color:#008b8b;
+//@field-color:#0F7979;
+//@metadata-color:#97EBEA;
+//@folder-color:#5A6D7E;
+//
+////  Black 112d32 Brown 4f4a41 LightBrown 6e6658 Blue 254e58 Blue 0F7686 Turquoise 88bdbc  White E7FEE1
+//@header-color:#4f4a41;
+//@template-color:#254e58;
+//@element-color:#0F7686;
+//@field-color:#88bdbc;
+//@metadata-color:#6e6658;
+//@folder-color:#112d32;
+//
+////  Brown 575439 DarkTurquoise 35755A MedTurquoise 52AA8E Turquoise 81D4BD  Silver BBBAB5
+//@header-color:#575439;
+//@template-color:#35755A;
+//@element-color:#52AA8E;
+//@field-color:#81D4BD;
+//@metadata-color:#81D4BD;
+//@folder-color:#575439;
 
-@header-dashboard: #ffffff;
-@button-dashboard: #005d67;
-@hover-dashboard: #00796B;
-@accent-dashboard: #00796B;
+//  Turquoise 81D4BD Blue 0F7686 LightGreen A2CF75 MedGreen 4C7C24
+@top-nav-color:@logo-dark-color;
+@header-color:#244152;
+@template-color:#408392;
+@element-color:#58797F;
+@field-color:#79A99E;
+@metadata-color:#0F7686;
+@folder-color:#4E4B4A;
 
-@header-navbar: #eaeaea;
-@header-bg-color: #2e5365;
+@header-template: @top-nav-color;
+@header-element: @top-nav-color;
+@header-field: @top-nav-color;
+@header-metadata: @top-nav-color;
+@header-folder: @top-nav-color;
+@header-dashboard: @white;
 
-@primary-accent: #FF5722;
-@dark-accent: #E64A19;
+@primary-accent: #cb6318;
+@dark-accent: #7d4427;
 
-@primary-text: #212121;
-@secondary-text: #727272;
+@primary-text: #0F7686;
+@secondary-text: #5A6D7E;
 
-@divider: #B6B6B6;
 
-@very-lt-gray: #CCCCCC;
-@lt-gray-1: #FAFAFA;
-@lt-gray: #F0F0F0;
-@background-gray: #EEEEEE;
+@button-template:lighten(@template-color, 10%);
+@button-element: @element-color;
+@button-field: @field-color;
+@button-metadata: @metadata-color;
+@button-folder: @folder-color;
 
-@dark-gray: #616161;
-@med-gray: #9E9E9E;
+@hover-template: darken(@template-color, 10%);
+@hover-element: darken(@element-color, 10%);
+@hover-field: darken(@field-color, 10%);
+@hover-metadata: darken(@metadata-color, 10%);
+@hover-folder: darken(@folder-color, 10%);
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
@@ -67,6 +90,24 @@
 @button-resume: #5cb85c;
 @button-resume-hover: #50A050;
 @button-cancel: #9E9E9E;
+
+@divider: #B6B6B6;
+
+@very-lt-gray: #CCCCCC;
+@lt-gray-1: #FAFAFA;
+@lt-gray: #F0F0F0;
+@background-gray: #EEEEEE;
+@dark-gray: #616161;
+@med-gray: #9E9E9E;
+
+::selection {
+  background: lighten(@logo-light-color, 20%); /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: lighten(@logo-light-color, 20%); /* Gecko Browsers */
+}
+
+
 
 /* Definine local mixins */
 .activ-grotesk-regular {
@@ -155,13 +196,25 @@ button {
 
 .navbar {
   color: @header-text-color;
-  background-color: @header-bg-color;
   margin-bottom: 0;
   height: 50px;
   border: none;
 
+  &.template {
+    background-color: @header-template;
+  }
+
+  &.element {
+     background-color: @header-element;
+   }
+
+  &.field {
+    background-color: @header-field;
+  }
+
   &.metadata {
     height: 50px;
+    background-color: @header-metadata;
   }
 
   #page-title {
@@ -195,7 +248,7 @@ button {
     right: 15px;
     margin: 20px;
     font-size: 22px;
-    color: #ccc;
+    color: @very-lt-gray;
   }
 
   .search-input {
@@ -247,73 +300,39 @@ button {
     position: absolute;
     top: 0;
 
-    //noinspection ALL
     @media (min-width: @screen-sm-min) {
       margin-left: 0;
     }
   }
-
-  .navbar-back {
-    margin-top: 5px;
-    margin-left: 10px;
-
-    .back-arrow {
-      color: @white;
-      font-size: 20px;
-      margin: 0;
-      font-weight: 100;
-    }
-
-    .feedback-form {
-      font-size: 20px;
+  .feedback-form {
+    div {
+      padding: 0 10px;
       i {
-        margin: 0 10px;
-        color: #fff;
+        font-size: 18px;
       }
       i.fa.fa-lock, i.fa.fa-exclamation-triangle, i.fa.fa-circle-o {
         color: @button-warning;
       }
     }
+  }
 
-    .form-feedback {
-      position: absolute;
-      left: 36px;
-      top: -10px;
-      width: 45px;
-      height: 46px;
-      padding-top: 14px;
-      left: 66px;
-    }
-
-    .back-arrow-click {
-      position: absolute;
-      border-width: 0px;
-      width: 200px;
-      height: 46px;
-      cursor: pointer;
-      z-index: 10;
-      top: -10px;
-      left: 10px;
-    }
-
-    .page-title {
-      color: @white;
-      font-size: 18px;
-      margin: 0 0 0 10px;
-      font-weight: 200;
-    }
-
-    .document-title {
-      color: @white;
-      font-size: 18px;
-      font-weight: 200;
-      position: relative;
-      margin: 0;
-      padding: 0;
-    }
+  .navbar-back {
+    margin-left: 10px;
+    font-size:16px;
+    color: @white;
+    cursor:pointer;
 
     @media (min-width: @screen-sm-min) {
       margin-left: 0;
+    }
+
+    i.back-arrow {
+      margin-right: 10px;
+      font-weight: 100;
+      font-size:18px;
+    }
+    div.document-title {
+      margin-left: 10px;
     }
   }
 
@@ -337,7 +356,7 @@ button {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid @very-lt-gray;
     border-radius: 0;
     color: #000;
     padding-left: 0;
@@ -359,12 +378,15 @@ button {
   #element-name-container,
   #element-controlled-term-container {
 
+
     .cedar-svg-element,
     .cedar-svg-metadata,
     .cedar-svg-controll-term {
       position: absolute;
       color: @brand-primary;
     }
+
+
 
     .form-control {
       padding-left: 30px;
@@ -393,6 +415,9 @@ button {
   }
 }
 
+#headerCtrl {
+  //background:@top-nav-color;
+}
 #top-navigation {
 
   &.template {
@@ -405,12 +430,17 @@ button {
     margin-right: 10px;
   }
 
+  &.field {
+    background-color: @header-field;
+    margin-right: 10px;
+  }
+
   &.dashboard {
     background-color: @header-dashboard;
   }
 
   &.metadata {
-    background-color: @header-template;
+    background-color: @header-metadata;
   }
 
   .form-page {
@@ -428,7 +458,7 @@ button {
       margin: 0;
       color: @button-warning;
     }
-    i.errpr {
+    i.error {
       font-size: 0.8em;
       margin: 0;
       color: @button-error;
@@ -445,13 +475,13 @@ button {
 }
 
 .link-disabled, .link-disabled:hover {
-  color: #ccc !important;
+  color: @very-lt-gray !important;
   background: #f8f8f8 !important;
 }
 
 .controls-bar {
   padding: 10px 5px 0 5px;
-  background: @header-bg-color;
+  background: @header-template;
   color: @white;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
@@ -485,7 +515,7 @@ button {
 
   i {
     font-size: 16px;
-    visibility: none;
+    //visibility: none;
 
     .invisible {
       visibility: hidden;
@@ -905,6 +935,12 @@ button {
           }
         }
 
+        &.field {
+          i {
+            color: @button-field;
+          }
+        }
+
         &.metadata, &.instance {
           i {
             color: @button-metadata;
@@ -986,6 +1022,10 @@ button {
             background: @button-element;
           }
 
+          &.field {
+            background: @button-field;
+          }
+
           &.metadata, &.instance {
             background: @button-metadata;
           }
@@ -1049,12 +1089,81 @@ button {
         background: #ffffff;
         font-size: 14px;
         color: @graytxt;
+        cursor:pointer;
 
         .cell {
           display: inline-block;
-          padding: 10px;
+          padding: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
+          padding:10px;
+
+
+          &.icon {
+            display: inline-block;
+            margin: 0px;
+            border-radius: 50%;
+            padding: 0px;
+            &.field {
+              background-color: @field-color;
+            }
+            &.element {
+              background-color: @element-color;
+            }
+            &.template {
+              background-color: @template-color;
+            }
+            &.metadata, &.instance {
+              background-color:  @metadata-color;
+            }
+            &.folder {
+              background-color:  @folder-color;
+            }
+            i {
+              color: @white;
+              display: table-cell;
+              vertical-align: middle;
+              text-align: center;
+            }
+          }
+
+        }
+        &.selected {
+          .cell {
+            &.icon {
+              &.field {
+                background-color: @white;
+                i {
+                  color: @field-color;
+                }
+              }
+              &.element {
+                background-color: @white;
+                i {
+                  color: @element-color;
+                }
+              }
+              &.template {
+                background-color: @white;
+                i {
+                  color: @template-color;
+                }
+              }
+              &.metadata,&.instance {
+                background-color: @white;
+                i {
+                  color: @template-color;
+                }
+              }
+              &.folder {
+                background-color: @white;
+                i {
+                  color: @folder-color;
+                }
+              }
+            }
+          }
+
 
           i.large-icon {
             color: #fff;
@@ -1069,45 +1178,68 @@ button {
           }
         }
 
+        //.cell {
+        //  display: inline-block;
+        //  padding: 5px;
+        //  overflow: hidden;
+        //  text-overflow: ellipsis;
+        //
+        //  i.large-icon {
+        //    color: #fff;
+        //  }
+        //
+        //  .disabled {
+        //    cursor: not-allowed;
+        //  }
+        //
+        //  .disabled > a {
+        //    pointer-events: none;
+        //  }
+        //}
+
         .resource {
-          width: 45%;
+          width: 43%;
         }
         .type {
-          width: 10%;
+          width: 12%;
         }
         .date {
           width: 20%;
           white-space: nowrap;
         }
 
-        .btn-circle {
-          border-radius: 50%;
-          background: #fff;
-          width: 30px;
-          height: 30px;
-          padding-top: .5em;
-        }
-        .btn-info.btn-circle {
-          background: @brand-primary;
-          color: #fff;
-          border: none;
-
-          &.template {
-            background: @button-template;
-          }
-
-          &.element {
-            background: @button-element;
-          }
-
-          &.metadata, &.instance {
-            background: @button-metadata;
-          }
-
-          &.folder {
-            background: @button-folder;
-          }
-        }
+        //.btn-circle {
+        //  border-radius: 50%;
+        //  background: #fff;
+        //  width: 30px;
+        //  height: 30px;
+        //  padding-top: .5em;
+        //}
+        //.btn-info.btn-circle {
+        //  background: @brand-primary;
+        //  color: #fff;
+        //  border: none;
+        //
+        //  &.template {
+        //    background: @button-template;
+        //  }
+        //
+        //  &.element {
+        //    background: @button-element;
+        //  }
+        //
+        //  &.field {
+        //    background: @button-field;
+        //  }
+        //
+        //  &.metadata, &.instance {
+        //    background: @button-metadata;
+        //  }
+        //
+        //  &.folder {
+        //    background: @button-folder;
+        //  }
+        //}
       }
 
       .box-row.selected {
@@ -1138,6 +1270,10 @@ button {
 
           &.element {
             color: @button-element;
+          }
+
+          &.field {
+            color: @button-field;
           }
 
           &.metadata, &.instance {
@@ -1252,6 +1388,10 @@ button {
     .filter-options {
       padding: 10px 0 0 10px;
 
+      .filter-type {
+        margin:5px 0;
+      }
+
       .shares {
         margin: 30px 0 40px 0;
         .share {
@@ -1304,7 +1444,7 @@ button {
       }
       .reset-text {
         text-transform: uppercase;
-        height: 30px;
+        padding: 10px 0;
       }
 
       button {
@@ -1328,6 +1468,11 @@ button {
 
         &.element {
           background: @button-element;
+          padding: 6px;
+        }
+
+        &.field {
+          background: @button-field;
           padding: 6px;
         }
 
@@ -1376,7 +1521,7 @@ button {
 
     position: fixed;
     bottom: 10px;
-    right: 30px;
+    right: 20px;
 
     &:hover {
     }
@@ -1408,6 +1553,10 @@ button {
 
       &.element {
         background: @button-element;
+      }
+
+      &.field {
+        background: @button-field;
       }
 
       &.metadata, &.instance {
@@ -1667,9 +1816,40 @@ body.search-browse-modal {
   }
 }
 
+#field-name-container {
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @white;
+  }
+}
+
+#template-name-container {
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @white;
+  }
+}
+
+#element-name-container {
+
+  i {
+    position: absolute;
+    display: inline-block;
+    transform: translate(0px, 7px);
+    font-size: 20px;
+    color: @white;
+  }
+}
+
 .template-header {
   width: 100%;
-  background-color: @header-bg-color;
+  //background-color: @header-bg-color;
   padding: 60px 0 20px 0;
   min-height: 130px;
 
@@ -1711,9 +1891,10 @@ body.search-browse-modal {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid @brand-primary;
+    border-bottom: 2px solid #ccc;
     border-radius: 0;
-    color: @white;
+    color: #ccc;
+
 
     &:before {
       font-family: "project-cedar" !important;
@@ -1723,9 +1904,8 @@ body.search-browse-modal {
   }
 
   .floating-label {
-    font-size: 16px;
-    top: 10px;
-    color: @white;
+    top: 6px;
+    color: #ccc;
   }
 
   .show-type {
@@ -1757,8 +1937,12 @@ body.search-browse-modal {
     right: 0;
   }
 
+
   #element-name-container,
+  #field-name-container,
+  #template-name-container,
   #element-controlled-term-container {
+
 
     .cedar-svg-element,
     .cedar-svg-metadata,
@@ -1768,7 +1952,6 @@ body.search-browse-modal {
     }
 
     .form-control {
-      padding-left: 30px;
     }
 
     .form-control ~ .floating-label {
@@ -1793,6 +1976,10 @@ body.search-browse-modal {
 
 .template-header.element {
   background-color: @header-element;
+}
+
+.template-header.field {
+  background-color: @header-field;
 }
 
 .template-body {
@@ -2798,7 +2985,7 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    margin-left: 0 0 0 10px;
+    margin-left: 0;
     padding: 0;
     position: relative;
   }
@@ -3615,6 +3802,12 @@ section.dashboard-elements {
     background-color: @button-element;
     &:hover {
       background-color: @hover-element;
+    }
+  }
+  .btn.btn-save.field {
+    background-color: @button-field;
+    &:hover {
+      background-color: @hover-field;
     }
   }
   .btn.btn-save.metadata {
@@ -4764,7 +4957,7 @@ p.instructions {
 
     &.true {
       i {
-        color: @brand-primary;
+        color: @button-element;
       }
     }
   }
@@ -4788,13 +4981,13 @@ p.instructions {
       }
 
       &.btn-clear {
-        color: @brand-primary;
+        color: @button-element;
         background-color: transparent;
         .activ-grotesk-bold;
 
         &:hover,
         &:focus {
-          color: @brand-primary-hover;
+          color: @hover-element;
         }
       }
 
@@ -4806,6 +4999,83 @@ p.instructions {
         &:hover,
         &:focus {
           background-color: @hover-element;
+        }
+      }
+    }
+  }
+}
+
+/*
+================================================
+=== Field Builder Actions
+================================================
+*/
+
+.field-actions {
+  padding-top: 40px;
+  border-top: 0px solid #ddd;
+  height: 300px;
+
+  .favorite {
+    float: left;
+    padding-top: 17px;
+    cursor: pointer;
+
+    span {
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    i {
+      padding-right: 10px;
+      .link-transition;
+      color: rgba(51, 51, 51, 0.43);
+    }
+
+    &.true {
+      i {
+        color: @button-field;
+      }
+    }
+  }
+
+  .search {
+    margin: 10px;
+  }
+
+  .clear-save {
+    float: right;
+
+    .btn {
+      text-transform: uppercase;
+      padding: 25px 40px;
+      border: none;
+      .link-transition;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &.btn-clear {
+        color: @button-field;
+        background-color: transparent;
+        .activ-grotesk-bold;
+
+        &:hover,
+        &:focus {
+          color: @hover-field;
+        }
+      }
+
+      &.btn-save {
+        color: @white;
+        background-color: @button-field;
+        font-size: 16px;
+
+        &:hover,
+        &:focus {
+          background-color: @hover-field;
         }
       }
     }
@@ -4863,24 +5133,24 @@ p.instructions {
       }
 
       &.btn-clear {
-        color: @brand-primary;
+        color: @button-template;
         background-color: transparent;
         .activ-grotesk-bold;
 
         &:hover,
         &:focus {
-          color: @brand-primary-hover;
+          color: @hover-template;
         }
       }
 
       &.btn-save {
         color: @white;
-        background-color: @brand-primary;
+        background-color: @button-template;
         font-size: 16px;
 
         &:hover,
         &:focus {
-          background-color: @brand-primary-hover;
+          background-color: @hover-template;
         }
       }
     }
@@ -6363,10 +6633,6 @@ body .template-header .controlled-terms-modal {
 }
 
 .sortable-icon {
-  background: url("/img/drag-me.png") no-repeat;
-  background-size: 18px auto;
-  text-indent: -1000px;
-  width: 0;
   height: 20px;
   padding: 0 12px;
 }
@@ -6825,6 +7091,10 @@ table.apiKey {
               background: @button-element;
             }
 
+            &.field {
+              background: @button-field;
+            }
+
             &.metadata, &.instance {
               background: @button-metadata;
             }
@@ -6936,6 +7206,10 @@ table.apiKey {
                 color: @button-element;
               }
 
+              &.field {
+                color: @button-field;
+              }
+
               &.metadata, &.instance {
                 color: @button-metadata;
               }
@@ -6985,12 +7259,58 @@ table.apiKey {
               width: 100%;
               white-space: nowrap;
               overflow: hidden;
-
               .cell {
                 display: inline-block;
                 padding: 5px;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
+                &.icon {
+                  display: inline-block;
+                  margin: 0px;
+                  padding: 0px;
+                  border-radius: 50%;
+
+                  &.field {
+                    background-color: @field-color;
+                  }
+                  &.element {
+                    background-color: @element-color;
+                  }
+                  i {
+                    color: @white;
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: center;
+                    height: 30px;
+                    width: 30px;
+                  }
+                }
+
+              }
+              &.selected {
+                background:red;
+
+                .cell {
+                  &.icon {
+                    &.field {
+                      background-color: @white;
+                      i {
+                        color: @field-color;
+                      }
+                    }
+                    &.element {
+                      background-color: @white;
+                      i {
+                        color: @element-color;
+                      }
+                    }
+                  }
+                }
+
+
+
+
 
                 i.large-icon {
                   color: #fff;
@@ -7033,6 +7353,10 @@ table.apiKey {
                   background: @button-element;
                 }
 
+                &.field {
+                  background: @button-field;
+                }
+
                 &.metadata, &.instance {
                   background: @button-metadata;
                 }
@@ -7071,6 +7395,10 @@ table.apiKey {
 
                 &.element {
                   color: @button-element;
+                }
+
+                &.field {
+                  color: @button-field;
                 }
 
                 &.metadata, &.instance {
@@ -7357,6 +7685,10 @@ table.apiKey {
             background: @button-element;
           }
 
+          &.field {
+            background: @button-field;
+          }
+
           &.metadata, &.instance {
             background: @button-metadata;
           }
@@ -7421,6 +7753,9 @@ table.apiKey {
     overflow-y: auto;
     &.without-info {
       right: 0;
+    }
+    .extraRight {
+      margin-right:40px;
     }
   }
 
@@ -7650,9 +7985,15 @@ table.message {
     background:white;
     margin-bottom:5px;
     .form-group {
-      margin-bottom:0;width:100%;
-      input {
-        border-width:0px;
+      margin-bottom:0;
+      width:100%;
+      border-width:0;
+      margin-right:0;
+      input.form-control {
+        border-width:0;
+        &.no-floating-label {
+          padding-top:8px;
+        }
       }
     }
     .property {
@@ -7670,12 +8011,20 @@ table.message {
       }
     }
   }
+
+  .property-icon {
+    padding:0 10px 0 0;
+    i {
+      padding-top:5px;
+      transform:none;
+      color:#999;
+    }
+  }
 }
 
 .flex-top {
   display:flex;
   justify-content:flex-end;
-  align-items: top;
   width:100%;
   height:100%;
 }
@@ -7723,4 +8072,106 @@ div.tooltip-inner {
   max-width: 500px;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+div.resource-icon {
+  cursor:pointer;
+  vertical-align: middle;
+  text-align: center;
+  overflow:hidden;
+  font-size: 18px;
+    min-height: 36px;
+    min-width: 36px;
+    max-height: 36px;
+    max-width: 36px;
+
+
+  .cell {
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+
+
+    &.icon {
+      display: inline-block;
+      margin: 0px;
+      padding: 0px;
+      border-radius: 50%;
+
+      &.field {
+        background-color: @field-color;
+      }
+      &.element {
+        background-color: @element-color;
+      }
+      &.template {
+        background-color: @template-color;
+      }
+      &.metadata, &.instance {
+        background-color:  @metadata-color;
+      }
+      &.folder {
+        background-color:  @folder-color;
+      }
+      i {
+        color: @white;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        height: 36px;
+        width: 36px;
+
+      }
+    }
+
+  }
+  &.selected {
+    .cell {
+      &.icon {
+        &.field {
+          background-color: @white;
+          i {
+            color: @field-color;
+          }
+        }
+        &.element {
+          background-color: @white;
+          i {
+            color: @element-color;
+          }
+        }
+        &.template {
+          background-color: @white;
+          i {
+            color: @template-color;
+          }
+        }
+        &.metadata,&.instance {
+          background-color: @white;
+          i {
+            color: @template-color;
+          }
+        }
+        &.folder {
+          background-color: @white;
+          i {
+            color: @folder-color;
+          }
+        }
+      }
+    }
+
+
+    i.large-icon {
+      color: #fff;
+    }
+
+    .disabled {
+      cursor: not-allowed;
+    }
+
+    .disabled > a {
+      pointer-events: none;
+    }
+  }
 }

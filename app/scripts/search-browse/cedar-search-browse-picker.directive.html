@@ -162,7 +162,7 @@
 
           <div class="clearfix reset-text">
             <div class="pull-left " translate>DASHBOARD.filter.filterBy</div>
-            <div class="pull-right"><a href="#" ng-click="dc.resetFilters()" translate>DASHBOARD.filter.reset</a></div>
+            <div class="pull-right" ng-show="dc.resetFiltersEnabled()"><a href="#" ng-click="dc.resetFilters()" translate>DASHBOARD.filter.reset</a></div>
           </div>
 
           <div>
@@ -180,43 +180,46 @@
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('type'), 'fa-caret-left': !dc.isFilterSection('type') }"
                   aria-hidden="true"></i></a>
 
-                <ul ng-if="dc.isFilterSection('type')" class="list-inline ">
-                  <li>
-                    <button uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="template"
-                        ng-click="dc.toggleResourceType('template')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
+                <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
-                  </li>
-                  <li>
-                    <button uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
+                        uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
-                        class="element"
-                        ng-click="dc.toggleResourceType('element')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
-                        ng-class="{ active: dc.isResourceTypeActive('element') }"></i></button>
+                        ng-click="dc.toggleResourceType('template')"
+                        ng-class="{ selected: !dc.isResourceTypeActive('template') }">
+                        </cedar-resource-icon>
 
-                  </li>
-                  <li>
-                    <button uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
+                        uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
-                        class="metadata"
-                        ng-click="dc.toggleResourceType('instance')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
-                        ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>
-                  </li>
-                </ul>
+                        ng-click="dc.toggleResourceType('element')"
+                        ng-class="{ selected: !dc.isResourceTypeActive('element') }"></cedar-resource-icon>
+
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
+                        uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="dc.toggleResourceType('field')"
+                        ng-class="{ selected: !dc.isResourceTypeActive('field') }"></cedar-resource-icon>
+
+                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
+                        uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="dc.toggleResourceType('instance')"
+                        ng-class="{ selected: !dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
+
+                </div>
 
               </li>
 
@@ -299,7 +302,7 @@
       <!-- center panel -->
       <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"
           ng-class="{ 'col-sm-7': dc.isInfoOpen() , 'without-info': !dc.isInfoOpen()}" id="center-panel">
-        <div style="height:auto;">
+        <div style="height:auto;" ng-class="{ 'extraRight': !dc.isInfoOpen()}">
 
 
           <div class="no-selection" ng-if="!dc.hasResources()">
@@ -434,12 +437,10 @@
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
-                      class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
                     <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -459,7 +460,6 @@
                   </div>
                 </div>
 
-
                 <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
                     offsetx="0" offsety="0"
                     dropdownId="{{getId(resource, 'list')}}"
@@ -468,13 +468,10 @@
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
-                      ng-class="dc.getResourceIconClass(resource)"
-                      class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
                     <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -646,49 +643,58 @@
     <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()"
         ng-mouseleave="dc.showFloatingMenu = false">
       <ul class="list-unstyled others">
-        <li ng-show="dc.showFloatingMenu">
-          <button type="button"
+        <li style="margin:5px 0;" ng-show="dc.showFloatingMenu">
+          <cedar-resource-icon resource-type="'folder'"
               id="button-create-folder"
               uib-tooltip='{{"HELP.createFolder" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="left"
               data-toggle="tooltip"
-              class="btn btn-sm btn-info btn-circle folder"
-              ng-click="dc.showNewFolderModal()"><i
-              class="fa fa-folder"></i></button>
+              ng-click="dc.showNewFolderModal()"></cedar-resource-icon>
         </li>
 
-        <li ng-show="dc.showFloatingMenu">
-          <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
+          <a ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <cedar-resource-icon resource-type="'field'"
+                id="button-create-field"
+                uib-tooltip='{{"HELP.createField" | translate}}'
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip" >
+            </cedar-resource-icon>
+          </a>
+        </li>
 
-            <button type="button"
+        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
+          <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <cedar-resource-icon resource-type="'element'"
                 id="button-create-element"
                 uib-tooltip='{{"HELP.createElement" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
-                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
-            </button>
+                data-toggle="tooltip" >
+            </cedar-resource-icon>
           </a>
         </li>
 
-        <li ng-show="dc.showFloatingMenu">
+
+        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
           <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <button type="button"
+            <cedar-resource-icon  resource-type ="'template'"
                 id="button-create-template"
                 uib-tooltip='{{"HELP.createTemplate" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
-                data-toggle="tooltip"
-                class="btn btn-sm btn-info btn-circle template">
-              <i class="fa fa-file-text"></i>
-            </button>
+                data-toggle="tooltip">
+            </cedar-resource-icon>
           </a>
         </li>
 
-        <li>
+        <li style="margin:5px 0">
           <button type="button"
               id="button-create"
               class="btn btn-sm btn-info btn-circle compose"

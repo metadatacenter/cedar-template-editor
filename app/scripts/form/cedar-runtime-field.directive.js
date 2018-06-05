@@ -71,7 +71,8 @@ define([
 
 
       $scope.hasDescription = function () {
-        return dms.getDescription($scope.field).length > 0;
+        var description = dms.getDescription($scope.field);
+        return description && description.length > 0;
       };
 
       $scope.getContent = function (field) {
@@ -1105,7 +1106,7 @@ define([
       // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
       $scope.$watch(
           function () {
-            return ( $rootScope.activeLocator);
+            return ( UIUtilService.activeLocator);
           },
           function (newValue, oldValue) {
 
