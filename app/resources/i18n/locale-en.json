@@ -509,8 +509,8 @@
     "enterDate": "Enter Date (yyyy-mm-dd)",
     "enterMinLength": "Min String Length",
     "enterMaxLength": "Max String Length",
-    "enterMinValue": "Min Value",
-    "enterMaxValue": "Max Value"
+    "enterMinValue": "Enter Min Value",
+    "enterMaxValue": "Enter Max Value"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
