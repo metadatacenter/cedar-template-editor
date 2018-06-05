@@ -7985,9 +7985,15 @@ table.message {
     background:white;
     margin-bottom:5px;
     .form-group {
-      margin-bottom:0;width:100%;
-      input {
-        border-width:0px;
+      margin-bottom:0;
+      width:100%;
+      border-width:0;
+      margin-right:0;
+      input.form-control {
+        border-width:0;
+        &.no-floating-label {
+          padding-top:8px;
+        }
       }
     }
     .property {
@@ -8005,12 +8011,20 @@ table.message {
       }
     }
   }
+
+  .property-icon {
+    padding:0 10px 0 0;
+    i {
+      padding-top:5px;
+      transform:none;
+      color:#999;
+    }
+  }
 }
 
 .flex-top {
   display:flex;
   justify-content:flex-end;
-  align-items: top;
   width:100%;
   height:100%;
 }

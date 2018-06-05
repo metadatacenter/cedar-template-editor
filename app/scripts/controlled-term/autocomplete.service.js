@@ -54,9 +54,11 @@ define([
 
     service.removeAutocompleteResultsForSource = function (id, query, source_uri) {
       // remove results for this source
-      for (var i = service.autocompleteResultsCache[id][query].results.length - 1; i >= 0; i--) {
-        if (service.autocompleteResultsCache[id][query].results[i].sourceUri === source_uri) {
-          service.autocompleteResultsCache[id][query].results.splice(i, 1);
+      if (service.autocompleteResultsCache[id][query]) {
+        for (var i = service.autocompleteResultsCache[id][query].results.length - 1; i >= 0; i--) {
+          if (service.autocompleteResultsCache[id][query].results[i].sourceUri === source_uri) {
+            service.autocompleteResultsCache[id][query].results.splice(i, 1);
+          }
         }
       }
     };
@@ -128,29 +130,18 @@ define([
           'results': []
         };
       }
+      return service.autocompleteResultsCache[id][term].results;
     };
 
-    // Used in textfield.html
+    // returns an array of promises
     service.updateFieldAutocomplete = function (field, term) {
 
       var query = term || '*';
       var results = [];
       var vcst = DataManipulationService.getValueConstraint(field);
       var id = DataManipulationService.getId(field);
-
-
-      // initialize the results array
-      if (angular.isUndefined(service.autocompleteResultsCache[id])) {
-        service.autocompleteResultsCache[id] = [];
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
-      if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
+      var promises = [];
+      service.initResults(id, query);
 
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {
@@ -193,10 +184,12 @@ define([
           if (query == '*') {
             service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
           }
-          controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
-              valueSet.uri).then(function (childResponse) {
-            service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
-          });
+          var promise =
+              controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
+                  valueSet.uri).then(function (childResponse) {
+                service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
+              });
+          promises.push(promise);
         });
       }
 
@@ -205,9 +198,11 @@ define([
           if (query == '*') {
             service.removeAutocompleteResultsForSource(id, query, ontology.uri);
           }
-          controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(function (childResponse) {
-            service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
-          });
+          var promise = controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(
+              function (childResponse) {
+                service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
+              });
+          promises.push(promise);
         });
       }
 
@@ -216,15 +211,115 @@ define([
           if (query == '*') {
             service.removeAutocompleteResultsForSource(id, query, branch.uri);
           }
-          controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
+          var promise = controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
               branch.maxDepth).then(
               function (childResponse) {
                 service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
               }
           );
+          promises.push(promise);
         });
       }
+
+      return promises;
     };
+
+
+    // Used in textfield.html
+    // service.updateFieldAutocompleteOld = function (field, term) {
+    //
+    //   var query = term || '*';
+    //   var results = [];
+    //   var vcst = DataManipulationService.getValueConstraint(field);
+    //   var id = DataManipulationService.getId(field);
+    //
+    //
+    //   // initialize the results array
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id])) {
+    //     service.autocompleteResultsCache[id] = [];
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //
+    //   // are we searching for classes?
+    //   if (vcst.classes && vcst.classes.length > 0) {
+    //     service.removeAutocompleteResultsForSource(id, query, 'template');
+    //     angular.forEach(vcst.classes, function (klass) {
+    //       if (query == '*') {
+    //         service.autocompleteResultsCache[id][query].results.push(
+    //             {
+    //               '@id'      : klass.uri,
+    //               'label'    : klass.label,
+    //               'type'     : 'Ontology Class',
+    //               'sourceUri': 'template'
+    //             }
+    //         );
+    //       } else {
+    //         if (klass && klass.label && klass.label.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+    //           service.autocompleteResultsCache[id][query].results.push(
+    //               {
+    //                 '@id'      : klass.uri,
+    //                 'label'    : klass.label,
+    //                 'type'     : 'Ontology Class',
+    //                 'sourceUri': 'template'
+    //               }
+    //           );
+    //         }
+    //       }
+    //     });
+    //     if (query !== '*') {
+    //       if (service.autocompleteResultsCache[id][query].results.length === 0) {
+    //         service.autocompleteResultsCache[id][query].results.push({
+    //           'label'    : $translate.instant('GENERIC.NoResults'),
+    //           'sourceUri': 'template'
+    //         });
+    //       }
+    //     }
+    //   }
+    //
+    //   if (vcst.valueSets && vcst.valueSets.length > 0) {
+    //     angular.forEach(vcst.valueSets, function (valueSet) {
+    //       if (query == '*') {
+    //         service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
+    //       }
+    //       controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
+    //           valueSet.uri).then(function (childResponse) {
+    //         service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
+    //       });
+    //     });
+    //   }
+    //
+    //   if (vcst.ontologies && vcst.ontologies.length > 0) {
+    //     angular.forEach(vcst.ontologies, function (ontology) {
+    //       if (query == '*') {
+    //         service.removeAutocompleteResultsForSource(id, query, ontology.uri);
+    //       }
+    //       controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(function (childResponse) {
+    //         service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
+    //       });
+    //     });
+    //   }
+    //
+    //   if (vcst.branches && vcst.branches.length > 0) {
+    //     angular.forEach(vcst.branches, function (branch) {
+    //       if (query == '*') {
+    //         service.removeAutocompleteResultsForSource(id, query, branch.uri);
+    //       }
+    //       controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
+    //           branch.maxDepth).then(
+    //           function (childResponse) {
+    //             service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
+    //           }
+    //       );
+    //     });
+    //   }
+    // };
 
     // Note that this only checks the values if the autocomplete cache has them and the cache
     // will be empty if the user didn't use autocomplete in this session for this field.
