@@ -509,6 +509,7 @@
     "enterDate": "Enter Date (yyyy-mm-dd)",
     "enterMinLength": "Min String Length",
     "enterMaxLength": "Max String Length",
+    "enterUnitOfMeasure": "Enter Unit of Measure",
     "enterMinValue": "Enter Min Value",
     "enterMaxValue": "Enter Max Value",
     "enterNumberType": "Enter Number Type",
