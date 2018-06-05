@@ -26,6 +26,7 @@ define([
       $scope.data = {
         model: null
       };
+      $scope.forms = {};
       $scope.viewState;
       $scope.index = 0;
       $scope.pageMin = 0;
@@ -1239,7 +1240,6 @@ define([
       };
 
 
-
       $scope.setDateValue = function (value) {
         if ($scope.model && $scope.model.length > 0) {
           $scope.model[$scope.index]['@value'] = $scope.parseDate(value);
@@ -1262,6 +1262,19 @@ define([
         }
         return result;
       };
+
+      /* start of value constraints functionality */
+
+      // Check the string length of the input value
+      $scope.checkStringLength = function () {
+        var value = $scope.valueArray[$scope.index]['@value']
+        var minLength = dms.getMinLength($scope.field) || 0;
+        var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
+        $scope.forms.fieldEditForm0.activeTextField.$setValidity('stringLength',
+            (value.length > minLength) && (value.length < maxLength));
+      };
+
+      /* end of value constraints functionality */
 
     };
 

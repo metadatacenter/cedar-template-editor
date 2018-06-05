@@ -113,7 +113,7 @@
 
               <div ng-if="i===index && !isSectionBreak()">
 
-                <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                <form ng-if="isActive(index)" name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
                   <div ng-include="getFieldUrl()"></div>
                   <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                   <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
@@ -178,7 +178,7 @@
               </div>
             </div>
 
-            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+            <form name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
               <div class="originalContent" ng-include="getFieldUrl()"></div>
               <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
               <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>

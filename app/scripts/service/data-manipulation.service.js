@@ -197,11 +197,13 @@ define([
 
         // min/max string length
         service.getMinLength = function (node) {
-          return service.propertiesOf(node)['@value'].minLength;
+          return service.getValueConstraint(node).hasOwnProperty('minLength')
+              && service.getValueConstraint(node).minLength;
         }
 
         service.getMaxLength = function (node) {
-          return service.propertiesOf(node)['@value'].maxLength;
+          return service.getValueConstraint(node).hasOwnProperty('maxLength')
+              && service.getValueConstraint(node).maxLength;
         }
 
         // schema title and description
@@ -272,7 +274,7 @@ define([
         };
 
         service.isTextFieldType = function (node) {
-          return (service.getInputType(node) == 'textField');
+          return (service.getInputType(node) == 'textfield');
         };
 
         service.isDateType = function (node) {

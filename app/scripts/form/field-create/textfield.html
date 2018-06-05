@@ -22,7 +22,7 @@
         class="form-control field-min-max-definition"
         placeholder="{{'CREATOR.enterMinLength' | translate}}"
         aria-label="{{'CREATOR.enterMinLength' | translate}}"
-        ng-model="$root.propertiesOf(field)['@value'].minLength"
+        ng-model="$root.schemaOf(field)._valueConstraints.minLength"
         ng-if="isEditable()"
         with-floating-label>
   </div>
@@ -33,7 +33,7 @@
         class="form-control field-min-max-definition"
         placeholder="{{'CREATOR.enterMaxLength' | translate}}"
         aria-label="{{'CREATOR.enterMaxLength' | translate}}"
-        ng-model="$root.propertiesOf(field)['@value'].maxLength"
+        ng-model="$root.schemaOf(field)._valueConstraints.maxLength"
         ng-if="isEditable()"
         with-floating-label>
   </div>
