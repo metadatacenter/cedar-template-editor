@@ -121,6 +121,7 @@ define([
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
+          vm.resetFiltersEnabled = resetFiltersEnabled;
           vm.filterSections = {};
           vm.isFilterSection = isFilterSection;
 
@@ -1116,6 +1117,11 @@ define([
 
           function filterShowing() {
             return vm.showFilters && onDashboard();
+          }
+
+          // is something changed by the filters?  for now, just look at the resource types
+          function resetFiltersEnabled() {
+            return Object.values(vm.resourceTypes).indexOf(false) > -1;
           }
 
           function resetFilters() {
