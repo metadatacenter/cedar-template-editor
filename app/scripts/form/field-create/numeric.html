@@ -5,6 +5,24 @@
   <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
+  <!-- numeric datatype constraint -->
+  <div  class="form-group floating-label-wrapper" >
+    <select
+        class="form-control"
+        placeholder="{{'CREATOR.enterNumberType' | translate}}"
+        aria-label="{{'CREATOR.enterNumberType' | translate}}"
+        ng-init="setDefaultNumberType()"
+        ng-model="$root.schemaOf(field)._valueConstraints.numberType"
+        ng-if="isEditable()"
+        with-floating-label>
+      <option value="xsd:decimal">Any numbers</option>
+      <option value="xsd:long">Long integer numbers</option>
+      <option value="xsd:int">Integer numbers</option>
+      <option value="xsd:double">Double-precision real numbers</option>
+      <option value="xsd:float">Single-precision real numbers</option>
+    </select>
+  </div>
+
   <!-- min number value constraint -->
   <div  class="form-group floating-label-wrapper" >
     <input type="text" auto-focus

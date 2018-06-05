@@ -510,7 +510,8 @@
     "enterMinLength": "Min String Length",
     "enterMaxLength": "Max String Length",
     "enterMinValue": "Enter Min Value",
-    "enterMaxValue": "Enter Max Value"
+    "enterMaxValue": "Enter Max Value",
+    "enterNumberType": "Enter Number Type"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
