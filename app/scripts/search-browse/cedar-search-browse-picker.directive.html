@@ -183,7 +183,7 @@
                 <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
-                        uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
+                        uib-tooltip="{{'GENERIC.Template' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -193,7 +193,7 @@
                         </cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
-                        uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
+                        uib-tooltip="{{'GENERIC.Element' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -202,7 +202,7 @@
                         ng-class="{ selected: !dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
-                        uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
+                        uib-tooltip="{{'GENERIC.Field' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -211,7 +211,7 @@
                         ng-class="{ selected: !dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
-                        uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
+                        uib-tooltip="{{'GENERIC.Metadata' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -223,73 +223,28 @@
 
               </li>
 
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication
-                Status<i class="fa pull-right"
-                    ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
-
-                <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
-                  <li>
-                    <button uib-tooltip="{{'GENERIC.Published' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="template"
-                        ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }"></i></button>
-                  </li>
-                  <li>
-                    <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="element"
-                        ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }"></i></button>
-                  </li>
-                  <li>
-                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="metadata"
-                        ng-click="dc.setResourcePublicationStatus('all')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('all') }"></i></button>
-                  </li>
-                </ul>
-              </li>
-
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i
+              <li><a href="#" ng-click="dc.toggleFilters('version')">Version<i
                   class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
+                <ul ng-if="dc.isFilterSection('version')" class="list-inline filter-resource-version ">
                   <li>
-                    <button uib-tooltip="{{'GENERIC.Latest' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="template"
-                        ng-click="dc.setResourceVersion('latest')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourceVersionActive('latest') }"></i></button>
+                    <div ng-click="dc.toggleResourcePublicationStatus('bibo:published')"
+                        class="published no-select"
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }">
+                      <i class="btn fa" ng-class="dc.getVersionIcon('bibo:published')"></i>{{'GENERIC.Published' | translate}}</div>
                   </li>
                   <li>
-                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="metadata"
-                        ng-click="dc.setResourceVersion('all')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
-                        ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
+                    <div ng-click="dc.toggleResourcePublicationStatus('bibo:draft')"
+                        class="draft no-select"
+                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }">
+                      <i class="btn fa" ng-class="dc.getVersionIcon('bibo:draft')"></i>{{'GENERIC.Draft' | translate}}</div>
+                  </li>
+                  <li>
+                    <div ng-click="dc.toggleResourceVersion('latest')"
+                        class="latest no-select"
+                        ng-class="{ active: dc.isResourceVersionActive('latest') }">
+                      <i class="btn fa " ng-class="dc.getVersionIcon('latest')"></i>{{'GENERIC.Latest' | translate}}</div>
                   </li>
                 </ul>
               </li>
@@ -364,33 +319,36 @@
                     ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div rightclick
-                      offsetX="0"
-                      offsetY="5"
-                      dropdownId="{{getId(resource, 'populate')}}"
+                  <div
                       ng-click="dc.selectResource(resource)"
                       ng-dblclick="dc.goToResource(resource)"
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-                      <div ng-if="dc.versioningEnabled()"
-                          style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
-                        {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
-                      </div>
-                      <div ng-if="dc.versioningEnabled()"
-                          style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
-                        {{ resource['pav:version'] }}
-                      </div>
-                      <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
-                          ng-class="dc.getResourceIconClass(resource)"></i>
+                      <div class="toolbar-right" >
+                        <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])" ng-click=""></i>
+                        <i class="action fa fa-share-square" ng-click=""></i>
 
 
-                      </div>
-                      <div class="title"
-                          style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                        {{ resource['schema:name'] }}
+                        <button  title="More"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="action fa fa-ellipsis-v"></i>
+                        </button>
+
+                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                            rename="dc.showRenameModal"
+                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                        </cedar-dropdown-menu>
                       </div>
 
+
+                      <div class="resource"><i class="fa" ng-class="dc.getResourceIconClass(resource)"></i></div>
+                      <div class="title">{{ resource['schema:name'] }}</div>
                       <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                         <button style="display:none" title="More"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i

@@ -62,6 +62,10 @@
 @header-folder: @top-nav-color;
 @header-dashboard: @white;
 
+@draft: #DAA520;
+@published: #000000;
+@latest: #8B0000;
+
 @primary-accent: #cb6318;
 @dark-accent: #7d4427;
 
@@ -175,6 +179,15 @@ i {
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
 .container {
@@ -912,16 +925,50 @@ button {
       overflow: hidden;
 
       .box-content {
-        color: @brand-primary;
+
         padding: 0px;
         font-size: 12px;
         display: block;
         text-align: left;
 
-        i {
-          font-size: 20px;
-          color: @brand-primary;
+        div.toolbar-left {
+          position:absolute;top:15px; left:10px;height:20px;padding:0px;color: #ccc;font-size:10px;
+          i.action {
+            font-size: 16px;
+            margin:0 3px;
+            color: #ccc;
+            &:hover {
+              color: #aaa;
+            }
+          }
         }
+
+        div.toolbar-right {
+          position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #ccc;font-size:10px;
+          i.action {
+            font-size: 16px;
+            margin:0 3px;
+            color: #ccc;
+            &:hover {
+              color: #aaa;
+            }
+          }
+        }
+
+        div.title {
+          text-align:center;height:40px;padding:10px;margin-top:10px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+        }
+
+        div.resource {
+          text-align:center;
+          padding-top:30px;
+          color:red;
+          i {
+            font-size: 36px;
+          }
+        }
+
+
 
         &.template {
           i {
@@ -1392,6 +1439,39 @@ button {
         margin:5px 0;
       }
 
+
+      ul.filter-resource-version {
+        li div {
+          cursor:pointer;
+          font-size:14px;
+          white-space:nowrap;
+        }
+        li div.draft i {
+          color:@draft;
+          padding:0;margin:0 10px;
+          border-width:0;
+          opacity: 0.4;
+          font-size:30px
+        }
+        li div.published i {
+          color:@published;
+          padding:0;margin:0 10px;
+          border-width:0;
+          opacity: 0.4;
+          font-size:30px
+        }
+        li div.latest i {
+          color:@latest;
+          padding:0;margin:0 10px;
+          border-width:0;
+          opacity: 0.4;
+          font-size:30px
+        }
+        li div.active i {
+          opacity: 1;
+        }
+      }
+
       .shares {
         margin: 30px 0 40px 0;
         .share {
@@ -1431,6 +1511,7 @@ button {
       }
       ul.list-unstyled > li:last-child {
         border-bottom: 1px solid @gray3;
+        padding-bottom: 10px;
       }
       ul.list-unstyled > li > a {
         display: block;
