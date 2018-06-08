@@ -53,12 +53,13 @@
   <div class="flex field-title" ng-repeat="x in getCount() track by $index">
     <div ng-valid="false" class="form-group floating-label-wrapper">
 
-
       <input type="text"
-          class="form-control no-floating-label"
-          ng-model="fieldLabel[fieldLabelKey]"
-          aria-label="{{getDescription()}}"
-          ng-disabled="true"/>
+          class="form-control  "
+          placeholder="{{getTitle()}}"
+          aria-label="{{getHelp()}}"
+          ng-disabled="true"
+          with-floating-label
+      />
 
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

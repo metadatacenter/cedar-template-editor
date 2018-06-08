@@ -566,9 +566,9 @@ define([
           if (!service.isRootNode(parent,node) && !service.hasVersion(node)) {
               var title = service.getTitle(node);
               var labels = service.getPropertyLabels(parent);
-              var label = labels[key];
+              var label = labels && labels[key];
               var descriptions = service.getPropertyDescriptions(parent);
-              var description = descriptions[key];
+              var description = descriptions && descriptions[key];
               service.relabel(parent, key, title, label, description);
           }
         };
@@ -579,7 +579,6 @@ define([
 
             var schema = service.schemaOf(parent);
             var properties = service.propertiesOf(parent);
-            var labels = service.getPropertyLabels(parent);
             var newKey = service.getAcceptableKey(properties, label);
 
             angular.forEach(properties, function (value, k) {

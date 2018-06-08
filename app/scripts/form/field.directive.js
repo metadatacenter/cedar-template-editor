@@ -163,6 +163,16 @@ define([
         return dms.getTitle($scope.field).length > 0;
       };
 
+      $scope.getPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return  descriptions ?  descriptions[$scope.fieldKey] : false;
+      };
+
+      $scope.hasPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return descriptions &&  descriptions[$scope.fieldKey] && descriptions[$scope.fieldKey].length > 0;
+      };
+
       $scope.getDescription = function () {
         return dms.getDescription($scope.field);
       };
@@ -170,6 +180,14 @@ define([
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
         return description && description.length > 0;
+      };
+
+      $scope.getHelp = function () {
+        return $scope.getDescription() || $scope.getPropertyDescription();
+      };
+
+      $scope.hasHelp = function () {
+        return $scope.hasDescription() || $scope.hasPropertyDescription();
       };
 
       $scope.hasValueConstraint = function () {
