@@ -462,7 +462,7 @@ define([
             params['version'] = options.version;
           }
           if ('publicationStatus' in options) {
-            params['publicationStatus'] = options.publicationStatus;
+            params['publication_status'] = options.publicationStatus;
           }
         }
 
