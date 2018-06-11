@@ -272,7 +272,7 @@ define([
           function () {
             $timeout(function () {
               $scope.doReset();
-              // StagingService.resetPage();
+              StagingService.resetPage();
             });
           },
           'GENERIC.AreYouSure',
@@ -281,12 +281,16 @@ define([
       );
     };
 
-    $scope.doReset = function () {
-      $scope.element = angular.copy($scope.resetElement);
-      $scope.elementSchema = dms.schemaOf($scope.element);
-      // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-      $rootScope.$broadcast('form:reset');
 
+    $scope.doReset = function () {
+      // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
+      angular.forEach($scope.element.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          delete $scope.element.properties[key];
+        }
+      });
+      $scope.element._ui.order = [];
+      UIUtilService.setDirty(false);
     };
 
     $scope.saveElement = function () {

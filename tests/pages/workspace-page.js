@@ -115,13 +115,15 @@ var WorkspacePage = function () {
   // create new buttons
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
+  var createFieldButton = element(by.id('button-create-field'));
   var createElementButton = element(by.id('button-create-element'));
   var createFolderButton = element(by.id('button-create-folder'));
   var createMetadataButton = element(by.id('button-save-metadata'));
   var createResourceButtons = {
     "template": createTemplateButton,
     "element" : createElementButton,
-    "folder"  : createFolderButton
+    "folder"  : createFolderButton,
+    "field"   : createFieldButton
   };
 
   // main center panel
@@ -388,12 +390,14 @@ var WorkspacePage = function () {
 
   // create a template or folder resource and set the title, return to the workspace
   this.createResource = function (type, title, description) {
+    console.log('createResource',type, title, description)
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
     browser.actions().mouseMove(createButton).perform();
 
     var button = createResourceButtons[type];
+
     browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
@@ -914,7 +918,7 @@ var WorkspacePage = function () {
   this.deleteResources = function (resources) {
     for (var i = 0; i < resources.length; i++) {
       (function (resource) {
-       console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
+        console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
         login(resource.username, resource.password);
         deleteResourceViaRightClick(resource.title, resource.type);
         toastyModal.isSuccess();

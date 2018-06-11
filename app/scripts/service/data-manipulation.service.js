@@ -1974,6 +1974,8 @@ define([
                 // Rename key in the 'propertyLabels' array
                 delete parentSchema._ui.propertyLabels[key];
                 parentSchema._ui.propertyLabels[newKey] = newKey;
+                delete parentSchema._ui.propertyDescriptions[key];
+                parentSchema._ui.propertyDescriptions[newKey] = newKey;
 
               }
             });
@@ -2349,6 +2351,9 @@ define([
               // Remove the property label (for elements)
               if (service.getPropertyLabels(parent)[selectedKey]) {
                 delete service.getPropertyLabels(parent)[selectedKey];
+              }
+              if (service.getPropertyDescriptions(parent)[selectedKey]) {
+                delete service.getPropertyDescriptions(parent)[selectedKey];
               }
 
               // Remove it from the top-level 'required' array

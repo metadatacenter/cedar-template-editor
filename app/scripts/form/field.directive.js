@@ -182,8 +182,12 @@ define([
         return description && description.length > 0;
       };
 
+      $scope.getLabel = function () {
+        return $scope.getTitle() || $scope.getPropertyLabel();
+      };
+
       $scope.getHelp = function () {
-        return $scope.getDescription() || $scope.getPropertyDescription();
+        return $scope.getPropertyDescription() || $scope.getDescription();
       };
 
       $scope.hasHelp = function () {
@@ -355,6 +359,7 @@ define([
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
           $scope.model.push({'@value': null});
+          $scope.setDirty();
         }
       };
 
@@ -362,6 +367,7 @@ define([
         var minItems = dms.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
           $scope.model.splice(index, 1);
+          $scope.setDirty();
         }
       };
 
@@ -1038,11 +1044,17 @@ define([
       };
 
       $scope.getPropertyLabel = function () {
-        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
+        var labels = dms.getPropertyLabels($scope.parentElement);
+        return (labels && labels[$scope.fieldKey]) ? labels[$scope.fieldKey] : '';
+      };
+
+      $scope.getLabel = function () {
+        return $scope.getPropertyLabel() || $scope.getTitle();
       };
 
       $scope.getPropertyDescription = function () {
-        return dms.getPropertyDescriptions($scope.parentElement)[$scope.fieldKey];
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return descriptions && descriptions[$scope.fieldKey];
       };
 
       $scope.getPropertyId = function () {

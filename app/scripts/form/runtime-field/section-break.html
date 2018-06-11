@@ -2,12 +2,12 @@
 <!-- actively editing the field --->
 <div ng-if="isActive(index)" >
   <h3 class="section-title">{{getTitle()}}</h3>
-  <p ng-if="getDescription*().length > 0" class="section-body">{{getDescription()}}</p>
+  <p ng-if="getDescription*().length > 0" class="section-body">{{getHelp()}}</p>
 </div>
 
 <!-- not editing --->
 <div ng-if="!isActive(index)" class="form-group  has-feedback value">
   <div  ng-click="setActive(index,true)"
-      aria-label="{{getDescription()}}">{{getTitle()}}</div>
+      aria-label="{{getHelp()}}">{{getLabel()}}</div>
 </div>
 
