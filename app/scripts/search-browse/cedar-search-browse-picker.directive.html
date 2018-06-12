@@ -189,6 +189,7 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('template')"
+                        class="template"
                         ng-class="{ selected: !dc.isResourceTypeActive('template') }">
                         </cedar-resource-icon>
 
@@ -199,6 +200,7 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('element')"
+                        class="element"
                         ng-class="{ selected: !dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
@@ -208,6 +210,7 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('field')"
+                        class="field"
                         ng-class="{ selected: !dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
@@ -217,6 +220,7 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('instance')"
+                        class="metadata"
                         ng-class="{ selected: !dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
 
                 </div>

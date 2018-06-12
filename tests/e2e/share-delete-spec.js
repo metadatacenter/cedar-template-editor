@@ -124,7 +124,7 @@ describe('share-delete', function () {
       shareModal.moveShareDeleteDisabled(folder, 'folder');
     });
 
-    it("should fail to moe, share, and delete a readable resource via group", function () {
+    it("should fail to move, share, and delete a readable resource via group", function () {
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var folder = workspacePage.createFolder('Readable');

@@ -98,16 +98,20 @@ var WorkspacePage = function () {
   // filtering
   var filterButtons = [
     {
-      'button': element(by.css('#sidebar-left .filter-options button.template')),
-      'active': element(by.css('#sidebar-left .filter-options button.template i.active'))
+      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.template')),
+      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.template'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options button.element')),
-      'active': element(by.css('#sidebar-left .filter-options button.element i.active'))
+      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.element')),
+      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.element.selected'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options button.metadata')),
-      'active': element(by.css('#sidebar-left .filter-options button.metadata i.active'))
+      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.metadata ')),
+      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.metadata '))
+    },
+    {
+      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.field')),
+      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.field'))
     }
   ];
 
@@ -390,7 +394,6 @@ var WorkspacePage = function () {
 
   // create a template or folder resource and set the title, return to the workspace
   this.createResource = function (type, title, description) {
-    console.log('createResource',type, title, description)
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
