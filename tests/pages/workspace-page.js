@@ -560,7 +560,7 @@ var WorkspacePage = function () {
 
   this.initPreferences = function () {
     this.onWorkspace();
-    this.resetFiltering();
+    //this.resetFiltering();
     this.closeInfoPanel();
     this.setSortOrder('sortCreated');
     this.setGridView();
