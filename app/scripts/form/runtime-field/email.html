@@ -5,7 +5,7 @@
         class="form-control select"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter email' : ''}}"
-        aria-label="{{getDescription()}}"
+        aria-label="{{getHelp()}}"
         ng-model="valueElement['@value']"
         ng-model-options="{allowInvalid:true}"
         validate-on="blur"
@@ -16,6 +16,6 @@
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index)">
-    <div aria-label="{{getDescription(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
+    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 </div>

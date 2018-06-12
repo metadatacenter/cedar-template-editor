@@ -8,7 +8,7 @@
         ng-class="{'required': isRequired()}"
         placeholder="enter number"
         ng-model-options="{allowInvalid:true}"
-        aria-label="{{getDescription()}}"
+        aria-label="{{getHelp()}}"
         validate-on="blur"
         ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
         ng-model="valueElement['@value']">
@@ -28,7 +28,7 @@
     <!--</div>-->
 
     <!-- paged view -->
-    <div aria-label="{{getDescription()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
+    <div aria-label="{{getHelp()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
 
   </div>
 </div>

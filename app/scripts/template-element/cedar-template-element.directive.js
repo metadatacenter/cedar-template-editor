@@ -58,11 +58,31 @@ define([
       };
 
       scope.hasDescription = function () {
-        return scope.element && dms.getDescription(scope.element).length > 0;
+        var description = dms.getDescription(scope.element);
+        return description && description.length > 0;
       };
 
       scope.getDescription = function () {
         return dms.getDescription(scope.element);
+      };
+
+      scope.getPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions(scope.parentElement);
+        return  descriptions ?  descriptions[scope.key] : false;
+      };
+
+      scope.hasPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions(scope.parentElement);
+        return descriptions &&  descriptions[scope.key] && descriptions[scope.key].length > 0;
+      };
+
+
+      scope.getHelp = function () {
+        return scope.getDescription() || scope.getPropertyDescription();
+      };
+
+      scope.hasHelp = function () {
+        return scope.hasDescription() || scope.hasPropertyDescription();
       };
 
       scope.getId = function () {

@@ -57,22 +57,39 @@ define([
       $scope.getPropertyLabel = function () {
         if ($scope.labels && $scope.fieldKey && $scope.labels[$scope.fieldKey]) {
           return $scope.labels[$scope.fieldKey];
-        } else {
-          return $scope.getTitle();
         }
       };
 
+      $scope.getPropertyDescription = function () {
+        if ($scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey]) {
+          return $scope.descriptions[$scope.fieldKey];
+        }
+      };
 
+      $scope.hasPropertyDescription = function () {
+        return $scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey];
+      };
 
       // get the field description
       $scope.getDescription = function (field) {
         return dms.getDescription(field || $scope.field);
       };
 
-
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
         return description && description.length > 0;
+      };
+
+      $scope.getLabel = function () {
+        return $scope.getTitle() || $scope.getPropertyLabel();
+      };
+
+      $scope.getHelp = function () {
+        return $scope.getPropertyDescription() || $scope.getDescription();
+      };
+
+      $scope.hasHelp = function () {
+        return $scope.hasPropertyDescription() || $scope.hasDescription();
       };
 
       $scope.getContent = function (field) {
@@ -1265,7 +1282,8 @@ define([
         parentKey     : '=',
         parentModel   : '=',
         parentInstance: '=',
-        labels: '='
+        labels: '=',
+        descriptions: '='
 
       },
       controller : function ($scope, $element) {
