@@ -115,7 +115,7 @@ describe('template-creator', function () {
   var isMore = !fieldType.primaryField;
   var title = fieldType.label;
   var description = fieldType.label + ' description';
-  var pageTypes = ['element',  'template'];
+  var pageTypes = ['template', 'element'];
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -230,7 +230,7 @@ describe('template-creator', function () {
 
               });
 
-              it("should select and deselect a " + type + " in " + pageType, function () {
+              xit("should select and deselect a " + type + " in " + pageType, function () {
 
                 var firstField;
                 var lastField;
