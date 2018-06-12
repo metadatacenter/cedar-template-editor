@@ -230,7 +230,7 @@ describe('template-creator', function () {
 
               });
 
-              xit("should select and deselect a " + type + " in " + pageType, function () {
+              it("should select and deselect a " + type + " in " + pageType, function () {
 
                 var firstField;
                 var lastField;
@@ -399,7 +399,7 @@ describe('template-creator', function () {
           // clear and confirm
           templatePage.clickClear(pageType);
           sweetAlertModal.confirm();
-          sweetAlertModal.isHidden();
+          //sweetAlertModal.isHidden();
 
           templatePage.clickBackArrow();
           //sweetAlertModal.confirm();
