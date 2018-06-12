@@ -5,49 +5,8 @@
 @container-cedar-medium: 952px;
 
 @modal-bg-color: #eaf2f2;
-
-/*
-  blue green combo
- 557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
- */
-
-
-
-
-////  Black 000000  DarkSlateGray 213F3D  SlateGray 5A6D7E DarkCyan  008b8b LightSeaGreen 0F7979  PaleTurquoise 97EBEA
-//@header-color:#213F3D;
-//@template-color:#5A6D7E;
-//@element-color:#008b8b;
-//@field-color:#0F7979;
-//@metadata-color:#97EBEA;
-//@folder-color:#5A6D7E;
-//
-////  Black 17252a DarkGreen 2b7a78 Turquoise 3aafa9  Silver def2f1 White F2F2F2
-//@header-color:#213F3D;
-//@template-color:#5A6D7E;
-//@element-color:#008b8b;
-//@field-color:#0F7979;
-//@metadata-color:#97EBEA;
-//@folder-color:#5A6D7E;
-//
-////  Black 112d32 Brown 4f4a41 LightBrown 6e6658 Blue 254e58 Blue 0F7686 Turquoise 88bdbc  White E7FEE1
-//@header-color:#4f4a41;
-//@template-color:#254e58;
-//@element-color:#0F7686;
-//@field-color:#88bdbc;
-//@metadata-color:#6e6658;
-//@folder-color:#112d32;
-//
-////  Brown 575439 DarkTurquoise 35755A MedTurquoise 52AA8E Turquoise 81D4BD  Silver BBBAB5
-//@header-color:#575439;
-//@template-color:#35755A;
-//@element-color:#52AA8E;
-//@field-color:#81D4BD;
-//@metadata-color:#81D4BD;
-//@folder-color:#575439;
-
-//  Turquoise 81D4BD Blue 0F7686 LightGreen A2CF75 MedGreen 4C7C24
-@top-nav-color:@logo-dark-color;
+@background-side:#2A2A2A;
+@top-nav-color:#0A0A0A;
 @header-color:#244152;
 @template-color:#408392;
 @element-color:#58797F;
@@ -57,7 +16,7 @@
 
 @header-template: @top-nav-color;
 @header-element: @top-nav-color;
-@header-field: @top-nav-color;
+@header-field:@top-nav-color;
 @header-metadata: @top-nav-color;
 @header-folder: @top-nav-color;
 @header-dashboard: @white;
@@ -414,32 +373,30 @@ button {
   }
 }
 
-#headerCtrl {
-  //background:@top-nav-color;
-}
+
 #top-navigation {
 
   &.template {
-    background-color: @header-template;
+    background-color: @top-nav-color;
     margin-right: 10px;
   }
 
   &.element {
-    background-color: @header-element;
+    background-color: @top-nav-color;
     margin-right: 10px;
   }
 
   &.field {
-    background-color: @header-field;
+    background-color: @top-nav-color;
     margin-right: 10px;
   }
 
   &.dashboard {
-    background-color: @header-dashboard;
+    background-color: @white;
   }
 
   &.metadata {
-    background-color: @header-metadata;
+    background-color: @top-nav-color;
   }
 
   .form-page {
@@ -1848,7 +1805,7 @@ body.search-browse-modal {
 
 .template-header {
   width: 100%;
-  //background-color: @header-bg-color;
+  background-color: @background-side;
   padding: 60px 0 20px 0;
   min-height: 130px;
 
@@ -1970,15 +1927,15 @@ body.search-browse-modal {
 }
 
 .template-header.template {
-  background-color: @header-template;
+  background-color: @background-side;
 }
 
 .template-header.element {
-  background-color: @header-element;
+  background-color: @background-side;
 }
 
 .template-header.field {
-  background-color: @header-field;
+  background-color: @background-side;
 }
 
 .template-body {
@@ -3116,6 +3073,7 @@ section.dashboard-elements {
     font-size: 1em;
     cursor: pointer;
 
+
     padding-top: 4px;
     min-height: 30px;
     padding-left: 10px;
@@ -3158,7 +3116,7 @@ section.dashboard-elements {
     }
     .answer {
       border: 1px solid #ccc;
-      background: #f8f8f8;
+      background: #eee;
       .edit {
         visibility: visible;
       }
