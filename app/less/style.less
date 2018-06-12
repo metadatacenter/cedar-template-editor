@@ -96,7 +96,7 @@
 @very-lt-gray: #CCCCCC;
 @lt-gray-1: #FAFAFA;
 @lt-gray: #F0F0F0;
-@background-gray: #EEEEEE;
+@background-gray: #f7f7f7;
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
 
@@ -149,7 +149,6 @@ body {
   color: #333;
   height: 100%;
   overflow: hidden;
-
 }
 
 a {
@@ -3704,7 +3703,7 @@ section.dashboard-elements {
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #EEEEEE;
+    background-color: @background-gray;
     border-radius: 0px;
   }
 
@@ -6325,7 +6324,7 @@ body .template-header .controlled-terms-modal {
 }
 
 .template-body form .controlled-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
-  background: #EEE;
+  background: @background-gray;
 }
 
 #form-item-config-section .radio label {
@@ -6643,9 +6642,9 @@ body .template-header .controlled-terms-modal {
 
 table.apiKey {
   border-collapse: collapse;
-  border: 1px solid #eeeeee;
+  border: 1px solid @background-gray;
   tr {
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid @background-gray;
   }
   td {
     text-align: left;
@@ -7899,7 +7898,7 @@ textarea.curlSample {
 
 #outputJSON, #templateJSON {
   div.panel-group {
-    background-color: #eee;
+    background-color: @background-gray;
   }
   .panel-body {
     padding: 0;
