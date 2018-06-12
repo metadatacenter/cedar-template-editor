@@ -36,7 +36,7 @@ jobs:
   # - script: gulp test-metadata # e2e stage
   # - script: gulp test-template # e2e stage
   - script: gulp test-share-delete # e2e stage
-  # - script: gulp test-copy-move # e2e git stage
+  - script: gulp test-copy-move # e2e git stage
 
 env:
   global:
