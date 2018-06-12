@@ -98,9 +98,7 @@ var TemplateCreatorPage = function () {
   this.cssItemSortableIcon = ".item-root .sortable-icon";
   this.cssSortableIcon = ".sortable-icon";
   this.cssFieldContainer = ".field-root .elementTotalContent";
-  this.modelFieldTitle = "fieldSchema['schema:name']";
-  this.modelFieldDescription = "fieldSchema['schema:description']";
-  this.modelFieldContent = "$root.schemaOf(field)._ui._content";
+  this.modelFieldTitle = "fieldLabel[fieldLabelKey]";
   this.hasBeenCreated = 'has been created';
   this.deleteButtonTooltip = 'delete selection';
   this.deleteElementMessage = 'The template element has been deleted.';
@@ -384,6 +382,7 @@ var TemplateCreatorPage = function () {
   };
 
 
+
   // element creator
   var elementTitle = element(by.id('element-name'));
   var elementDescription = element(by.id('element-description'));
@@ -638,76 +637,63 @@ var TemplateCreatorPage = function () {
     }
   };
 
-  this.setTitle = function (type, text) {
-    if (type === 'template') {
-      browser.wait(EC.visibilityOf(templateTitle));
-      browser.wait(EC.elementToBeClickable(templateTitle));
-      browser.actions().doubleClick(templateTitle).perform();
-      templateTitle.sendKeys(text);
-      templateTitle.submit();
-      templateTitle.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    } else {
-      browser.wait(EC.visibilityOf(elementTitle));
-      browser.wait(EC.elementToBeClickable(elementTitle));
-      browser.actions().doubleClick(elementTitle).perform();
-      elementTitle.sendKeys(text);
-      elementTitle.submit();
-      elementTitle.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
+  var getTitle = function (type) {
+    var btn;
+    switch (type) {
+      case "template":
+        btn = templateTitle;
+        break;
+      case "element":
+        btn = elementTitle;
+        break;
     }
+    return btn;
   };
 
-  this.isTitle = function (type, text) {
-    if (type === 'template') {
-      //browser.actions().doubleClick(templateTitle).perform();
-      templateTitle.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    } else {
-      //browser.actions().doubleClick(elementTitle).perform();
-      elementTitle.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
+  var getDescription = function (type) {
+    var btn;
+    switch (type) {
+      case "template":
+        btn = templateDescription;
+        break;
+      case "element":
+        btn = elementDescription;
+        break;
     }
+    return btn;
+  };
+
+  this.setTitle = function (type, text) {
+    var title = getTitle(type);
+    browser.wait(EC.visibilityOf(title));
+    browser.wait(EC.elementToBeClickable(title));
+    browser.actions().doubleClick(title).perform();
+    title.sendKeys(text);
+    title.submit();
   };
 
   this.setDescription = function (type, text) {
-    if (type === 'template') {
-      browser.wait(EC.visibilityOf(templateDescription));
-      browser.wait(EC.elementToBeClickable(templateDescription));
-      browser.actions().doubleClick(templateDescription).perform();
-      templateDescription.sendKeys(text);
-      templateDescription.submit();
-      templateDescription.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    } else {
-      browser.wait(EC.visibilityOf(elementDescription));
-      browser.wait(EC.elementToBeClickable(elementDescription));
-      browser.actions().doubleClick(elementDescription).perform();
-      elementDescription.sendKeys(text);
-      elementDescription.submit();
-      elementDescription.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    }
+    var description = getDescription(type);
+    browser.wait(EC.visibilityOf(description));
+    browser.wait(EC.elementToBeClickable(description));
+    browser.actions().doubleClick(description).perform();
+    description.sendKeys(text);
+    description.submit();
+  };
+
+  this.isTitle = function (type, text) {
+    var title = getTitle(type);
+    title.getAttribute('value').then(function (value) {
+      expect(value === text).toBe(true);
+    });
   };
 
   this.isDescription = function (type, text) {
-    if (type === 'template') {
-      browser.actions().doubleClick(templateDescription).perform();
-      templateDescription.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    } else {
-      browser.actions().doubleClick(elementDescription).perform();
-      elementDescription.getAttribute('value').then(function (value) {
-        expect(value === text).toBe(true);
-      });
-    }
+    var description = getDescription(type);
+    //browser.actions().doubleClick(description).perform();
+    description.getAttribute('value').then(function (value) {
+      expect(value === text).toBe(true);
+    });
   };
 
   // are we on the dashboard page?
@@ -1033,11 +1019,11 @@ var TemplateCreatorPage = function () {
         browser.wait(EC.elementToBeClickable(createFieldContent));
         createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
         break;
-      // case "richtext":
-      //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
-      //   browser.wait(EC.elementToBeClickable(richTextContent));
-      //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
-      //   break;
+        // case "richtext":
+        //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
+        //   browser.wait(EC.elementToBeClickable(richTextContent));
+        //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        //   break;
     }
   };
 

@@ -98,16 +98,20 @@ var WorkspacePage = function () {
   // filtering
   var filterButtons = [
     {
-      'button': element(by.css('#sidebar-left .filter-options button.template')),
-      'active': element(by.css('#sidebar-left .filter-options button.template i.active'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.template')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.template'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options button.element')),
-      'active': element(by.css('#sidebar-left .filter-options button.element i.active'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.element')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.element.selected'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options button.metadata')),
-      'active': element(by.css('#sidebar-left .filter-options button.metadata i.active'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.metadata ')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.metadata '))
+    },
+    {
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.field')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.field'))
     }
   ];
 
@@ -115,13 +119,15 @@ var WorkspacePage = function () {
   // create new buttons
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
+  var createFieldButton = element(by.id('button-create-field'));
   var createElementButton = element(by.id('button-create-element'));
   var createFolderButton = element(by.id('button-create-folder'));
   var createMetadataButton = element(by.id('button-save-metadata'));
   var createResourceButtons = {
     "template": createTemplateButton,
     "element" : createElementButton,
-    "folder"  : createFolderButton
+    "folder"  : createFolderButton,
+    "field"   : createFieldButton
   };
 
   // main center panel
@@ -394,6 +400,7 @@ var WorkspacePage = function () {
     browser.actions().mouseMove(createButton).perform();
 
     var button = createResourceButtons[type];
+
     browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
@@ -540,13 +547,19 @@ var WorkspacePage = function () {
   this.resetFiltering = function () {
 
     filterButtons.forEach(function (btnObj) {
-      var btn = btnObj.button;
-      btnObj.active.isPresent().then(function (on) {
-        if (!on) {
-          browser.wait(EC.visibilityOf(btn));
-          browser.wait(EC.elementToBeClickable(btn));
-          btn.click();
+      var off = btnObj.off;
+
+      off.isPresent().then(function (result) {
+
+        if (result) {
+          browser.wait(EC.visibilityOf(off));
+          browser.wait(EC.elementToBeClickable(off));
+          off.click();
+
+          var on = btnObj.on;
+          browser.wait(EC.visibilityOf(on));
         }
+
       });
     });
   };
@@ -914,7 +927,7 @@ var WorkspacePage = function () {
   this.deleteResources = function (resources) {
     for (var i = 0; i < resources.length; i++) {
       (function (resource) {
-       console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
+        console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
         login(resource.username, resource.password);
         deleteResourceViaRightClick(resource.title, resource.type);
         toastyModal.isSuccess();

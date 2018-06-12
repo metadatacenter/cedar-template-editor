@@ -7,7 +7,7 @@ define([
       .directive('fieldToolbar', fieldToolbar);
 
 
-  fieldToolbar.$inject = ['UIUtilService','DataManipulationService', 'DataUtilService'];
+  fieldToolbar.$inject = ['UIUtilService', 'DataManipulationService', 'DataUtilService'];
 
   function fieldToolbar(UIUtilService, DataManipulationService, DataUtilService) {
 
@@ -21,22 +21,24 @@ define([
       templateUrl: 'scripts/form/field-toolbar.directive.html',
       restrict   : 'EA',
       scope      : {
-        field       : "=",
-        model       : '=',
-        index       : '=',
-        viewState   : '=',
-        remove      : "=",
-        add         : "=",
-        copy        : "=",
-        setActive   : '=',
-        getLocator  : '=',
-        expandAll   : '=',
-        values      : '=',
-        min         : '=',
-        max         : '=',
-        select      : '=',
-        range       : '=',
-        paging      : '='
+        field     : "=",
+        model     : '=',
+        index     : '=',
+        viewState : '=',
+        remove    : "=",
+        add       : "=",
+        copy      : "=",
+        setActive : '=',
+        getLocator: '=',
+        expandAll : '=',
+        values    : '=',
+        min       : '=',
+        max       : '=',
+        select    : '=',
+        range     : '=',
+        paging    : '=',
+        getHelp      : '=',
+        hasHelp: '='
       },
       controller : function ($scope, $element) {
 
@@ -59,8 +61,10 @@ define([
 
         scope.isMultiple = function () {
           // We consider that checkboxes and multi-choice lists are not 'multiple'
-          return (DataManipulationService.isCardinalElement(scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
+          return (DataManipulationService.isCardinalElement(
+              scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
         };
+
 
         scope.isAttributeValueType = function () {
           return DataManipulationService.isAttributeValueType(scope.field);
@@ -74,7 +78,7 @@ define([
           return UIUtilService.toggleView(scope.viewState);
         };
 
-        scope.cardinalityString = function() {
+        scope.cardinalityString = function () {
           return UIUtilService.cardinalityString(scope.field);
         };
 
@@ -95,8 +99,9 @@ define([
         // can we add more?
         scope.canAdd = function () {
           if (scope.field) {
-            var maxItems  = DataManipulationService.getMaxItems(scope.field);
-            return scope.add && DataManipulationService.isElement(scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
+            var maxItems = DataManipulationService.getMaxItems(scope.field);
+            return scope.add && DataManipulationService.isElement(
+                    scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
           }
         };
 
