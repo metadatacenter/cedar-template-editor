@@ -190,7 +190,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('template')"
                         class="template"
-                        ng-class="{ selected: !dc.isResourceTypeActive('template') }">
+                        ng-class="{ deselected: !dc.isResourceTypeActive('template'), selected: dc.isResourceTypeActive('template')}">
                         </cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
@@ -201,7 +201,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('element')"
                         class="element"
-                        ng-class="{ selected: !dc.isResourceTypeActive('element') }"></cedar-resource-icon>
+                        ng-class="{ deselected: !dc.isResourceTypeActive('element'), selected: dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
                         uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
@@ -211,7 +211,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('field')"
                         class="field"
-                        ng-class="{ selected: !dc.isResourceTypeActive('field') }"></cedar-resource-icon>
+                        ng-class="{ deselected: !dc.isResourceTypeActive('field'), selected: dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
                     <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
                         uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
@@ -221,7 +221,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('instance')"
                         class="metadata"
-                        ng-class="{ selected: !dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
+                        ng-class="{ deselected: !dc.isResourceTypeActive('instance'), selected: dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
 
                 </div>
 

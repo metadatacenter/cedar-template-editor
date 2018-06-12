@@ -98,20 +98,20 @@ var WorkspacePage = function () {
   // filtering
   var filterButtons = [
     {
-      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.template')),
-      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.template'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.template')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.template'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.element')),
-      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.element.selected'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.element')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.element.selected'))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.metadata ')),
-      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.metadata '))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.metadata ')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.metadata '))
     },
     {
-      'button': element(by.css('#sidebar-left .filter-options div.resource-icon.field')),
-      'active': element(by.css('#sidebar-left .filter-options div.resource-icon.selected.field'))
+      'off': element(by.css('#sidebar-left .filter-options div.resource-icon.deselected.field')),
+      'on' : element(by.css('#sidebar-left .filter-options div.resource-icon.selected.field'))
     }
   ];
 
@@ -547,20 +547,26 @@ var WorkspacePage = function () {
   this.resetFiltering = function () {
 
     filterButtons.forEach(function (btnObj) {
-      var btn = btnObj.button;
-      btnObj.active.isPresent().then(function (on) {
-        if (!on) {
-          browser.wait(EC.visibilityOf(btn));
-          browser.wait(EC.elementToBeClickable(btn));
-          btn.click();
+      var off = btnObj.off;
+
+      off.isPresent().then(function (result) {
+
+        if (result) {
+          browser.wait(EC.visibilityOf(off));
+          browser.wait(EC.elementToBeClickable(off));
+          off.click();
+
+          var on = btnObj.on;
+          browser.wait(EC.visibilityOf(on));
         }
+
       });
     });
   };
 
   this.initPreferences = function () {
     this.onWorkspace();
-    //this.resetFiltering();
+    this.resetFiltering();
     this.closeInfoPanel();
     this.setSortOrder('sortCreated');
     this.setGridView();
