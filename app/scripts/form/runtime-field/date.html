@@ -7,7 +7,7 @@
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           ng-change="setDateValue(date.dt)"
           ng-model="date.dt"
-          aria-label="{{getDescription()}}"
+          aria-label="{{getHelp()}}"
           placeholder="{{'CREATOR.enterDate' | translate}}"
           ng-model-options="{allowInvalid:true}"
           date-validation>
@@ -18,7 +18,7 @@
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-    <div aria-label="{{getDescription(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
+    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 
 </div>

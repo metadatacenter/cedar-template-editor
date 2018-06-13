@@ -7,7 +7,7 @@
         class="isInactive ">{{attributeNameArray[index]}} = {{attributeValueArray[index]['@value']}}</div>
 
     <div ng-if="!isListView()  && valueArray[index]['@value']"
-        aria-label="{{getDescription()}}"
+        aria-label="{{getHelp()}}"
         class="isInactive "> {{getValueString(valueArray,attributeValueArray)}} &nbsp;</span>
     </div>
   </div>
@@ -22,7 +22,7 @@
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="Name"
-          aria-label="{{getDescription()}}"
+          aria-label="{{getHelp()}}"
           ng-model="valueArray[index]['@value']"
           ng-change="updateModelFromUI(valueArray[index]['@value'], '{{valueArray[index]['@value']}}',true); $event.stopPropagation();">
       </input>
@@ -36,7 +36,7 @@
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="Value"
-          aria-label="{{getDescription()}}"
+          aria-label="{{getHelp()}}"
           ng-model="attributeValueArray[index]['@value']"
           ng-change="updateModelFromUI(attributeValueArray[index]['@value'], '{{attributeValueArray[index]['@value']}}', false); $event.stopPropagation();">
       </input>
