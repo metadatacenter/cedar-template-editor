@@ -394,12 +394,12 @@ define([
       $scope.showModal = function (type) {
         if (type) {
           // TODO don't pass the search string through rootScope
-          $rootScope.finalTitle = $scope.getTitle();
+          $rootScope.finalTitle = $scope.getLabel();
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          $rootScope.$broadcast("ctdc:init", [$scope.getLabel()]);
         }
       };
 
