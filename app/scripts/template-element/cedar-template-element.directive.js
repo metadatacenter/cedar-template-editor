@@ -317,16 +317,9 @@ define([
         //UIUtilService.toggleElement(scope.getDomId(scope.element));
       };
 
-      scope.removeChild = function (node) {
-        dms.removeChild(scope.parentElement, node);
-        scope.$emit("invalidElementState",
-            ["remove", scope.getTitle(), scope.getId()]);
-
-      };
-
       // remove the element from the form
       scope.ckDelete = function () {
-        dms.removeChild(scope.parentElement, scope.element);
+        dms.removeChild(scope.parentElement, scope.element, scope.key);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);
       };
