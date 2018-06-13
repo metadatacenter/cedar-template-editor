@@ -5,25 +5,36 @@
 @container-cedar-medium: 952px;
 
 @modal-bg-color: #eaf2f2;
-@background-side:#2A2A2A;
-@top-nav-color:#0A0A0A;
-@header-color:#244152;
-@template-color:#408392;
-@element-color:#58797F;
-@field-color:#79A99E;
-@metadata-color:#0F7686;
-@folder-color:#4E4B4A;
+@background-side: #2A2A2A;
+@top-nav-color: #0A0A0A;
+@header-color: #244152;
+@template-color: #408392;
+@element-color: #58797F;
+@field-color: #79A99E;
+@metadata-color: #0F7686;
+@folder-color: #4E4B4A;
+
+@very-lt-gray: #CCCCCC;
+@lt-gray-1: #FAFAFA;
+@lt-gray: #F0F0F0;
+@background-gray: #f7f7f7;
+@dark-gray: #616161;
+@med-gray: #9E9E9E;
 
 @header-template: @top-nav-color;
 @header-element: @top-nav-color;
-@header-field:@top-nav-color;
+@header-field: @top-nav-color;
 @header-metadata: @top-nav-color;
 @header-folder: @top-nav-color;
 @header-dashboard: @white;
 
-@draft: #DAA520;
-@published: #000000;
-@latest: #8B0000;
+//@draft: #DAA520;
+//@published: #000000;
+//@latest: #8B0000;
+
+@draft: @med-gray;
+@published: @med-gray;
+@latest: @med-gray;
 
 @primary-accent: #cb6318;
 @dark-accent: #7d4427;
@@ -31,8 +42,7 @@
 @primary-text: #0F7686;
 @secondary-text: #5A6D7E;
 
-
-@button-template:lighten(@template-color, 10%);
+@button-template: lighten(@template-color, 10%);
 @button-element: @element-color;
 @button-field: @field-color;
 @button-metadata: @metadata-color;
@@ -56,21 +66,15 @@
 
 @divider: #B6B6B6;
 
-@very-lt-gray: #CCCCCC;
-@lt-gray-1: #FAFAFA;
-@lt-gray: #F0F0F0;
-@background-gray: #f7f7f7;
-@dark-gray: #616161;
-@med-gray: #9E9E9E;
+
 
 ::selection {
   background: lighten(@logo-light-color, 20%); /* WebKit/Blink Browsers */
 }
+
 ::-moz-selection {
   background: lighten(@logo-light-color, 20%); /* Gecko Browsers */
 }
-
-
 
 /* Definine local mixins */
 .activ-grotesk-regular {
@@ -140,12 +144,12 @@ i {
 }
 
 .no-select {
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
 }
 
 .container {
@@ -176,8 +180,8 @@ button {
   }
 
   &.element {
-     background-color: @header-element;
-   }
+    background-color: @header-element;
+  }
 
   &.field {
     background-color: @header-field;
@@ -303,9 +307,9 @@ button {
 
   .navbar-back {
     margin-left: 10px;
-    font-size:16px;
+    font-size: 16px;
     color: @white;
-    cursor:pointer;
+    cursor: pointer;
 
     @media (min-width: @screen-sm-min) {
       margin-left: 0;
@@ -314,7 +318,7 @@ button {
     i.back-arrow {
       margin-right: 10px;
       font-weight: 100;
-      font-size:18px;
+      font-size: 18px;
     }
     div.document-title {
       margin-left: 10px;
@@ -363,15 +367,12 @@ button {
   #element-name-container,
   #element-controlled-term-container {
 
-
     .cedar-svg-element,
     .cedar-svg-metadata,
     .cedar-svg-controll-term {
       position: absolute;
       color: @brand-primary;
     }
-
-
 
     .form-control {
       padding-left: 30px;
@@ -399,7 +400,6 @@ button {
     margin-top: 6px;
   }
 }
-
 
 #top-navigation {
 
@@ -471,7 +471,7 @@ button {
   top: 0;
   position: relative;
   min-height: 50px;
-  height:50px;
+  height: 50px;
 
   .breadcrumbs-sb {
     margin: 5px 0;
@@ -866,7 +866,7 @@ button {
 
     .selected .title {
       background-color: @brand-primary;
-      color: @white;
+      color: @white !important;
     }
 
     .selected .form-box .box-content .folderIconContainer,
@@ -903,10 +903,16 @@ button {
         text-align: left;
 
         div.toolbar-left {
-          position:absolute;top:15px; left:10px;height:20px;padding:0px;color: #ccc;font-size:10px;
+          position: absolute;
+          top: 15px;
+          left: 10px;
+          height: 20px;
+          padding: 0px;
+          color: #ccc;
+          font-size: 10px;
           i.action {
             font-size: 16px;
-            margin:0 3px;
+            margin: 0 3px;
             color: #ccc;
             &:hover {
               color: #aaa;
@@ -915,10 +921,17 @@ button {
         }
 
         div.toolbar-right {
-          position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #ccc;font-size:10px;
+          position: absolute;
+          top: 15px;
+          right: 10px;
+          height: 20px;
+          padding: 0px;
+          white-space: nowrap;
+          color: #ccc;
+          font-size: 10px;
           i.action {
             font-size: 16px;
-            margin:0 3px;
+            margin: 0 3px;
             color: #ccc;
             &:hover {
               color: #aaa;
@@ -927,19 +940,25 @@ button {
         }
 
         div.title {
-          text-align:center;height:40px;padding:10px;margin-top:10px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+          text-align: left;
+          height: 40px;
+          padding: 10px;
+          margin-top: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 13px;
+          color: @med-gray;
         }
 
         div.resource {
-          text-align:center;
-          padding-top:30px;
-          color:red;
+          text-align: center;
+          padding-top: 30px;
+          color: red;
           i {
             font-size: 36px;
           }
         }
-
-
 
         &.template {
           i {
@@ -975,7 +994,7 @@ button {
           line-height: 15px;
           text-overflow: ellipsis;
           overflow: hidden;
-          color: @graytxt;
+          color: @med-gray;
         }
         span.description {
           height: 60px;
@@ -1001,6 +1020,8 @@ button {
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          color:@med-gray;
+          font-size:13px;
         }
 
         .disabled {
@@ -1096,7 +1117,7 @@ button {
         }
 
         .bold {
-          font-weight:bold;
+          font-weight: bold;
         }
       }
 
@@ -1107,15 +1128,14 @@ button {
         background: #ffffff;
         font-size: 14px;
         color: @graytxt;
-        cursor:pointer;
+        cursor: pointer;
 
         .cell {
           display: inline-block;
           padding: 5px;
           overflow: hidden;
           text-overflow: ellipsis;
-          padding:10px;
-
+          padding: 10px;
 
           &.icon {
             display: inline-block;
@@ -1132,10 +1152,10 @@ button {
               background-color: @template-color;
             }
             &.metadata, &.instance {
-              background-color:  @metadata-color;
+              background-color: @metadata-color;
             }
             &.folder {
-              background-color:  @folder-color;
+              background-color: @folder-color;
             }
             i {
               color: @white;
@@ -1167,7 +1187,7 @@ button {
                   color: @template-color;
                 }
               }
-              &.metadata,&.instance {
+              &.metadata, &.instance {
                 background-color: @white;
                 i {
                   color: @template-color;
@@ -1181,7 +1201,6 @@ button {
               }
             }
           }
-
 
           i.large-icon {
             color: #fff;
@@ -1407,36 +1426,38 @@ button {
       padding: 10px 0 0 10px;
 
       .filter-type {
-        margin:5px 0;
+        margin: 5px 0;
       }
-
 
       ul.filter-resource-version {
         li div {
-          cursor:pointer;
-          font-size:14px;
-          white-space:nowrap;
+          cursor: pointer;
+          font-size: 14px;
+          white-space: nowrap;
         }
         li div.draft i {
-          color:@draft;
-          padding:0;margin:0 10px;
-          border-width:0;
+          color: @draft;
+          padding: 0;
+          margin: 0 10px;
+          border-width: 0;
           opacity: 0.4;
-          font-size:30px
+          font-size: 24px
         }
         li div.published i {
-          color:@published;
-          padding:0;margin:0 10px;
-          border-width:0;
+          color: @published;
+          padding: 0;
+          margin: 0 10px;
+          border-width: 0;
           opacity: 0.4;
-          font-size:30px
+          font-size: 24px
         }
         li div.latest i {
-          color:@latest;
-          padding:0;margin:0 10px;
-          border-width:0;
+          color: @latest;
+          padding: 0;
+          margin: 0 10px;
+          border-width: 0;
           opacity: 0.4;
-          font-size:30px
+          font-size: 24px
         }
         li div.active i {
           opacity: 1;
@@ -1947,7 +1968,6 @@ body.search-browse-modal {
     border-radius: 0;
     color: #ccc;
 
-
     &:before {
       font-family: "project-cedar" !important;
       content: "n";
@@ -1989,12 +2009,10 @@ body.search-browse-modal {
     right: 0;
   }
 
-
   #element-name-container,
   #field-name-container,
   #template-name-container,
   #element-controlled-term-container {
-
 
     .cedar-svg-element,
     .cedar-svg-metadata,
@@ -3169,7 +3187,6 @@ section.dashboard-elements {
     font-size: 1em;
     cursor: pointer;
 
-
     padding-top: 4px;
     min-height: 30px;
     padding-left: 10px;
@@ -3192,8 +3209,8 @@ section.dashboard-elements {
   }
 
   .tools {
-    min-height:2em;
-    padding:5px 0;
+    min-height: 2em;
+    padding: 5px 0;
   }
 
   .row.isActive, .row:hover {
@@ -3957,10 +3974,10 @@ section.dashboard-elements {
 
 .field-header {
   .field-icon {
-    margin-right:10px;
-    color:#333;
-    font-size:18px;
-    margin:0 5px;
+    margin-right: 10px;
+    color: #333;
+    font-size: 18px;
+    margin: 0 5px;
 
   }
   .type-label {
@@ -6531,12 +6548,12 @@ body .template-header .controlled-terms-modal {
 }
 
 .field-instance.multiple-instance-field {
-   border: 1px solid #ddd;
-   padding-top: 2px;
-   padding-bottom: 2px;
-   margin-bottom: 5px !important;
-   background-color: #e8e8e8;
- }
+  border: 1px solid #ddd;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-bottom: 5px !important;
+  background-color: #e8e8e8;
+}
 
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -7238,7 +7255,7 @@ table.apiKey {
               width: calc(~"50% - 10px");
               background: @white;
               height: 399px;
-              overflow:hidden;
+              overflow: hidden;
               .no-title {
                 padding-top: 100px;
                 text-align: center;
@@ -7276,8 +7293,8 @@ table.apiKey {
               text-align: center;
             }
             .description {
-              text-align:left;
-              padding:1em .4em;
+              text-align: left;
+              padding: 1em .4em;
             }
             .table-details {
               margin: 0 20px;
@@ -7342,7 +7359,7 @@ table.apiKey {
 
               }
               &.selected {
-                background:red;
+                background: red;
 
                 .cell {
                   &.icon {
@@ -7360,10 +7377,6 @@ table.apiKey {
                     }
                   }
                 }
-
-
-
-
 
                 i.large-icon {
                   color: #fff;
@@ -7483,6 +7496,7 @@ table.apiKey {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              color: @med-gray;
             }
             .title-icon {
               text-align: center;
@@ -7712,7 +7726,6 @@ table.apiKey {
           }
         }
 
-
         .btn-info {
           border-radius: 50%;
           width: 40px;
@@ -7751,7 +7764,7 @@ table.apiKey {
           }
         }
         .btn-info.btn-circle:disabled {
-          background:#ccc;
+          background: #ccc;
         }
         .btn-info.btn-circle-outline {
           box-shadow: none;
@@ -7808,7 +7821,7 @@ table.apiKey {
       right: 0;
     }
     .extraRight {
-      margin-right:40px;
+      margin-right: 40px;
     }
   }
 
@@ -7917,12 +7930,13 @@ table.apiKey {
   max-height: 20px;
   margin: 0;
   padding: 0;
-  display:inline;
-  position:relative;
-  left:-10px;top:-10px;
-  font-size:smaller;
+  display: inline;
+  position: relative;
+  left: -10px;
+  top: -10px;
+  font-size: smaller;
   button {
-    display:inline;
+    display: inline;
     margin: 0;
     padding: 0 5px;
     background: @primary-accent;
@@ -8027,38 +8041,42 @@ table.message {
 }
 
 .flex {
-  display:flex;
-  justify-content:space-between;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  width:100%;
+  width: 100%;
 
   &.field-title {
-    width:100%;
-    border:1px solid #ddd;
-    background:white;
-    margin-bottom:5px;
+    width: 100%;
+    border: 1px solid #ddd;
+    background: white;
+    margin-bottom: 5px;
     .form-group {
-      margin-bottom:0;
-      width:100%;
-      border-width:0;
-      margin-right:0;
+      margin-bottom: 0;
+      width: 100%;
+      border-width: 0;
+      margin-right: 0;
       input.form-control {
-        border-width:0;
+        border-width: 0;
         &.no-floating-label {
-          padding-top:8px;
+          padding-top: 8px;
         }
       }
     }
     .property {
-      padding:0 10px;
+      padding: 0 10px;
       .flex {
         i {
-          display:inline;transform:none;color:#999
+          display: inline;
+          transform: none;
+          color: #999
         }
         .class-dropdown {
-          display:inline;color:#999;
+          display: inline;
+          color: #999;
           button {
-            background:transparent;padding:0
+            background: transparent;
+            padding: 0
           }
         }
       }
@@ -8066,60 +8084,58 @@ table.message {
   }
 
   .property-icon {
-    padding:0 10px 0 0;
+    padding: 0 10px 0 0;
     i {
-      padding-top:5px;
-      transform:none;
-      color:#999;
+      padding-top: 5px;
+      transform: none;
+      color: #999;
     }
   }
 }
 
 .flex-top {
-  display:flex;
-  justify-content:flex-end;
-  width:100%;
-  height:100%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
 }
 
 .flex-right {
-  display:flex;
-  justify-content:flex-end;
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
-  width:100%;
-}
-.flex-left {
-  display:flex;
-  justify-content:flex-start;
-  align-items: center;
-  width:100%;
+  width: 100%;
 }
 
+.flex-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
 
 .invalid {
-  color:red;
+  color: red;
 }
 
 .required {
-  color:red;
-  font-size:12px;
+  color: red;
+  font-size: 12px;
 }
 
 .color-active {
-  color:#5795ba;
+  color: #5795ba;
 }
 
 .color-deactive {
-  color:@med-gray;
+  color: @med-gray;
 }
 
 i.cedar-svg-numeric {
-  padding:0 !important;
-  margin-left:0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
   height: 40px;
 }
-
-
 
 div.tooltip-inner {
   max-width: 500px;
@@ -8128,22 +8144,20 @@ div.tooltip-inner {
 }
 
 div.resource-icon {
-  cursor:pointer;
+  cursor: pointer;
   vertical-align: middle;
   text-align: center;
-  overflow:hidden;
+  overflow: hidden;
   font-size: 18px;
-    min-height: 36px;
-    min-width: 36px;
-    max-height: 36px;
-    max-width: 36px;
-
+  min-height: 36px;
+  min-width: 36px;
+  max-height: 36px;
+  max-width: 36px;
 
   .cell {
     vertical-align: middle;
     text-align: center;
     display: inline-block;
-
 
     &.icon {
       display: inline-block;
@@ -8161,10 +8175,10 @@ div.resource-icon {
         background-color: @template-color;
       }
       &.metadata, &.instance {
-        background-color:  @metadata-color;
+        background-color: @metadata-color;
       }
       &.folder {
-        background-color:  @folder-color;
+        background-color: @folder-color;
       }
       i {
         color: @white;
@@ -8199,7 +8213,7 @@ div.resource-icon {
             color: @template-color;
           }
         }
-        &.metadata,&.instance {
+        &.metadata, &.instance {
           background-color: @white;
           i {
             color: @template-color;
@@ -8213,7 +8227,6 @@ div.resource-icon {
         }
       }
     }
-
 
     i.large-icon {
       color: #fff;

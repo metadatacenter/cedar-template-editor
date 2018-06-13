@@ -68,7 +68,7 @@
                   publish="dc.publishResource" create-draft="dc.createDraftResource"
                   can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                   can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                  can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                  can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
               </cedar-dropdown-menu>
 
             </div>
@@ -308,7 +308,7 @@
                             publish="dc.publishResource" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                            can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
 
                       </div>
@@ -331,9 +331,13 @@
 
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
                       <div class="toolbar-right" >
-                        <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])" ng-click=""></i>
-                        <i class="action fa fa-share-square" ng-click=""></i>
-
+                        <i class="action fa"  ng-class="dc.getVersionIcon(resource['bibo:status'])"
+                            uib-tooltip="{{dc.getResourceVersion(resource)}}"
+                            tooltip-trigger
+                            tooltip-animation="false"
+                            tooltip-placement="left"
+                            data-toggle="tooltip"
+                        ng-click="dc.createVersion(resource)"></i>
 
                         <button  title="More"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -347,7 +351,7 @@
                             publish="dc.publishResource" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                            can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
                       </div>
 

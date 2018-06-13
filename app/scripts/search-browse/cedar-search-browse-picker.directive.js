@@ -111,12 +111,15 @@ define([
           vm.canNotPopulate = false;
           vm.canNotPublish = false;
           vm.canNotCreateDraft = false;
+          vm.canNotDelete = false;
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
+          vm.isPublished = isPublished;
+          vm.createVersion = createVersion;
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -187,7 +190,7 @@ define([
             visible = false;
           };
 
-          vm.cancelDescriptionEditing = function() {
+          vm.cancelDescriptionEditing = function () {
           };
 
           vm.toggleDescriptionEditing = function () {
@@ -218,7 +221,7 @@ define([
                       if (jqDescriptionField) {
                         jqDescriptionField.blur();
                       }
-                      if ( vm.editingDescriptionInitialValue != vm.editingDescriptionSelection['schema:description']) {
+                      if (vm.editingDescriptionInitialValue != vm.editingDescriptionSelection['schema:description']) {
                         vm.updateDescription();
                       }
                       $window.onclick = null;
@@ -261,7 +264,7 @@ define([
               }
             }
 
-            vm.setResourceInfoVisibility(true);
+            //vm.setResourceInfoVisibility(true);
           };
 
           vm.isResourceSelected = function (resource) {
@@ -299,6 +302,7 @@ define([
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
+                    vm.canNotDelete = vm.isPublished();
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
@@ -330,15 +334,14 @@ define([
             return resourceService.canWrite(vm.currentFolder);
           };
 
-          vm.getResourceVersion = function () {
-            var resource = vm.getSelection();
+          vm.getResourceVersion = function (resource) {
             if (resource != null) {
               return resource['pav:version'];
             }
           };
 
-          vm.getNextResourceVersion = function () {
-            var currentVersion = vm.getResourceVersion();
+          vm.getNextResourceVersion = function (resource) {
+            var currentVersion = vm.getResourceVersion(resource);
             var parts = currentVersion.split(".");
             if (parts.length == 3) {
               parts[2] = parseInt(parts[2]) + 1;
@@ -516,7 +519,6 @@ define([
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
-            console.log('uip',uip);
 
             vm.resourceTypes = {
               element : uip.resourceTypeFilters.element,
@@ -525,8 +527,8 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type             : true,
-              version          : true
+              type   : true,
+              version: true
             };
             vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
             vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "latest" : uip.resourceVersionFilter.version;
@@ -704,11 +706,12 @@ define([
             );
           }
 
+
           function publishResource(resource) {
             if (!resource) {
               resource = getSelection();
             }
-            var newVersion = vm.getResourceVersion();
+            var newVersion = vm.getResourceVersion(resource);
             resourceService.publishResource(
                 resource,
                 newVersion,
@@ -724,6 +727,31 @@ define([
             );
           }
 
+          function createVersion(value) {
+
+            var resource = value || vm.selectedResource;
+
+            var canCreateDraft =
+            (resource.nodeType == CONST.resourceType.TEMPLATE ||
+            resource.nodeType == CONST.resourceType.ELEMENT) &&
+            resource['bibo:status'] == 'bibo:published' &&
+            resource.isLatestVersion;
+
+            var canPublish = (resource.nodeType == CONST.resourceType.TEMPLATE ||
+                resource.nodeType == CONST.resourceType.ELEMENT) &&
+                resource['bibo:status'] == 'bibo:draft';
+
+
+              if (canCreateDraft) {
+                vm.createDraftResource(resource);
+              } else {
+                if (canPublish) {
+                  vm.publishResource(resource);
+                }
+              }
+
+          }
+
           function createDraftResource(resource) {
             if (!resource) {
               resource = getSelection();
@@ -732,7 +760,7 @@ define([
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
-            var newVersion = vm.getNextResourceVersion();
+            var newVersion = vm.getNextResourceVersion(resource);
             var propagateSharing = true;
             resourceService.createDraftResource(
                 resource,
@@ -976,10 +1004,10 @@ define([
                   result += CONST.resourceIcon.INSTANCE;
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += CONST.resourceIcon.ELEMENT ;
+                  result += CONST.resourceIcon.ELEMENT;
                   break;
                 case CONST.resourceType.FIELD:
-                  result += CONST.resourceIcon.FIELD ;
+                  result += CONST.resourceIcon.FIELD;
                   break;
               }
             }
@@ -1026,26 +1054,33 @@ define([
             return false;
           }
 
-          function canPublish() {
-            return resourceService.canPublish(vm.getSelectedNode());
+          function canPublish(value) {
+            var resource = value || vm.selectedResource;
+            return resourceService.canPublish(resource);
+          };
+
+          function canCreateDraft(value) {
+            var resource = value || vm.selectedResource;
+            return resourceService.canCreateDraft(resource);
           };
 
           function canPublishStatic() {
             return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource['bibo:status'] == 'bibo:draft');
+            (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+            vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+            vm.selectedResource['bibo:status'] == 'bibo:draft');
           }
 
-          function canCreateDraft() {
-            return resourceService.canCreateDraft(vm.getSelectedNode());
+          function isPublished(resource) {
+            var node = resource || vm.selectedResource;
+            return node && (node['bibo:status'] == 'bibo:published');
           };
 
           function canCreateDraftStatic() {
             return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource['bibo:status'] == 'bibo:published');
+            (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+            vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+            vm.selectedResource['bibo:status'] == 'bibo:published');
           }
 
           function isTemplate() {
@@ -1089,7 +1124,7 @@ define([
           }
 
           function isResourcePublicationStatusActive(publicationStatus) {
-            return vm.resourcePublicationStatusFilterValue == publicationStatus || vm.resourcePublicationStatusFilterValue == 'all' ;
+            return vm.resourcePublicationStatusFilterValue == publicationStatus || vm.resourcePublicationStatusFilterValue == 'all';
           }
 
           function isResourceVersionActive(version) {
@@ -1123,7 +1158,7 @@ define([
           // is something changed by the filters?  for now, just look at the resource types
           function resetFiltersEnabled() {
             var notLatest = vm.resourceVersionFilterValue != "latest";
-            var notPublishedAndDraft =  vm.resourcePublicationStatusFilterValue != "all";
+            var notPublishedAndDraft = vm.resourcePublicationStatusFilterValue != "all";
             var typeHidden = Object.values(vm.resourceTypes).indexOf(false) > -1
             return typeHidden || notLatest || notPublishedAndDraft;
           }
@@ -1214,7 +1249,7 @@ define([
 
 
           function toggleResourcePublicationStatus(publicationStatus) {
-            var otherStatus =  (publicationStatus == 'bibo:published') ? 'bibo:draft' : 'bibo:published';
+            var otherStatus = (publicationStatus == 'bibo:published') ? 'bibo:draft' : 'bibo:published';
 
             if (vm.isResourcePublicationStatusActive(publicationStatus)) {
               vm.setResourcePublicationStatus(otherStatus);
@@ -1248,7 +1283,7 @@ define([
 
           function toggleResourceVersion() {
             if (vm.resourceVersionFilterValue == 'latest') {
-                setResourceVersion('all');
+              setResourceVersion('all');
             } else {
               vm.resourcePublicationStatusFilterValue = 'all';
               UISettingsService.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', 'all');

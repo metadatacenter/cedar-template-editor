@@ -33,6 +33,7 @@ define([
         canNotCreateDraft: '=',
         canNotWrite      : '=',
         canNotShare      : '=',
+        canNotDelete     : '=',
         isFolder         : '='
       },
       controller : function ($scope, $element) {
