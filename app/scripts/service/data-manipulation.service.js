@@ -2328,42 +2328,37 @@ define([
         };
 
 
-        service.removeChild = function (parent, child) {
+        service.removeChild = function (parent, child, childKey) {
           if (!service.isRootNode(parent, child)) {
 
-            var id = service.getId(child);
-            var selectedKey;
-            var props = service.propertiesOf(parent);
-            angular.forEach(props, function (value, key) {
-              if (service.getId(value) == id) {
-                selectedKey = key;
-              }
-            });
 
-            if (selectedKey) {
+            var id = service.getId(child);
+            var props = service.propertiesOf(parent);
+
+            if (childKey && props[childKey]) {
               // Remove the key
-              delete props[selectedKey];
+              delete props[childKey];
 
               // Remove it from the order array
-              var idx = service.getOrder(parent).indexOf(selectedKey);
+              var idx = service.getOrder(parent).indexOf(childKey);
               service.getOrder(parent).splice(idx, 1);
 
               // Remove the property label (for elements)
-              if (service.getPropertyLabels(parent)[selectedKey]) {
-                delete service.getPropertyLabels(parent)[selectedKey];
+              if (service.getPropertyLabels(parent)[childKey]) {
+                delete service.getPropertyLabels(parent)[childKey];
               }
-              if (service.getPropertyDescriptions(parent)[selectedKey]) {
-                delete service.getPropertyDescriptions(parent)[selectedKey];
+              if (service.getPropertyDescriptions(parent)[childKey]) {
+                delete service.getPropertyDescriptions(parent)[childKey];
               }
 
               // Remove it from the top-level 'required' array
-              service.removeKeyFromRequired(parent, selectedKey);
+              service.removeKeyFromRequired(parent, childKey);
 
               // Remove it from the context
-              service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
+              service.removeKeyFromContext(service.schemaOf(parent), childKey);
 
             }
-            return selectedKey;
+            return childKey;
           }
         };
 

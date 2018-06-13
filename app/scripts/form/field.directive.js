@@ -251,7 +251,7 @@ define([
             $rootScope.$broadcast("form:clear");
 
           } else {
-            dms.removeChild($scope.parentElement, $scope.field);
+            dms.removeChild($scope.parentElement, $scope.field, $scope.fieldKey);
             $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
           }
         }
