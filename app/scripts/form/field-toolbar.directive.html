@@ -55,7 +55,7 @@
 
   <button ng-if="hasHelp()" type="button" class="question" tooltip-append-to-body="true"
       ng-click="$event.stopPropagation()"
-      uib-tooltip="{{getHelp() | translate}}"
+      uib-tooltip="{{getHelp()}}"
       tooltip-enable="hasHelp()" >
     <i class="fa fa-question-circle"></i>
   </button>

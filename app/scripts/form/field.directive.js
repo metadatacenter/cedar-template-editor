@@ -251,7 +251,7 @@ define([
             $rootScope.$broadcast("form:clear");
 
           } else {
-            dms.removeChild($scope.parentElement, $scope.field);
+            dms.removeChild($scope.parentElement, $scope.field, $scope.fieldKey);
             $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
           }
         }
@@ -394,12 +394,12 @@ define([
       $scope.showModal = function (type) {
         if (type) {
           // TODO don't pass the search string through rootScope
-          $rootScope.finalTitle = $scope.getTitle();
+          $rootScope.finalTitle = $scope.getLabel();
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          $rootScope.$broadcast("ctdc:init", [$scope.getLabel()]);
         }
       };
 
