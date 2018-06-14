@@ -1085,15 +1085,6 @@ button {
         left: auto;
       }
 
-      .cell.more {
-        color: #ccc;
-        font-size: 24px;
-        &:hover {
-          &:hover {
-            color: #aaa;
-          }
-        }
-      }
 
       .title {
         text-transform: uppercase;
@@ -1151,6 +1142,27 @@ button {
           text-overflow: ellipsis;
           vertical-align: middle;
           padding:4px;
+
+          &.type {
+            padding:4px 20px;
+            div.cell.icon {
+              background:@white;
+              i {
+              color:@brand-primary;
+              }
+            }
+          }
+
+          &.more {
+            color: #ccc;
+            font-size: 20px;
+            font-weight:200;
+            &:hover {
+              &:hover {
+                color: #aaa;
+              }
+            }
+          }
         
 
           &.icon {

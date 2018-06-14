@@ -300,7 +300,7 @@ define([
       // remove the field from the form
       scope.ckDelete = function () {
         dms.removeChild(scope.parentElement, scope.field);
-        scope.$emit("invalidFieldtState",
+        scope.$emit("invalidFieldState",
             ["remove", scope.getTitle(), scope.getId()]);
       };
 

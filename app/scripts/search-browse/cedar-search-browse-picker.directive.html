@@ -236,30 +236,32 @@
 
                 <ul ng-if="dc.isFilterSection('version')" class="list-inline filter-resource-version ">
                   <li>
-                    <div ng-click="dc.toggleResourcePublicationStatus('bibo:published')"
+                    <div ng-click="dc.setPublication('bibo:draft')"
+                        class="draft no-select"
+                        ng-class="{ active: dc.getPublication('bibo:draft') }">
+                      <i class="btn fa" ng-class="dc.getVersionIcon('bibo:draft')"></i>{{'GENERIC.Draft' | translate}}
+                    </div>
+                  </li>
+                  <li>
+                    <div ng-click="dc.setPublication('bibo:published')"
                         class="published no-select"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }">
+                        ng-class="{ active: dc.getPublication('bibo:published') }">
                       <i class="btn fa" ng-class="dc.getVersionIcon('bibo:published')"></i>{{'GENERIC.Published' |
                       translate}}
                     </div>
                   </li>
                   <li>
-                    <div ng-click="dc.toggleResourcePublicationStatus('bibo:draft')"
-                        class="draft no-select"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }">
-                      <i class="btn fa" ng-class="dc.getVersionIcon('bibo:draft')"></i>{{'GENERIC.Draft' | translate}}
-                    </div>
-                  </li>
-                  <li>
-                    <div ng-click="dc.toggleResourceVersion('latest')"
+                    <div ng-click="dc.setPublication('latest')"
                         class="latest no-select"
-                        ng-class="{ active: dc.isResourceVersionActive('latest') }">
+                        ng-class="{ active: dc.getPublication('latest') }">
                       <i class="btn fa " ng-class="dc.getVersionIcon('latest')"></i>{{'GENERIC.Latest' | translate}}
                     </div>
                   </li>
                 </ul>
               </li>
             </ul>
+
+
           </div>
         </div>
       </div>
@@ -385,18 +387,17 @@
                 </div>
               </div>
 
-              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
-                  style="height:auto">
+              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto">
 
                 <div class="box-title">
                   <div class="cell type"></div>
-                  <div class="cell more"></div>
                   <a class="cell resource" ng-class="{'bold': dc.isSort('name')}" href="#" href="#"
                       ng-click="dc.updateSort('name')">Title</a>
                   <a class="cell date" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
                       ng-click="dc.updateSort('createdOnTS')">Created</a>
                   <a class="cell date" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
                       ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
+                  <div class="cell more"></div>
                 </div>
 
                 <!-- show the folders first -->
@@ -409,6 +410,26 @@
                     ng-repeat="(index, resource) in dc.resources">
 
                   <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
+                  <div class="cell resource">{{ resource['schema:name'] }}</div>
+                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
+                    <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
+                      <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                          class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
+                      </button>
+
+                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                          rename="dc.showRenameModal"
+                          publish="dc.publishResource" create-draft="dc.createDraftResource"
+                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                      </cedar-dropdown-menu>
+                    </div>
+                  </div>
                   <div class="cell more " style="text-align:right">
                     <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                         uib-tooltip="{{dc.getResourceVersion(resource)}}"
@@ -433,10 +454,19 @@
                         can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                     </cedar-dropdown-menu>
                   </div>
+                </div>
+
+                <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%"
+                    ng-class="{ selected: dc.isResourceSelected(resource) }"
+                    ng-click="dc.selectResource(resource)"
+                    ng-dblclick="dc.goToResource(resource)"
+                    ng-repeat="(index, resource) in dc.resources">
+
+                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
                   <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
                   <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-                    <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
+                    <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                           class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
@@ -453,15 +483,6 @@
                       </cedar-dropdown-menu>
                     </div>
                   </div>
-                </div>
-
-                <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
-                    ng-click="dc.selectResource(resource)"
-                    ng-dblclick="dc.goToResource(resource)"
-                    ng-repeat="(index, resource) in dc.resources">
-
-                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell more " style="text-align:right" >
                     <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                         uib-tooltip="{{dc.getResourceVersion(resource)}}"
@@ -485,27 +506,6 @@
                         can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                         can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                     </cedar-dropdown-menu>
-                  </div>
-
-                  <div class="cell resource">{{ resource['schema:name'] }}</div>
-                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-                    <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
-                      <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                          class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                      </button>
-
-                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
-                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
-                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
-                          rename="dc.showRenameModal"
-                          publish="dc.publishResource" create-draft="dc.createDraftResource"
-                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-                      </cedar-dropdown-menu>
-                    </div>
                   </div>
                 </div>
               </div>

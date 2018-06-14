@@ -121,6 +121,7 @@ define([
           vm.isPublished = isPublished;
           vm.createVersion = createVersion;
 
+
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
@@ -138,10 +139,21 @@ define([
 
           vm.isResourcePublicationStatusActive = isResourcePublicationStatusActive;
           vm.setResourcePublicationStatus = setResourcePublicationStatus;
-          vm.toggleResourcePublicationStatus = toggleResourcePublicationStatus;
+          vm.setPublication = setPublication;
+          vm.getPublication = getPublication;
+          vm.setResourceVersion = setResourceVersion;
+
+
+
+          vm.getPublicationVersion = getPublicationVersion;
+          vm.setPublicationVersion = setPublicationVersion;
+
+
+          vm.getPublicationStatus = getPublicationStatus;
+          vm.setPublicationStatus = setPublicationStatus;
 
           vm.isResourceVersionActive = isResourceVersionActive;
-          vm.setResourceVersion = setResourceVersion;
+
           vm.toggleResourceVersion = toggleResourceVersion;
           vm.getVersionIcon = getVersionIcon;
 
@@ -1247,18 +1259,80 @@ define([
             init();
           }
 
+          function getPublication(value) {
+            var result = false;
+            switch (value) {
+              case 'bibo:draft':
+                result = ((vm.resourcePublicationStatusFilterValue == 'bibo:draft' || vm.resourcePublicationStatusFilterValue == 'all'));
+                break;
+              case 'bibo:published':
+                result = ((vm.resourcePublicationStatusFilterValue == 'bibo:published' || vm.resourcePublicationStatusFilterValue == 'all'));
+                break;
+              case 'latest':
+                result = (vm.resourceVersionFilterValue == 'latest');
+                break;
+            }
+            return result;
+          }
 
-          function toggleResourcePublicationStatus(publicationStatus) {
-            var otherStatus = (publicationStatus == 'bibo:published') ? 'bibo:draft' : 'bibo:published';
+          function getPublicationStatus(value) {
+            var result = false;
+            switch (value) {
+              case 'bibo:draft':
+                result = (vm.resourcePublicationStatusFilterValue == 'bibo:draft');
+                break;
+              case 'bibo:published':
+                result = (vm.resourcePublicationStatusFilterValue == 'bibo:published');
+                break;
+              case 'all':
+                result = (vm.resourcePublicationStatusFilterValue == 'all');
+                break;
+            }
+            return result;
+          }
 
-            if (vm.isResourcePublicationStatusActive(publicationStatus)) {
-              vm.setResourcePublicationStatus(otherStatus);
-            } else {
-              if (vm.isResourcePublicationStatusActive(otherStatus)) {
-                vm.setResourcePublicationStatus('all');
-              } else {
-                vm.setResourcePublicationStatus(publicationStatus);
-              }
+          function getPublicationVersion(value) {
+            var result = false;
+            switch (value) {
+              case 'all':
+                result = (vm.resourceVersionFilterValue == 'all');
+                break;
+              case 'latest':
+                result = (vm.resourceVersionFilterValue == 'latest');
+                break;
+            }
+            return result;
+          }
+
+          function setPublicationStatus(value) {
+            vm.setResourcePublicationStatus(value);
+          }
+
+          function setPublicationVersion(value) {
+            vm.setResourceVersion(value);
+          }
+
+
+          function setPublication(value) {
+            switch (value) {
+
+              case 'bibo:draft':
+                if (vm.resourcePublicationStatusFilterValue == 'bibo:published') {
+                  vm.setResourcePublicationStatus('all');
+                } else {
+                  vm.setResourcePublicationStatus('bibo:draft');
+                }
+                break;
+              case 'bibo:published':
+                if (vm.resourcePublicationStatusFilterValue == 'bibo:draft') {
+                  vm.setResourcePublicationStatus('all');
+                } else {
+                  vm.setResourcePublicationStatus('bibo:published');
+                }
+                break;
+              case 'latest':
+                vm.toggleResourceVersion();
+                break;
             }
           }
 
@@ -1269,33 +1343,32 @@ define([
           }
 
 
-          function getVersionIcon(status) {
+          function getVersionIcon(value) {
             var result;
-            if (status == 'bibo:published') {
-              result = 'fa-check-square'
-            } else if (status == 'bibo:draft') {
-              result = 'fa-pencil-square'
-            } else if (status == 'latest') {
-              result = 'fa-clock-o';
+            switch (value) {
+              case 'bibo:draft':
+                result = 'fa-pencil-square';
+                break;
+              case 'bibo:published':
+                result = 'fa-check-square';
+                break;
+              case 'latest':
+                result = 'fa-clock-o';
+                break;
             }
             return result;
           }
+
 
           function toggleResourceVersion() {
             if (vm.resourceVersionFilterValue == 'latest') {
               setResourceVersion('all');
             } else {
-              vm.resourcePublicationStatusFilterValue = 'all';
-              UISettingsService.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', 'all');
-
-              vm.resourceVersionFilterValue = 'latest';
-              UISettingsService.saveUIPreference('resourceVersionFilter.version', 'latest');
-              init();
+              setResourceVersion('latest');
             }
           }
 
           function setResourceVersion(version) {
-
             vm.resourceVersionFilterValue = version;
             UISettingsService.saveUIPreference('resourceVersionFilter.version', version);
             init();
