@@ -468,7 +468,9 @@
       "invalidFields": "Values of the following fields are invalid:",
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
-      "validationErrors": "Validation errors:"
+      "validationErrors": "Validation errors:",
+      "valueTooBigError": "The value of the following fields is too big",
+      "valueTooSmallError": "The value of the following fields is too small"
     }
   },
   "PAGES": {

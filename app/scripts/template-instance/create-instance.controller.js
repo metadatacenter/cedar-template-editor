@@ -339,6 +339,28 @@ define([
       }
     });
 
+    // Initialize array for fields that are not conform to max value constraint
+    $scope.invalidFieldsValueTooBig = {};
+    $scope.$on('valueTooBigError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldsValueTooBig[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldsValueTooBig[args[2]];
+      }
+    });
+
+    // Initialize array for fields that are not conform to min value constraint
+    $scope.invalidFieldsValueTooSmall = {};
+    $scope.$on('valueTooSmallError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldsValueTooSmall[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldsValueTooSmall[args[2]];
+      }
+    });
+
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));

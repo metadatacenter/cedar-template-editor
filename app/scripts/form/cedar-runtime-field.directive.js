@@ -1277,10 +1277,20 @@ define([
       // Check the numeric value of the input value
       $scope.checkNumberValue = function () {
         var value = Number($scope.valueArray[$scope.index]['@value']);
-        var minValue = dms.getMinValue($scope.field) || Number.MIN_SAFE_INTEGER;
-        var maxValue = dms.getMaxValue($scope.field) || Number.MAX_SAFE_INTEGER;
-        $scope.forms['fieldEditForm'+$scope.index].activeNumericField.$setValidity('numberValue',
-            (value > minValue) && (value < maxValue));
+        if (value) {
+          var minValue = dms.getMinValue($scope.field);
+          var maxValue = dms.getMaxValue($scope.field);
+          var isTooBig = (minValue ? (value > maxValue) : false);
+          var isTooSmall = (maxValue ? (value < minValue) : false);
+          var isValid = !isTooBig && !isTooSmall;
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
+          $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', false);
+          $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+        }
       };
 
       // Check the decimal place of the input value
