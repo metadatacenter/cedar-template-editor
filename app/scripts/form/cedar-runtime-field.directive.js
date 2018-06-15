@@ -1303,10 +1303,21 @@ define([
       // Check the string length of the input value
       $scope.checkStringLength = function () {
         var value = $scope.valueArray[$scope.index]['@value']
-        var minLength = dms.getMinLength($scope.field) || 0;
-        var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
-        $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength',
-            (value.length > minLength) && (value.length < maxLength));
+        if (value) {
+          var valueLength = value.length;
+          var minLength = dms.getMinLength($scope.field) || 0;
+          var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
+          var isTooLong = (maxLength ? (valueLength > maxLength) : false);
+          var isTooShort = (minLength ? (valueLength < minLength) : false );
+          var isValid = !isTooLong && !isTooShort;
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
+          $scope.$emit('valueTooLongError', [isTooLong ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooShortError', [isTooShort ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
+          $scope.$emit('valueTooLongError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooShortError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+        }
       };
 
       // Check the numeric value of the input value

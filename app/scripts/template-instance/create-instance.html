@@ -38,6 +38,22 @@
                 <li ng-repeat="field in validationErrors">{{field}}</li>
               </ul>
             </div>
+            <div ng-if="!isEmpty(invalidFieldsValueTooLong)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span
+                  translate>VALIDATION.groupHeader.valueTooLongError</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in invalidFieldsValueTooLong">{{field}}</li>
+              </ul>
+            </div>
+            <div ng-if="!isEmpty(invalidFieldsValueTooShort)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span
+                  translate>VALIDATION.groupHeader.valueTooShortError</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in invalidFieldsValueTooShort">{{field}}</li>
+              </ul>
+            </div>
             <div ng-if="!isEmpty(invalidFieldsValueTooBig)" class="alert alert-danger" role="alert">
               <p><i class="fa fa-exclamation-triangle"></i><span
                   translate>VALIDATION.groupHeader.valueTooBigError</span>
