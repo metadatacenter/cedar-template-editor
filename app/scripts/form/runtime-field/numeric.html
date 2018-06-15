@@ -13,6 +13,7 @@
         validate-on="blur"
         ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
         ng-model="valueElement['@value']"
+        ng-focus="checkNumberValue();checkDecimalPlace()"
         ng-change="checkNumberValue();checkDecimalPlace()">
     </input>
 
