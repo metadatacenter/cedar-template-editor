@@ -1271,8 +1271,13 @@ define([
           text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
           text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
         } else {
-          text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) + "." + "0".repeat(decimalPlace) : "";
-          text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) + "." + "0".repeat(decimalPlace) : "";
+          if (dms.hasMinValue($scope.field) || dms.hasMaxValue($scope.field)) {
+            var decimalPlacesText = "." + "0".repeat(decimalPlace)
+            text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) + decimalPlacesText : "";
+            text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) + decimalPlacesText : "";
+          } else {
+            text += " with " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
+          }
         }
         return text;
       }
