@@ -1264,13 +1264,9 @@ define([
       };
 
       $scope.getPlaceholderText = function () {
-        var text = "Enter number";
+        var numberType = dms.getNumberType($scope.field);
+        var text = "Enter " + getNumberLabel(numberType) + " number";
         var decimalPlace = dms.getDecimalPlace($scope.field) || 0;
-        if (decimalPlace == 1) {
-          text = "Enter 1 decimal place number";
-        } else if (decimalPlace > 1) {
-          text = "Enter " + decimalPlace + " decimal places number";
-        }
         if (decimalPlace == 0) {
           text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
           text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
@@ -1279,6 +1275,22 @@ define([
           text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) + "." + "0".repeat(decimalPlace) : "";
         }
         return text;
+      }
+
+      var getNumberLabel = function(numberType) {
+        var label = "a";
+        if (numberType == "xsd:decimal") {
+          label = "decimal"
+        } else if (numberType == "xsd:int") {
+          label = "integer";
+        } else if (numberType == "xsd:long") {
+          label = "long-integer";
+        } else if (numberType == "xsd:float") {
+          label = "single-precision floating"
+        } else if (numberType == "xsd:double") {
+          label = "double-precision floating";
+        }
+        return label;
       }
 
       /* start of value constraints functionality */

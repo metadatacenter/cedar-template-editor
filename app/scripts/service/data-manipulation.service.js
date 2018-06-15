@@ -232,6 +232,15 @@ define([
           return service.hasDecimalPlace(node) && service.getValueConstraint(node).decimalPlace;
         }
 
+        // number type
+        service.hasNumberType = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('numberType');
+        }
+
+        service.getNumberType = function (node) {
+          return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;
