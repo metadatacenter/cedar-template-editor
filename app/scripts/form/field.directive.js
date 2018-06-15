@@ -1089,12 +1089,6 @@ define([
         $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
         $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
       }
-
-      $scope.setDefaultNumberType = function() {
-        var valueConstraints = dms.getValueConstraint($scope.field);
-        valueConstraints['numberType'] = 'xsd:decimal';
-      }
-
     };
 
 
