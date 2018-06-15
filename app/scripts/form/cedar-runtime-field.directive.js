@@ -1294,7 +1294,7 @@ define([
           $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
           $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
         } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', false);
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
           $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
           $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
         }
