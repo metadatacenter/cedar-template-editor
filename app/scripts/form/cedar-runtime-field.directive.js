@@ -1265,8 +1265,19 @@ define([
 
       $scope.getPlaceholderText = function () {
         var text = "Enter number";
-        text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
-        text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
+        var decimalPlace = dms.getDecimalPlace($scope.field) || 0;
+        if (decimalPlace == 1) {
+          text = "Enter 1 decimal place number";
+        } else if (decimalPlace > 1) {
+          text = "Enter " + decimalPlace + " decimal places number";
+        }
+        if (decimalPlace == 0) {
+          text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
+          text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
+        } else {
+          text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) + "." + "0".repeat(decimalPlace) : "";
+          text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) + "." + "0".repeat(decimalPlace) : "";
+        }
         return text;
       }
 
@@ -1303,9 +1314,15 @@ define([
       // Check the decimal place of the input value
       $scope.checkDecimalPlace = function () {
         var value = Number($scope.valueArray[$scope.index]['@value']);
-        var decimalPlace = dms.getDecimalPlace($scope.field) || 0;
-        $scope.forms['fieldEditForm'+$scope.index].activeNumericField.$setValidity('decimalPlace',
-            (countDecimals(value) <= decimalPlace));
+        if (value) {
+          var decimalPlace = dms.getDecimalPlace($scope.field);
+          var isValid = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
+          $scope.$emit('decimalPlaceError', [!isValid ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
+          $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+        }
       };
 
       var countDecimals = function (value) {

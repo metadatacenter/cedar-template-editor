@@ -54,6 +54,14 @@
                 <li ng-repeat="field in invalidFieldsValueTooSmall">{{field}}</li>
               </ul>
             </div>
+            <div ng-if="!isEmpty(invalidFieldsIncorrectDecimalPlace)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span
+                  translate>VALIDATION.groupHeader.incorrectDecimalPlaceError</span>
+              </p>
+              <ul>
+                <li ng-repeat="field in invalidFieldsIncorrectDecimalPlace">{{field}}</li>
+              </ul>
+            </div>
             <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>

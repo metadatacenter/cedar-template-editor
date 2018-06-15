@@ -223,9 +223,13 @@ define([
           return service.hasMaxValue(node) && service.getValueConstraint(node).maxValue;
         }
 
+        // decimal places
+        service.hasDecimalPlace = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('decimalPlace');
+        }
+
         service.getDecimalPlace = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('decimalPlace')
-              && service.getValueConstraint(node).decimalPlace;
+          return service.hasDecimalPlace(node) && service.getValueConstraint(node).decimalPlace;
         }
 
         // schema title and description

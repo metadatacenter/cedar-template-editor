@@ -361,6 +361,17 @@ define([
       }
     });
 
+    // Initialize array for fields that are not conform to decimal place constraint
+    $scope.invalidFieldsIncorrectDecimalPlace = {};
+    $scope.$on('decimalPlaceError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldsIncorrectDecimalPlace[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldsIncorrectDecimalPlace[args[2]];
+      }
+    });
+
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
