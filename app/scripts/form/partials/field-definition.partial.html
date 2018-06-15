@@ -55,10 +55,11 @@
 
 
       <input type="text"
-          class="form-control no-floating-label"
-          ng-model="fieldLabel[fieldLabelKey]"
+          class="form-control empty"
+          placeholder="{{getPropertyLabel()}}"
           aria-label="{{getDescription()}}"
-          ng-disabled="true"/>
+          ng-disabled="true"
+          with-floating-label/>
 
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
