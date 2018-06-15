@@ -1263,6 +1263,13 @@ define([
         return result;
       };
 
+      $scope.getPlaceholderText = function () {
+        var text = "Enter number";
+        text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
+        text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
+        return text;
+      }
+
       /* start of value constraints functionality */
 
       // Check the string length of the input value

@@ -207,14 +207,20 @@ define([
         }
 
         // min/max numeric value
+        service.hasMinValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('minValue');
+        }
+
         service.getMinValue = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('minValue')
-              && service.getValueConstraint(node).minValue;
+          return service.hasMinValue(node) && service.getValueConstraint(node).minValue;
+        }
+
+        service.hasMaxValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('maxValue')
         }
 
         service.getMaxValue = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('maxValue')
-              && service.getValueConstraint(node).maxValue;
+          return service.hasMaxValue(node) && service.getValueConstraint(node).maxValue;
         }
 
         service.getDecimalPlace = function (node) {
