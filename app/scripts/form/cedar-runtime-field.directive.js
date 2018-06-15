@@ -1285,15 +1285,15 @@ define([
       var getNumberLabel = function(numberType) {
         var label = "a";
         if (numberType == "xsd:decimal") {
-          label = "decimal"
+          label = "a decimal"
         } else if (numberType == "xsd:int") {
-          label = "integer";
+          label = "an integer";
         } else if (numberType == "xsd:long") {
-          label = "long-integer";
+          label = "a long-integer";
         } else if (numberType == "xsd:float") {
-          label = "single-precision floating"
+          label = "a single-precision floating"
         } else if (numberType == "xsd:double") {
-          label = "double-precision floating";
+          label = "a double-precision floating";
         }
         return label;
       }
