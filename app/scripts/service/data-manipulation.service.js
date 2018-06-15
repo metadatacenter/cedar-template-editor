@@ -1533,8 +1533,8 @@ define([
           return "xsd:date";
         };
 
-        service.generateInstanceTypeForNumericField = function () {
-          return "xsd:decimal";
+        service.generateInstanceTypeForNumericField = function (node) {
+          return service.getNumberType(node);
         };
 
         // returns the properties of a template, element, or field schema
@@ -1718,7 +1718,7 @@ define([
         service.initializeValueType = function (field, model) {
           var fieldType;
           if (service.isNumericField(field)) {
-            fieldType = service.generateInstanceTypeForNumericField();
+            fieldType = service.generateInstanceTypeForNumericField(field);
           }
           else if (service.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();
