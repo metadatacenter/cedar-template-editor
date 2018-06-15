@@ -1310,8 +1310,8 @@ define([
         if (value) {
           var minValue = dms.getMinValue($scope.field);
           var maxValue = dms.getMaxValue($scope.field);
-          var isTooBig = (minValue ? (value > maxValue) : false);
-          var isTooSmall = (maxValue ? (value < minValue) : false);
+          var isTooBig = (maxValue ? (value > maxValue) : false);
+          var isTooSmall = (minValue ? (value < minValue) : false);
           var isValid = !isTooBig && !isTooSmall;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
           $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
