@@ -1305,7 +1305,7 @@ define([
         var value = $scope.valueArray[$scope.index]['@value']
         var minLength = dms.getMinLength($scope.field) || 0;
         var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
-        $scope.forms.fieldEditForm0.activeTextField.$setValidity('stringLength',
+        $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength',
             (value.length > minLength) && (value.length < maxLength));
       };
 
