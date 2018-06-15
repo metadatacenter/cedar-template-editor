@@ -22,7 +22,6 @@
         class="form-control"
         placeholder="{{'CREATOR.enterNumberType' | translate}}"
         aria-label="{{'CREATOR.enterNumberType' | translate}}"
-        ng-init="setDefaultNumberType()"
         ng-model="$root.schemaOf(field)._valueConstraints.numberType"
         ng-if="isEditable()"
         with-floating-label>
