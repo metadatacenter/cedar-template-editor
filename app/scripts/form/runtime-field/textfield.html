@@ -15,7 +15,7 @@
           name="activeTextField"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter value' : ''}}"
+          placeholder="{{isActive(index) ? getPlaceholderText() : ''}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']"

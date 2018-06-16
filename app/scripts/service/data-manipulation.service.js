@@ -196,14 +196,20 @@ define([
         };
 
         // min/max string length
+        service.hasMinLength = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('minLength');
+        }
+
         service.getMinLength = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('minLength')
-              && service.getValueConstraint(node).minLength;
+          return service.hasMinLength(node) && service.getValueConstraint(node).minLength;
+        }
+
+        service.hasMaxLength = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('maxLength');
         }
 
         service.getMaxLength = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('maxLength')
-              && service.getValueConstraint(node).maxLength;
+          return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
         }
 
         // min/max numeric value
