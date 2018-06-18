@@ -1264,7 +1264,7 @@ define([
       }
 
       $scope.getPlaceholderText = function () {
-        var text = "Enter value";
+        var text = "Enter a value";
         if (dms.isTextFieldType($scope.field)) {
           text = getPlaceholderForTextField($scope.field);
         } else if (dms.isNumericField($scope.field)) {
