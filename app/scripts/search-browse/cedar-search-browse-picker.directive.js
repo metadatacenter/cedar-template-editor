@@ -272,8 +272,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return CedarUser.hasPermission(
-                    'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource.isBasedOn === "Baszd meg!";
           };
 
 
