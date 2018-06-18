@@ -13,6 +13,11 @@ define([
 
 
     var linker = function (scope, element, attrs) {
+
+
+      // var el = element[0]; // elem - jQLite element, el - native DOM element
+      // console.log(el.getBoundingClientRect());
+
     };
 
     return {
