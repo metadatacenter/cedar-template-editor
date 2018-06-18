@@ -1322,8 +1322,8 @@ define([
         var value = $scope.valueArray[$scope.index]['@value']
         if (value) {
           var valueLength = value.length;
-          var minLength = dms.getMinLength($scope.field) || 0;
-          var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
+          var minLength = dms.getMinLength($scope.field);
+          var maxLength = dms.getMaxLength($scope.field);
           var isTooLong = (maxLength ? (valueLength > maxLength) : false);
           var isTooShort = (minLength ? (valueLength < minLength) : false );
           var isValid = !isTooLong && !isTooShort;
