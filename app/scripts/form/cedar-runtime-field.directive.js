@@ -957,6 +957,24 @@ define([
         var id = $scope.getId();
         //var id = $scope.getId() + '-' + $scope.index;
 
+        // Validate the value against some user-defined value constraints
+        var value = Number($scope.valueArray[$scope.index]['@value']);
+        if (value) {
+          var minValue = dms.getMinValue($scope.field);
+          var maxValue = dms.getMaxValue($scope.field);
+          var decimalPlace = dms.getDecimalPlace($scope.field);
+          var isTooBig = (maxValue ? (value > maxValue) : false);
+          var isTooSmall = (minValue ? (value < minValue) : false);
+          var isCorrectDecimalPlace = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+          $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+          $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+          $scope.$emit('decimalPlaceError', [!isCorrectDecimalPlace ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+        } else {
+          $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+          $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+          $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+        }
+
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($scope.hasValueConstraint() && $scope.isRequired()) {
           var allRequiredFieldsAreFilledIn = true;
@@ -1347,12 +1365,8 @@ define([
           var isTooSmall = (minValue ? (value < minValue) : false);
           var isValid = !isTooBig && !isTooSmall;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
-          $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
-          $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
-          $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
-          $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
         }
       };
 
@@ -1363,10 +1377,8 @@ define([
           var decimalPlace = dms.getDecimalPlace($scope.field);
           var isValid = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
-          $scope.$emit('decimalPlaceError', [!isValid ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
-          $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
         }
       };
 
