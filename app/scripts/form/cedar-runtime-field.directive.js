@@ -1261,20 +1261,37 @@ define([
           result = (isNaN(year) || isNaN(month) || isNaN(day));
         }
         return result;
-      };
+      }
 
       $scope.getPlaceholderText = function () {
-        var numberType = dms.getNumberType($scope.field);
+        var text = "Enter a value";
+        if (dms.isTextFieldType($scope.field)) {
+          text = getPlaceholderForTextField($scope.field);
+        } else if (dms.isNumericField($scope.field)) {
+          text = getPlaceholderForNumericField($scope.field);
+        }
+        return text;
+      }
+
+      var getPlaceholderForTextField = function(node) {
+        var text = "Enter a value";
+        text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
+        text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
+        return text;
+      }
+
+      var getPlaceholderForNumericField = function(node) {
+        var numberType = dms.getNumberType(node);
         var text = "Enter " + getNumberLabel(numberType) + " number";
-        var decimalPlace = dms.getDecimalPlace($scope.field) || 0;
+        var decimalPlace = dms.getDecimalPlace(node) || 0;
         if (decimalPlace == 0) {
-          text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) : "";
-          text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) : "";
+          text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
+          text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
         } else {
-          if (dms.hasMinValue($scope.field) || dms.hasMaxValue($scope.field)) {
+          if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
             var decimalPlacesText = "." + "0".repeat(decimalPlace)
-            text += dms.hasMinValue($scope.field) ? ", min: " + dms.getMinValue($scope.field) + decimalPlacesText : "";
-            text += dms.hasMaxValue($scope.field) ? ", max: " + dms.getMaxValue($scope.field) + decimalPlacesText : "";
+            text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
+            text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
           } else {
             text += " with " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
           }
@@ -1303,10 +1320,21 @@ define([
       // Check the string length of the input value
       $scope.checkStringLength = function () {
         var value = $scope.valueArray[$scope.index]['@value']
-        var minLength = dms.getMinLength($scope.field) || 0;
-        var maxLength = dms.getMaxLength($scope.field) || Number.MAX_SAFE_INTEGER;
-        $scope.forms.fieldEditForm0.activeTextField.$setValidity('stringLength',
-            (value.length > minLength) && (value.length < maxLength));
+        if (value) {
+          var valueLength = value.length;
+          var minLength = dms.getMinLength($scope.field);
+          var maxLength = dms.getMaxLength($scope.field);
+          var isTooLong = (maxLength ? (valueLength > maxLength) : false);
+          var isTooShort = (minLength ? (valueLength < minLength) : false );
+          var isValid = !isTooLong && !isTooShort;
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
+          $scope.$emit('valueTooLongError', [isTooLong ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooShortError', [isTooShort ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
+          $scope.$emit('valueTooLongError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+          $scope.$emit('valueTooShortError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
+        }
       };
 
       // Check the numeric value of the input value

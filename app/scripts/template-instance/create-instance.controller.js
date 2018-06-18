@@ -339,6 +339,28 @@ define([
       }
     });
 
+    // Initialize array for fields that are not conform to max length constraint
+    $scope.invalidFieldsValueTooLong = {};
+    $scope.$on('valueTooLongError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldsValueTooLong[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldsValueTooLong[args[2]];
+      }
+    });
+
+    // Initialize array for fields that are not conform to min length constraint
+    $scope.invalidFieldsValueTooShort = {};
+    $scope.$on('valueTooShortError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldsValueTooShort[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldsValueTooShort[args[2]];
+      }
+    });
+
     // Initialize array for fields that are not conform to max value constraint
     $scope.invalidFieldsValueTooBig = {};
     $scope.$on('valueTooBigError', function (event, args) {
