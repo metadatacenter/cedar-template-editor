@@ -1372,8 +1372,9 @@ define([
 
       // Check the numeric value of the input value
       $scope.checkNumberValue = function () {
-        var value = Number($scope.valueArray[$scope.index]['@value']);
+        var value = $scope.valueArray[$scope.index]['@value'];
         if (value) {
+          value = Number(value);
           var minValue = dms.getMinValue($scope.field);
           var maxValue = dms.getMaxValue($scope.field);
           var isTooBig = (maxValue ? (value > maxValue) : false);
