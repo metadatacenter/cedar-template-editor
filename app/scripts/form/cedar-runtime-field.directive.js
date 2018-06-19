@@ -957,22 +957,41 @@ define([
         var id = $scope.getId();
         //var id = $scope.getId() + '-' + $scope.index;
 
-        // Validate the value against some user-defined value constraints
-        var value = Number($scope.valueArray[$scope.index]['@value']);
-        if (value) {
-          var minValue = dms.getMinValue($scope.field);
-          var maxValue = dms.getMaxValue($scope.field);
-          var decimalPlace = dms.getDecimalPlace($scope.field);
-          var isTooBig = (maxValue ? (value > maxValue) : false);
-          var isTooSmall = (minValue ? (value < minValue) : false);
-          var isCorrectDecimalPlace = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
-          $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
-          $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
-          $scope.$emit('decimalPlaceError', [!isCorrectDecimalPlace ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
-        } else {
-          $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
-          $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
-          $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+        // Validate the value of a text field
+        if (dms.isTextFieldType($scope.field)) {
+          var value = $scope.valueArray[$scope.index]['@value'];
+          if (value) {
+            var valueLength = value.length;
+            var minLength = dms.getMinLength($scope.field);
+            var maxLength = dms.getMaxLength($scope.field);
+            var isTooLong = (maxLength ? (valueLength > maxLength) : false);
+            var isTooShort = (minLength ? (valueLength < minLength) : false );
+            $scope.$emit('valueTooLongError', [isTooLong ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooShortError', [isTooShort ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+          } else {
+            $scope.$emit('valueTooLongError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooShortError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+          }
+        }
+            
+        // Validate the value of a numeric field
+        if (dms.isNumericField($scope.field)) {
+          var value = Number($scope.valueArray[$scope.index]['@value']);
+          if (value) {
+            var minValue = dms.getMinValue($scope.field);
+            var maxValue = dms.getMaxValue($scope.field);
+            var decimalPlace = dms.getDecimalPlace($scope.field);
+            var isTooBig = (maxValue ? (value > maxValue) : false);
+            var isTooSmall = (minValue ? (value < minValue) : false);
+            var isCorrectDecimalPlace = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+            $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('decimalPlaceError', [!isCorrectDecimalPlace ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+          } else {
+            $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+          }
         }
 
         // If field is required and is empty, emit failed emptyRequiredField event
@@ -1346,12 +1365,8 @@ define([
           var isTooShort = (minLength ? (valueLength < minLength) : false );
           var isValid = !isTooLong && !isTooShort;
           $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
-          $scope.$emit('valueTooLongError', [isTooLong ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
-          $scope.$emit('valueTooShortError', [isTooShort ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()])
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
-          $scope.$emit('valueTooLongError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
-          $scope.$emit('valueTooShortError', ['remove', $scope.getPropertyLabel(), $scope.getId()])
         }
       };
 
