@@ -247,6 +247,15 @@ define([
           return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
         }
 
+        // unit of measure
+        service.hasUnitOfMeasure = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('unitOfMeasure');
+        }
+
+        service.getUnitOfMeasure = function (node) {
+          return service.hasUnitOfMeasure(node) && service.getValueConstraint(node).unitOfMeasure;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;

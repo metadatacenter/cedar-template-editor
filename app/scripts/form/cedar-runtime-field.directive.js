@@ -1320,6 +1320,9 @@ define([
       var getPlaceholderForNumericField = function(node) {
         var numberType = dms.getNumberType(node);
         var text = "Enter " + getNumberLabel(numberType) + " number";
+        if (dms.hasUnitOfMeasure(node)) {
+          text += " (in " + dms.getUnitOfMeasure(node) +")";
+        }
         var decimalPlace = dms.getDecimalPlace(node) || 0;
         if (decimalPlace == 0) {
           text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
