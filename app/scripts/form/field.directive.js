@@ -1065,11 +1065,17 @@ define([
       };
 
       $scope.getPropertyLabel = function () {
-        return dms.getPropertyLabels($scope.parentElement)[$scope.fieldKey];
+        var labels = dms.getPropertyLabels($scope.parentElement);
+        return (labels && labels[$scope.fieldKey]) ? labels[$scope.fieldKey] : '';
+      };
+
+      $scope.getLabel = function () {
+        return $scope.getPropertyLabel() || $scope.getTitle();
       };
 
       $scope.getPropertyDescription = function () {
-        return dms.getPropertyDescriptions($scope.parentElement)[$scope.fieldKey];
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return descriptions && descriptions[$scope.fieldKey];
       };
 
       $scope.getPropertyId = function () {
