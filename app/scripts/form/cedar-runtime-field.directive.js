@@ -976,8 +976,9 @@ define([
             
         // Validate the value of a numeric field
         if (dms.isNumericField($scope.field)) {
-          var value = Number($scope.valueArray[$scope.index]['@value']);
+          var value = $scope.valueArray[$scope.index]['@value'];
           if (value) {
+            value = Number(value);
             var minValue = dms.getMinValue($scope.field);
             var maxValue = dms.getMaxValue($scope.field);
             var decimalPlace = dms.getDecimalPlace($scope.field);
