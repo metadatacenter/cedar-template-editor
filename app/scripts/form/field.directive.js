@@ -461,15 +461,19 @@ define([
 
       // Used to update schema:name when the field label (stored in propertyLabels) changes
       $scope.$watch("fieldLabel[fieldLabelKey]", function () {
-        if ($scope.isEditable()) {
-          dms.setTitle($scope.field, $scope.fieldLabel[$scope.fieldLabelKey])
+        if (!angular.isUndefined($scope.fieldLabelKey) && !angular.isUndefined($scope.fieldLabel[$scope.fieldLabelKey])) {
+          if ($scope.isEditable()) {
+            dms.setTitle($scope.field, $scope.fieldLabel[$scope.fieldLabelKey]);
+          }
         }
       }, true);
 
       // Used to update schema:description when the field description (stored in propertyDescriptions) changes
       $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
-        if ($scope.isEditable()) {
-          dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey])
+        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
+          if ($scope.isEditable()) {
+            dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
+          }
         }
       }, true);
 
