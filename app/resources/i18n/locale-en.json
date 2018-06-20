@@ -469,11 +469,11 @@
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
       "validationErrors": "Validation errors:",
-      "valueTooLongError": "The value of the following fields is too long",
-      "valueTooShortError": "The value of the following fields is too short",
-      "valueTooBigError": "The value of the following fields is too big",
-      "valueTooSmallError": "The value of the following fields is too small",
-      "incorrectDecimalPlaceError": "The value of the following fields has an incorrect decimal place"
+      "valueTooLongError": "The value of the following field(s) is too long",
+      "valueTooShortError": "The value of the following field(s) is too short",
+      "valueTooLargeError": "The value of the following field(s) is too large",
+      "valueTooSmallError": "The value of the following field(s) is too small",
+      "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
     }
   },
   "PAGES": {

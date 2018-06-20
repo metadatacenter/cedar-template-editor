@@ -981,14 +981,14 @@ define([
             var minValue = dms.getMinValue($scope.field);
             var maxValue = dms.getMaxValue($scope.field);
             var decimalPlace = dms.getDecimalPlace($scope.field);
-            var isTooBig = (maxValue ? (value > maxValue) : false);
+            var isTooLarge = (maxValue ? (value > maxValue) : false);
             var isTooSmall = (minValue ? (value < minValue) : false);
             var isCorrectDecimalPlace = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
-            $scope.$emit('valueTooBigError', [isTooBig ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooLargeError', [isTooLarge ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
             $scope.$emit('valueTooSmallError', [isTooSmall ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
             $scope.$emit('decimalPlaceError', [!isCorrectDecimalPlace ? 'add' : 'remove', $scope.getPropertyLabel(), $scope.getId()]);
           } else {
-            $scope.$emit('valueTooBigError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
+            $scope.$emit('valueTooLargeError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
             $scope.$emit('valueTooSmallError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
             $scope.$emit('decimalPlaceError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
           }
@@ -1380,9 +1380,9 @@ define([
           value = Number(value);
           var minValue = dms.getMinValue($scope.field);
           var maxValue = dms.getMaxValue($scope.field);
-          var isTooBig = (maxValue ? (value > maxValue) : false);
+          var isTooLarge = (maxValue ? (value > maxValue) : false);
           var isTooSmall = (minValue ? (value < minValue) : false);
-          var isValid = !isTooBig && !isTooSmall;
+          var isValid = !isTooLarge && !isTooSmall;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);

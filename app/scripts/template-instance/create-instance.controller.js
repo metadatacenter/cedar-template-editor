@@ -363,7 +363,7 @@ define([
 
     // Initialize array for fields that are not conform to max value constraint
     $scope.invalidFieldsValueTooBig = {};
-    $scope.$on('valueTooBigError', function (event, args) {
+    $scope.$on('valueTooLargeError', function (event, args) {
       if (args[0] == 'add') {
         $scope.invalidFieldsValueTooBig[args[2]] = args[1];
       }
