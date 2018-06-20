@@ -81,7 +81,7 @@ define([
       };
 
       $scope.getLabel = function () {
-        return $scope.getTitle() || $scope.getPropertyLabel();
+        return $scope.getPropertyLabel() || $scope.getTitle();
       };
 
       $scope.getHelp = function () {

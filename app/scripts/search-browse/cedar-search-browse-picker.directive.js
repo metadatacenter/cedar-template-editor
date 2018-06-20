@@ -272,7 +272,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource.isBasedOn === "Baszd meg!";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
           };
 
 

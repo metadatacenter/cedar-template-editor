@@ -575,11 +575,11 @@ define([
 
         // Relabel the element key with a new value from the propertyLabels
         service.relabel = function (parent, key, title, label, description) {
-          if (key != title) {
 
+          if (key != title) {
             var schema = service.schemaOf(parent);
             var properties = service.propertiesOf(parent);
-            var newKey = service.getAcceptableKey(properties, label);
+            var newKey = service.getAcceptableKey(properties, label, key);
 
             angular.forEach(properties, function (value, k) {
               if (value && key == k) {
@@ -1778,6 +1778,7 @@ define([
         };
 
         service.getAcceptableKey = function (obj, suggestedKey, currentKey) {
+
           if (!obj || typeof(obj) != "object") {
             return;
           }
@@ -1788,7 +1789,7 @@ define([
 
           var key = suggestedKey;
 
-          if (obj[key]) {
+          if (obj[key]) { // if the object already contains the suggested key, generate an acceptable key
             var idx = 1;
             var newKey = "" + key + idx;
             while (obj[newKey]) {
