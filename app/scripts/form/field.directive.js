@@ -165,12 +165,12 @@ define([
 
       $scope.getPropertyDescription = function () {
         var descriptions = dms.getPropertyDescriptions($scope.parentElement);
-        return  descriptions ?  descriptions[$scope.fieldKey] : false;
+        return  descriptions ? descriptions[$scope.fieldKey] : false;
       };
 
       $scope.hasPropertyDescription = function () {
         var descriptions = dms.getPropertyDescriptions($scope.parentElement);
-        return descriptions &&  descriptions[$scope.fieldKey] && descriptions[$scope.fieldKey].length > 0;
+        return descriptions && descriptions[$scope.fieldKey] && descriptions[$scope.fieldKey].length > 0;
       };
 
       $scope.getDescription = function () {
@@ -421,7 +421,7 @@ define([
 
 
       //
-      // watches
+      // watchers
       //
 
       // watch for this field's deselect
@@ -457,6 +457,20 @@ define([
           return (dms.addOption($scope.field));
         };
 
+      }, true);
+
+      // Used to update schema:name when the field label (stored in propertyLabels) changes
+      $scope.$watch("fieldLabel[fieldLabelKey]", function () {
+        if ($scope.isEditable()) {
+          dms.setTitle($scope.field, $scope.fieldLabel[$scope.fieldLabelKey])
+        }
+      }, true);
+
+      // Used to update schema:description when the field description (stored in propertyDescriptions) changes
+      $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
+        if ($scope.isEditable()) {
+          dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey])
+        }
       }, true);
 
       $scope.isFirstLevel = function () {
