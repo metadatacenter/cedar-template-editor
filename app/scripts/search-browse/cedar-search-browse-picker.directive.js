@@ -372,6 +372,19 @@ define([
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
                     }
                 );
+              } else if (nodeType == 'field') {
+                AuthorizedBackendService.doCall(
+                    resourceService.renameNode(id, null, description),
+                    function (response) {
+
+                      var title = DataManipulationService.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.field.update.error', err);
+                    }
+                );
               } else if (nodeType == 'element') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),

@@ -444,8 +444,8 @@
 
                   <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
-                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
+                  <div class="cell date">{{ resource['pav:createdOn'] | prettyDate }}</div>
+                  <div class="cell date">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
                     <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -475,8 +475,8 @@
 
                   <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
                   <div class="cell resource">{{ resource['schema:name'] }}</div>
-                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
+                  <div class="cell date">{{ resource['pav:createdOn'] | prettyDate }}</div>
+                  <div class="cell date">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
                     <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                       <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -570,7 +570,7 @@
           <div class="row">
             <div class="col-sm-4 left ">Modified</div>
             <div class="col-sm-8 modified">
-              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
+              <span class="no-wrap">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
             </div>
@@ -578,7 +578,7 @@
           <div class="row">
             <div class="col-sm-4 left ">Created</div>
             <div class="col-sm-8 created">
-              <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
+              <span class="no-wrap">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
             </div>
@@ -628,14 +628,13 @@
           <div>
             <button
                 style="background:transparent"
-                ng-show="!dc.editingDescription"
+                ng-show="!dc.editingDescription && dc.canWrite()"
                 type="button"
                 uib-tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-                ng-show="dc.canWrite()"
                 ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
 
