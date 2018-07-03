@@ -26,7 +26,7 @@
               <div class="col-sm-7">
 
                 <input  auto-focus placeholder="enter group name" type="text"
-                    ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
+                    ng-change="share.updateGroupPermission(share.typeaheadGroup['@id'])"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
                     uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "
@@ -38,7 +38,7 @@
 
               <select ng-disabled="!share.typeaheadGroup" class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
                   data-dropup-auto="false" class="dropdown group-permission" select-picker
-                  select-model="share.typeaheadGroup.id"
+                  select-model="share.typeaheadGroup['@id']"
                   cedar-live-search="true">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
@@ -55,7 +55,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadGroup"
-                    ng-click="share.addShare(share.typeaheadGroup.id, share.giveGroupPermission, 'shared-users', resource);share.clearTypeAheadGroup()">
+                    ng-click="share.addShare(share.typeaheadGroup['@id'], share.giveGroupPermission, 'shared-users', resource);share.clearTypeAheadGroup()">
                   <!--<span aria-hidden="true">&plus;</span>-->
                   <i class="fa fa-plus" ></i>
                 </button>
@@ -106,11 +106,11 @@
 
               <select ng-disabled="!share.typeaheadUser" ng-model="share.giveUserPermission"
                   data-dropup-auto="false" class="dropup col-sm-4 select-picker user-permission" select-picker
-                  select-model="share.typeaheadUser.id"
+                  select-model="share.typeaheadUser['@id']"
                   cedar-live-search="true">
                 <option value="read" translate>GENERIC.canRead</option>
                 <option value="write" translate>GENERIC.canWrite</option>
-                <option ng-show="share.canBeOwner(share.typeaheadUser.id)" value="own" translate>GENERIC.isOwner</option>
+                <option ng-show="share.canBeOwner(share.typeaheadUser['@id'])" value="own" translate>GENERIC.isOwner</option>
               </select>
 
               <div class="col-sm-1 pull-right">
@@ -124,7 +124,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-disabled="!share.typeaheadUser"
-                    ng-click="share.addShare(share.typeaheadUser.id, share.giveUserPermission, 'shared-users', resource);share.clearTypeAheadUser()">
+                    ng-click="share.addShare(share.typeaheadUser['@id'], share.giveUserPermission, 'shared-users', resource);share.clearTypeAheadUser()">
                   <!--<span aria-hidden="true">&plus;</span>-->
                   <i class="fa fa-plus" ></i>
                 </button>
@@ -159,19 +159,19 @@
 
               <div class="row" ng-repeat="sh in share.shares">
 
-                <div class="col-sm-7 name">{{sh.node.name}}</div>
+                <div class="col-sm-7 name">{{sh.node['schema:name']}}</div>
 
                 <select ng-model="sh.permission" class="col-sm-4 select-picker" select-picker
-                    ng-change="share.addShare(sh.node.id, sh.permission, 'shared-users', resource)"
+                    ng-change="share.addShare(sh.node['@id'], sh.permission, 'shared-users', resource)"
                     select-model="sh"
                     cedar-live-search="true" ng-disabled="!share.canWrite()">
 
 
-                  <option ng-show="(!share.canWrite() && sh.permisison === 'read') || share.canWrite()" value="read"
+                  <option ng-show="(!share.canWrite() && sh.permission === 'read') || share.canWrite()" value="read"
                       translate>
                     GENERIC.canRead
                   </option>
-                  <option ng-show="(!share.canWrite() && sh.permisison === 'write') || share.canWrite()"
+                  <option ng-show="(!share.canWrite() && sh.permission === 'write') || share.canWrite()"
                       value="write" translate>GENERIC.canWrite
                   </option>
                   <option ng-show="share.canBeOwner(sh.node.id)" value="own" translate>GENERIC.isOwner</option>
@@ -213,7 +213,7 @@
             <div class="row">
               <div class="col-sm-11 ">
                 <input auto-focus placeholder="enter group name" type="text"
-                    ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
+                    ng-change="share.updateGroupPermission(share.typeaheadGroup['@id'])"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
                     uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "

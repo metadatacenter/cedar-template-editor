@@ -637,8 +637,8 @@ define([
         function createGroup(name, description, successCallback, errorCallback) {
           var url = urlService.getGroups();
           var payload = {
-            name       : name,
-            description: description
+            "schema:name"       : name,
+            "schema:description": description
           };
           authorizedBackendService.doCall(
               httpBuilderService.post(url, payload),
@@ -650,7 +650,7 @@ define([
         }
 
         function updateGroup(group, successCallback, errorCallback) {
-          var url = urlService.getGroup(group.id);
+          var url = urlService.getGroup(group['@id']);
 
           authorizedBackendService.doCall(
               httpBuilderService.put(url, angular.toJson(group)),
@@ -686,7 +686,7 @@ define([
         }
 
         function updateGroupMembers(group, successCallback, errorCallback) {
-          var url = urlService.getGroupMembers(group.id);
+          var url = urlService.getGroupMembers(group['@id']);
 
           var payload = {};
           payload.users = group.users;
