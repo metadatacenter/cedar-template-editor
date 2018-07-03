@@ -628,14 +628,13 @@
           <div>
             <button
                 style="background:transparent"
-                ng-show="!dc.editingDescription"
+                ng-show="!dc.editingDescription && dc.canWrite()"
                 type="button"
                 uib-tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-                ng-show="dc.canWrite()"
                 ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
 
