@@ -382,7 +382,7 @@ define([
                           'GENERIC.Updated');
                     },
                     function (err) {
-                      UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
+                      UIMessageService.showBackendError('SERVER.field.update.error', err);
                     }
                 );
               } else if (nodeType == 'element') {

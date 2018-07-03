@@ -29,7 +29,7 @@ define([
 
     service.setAuthProfile = function (parsedToken) {
       getAppData().authUserProfile = {
-        "id"   : parsedToken.sub,
+        "@id"   : parsedToken.sub,
         "email": parsedToken.email
       };
     };
@@ -43,7 +43,7 @@ define([
     };
 
     service.getUserId = function () {
-      return getAppData().authUserProfile.id;
+      return getAppData().authUserProfile['@id'];
     };
 
     service.getEmail = function () {
