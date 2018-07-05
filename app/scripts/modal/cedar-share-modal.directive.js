@@ -151,7 +151,7 @@ define([
           // is this user the owner of the selected resource
           function isOwner(node) {
             if (vm.resourcePermissions && vm.resourcePermissions.owner && node) {
-              return vm.resourcePermissions.owner.id === node.id;
+              return vm.resourcePermissions.owner['@id'] === node['@id'];
             }
             return false;
           }
@@ -177,7 +177,7 @@ define([
           function getNode(id) {
             if (vm.resourceNodes) {
               for (var i = 0; i < vm.resourceNodes.length; i++) {
-                if (vm.resourceNodes[i].id === id) {
+                if (vm.resourceNodes[i]['@id'] === id) {
                   return vm.resourceNodes[i];
                 }
               }
@@ -232,7 +232,6 @@ define([
                 share.permission = vm.resourcePermissions.groupPermissions[i].permission;
                 share.node = vm.resourcePermissions.groupPermissions[i].group;
                 share.node.nodeType = 'group';
-                share.node.name = getName(share.node);
                 vm.shares.push(share);
               }
               for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
@@ -240,7 +239,7 @@ define([
                 share.permission = vm.resourcePermissions.userPermissions[i].permission;
                 share.node = vm.resourcePermissions.userPermissions[i].user;
                 share.node.nodeType = 'user';
-                share.node.name = getName(share.node);
+                share.node['schema:name'] = getName(share.node);
                 vm.shares.push(share);
               }
             }
@@ -248,7 +247,6 @@ define([
 
           // write the permissions to the server
           function setPermissions(resource) {
-
             // rebuild permissions from shares
             vm.resourcePermissions.groupPermissions = [];
             vm.resourcePermissions.userPermissions = [];
@@ -284,9 +282,9 @@ define([
             for (var i = 0; i < nodes.length; i++) {
               nodes[i].name = getName(nodes[i]);
             }
-            nodes.sort(dynamicSort("name"));
+            nodes.sort(dynamicSort("schema:name"));
             if (nodes.length > 0) {
-              result = nodes[0].id;
+              result = nodes[0]['@id'];
             }
             return result;
 
@@ -330,19 +328,19 @@ define([
           // remove the share permission on this node
           function removeShare(node, resource) {
             for (var i = 0; i < vm.shares.length; i++) {
-              if (node.id === vm.shares[i].node.id) {
+              if (node['@id'] === vm.shares[i].node['@id']) {
                 vm.shares.splice(i, 1);
               }
             }
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
+              if (node['@id'] === vm.resourcePermissions.userPermissions[i].user['@id']) {
                 vm.resourcePermissions.userPermissions.splice(i, 1);
                 saveShare(resource);
                 return;
               }
             }
             for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
+              if (node['@id'] === vm.resourcePermissions.groupPermissions[i].group['@id']) {
                 vm.resourcePermissions.groupPermissions.splice(i, 1);
                 saveShare(resource);
                 return;
@@ -357,7 +355,7 @@ define([
               if (isUser(node)) {
                 result = node.firstName + ' ' + node.lastName;
               } else {
-                result = node['name'];
+                result = node['schema:name'];
               }
             }
             return result;
@@ -377,7 +375,7 @@ define([
           function addUserToGroup(user, group, domId) {
 
             for (var i = 0; i < group.users.length; i++) {
-              if (group.users[i].user.id === user.id) {
+              if (group.users[i].user['@id'] === user['@id']) {
                 return;
               }
             }
@@ -399,7 +397,7 @@ define([
           }
 
 
-          // when selected user changes, reset selected permisison
+          // when selected user changes, reset selected permission
           function updateGroupPermission(id) {
             if (id) {
               var node = getNode(id);
@@ -413,7 +411,7 @@ define([
           function updateShare(node, permission, resource) {
 
             for (var i = 0; i < vm.shares.length; i++) {
-              if (node.id === vm.shares[i].node.id) {
+              if (node['@id'] === vm.shares[i].node['@id']) {
                 vm.shares[i].permission = permission;
                 saveShare(resource);
                 return true;
@@ -433,7 +431,7 @@ define([
 
                 var owner = vm.resourcePermissions.owner;
 
-                if (owner.id != id) {
+                if (owner['@id'] != id) {
 
                   // make the node the owner
                   removeShare(node, resource);
@@ -471,8 +469,8 @@ define([
 
           function groupTypeaheadOnSelect(item, model, label) {
             getGroupMembers(vm.typeaheadGroup);
-            vm.newTitle = vm.typeaheadGroup.name;
-            vm.newDescription = vm.typeaheadGroup.description;
+            vm.newTitle = vm.typeaheadGroup['schema:name'];
+            vm.newDescription = vm.typeaheadGroup['schema:description'];
           }
 
           function isAdmin(id) {
@@ -500,7 +498,6 @@ define([
 
             // select the new group
             vm.typeaheadGroup = group;
-            vm.typeaheadGroup.name = getName(group);
             vm.newGroupName = '';
 
 
@@ -535,26 +532,17 @@ define([
 
             vm.editingDescription = false;
             if (description.length > 0) {
-              group.description = description;
+              group['schema:description'] = description;
               vm.typeaheadGroup.description = description;
               updateGroup(group);
             }
-          }
-
-          function isUniqueName(name) {
-            for (var i = 0; i < vm.resourceGroups.length; i++) {
-              if ((group.name && vm.resourceGroups[i].name === group.name)) {
-                return false;
-              }
-            }
-            return true;
           }
 
           // update the name of the group
           function updateGroupName(group, name) {
             vm.editingTitle = false;
             if (name.length > 0) {
-              group.name = name;
+              group['schema:name'] = name;
               vm.typeaheadGroup.name = name;
               updateGroup(group);
             }
@@ -579,7 +567,7 @@ define([
 
 
           function deleteGroup(group, resource) {
-            resourceService.deleteGroup(group.id,
+            resourceService.deleteGroup(group['@id'],
                 function (response) {
 
                   var i = vm.resourceGroups.indexOf(vm.typeaheadGroup);
@@ -591,7 +579,7 @@ define([
                   // remove the shares for this group
                   var update = false;
                   for (var i=0;i<vm.shares.length;i++) {
-                    if (group.id === vm.shares[i].node.id) {
+                    if (group['@id'] === vm.shares[i].node['@id']) {
                       vm.shares.splice(i, 1);
                       update = true;
                     }
@@ -610,7 +598,7 @@ define([
 
           function getGroupMembers(group, successCallback, errorCallback) {
 
-            resourceService.getGroupMembers(group.id,
+            resourceService.getGroupMembers(group['@id'],
                 function (response) {
 
                   group.users = response.users;

@@ -575,11 +575,11 @@ define([
 
         // Relabel the element key with a new value from the propertyLabels
         service.relabel = function (parent, key, title, label, description) {
-          if (key != title) {
 
+          if (key != title) {
             var schema = service.schemaOf(parent);
             var properties = service.propertiesOf(parent);
-            var newKey = service.getAcceptableKey(properties, label);
+            var newKey = service.getAcceptableKey(properties, label, key);
 
             angular.forEach(properties, function (value, k) {
               if (value && key == k) {
@@ -1778,6 +1778,7 @@ define([
         };
 
         service.getAcceptableKey = function (obj, suggestedKey, currentKey) {
+
           if (!obj || typeof(obj) != "object") {
             return;
           }
@@ -1788,7 +1789,7 @@ define([
 
           var key = suggestedKey;
 
-          if (obj[key]) {
+          if (obj[key]) { // if the object already contains the suggested key, generate an acceptable key
             var idx = 1;
             var newKey = "" + key + idx;
             while (obj[newKey]) {
@@ -2328,42 +2329,37 @@ define([
         };
 
 
-        service.removeChild = function (parent, child) {
+        service.removeChild = function (parent, child, childKey) {
           if (!service.isRootNode(parent, child)) {
 
-            var id = service.getId(child);
-            var selectedKey;
-            var props = service.propertiesOf(parent);
-            angular.forEach(props, function (value, key) {
-              if (service.getId(value) == id) {
-                selectedKey = key;
-              }
-            });
 
-            if (selectedKey) {
+            var id = service.getId(child);
+            var props = service.propertiesOf(parent);
+
+            if (childKey && props[childKey]) {
               // Remove the key
-              delete props[selectedKey];
+              delete props[childKey];
 
               // Remove it from the order array
-              var idx = service.getOrder(parent).indexOf(selectedKey);
+              var idx = service.getOrder(parent).indexOf(childKey);
               service.getOrder(parent).splice(idx, 1);
 
               // Remove the property label (for elements)
-              if (service.getPropertyLabels(parent)[selectedKey]) {
-                delete service.getPropertyLabels(parent)[selectedKey];
+              if (service.getPropertyLabels(parent)[childKey]) {
+                delete service.getPropertyLabels(parent)[childKey];
               }
-              if (service.getPropertyDescriptions(parent)[selectedKey]) {
-                delete service.getPropertyDescriptions(parent)[selectedKey];
+              if (service.getPropertyDescriptions(parent)[childKey]) {
+                delete service.getPropertyDescriptions(parent)[childKey];
               }
 
               // Remove it from the top-level 'required' array
-              service.removeKeyFromRequired(parent, selectedKey);
+              service.removeKeyFromRequired(parent, childKey);
 
               // Remove it from the context
-              service.removeKeyFromContext(service.schemaOf(parent), selectedKey);
+              service.removeKeyFromContext(service.schemaOf(parent), childKey);
 
             }
-            return selectedKey;
+            return childKey;
           }
         };
 

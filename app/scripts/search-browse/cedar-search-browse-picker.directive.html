@@ -415,6 +415,7 @@
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
 
+
                   <div class="outer flex">
                     <div class="flex ellipsis" style="justify-content:flex-start">
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
@@ -446,6 +447,7 @@
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -568,7 +570,7 @@
           <div class="row">
             <div class="col-sm-4 left ">Modified</div>
             <div class="col-sm-8 modified">
-              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
+              <span class="no-wrap">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
             </div>
@@ -576,7 +578,7 @@
           <div class="row">
             <div class="col-sm-4 left ">Created</div>
             <div class="col-sm-8 created">
-              <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
+              <span class="no-wrap">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
             </div>
@@ -626,14 +628,13 @@
           <div>
             <button
                 style="background:transparent"
-                ng-show="!dc.editingDescription"
+                ng-show="!dc.editingDescription && dc.canWrite()"
                 type="button"
                 uib-tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-                ng-show="dc.canWrite()"
                 ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
 

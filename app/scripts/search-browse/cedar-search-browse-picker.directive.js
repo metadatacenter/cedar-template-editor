@@ -291,8 +291,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return CedarUser.hasPermission(
-                    'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
           };
 
 
@@ -390,6 +389,19 @@ define([
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'field') {
+                AuthorizedBackendService.doCall(
+                    resourceService.renameNode(id, null, description),
+                    function (response) {
+
+                      var title = DataManipulationService.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.field.update.error', err);
                     }
                 );
               } else if (nodeType == 'element') {
