@@ -1085,30 +1085,19 @@ button {
     }
 
     .list-view {
-      .dx-menu-container-wrap {
-        position:absolute;
-        top:100px;left:100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        flex-grow: 1;
-        white-space:nowrap;
-        height:400px;
-        min-width:300px;
-        background:green;
-      }
+
       .dropdown-menu {
-        box-shadow: none;
-        width: 100%;
-        position: absolute;
-        top: 100px;
-        left: 200px;
+        z-index:100;
         width: 200px;
+        position: absolute;
+        //left: calc(47.5vw - 25px);
+        //top: calc(47.5vw - 25px);
+        left:0;
+        top:0;
+        height:auto;
+        text-align: center;
+        color: red;
         background-color: red;
-        margin-bottom: 30px;
-        border-top: none;
-        border-left: none;
-        border-right: none;
 
         li:first-of-type a {
           border-top: none;
@@ -6577,6 +6566,9 @@ body .template-header .controlled-terms-modal {
   margin-top: 5px;
   background: #f8f8f8;
   padding-bottom: 0;
+  .form-control.ui-select-toggle {
+    background:red;
+  }
 }
 
 .sortable-icon {
@@ -8117,4 +8109,6 @@ div.resource-icon {
       pointer-events: none;
     }
   }
+
+
 }

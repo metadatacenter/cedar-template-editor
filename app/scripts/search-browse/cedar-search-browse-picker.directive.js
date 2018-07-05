@@ -197,6 +197,9 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
+          vm.getId = function(node,label) {
+            return DataManipulationService.getId(node) + label;
+          };
 
           vm.hideModal = function (visible) {
             visible = false;

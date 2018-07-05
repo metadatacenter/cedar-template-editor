@@ -291,7 +291,7 @@
                     ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div dropdownId="{{getId(resource, 'populate')}}"
+                  <div rightclick offsetX="0" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
                       ng-click="dc.selectResource(resource)"
                       ng-dblclick="dc.goToResource(resource)"
                       class="form-box  ">
@@ -332,7 +332,10 @@
                     ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div
+                  <div rightclick
+                      offsetX="0"
+                      offsetY="5"
+                      dropdownId="{{getId(resource, 'populate')}}"
                       ng-click="dc.selectResource(resource)"
                       ng-dblclick="dc.goToResource(resource)"
                       class="form-box">
@@ -388,7 +391,7 @@
                 </div>
               </div>
 
-              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto">
+              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto;position:relative">
 
                 <div class="box-title flex">
                   <a style="padding-left:50px;width:100%" ng-class="{'bold': dc.isSort('name')}" href="#" href="#"
@@ -404,6 +407,9 @@
 
                 <!-- show the folders first -->
                 <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row "
+                    rightclick
+                    offsetx="0" offsety="0"
+                    dropdownId="{{getId(resource, 'list')}}"
                     ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
@@ -414,10 +420,10 @@
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
                       <div style="padding-left:10px">{{getId(resource, 'list')}} {{ resource['schema:name'] }}</div>
                     </div>
-                    <div class="flex" style="width:300px">
+                    <div class="flex" style="width:300px;">
                       <div class="ellipsis" style="width:130px">{{ resource.createdOnTS | prettyDate }}</div>
                       <div class="ellipsis" style="width:130px">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
-                      <div style="width:40px">
+                      <div style="width:40px;"   >
                         <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
@@ -426,11 +432,11 @@
                             data-toggle="tooltip"
                             ng-click="dc.createVersion(resource)"></i>
 
-                        <button title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <i class="action fa fa-ellipsis-v" id="{{getId(resource, 'list')}}"></i>
+                        <button id="{{dc.getId(resource, 'list')}}" title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="action fa fa-ellipsis-v" ></i>
                         </button>
 
-                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'list')}}"
+                        <cedar-dropdown-menu class="dropdown-menu " toggle-id="dc.getId" aria-labelledby="{{dc.getId(resource, 'list')}}"
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
@@ -445,6 +451,9 @@
                 </div>
 
                 <div ng-if="!dc.isFolder(resource)" class="box-row "
+                    rightclick
+                    offsetx="0" offsety="0"
+                    dropdownId="{{getId(resource, 'list')}}"
                     ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
@@ -458,7 +467,7 @@
                     <div class="flex" style="width:300px">
                       <div class="ellipsis" style="width:130px">{{ resource.createdOnTS | prettyDate }}</div>
                       <div class="ellipsis" style="width:130px">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
-                      <div style="width:40px">
+                      <div style="width:40px;">
                         <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
@@ -467,11 +476,11 @@
                             data-toggle="tooltip"
                             ng-click="dc.createVersion(resource)"></i>
 
-                        <button title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <i class="action fa fa-ellipsis-v" id="{{getId(resource, 'list')}}"></i>
+                        <button id="{{dc.getId(resource, 'list')}}" title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="action fa fa-ellipsis-v" ></i>
                         </button>
 
-                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'list')}}"
+                        <cedar-dropdown-menu  toggle-id="dc.getId" class="dropdown-menu " aria-labelledby="{{dc.getId(resource, 'list')}}"
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
