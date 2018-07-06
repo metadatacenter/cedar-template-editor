@@ -272,7 +272,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933";
           };
 
 
