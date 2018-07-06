@@ -19,28 +19,23 @@ define([
       var centerPanelRect;
       var toggle;
       var toggleRect;
+      var centerPanel;
 
       if (typeof scope.toggleId == 'function') {
         toggle = document.getElementById(scope.toggleId(scope.resource,'list'));
-        if (toggle) {
-          console.log('toggle',toggle.offsetLeft, toggle.offsetTop);
+        centerPanel = document.getElementById('center-panel');
+        if (toggle && centerPanel) {
           toggleRect = toggle.getBoundingClientRect();
-          //el.style.setProperty("top", toggleRect.top + "px");
+          centerPanelRect = centerPanel.getBoundingClientRect();
+          console.log('center-panel', toggleRect.height, centerPanelRect, toggleRect);
+
+          el.style.setProperty("top", (toggleRect.top - centerPanelRect.top + toggleRect.height) + "px");
+          //el.style.setProperty("top", "0px");
+
+        } else {
+          console.log('toggle',toggle);
         }
       }
-
-      var scrollTop = document.getElementById('center-panel');
-      if (scrollTop) {
-        console.log('center-panel', scrollTop.offsetLeft, scrollTop.offsetTop);
-        centerPanelRect = toggle.getBoundingClientRect();
-        el.style.setProperty("top", centerPanelRect.top + "px");
-      }
-
-
-      // console.log(el,el.parentElement);
-      // console.log(el.offsetLeft, el.offsetTop);
-      // console.log(el.parentElement.offsetLeft, el.parentElement.offsetTop);
-      //el.style.setProperty("top", rect.top + "px");
 
     };
 
