@@ -1099,14 +1099,10 @@ button {
         z-index:100;
         width: 200px;
         position: absolute;
-        //left: calc(47.5vw - 25px);
-        //top: calc(47.5vw - 25px);
         left:0;
         top:0;
         height:auto;
         text-align: center;
-        color: red;
-        background-color: red;
 
         li:first-of-type a {
           border-top: none;
@@ -1116,26 +1112,6 @@ button {
           white-space: inherit;
         }
       }
-      //.dropdown-menu {
-      //  left: auto;
-      //
-      //  box-shadow: none;
-      //  width: 100%;
-      //  position: relative;
-      //  background-color: transparent;
-      //  margin-bottom: 30px;
-      //  border-top: none;
-      //  border-left: none;
-      //  border-right: none;
-      //
-      //  li:first-of-type a {
-      //    border-top: none;
-      //  }
-      //
-      //  li a {
-      //    white-space: inherit;
-      //  }
-      //}
 
       .title {
         text-transform: uppercase;
@@ -1153,6 +1129,8 @@ button {
         width: 100%;
         font-size: 16px;
         color: @med-gray;
+        border-left: 5px solid transparent;
+        padding:0 6px;
       }
 
       .box-row {
@@ -8065,6 +8043,8 @@ div.resource-icon {
         text-align: center;
         height: 36px;
         width: 36px;
+       transition:none;
+
 
       }
     }

@@ -394,19 +394,24 @@
               <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto;position:relative">
 
                 <div class="box-title flex">
-                  <a style="padding-left:50px;width:100%" ng-class="{'bold': dc.isSort('name')}" href="#" href="#"
-                      ng-click="dc.updateSort('name')">Title</a>
-                  <div class="flex" style="width:300px">
-                    <a style="width:130px;background:red" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
-                        ng-click="dc.updateSort('createdOnTS')">Created</a>
-                    <a style="width:130px;background:blue" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
-                        ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                    <div style="width:40px"></div>
+                  <div class="flex" style="width:100%;justify-content:space-between;">
+                    <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                    <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#"
+                        ng-click="dc.updateSort('name')">Title</a>
+
                   </div>
+
+                    <a style="width:200px;" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
+                        ng-click="dc.updateSort('createdOnTS')">Created</a>
+                    <a style="width:200px;" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
+                        ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
+                    <div style="width:60px"></div>
+
                 </div>
 
                 <!-- show the folders first -->
                 <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row "
+                    id="{{dc.getId(resource, 'row')}}"
                     rightclick
                     offsetx="0" offsety="0"
                     dropdownId="{{getId(resource, 'list')}}"
@@ -416,15 +421,15 @@
                     ng-repeat="(index, resource) in dc.resources">
 
 
-                  <div class="outer flex">
-                    <div class="flex ellipsis" style="justify-content:flex-start">
+                  <div class="outer flex" >
+                    <div class="flex ellipsis" style="justify-content:space-between">
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
-                      <div style="padding-left:10px">{{getId(resource, 'list')}} {{ resource['schema:name'] }}</div>
+                      <div class="ellipsis" style="width:100%">{{ resource['schema:name']}}</div>
                     </div>
-                    <div class="flex" style="width:300px;">
-                      <div class="ellipsis" style="width:130px">{{ resource.createdOnTS | prettyDate }}</div>
-                      <div class="ellipsis" style="width:130px">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
-                      <div style="width:40px;"   >
+                    <div class="ellipsis" style="width:200px;">{{ resource['pav:createdOn'] | prettyDate }}</div>
+                    <div class="ellipsis" style="width:200px;">{{ resource['pav:lastUpdatedOn'] | prettyDate }}</div>
+                    <div class="flex" style="width:60px;justify-content:space-between">
+                      
                         <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
@@ -433,11 +438,21 @@
                             data-toggle="tooltip"
                             ng-click="dc.createVersion(resource)"></i>
 
-                        <button id="{{dc.getId(resource, 'list')}}" title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+
+                        <button  id="{{dc.getId(resource, 'list')}}"
+                            ng-click="dc.toggledCedarDropdownMenu($event, resource )"
+                            title="More"
+                            class="dropup"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="true">
                           <i class="action fa fa-ellipsis-v" ></i>
                         </button>
 
-                        <cedar-dropdown-menu class="dropdown-menu " toggle-id="dc.getId" aria-labelledby="{{dc.getId(resource, 'list')}}"
+                        <cedar-dropdown-menu  id="{{dc.getId(resource, 'menu')}}"
+                            class="dropdown-menu"
+                            toggle-id="dc.getId"
+                            aria-labelledby="{{dc.getId(resource, 'list')}}"
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
@@ -446,13 +461,14 @@
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
-                      </div>
+
 
                     </div>
                   </div>
                 </div>
 
                 <div ng-if="!dc.isFolder(resource)" class="box-row "
+                    id="{{dc.getId(resource, 'row')}}"
                     rightclick
                     offsetx="0" offsety="0"
                     dropdownId="{{getId(resource, 'list')}}"
@@ -461,15 +477,15 @@
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
 
-                  <div class="outer flex">
-                    <div class="flex ellipsis" style="justify-content:flex-start">
+                  <div class="outer flex" >
+                    <div class="flex ellipsis" style="justify-content:space-between">
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
                       <div class="ellipsis" style="width:100%">{{ resource['schema:name']}}</div>
                     </div>
-                    <div class="flex" style="width:300px">
-                      <div class="ellipsis" style="width:130px">{{ resource.createdOnTS | prettyDate }}</div>
-                      <div class="ellipsis" style="width:130px">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
-                      <div style="width:40px;">
+                    <div class="ellipsis" style="width:200px;">{{ resource['pav:createdOn'] | prettyDate }}</div>
+                    <div class="ellipsis" style="width:200px;">{{ resource['pav:lastUpdatedOn'] | prettyDate }}</div>
+                    <div class="flex" style="width:60px;justify-content:space-between">
+
                         <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
@@ -478,11 +494,15 @@
                             data-toggle="tooltip"
                             ng-click="dc.createVersion(resource)"></i>
 
-                        <button id="{{dc.getId(resource, 'list')}}" title="More" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <button id="{{dc.getId(resource, 'list')}}" title="More"
+                            ng-click="dc.toggledCedarDropdownMenu($event, resource)"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           <i class="action fa fa-ellipsis-v" ></i>
                         </button>
 
-                        <cedar-dropdown-menu  toggle-id="dc.getId" class="dropdown-menu " aria-labelledby="{{dc.getId(resource, 'list')}}"
+                        <cedar-dropdown-menu  id="{{dc.getId(resource, 'menu')}}"
+                            toggle-id="dc.getId"
+                            class="dropdown-menu " aria-labelledby="{{dc.getId(resource, 'list')}}"
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
@@ -491,7 +511,7 @@
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
-                      </div>
+
                     </div>
                   </div>
                 </div>

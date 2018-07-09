@@ -144,7 +144,6 @@ define([
           vm.setResourceVersion = setResourceVersion;
 
 
-
           vm.getPublicationVersion = getPublicationVersion;
           vm.setPublicationVersion = setPublicationVersion;
 
@@ -197,7 +196,7 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
-          vm.getId = function(node,label) {
+          vm.getId = function (node, label) {
             return DataManipulationService.getId(node) + label;
           };
 
@@ -208,10 +207,26 @@ define([
           vm.cancelDescriptionEditing = function () {
           };
 
+          // adjust the position of the context menu
+          vm.toggledCedarDropdownMenu = function ($event, resource) {
+
+              var centerPanel = document.getElementById('center-panel');
+              var row = document.getElementById(vm.getId(resource, 'row'));
+              var menu = document.getElementById(vm.getId(resource, 'menu'));
+
+              if (centerPanel && row && menu) {
+
+                var centerRect = centerPanel.getBoundingClientRect();
+                var rowRect = row.getBoundingClientRect();
+
+                menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
+                menu.style.setProperty("top", ($event.pageY - centerRect.top - 20) + "px");
+              }
+          };
+
           vm.toggleDescriptionEditing = function () {
             if (vm.getSelection()) {
               vm.editingDescription = !vm.editingDescription;
-
 
               if (vm.editingDescription) {
                 vm.editingDescriptionSelection = vm.getSelection();
@@ -291,7 +306,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
           };
 
 
@@ -759,23 +774,23 @@ define([
             var resource = value || vm.selectedResource;
 
             var canCreateDraft =
-            (resource.nodeType == CONST.resourceType.TEMPLATE ||
-            resource.nodeType == CONST.resourceType.ELEMENT) &&
-            resource['bibo:status'] == 'bibo:published' &&
-            resource.isLatestVersion;
+                (resource.nodeType == CONST.resourceType.TEMPLATE ||
+                resource.nodeType == CONST.resourceType.ELEMENT) &&
+                resource['bibo:status'] == 'bibo:published' &&
+                resource.isLatestVersion;
 
             var canPublish = (resource.nodeType == CONST.resourceType.TEMPLATE ||
                 resource.nodeType == CONST.resourceType.ELEMENT) &&
                 resource['bibo:status'] == 'bibo:draft';
 
 
-              if (canCreateDraft) {
-                vm.createDraftResource(resource);
-              } else {
-                if (canPublish) {
-                  vm.publishResource(resource);
-                }
+            if (canCreateDraft) {
+              vm.createDraftResource(resource);
+            } else {
+              if (canPublish) {
+                vm.publishResource(resource);
               }
+            }
 
           }
 
