@@ -1,0 +1,55 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" id="publishModalHeader">
+      <button type="button" class="close" ng-click="dc.publishModalVisible=false" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" translate>DASHBOARD.publish.title</h4>
+    </div>
+    <div class="modal-body">
+
+      <h5 translate>Set Version</h5> {{publish.publishResource}} {{resource}}
+
+      <form ng-submit="publish.updateResource();dc.publishModalVisible=false">
+
+        <div class="flex flex-center">
+
+          <div class="flex-start" style="padding-right:10px;flex-direction:row">
+            <input style="width:3em" name="major" id="version-major"  ng-model="publish.parts[0]"
+                ng-change="publish.change(0, publish.parts[0], '{{publish.parts[0]}}')">
+            <i style="font-size:16px" class="fa fa-plus-circle" ng-click="publish.increment(0)"></i>
+            <i style="font-size:16px" class="fa fa-minus-circle" ng-click="publish.decrement(0)"></i>
+
+          </div>
+
+          <div class="flex-start" style="padding-right:10px">
+          <input style="width:3em" name="minor" id="version-minor" ng-model="publish.parts[1]"
+              ng-change="publish.change(1, publish.parts[1], '{{publish.parts[1]}}')">
+          <i style="font-size:16px" class="fa fa-plus-circle" ng-click="publish.increment(1)"></i>
+          <i style="font-size:16px" class="fa fa-minus-circle" ng-click="publish.decrement(1)"></i>
+          </div>
+
+          <div class="flex-start">
+          <input style="width:3em" name="build" id="version-build" ng-model="publish.parts[2]"
+              ng-change="publish.change(2, publish.parts[2], '{{publish.parts[2]}}')">
+          <i style="font-size:16px" class="fa fa-plus-circle" ng-click="publish.increment(2)"></i>
+          <i style="font-size:16px" class="fa fa-minus-circle" ng-click="publish.decrement(2)"></i>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button ng-click="dc.publishResource(publish.resource, publish.getVersionString());dc.publishModalVisible=false;" type="button"
+            class="btn btn-save confirm" translate>
+          GENERIC.Publish
+        </button>
+      </div>
+      <div class="clear-save">
+        <button type="button" class="btn btn-clear" ng-click="dc.publishModalVisible=false;" translate="">Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

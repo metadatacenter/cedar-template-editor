@@ -65,7 +65,7 @@
                   go-to="dc.goToResource"
                   share="dc.showShareModal"
                   move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
-                  publish="dc.publishResource" create-draft="dc.createDraftResource"
+                  publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                   can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                   can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                   can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -313,7 +313,7 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
                             copy="dc.showCopyModal" rename="dc.showRenameModal"
-                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -359,7 +359,7 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
-                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -379,7 +379,7 @@
                             resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
-                            publish="dc.publishResource" create-draft="dc.createDraftResource"
+                            publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -461,7 +461,7 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
-                          publish="dc.publishResource" create-draft="dc.createDraftResource"
+                          publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                           can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -515,7 +515,7 @@
                           resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                           move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                           rename="dc.showRenameModal"
-                          publish="dc.publishResource" create-draft="dc.createDraftResource"
+                          publish="dc.showPublishModal" create-draft="dc.createDraftResource"
                           can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                           can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -788,6 +788,14 @@
       tabindex="-1" role="dialog" aria-labelledby="moveModalHeader"
       data-keyboard="true" data-backdrop="static" move-resource="resource">
   </cedar-move-modal>
+</section>
+
+<!-- publish modal -->
+<section>
+  <cedar-publish-modal cedar-modal-show modal-visible="dc.publishModalVisible" class="modal fade" id="publish-modal"
+      tabindex="-1" role="dialog" aria-labelledby="publishModalHeader"
+      data-keyboard="true" data-backdrop="static" move-resource="resource">
+  </cedar-publish-modal>
 </section>
 
 <!--- share modal  --->

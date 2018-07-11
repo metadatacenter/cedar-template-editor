@@ -154,7 +154,8 @@
     "Draft": "Draft",
     "Latest": "Latest",
     "All": "All",
-    "Field": "Field"
+    "Field": "Field",
+    "Publish": "Publish"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -388,6 +389,10 @@
     "rename": {
       "title": "Rename",
       "label": "Enter a name"
+    },
+    "publish" : {
+      "title": "Publish",
+      "version": "Version"
     },
     "newFolder": {
       "title": "New folder"

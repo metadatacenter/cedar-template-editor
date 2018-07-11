@@ -70,6 +70,7 @@ define([
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showPublishModal = showPublishModal;
           vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
@@ -77,6 +78,7 @@ define([
           vm.showFlowModal = showFlowModal;
           vm.copyModalVisible = false;
           vm.moveModalVisible = false;
+          vm.publishModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
@@ -99,6 +101,7 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
+
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -198,7 +201,9 @@ define([
           vm.forms = null;
 
           vm.getId = function (node, label) {
-            return DataManipulationService.getId(node) + label;
+            if (node) {
+              return DataManipulationService.getId(node) + label;
+            }
           };
 
           vm.hideModal = function (visible) {
@@ -211,18 +216,18 @@ define([
           // adjust the position of the context menu
           vm.toggledCedarDropdownMenu = function ($event, resource) {
 
-              var centerPanel = document.getElementById('center-panel');
-              var row = document.getElementById(vm.getId(resource, 'row'));
-              var menu = document.getElementById(vm.getId(resource, 'menu'));
+            var centerPanel = document.getElementById('center-panel');
+            var row = document.getElementById(vm.getId(resource, 'row'));
+            var menu = document.getElementById(vm.getId(resource, 'menu'));
 
-              if (centerPanel && row && menu) {
+            if (centerPanel && row && menu) {
 
-                var centerRect = centerPanel.getBoundingClientRect();
-                var rowRect = row.getBoundingClientRect();
+              var centerRect = centerPanel.getBoundingClientRect();
+              var rowRect = row.getBoundingClientRect();
 
-                menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
-                menu.style.setProperty("top", ($event.pageY - centerRect.top - 20) + "px");
-              }
+              menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
+              menu.style.setProperty("top", ($event.pageY - centerRect.top - 20) + "px");
+            }
           };
 
           vm.toggleDescriptionEditing = function () {
@@ -269,21 +274,24 @@ define([
           };
 
           vm.selectResource = function (resource) {
-            vm.editingDescription = false;
-            vm.selectedResource = resource;
-            //TODO: hide the write/read/share boolean vars in the info panel
+            if (vm.getId(resource) != vm.getId(vm.selectedResource)) {
 
-            $timeout(function () {
-              if (vm.activeTab == 'resource-version') {
-                vm.getResourceReport(resource);
-              } else {
-                vm.getResourceDetails(resource);
-              }
+              vm.editingDescription = false;
+              vm.selectedResource = resource;
 
-              if (typeof vm.selectResourceCallback === 'function') {
-                vm.selectResourceCallback(resource);
-              }
-            }, 0);
+
+              $timeout(function () {
+                if (vm.activeTab == 'resource-version') {
+                  vm.getResourceReport(resource);
+                } else {
+                  vm.getResourceDetails(resource);
+                }
+
+                if (typeof vm.selectResourceCallback === 'function') {
+                  vm.selectResourceCallback(resource);
+                }
+              }, 0);
+            }
           };
 
           // show the info panel with this resource or find one
@@ -332,7 +340,7 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
-                  console.log('report',response);
+                  console.log('report', response);
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
@@ -361,7 +369,6 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  console.log('details',response);
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
@@ -423,7 +430,7 @@ define([
               return parts.join(".");
             }
             return null;
-          }
+          };
 
           vm.getResourcePublicationStatus = function () {
             var resource = vm.getSelection();
@@ -795,11 +802,11 @@ define([
           }
 
 
-          function publishResource(resource) {
+          function publishResource(resource, version) {
             if (!resource) {
               resource = getSelection();
             }
-            var newVersion = vm.getResourceVersion(resource);
+            var newVersion = version || vm.getResourceVersion(resource);
             resourceService.publishResource(
                 resource,
                 newVersion,
@@ -1649,6 +1656,20 @@ define([
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
+            }
+          }
+
+          // open the publish modal
+          function showPublishModal(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+
+            if (vm.canWrite(r)) {
+              vm.publishModalVisible = true;
+              var homeFolderId = CedarUser.getHomeFolderId();
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r]);
             }
           }
 

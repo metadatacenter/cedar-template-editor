@@ -6688,7 +6688,7 @@ table.apiKey {
   overflow-y: auto;
 }
 
-#rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
+#rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
 
   .modal-header {
     border-bottom: 0px solid #aaa;
@@ -6921,6 +6921,14 @@ table.apiKey {
         }
       }
     }
+  }
+}
+
+#publish-modal {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 
@@ -8011,6 +8019,10 @@ table.message {
 
 .flex-wrap {
   flex-wrap:wrap;
+}
+
+.flex-center {
+  justify-content:center;
 }
 
 .flex-top {
