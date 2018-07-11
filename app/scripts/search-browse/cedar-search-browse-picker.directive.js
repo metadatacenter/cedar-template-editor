@@ -65,6 +65,7 @@ define([
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
+          vm.activeTab = 'resource-info';
 
 
           // modals
@@ -273,7 +274,12 @@ define([
             //TODO: hide the write/read/share boolean vars in the info panel
 
             $timeout(function () {
-              vm.getResourceDetails(resource);
+              if (vm.activeTab == 'resource-version') {
+                vm.getResourceReport(resource);
+              } else {
+                vm.getResourceDetails(resource);
+              }
+
               if (typeof vm.selectResourceCallback === 'function') {
                 vm.selectResourceCallback(resource);
               }
@@ -315,8 +321,7 @@ define([
             return (vm.showResourceInfo ? 'Hide' : 'Show') + ' details';
           };
 
-
-          vm.getResourceDetails = function (resource) {
+          vm.getResourceReport = function (resource) {
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
             }
@@ -324,9 +329,10 @@ define([
             vm.canNotPopulate = !vm.isTemplate();
             vm.canNotPublish = !vm.canPublishStatic();
             vm.canNotCreateDraft = !vm.canCreateDraftStatic();
-            resourceService.getResourceDetail(
+            resourceService.getResourceReport(
                 resource,
                 function (response) {
+                  console.log('report',response);
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
@@ -341,6 +347,46 @@ define([
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
                 }
             );
+          };
+
+
+          vm.getResourceDetails = function (resource) {
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
+            }
+            var id = resource['@id'];
+            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotPublish = !vm.canPublishStatic();
+            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
+            resourceService.getResourceDetail(
+                resource,
+                function (response) {
+                  console.log('details',response);
+                  if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
+                    vm.selectedResource = response;
+                    vm.canNotWrite = !vm.canWrite();
+                    vm.canNotShare = !vm.canShare();
+                    vm.canNotDelete = vm.isPublished();
+                    vm.canNotPopulate = !vm.isTemplate();
+                    vm.canNotPublish = !vm.canPublish();
+                    vm.canNotCreateDraft = !vm.canCreateDraft();
+                  }
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
+
+          vm.isTabActive = function (item) {
+            return vm.activeTab === item;
+          };
+
+          vm.setTab = function (item) {
+            vm.activeTab = item;
+            if (vm.activeTab == 'resource-version') {
+              vm.getResourceReport(vm.getSelectedNode());
+            }
           };
 
           vm.canRead = function () {

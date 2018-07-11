@@ -39,14 +39,14 @@
 <![endif]-->
 <nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role=" navigation ">
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
-    <div class="navbar-header">
+    <div class="navbar-header" >
 
       <!-- if we are in the workspace  --->
-      <div ng-if="hc.isDashboard()">
+      <div ng-if="hc.isDashboard()" >
         <div>
           <div class="nav-search">
             <form>
-              <div class="form-group floating-label-wrapper search-input">
+              <div class="form-group floating-label-wrapper search-input" >
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                     class="form-control search-input"
                     id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"/>
@@ -57,7 +57,7 @@
             </form>
           </div>
         </div>
-        <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
+        <a class="navbar-brand pull-left" style="max-height:40px;overflow:hidden" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
 
@@ -70,9 +70,9 @@
           </div>
 
           <div ng-if="!hc.isMessaging()" class="flex-right feedback-form" >
-            <div  uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
-            <div  uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
-            <div  uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
+            <div  uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
+            <div  uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
+            <div  uib-tooltip="{{hc.validInvalidTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa "
                 ng-class="{'fa-exclamation-triangle': !hc.isValid(), 'fa-check': hc.isValid()}"></i></div>
           </div>
 

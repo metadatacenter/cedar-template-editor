@@ -4,20 +4,23 @@
 /* Definine local variables */
 @container-cedar-medium: 952px;
 
-@modal-bg-color: #eaf2f2;
-@background-side: #2A2A2A;
-@top-nav-color: #0A0A0A;
-@header-color: #244152;
+@top-nav-color: rgba(21, 53, 53, 0.98); // top nav and controls bar
+@background-side: rgba(16, 43, 46, 0.84); // field and element header
+@modal-bg-color: #eaf2f2; // controlled terms modal background
+@background-gray: #e8e8e8;
+
+// resource colors
 @template-color: #408392;
 @element-color: #58797F;
 @field-color: #79A99E;
 @metadata-color: #0F7686;
-@folder-color: #4E4B4A;
+@folder-color: @background-side;
 
+//grays
 @very-lt-gray: #CCCCCC;
 @lt-gray-1: #FAFAFA;
 @lt-gray: #F0F0F0;
-@background-gray: #f7f7f7;
+
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
 
@@ -65,15 +68,6 @@
 @button-cancel: #9E9E9E;
 
 @divider: #B6B6B6;
-
-
-@very-lt-gray: #CCCCCC;
-@lt-gray-1: #FAFAFA;
-@lt-gray: #F0F0F0;
-@background-gray: #E8E8E8;
-@dark-gray: #616161;
-@med-gray: #9E9E9E;
-
 
 ::selection {
   background: lighten(@logo-light-color, 20%); /* WebKit/Blink Browsers */
@@ -187,18 +181,7 @@ button {
   margin-bottom: 0;
   height: 50px;
   border: none;
-
-  &.template {
-    background-color: @header-template;
-  }
-
-  &.element {
-    background-color: @header-element;
-  }
-
-  &.field {
-    background-color: @header-field;
-  }
+  background-color: @top-nav-color;
 
   &.metadata {
     height: 50px;
@@ -410,33 +393,39 @@ button {
   .nav-search {
     float: right;
     width: 50%;
-    margin-top: 6px;
+    max-height:40px;
+    overflow:hidden;
+    margin-top:0;
+    padding-top:0
   }
 }
 
 #top-navigation {
+  overflow-y:scroll;
 
   &.template {
     background-color: @top-nav-color;
-    margin-right: 10px;
+    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
   }
 
   &.element {
     background-color: @top-nav-color;
-    margin-right: 10px;
+    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
   }
 
   &.field {
     background-color: @top-nav-color;
-    margin-right: 10px;
+    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
   }
 
   &.dashboard {
-    background-color: @white;
+    background-color: @background-gray !important;
+    ::-webkit-scrollbar-track-piece {background-color: @background-gray !important;}
   }
 
   &.metadata {
     background-color: @top-nav-color;
+    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
   }
 
   .form-page {
@@ -497,7 +486,7 @@ button {
       padding: 0 4px;
     }
     a:hover {
-      color: #ccc;
+      color: @very-lt-gray;
     }
     a:active {
       color: @white;
@@ -547,10 +536,10 @@ button {
         }
       }
       button:disabled {
-        color: #ccc;
+        color: @very-lt-gray;
       }
       button:hover {
-        color: #ccc;
+        color: @very-lt-gray;
       }
       button:active {
       }
@@ -829,7 +818,7 @@ button {
 
     .no-selection {
       padding: 100px 0;
-      color: #ccc;
+      color: @very-lt-gray;
       .no-file {
         font-size: 50px
       }
@@ -921,12 +910,12 @@ button {
           left: 10px;
           height: 20px;
           padding: 0px;
-          color: #ccc;
+          color: @very-lt-gray;
           font-size: 10px;
           i.action {
             font-size: 16px;
             margin: 0 3px;
-            color: #ccc;
+            color: @very-lt-gray;
             &:hover {
               color: #aaa;
             }
@@ -940,12 +929,12 @@ button {
           height: 20px;
           padding: 0px;
           white-space: nowrap;
-          color: #ccc;
+          color: @very-lt-gray;
           font-size: 10px;
           i.action {
             font-size: 16px;
             margin: 0 3px;
-            color: #ccc;
+            color: @very-lt-gray;
             &:hover {
               color: #aaa;
             }
@@ -1022,7 +1011,7 @@ button {
           padding: 15px 0 0 15px;
           width: 48px;
           height: 48px;
-          background-color: #fafafa;
+          background-color: @lt-gray-1;
         }
 
         .folderTitle {
@@ -1094,16 +1083,16 @@ button {
     }
 
     .list-view {
-      padding-bottom:300px;
+      padding-bottom: 300px;
 
       .dropdown-menu {
-        z-index:100;
+        z-index: 100;
         width: 200px;
         position: absolute;
-        left:0;
-        top:0;
-        height:auto;
-        text-align: center;
+        left: 0;
+        top: 0;
+        height: auto;
+        text-align: left;
 
         li:first-of-type a {
           border-top: none;
@@ -1131,7 +1120,7 @@ button {
         font-size: 16px;
         color: @med-gray;
         border-left: 5px solid transparent;
-        padding:0 6px;
+        padding: 0 6px;
       }
 
       .box-row {
@@ -1145,14 +1134,14 @@ button {
         overflow: hidden;
         .outer {
           border-left: 5px solid #fff;
-          padding:6px;
+          padding: 6px;
         }
         .resource-icon {
           vertical-align: middle;
         }
 
         .cell.icon {
-          background:@white;
+          background: @white;
 
           i {
             &.field {
@@ -1194,13 +1183,13 @@ button {
     right: 0;
     padding: 20px;
     height: 100%;
-    background: #fafafa;
+    background: @lt-gray-1;
     border-left: 1px solid #ebebeb;
 
     .title {
       display: inline-block;
       padding: 20px 0;
-      font-size: 22px;
+      font-size: 16px;
       opacity: .5;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1249,11 +1238,11 @@ button {
 
         button:hover {
           background: @white;
-          border: 1px solid #ccc;
+          border: 1px solid @very-lt-gray;
         }
         button:active {
           background: @white;
-          border: 1px solid #ccc;
+          border: 1px solid @very-lt-gray;
         }
         button:focus {
           outline: 0;
@@ -1376,7 +1365,7 @@ button {
 
       button {
         background: transparent;
-        border: 0px solid #ccc;
+        border: 0px solid @very-lt-gray;
       }
 
       .btn-circle {
@@ -1663,11 +1652,11 @@ body.search-browse-modal {
         }
 
         &.disabled {
-          color: #ccc;
+          color: @very-lt-gray;
           cursor: not-allowed;
 
           i {
-            color: #ccc;
+            color: @very-lt-gray;
           }
 
           &:hover {
@@ -1818,9 +1807,9 @@ body.search-browse-modal {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid @very-lt-gray;
     border-radius: 0;
-    color: #ccc;
+    color: @very-lt-gray;
 
     &:before {
       font-family: "project-cedar" !important;
@@ -1831,7 +1820,7 @@ body.search-browse-modal {
 
   .floating-label {
     top: 6px;
-    color: #ccc;
+    color: @very-lt-gray;
   }
 
   .show-type {
@@ -1909,8 +1898,21 @@ body.search-browse-modal {
 .template-body {
   padding: 0 0 30px 0;
 
-  &.metadata {
-    height: 100%;
+  &.template, &.element, &.field {
+    background-color: @background-gray;
+  }
+
+  &.metadata, &.instance {
+    background-color: @white;
+
+    //background:
+    //    url(../img/cedar-bg-smaller.jpg)    /* image */
+    //    center center / 200px 200px /* position / size */
+    //    repeat                /* repeat */
+    //    fixed                    /* attachment */
+    //    padding-box              /* origin */
+    //    content-box              /* clip */
+    //    @white;                     /* color */
   }
 
   .right-body {
@@ -2082,7 +2084,7 @@ body.search-browse-modal {
       }
 
       .nested-element {
-        border: 1px solid #ccc;
+        border: 1px solid @very-lt-gray;
         margin: 5px 0;
       }
     }
@@ -2205,11 +2207,11 @@ p.add-item {
         }
 
         &.disabled {
-          color: #ccc;
+          color: @very-lt-gray;
           cursor: not-allowed;
 
           i {
-            color: #ccc;
+            color: @very-lt-gray;
           }
 
           &:hover {
@@ -2453,7 +2455,7 @@ section.dashboard-elements {
       box-shadow: 3px 3px #e0e0e0;
       position: relative;
       cursor: pointer;
-      background: #ffffff;
+      background: @white;
 
       @media (min-width: @screen-md-min) {
         width: calc(~"23% - 20px");
@@ -2599,7 +2601,7 @@ section.dashboard-elements {
       font-size: 14px;
       color: @black;
       transition: border-color 0.3s linear;
-      background: #fff;
+      background: @white;
 
       &.empty ~ .floating-label {
         top: 10px;
@@ -2737,7 +2739,7 @@ section.dashboard-elements {
         filter: alpha(opacity=0);
         opacity: 0;
         outline: none;
-        background: white;
+        background: @white;
         cursor: inherit;
         display: block;
       }
@@ -3082,7 +3084,7 @@ section.dashboard-elements {
       text-shadow: 1px 0px 0px @brand-primary;
     }
     .answer {
-      border: 1px solid #ccc;
+      border: 1px solid @very-lt-gray;
       background: #eee;
       .edit {
         visibility: visible;
@@ -3231,8 +3233,7 @@ section.dashboard-elements {
 
     .title {
       color: #666;
-      font-weight: 200;
-      font-family: "Helvetica Neue Light", sans-serif;
+      font-weight: 700;
       font-size: 1em;
     }
 
@@ -3268,7 +3269,7 @@ section.dashboard-elements {
 
     input {
       border-width: 0px;
-      background: #fff;
+      background: @white;
       height: 20px;
 
       &.isActive {
@@ -3279,7 +3280,7 @@ section.dashboard-elements {
 
     select {
       border-width: 0px;
-      background: #fff;
+      background: @white;
       padding-top: 10px;
 
       &.isActive {
@@ -3298,7 +3299,7 @@ section.dashboard-elements {
 
     textarea.form-control {
       border-width: 0px;
-      background: #fff;
+      background: @white;
       padding-top: 10px;
 
       &.isActive {
@@ -3333,7 +3334,7 @@ section.dashboard-elements {
     }
 
     .bootstrap-select {
-      background: #fff;
+      background: @white;
       .btn-select-picker {
         font-size: 1em;
         box-shadow: none;
@@ -3442,7 +3443,7 @@ section.dashboard-elements {
         filter: alpha(opacity=0);
         opacity: 0;
         outline: none;
-        background: white;
+        background: @white;
         cursor: inherit;
         display: block;
       }
@@ -3602,8 +3603,8 @@ section.dashboard-elements {
     overflow-x: hidden;
     overflow-y: auto;
     background: @white;
-    border: 1px solid #ccc;
-    box-shadow: 5px 5px 5px #ccc;
+    border: 1px solid @very-lt-gray;
+    box-shadow: 5px 5px 5px @very-lt-gray;
   }
 
   /* Always show scroll bars */
@@ -3624,7 +3625,7 @@ section.dashboard-elements {
   ::-webkit-scrollbar-thumb {
     border-radius: 0px;
     border: 0px solid white;
-    background-color: #ccc;
+    background-color: @very-lt-gray;
   }
 
   ::-webkit-scrollbar-track {
@@ -3643,7 +3644,7 @@ section.dashboard-elements {
   //}
 
   overflow: hidden;
-  border: 1px solid #ccc;
+  border: 1px solid @very-lt-gray;
   min-height: 300px;
 
   .tooltip {
@@ -5788,7 +5789,7 @@ p.instructions {
   .class-list-container {
     margin-bottom: 0;
     .empty {
-      color: #ccc;
+      color: @very-lt-gray;
     }
   }
 }
@@ -6082,7 +6083,7 @@ p.instructions {
   background-color: transparent;
   border-width: 0;
   &.open {
-    border: 1px solid #ccc;
+    border: 1px solid @very-lt-gray;
   }
   .ui-select-match {
     background-color: transparent;
@@ -6555,7 +6556,7 @@ body .template-header .controlled-terms-modal {
   background: #f8f8f8;
   padding-bottom: 0;
   .form-control.ui-select-toggle {
-    background:red;
+    background: red;
   }
 }
 
@@ -6602,9 +6603,8 @@ table.apiKey {
   background-color: #ddd;
 }
 
-::-webkit-scrollbar-track {
-  background-color: @lt-gray;
-  border-radius: 0px;
+::-webkit-scrollbar-track-piece {
+  background-color: @background-gray;
 }
 
 ::-webkit-scrollbar-corner {
@@ -6642,21 +6642,11 @@ table.apiKey {
   width: 100%;
 }
 
+
+
 .scrollable-content {
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-.scrollable-content::-webkit-scrollbar {
-  width: 10px;
-}
-
-.scrollable-content::-webkit-scrollbar {
-  background: #f8f8f8;
-}
-
-.scrollable-content::-webkit-scrollbar-thumb {
-  background: #ccc;
 }
 
 #rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
@@ -6747,7 +6737,7 @@ table.apiKey {
     border: 0;
     max-width: 400px;
     margin: 0 auto;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid @very-lt-gray;
 
     .arrow-click {
       cursor: pointer;
@@ -6841,7 +6831,7 @@ table.apiKey {
         box-shadow: unset;
         color: #000;
         &:focus {
-          border: 1px solid #ccc;
+          border: 1px solid @very-lt-gray;
         }
       }
       .actions {
@@ -6912,7 +6902,7 @@ table.apiKey {
           right: 15px;
           margin: 20px;
           font-size: 16px;
-          color: #ccc;
+          color: @very-lt-gray;
         }
         .search-input {
           color: black;
@@ -6923,7 +6913,7 @@ table.apiKey {
           outline: none;
           box-shadow: none;
           &:focus {
-            border-color: #ccc;
+            border-color: @very-lt-gray;
           }
         }
         .do-search {
@@ -6997,7 +6987,7 @@ table.apiKey {
 
           button {
             background: transparent;
-            border: 0px solid #ccc;
+            border: 0px solid @very-lt-gray;
           }
 
           .btn-circle {
@@ -7042,7 +7032,7 @@ table.apiKey {
           button.tool {
             background: @white;
             &:disabled {
-              color: #ccc;
+              color: @very-lt-gray;
             }
           }
           button {
@@ -7481,7 +7471,7 @@ table.apiKey {
           outline: none;
           border-radius: 0px;
           box-shadow: none;
-          border: 1px solid #ccc;
+          border: 1px solid @very-lt-gray;
           height: 40px;
 
         }
@@ -7551,7 +7541,7 @@ table.apiKey {
           }
         }
         .hidden-container {
-          border: 0px solid #ccc;
+          border: 0px solid @very-lt-gray;
           padding-right: 24px;
           margin-right: 12px
         }
@@ -7559,13 +7549,13 @@ table.apiKey {
           height: 250px;
           overflow-y: scroll;
           overflow-x: hidden;
-          border: 1px solid #ccc;
+          border: 1px solid @very-lt-gray;
           padding-right: 24px;
         }
         .bootstrap-select {
           button.disabled {
             background: @white;
-            border: 1px solid #ccc;
+            border: 1px solid @very-lt-gray;
             color: #333;
             opacity: 1;
             .glyphicon {
@@ -7621,7 +7611,7 @@ table.apiKey {
           }
         }
         .btn-info.btn-circle:disabled {
-          background: #ccc;
+          background: @very-lt-gray;
         }
         .btn-info.btn-circle-outline {
           box-shadow: none;
@@ -7692,6 +7682,32 @@ table.apiKey {
       width: 0;
     }
 
+    .resource-icon {
+      vertical-align: middle;
+    }
+
+    .cell.icon {
+      background: transparent;
+
+      i {
+        &.field {
+          color: @field-color !important;
+        }
+        &.element {
+          color: @element-color !important;
+        }
+        &.template {
+          color: @template-color !important;
+        }
+        &.metadata, &.instance {
+          color: @metadata-color !important;
+        }
+        &.folder {
+          color: @folder-color !important;
+        }
+      }
+    }
+
     #edit-description {
       outline: none;
     }
@@ -7711,8 +7727,8 @@ table.apiKey {
       padding: 0;
       margin: 0;
       font-size: 13px;
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
+      //border-top: 1px solid #ddd;
+      //border-bottom: 1px solid #ddd;
       .row {
         margin: 15px 0;
         .location {
@@ -7721,7 +7737,7 @@ table.apiKey {
       }
       &.no-selection {
         padding: 50px 0 100px 0;
-        color: #ccc;
+        color: @very-lt-gray;
         .no-file {
           font-size: 50px
         }
@@ -7858,7 +7874,7 @@ textarea.curlSample {
   .warning {
     font-size: 16px;
     padding: 40px 0;
-    color: #ccc;
+    color: @very-lt-gray;
     background-color: @white;
     border-width: 0px;
     min-height: 100px;
@@ -8044,8 +8060,7 @@ div.resource-icon {
         text-align: center;
         height: 36px;
         width: 36px;
-       transition:none;
-
+        transition: none;
 
       }
     }
@@ -8100,5 +8115,6 @@ div.resource-icon {
     }
   }
 
-
 }
+
+

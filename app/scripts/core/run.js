@@ -82,24 +82,29 @@ define([
     $rootScope.setHeader = function () {
 
       var e = jQuery("#top-navigation");
+      var f = jQuery(".template-container");
       e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
-      //jQuery("body").css('overflow:scroll');
+      f.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
+
 
       if ($location.path().startsWith("/dashboard")) {
-        //jQuery("body").css('overflow:hidden');
         e.addClass('dashboard');
+        f.addClass('dashboard');
       } else if ($location.path().startsWith("/elements")) {
         e.addClass('element');
-
+        f.addClass('element');
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
-
+        f.addClass('template');
       } else if ($location.path().startsWith("/fields")) {
         e.addClass('field');
-
+        f.addClass('field');
       } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');
+        f.addClass('metadata');
       }
+
+
     };
 
 
