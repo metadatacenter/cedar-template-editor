@@ -258,8 +258,8 @@ button {
   .navbar-brand-white {
     background-image: url(../img/cedar-logo-main.png);
     background-repeat: no-repeat;
-    width: 140px;
-    background-size: 140px;
+    width: 100px;
+    background-size: 100px;
     margin-top: 5px;
     margin-left: 0;
     color: white;
@@ -270,10 +270,10 @@ button {
   }
 
   .navbar-brand {
-    background-image: url(../img/cedar-logo-image.png);
+    background-image: url(../img/cedar-logo-main.png);
     background-repeat: no-repeat;
-    width: 140px;
-    background-size: 140px;
+    width: 100px;
+    background-size: 100px;
     margin-top: 5px;
     margin-left: 0;
     .text-hide();
@@ -1186,6 +1186,37 @@ button {
     background: @lt-gray-1;
     border-left: 1px solid #ebebeb;
 
+    .padding-top {
+      padding: 10px 0 0 0;
+    }
+
+    .helf-padding-top {
+      padding: 5px 0 0 0;
+    }
+
+    .padding-right {
+      padding-right:10px;
+    }
+
+    .resource-version {
+      margin:20px 0;
+      i {
+        font-size:20px;color:#9E9E9E;padding:0 5px 0 0;
+      }
+    }
+
+    .clickable {
+      width:100%;cursor:pointer;
+    }
+
+    .goaway {
+      position:absolute;top:10px;right:10px;
+    }
+
+    .element-toggles {
+      font-size:12px
+    }
+
     .title {
       display: inline-block;
       padding: 20px 0;
@@ -1193,6 +1224,14 @@ button {
       opacity: .5;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .field-label {
+      text-transform:uppercase;
+      color:#9E9E9E;
+      font-size:smaller;
+      padding:0 5px 0 0;
+      font-weight: normal;
     }
 
     .description {
@@ -7964,6 +8003,14 @@ table.message {
       color: #999;
     }
   }
+
+  .full-width {
+    width:100%
+  }
+}
+
+.flex-wrap {
+  flex-wrap:wrap;
 }
 
 .flex-top {

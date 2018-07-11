@@ -550,31 +550,26 @@
 
         <div class="flex">
           <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
-          <div style="width:100%" class="title " ng-class="dc.getSelectedNode().nodeType">
+          <div class="title full-width" ng-class="dc.getSelectedNode().nodeType">
             <span class="ellipsis" ng-bind="dc.getSelectedNode()['schema:name']"></span>
           </div>
-          <div class="goaway" style="position:absolute;top:10px;right:10px">
+          <div class="goaway">
             <button
                 ng-click="dc.toggleInfo()"
                 type="button"
                 class="close"
                 aria-label="Close">
               <span aria-hidden="true">
-                <img src="/img/close_modal.png" width="22" /></span>
+                <img src="/img/close_modal.png" width="16"/></span>
             </button>
           </div>
         </div>
 
-        <div class="element-toggles list table-style" style="font-size:12px">
+        <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style "
               ng-class="{active: dc.isTabActive('resource-info')}"
               ng-click="dc.setTab('resource-info');">
             <span>Info</span>
-          </div>
-          <div class="element-toggle table-cell-style "
-              ng-class="{active: dc.isTabActive('resource-share')}"
-              ng-click="dc.setTab('resource-share');">
-            <span>Share</span>
           </div>
           <div class="element-toggle table-cell-style "
               ng-class="{active: dc.isTabActive('resource-version')}"
@@ -583,43 +578,27 @@
           </div>
         </div>
 
-        <div id="resource-version" ng-show="dc.isTabActive('resource-version')" style="margin:20px 0">
-          <div class="info" ng-if="dc.selectedResource && dc.selectedResource.versions"
+        <div class="half-padding-top" id="resource-version" ng-show="dc.isTabActive('resource-version')">
+          <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
               ng-repeat="(index, resource) in dc.selectedResource.versions">
 
             <div class="flex" style="margin:10px 0;">
-              <i style="font-size:20px;color:#9E9E9E;padding:0 5px 0 0" class="action fa"
+              <i class="padding-right action fa"
                   ng-class="dc.getVersionIcon(resource['bibo:status'])"></i>
-              <div style="padding-right:10px">
-                {{resource['pav:version']}}
-              </div>
-              <div class="ellipsis" style="width:100%;cursor:pointer" ng-click="dc.goToResource(resource)">
-                {{resource['schema:name']}}
-              </div>
-
+              <div class="padding-right">{{resource['pav:version']}}</div>
+              <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{resource['schema:name']}}</div>
             </div>
 
-            <div class="flex" style="flex-wrap:wrap;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">
-                Created
-              </div>
-              <div>
-                {{ resource['pav:createdOn'] | prettyDate }}
-              </div>
+            <div class="flex flex-wrap">
+              <div class="field-label">Created</div>
+              <div>{{ resource['pav:createdOn'] | prettyDate }}</div>
             </div>
-            <div class="flex" style="flex-wrap:wrap;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">
-                Modified
-              </div>
-              <div>
-                {{ resource['pav:lastUpdatedOn'] | prettyDate }}
-              </div>
+            <div class="flex flex-wrap">
+              <div class="field-label" translate>Modified</div>
+              <div>{{ resource['pav:lastUpdatedOn'] | prettyDate }}</div>
             </div>
 
           </div>
-        </div>
-
-        <div id="resource-share" ng-show="dc.isTabActive('resource-share')">
         </div>
 
         <div id="resource-info" ng-if="dc.isTabActive('resource-info')">
@@ -633,32 +612,32 @@
           </div>
 
           <div class="info" ng-if="dc.getSelectedNode()">
-            <div class="flex" style="flex-wrap:wrap;padding: 10px 0 0 0;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">Location</div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label" translate>Location</div>
               <div>{{ dc.getSelectedNode().parentPath }}</div>
             </div>
 
-            <div class="flex" style="flex-wrap:wrap;padding: 10px 0 0 0;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">Owner</div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label" translate>Owner</div>
               <div> {{ dc.getSelectedNode().ownedByUserName }}</div>
             </div>
 
-            <div class="flex" style="flex-wrap:wrap;padding: 10px 0 0 0;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">Created</div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label" translate>Created</div>
               <div>{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
                 dc.getSelectedNode().createdByUserName }}
               </div>
             </div>
 
-            <div class="flex" style="flex-wrap:wrap;padding: 10px 0 0 0;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding-right:10px;">Modified</div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label" translate>Modified</div>
               <div>{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
                 {{ dc.getSelectedNode().lastUpdatedByUserName }}
               </div>
             </div>
 
-            <div class="flex" style="flex-wrap:wrap;padding: 10px 0 0 0;">
-              <div style="text-transform:uppercase;color:#9E9E9E;font-size:smaller;padding:0 5px 0 0">Permission</div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label" translate>Permission</div>
               <div>
                 <span ng-if="dc.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
                 <span ng-if="dc.canWrite()" class="can-write ellipsis"><i class="fa fa-check"></i>write </span>
