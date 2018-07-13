@@ -31,6 +31,7 @@ define([
           '$location',
           '$timeout',
           '$scope',
+          '$rootScope',
           '$window',
           '$translate',
           'CedarUser',
@@ -45,7 +46,7 @@ define([
           'MessagingService'
         ];
 
-        function cedarSearchBrowsePickerController($location, $timeout, $scope, $window, $translate, CedarUser,
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $window, $translate, CedarUser,
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService,
@@ -1753,6 +1754,27 @@ define([
           // do we have any resources to show?
           vm.hasResources = function () {
             return vm.totalCount > 0;
+          };
+
+          vm.search = function (searchTerm) {
+
+              vm.searchTerm = searchTerm;
+              var baseUrl = '/dashboard';
+              var queryParams = {};
+              var folderId = QueryParamUtilsService.getFolderId();
+              if (folderId) {
+                queryParams['folderId'] = folderId;
+              }
+              queryParams['search'] = searchTerm;
+              // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+              // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+              queryParams['t'] = Date.now();
+              var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+              $location.url(url);
+              if (searchTerm) {
+                UIProgressService.start();
+              }
+
           };
 
 

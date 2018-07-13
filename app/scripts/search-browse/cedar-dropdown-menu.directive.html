@@ -10,6 +10,8 @@
   <li ng-if="!canNotPublish || !canNotCreateDraft" role="separator" class="divider"></li>
   <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publish(resource)">Publish</a></li>
   <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="createDraft(resource)">Create Draft</a></li>
+  <li  role="separator" class="divider"></li>
+  <li ><a ng-cloak class="submit"  ng-class="{'link-disabled': !dc.canSubmit()}" href="#"  ng-click="dc.showFlowModal()">Submit </a></li>
   <li ng-if="!canNotDelete && !canNotWrite" role="separator" class="divider"></li>
   <li ng-if="!canNotDelete && !canNotWrite"><a ng-cloak class="delete"  href="#"  ng-click="delete(resource)">Delete </a></li>
 </ul>

@@ -44,6 +44,7 @@
 
 @primary-text: #0F7686;
 @secondary-text: #5A6D7E;
+@search-input: rgba(50, 119, 119, 0.46);
 
 @button-template: lighten(@template-color, 10%);
 @button-element: @element-color;
@@ -176,15 +177,74 @@ button {
   outline: none;
 }
 
+#user-menu-dropdown {
+  z-index: 99999;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: @white;
+  margin: 0;
+  padding: 0;
+  width: 150px;
+  box-shadow: 0px 0px 12px 1px #DDD;
+  ul {
+    padding: 10px;
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    li {
+      padding: 5px 10px;
+      width: 100%;
+      &:hover {
+        background-color: @very-lt-gray;
+      }
+    }
+
+  }
+}
+
+#messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
+
+  button {
+    background-color: rgba(6, 251, 251, 0.46);
+    background-color: #4bafaf;
+    color: @white;
+    //border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+
+    i {
+      font-size: 12px;
+      pointer-events: none;
+    }
+  }
+}
+
+#messaging, #user-menu {
+  button {
+    background-color: #4bafaf;
+  }
+}
+
+#grid-view-tool, #show-details, #workspace-sort-tool {
+  button {
+    background-color: #61a2c2;
+  }
+}
+
 .navbar {
   color: @header-text-color;
   margin-bottom: 0;
-  height: 50px;
+  height: 65px;
   border: none;
   background-color: @top-nav-color;
 
   &.metadata {
-    height: 50px;
+    height: 65px;
     background-color: @header-metadata;
   }
 
@@ -219,22 +279,24 @@ button {
     right: 15px;
     margin: 20px;
     font-size: 22px;
-    color: @very-lt-gray;
+    color: @white;
   }
 
   .search-input {
 
     color: black;
     font-size: 16px;
-    margin-top: 0px;
+    margin-top: 10px;
+    background-color: @search-input;
   }
 
   .do-search {
     position: absolute;
     top: -20px;
-    right: -20px;
+    right: -10px;
     margin: 20px;
     font-size: 22px;
+    color: @white;
   }
 
   .navbar-toggle {
@@ -255,38 +317,20 @@ button {
     }
   }
 
-  .navbar-brand-white {
-    background-image: url(../img/cedar-logo-main.png);
-    background-repeat: no-repeat;
-    width: 100px;
-    background-size: 100px;
-    margin-top: 5px;
-    margin-left: 0;
-    color: white;
-    text-shadow: none;
-    background-color: transparent;
-    border: 0;
-
-  }
-
   .navbar-brand {
     background-image: url(../img/cedar-logo-main.png);
     background-repeat: no-repeat;
-    width: 100px;
-    background-size: 100px;
-    margin-top: 5px;
-    margin-left: 0;
+    width: 50px;
+    background-size: 140px;
     .text-hide();
-
-    color: transparent;
+    color: @white;
     text-shadow: none;
-    background-color: transparent;
     border: 0;
+    left: 0;
     position: absolute;
-    top: 0;
-
+    //left:calc(~"50% - 70px");
     @media (min-width: @screen-sm-min) {
-      margin-left: 0;
+      width: 140px;
     }
   }
   .feedback-form {
@@ -306,6 +350,7 @@ button {
     font-size: 16px;
     color: @white;
     cursor: pointer;
+    margin-top: 8px;
 
     @media (min-width: @screen-sm-min) {
       margin-left: 0;
@@ -341,10 +386,12 @@ button {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid @very-lt-gray;
+    border-bottom: 0px solid @very-lt-gray;
     border-radius: 0;
     color: #000;
     padding-left: 0;
+    padding: 10px;
+    color: white;
     outline: none;
 
     &:before {
@@ -393,40 +440,59 @@ button {
   .nav-search {
     float: right;
     width: 50%;
-    max-height:40px;
-    overflow:hidden;
-    margin-top:0;
-    padding-top:0
+    max-height: 40px;
+    overflow: hidden;
+    margin-top: 0;
+    padding-top: 0
   }
 }
 
 #top-navigation {
-  overflow-y:scroll;
+  background-color: @top-nav-color;
 
-  &.template {
-    background-color: @top-nav-color;
-    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  .dropdown-menu {
+    box-shadow: none;
+    width: 100%;
+    position: relative;
+    background-color: transparent;
+    margin-bottom: 30px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+    li:first-of-type a {
+      border-top: none;
+    }
+
+    li a {
+      white-space: inherit;
+    }
   }
 
-  &.element {
-    background-color: @top-nav-color;
-    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
-  }
-
-  &.field {
-    background-color: @top-nav-color;
-    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
-  }
-
-  &.dashboard {
-    background-color: @background-gray !important;
-    ::-webkit-scrollbar-track-piece {background-color: @background-gray !important;}
-  }
-
-  &.metadata {
-    background-color: @top-nav-color;
-    ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
-  }
+  //&.template {
+  //  background-color: @top-nav-color;
+  //  ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  //}
+  //
+  //&.element {
+  //  background-color: @top-nav-color;
+  //  ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  //}
+  //
+  //&.field {
+  //  background-color: @top-nav-color;
+  //  ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  //}
+  //
+  //&.dashboard {
+  //  background-color: @top-nav-color;
+  //  ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  //}
+  //
+  //&.metadata {
+  //  background-color: @top-nav-color;
+  //  ::-webkit-scrollbar-track-piece {background-color: @top-nav-color;}
+  //}
 
   .form-page {
     height: 36px;
@@ -454,7 +520,7 @@ button {
 
 #angular-views-entry {
   position: relative;
-  top: 50px;
+  top: 65px;
   width: 100%;
   height: calc(~"100% - 50px");
 }
@@ -465,15 +531,15 @@ button {
 }
 
 .controls-bar {
-  padding: 10px 5px 0 5px;
+  padding: 0 5px 0 5px;
   background: @header-template;
   color: @white;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
   top: 0;
   position: relative;
-  min-height: 50px;
-  height: 50px;
+  min-height: 0px;
+  height: 0px;
 
   .breadcrumbs-sb {
     margin: 5px 0;
@@ -800,7 +866,8 @@ button {
   color: @graytxt;
   padding: 0;
   position: relative;
-  height: calc(~"100% - 55px");
+  //height: calc(~"100% - 55px");
+  height: 100%;
 
   .center-panel {
     top: 0;
@@ -857,7 +924,7 @@ button {
 
   .populate-form-boxes {
 
-    margin: 0 20px;
+    //margin: 0 20px;
 
     .form-box {
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
@@ -1083,7 +1150,7 @@ button {
     }
 
     .list-view {
-      padding-bottom: 300px;
+      //padding-bottom: 300px;
 
       .dropdown-menu {
         z-index: 100;
@@ -1195,26 +1262,31 @@ button {
     }
 
     .padding-right {
-      padding-right:10px;
+      padding-right: 10px;
     }
 
     .resource-version {
-      margin:20px 0;
+      margin: 20px 0;
       i {
-        font-size:20px;color:#9E9E9E;padding:0 5px 0 0;
+        font-size: 20px;
+        color: #9E9E9E;
+        padding: 0 5px 0 0;
       }
     }
 
     .clickable {
-      width:100%;cursor:pointer;
+      width: 100%;
+      cursor: pointer;
     }
 
     .goaway {
-      position:absolute;top:10px;right:10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
 
     .element-toggles {
-      font-size:12px
+      font-size: 12px
     }
 
     .title {
@@ -1227,10 +1299,10 @@ button {
     }
 
     .field-label {
-      text-transform:uppercase;
-      color:#9E9E9E;
-      font-size:smaller;
-      padding:0 5px 0 0;
+      text-transform: uppercase;
+      color: #9E9E9E;
+      font-size: smaller;
+      padding: 0 5px 0 0;
       font-weight: normal;
     }
 
@@ -1304,6 +1376,10 @@ button {
     top: 0;
     left: 0;
 
+    .compose-options {
+
+    }
+
     .filter-options {
       padding: 10px 0 0 10px;
 
@@ -1347,7 +1423,7 @@ button {
       }
 
       .shares {
-        margin: 30px 0 40px 0;
+        margin: 10px 0 40px 0;
         .share {
           color: @brand-primary;
           margin: 10px 0;
@@ -1472,69 +1548,69 @@ button {
     overflow: hidden;
   }
 
-  .add-new {
-
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-
-    &:hover {
-    }
-
-    button:focus {
-      outline: 0;
-    }
-
-    .btn-info {
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-      margin: 5px 0;
-    }
-
-    .btn-info.btn-circle {
-      background: @brand-primary;
-      color: @white;
-      border: none;
-
-      &.compose {
-        background: @primary-accent;
-      }
-
-      &.template {
-        background: @button-template;
-      }
-
-      &.element {
-        background: @button-element;
-      }
-
-      &.field {
-        background: @button-field;
-      }
-
-      &.metadata, &.instance {
-        background: @button-metadata;
-      }
-
-      &.folder {
-        background: @button-folder;
-      }
-    }
-    .btn-info.btn-circle-outline {
-      box-shadow: none;
-      background: @white;
-      color: @brand-primary;
-      border: 1px solid @brand-primary;
-    }
-    .btn-info.btn-close {
-      box-shadow: none;
-      background: @graytxt;
-      color: @white;
-      border: none;
-    }
-  }
+  //.add-new {
+  //
+  //  position: fixed;
+  //  bottom: 10px;
+  //  right: 20px;
+  //
+  //  &:hover {
+  //  }
+  //
+  //  button:focus {
+  //    outline: 0;
+  //  }
+  //
+  //  .btn-info {
+  //    border-radius: 50%;
+  //    width: 40px;
+  //    height: 40px;
+  //    font-size: 18px;
+  //    margin: 5px 0;
+  //  }
+  //
+  //  .btn-info.btn-circle {
+  //    background: @brand-primary;
+  //    color: @white;
+  //    border: none;
+  //
+  //    &.compose {
+  //      background: @primary-accent;
+  //    }
+  //
+  //    &.template {
+  //      background: @button-template;
+  //    }
+  //
+  //    &.element {
+  //      background: @button-element;
+  //    }
+  //
+  //    &.field {
+  //      background: @button-field;
+  //    }
+  //
+  //    &.metadata, &.instance {
+  //      background: @button-metadata;
+  //    }
+  //
+  //    &.folder {
+  //      background: @button-folder;
+  //    }
+  //  }
+  //  .btn-info.btn-circle-outline {
+  //    box-shadow: none;
+  //    background: @white;
+  //    color: @brand-primary;
+  //    border: 1px solid @brand-primary;
+  //  }
+  //  .btn-info.btn-close {
+  //    box-shadow: none;
+  //    background: @graytxt;
+  //    color: @white;
+  //    border: none;
+  //  }
+  //}
 
 }
 
@@ -3650,6 +3726,7 @@ section.dashboard-elements {
 
   ::-webkit-scrollbar {
     -webkit-appearance: none;
+    background: transparent;
   }
 
   ::-webkit-scrollbar:vertical {
@@ -6643,7 +6720,7 @@ table.apiKey {
 }
 
 ::-webkit-scrollbar-track-piece {
-  background-color: @background-gray;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-corner {
@@ -6680,8 +6757,6 @@ table.apiKey {
   height: 100%;
   width: 100%;
 }
-
-
 
 .scrollable-content {
   overflow-x: hidden;
@@ -7697,20 +7772,38 @@ table.apiKey {
 @media (min-width: 768px) {
   #sidebar-left {
     position: absolute;
-    top: 50px;
+    top: 0;
     bottom: 0;
     left: 0;
     width: 16.66666667%;
     overflow-y: auto;
+
+    .add-new {
+      position: relative;
+      margin-top: 35px;
+      margin-left: 10px;
+
+      button {
+        background-color: @brand-primary;
+        color: @white;
+      }
+
+      button:focus {
+        outline: 0;
+        background-color: @brand-primary
+      }
+    }
   }
 
   #center-panel {
     position: absolute;
-    top: 50px;
+    top: 0;
     bottom: 0;
     left: 16.66666667%;
     right: 16.66666667%;
-    overflow-y: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    overflow-y: hidden;
     &.without-info {
       right: 0;
     }
@@ -7721,7 +7814,7 @@ table.apiKey {
 
   #sidebar-right {
     position: absolute;
-    top: 50px;
+    top: 0;
     bottom: 0;
     right: 0;
     overflow-y: auto;
@@ -7803,6 +7896,22 @@ table.apiKey {
     overflow-y: auto;
 
     #sidebar-left {
+      .add-new {
+        position: relative;
+        margin-top: 35px;
+        margin-left: 10px;
+
+        button {
+          background-color: @brand-primary;
+          color: @white;
+        }
+
+        button:focus {
+          outline: 0;
+          background-color: @brand-primary
+        }
+      }
+
     }
 
     #center-panel {
@@ -8013,16 +8122,16 @@ table.message {
   }
 
   .full-width {
-    width:100%
+    width: 100%
   }
 }
 
 .flex-wrap {
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
 
 .flex-center {
-  justify-content:center;
+  justify-content: center;
 }
 
 .flex-top {

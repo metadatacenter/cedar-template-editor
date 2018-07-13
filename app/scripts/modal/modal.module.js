@@ -10,7 +10,8 @@ define([
   'cedar/template-editor/modal/cedar-share-modal.directive',
   'cedar/template-editor/modal/cedar-rename-modal.directive',
   'cedar/template-editor/modal/cedar-new-folder-modal.directive',
-  'cedar/template-editor/modal/cedar-finder.directive'
+  'cedar/template-editor/modal/cedar-finder.directive',
+  'cedar/template-editor/modal/cedar-test-modal.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.modal', [
     'cedar.templateEditor.modal.cedarCopyModal',
@@ -20,6 +21,7 @@ define([
     'cedar.templateEditor.modal.cedarShareModal',
     'cedar.templateEditor.modal.cedarRenameModal',
     'cedar.templateEditor.modal.cedarNewFolderModal',
-    'cedar.templateEditor.modal.cedarFinder'
+    'cedar.templateEditor.modal.cedarFinder',
+    'cedar.templateEditor.modal.cedarTestModal'
   ]);
 });

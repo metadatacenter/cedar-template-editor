@@ -39,14 +39,17 @@
 <![endif]-->
 <nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role=" navigation ">
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
-    <div class="navbar-header" >
+    <div class="navbar-header ">
 
-      <!-- if we are in the workspace  --->
-      <div ng-if="hc.isDashboard()" >
-        <div>
-          <div class="nav-search">
+      <div ng-if="hc.isDashboard()">
+        <div class="row">
+          <div class="col-xs-2" ng-click="hc.goToDashboardOrBack()">
+            <a class="navbar-brand " alt="Cedar" href="javascript:">Cedar</a>
+          </div>
+
+          <div class="col-xs-7" style="margin-top:0;padding-top:0">
             <form>
-              <div class="form-group floating-label-wrapper search-input" >
+              <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                     class="form-control search-input"
                     id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"/>
@@ -56,10 +59,34 @@
               </div>
             </form>
           </div>
-        </div>
-        <a class="navbar-brand pull-left" style="max-height:40px;overflow:hidden" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
-      </div>
 
+          <div class="col-xs-3">
+            <ul class="list-inline pull-right" style="margin-top:10px;white-space: nowrap;">
+
+
+              <li id="messaging">
+                <button  class="inline" uib-tooltip='{{"HELP.message" | translate}}' tooltip-placement="bottom"
+                    type="button"
+                    ng-click="hc.openMessaging()"><i class="fa fa-bell inline"></i></button>
+                <div id="messaging-number" ng-show="hc.hasUnreadMessages()">
+                  <button type="button"
+                      uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+                      tooltip-placement="bottom"
+                      ng-click="dc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
+                  </button>
+                </div>
+              </li>
+
+              <li id="user-menu"><button  id="user-menu-dropdown-trigger" class="inline"
+                  type="button"
+                  ng-click="hc.toggleUserMenuDropdown()"><i   class="fa fa-user inline"></i></button>
+               </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </div>
 
       <div ng-if="!hc.isDashboard()">
         <div class="navbar-back flex">
@@ -69,10 +96,13 @@
             <div class="document-title">{{hc.formatDocumentTitle()}}</div>
           </div>
 
-          <div ng-if="!hc.isMessaging()" class="flex-right feedback-form" >
-            <div  uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
-            <div  uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
-            <div  uib-tooltip="{{hc.validInvalidTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i class="fa "
+          <div ng-if="!hc.isMessaging()" class="flex-right feedback-form">
+            <div uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
+            <div uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
+            <div uib-tooltip="{{hc.validInvalidTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa "
                 ng-class="{'fa-exclamation-triangle': !hc.isValid(), 'fa-check': hc.isValid()}"></i></div>
           </div>
 
@@ -85,6 +115,19 @@
 </nav>
 
 <div id="angular-views-entry" ng-view="">Preloading CEDAR ...</div>
+
+<section>
+  <cedar-test-modal cedar-modal-show modal-visible="hc.testModalVisible" class="modal"
+      id="test-modal" tabindex="-1" role="dialog" aria-labelledby="testModalHeader"
+      data-keyboard="false" data-backdrop="false">
+  </cedar-test-modal>
+</section>
+
+<!--<section>-->
+<!--<div id="menu-dropdown" style="display:none;position">-->
+<!--menu dropdown here-->
+<!--</div>-->
+<!--</section>-->
 
 <toasty></toasty>
 
