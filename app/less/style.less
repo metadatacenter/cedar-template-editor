@@ -207,32 +207,40 @@ button {
 }
 
 #messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
+  position:relative;
 
   button {
-    background-color: rgba(6, 251, 251, 0.46);
-    background-color: #4bafaf;
-    color: @white;
-    //border-radius: 50%;
-    width: 26px;
-    height: 26px;
+    background-color: transparent;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
     text-align: center;
-
+    vertical-align:middle;
+    transition: all 1s ease-in-out;
+    &:hover {
+      color: @white;
+    }
     i {
-      font-size: 12px;
+      font-size: 16px;
       pointer-events: none;
     }
   }
 }
 
 #messaging, #user-menu {
-  button {
+  button {color: #ccc;}
+  button:hover {
     background-color: #4bafaf;
+    transition: background-color 0.3s ease-in 0.1s;
   }
 }
 
 #grid-view-tool, #show-details, #workspace-sort-tool {
-  button {
+  button {color: #616161;}
+  button:hover {
     background-color: #61a2c2;
+    transition: background-color 0.3s ease-in 0.1s;
+    transition: background-color 0.3s ease-in 0.1s;
   }
 }
 
