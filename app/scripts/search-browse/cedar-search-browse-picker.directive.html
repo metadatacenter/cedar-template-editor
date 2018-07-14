@@ -172,27 +172,6 @@
           <div class="col-xs-5">
             <ul class="list-inline pull-right" style="white-space: nowrap;">
 
-              <!--<li ng-if="dc.onDashboard() " class="more-options">-->
-                <!--<div class="btn-group dropdown">-->
-                  <!--<button class="{'disabled': !dc.hasSelection()}"-->
-                      <!--ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                    <!--<i-->
-                        <!--class="fa fa-ellipsis-v  inline "></i></button>-->
-
-                  <!--<cedar-dropdown-menu class="dropdown-menu dropdown-menu-right" resource="selectedResource"-->
-                      <!--go-to="dc.goToResource"-->
-                      <!--share="dc.showShareModal"-->
-                      <!--move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"-->
-                      <!--rename="dc.showRenameModal"-->
-                      <!--publish="dc.showPublishModal" create-draft="dc.createDraftResource"-->
-                      <!--can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"-->
-                      <!--can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"-->
-                      <!--can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">-->
-                  <!--</cedar-dropdown-menu>-->
-
-                <!--</div>-->
-              <!--</li>-->
-
               <li ng-show="dc.onDashboard()" id="grid-view-tool">
                 <button type="button"
                     uib-tooltip='{{"Select view" | translate}}'
@@ -271,7 +250,7 @@
           </div>
         </div>
 
-        <div cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content" style="padding-top:10px">
+        <div cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content" style="padding-top:0">
           <div style="height:auto;">
 
             <div class="no-selection" ng-if="!dc.hasResources()">
@@ -293,7 +272,7 @@
                       ng-class="{ selected: dc.isResourceSelected(resource) }"
                       ng-repeat="(index, resource) in dc.resources">
 
-                    <div rightclick offsetX="0" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
+                    <div dropdownId="{{getId(resource, 'populate')}}"
                         ng-click="dc.selectResource(resource)"
                         ng-dblclick="dc.goToResource(resource)"
                         class="form-box  ">
@@ -391,7 +370,7 @@
                 <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
                     style="height:auto;position:relative">
 
-                  <div class="box-title flex">
+                  <div class="box-title flex" >     
                     <div class="flex" style="width:100%;justify-content:space-between;">
                       <cedar-resource-icon style="visibility:hidden"
                           resource-type="resource.nodeType"></cedar-resource-icon>
