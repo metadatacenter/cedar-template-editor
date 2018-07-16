@@ -85,6 +85,7 @@ define([
           vm.newFolderModalVisible = false;
           vm.flowModalVisible = false;
 
+
           vm.getFacets = getFacets;
           vm.getForms = getForms;
           vm.getCurrentFolderSummary = getCurrentFolderSummary;
@@ -102,6 +103,7 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
+          vm.isSelected = isSelected;
 
 
           vm.onDashboard = onDashboard;
@@ -227,7 +229,7 @@ define([
               var rowRect = row.getBoundingClientRect();
 
               menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
-              menu.style.setProperty("top", ($event.pageY - centerRect.top - 20) + "px");
+              menu.style.setProperty("top", ($event.pageY - centerRect.top - 60) + "px");
             }
           };
 
@@ -282,7 +284,7 @@ define([
 
 
               $timeout(function () {
-                if (vm.activeTab == 'resource-version') {
+                if (infoShowing()) {
                   vm.getResourceReport(resource);
                 } else {
                   vm.getResourceDetails(resource);
@@ -324,10 +326,28 @@ define([
             return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
           };
 
+          vm.getNumberOfInstances = function () {
+            if (vm.selectedResource && vm.selectedResource['numberOfInstances']) {
+              return vm.selectedResource['numberOfInstances'];
+            }
+          };
+
+          vm.getDerivedFrom = function () {
+            if (vm.selectedResource && vm.selectedResource['derivedFrom']) {
+              return vm.selectedResource['derivedFrom'];
+            }
+          };
+
+          vm.getBasedOn = function () {
+            if (vm.selectedResource && vm.selectedResource['isBasedOn']) {
+              return vm.selectedResource['isBasedOn'];
+            }
+          };
+
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
-            return (vm.showResourceInfo ? 'Hide' : 'Show') + ' details';
+            return (infoShowing() ? 'Hide' : 'Show') + ' details';
           };
 
           vm.getResourceReport = function (resource) {
@@ -341,7 +361,6 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
-                  console.log('report', response);
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
@@ -350,6 +369,7 @@ define([
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
+
                   }
                 },
                 function (error) {
@@ -1080,6 +1100,12 @@ define([
             return result;
           }
 
+          function isSelected(node) {
+            if (hasSelection() && node) {
+              return  (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
+            }
+          }
+
           function getNodeType(resource) {
             return resource ? resource.nodeType : '';
           }
@@ -1276,7 +1302,7 @@ define([
           }
 
           function infoShowing() {
-            return vm.showResourceInfo && onDashboard();
+            return CedarUser.isInfoOpen();
           }
 
           function narrowContent() {

@@ -936,6 +936,8 @@ button {
 
     //margin: 0 20px;
 
+
+
     .form-box {
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
     }
@@ -1006,12 +1008,12 @@ button {
           height: 20px;
           padding: 0px;
           white-space: nowrap;
-          color: @very-lt-gray;
+          color: @med-gray;
           font-size: 10px;
           i.action {
             font-size: 16px;
             margin: 0 3px;
-            color: @very-lt-gray;
+            color: @med-gray;
             &:hover {
               color: #aaa;
             }
@@ -1214,11 +1216,16 @@ button {
         overflow: hidden;
         //opacity:0.7;
 
+
+
         &:hover {
+          //opacity:0.7;
           //box-shadow: 5px 5px 5px @med-gray;
+          background-color:#f8f8f8;
+
         }
         .outer {
-          border-left: 5px solid #fff;
+          border-left: 5px solid transparent;
           padding: 6px;
         }
         .resource-icon {
@@ -1247,6 +1254,7 @@ button {
           }
         }
         &.selected {
+          background-color:#f8f8f8;
           .outer {
             border-left-color: @brand-primary;
           }
@@ -7839,6 +7847,14 @@ table.apiKey {
     overflow-y: auto;
     &.without-info {
       width: 0;
+    }
+
+    .latest-version {
+      font-weight:bold;
+    }
+
+    .selected-version {
+      background-color:#eee;
     }
 
     .resource-icon {
