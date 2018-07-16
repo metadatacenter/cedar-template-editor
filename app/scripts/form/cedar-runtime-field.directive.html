@@ -11,11 +11,12 @@
           <div class="col-xs-12">
             <div class="leader"></div>
             <div class="title field">
-              {{getPropertyLabel() || getTitle()}}
+              {{getLabel()}}
             </div>
           </div>
         </div>
       </div>
+
 
       <!-- show the spreadsheet -->
       <div ng-if="isSpreadsheetView()">
@@ -36,9 +37,10 @@
           <div class="col-sm-9 answer" ng-if="isActive(index)">
             <div class="flex">
               <div></div> <!--title-->
+
               <field-toolbar  model="model" field="field" index="index" paging="!isSpreadsheetView()"
                   remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
-                  expand-all="expandAll" get-locator="getLocator" view-state="viewState"></field-toolbar>
+                  expand-all="expandAll" get-locator="getLocator" view-state="viewState" get-help="getHelp"  has-help="hasHelp"></field-toolbar>
             </div>
 
 
@@ -66,7 +68,7 @@
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="toggleActive(index)" class="title field isInactive"
                 ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              {{getPropertyLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
+              {{getLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
             </div>
           </div>
 
@@ -82,10 +84,10 @@
             <div class="flex " style="min-height:2em;padding:5px 0;">
               <div></div> <!--title-->
               <field-toolbar  values="valueArray" min="pageMin"
-                  max="pageMax" select="selectPage" paging="isMultipleCardinality() && isTabView()"
+                  max="pageMax" select="selectPage" paging="isMultiple()"
                   range="pageRange" model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive" expand-all="expandAll"
-                  get-locator="getLocator" view-state="viewState">
+                  get-locator="getLocator" view-state="viewState" get-help="getHelp"  has-help="hasHelp">
               </field-toolbar>
             </div>
 
@@ -134,7 +136,7 @@
           <div class="col-sm-3 col-xs-* ">
 
             <div ng-click="toggleActive(index)" class="title field isInactive">
-              {{getPropertyLabel()}} <span ng-if="isMultipleCardinality()" class="" count>({{index+1}})</span>
+              {{getLabel()}} <span ng-if="isMultipleCardinality()" class="" count>({{index+1}})</span>
             </div>
           </div>
           <div class="col-sm-9 col-xs-* " ng-click="setActive(index, true)">
@@ -149,7 +151,7 @@
           <div class="col-sm-3">
             <div class="leader"></div>
             <div class="title field isActive">
-              {{getPropertyLabel()}} <span ng-if="isMultipleCardinality()" class="count">({{index+1}})</span>
+              {{getLabel()}} <span ng-if="isMultipleCardinality()" class="count">({{index+1}})</span>
             </div>
           </div>
           <div class="col-sm-9 answer">
@@ -159,7 +161,7 @@
                   index="index" view-state="viewState"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
                   expand-all="expandAll"
-                  get-locator="getLocator"></field-toolbar>
+                  get-locator="getLocator" get-help="getHelp"  has-help="hasHelp"></field-toolbar>
             </div>
 
             <div ng-if="isStatic(previous)" style="margin-bottom:20px;overflow-x:hidden">

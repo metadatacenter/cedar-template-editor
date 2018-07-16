@@ -33,7 +33,7 @@ describe('update-ownership', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('in info panel', function () {
+  describe('in share dialog', function () {
 
     it("should give ownership of a folder owned by current user to another user", function () {
       console.log('update-ownership should give ownership of a folder owned by current user to another user');

@@ -183,7 +183,7 @@
                   <tr>
                     <td class="label">Modified</td>
                     <td>
-                      <span class="no-wrap">{{ finder.selectedResource.lastUpdatedOnTS | prettyDate }}</span>
+                      <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>
                       by
                       <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>
                     </td>
@@ -191,7 +191,7 @@
                   <tr>
                     <td class="label">Created</td>
                     <td>
-                      <span class="no-wrap">{{ finder.selectedResource.createdOnTS | prettyDate }}</span>
+                      <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>
                       by
                       <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>
                     </td>

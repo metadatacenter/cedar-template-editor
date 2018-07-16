@@ -13,7 +13,7 @@ define([
       if (value == null) {
         return '';
       }
-      return $filter('date')(value * 1000, 'short');
+      return $filter('date')(value, 'short');
     };
   };
 

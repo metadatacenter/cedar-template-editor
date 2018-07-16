@@ -32,13 +32,13 @@ define([
           '$timeout',
           'resourceService',
           'UIMessageService',
-          'UISettingsService','$anchorScroll',
+          'UISettingsService', '$anchorScroll',
           'CONST'
         ];
 
         function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
                                           resourceService,
-                                          UIMessageService,UISettingsService, $anchorScroll,
+                                          UIMessageService, UISettingsService, $anchorScroll,
                                           CONST) {
           var vm = this;
 
@@ -112,35 +112,42 @@ define([
             return result;
           }
 
-          function updateResource() {
 
-            if (vm.selectedDestination) {
-              var folderId = vm.selectedDestination['@id'];
+          function moveEnabled() {
+            return vm.moveResource && vm.selectedDestination && vm.selectedDestination['@id'] != vm.currentFolderId;
+          }
 
-              if (vm.moveResource) {
-                var resource = vm.moveResource;
-
-                resourceService.moveResource(
-                    resource,
-                    folderId,
-                    function (response) {
-
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource['schema:name']},
-                          'GENERIC.Moved');
-
-                      refresh();
-                    },
-                    function (response) {
-                      UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
-                    }
-                );
-
-              }
-            }
+          function moveDisabled() {
+            return !moveEnabled();
           }
 
           function refresh() {
             $scope.$broadcast('refreshWorkspace');
+          }
+
+          function updateResource() {
+
+            if (moveEnabled()) {
+
+              var folderId = vm.selectedDestination['@id'];
+              var resource = vm.moveResource;
+
+              resourceService.moveResource(
+                  resource,
+                  folderId,
+                  function (response) {
+
+                    UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success',
+                        {"title": resource['schema:name']},
+                        'GENERIC.Moved');
+
+                    refresh();
+                  },
+                  function (response) {
+                    UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
+                  }
+              );
+            }
           }
 
           function currentTitle() {
@@ -165,9 +172,6 @@ define([
             }
           }
 
-          function moveDisabled() {
-            return vm.selectedDestination == null;
-          }
 
           function isDestinationSelected(resource) {
             if (resource == null || vm.selectedDestination == null) {
@@ -187,7 +191,7 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
-            if ( vm.modalVisible) {
+            if (vm.modalVisible) {
               vm.offset += UISettingsService.getRequestLimit();
               if (vm.offset < vm.totalCount) {
                 getDestinationById(vm.currentDestinationID);
@@ -207,7 +211,7 @@ define([
                     vm.totalCount = response.totalCount;
                     vm.currentDestinationID = folderId;
                     if (vm.offset > 0) {
-                      $scope.destinationResources =  $scope.destinationResources.concat(response.resources);
+                      $scope.destinationResources = $scope.destinationResources.concat(response.resources);
                     } else {
                       $scope.destinationResources = response.resources;
                     }
@@ -294,7 +298,6 @@ define([
             var homeFolderId = params[4];
             var resourceTypes = params[5];
             var sortOptionField = params[6];
-
 
 
             if (visible && resource) {

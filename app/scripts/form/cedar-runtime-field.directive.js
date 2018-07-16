@@ -58,18 +58,23 @@ define([
       $scope.getPropertyLabel = function () {
         if ($scope.labels && $scope.fieldKey && $scope.labels[$scope.fieldKey]) {
           return $scope.labels[$scope.fieldKey];
-        } else {
-          return $scope.getTitle();
         }
       };
 
+      $scope.getPropertyDescription = function () {
+        if ($scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey]) {
+          return $scope.descriptions[$scope.fieldKey];
+        }
+      };
 
+      $scope.hasPropertyDescription = function () {
+        return $scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey];
+      };
 
       // get the field description
       $scope.getDescription = function (field) {
         return dms.getDescription(field || $scope.field);
       };
-
 
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
@@ -92,6 +97,18 @@ define([
       $scope.hasMaxLength = function () {
         return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
       }
+
+      $scope.getLabel = function () {
+        return $scope.getPropertyLabel() || $scope.getTitle();
+      };
+
+      $scope.getHelp = function () {
+        return $scope.getPropertyDescription() || $scope.getDescription();
+      };
+
+      $scope.hasHelp = function () {
+        return $scope.hasPropertyDescription() || $scope.hasDescription();
+      };
 
       $scope.getContent = function (field) {
         return dms.getContent(field || $scope.field);
@@ -973,7 +990,7 @@ define([
             $scope.$emit('valueTooShortError', ['remove', $scope.getPropertyLabel(), $scope.getId()]);
           }
         }
-            
+
         // Validate the value of a numeric field
         if (dms.isNumericField($scope.field)) {
           var value = $scope.valueArray[$scope.index]['@value'];
@@ -1428,7 +1445,8 @@ define([
         parentKey     : '=',
         parentModel   : '=',
         parentInstance: '=',
-        labels: '='
+        labels: '=',
+        descriptions: '='
 
       },
       controller : function ($scope, $element) {

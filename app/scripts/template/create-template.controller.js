@@ -212,9 +212,8 @@ define([
               // now we are sure that the element was successfully added
               UIUtilService.scrollToDomId(domId);
               $scope.toggleMore();
-              $timeout(function () {
-                UIUtilService.setDirty();
-              });
+              UIUtilService.setDirty(true);
+
             });
           }
         };
@@ -239,6 +238,7 @@ define([
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               UIUtilService.scrollToDomId(domId);
+              UIUtilService.setDirty(true);
 
             });
             $rootScope.$broadcast("form:update", element);
@@ -256,6 +256,7 @@ define([
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               UIUtilService.scrollToDomId(domId);
+              UIUtilService.setDirty(true);
 
             });
             $rootScope.$broadcast("form:update", node);
@@ -299,7 +300,8 @@ define([
           });
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-          $rootScope.$broadcast('form:reset');
+          // $rootScope.$broadcast('form:reset');
+          UIUtilService.setDirty(false);
         };
 
         $scope.saveTemplate = function () {
@@ -365,7 +367,8 @@ define([
                     var newId = response.data['@id'];
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
-                    $rootScope.$broadcast('form:clean');
+                    //$rootScope.$broadcast('form:clean');
+                    UIUtilService.setDirty(false);
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -397,7 +400,8 @@ define([
                           {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
                       owner.enableSaveButton();
 
-                      $rootScope.$broadcast('form:clean');
+                      //$rootScope.$broadcast('form:clean');
+                      UIUtilService.setDirty(false);
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);

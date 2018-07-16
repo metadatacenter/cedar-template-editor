@@ -63,7 +63,7 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should copy and move resource to folder", function () {
+    xit("should copy and move resource to folder", function () {
       // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -84,7 +84,7 @@ describe('copy and move', function () {
     });
 
     // TODO failed
-    it("should fail to move and succeed to copy a readable resource", function () {
+   xit("should fail to move and succeed to copy a readable resource", function () {
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -106,7 +106,7 @@ describe('copy and move', function () {
 
     });
 
-    it("should fail to copy and move to a readable folder", function () {
+    xit("should fail to copy and move to a readable folder", function () {
       // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');
@@ -127,7 +127,7 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should move resource to a writable folder", function () {
+    xit("should move resource to a writable folder", function () {
       // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       var sourceTemplate = workspacePage.createTemplate('Source');

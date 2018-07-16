@@ -1,7 +1,7 @@
 <div ng-init="initializeValue(); initializeValueType()">
 
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group has-feedback value">
-    <div aria-label="{{getDescription()}}" class="isInactive " style="display: flex;justify-content: space-between;">
+    <div aria-label="{{getHelp()}}" class="isInactive " style="display: flex;justify-content: space-between;">
       <span>{{getValue()}}</span>
       <!--<i class="cedar-svg-help-circle isInactive"  style="color:#ccc" uib-tooltip="{{getDescription()}}"  tooltip-append-to-body="true"  tooltip-placement="top" ng-if="hasDescription()"></i>-->
     </div>
@@ -28,7 +28,7 @@
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="{{isActive(index) ? 'enter URI' : ''}}"
-          aria-label="{{getDescription()}}"
+          aria-label="{{getHelp()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@id']"
           ng-pattern="urlRegex">

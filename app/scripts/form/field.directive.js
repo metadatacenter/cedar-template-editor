@@ -170,6 +170,16 @@ define([
         return dms.getTitle($scope.field).length > 0;
       };
 
+      $scope.getPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return  descriptions ? descriptions[$scope.fieldKey] : false;
+      };
+
+      $scope.hasPropertyDescription = function () {
+        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        return descriptions && descriptions[$scope.fieldKey] && descriptions[$scope.fieldKey].length > 0;
+      };
+
       $scope.getDescription = function () {
         return dms.getDescription($scope.field);
       };
@@ -193,6 +203,18 @@ define([
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
         return description && description.length > 0;
+      };
+
+      $scope.getLabel = function () {
+        return $scope.getTitle() || $scope.getPropertyLabel();
+      };
+
+      $scope.getHelp = function () {
+        return $scope.getPropertyDescription() || $scope.getDescription();
+      };
+
+      $scope.hasHelp = function () {
+        return $scope.hasDescription() || $scope.hasPropertyDescription();
       };
 
       $scope.hasValueConstraint = function () {
@@ -252,7 +274,7 @@ define([
             $rootScope.$broadcast("form:clear");
 
           } else {
-            dms.removeChild($scope.parentElement, $scope.field);
+            dms.removeChild($scope.parentElement, $scope.field, $scope.fieldKey);
             $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
           }
         }
@@ -360,6 +382,7 @@ define([
         var maxItems = dms.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
           $scope.model.push({'@value': null});
+          $scope.setDirty();
         }
       };
 
@@ -367,6 +390,7 @@ define([
         var minItems = dms.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
           $scope.model.splice(index, 1);
+          $scope.setDirty();
         }
       };
 
@@ -393,12 +417,12 @@ define([
       $scope.showModal = function (type) {
         if (type) {
           // TODO don't pass the search string through rootScope
-          $rootScope.finalTitle = $scope.getTitle();
+          $rootScope.finalTitle = $scope.getLabel();
           $scope.modalType = type;
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
+          $rootScope.$broadcast("ctdc:init", [$scope.getLabel()]);
         }
       };
 
@@ -420,7 +444,7 @@ define([
 
 
       //
-      // watches
+      // watchers
       //
 
       // watch for this field's deselect
@@ -456,6 +480,24 @@ define([
           return (dms.addOption($scope.field));
         };
 
+      }, true);
+
+      // Used to update schema:name when the field label (stored in propertyLabels) changes
+      $scope.$watch("fieldLabel[fieldLabelKey]", function () {
+        if (!angular.isUndefined($scope.fieldLabelKey) && !angular.isUndefined($scope.fieldLabel[$scope.fieldLabelKey])) {
+          if ($scope.isEditable()) {
+            dms.setTitle($scope.field, $scope.fieldLabel[$scope.fieldLabelKey]);
+          }
+        }
+      }, true);
+
+      // Used to update schema:description when the field description (stored in propertyDescriptions) changes
+      $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
+        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
+          if ($scope.isEditable()) {
+            dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
+          }
+        }
       }, true);
 
       $scope.isFirstLevel = function () {

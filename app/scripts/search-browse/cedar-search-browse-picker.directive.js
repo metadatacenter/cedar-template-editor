@@ -121,6 +121,7 @@ define([
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
+          vm.resetFiltersEnabled = resetFiltersEnabled;
           vm.filterSections = {};
           vm.isFilterSection = isFilterSection;
 
@@ -271,8 +272,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return CedarUser.hasPermission(
-                    'permission_post_submission_create') && vm.selectedResource && vm.selectedResource.nodeType === "instance";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
           };
 
 
@@ -370,6 +370,19 @@ define([
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'field') {
+                AuthorizedBackendService.doCall(
+                    resourceService.renameNode(id, null, description),
+                    function (response) {
+
+                      var title = DataManipulationService.getTitle(response.data);
+                      UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.field.update.error', err);
                     }
                 );
               } else if (nodeType == 'element') {
@@ -1116,6 +1129,11 @@ define([
 
           function filterShowing() {
             return vm.showFilters && onDashboard();
+          }
+
+          // is something changed by the filters?  for now, just look at the resource types
+          function resetFiltersEnabled() {
+            return Object.values(vm.resourceTypes).indexOf(false) > -1;
           }
 
           function resetFilters() {

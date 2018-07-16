@@ -7,7 +7,7 @@
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter phone number' : ''}}"
-        aria-label="{{getDescription()}}"
+        aria-label="{{getHelp()}}"
         ng-model-options="{allowInvalid:true}"
         validate-on="blur"
         ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
@@ -19,7 +19,7 @@
 
   <!-- not editing the field -->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-    <div aria-label="{{getDescription()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
+    <div aria-label="{{getHelp()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
   </div>
 </div>
 
