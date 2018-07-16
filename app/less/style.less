@@ -219,7 +219,7 @@ button {
     vertical-align:middle;
     transition: all 1s ease-in-out;
     &:hover {
-      color: @white;
+      //color: @white;
     }
     i {
       font-size: 16px;
@@ -232,6 +232,7 @@ button {
   button {color: #ccc;}
   button:hover {
     background-color: #4bafaf;
+    color: @white;
     transition: background-color 0.3s ease-in 0.1s;
   }
 }
@@ -240,7 +241,7 @@ button {
   button {color: #616161;}
   button:hover {
     background-color: #61a2c2;
-    transition: background-color 0.3s ease-in 0.1s;
+    color: @white;
     transition: background-color 0.3s ease-in 0.1s;
   }
 }
@@ -1205,14 +1206,16 @@ button {
         width: 100%;
         border: 1px solid #ebebeb;
         background: @white;
-        opacity: 0.7;
+
         font-size: 14px;
         color: #000;
         cursor: pointer;
         vertical-align: middle;
         overflow: hidden;
+        //opacity:0.7;
+
         &:hover {
-          box-shadow: 5px 5px 5px @med-gray;
+          //box-shadow: 5px 5px 5px @med-gray;
         }
         .outer {
           border-left: 5px solid #fff;
@@ -1249,6 +1252,7 @@ button {
           }
         }
       }
+
     }
   }
 
