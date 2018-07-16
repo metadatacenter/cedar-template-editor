@@ -253,7 +253,7 @@
           </div>
         </div>
 
-        <div cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content"
+        <div id="workspace-view-container" cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content"
             style="padding-top:0">
           <div style="height:auto;">
 
@@ -557,12 +557,14 @@
           </div>
         </div>
 
+
+
         <div class="half-padding-top"  id="resource-version" ng-show="dc.isTabActive('resource-version')"  >
           <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
               ng-repeat="(index, resource) in dc.selectedResource.versions">
 
 
-            <div class="padding-top" ng-class="{'selected-version':dc.isSelected(resource)}">
+            <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;">
             <div class="flex" >
               <i class="padding-right action fa"
                   ng-class="dc.getVersionIcon(resource['bibo:status'])"></i>
@@ -583,6 +585,7 @@
 
           </div>
         </div>
+
 
         <div id="resource-info" ng-if="dc.isTabActive('resource-info')">
           <div class="info no-selection" ng-if="!dc.getSelectedNode()">

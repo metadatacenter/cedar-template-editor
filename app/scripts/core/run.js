@@ -81,27 +81,31 @@ define([
 
     $rootScope.setHeader = function () {
 
+      var a = jQuery("#rootElement");
       var e = jQuery("#top-navigation");
-      var f = jQuery(".template-container");
-      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
-      f.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
 
+      a.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
+      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element').removeClass('field');
 
       if ($location.path().startsWith("/dashboard")) {
+        a.addClass('dashboard');
         e.addClass('dashboard');
-        f.addClass('dashboard');
+
       } else if ($location.path().startsWith("/elements")) {
+        a.addClass('element');
         e.addClass('element');
-        f.addClass('element');
+
       } else if ($location.path().startsWith("/templates")) {
+        a.addClass('template');
         e.addClass('template');
-        f.addClass('template');
+
       } else if ($location.path().startsWith("/fields")) {
+        a.addClass('field');
         e.addClass('field');
-        f.addClass('field');
+
       } else if ($location.path().startsWith("/instances")) {
+        a.addClass('metadata');
         e.addClass('metadata');
-        f.addClass('metadata');
       }
 
 

@@ -119,6 +119,9 @@ body {
   color: #333;
   height: 100%;
   overflow: hidden;
+  &.metadata {
+    background-color: @white;
+  }
 }
 
 a {
@@ -458,7 +461,6 @@ button {
 }
 
 #top-navigation {
-  background-color: @top-nav-color;
 
   .dropdown-menu {
     box-shadow: none;
@@ -533,6 +535,15 @@ button {
   top: 65px;
   width: 100%;
   height: calc(~"100% - 50px");
+
+  &.template, &.element, &.field {
+    background-color: @background-gray;
+  }
+
+  &.metadata, &.instance {
+    background-color: @white;
+  }
+
 }
 
 .link-disabled, .link-disabled:hover {
@@ -1226,7 +1237,7 @@ button {
         }
         .outer {
           border-left: 5px solid transparent;
-          padding: 6px;
+          padding: 2px;
         }
         .resource-icon {
           vertical-align: middle;

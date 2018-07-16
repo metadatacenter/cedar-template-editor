@@ -219,17 +219,18 @@ define([
           // adjust the position of the context menu
           vm.toggledCedarDropdownMenu = function ($event, resource) {
 
-            var centerPanel = document.getElementById('center-panel');
+            var centerPanel = document.getElementById('workspace-view-container');
             var row = document.getElementById(vm.getId(resource, 'row'));
             var menu = document.getElementById(vm.getId(resource, 'menu'));
 
             if (centerPanel && row && menu) {
 
+              var centerScrollTop = centerPanel.scrollTop;
               var centerRect = centerPanel.getBoundingClientRect();
               var rowRect = row.getBoundingClientRect();
 
               menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
-              menu.style.setProperty("top", ($event.pageY - centerRect.top - 60) + "px");
+              menu.style.setProperty("top", ($event.pageY - centerRect.top  + centerScrollTop  ) + "px");
             }
           };
 
