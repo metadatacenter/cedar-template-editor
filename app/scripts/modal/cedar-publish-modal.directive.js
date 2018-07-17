@@ -8,14 +8,14 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarPublishModal', cedarPublishModalDirective);
 
-  cedarPublishModalDirective.$inject = ['CedarUser'];
+      cedarPublishModalDirective.$inject = ['CedarUser'];
 
       function cedarPublishModalDirective(CedarUser) {
 
         var directive = {
           bindToController: {
             publishResource: '=',
-            modalVisible: '='
+            modalVisible   : '='
           },
           controller      : cedarPublishModalController,
           controllerAs    : 'publish',
@@ -60,29 +60,40 @@ define([
           };
 
 
-          var getTotal = function(parts) {
+          var getTotal = function (parts) {
             if (parts.length == 3) {
               return parts[0] * 1000000 + parts[1] * 1000 + parts[2];
             }
           };
 
           var isLarger = function (value) {
-            return getTotal(value) > vm.min;
+            return getTotal(value) >= vm.min;
+          };
+
+          vm.canIncrement = function (index) {
+            return vm.parts && (vm.parts.length > index) && vm.parts[index] < 1000;
+          };
+
+          vm.canDecrement = function (index) {
+            if (vm.parts && vm.parts.length > index && vm.parts[index] > 0) {
+              var value = vm.parts.slice();
+              value[index] = value[index] > 0 ? value[index] - 1 : 0;
+              return (getTotal(value) >= vm.min);
+            }
           };
 
           vm.increment = function (index) {
-            if (vm.parts.length > index) {
+            if (vm.parts && vm.parts.length > index) {
               vm.parts[index] = vm.parts[index] < 1000 ? vm.parts[index] + 1 : vm.parts[index];
             }
           };
 
           vm.decrement = function (index) {
-            var value = vm.parts;
-            value[index] = value[index] > 0 ? value[index]-1 : 0;
-            if (isLarger(value)) {
-              vm.parts[index] = value[index];
-            } else {
-              vm.parts[index]++;
+            if (vm.parts && vm.parts.length > index) {
+              vm.parts[index] = vm.parts[index] > 0 ? vm.parts[index] - 1 : 0;
+              if (getTotal(vm.parts) < vm.min) {
+                vm.parts[index]++;
+              }
             }
           };
 
@@ -109,7 +120,7 @@ define([
             if (parts.length == 3) {
               parts[0] = parseInt(parts[0]);
               parts[1] = parseInt(parts[1]);
-              parts[2] = parseInt(parts[2]) + 1;
+              parts[2] = parseInt(parts[2]) + (resource['bibo:status'] == 'bibo:published' ? 1 : 0);
               return parts;
             }
             return null;
@@ -122,7 +133,7 @@ define([
           };
 
 
-          // on modal open
+// on modal open
           $scope.$on('publishModalVisible', function (event, params) {
 
             var visible = params[0];
@@ -140,4 +151,5 @@ define([
         }
       }
     }
-);
+)
+;

@@ -211,7 +211,7 @@ button {
 }
 
 #messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
-  position:relative;
+  position: relative;
 
   button {
     background-color: transparent;
@@ -219,7 +219,7 @@ button {
     width: 32px;
     height: 32px;
     text-align: center;
-    vertical-align:middle;
+    vertical-align: middle;
     transition: all 1s ease-in-out;
     &:hover {
       //color: @white;
@@ -232,7 +232,9 @@ button {
 }
 
 #messaging, #user-menu {
-  button {color: #ccc;}
+  button {
+    color: #ccc;
+  }
   button:hover {
     background-color: #4bafaf;
     color: @white;
@@ -241,7 +243,9 @@ button {
 }
 
 #grid-view-tool, #show-details, #workspace-sort-tool {
-  button {color: #616161;}
+  button {
+    color: #616161;
+  }
   button:hover {
     background-color: #61a2c2;
     color: @white;
@@ -947,8 +951,6 @@ button {
 
     //margin: 0 20px;
 
-
-
     .form-box {
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
     }
@@ -1211,8 +1213,8 @@ button {
         color: @med-gray;
         border-left: 5px solid transparent;
         padding: 0 6px;
-        background-color:@white;
-        border:1px solid #ccc;
+        background-color: @white;
+        border: 1px solid #ccc;
       }
 
       .box-row {
@@ -1227,12 +1229,10 @@ button {
         overflow: hidden;
         //opacity:0.7;
 
-
-
         &:hover {
           //opacity:0.7;
           //box-shadow: 5px 5px 5px @med-gray;
-          background-color:#f8f8f8;
+          background-color: #f8f8f8;
 
         }
         .outer {
@@ -1265,7 +1265,7 @@ button {
           }
         }
         &.selected {
-          background-color:#f8f8f8;
+          background-color: #f8f8f8;
           .outer {
             border-left-color: @brand-primary;
           }
@@ -1288,7 +1288,7 @@ button {
     right: 0;
     padding: 20px;
     height: 100%;
-    background: @lt-gray-1;
+    background: @white;
     border-left: 1px solid #ebebeb;
 
     .padding-top {
@@ -7043,6 +7043,33 @@ table.apiKey {
     -webkit-appearance: none;
     margin: 0;
   }
+  .publish {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .version-part {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding-right: 20px;
+      input {
+        width: 3em
+      }
+      .incrementor {
+        flex-direction: column;
+        padding-left: 5px;
+        i {
+          color: @brand-primary;
+          font-size: 20px;
+          &.disabled {
+            color: #ccc;
+          }
+        }
+      }
+    }
+  }
 }
 
 #finder-modal {
@@ -7861,11 +7888,11 @@ table.apiKey {
     }
 
     .latest-version {
-      font-weight:bold;
+      font-weight: bold;
     }
 
     .selected-version {
-      background-color:#eee;
+      background-color: #f8f8f8;
     }
 
     .resource-icon {

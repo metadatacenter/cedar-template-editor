@@ -526,7 +526,6 @@
       <!-- RIGHT SIDE -->
       <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.isInfoOpen()">
 
-
         <div class="flex">
           <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
           <div class="title full-width" ng-class="dc.getSelectedNode().nodeType">
@@ -557,14 +556,11 @@
           </div>
         </div>
 
-
-
         <div class="half-padding-top"  id="resource-version" ng-show="dc.isTabActive('resource-version')"  >
           <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
               ng-repeat="(index, resource) in dc.selectedResource.versions">
 
-
-            <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;">
+            <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
             <div class="flex" >
               <i class="padding-right action fa"
                   ng-class="dc.getVersionIcon(resource['bibo:status'])"></i>
