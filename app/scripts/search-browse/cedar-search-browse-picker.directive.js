@@ -1271,6 +1271,7 @@ define([
           }
 
           function openMessaging() {
+            console.log('openMessaging');
             $location.url(FrontendUrlService.getMessaging(vm.getFolderId()));
           }
 

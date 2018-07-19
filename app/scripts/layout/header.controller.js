@@ -80,6 +80,7 @@ define([
     };
 
     vm.goToDashboardOrBack = function () {
+      console.log('goToDashboardOrBack');
       vm.searchTerm = null;
       UIUtilService.activeLocator = null;
       UIUtilService.activeZeroLocator = null;
@@ -92,7 +93,7 @@ define([
         if (sharing) {
           queryParams['sharing'] = sharing;
         }
-        var folderId = QueryParamUtilsService.getFolderId();
+        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
         if (folderId) {
           queryParams['folderId'] = folderId;
         }

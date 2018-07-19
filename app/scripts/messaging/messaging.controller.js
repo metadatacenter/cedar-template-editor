@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.messaging.messagingController', [])
       .controller('MessagingController', MessagingController);
 
-  MessagingController.$inject = ["$rootScope", "$scope", "MessagingService", "HeaderService", "CONST"];
+  MessagingController.$inject = ["$rootScope", "$scope", "$location", "$window","MessagingService", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService"];
 
-  function MessagingController($rootScope, $scope, MessagingService, HeaderService, CONST) {
+  function MessagingController($rootScope, $scope, $location,$window, MessagingService, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
 
     $rootScope.pageTitle = 'Messaging';
 
@@ -36,6 +36,48 @@ define([
 
       return utcDate;
     };
+
+    $scope.goToDashboardOrBack = function () {
+      //vm.searchTerm = null;
+      UIUtilService.activeLocator = null;
+      UIUtilService.activeZeroLocator = null;
+      var path = $location.path();
+      var hash = $location.hash();
+      var baseUrl = '/dashboard';
+      if (path != baseUrl) {
+        var queryParams = {};
+        var sharing = QueryParamUtilsService.getSharing();
+        if (sharing) {
+          queryParams['sharing'] = sharing;
+        }
+        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
+        if (folderId) {
+          queryParams['folderId'] = folderId;
+        }
+        /*if (params.search) {
+         queryParams['search'] = params.search;
+         }*/
+      }
+      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      if (hash) {
+        url += '#' + hash;
+      }
+      $location.url(url);
+      $window.scrollTo(0, 0);
+
+    };
+
+    $scope.isRejected = function(message) {
+      console.log('isRejected',message, message.toUpperCase(),message.toUpperCase().includes("REJECTED"));
+      return message.toUpperCase().includes("REJECTED");
+    };
+
+    $scope.isUnread = function(message) {
+      console.log('isUnread',message, message.toUpperCase(),message.toUpperCase().includes("unread"));
+      return message.toUpperCase().includes("UNREAD");
+    };
+
+
 
     MessagingService.loadMessages(function (userMessages) {
       //console.log("messages loaded:");

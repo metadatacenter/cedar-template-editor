@@ -118,7 +118,7 @@ body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   height: 100%;
-  overflow: hidden;
+  overflow-y: hidden;
   &.metadata {
     background-color: @white;
   }
@@ -7966,7 +7966,7 @@ table.apiKey {
   body {
     height: 100%;
     background-color: @lt-gray;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     #sidebar-left {
       .add-new {
@@ -7995,16 +7995,77 @@ table.apiKey {
   }
 }
 
-#privacy-policy, #profile {
+#privacy-policy, #profile, #messaging-report {
   padding: 30px 0;
   height: 100%;
-  overflow-y: auto;
-  overflow-x: auto;
+  overflow: auto;
+  font-size: 1em;
+
+  .bold {
+    font-weight:bold !important;
+  }
+  .rejected {
+    color:red !important;
+  }
+
+  hr {
+    margin:10px 0;padding:0;
+  }
+
+  .message-label {color:@brand-primary;}
+  .message-date {float:right;color:@brand-primary}
+  .message-subject {color:@brand-secondary;}
+  .message-body {white-space: pre;margin:5px 0;overflow-x:auto}
+  .message-box {margin:5px;padding:5px;background-color:@white;border:1px solid #ccc}
+
+
+  .navbar-back {
+    padding: 10px 0;
+    margin: 0 auto;
+    max-width: 800px;
+    @media (min-width: @screen-md-min) {
+      width: 80%;
+    }
+    @media (max-width: @screen-sm-max) {
+      width: 90%;
+    }
+  }
 
   .content {
-    height: 100%;
-    .row {
-      padding: 10px 0;
+    background: @white;
+
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    max-width: 800px;
+    height:auto;
+    &.message-content {background-color:@lt-gray;}
+    @media (min-width: @screen-md-min) {
+      width: 80%;
+    }
+    @media (max-width: @screen-sm-max) {
+      width: 90%;
+    }
+    .padded {
+    }
+    .field-label {
+      text-transform: uppercase;
+      color: #9E9E9E;
+      font-size: smaller;
+      font-weight: normal;
+      flex-basis:50%;
+      padding: 10px 5px 0 0;
+
+    }
+    .field-value {
+      overflow: auto;
+    }
+    textarea.curlSample {
+      width: 100%;
+      min-height: 100px;
+      outline: none;
+      font-family: Courier;
+      font-size: 11px;
     }
     .title {
       text-overflow: ellipsis;
@@ -8051,13 +8112,6 @@ table.apiKey {
       top: -2px;
     }
   }
-}
-
-textarea.curlSample {
-  width: 650px;
-  height: 100px;
-  font-family: Courier;
-  font-size: 11px
 }
 
 #document-preview {
@@ -8197,6 +8251,10 @@ table.message {
   .full-width {
     width: 100%
   }
+}
+
+.flex-start {
+  justify-content: flex-start;
 }
 
 .flex-wrap {
@@ -8357,5 +8415,7 @@ div.resource-icon {
   }
 
 }
+
+
 
 

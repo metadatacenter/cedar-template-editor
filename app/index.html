@@ -41,7 +41,7 @@
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header ">
 
-      <div ng-if="hc.isDashboard()">
+      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging()">
         <div class="row">
           <div class="col-xs-2" ng-click="hc.goToDashboardOrBack()">
             <a class="navbar-brand " alt="Cedar" href="javascript:">Cedar</a>
@@ -72,7 +72,7 @@
                   <button type="button"
                       uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
                       tooltip-placement="bottom"
-                      ng-click="dc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
+                      ng-click="hc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
                   </button>
                 </div>
               </li>
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <div ng-if="!hc.isDashboard()">
+      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging()">
         <div class="navbar-back flex">
           <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
@@ -96,7 +96,7 @@
             <div class="document-title">{{hc.formatDocumentTitle()}}</div>
           </div>
 
-          <div ng-if="!hc.isMessaging()" class="flex-right feedback-form">
+          <div  class="flex-right feedback-form">
             <div uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
                 class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
             <div uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
