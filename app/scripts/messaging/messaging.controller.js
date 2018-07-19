@@ -68,20 +68,14 @@ define([
     };
 
     $scope.isRejected = function(message) {
-      console.log('isRejected',message, message.toUpperCase(),message.toUpperCase().includes("REJECTED"));
       return message.toUpperCase().includes("REJECTED");
     };
 
     $scope.isUnread = function(message) {
-      console.log('isUnread',message, message.toUpperCase(),message.toUpperCase().includes("unread"));
       return message.toUpperCase().includes("UNREAD");
     };
 
-
-
     MessagingService.loadMessages(function (userMessages) {
-      //console.log("messages loaded:");
-      //console.log(userMessages);
       $scope.userMessages = userMessages;
       if (userMessages.unread > 0) {
         MessagingService.markAllMessagesAsRead();
