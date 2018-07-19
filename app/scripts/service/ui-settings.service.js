@@ -73,6 +73,7 @@ define([
     };
 
     service.saveUIPreference = function (prefPath, prefValue) {
+      console.log('saveUIPreference',prefPath, prefValue);
       var putData = {};
       putData['uiPreferences.' + prefPath] = prefValue;
       AuthorizedBackendService.doCall(
@@ -126,6 +127,14 @@ define([
 
     service.saveSortByUpdated = function() {
       service.saveUIPreference('folderView.sortBy', 'lastUpdatedOnTS');
+    };
+
+    service.saveStatus = function(prefValue) {
+      service.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', prefValue);
+    };
+
+    service.saveVersion = function(prefValue) {
+      service.saveUIPreference('resourceVersionFilter.version', prefValue);
     };
 
     return service;

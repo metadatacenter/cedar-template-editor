@@ -143,6 +143,8 @@ define([
       return service.getUIPreferences().infoPanel.opened;
     };
 
+
+
     service.toggleInfo = function () {
       service.saveUIPreference('infoPanel', 'opened', !service.isInfoOpen());
       return service.isInfoOpen();
@@ -187,11 +189,25 @@ define([
       return service.getSort();
     };
 
-
-
     service.setSortByUpdated = function () {
       service.saveUIPreference('folderView', 'sortBy', 'lastUpdatedOnTS');
       return service.getSort();
+    };
+
+    service.setStatus = function (status) {
+      service.saveUIPreference('resourcePublicationStatusFilter', 'publicationStatus', status);
+    };
+
+    service.getStatus = function (version) {
+      return service.getUIPreferences().resourcePublicationStatusFilter.publicationStatus;
+    };
+
+    service.setVersion = function (version) {
+      service.saveUIPreference('resourceVersionFilter', 'version', version);
+    };
+
+    service.getVersion = function (version) {
+      return service.getUIPreferences().resourceVersionFilter.version;
     };
 
     return service;
