@@ -380,18 +380,15 @@ define([
         });
 
         // watch the dirty flag on the form and pass it up to root
-        $scope.$watch('forms.templateForm.$dirty', function () {
-          //UIUtilService.setDirty($scope.forms.templateForm.$dirty);
+        $scope.$watch('forms.templateForm.$dirty', function (dirty) {
+          if (dirty) {
+            UIUtilService.setDirty(dirty);
+          }
         });
 
         $scope.$on("form:clean", function () {
           UIUtilService.setDirty(false);
         });
-
-        // $scope.$on("form:dirty", function () {
-        //   $scope.forms.templateForm.$dirty = true;
-        //   console.log('form:dirty',$scope.forms.templateForm.$dirty);
-        // });
 
         $scope.$on("form:update", function () {
           startParseForm();

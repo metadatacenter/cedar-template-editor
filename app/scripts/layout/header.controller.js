@@ -59,7 +59,7 @@ define([
     };
 
     vm.confirmBack = function () {
-      if (UIUtilService.isLocked() || !UIUtilService.isDirty() || !UIUtilService.isValid()) {
+      if (UIUtilService.isLocked() || !UIUtilService.isDirty()) {
         vm.goToDashboardOrBack();
       } else {
 
@@ -80,7 +80,6 @@ define([
     };
 
     vm.goToDashboardOrBack = function () {
-      console.log('goToDashboardOrBack');
       vm.searchTerm = null;
       UIUtilService.activeLocator = null;
       UIUtilService.activeZeroLocator = null;

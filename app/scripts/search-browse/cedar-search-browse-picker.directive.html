@@ -163,9 +163,9 @@
               <p ng-if="!dc.isSearching">
             <span class="folder-path" ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
-                  class="breadcrumbs">{{dc.breadcrumbName(folder['schema:name'])}}</a> /
+                  class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(folder))}}</a> /
             </span>
-                <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath['schema:name'])}}</a>
+                <a class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(dc.currentPath))}}</a>
 
               </p>
             </div>
@@ -252,7 +252,7 @@
                         <div class="folderIconContainer">
                           <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
                         </div>
-                        <div class="folderTitle">{{ resource['schema:name'] }}</div>
+                        <div class="folderTitle">{{ dc.getTitle(resource) }}</div>
 
                         <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}"
                             append-to-body="true">
@@ -291,7 +291,7 @@
 
                       <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
                         <div class="toolbar-right">
-                          <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
+                          <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
                               uib-tooltip="{{dc.getResourceVersion(resource)}}"
                               tooltip-trigger
                               tooltip-animation="false"
@@ -316,7 +316,7 @@
 
 
                         <div class="resource"><i class="fa" ng-class="dc.getResourceIconClass(resource)"></i></div>
-                        <div class="title">{{ resource['schema:name'] }}</div>
+                        <div class="title">{{ dc.getTitle(resource) }}</div>
                         <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                           <button style="display:none" title="More"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -372,7 +372,7 @@
                       <div class="flex ellipsis">
                         <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
                         <div class="ellipsis" style="width:100%;justify-content: space-between">{{
-                          resource['schema:name']}}
+                          dc.getTitle(resource)}}
                         </div>
                       </div>
                       <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:createdOn'] |
@@ -383,7 +383,7 @@
                       </div>
                       <div class="flex" style="width:60px;justify-content:space-between">
 
-                        <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
+                        <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
                             tooltip-animation="false"
@@ -431,7 +431,7 @@
                     <div class="outer flex">
                       <div class="flex ellipsis" style="justify-content:space-between">
                         <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
-                        <div class="ellipsis" style="width:100%">{{ resource['schema:name']}}</div>
+                        <div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
                       </div>
                       <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:createdOn'] |
                         prettyDate }}
@@ -441,7 +441,7 @@
                       </div>
                       <div class="flex" style="width:60px;justify-content:space-between">
 
-                        <i class="action fa" ng-class="dc.getVersionIcon(resource['bibo:status'])"
+                        <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
                             tooltip-trigger
                             tooltip-animation="false"
@@ -499,7 +499,7 @@
         <div class="flex">
           <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
           <div class="title full-width" ng-class="dc.getSelectedNode().nodeType">
-            <span class="ellipsis" ng-bind="dc.getSelectedNode()['schema:name']"></span>
+            <span class="ellipsis" ng-bind="dc.getSelectedNode()[dc.titleLocation()]"></span>
           </div>
           <div class="goaway">
             <button
@@ -533,9 +533,9 @@
             <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
             <div class="flex" >
               <i class="padding-right action fa"
-                  ng-class="dc.getVersionIcon(resource['bibo:status'])"></i>
+                  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i>
               <div class="padding-right" ng-class="{'latest-version': resource.isLatestVersion}"> {{resource['pav:version']}}</div>
-              <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{resource['schema:name']}}</div>
+              <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
             </div>
 
             <div class="flex flex-wrap">
@@ -611,9 +611,9 @@
               <div class="flex flex-wrap padding-top">
                 <div class="field-label" translate>Derived From</div>
                 <div>
-                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getDerivedFrom()['bibo:status'])"></i>
-                  <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getDerivedFrom()['pav:version'] }}</span>
-                  {{ dc.getDerivedFrom()['schema:name'] }}</div>
+                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getDerivedFrom()))"></i>
+                  <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getResourceVersion(dc.getDerivedFrom()) }}</span>
+                  {{ dc.getTitle(dc.getDerivedFrom()) }}</div>
               </div>
 
               <div class="flex flex-wrap padding-top">
@@ -636,9 +636,9 @@
               <div class="flex flex-wrap padding-top">
                 <div class="field-label" translate>Based On</div>
                 <div>
-                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getBasedOn()['bibo:status'])"></i>
-                  <span  ng-class="{'latest-version': dc.getBasedOn().isLatestVersion}" > {{ dc.getBasedOn()['pav:version'] }}</span>
-                  {{ dc.getBasedOn()['schema:name'] }}</div>
+                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getBasedOn()))"></i>
+                  <span  ng-class="{'latest-version': dc.getBasedOn().isLatestVersion}" > {{ dc.getResourceVersion(dc.getBasedOn()) }}</span>
+                  {{ dc.getTitle(dc.getBasedOn()) }}</div>
               </div>
 
               <div class="flex flex-wrap padding-top">
@@ -661,7 +661,7 @@
                   <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
                     <fieldset>
                 <textarea style="width:100%;resize:both" id="edit-description" type="text"
-                    ng-model="dc.selectedResource['schema:description']"
+                    ng-model="dc.selectedResource[dc.descriptionLocation()]"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
                       <button type="submit" style=" display:none">Add</button>
                     </fieldset>
@@ -669,7 +669,7 @@
 
                 </div>
                 <div ng-if="!dc.editingDescription" class="title">
-                  {{ dc.selectedResource['schema:description'] }}
+                  {{ dc.getDescription(dc.selectedResource) }}
                 </div>
               </div>
 

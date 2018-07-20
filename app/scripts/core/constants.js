@@ -47,6 +47,11 @@ define([
         "PUBLISHED": "bibo:published",
         "ALL": "all",
         "LATEST": "latest"
+      },
+      "model": {
+        "NAME": "schema:name",
+        "DESCRIPTION": "schema:description",
+        "BASEDON": "schema:isBasedOn"
       }
     });
 });

@@ -206,7 +206,7 @@ define([
           vm.filterLatest = function () {
             return (vm.getFilterVersion() == CONST.publication.LATEST);
           };
-          
+
           vm.setPublicationStatus = function (value) {
             vm.setResourcePublicationStatus(value);
           };
@@ -319,6 +319,26 @@ define([
           //  publication end
           //
 
+          vm.titleLocation = function() {
+            return DataManipulationService.titleLocation();
+          };
+
+          vm.descriptionLocation = function() {
+            return DataManipulationService.descriptionLocation();
+          };
+
+          vm.getTitle = function(node) {
+            if (node) {
+              return DataManipulationService.getTitle(node);
+            }
+          };
+
+          vm.getDescription = function(node) {
+            if (node) {
+              return DataManipulationService.getDescription(node);
+            }
+          };
+
           vm.getId = function (node, label) {
             if (node) {
               return DataManipulationService.getId(node) + label;
@@ -356,7 +376,7 @@ define([
 
               if (vm.editingDescription) {
                 vm.editingDescriptionSelection = vm.getSelection();
-                vm.editingDescriptionInitialValue = vm.selectedResource['schema:description'];
+                vm.editingDescriptionInitialValue = vm.selectedResource[CONST.model.DESCRIPTION];
 
                 $timeout(function () {
                   var jqDescriptionField = $('#edit-description');
@@ -377,7 +397,7 @@ define([
                       if (jqDescriptionField) {
                         jqDescriptionField.blur();
                       }
-                      if (vm.editingDescriptionInitialValue != vm.editingDescriptionSelection['schema:description']) {
+                      if (vm.editingDescriptionInitialValue != vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
                         vm.updateDescription();
                       }
                       $window.onclick = null;
@@ -440,7 +460,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource["schema:isBasedOn"] === "Baszd meg!";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "<enter templateid>";
           };
 
           vm.getNumberOfInstances = function () {
@@ -570,10 +590,10 @@ define([
             return null;
           };
 
-          vm.getResourcePublicationStatus = function () {
-            var resource = vm.getSelection();
+          vm.getResourcePublicationStatus = function (value) {
+            var resource = value || vm.getSelection();
             if (resource != null) {
-              return resource[CONST.publication.status];
+              return resource[CONST.publication.STATUS];
             }
           };
 
@@ -585,7 +605,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var description = resource['schema:description'];
+              var description = resource[CONST.model.DESCRIPTION];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
@@ -602,7 +622,7 @@ define([
                     resourceService.renameNode(id, null, description),
                     function (response) {
 
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": title},
                           'GENERIC.Updated');
                     },
@@ -615,7 +635,7 @@ define([
                     resourceService.renameNode(id, null, description),
                     function (response) {
 
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": title},
                           'GENERIC.Updated');
                     },
@@ -629,7 +649,7 @@ define([
                     function (response) {
 
                       $scope.form = response.data;
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                           {"title": title}, 'GENERIC.Updated');
                     },
@@ -947,7 +967,7 @@ define([
                 resource,
                 newVersion,
                 function (response) {
-                  var title = DataManipulationService.getTitle(resource);
+                  var title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": title},
                       'GENERIC.Published');
                   vm.refreshWorkspace(resource);
@@ -965,7 +985,7 @@ define([
             var canCreateDraft =
                 (resource.nodeType == CONST.resourceType.TEMPLATE ||
                 resource.nodeType == CONST.resourceType.ELEMENT) &&
-                resource[CONST.publication.status] == CONST.publication.PUBLISHED &&
+                resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED &&
                 resource.isLatestVersion;
 
             var canPublish = (resource.nodeType == CONST.resourceType.TEMPLATE ||
@@ -999,7 +1019,7 @@ define([
                 newVersion,
                 propagateSharing,
                 function (response) {
-                  var title = DataManipulationService.getTitle(resource);
+                  var title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
                       'GENERIC.CreatedDraft');
                   vm.refreshWorkspace(resource);
@@ -1305,19 +1325,19 @@ define([
             return (hasSelection() &&
             (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
             vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-            vm.selectedResource[CONST.publication.status] == CONST.publication.DRAFT);
+            vm.selectedResource[CONST.publication.STATUS] == CONST.publication.DRAFT);
           }
 
           function isPublished(resource) {
             var node = resource || vm.selectedResource;
-            return node && (node[CONST.publication.status] == CONST.publication.PUBLISHED);
+            return node && (node[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           };
 
           function canCreateDraftStatic() {
             return (hasSelection() &&
             (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
             vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-            vm.selectedResource[CONST.publication.status] == CONST.publication.PUBLISHED);
+            vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           }
 
           function isTemplate() {
@@ -1699,7 +1719,7 @@ define([
             var name = null;
             if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
               instanceId = vm.selectedResource['@id'];
-              name = vm.selectedResource['schema:name'];
+              name = vm.selectedResource[CONST.model.NAME];
             }
             $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }
