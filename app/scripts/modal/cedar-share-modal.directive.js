@@ -64,6 +64,8 @@ define([
           vm.updateUserPermission = updateUserPermission;
           vm.clearTypeAheadUser = clearTypeAheadUser;
           vm.clearTypeAheadGroup = clearTypeAheadGroup;
+          vm.isTabActive = isTabActive;
+          vm.setTab = setTab;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
@@ -109,6 +111,16 @@ define([
           vm.giveGroupPermission = 'read';
           vm.typeaheadGroup = null;
           vm.newGroupName = null;
+          vm.activeTab = 'share-people';
+
+          // tabs
+          function isTabActive(item) {
+            return vm.activeTab === item;
+          };
+
+          function setTab(item) {
+            vm.activeTab = item;
+          };
 
 
           /* string utils  */
