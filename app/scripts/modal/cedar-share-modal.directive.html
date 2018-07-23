@@ -11,27 +11,18 @@
     </div>
 
     <div class="modal-body">
-
       <!-- body  for share  -->
       <div ng-if="!share.showGroups">
 
         <div class="row">
           <div ng-if="share.canWrite()" class="col-sm-6">
 
-            <div class="element-toggles list table-style">
-              <div class="element-toggle table-cell-style "
-                  ng-class="{active: share.isTabActive('share-people')}"
-                  ng-click="share.setTab('share-people');">
-                <span>People</span>
-              </div>
-              <div class="element-toggle table-cell-style "
-                  ng-class="{active: share.isTabActive('share-group')}"
-                  ng-click="share.setTab('share-group');">
-                <span>Groups</span>
-              </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <h5 translate>DASHBOARD.share.withUsers</h5></div>
             </div>
 
-            <div class="half-padding-top" id="share-people" ng-show="share.isTabActive('share-people')">
+            <div class="half-padding-top" id="share-people" >
               <div class="row">
                 <div class="col-sm-8 typeaheadDropDown">
 
@@ -70,7 +61,13 @@
               </div>
             </div>
 
-            <div class="half-padding-top" id="share-group" ng-show="share.isTabActive('share-group')">
+
+            <div class="row">
+              <div class="col-sm-12">
+                <h5 translate>DASHBOARD.share.withGroups</h5></div>
+            </div>
+
+            <div class="half-padding-top" id="share-group" >
               <!-- share with groups -->
               <div class="row">
                 <div class="col-sm-8">
