@@ -44,7 +44,7 @@
   <!--</button>-->
 
   <button type="button" class="view-toggle" tooltip-append-to-body="true"
-      ng-click="toggleView();setActive(index,true);$event.stopPropagation()"
+      ng-click="console('ng-click');toggleView();setActive(index,true);$event.stopPropagation()"
       uib-tooltip="{{'GENERIC.ToggleView' | translate}}"
       tooltip-enable="isMultiple()"
       ng-if="isMultiple() && !isAttributeValueType()">

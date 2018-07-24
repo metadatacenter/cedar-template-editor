@@ -790,6 +790,7 @@ define([
                                                 createExtraRows, deleteExtraRows) {
 
 
+
           var type = isField() ? 'field' : 'element';
           var context = new SpreadsheetContext(type, $element);
 

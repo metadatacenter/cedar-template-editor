@@ -305,6 +305,7 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
@@ -421,7 +422,6 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
-        console.log('showModal', type);
         if (type) {
           $rootScope.finalTitle = scope.getTitle();
           scope.modalType = type;
@@ -434,7 +434,6 @@ define([
 
       // show the controlled terms modal
       scope.hideModal = function () {
-        console.log('hideModal', scope.modalType);
         UIUtilService.hideModal();
       };
 
@@ -448,7 +447,6 @@ define([
           var propertyId = args[0];
           var propertyLabel = args[2];
           var propertyDescription = args[3];
-          console.log('property:propertyAdded',propertyId, propertyLabel, propertyDescription);
 
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, scope.parentElement);
         }
