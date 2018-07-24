@@ -114,6 +114,7 @@ define([
           vm.hash = $location.hash();
           vm.resources = [];
           vm.selectedResource = null;
+          vm.canNotSubmit = false;
           vm.canNotWrite = false;
           vm.canNotShare = false;
           vm.canNotPopulate = false;
@@ -460,7 +461,7 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "<enter templateid>";
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "https://repo.metadatacenter.orgx/templates/81e3c19a-7237-4c4d-af78-dfe3eada047a";
           };
 
           vm.getNumberOfInstances = function () {
@@ -501,6 +502,7 @@ define([
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
+                    vm.canNotSubmit = !vm.canSubmit();
                     vm.canNotShare = !vm.canShare();
                     vm.canNotDelete = vm.isPublished();
                     vm.canNotPopulate = !vm.isTemplate();
@@ -1714,6 +1716,7 @@ define([
 
 
           function showFlowModal() {
+            console.log('showFlowModal');
             vm.flowModalVisible = true;
             var instanceId = null;
             var name = null;

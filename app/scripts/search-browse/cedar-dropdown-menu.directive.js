@@ -27,6 +27,7 @@ define([
         copy             : '=',
         rename           : '=',
         publish          : '=',
+        submit           : '=',
         createDraft      : '=',
         canNotPopulate   : '=',
         canNotPublish    : '=',
@@ -34,8 +35,9 @@ define([
         canNotWrite      : '=',
         canNotShare      : '=',
         canNotDelete     : '=',
+        canNotSubmit     : '=',
         isFolder         : '=',
-        toggleId:"="
+        toggleId         : "="
 
       },
       controller : function ($scope, $element) {
