@@ -136,6 +136,7 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadsheet')
         scope.setActive(0, true);
         if (dms.getMaxItems(scope.element)) {
           // create all the rows if the maxItems is a fixed number
