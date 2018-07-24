@@ -294,6 +294,8 @@ define([
 
       $scope.cleanupSpreadsheet = function () {
         $scope.deleteExtraRows();
+        //$scope.expanded[0] = false;
+        SpreadsheetService.destroySpreadsheet($scope);
       };
 
       $scope.isTabView = function () {
@@ -310,7 +312,7 @@ define([
 
       // toggle through the list of view states
       $scope.toggleView = function () {
-        $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.switchToSpreadsheet);
+        $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.setActive);
       };
 
       $scope.toggleActive = function (index) {
@@ -1121,38 +1123,44 @@ define([
 
 
       // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
-      $scope.$watch(
-          function () {
-            return ( UIUtilService.activeLocator);
-          },
-          function (newValue, oldValue) {
-
-
-            if ($scope.isSpreadsheetView()) {
-
-              // spreadsheet view will use the 0th instance
-              var zeroedLocator = function (value) {
-                var result = '';
-                if (value) {
-                  var result = value.replace(/-([^-]*)$/, '-0');
-                }
-                return result;
-              };
-
-              $timeout(function () {
-                var zeroLocator = $scope.getLocator(0);
-                if (zeroLocator === zeroedLocator(oldValue)) {
-                  SpreadsheetService.destroySpreadsheet($scope);
-                  $scope.$apply();
-                }
-                if (zeroLocator === zeroedLocator(newValue)) {
-                  $scope.switchToSpreadsheet();
-                  $scope.$apply();
-                }
-              }, 0);
-            }
-          }
-      );
+      // $scope.$watch(
+      //     function () {
+      //       return ( UIUtilService.activeLocator);
+      //     },
+      //     function (newValue, oldValue) {
+      //
+      //       //console.log('watch activeLocator ', $scope.isSpreadsheetView());
+      //
+      //
+      //       // if ($scope.isSpreadsheetView()) {
+      //       //
+      //       //   // spreadsheet view will use the 0th instance
+      //       //   var zeroedLocator = function (value) {
+      //       //     var result = '';
+      //       //     if (value) {
+      //       //       var result = value.replace(/-([^-]*)$/, '-0');
+      //       //     }
+      //       //     return result;
+      //       //   };
+      //       //
+      //       //   console.log('switchToSpreadsheet zeroedLocator',  $scope.getLocator(0), zeroedLocator(oldValue));
+      //       //
+      //       //   $timeout(function () {
+      //       //     var zeroLocator = $scope.getLocator(0);
+      //       //     if (zeroLocator === zeroedLocator(oldValue)) {
+      //       //       console.log('destroySpreadsheet zeroedLocator');
+      //       //       SpreadsheetService.destroySpreadsheet($scope);
+      //       //       $scope.$apply();
+      //       //     }
+      //       //     if (zeroLocator === zeroedLocator(newValue)) {
+      //       //       console.log('switchToSpreadsheet zeroedLocator');
+      //       //       $scope.switchToSpreadsheet();
+      //       //       $scope.$apply();
+      //       //     }
+      //       //   }, 0);
+      //       // }
+      //     }
+      // );
 
       $scope.createExtraRows = function () {
         // make sure there are at least 10 entries in the spreadsheet

@@ -337,6 +337,7 @@ define([
       };
 
       $scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadsheetField')
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 

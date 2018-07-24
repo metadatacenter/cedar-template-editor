@@ -112,17 +112,22 @@ define([
 
     // toggle through the list of view states, call the callback for spreadsheets
     service.toggleView = function (viewState) {
+
+      var oldState = viewState.selected;
       var index = viewState.views.indexOf(viewState.selected);
       index = (index + 1) % viewState.views.length;
       viewState.selected = viewState.views[index];
-      if (service.isSpreadsheetView(viewState)) {
+
+      // throw away the old spreadsheet
+      if (oldState === 'spreadsheet'  && oldState != viewState.selected && typeof viewState.cleanupCallback == 'function') {
+        viewState.cleanupCallback();
+      }
+
+      // create the new spreadsheet
+      if (viewState.selected == 'spreadsheet' && typeof viewState.spreadsheetCallback == 'function') {
         setTimeout(function () {
           viewState.spreadsheetCallback();
         });
-      } else {
-        if (typeof viewState.cleanupCallback == 'function') {
-          viewState.cleanupCallback()
-        }
       }
       return viewState;
     };
