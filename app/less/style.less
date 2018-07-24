@@ -4,6 +4,7 @@
 /* Definine local variables */
 @container-cedar-medium: 952px;
 
+
 @top-nav-color: rgba(21, 53, 53, 0.98); // top nav and controls bar
 @background-side: rgba(16, 43, 46, 0.84); // field and element header
 @modal-bg-color: #eaf2f2; // controlled terms modal background
@@ -23,6 +24,7 @@
 
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
+
 
 @header-template: @top-nav-color;
 @header-element: @top-nav-color;
@@ -210,8 +212,10 @@ button {
   }
 }
 
+
 #messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
   position: relative;
+
 
   button {
     background-color: transparent;
@@ -1223,6 +1227,7 @@ button {
         background: @white;
 
         font-size: 14px;
+
         color: #000;
         cursor: pointer;
         vertical-align: middle;
@@ -1257,14 +1262,17 @@ button {
               color: @template-color;
             }
             &.metadata, &.instance {
+
               color: @metadata-color;
             }
             &.folder {
               color: @folder-color;
+
             }
           }
         }
         &.selected {
+
           background-color: #f8f8f8;
           .outer {
             border-left-color: @brand-primary;
@@ -1423,6 +1431,7 @@ button {
 
       .filter-type {
         margin: 5px 0;
+
       }
 
       ul.filter-resource-version {
@@ -1458,6 +1467,7 @@ button {
         li div.active i {
           opacity: 1;
         }
+
       }
 
       .shares {
@@ -6804,10 +6814,15 @@ table.apiKey {
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
 
   .modal-header {
-    border-bottom: 0px solid #aaa;
+    padding: 10px 15px;
+    border-bottom-width: 0;
   }
   .modal-footer {
     &.actions {
+
+      padding: 10px 15px;
+      text-align: right;
+      border-top: 1px solid @very-lt-gray;
 
       .favorite {
         float: left;
@@ -6904,7 +6919,7 @@ table.apiKey {
     .modal-body {
       max-height: 300px;
       overflow-y: auto;
-      border-top: 1px solid #d2d2d2;
+      border-top: 1px solid #ccc;
       .box-row {
         padding: 5px;
 
@@ -7651,8 +7666,69 @@ table.apiKey {
         }
       }
       .modal-body {
-        max-height: 500px;
-        overflow-y: scroll;
+        overflow-y: visible;
+        max-height: none;
+        .confirmation {
+          padding: 15px;
+          background: #eee;
+          width: 100%;
+          height:100%;
+
+          &:after {
+            clear: both;
+          }
+
+
+          .clear-save {
+
+            .btn {
+              text-transform: uppercase;
+              padding: 5px 15px;
+              border: none;
+              .link-transition;
+
+              &:focus {
+                outline: none;
+                box-shadow: none;
+              }
+
+              &.btn-clear {
+                color: @brand-primary;
+                background-color: transparent;
+                .activ-grotesk-bold;
+
+                &:hover,
+                &:focus {
+                  color: @brand-primary-hover;
+                }
+              }
+
+              &.btn-save {
+                color: @white;
+                background-color: @brand-primary;
+                font-size: 16px;
+
+                &:hover,
+                &:focus {
+                  background-color: @brand-primary-hover;
+                }
+              }
+              &.btn-pause {
+                background-color: @button-pause;
+                &:hover {
+                  background-color: @button-pause-hover;
+                }
+              }
+              &.btn-resume {
+                background-color: @button-resume;
+                &:hover {
+                  background-color: @button-resume-hover;
+                }
+              }
+            }
+
+          }
+        }
         input {
           color: #000;
           outline: none;

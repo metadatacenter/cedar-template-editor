@@ -460,6 +460,7 @@ define([
           };
 
           vm.canSubmit = function () {
+<<<<<<< HEAD
             return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "<enter templateid>";
           };
 
@@ -479,6 +480,9 @@ define([
             if (vm.selectedResource && vm.selectedResource['isBasedOn']) {
               return vm.selectedResource['isBasedOn'];
             }
+=======
+            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933";
+>>>>>>> develop
           };
 
 

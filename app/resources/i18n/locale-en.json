@@ -398,8 +398,8 @@
       "title": "New folder"
     },
     "share": {
-      "share": "Share",
-      "groups": "Groups",
+      "share": "Share settings",
+      "groups": "Group settings",
       "add": "With users",
       "addHint": "Share with user",
       "public": "With groups",

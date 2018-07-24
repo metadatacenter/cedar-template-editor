@@ -1,7 +1,8 @@
 <div class="modal-dialog">
   <div class="modal-content" ng-if="dc.shareModalVisible" ng-class="share.canWrite() ? '' : 'cannotWrite'">
     <div class="modal-header" id="shareModalHeader">
-      <button type="button" class="close" ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);" aria-label="Close"><span
+      <button type="button" class="close"
+          ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
       <div ng-if="!share.showGroups"><h4><span translate>DASHBOARD.share.share</span> <i class="fa fa-share"></i></h4>
       </div>
@@ -10,133 +11,131 @@
     </div>
 
     <div class="modal-body">
-
       <!-- body  for share  -->
-      <div   ng-show="!share.showGroups">
+      <div ng-if="!share.showGroups">
 
         <div class="row">
           <div ng-if="share.canWrite()" class="col-sm-6">
 
-            <!-- share with groups -->
+            <div class="row">
+              <div class="col-sm-12">
+                <h5 translate>DASHBOARD.share.withUsers</h5></div>
+            </div>
+
+            <div class="half-padding-top" id="share-people" >
+              <div class="row">
+                <div class="col-sm-8 typeaheadDropDown">
+
+                  <input auto-focus placeholder="enter user name" type="text"
+                      ng-change="share.updateUserPermission(share.typeaheadUser.id)"
+                      ng-model="share.typeaheadUser"
+                      typeahead-editable="false"
+                      uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
+                      typeahead-select-on-exact="true"
+                      class="form-control user-name"></div>
+
+
+                <select ng-disabled="!share.typeaheadUser" ng-model="share.giveUserPermission"
+                    data-dropup-auto="false" class="dropdown col-sm-4 select-picker user-permission" select-picker
+                    select-model="share.typeaheadUser['@id']"
+                    cedar-live-search="true"
+                    block="'#share-people'">
+                  <option value="read" translate>GENERIC.canRead</option>
+                  <option value="write" translate>GENERIC.canWrite</option>
+                  <option ng-show="share.canBeOwner(share.typeaheadUser['@id'])" value="own" translate>GENERIC.isOwner
+                  </option>
+                </select>
+
+              </div>
+              <div ng-show="share.canWrite() && share.typeaheadUser" class="confirmation">
+                <div class="flex-left clear-save">
+                  <button type="button" class="btn btn-save" translate
+                      ng-click="share.addShare(share.typeaheadUser['@id'], share.giveUserPermission, 'shared-users', resource);share.clearTypeAheadUser()">
+                    GENERIC.Ok
+                  </button>
+                  <button type="button" class="btn btn-clear" ng-click="share.clearTypeAheadUser()" translate>
+                    GENERIC.Cancel
+                  </button>
+
+                </div>
+              </div>
+            </div>
+
+
             <div class="row">
               <div class="col-sm-12">
                 <h5 translate>DASHBOARD.share.withGroups</h5></div>
             </div>
-            <div class="row">
-              <div class="col-sm-7">
 
-                <input  auto-focus placeholder="enter group name" type="text"
-                    ng-change="share.updateGroupPermission(share.typeaheadGroup['@id'])"
-                    ng-model="share.typeaheadGroup"
-                    typeahead-editable="false"
-                    uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "
-                    typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
-                    typeahead-select-on-exact="true"
-                    class="form-control group-name share-with-group">
+            <div class="half-padding-top" id="share-group" >
+              <!-- share with groups -->
+              <div class="row">
+                <div class="col-sm-8">
+                  <input auto-focus placeholder="enter group name" type="text"
+                      ng-change="share.updateGroupPermission(share.typeaheadGroup['@id'])"
+                      ng-model="share.typeaheadGroup"
+                      typeahead-editable="false"
+                      uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "
+                      typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
+                      typeahead-select-on-exact="true"
+                      class="form-control group-name share-with-group">
+                </div>
+
+                <select ng-disabled="!share.typeaheadGroup" class="col-sm-4 select-picker group-permission"
+                    ng-model="share.giveGroupPermission"
+                    data-dropup-auto="false" class="dropdown group-permission" select-picker
+                    select-model="share.typeaheadGroup['@id']"
+                    cedar-live-search="true"
+                    block="'#share-group'">
+                  <option value="read">can read</option>
+                  <option value="write">can write</option>
+                </select>
+
               </div>
 
-
-              <select ng-disabled="!share.typeaheadGroup" class="col-sm-4 select-picker group-permission" ng-model="share.giveGroupPermission"
-                  data-dropup-auto="false" class="dropdown group-permission" select-picker
-                  select-model="share.typeaheadGroup['@id']"
-                  cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
-              </select>
-
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-plus share-with-group" ng-if="share.canWrite()"
-                    ng-model="share.resourcePermissions"
-                    type="button"
-                    uib-tooltip="{{'HELP.shareWithGroup' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-disabled="!share.typeaheadGroup"
-                    ng-click="share.addShare(share.typeaheadGroup['@id'], share.giveGroupPermission, 'shared-users', resource);share.clearTypeAheadGroup()">
-                  <!--<span aria-hidden="true">&plus;</span>-->
-                  <i class="fa fa-plus" ></i>
-                </button>
+              <div ng-show="share.canWrite() && share.typeaheadGroup" class="confirmation">
+                <div class="flex-left clear-save">
+                  <button type="button" class="btn btn-save" translate
+                      ng-click="share.addShare(share.typeaheadGroup['@id'], share.giveGroupPermission, 'shared-users', resource);share.clearTypeAheadGroup()">
+                    GENERIC.Ok
+                  </button>
+                  <button type="button" class="btn btn-clear" ng-click="share.clearTypeAheadGroup()"
+                      translate>
+                    GENERIC.Cancel
+                  </button>
+                </div>
               </div>
 
-
-            </div>
-            <div class="row">
-              <div class="col-sm-11">
-                <form ng-submit="share.createGroup(share.newGroupName)">
-                  <input ng-model="share.newGroupName" type="text"
-                      placeholder="enter new group name"  class="new-group"/>
-                </form>
-              </div>
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-plus create-new-group"
-                    type="button"
-                    uib-tooltip="{{'HELP.createNewGroup' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-disabled="share.share.newGroupName || share.newGroupName.length==0"
-                    ng-click="share.createGroup(share.newGroupName);share.clearTypeAheadGroup()">
-                  <i class="fa fa-plus" ></i>
-                </button>
-              </div>
-            </div>
-
-
-            <!-- share with users -->
-            <div class="row" class="minTop">
-              <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.withUsers</h5></div>
-            </div>
-            <div class="row">
-              <div class="col-sm-7 typeaheadDropUp">
-
-                <input auto-focus placeholder="enter user name" type="text"
-                    ng-change="share.updateUserPermission(share.typeaheadUser.id)"
-                    ng-model="share.typeaheadUser"
-                    typeahead-editable="false"
-                    uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
-                    typeahead-select-on-exact="true"
-                    class="form-control user-name"></div>
-
-
-              <select ng-disabled="!share.typeaheadUser" ng-model="share.giveUserPermission"
-                  data-dropup-auto="false" class="dropup col-sm-4 select-picker user-permission" select-picker
-                  select-model="share.typeaheadUser['@id']"
-                  cedar-live-search="true">
-                <option value="read" translate>GENERIC.canRead</option>
-                <option value="write" translate>GENERIC.canWrite</option>
-                <option ng-show="share.canBeOwner(share.typeaheadUser['@id'])" value="own" translate>GENERIC.isOwner</option>
-              </select>
-
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-plus share-with-user" ng-if="share.canWrite()"
-                    ng-model="share.resourcePermissions"
-                    type="button"
-                    uib-tooltip="{{'HELP.shareWithPerson' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-disabled="!share.typeaheadUser"
-                    ng-click="share.addShare(share.typeaheadUser['@id'], share.giveUserPermission, 'shared-users', resource);share.clearTypeAheadUser()">
-                  <!--<span aria-hidden="true">&plus;</span>-->
-                  <i class="fa fa-plus" ></i>
-                </button>
+              <div class="row">
+                <div class="col-sm-12">
+                  <form ng-submit="share.createGroup(share.newGroupName)">
+                    <input ng-model="share.newGroupName" type="text"
+                        placeholder="enter new group name" class="new-group"/>
+                  </form>
+                </div>
               </div>
 
+              <div class="confirmation" ng-if="share.canWrite() && share.newGroupName">
+                <div class="flex-left clear-save">
+
+                  <button type="button" class="btn btn-save " translate
+                      ng-click="share.createGroup(share.newGroupName);share.clearTypeAheadGroup()">
+                    GENERIC.Ok
+                  </button>
+                  <button type="button" class="btn btn-clear" ng-click="share.newGroupName=''" translate>
+                    GENERIC.Cancel
+                  </button>
+
+                </div>
+              </div>
             </div>
 
 
             <!-- link to groups -->
             <div class="row">
               <div class="col-sm-12 center"><a href="#"
-                  ng-click="share.showGroups=true;share.showRemoveGroupConfirm=false"  class="group-settings">
+                  ng-click="share.showGroups=true;share.showRemoveGroupConfirm=false;share.clearTypeAheadUser()"
+                  class="group-settings">
                 <h5><span translate>DASHBOARD.share.groupSettings</span> <i class="fa fa-users"></i></h5>
               </a></div>
             </div>
@@ -152,7 +151,7 @@
                   {{share.getName(share.resourcePermissions.owner)}}
                 </div>
 
-                <select class="col-sm-4 select-picker"  select-picker ng-disabled="!share.canWrite()">
+                <select class="col-sm-4 select-picker" select-picker ng-disabled="!share.canWrite()">
                   <option value="own" translate>GENERIC.isOwner</option>
                 </select>
               </div>
@@ -164,7 +163,7 @@
                 <select ng-model="sh.permission" class="col-sm-4 select-picker" select-picker
                     ng-change="share.addShare(sh.node['@id'], sh.permission, 'shared-users', resource)"
                     select-model="sh"
-                    cedar-live-search="true" ng-disabled="!share.canWrite()">
+                    cedar-live-search="true" ng-disabled="!share.canWrite()" block="share.permission">
 
 
                   <option ng-show="(!share.canWrite() && sh.permission === 'read') || share.canWrite()" value="read"
@@ -186,7 +185,7 @@
                     tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-click="share.removeShare(sh.node, resource)"><i class="fa fa-times"
-                    ></i></button>
+                ></i></button>
               </div>
             </div>
 
@@ -198,6 +197,8 @@
 
           </div>
         </div>
+
+
       </div>
 
       <!-- body  for groups  -->
@@ -233,45 +234,45 @@
                     data-toggle="tooltip"
                     ng-click="share.showRemoveGroupConfirm=true;"
                     ng-disabled="!share.typeaheadGroup">
-                  <i class="fa fa-remove" ></i>
+                  <i class="fa fa-remove"></i>
                 </button>
               </div>
             </div>
-            <div class="row" ng-if="share.showRemoveGroupConfirm">
-              <div class="col-sm-12 center" style="height:40px">
-                Are you sure?
-                <button type="button" ng-click="share.showRemoveGroupConfirm=false;"
-                    data-dismiss="modal"
-                    class="btn btn-save confirm" translate>No
-                </button>
-                <button type="button"
+
+            <div class="confirmation" ng-show="share.showRemoveGroupConfirm">
+              <div class="flex-left clear-save">
+
+                <button type="button" class="btn btn-save confirm" translate
                     ng-click="share.deleteGroup(share.typeaheadGroup, resource);share.showRemoveGroupConfirm=false;"
-                    aria-label="Remove"
-                    class="btn btn-save confirm" translate>Yes
+                    aria-label="Remove">
+                  GENERIC.Remove
+                </button>
+                <button type="button" class="btn btn-clear" ng-click="share.showRemoveGroupConfirm=false;"
+                    data-dismiss="modal" translate>
+                  GENERIC.Cancel
                 </button>
 
-              </div>
 
+              </div>
             </div>
+
             <div class="row" ng-if="!share.showRemoveGroupConfirm">
-              <div class="col-sm-11">
+              <div class="col-sm-12">
                 <form ng-submit="share.createGroup(share.newGroupName)">
-                  <input ng-model="share.newGroupName"  type="text"
+                  <input ng-model="share.newGroupName" type="text"
                       placeholder="enter new group name" class="new-group-name"/>
                 </form>
               </div>
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-plus create-group"
-                    type="button"
-                    ooltip="{{'HELP.createNewGrpi[' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-disabled="share.share.newGroupName || share.newGroupName.length==0"
+            </div>
+
+            <div ng-if="share.newGroupName" class="confirmation">
+              <div class="flex-left clear-save">
+                <button type="button" class="btn btn-save" translate
                     ng-click="share.createGroup(share.newGroupName)">
-                  <i class="fa fa-plus" ></i>
+                  GENERIC.Ok
+                </button>
+                <button type="button" class="btn btn-clear" ng-click="share.newGroupName = ''" translate>
+                  GENERIC.Cancel
                 </button>
               </div>
             </div>
@@ -283,7 +284,7 @@
             </div>
             <div class="row">
 
-              <div class="col-sm-11 typeaheadDropUp">
+              <div class="col-sm-12 typeaheadDropDown">
                 <input auto-focus placeholder="enter user name" type="text"
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
@@ -292,24 +293,21 @@
                     typeahead-select-on-exact="true"
                     ng-disabled="!share.typeaheadGroup"
                     class="form-control user-name"></div>
+            </div>
 
+            <div ng-if="share.canWriteGroup() && share.typeaheadUser && share.typeaheadGroup" class="confirmation">
+              <div class="flex-left clear-save">
 
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-plus add-user" ng-if="share.canWriteGroup()"
-                    ng-model="share.resourcePermissions"
-                    type="button"
-                    uib-tooltip="{{'HELP.addToGroup' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-disabled="!share.typeaheadUser || !share.typeaheadGroup ||  share.typeaheadGroup.specialGroup"
+                <button type="button" class="btn btn-save " translate
                     ng-click="share.addUserToGroup(share.typeaheadUser,  share.typeaheadGroup, 'group-members');share.clearTypeAheadUser()">
-                  <i class="fa fa-plus"></i>
+                  GENERIC.Ok
                 </button>
-              </div>
+                <button type="button" class="btn btn-clear" ng-click="share.clearTypeAheadUser()" translate>
+                  GENERIC.Cancel
+                </button>
 
+
+              </div>
             </div>
 
 
@@ -327,8 +325,7 @@
 
             <!-- group members -->
             <div ng-if="share.showGroupMembers">
-              <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container"
-                  >
+              <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container">
 
                 <div ng-if="!share.typeaheadGroup" class="row">
                   <div class="center" style="margin-top:100px;">Select a group to display</div>
@@ -359,15 +356,16 @@
                       data-toggle="tooltip"
                       ng-disabled="share.typeaheadGroup.specialGroup"
                       ng-click="share.removeFromGroup(member, share.typeaheadGroup)"><i class="fa fa-times"
-                      ></i></button>
+                  ></i></button>
                 </div>
               </div>
             </div>
 
             <!-- group details -->
-            <div ng-if="!share.showGroupMembers" class="scroll-container" style="padding-left:20px;height:250px;overflow:hidden">
+            <div ng-if="!share.showGroupMembers" class="scroll-container"
+                style="padding-left:20px;height:250px;overflow:hidden">
               <div ng-if="!share.typeaheadGroup" class="row">
-                <div class="center" style="margin-top:100px;" >Select a group to display</div>
+                <div class="center" style="margin-top:100px;">Select a group to display</div>
               </div>
               <div ng-if="share.hasSelectedGroup()">
 
@@ -375,11 +373,16 @@
                   <form ng-submit="share.updateGroupName(share.typeaheadGroup, share.newTitle)">
                     <div class="row inline-editing">
                       <div class="col-sm-9 ">
-                        <input  class="borderless group-name" ng-click="share.editingTitle=true;" ng-disabled="share.typeaheadGroup.specialGroup" type="text"
+                        <input class="borderless group-name" ng-click="share.editingTitle=true;"
+                            ng-disabled="share.typeaheadGroup.specialGroup" type="text"
                             ng-model="share.newTitle" placeholder="enter group name"/></div>
-                      <div class="col-sm-3" >
-                        <button ng-if="share.editingTitle" type="button" ng-click="share.editingTitle=false;share.newTitle=share.typeaheadGroup.name" class="remove-group"><i class="fa fa-remove"></i></button>
-                        <button ng-if="share.editingTitle" type="button"  ng-click="share.updateGroupName(share.typeaheadGroup, share.newTitle)" aria-label="ok"><i class="fa fa-check"></i></button>
+                      <div class="col-sm-3">
+                        <button ng-if="share.editingTitle" type="button"
+                            ng-click="share.editingTitle=false;share.newTitle=share.typeaheadGroup.name"
+                            class="remove-group"><i class="fa fa-remove"></i></button>
+                        <button ng-if="share.editingTitle" type="button"
+                            ng-click="share.updateGroupName(share.typeaheadGroup, share.newTitle)" aria-label="ok"><i
+                            class="fa fa-check"></i></button>
                       </div>
                     </div>
                   </form>
@@ -415,12 +418,17 @@
                   <form ng-submit="share.updateGroupDescription(share.typeaheadGroup, share.newDescription)">
                     <div class="row inline-editing">
                       <div class="col-sm-9">
-                        <input class="borderless" ng-disabled="share.typeaheadGroup.specialGroup" type="text"  ng-click="share.editingDescription=true;"
+                        <input class="borderless" ng-disabled="share.typeaheadGroup.specialGroup" type="text"
+                            ng-click="share.editingDescription=true;"
                             ng-model="share.newDescription" placeholder="enter group description"/>
-                        </div>
-                      <div class="col-sm-3" >
-                        <button ng-if="share.editingDescription" type="button" ng-click="share.newDescription=false;share.newDescription=share.typeaheadGroup.description" aria-label="ok"><i class="fa fa-remove"></i></button>
-                        <button ng-if="share.editingDescription" type="button" ng-click="share.updateGroupDescription(share.typeaheadGroup, share.newDescription)"><i class="fa fa-check"></i></button>
+                      </div>
+                      <div class="col-sm-3">
+                        <button ng-if="share.editingDescription" type="button"
+                            ng-click="share.newDescription=false;share.newDescription=share.typeaheadGroup.description"
+                            aria-label="ok"><i class="fa fa-remove"></i></button>
+                        <button ng-if="share.editingDescription" type="button"
+                            ng-click="share.updateGroupDescription(share.typeaheadGroup, share.newDescription)"><i
+                            class="fa fa-check"></i></button>
                       </div>
                     </div>
                   </form>
