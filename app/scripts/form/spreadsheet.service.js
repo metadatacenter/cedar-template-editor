@@ -789,7 +789,6 @@ define([
         service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
                                                 createExtraRows, deleteExtraRows) {
 
-          console.log('switchToSpreadsheet');
 
 
           var type = isField() ? 'field' : 'element';

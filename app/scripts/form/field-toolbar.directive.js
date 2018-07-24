@@ -75,7 +75,6 @@ define([
         };
 
         scope.toggleView = function () {
-          console.log('toggleView',scope.viewState);
           return UIUtilService.toggleView(scope.viewState);
         };
 

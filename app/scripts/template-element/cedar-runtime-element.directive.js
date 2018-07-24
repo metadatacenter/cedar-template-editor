@@ -136,7 +136,6 @@ define([
 
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet')
         scope.setActive(0, true);
         if (dms.getMaxItems(scope.element)) {
           // create all the rows if the maxItems is a fixed number
@@ -159,6 +158,8 @@ define([
 
       scope.cleanupSpreadsheet = function () {
         scope.deleteExtraRows();
+        scope.expanded[0] = false;
+        SpreadsheetService.destroySpreadsheet(scope);
       };
 
 
@@ -180,42 +181,42 @@ define([
       };
 
       // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
-      scope.$watch(
-          function () {
-            return ( UIUtilService.activeLocator);
-          },
-          function (newValue, oldValue) {
-            if (scope.isSpreadsheetView()) {
-
-              // spreadsheet view will use the 0th instance
-              var zeroedLocator = function (value) {
-                var result = '';
-                if (value) {
-                  var result = value.replace(/-([^-]*)$/, '-0');
-                }
-                return result;
-              };
-
-              $timeout(function () {
-                var zeroLocator = scope.getLocator(0);
-                if (zeroLocator === zeroedLocator(oldValue)) {
-                  scope.expanded[0] = false;
-                  SpreadsheetService.destroySpreadsheet(scope);
-                  scope.$apply();
-                }
-                if (zeroLocator === zeroedLocator(newValue)) {
-                  scope.switchToSpreadsheet();
-                  scope.$apply();
-                }
-              }, 0);
-            }
-          }
-      );
+      // scope.$watch(
+      //     function () {
+      //       return ( UIUtilService.activeLocator);
+      //     },
+      //     function (newValue, oldValue) {
+      //       // if (scope.isSpreadsheetView()) {
+      //       //
+      //       //   // spreadsheet view will use the 0th instance
+      //       //   var zeroedLocator = function (value) {
+      //       //     var result = '';
+      //       //     if (value) {
+      //       //       var result = value.replace(/-([^-]*)$/, '-0');
+      //       //     }
+      //       //     return result;
+      //       //   };
+      //       //
+      //       //   $timeout(function () {
+      //       //     var zeroLocator = scope.getLocator(0);
+      //       //     if (zeroLocator === zeroedLocator(oldValue)) {
+      //       //       scope.expanded[0] = false;
+      //       //       SpreadsheetService.destroySpreadsheet(scope);
+      //       //       scope.$apply();
+      //       //     }
+      //       //     if (zeroLocator === zeroedLocator(newValue)) {
+      //       //       console.log('switchToSpreadsheet from zeroLocator');
+      //       //       scope.switchToSpreadsheet();
+      //       //       scope.$apply();
+      //       //     }
+      //       //   }, 0);
+      //       // }
+      //     }
+      // );
 
 
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function () {
-        console.log('createExtraRows');
         var maxItems = dms.getMaxItems(scope.element);
         var max = maxItems ? maxItems : 10;
         while ((scope.model.length < max)) {
@@ -642,9 +643,8 @@ define([
 
       scope.pageMinMax();
 
-      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet,
-          scope.cleanupSpreadsheet);
-      //console.log(scope.viewState);
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet, scope.cleanupSpreadsheet);
+
     }
   };
 });
