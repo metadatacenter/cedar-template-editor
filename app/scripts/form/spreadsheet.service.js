@@ -764,6 +764,7 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
+
           if ($scope.spreadsheetDataScope) {
 
             // delete extra rows in the object

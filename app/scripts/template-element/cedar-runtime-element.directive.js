@@ -158,7 +158,7 @@ define([
 
       scope.cleanupSpreadsheet = function () {
         scope.deleteExtraRows();
-        scope.expanded[0] = false;
+        //scope.expanded[0] = false;
         SpreadsheetService.destroySpreadsheet(scope);
       };
 
@@ -180,39 +180,26 @@ define([
         scope.viewState = UIUtilService.toggleView(scope.viewState);
       };
 
-      // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
-      // scope.$watch(
-      //     function () {
-      //       return ( UIUtilService.activeLocator);
-      //     },
-      //     function (newValue, oldValue) {
-      //       // if (scope.isSpreadsheetView()) {
-      //       //
-      //       //   // spreadsheet view will use the 0th instance
-      //       //   var zeroedLocator = function (value) {
-      //       //     var result = '';
-      //       //     if (value) {
-      //       //       var result = value.replace(/-([^-]*)$/, '-0');
-      //       //     }
-      //       //     return result;
-      //       //   };
-      //       //
-      //       //   $timeout(function () {
-      //       //     var zeroLocator = scope.getLocator(0);
-      //       //     if (zeroLocator === zeroedLocator(oldValue)) {
-      //       //       scope.expanded[0] = false;
-      //       //       SpreadsheetService.destroySpreadsheet(scope);
-      //       //       scope.$apply();
-      //       //     }
-      //       //     if (zeroLocator === zeroedLocator(newValue)) {
-      //       //       console.log('switchToSpreadsheet from zeroLocator');
-      //       //       scope.switchToSpreadsheet();
-      //       //       scope.$apply();
-      //       //     }
-      //       //   }, 0);
-      //       // }
-      //     }
-      // );
+      scope.zeroedLocator = function (value) {
+        var result = '';
+        if (value) {
+          var result = value.replace(/-([^-]*)$/, '-0');
+        }
+        return result;
+      };
+
+      // watch for changes in the selection for spreadsheet view to get out of spreadsheet mode
+      scope.$watch(
+          function () {
+            return ( UIUtilService.activeLocator);
+          },
+          function (newValue, oldValue) {
+
+            if (scope.zeroedLocator(newValue) != scope.zeroedLocator(oldValue) &&  scope.getLocator(0) == scope.zeroedLocator(oldValue) && scope.isSpreadsheetView()) {
+              scope.toggleView();
+            }
+          }
+      );
 
 
       // make sure there are at least 10 entries in the spreadsheet
@@ -436,7 +423,6 @@ define([
       };
 
 
-
       // toolbar pager min and max
       scope.pageMinMax = function () {
         scope.pageMax = Math.min(scope.valueArray.length, scope.index + scope.pageRange);
@@ -524,6 +510,7 @@ define([
 
       // watch for this field's active state
       scope.$on('setActive', function (event, args) {
+
         var id = args[0];
         var index = args[1];
         var path = args[2];
@@ -534,7 +521,6 @@ define([
 
         if (id === scope.getId() && path == scope.path && fieldKey == scope.fieldKey && parentKey == scope.parentKey && uid == scope.uid) {
           scope.setActive(index, value);
-          //scope.expanded[index] = true;
 
           $timeout(function () {
 
@@ -572,13 +558,14 @@ define([
       };
 
       scope.setActive = function (idx, value) {
+
         var index = scope.isSpreadsheetView() ? 0 : idx;
         UIUtilService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {
           scope.index = index;
           scope.pageMinMax();
+          scope.expanded[index] = value;
         }
-        scope.expanded[index] = value;
       };
 
       // set the active index
@@ -643,7 +630,8 @@ define([
 
       scope.pageMinMax();
 
-      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet, scope.cleanupSpreadsheet);
+      scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet,
+          scope.cleanupSpreadsheet);
 
     }
   };
