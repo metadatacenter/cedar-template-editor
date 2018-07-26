@@ -38,8 +38,8 @@
 //@latest: #8B0000;
 
 @draft: @med-gray;
-@published: @med-gray;
-@latest: @med-gray;
+@published: @dark-gray;
+@latest: #444;
 
 @primary-accent: #cb6318;
 @dark-accent: #7d4427;
@@ -1247,6 +1247,14 @@ button {
         .resource-icon {
           vertical-align: middle;
         }
+        i.fa-pencil-square {
+          color:@draft;
+          font-size:20px;
+        }
+        i.fa-check-square {
+          color:@published;
+          font-size:20px;
+        }
 
         .cell.icon {
           background: @white;
@@ -1445,7 +1453,7 @@ button {
           padding: 0;
           margin: 0 10px;
           border-width: 0;
-          opacity: 0.4;
+          opacity: 0.2;
           font-size: 24px
         }
         li div.published i {
@@ -1453,7 +1461,7 @@ button {
           padding: 0;
           margin: 0 10px;
           border-width: 0;
-          opacity: 0.4;
+          opacity: 0.8;
           font-size: 24px
         }
         li div.latest i {
@@ -1461,7 +1469,7 @@ button {
           padding: 0;
           margin: 0 10px;
           border-width: 0;
-          opacity: 0.4;
+          opacity: 0.2;
           font-size: 24px
         }
         li div.active i {
@@ -7950,6 +7958,15 @@ table.apiKey {
     }
     .extraRight {
       margin-right: 40px;
+    }
+  }
+
+  #resource-version {
+    i.fa-pencil-square {
+        color: @draft;
+    }
+    i.fa-check-square {
+        color: @published;
     }
   }
 

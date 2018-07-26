@@ -175,10 +175,10 @@
 
               <li ng-show="dc.onDashboard()" id="grid-view-tool">
                 <button type="button"
-                    uib-tooltip='{{"Select view" | translate}}'
+                    uib-tooltip='{{"View" | translate}}'
                     tooltip-trigger
                     tooltip-animation="false"
-                    tooltip-placement="bottom"
+                    tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-click="dc.toggleView()">
                   <i class="inline fa "
@@ -189,15 +189,19 @@
               <li ng-if="dc.onDashboard()" class="toggleDetails" id="show-details"
                   ng-class="{'hidePanel':dc.isInfoOpen(), 'showPanel':!dc.isInfoOpen()}">
                 <button type="button"
-                    uib-tooltip="{{ dc.toggleDirection() | translate  }}"
+                    uib-tooltip="{{ 'Details' | translate  }}"
                     tooltip-trigger
                     tooltip-animation="false"
-                    tooltip-placement="bottom"
+                    tooltip-placement="top"
                     data-toggle="tooltip"
                     ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
               </li>
 
-              <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
+              <li ng-if="dc.onDashboard()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
                 <div class="btn-group dropdown">
                   <button type="button" class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
                   ><i class="fa fa-sort-amount-asc "></i></button>
@@ -222,7 +226,7 @@
         </div>
 
         <div id="workspace-view-container" cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content"
-            style="padding-top:0;">
+            style="padding-top:0;overflow:scroll">
           <div style="height:auto;">
 
             <div class="no-selection" ng-if="!dc.hasResources()">
@@ -381,7 +385,7 @@
                       <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                         prettyDate }}
                       </div>
-                      <div class="flex" style="width:60px;justify-content:space-between">
+                      <div class="flex" style="width:80px;justify-content:space-between;">
 
                         <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
@@ -392,7 +396,7 @@
                             ng-click="dc.createVersion(resource)"></i>
 
 
-                        <button id="{{dc.getId(resource, 'list')}}" style="background-color:transparent;"
+                        <button id="{{dc.getId(resource, 'list')}}" style="background-color:transparent;padding-right:15px;"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource )"
                             title="More"
                             class="dropup"
@@ -402,7 +406,7 @@
                           <i class="action fa fa-ellipsis-v"></i>
                         </button>
 
-                        <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"
+                        <cedar-dropdown-menu  id="{{dc.getId(resource, 'menu')}}"
                             class="dropdown-menu"
                             toggle-id="dc.getId"
                             aria-labelledby="{{dc.getId(resource, 'list')}}"
@@ -441,7 +445,7 @@
                       <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                         prettyDate }}
                       </div>
-                      <div class="flex" style="width:60px;justify-content:space-between">
+                      <div class="flex" style="width:80px;justify-content:space-between;">
 
                         <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
                             uib-tooltip="{{dc.getResourceVersion(resource)}}"
@@ -454,7 +458,7 @@
                         <button id="{{dc.getId(resource, 'list')}}" title="More"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource)"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                            style="background-color:transparent;">
+                            style="background-color:transparent;padding-right:15px;">
                           <i class="action fa fa-ellipsis-v"></i>
                         </button>
 
