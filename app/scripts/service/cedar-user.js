@@ -139,6 +139,8 @@ define([
       return value;
     };
 
+    // TBD infoPanel.activeTab   'info' or 'version' or 'share'
+
     service.isInfoOpen = function () {
       return service.getUIPreferences().infoPanel.opened;
     };
