@@ -73,7 +73,6 @@ define([
     };
 
     service.saveUIPreference = function (prefPath, prefValue) {
-      console.log('saveUIPreference',prefPath, prefValue);
       var putData = {};
       putData['uiPreferences.' + prefPath] = prefValue;
       AuthorizedBackendService.doCall(
@@ -107,6 +106,10 @@ define([
 
     service.saveInfo = function(prefValue) {
       service.saveUIPreference('infoPanel.opened', prefValue);
+    };
+
+    service.saveInfoTab = function(prefValue) {
+      service.saveUIPreference('infoPanel.activeTab', prefValue);
     };
 
     service.saveResourceType = function(type, prefValue) {

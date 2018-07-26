@@ -170,6 +170,8 @@ define([
 
           vm.isInfoOpen = isInfoOpen;
           vm.toggleInfo = toggleInfo;
+          vm.isInfoTab = isInfoTab;
+          vm.isVersionTab = isVersionTab;
 
           vm.toggleResourceType = toggleResourceType;
 
@@ -221,7 +223,6 @@ define([
           };
 
           vm.setFilterPublished = function () {
-            console.log('setFilterPublished');
             switch (vm.getFilterStatus()) {
               case CONST.publication.DRAFT:
                 vm.setResourcePublicationStatus(CONST.publication.ALL);
@@ -545,16 +546,6 @@ define([
             );
           };
 
-          vm.isTabActive = function (item) {
-            return vm.activeTab === item;
-          };
-
-          vm.setTab = function (item) {
-            vm.activeTab = item;
-            if (vm.activeTab == 'resource-version') {
-              vm.getResourceReport(vm.getSelectedNode());
-            }
-          };
 
           vm.canRead = function () {
             return resourceService.canRead(vm.getSelectedNode());
@@ -1668,6 +1659,33 @@ define([
             UISettingsService.saveInfo(CedarUser.toggleInfo());
           }
 
+          function isVersionTab() {
+            return CedarUser.isVersionTab();
+          }
+
+          function isInfoTab() {
+            return CedarUser.isInfoTab();
+          }
+
+          function toggleInfoTab(tab) {
+            UISettingsService.saveInfoTab(CedarUser.toggleInfoTab(tab));
+          }
+
+          vm.isTabActive = function (item) {
+            return vm.activeTab === item;
+          };
+
+          vm.setTab = function (item) {
+            vm.activeTab = item;
+            if (vm.activeTab == 'resource-version') {
+              vm.getResourceReport(vm.getSelectedNode());
+              toggleInfoTab('version');
+            } else {
+              toggleInfoTab('info');
+            }
+          };
+
+
           // open the move modal
           function showCopyModal(value) {
             //var r = resource;
@@ -1716,7 +1734,6 @@ define([
 
 
           function showFlowModal() {
-            console.log('showFlowModal');
             vm.flowModalVisible = true;
             var instanceId = null;
             var name = null;

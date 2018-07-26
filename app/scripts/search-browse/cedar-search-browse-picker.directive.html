@@ -519,18 +519,18 @@
 
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style "
-              ng-class="{active: dc.isTabActive('resource-info')}"
+              ng-class="{active: dc.isInfoTab()}"
               ng-click="dc.setTab('resource-info');">
             <span>Info</span>
           </div>
           <div class="element-toggle table-cell-style "
-              ng-class="{active: dc.isTabActive('resource-version')}"
+              ng-class="{active: dc.isVersionTab()}"
               ng-click="dc.setTab('resource-version');">
             <span>Version</span>
           </div>
         </div>
 
-        <div class="half-padding-top"  id="resource-version" ng-show="dc.isTabActive('resource-version')"  >
+        <div class="half-padding-top"  id="resource-version" ng-show="dc.isVersionTab()"  >
           <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
               ng-repeat="(index, resource) in dc.selectedResource.versions">
 
@@ -557,7 +557,7 @@
         </div>
 
 
-        <div id="resource-info" ng-if="dc.isTabActive('resource-info')">
+        <div id="resource-info" ng-if="dc.isInfoTab('resource-info')">
           <div class="info no-selection" ng-if="!dc.getSelectedNode()">
             <div class="row no-file">
               <div class="col-sm-12 center"><i class="fa fa-file"></i></div>

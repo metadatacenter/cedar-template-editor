@@ -145,11 +145,30 @@ define([
       return service.getUIPreferences().infoPanel.opened;
     };
 
+    service.isVersionTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'version';
+    };
 
+    service.getInfoTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab;
+    };
+
+    service.isInfoTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'info';
+    };
+
+    service.isShareTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'share';
+    };
 
     service.toggleInfo = function () {
       service.saveUIPreference('infoPanel', 'opened', !service.isInfoOpen());
       return service.isInfoOpen();
+    };
+
+    service.toggleInfoTab = function (tab) {
+      service.saveUIPreference('infoPanel', 'activeTab', tab);
+      return service.getInfoTab();
     };
 
     service.isGridView = function () {
