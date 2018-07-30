@@ -43,6 +43,7 @@ define([
         // template details
         $scope.details;
         $scope.hasInstances;
+        $scope.hasInstanceResources;
         $scope.cannotWrite;
 
         $scope.isTemplate = true;
@@ -92,8 +93,10 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
+                console.log('hasMetadata',response);
                 $scope.checkLocking();
                 $scope.hasInstances = response.totalCount > 0;
+                $scope.hasInstanceResources = response.resources;
                 if ($scope.hasInstances) {
                   UIMessageService.showWarning("Warning",
                       "The template has metadata and should not be modified.", "OK", "");

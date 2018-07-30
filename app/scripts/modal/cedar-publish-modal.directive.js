@@ -133,14 +133,18 @@ define([
           };
 
 
-// on modal open
+          // on modal open
           $scope.$on('publishModalVisible', function (event, params) {
 
             var visible = params[0];
             var resource = params[1];
+            var callback = params[2];
+            var titleText = params[3];
 
             if (visible && resource) {
               vm.resource = resource;
+              vm.callback = callback;
+              vm.titleText = titleText;
               vm.modalVisible = visible;
               vm.initial = vm.getVersion(resource);
               vm.title = vm.getTitle(resource);

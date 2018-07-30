@@ -128,8 +128,6 @@ define([
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
           vm.isPublished = isPublished;
-          vm.createVersion = createVersion;
-
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -193,10 +191,21 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
+          vm.hasInstances = 0;
+          vm.hasInstanceResources = null;
+
 
           //
           //  Publication  start
           //
+
+          vm.isToday = function(value) {
+            var today = new Date();
+            var v = new Date(value);
+            return today.getMonth() == v.getMonth() && today.getYear() == v.getYear() && today.getDay() == v.getDay();
+
+
+          };
 
           vm.filterDraft = function () {
             return ((vm.getFilterStatus() == CONST.publication.DRAFT || vm.getFilterStatus() == CONST.publication.ALL));
@@ -484,6 +493,26 @@ define([
             }
           };
 
+          vm.doSearchTemplateInstances = function (id) {
+            var limit = 100;
+            var offset = 0;
+            var sort = 'name';
+
+            resourceService.hasMetadata(
+                id,
+                {sort: sort, limit: limit, offset: offset},
+                function (response) {
+                  console.log('hasMetadata',response);
+                  vm.hasInstances = response.totalCount > 0;
+                  vm.hasInstanceResources = response.resources;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                }
+            );
+          };
+
+
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
@@ -512,6 +541,8 @@ define([
                     vm.canNotCreateDraft = !vm.canCreateDraft();
 
                   }
+
+                  vm.doSearchTemplateInstances(id);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -951,7 +982,7 @@ define([
             );
           }
 
-
+          // set publication status as published
           function publishResource(resource, version) {
             if (!resource) {
               resource = getSelection();
@@ -972,32 +1003,8 @@ define([
             );
           }
 
-          function createVersion(value) {
-
-            var resource = value || vm.selectedResource;
-
-            var canCreateDraft =
-                (resource.nodeType == CONST.resourceType.TEMPLATE ||
-                resource.nodeType == CONST.resourceType.ELEMENT) &&
-                resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED &&
-                resource.isLatestVersion;
-
-            var canPublish = (resource.nodeType == CONST.resourceType.TEMPLATE ||
-                resource.nodeType == CONST.resourceType.ELEMENT) &&
-                resource[CONST.publication.STATUS] == CONST.publication.DRAFT;
-
-
-            if (canCreateDraft) {
-              vm.createDraftResource(resource);
-            } else {
-              if (canPublish) {
-                vm.publishResource(resource);
-              }
-            }
-
-          }
-
-          function createDraftResource(resource) {
+          // set publication status as draft
+          function createDraftResource(resource, version) {
             if (!resource) {
               resource = getSelection();
             }
@@ -1005,7 +1012,7 @@ define([
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
-            var newVersion = vm.getNextResourceVersion(resource);
+            var newVersion = version || vm.getResourceVersion(resource);
             var propagateSharing = true;
             resourceService.createDraftResource(
                 resource,
@@ -1720,7 +1727,7 @@ define([
           }
 
           // open the publish modal
-          function showPublishModal(resource) {
+          function showPublishModal(resource, callback, title) {
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -1729,7 +1736,7 @@ define([
             if (vm.canWrite(r)) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, title]);
             }
           }
 

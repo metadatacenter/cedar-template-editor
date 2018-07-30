@@ -270,7 +270,7 @@
                               resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                               move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
                               copy="dc.showCopyModal" rename="dc.showRenameModal"
-                              publish="dc.showPublishModal" create-draft="dc.createDraftResource"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
                               can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                               can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                               can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -311,7 +311,7 @@
                               resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                               move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                               rename="dc.showRenameModal"
-                              publish="dc.showPublishModal" create-draft="dc.createDraftResource"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
                               can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                               can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                               can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
@@ -331,7 +331,7 @@
                               resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                               move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                               rename="dc.showRenameModal"
-                              publish="dc.showPublishModal" create-draft="dc.createDraftResource"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
                               can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                               can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                               can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
@@ -379,12 +379,8 @@
                           dc.getTitle(resource)}}
                         </div>
                       </div>
-                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:createdOn'] |
-                        prettyDate }}
-                      </div>
-                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                        prettyDate }}
-                      </div>
+                      <div  class="ellipsis" style="width:200px;padding-right:10px;">{{  resource['pav:createdOn'] | prettyDate}}</div>
+                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
                       <div class="flex" style="width:80px;justify-content:space-between;">
 
                         <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
@@ -414,7 +410,7 @@
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
                             submit="dc.showFlowModal"
-                            publish="dc.showPublishModal" create-draft="dc.createDraftResource"
+                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                             can-not-submit="dc.canNotSubmit"
@@ -469,7 +465,7 @@
                             move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                             rename="dc.showRenameModal"
                             submit="dc.showFlowModal"
-                            publish="dc.showPublishModal" create-draft="dc.createDraftResource"
+                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
                             can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
                             can-not-submit="dc.canNotSubmit"
                             can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -560,7 +556,6 @@
           </div>
         </div>
 
-
         <div id="resource-info" ng-if="dc.isInfoTab('resource-info')">
           <div class="info no-selection" ng-if="!dc.getSelectedNode()">
             <div class="row no-file">
@@ -602,14 +597,6 @@
                 <span ng-if="dc.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
                 <span ng-if="dc.canWrite()" class="can-write ellipsis"><i class="fa fa-check"></i>write </span>
                 <span ng-if="dc.canChangeOwner()" class="can-change-owner ellipsis"><i class="fa fa-check"></i>change owner</span>
-              </div>
-            </div>
-
-            <div ng-if="dc.getNumberOfInstances()">
-              <hr/>
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Instances</div>
-                <div>{{ dc.getNumberOfInstances() }}</div>
               </div>
             </div>
 
@@ -695,6 +682,24 @@
               </div>
 
             </div>
+
+            <div ng-if="dc.getNumberOfInstances()">
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label" translate>Instances</div>
+                <div>{{ dc.getNumberOfInstances() }}</div>
+              </div>
+
+              <div  cedar-infinite-scroll load-more="" class="scrollable-content"
+                  style="margin-top:10px;overflow:scroll;border:1px solid #ccc;height:100px">
+              <div ng-repeat="(index, resource) in dc.hasInstanceResources" style="padding:2px;">
+                {{resource['schema:name']}}
+              </div>
+              </div>
+            </div>
+
+            <hr />
+
+
           </div>
 
         </div>

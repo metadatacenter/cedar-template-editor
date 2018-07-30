@@ -3,7 +3,7 @@
     <div class="modal-header" id="publishModalHeader">
       <button type="button" class="close" ng-click="dc.publishModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" translate>DASHBOARD.publish.title</h4>
+      <h4 class="modal-title" translate>{{publish.titleText}}</h4>
     </div>
     <div class="modal-body">
 
@@ -46,10 +46,10 @@
     <div class="modal-footer actions">
       <div class="clear-save">
         <button
-            ng-click="dc.publishResource(publish.resource, publish.getVersionString());dc.publishModalVisible=false;"
+            ng-click="publish.callback(publish.resource, publish.getVersionString(), publish.buttonText);dc.publishModalVisible=false;"
             type="button"
             class="btn btn-save confirm" translate>
-          GENERIC.Publish
+          GENERIC.Ok
         </button>
       </div>
       <div class="clear-save">
