@@ -498,7 +498,7 @@
       </div>
 
       <!-- RIGHT SIDE -->
-      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.isInfoOpen()">
+      <div class="col-sm-3 row-offcanvas-right ng-cloak" id="sidebar-right" ng-if="dc.isInfoOpen()" >
 
         <div class="flex">
           <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
@@ -568,43 +568,41 @@
 
           <div class="info" ng-if="dc.getSelectedNode()">
             <div class="flex flex-wrap padding-top">
-              <div class="field-label" translate>Location</div>
+              <div class="field-label ng-cloak" translate>Location</div>
               <div>{{ dc.getSelectedNode().parentPath }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
-              <div class="field-label" translate>Owner</div>
+              <div class="field-label ng-cloak" translate>Owner</div>
               <div> {{ dc.getSelectedNode().ownedByUserName }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
-              <div class="field-label" translate>Created</div>
+              <div class="field-label ng-cloak" translate>Created</div>
               <div>{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
                 dc.getSelectedNode().createdByUserName }}
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
-              <div class="field-label" translate>Modified</div>
+              <div class="field-label ng-cloak" translate>Modified</div>
               <div>{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
                 {{ dc.getSelectedNode().lastUpdatedByUserName }}
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
-              <div class="field-label" translate>Permission</div>
+              <div class="field-label ng-cloak" translate>Permission</div>
               <div>
                 <span ng-if="dc.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
                 <span ng-if="dc.canWrite()" class="can-write ellipsis"><i class="fa fa-check"></i>write </span>
-                <span ng-if="dc.canChangeOwner()" class="can-change-owner ellipsis"><i class="fa fa-check"></i>change owner</span>
+                <span ng-if="dc.canChangeOwner()" class="can-change-owner ellipsis"><i class="fa fa-check"></i>edit owner</span>
               </div>
             </div>
 
             <div ng-if="dc.getDerivedFrom()">
-              <hr/>
-
               <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Derived From</div>
+                <div class="field-label ng-cloak" translate>Derived From</div>
                 <div>
                   <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getDerivedFrom()))"></i>
                   <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getResourceVersion(dc.getDerivedFrom()) }}</span>
@@ -612,22 +610,20 @@
               </div>
 
               <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Created</div>
+                <div class="field-label ng-cloak" translate>Created</div>
                 <div>{{ dc.getDerivedFrom()['pav:createdOn'] | prettyDate }}
                 </div>
               </div>
 
               <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Modified</div>
+                <div class="field-label ng-cloak" translate>Modified</div>
                 <div>{{ dc.getDerivedFrom()['pav:lastUpdatedOn'] | prettyDate }}
                 </div>
               </div>
-
             </div>
 
+            <!-- based on a copy? -->
             <div ng-if="dc.getBasedOn()">
-              <hr/>
-
               <div class="flex flex-wrap padding-top">
                 <div class="field-label" translate>Based On</div>
                 <div>
@@ -637,7 +633,7 @@
               </div>
 
               <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Created</div>
+                <div class="field-label ng-cloak" translate>Created</div>
                 <div>{{ dc.getBasedOn()['pav:createdOn'] | prettyDate }}
                 </div>
               </div>
@@ -647,7 +643,21 @@
                 <div>{{ dc.getBasedOn()['pav:lastUpdatedOn'] | prettyDate }}
                 </div>
               </div>
+            </div>
 
+            <!-- templates have instances -->
+            <div ng-if="dc.getNumberOfInstances()" class="instance-list">
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Instances</div>
+                <div class="field-value">{{ dc.getNumberOfInstances() }}</div>
+              </div>
+
+              <div  cedar-infinite-scroll load-more="" class="scrollable-content"
+                  style="margin-top:10px;overflow-y:scroll;border:1px solid #ccc;height:100px">
+              <div ng-repeat="(index, resource) in dc.hasInstanceResources" class="instance-item" style="padding:2px;" ng-click="dc.goToResource(resource,'open')">
+                {{resource['schema:name']}}
+              </div>
+              </div>
             </div>
 
             <div class="description flex-top " style="padding: 20px 0 0 0;" ng-if="dc.getSelectedNode()">
@@ -683,22 +693,7 @@
 
             </div>
 
-            <div ng-if="dc.getNumberOfInstances()">
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Instances</div>
-                <div>{{ dc.getNumberOfInstances() }}</div>
-              </div>
-
-              <div  cedar-infinite-scroll load-more="" class="scrollable-content"
-                  style="margin-top:10px;overflow:scroll;border:1px solid #ccc;height:100px">
-              <div ng-repeat="(index, resource) in dc.hasInstanceResources" style="padding:2px;">
-                {{resource['schema:name']}}
-              </div>
-              </div>
-            </div>
-
             <hr />
-
 
           </div>
 
