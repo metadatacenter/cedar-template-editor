@@ -59,19 +59,31 @@ define([
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function (modelValue, index) {
-        console.log('updateModelFromUIControlledField', modelValue, index);
         if (modelValue[index] && modelValue[index].termInfo) {
+          var termId = modelValue[index].termInfo['@id'];
+          var termLabel = modelValue[index].termInfo.label;
+          var termNotation;
+          // If 'notation' is there, use it. The 'notation' attribute is used in the CADSR-VS ontology to represent the
+          // value that needs to be stored, which is different from the value that is shown on the UI.
+          if (modelValue[index].termInfo.notation) {
+            termNotation = modelValue[index].termInfo.notation;
+          }
           // Array
           if (angular.isArray($scope.model)) {
-            $scope.model[index]['@id'] = modelValue[index].termInfo['@id'];
-            $scope.model[index]['rdfs:label'] = modelValue[index].termInfo.label;
+            $scope.model[index]['@id'] = termId;
+            $scope.model[index]['rdfs:label'] = termLabel;
+            if (termNotation) {
+              $scope.model[index]['skos:notation'] = termNotation;
+            }
           }
           // Single object
           else {
-            $scope.model['@id'] = modelValue[index].termInfo['@id'];
-            $scope.model['rdfs:label'] = modelValue[index].termInfo.label;
+            $scope.model['@id'] = termId;
+            $scope.model['rdfs:label'] = termLabel;
+            if (termNotation) {
+              $scope.model['skos:notation'] = termNotation;
+            }
           }
-
         }
         // Value is undefined
         else {
