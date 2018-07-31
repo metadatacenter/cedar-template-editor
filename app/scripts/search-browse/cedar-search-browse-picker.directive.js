@@ -1035,22 +1035,23 @@ define([
           function launchInstance(value) {
             var resource = value || getSelection();
             if (resource) {
-              var status = vm.getResourcePublicationStatus(resource);
               var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
-              if (status  == CONST.publication.DRAFT) {
-                UIMessageService.confirmedExecution(
-                    function () {
-                      console.log('confirmed');
-                      $location.url(url);
-                    },
-                    'GENERIC.AreYouSure',
-                    'This template is a draft.',
-                    'YES'
-                );
-              } else {
-                $location.url(url);
-              }
+              // TODO exceptionally painful for users if we turn this on
+              // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
+              //   UIMessageService.confirmedExecution(
+              //       function () {
+              //         $location.url(url);
+              //       },
+              //       'GENERIC.AreYouSure',
+              //       'This template is a draft.',
+              //       'YES'
+              //   );
+              // } else {
+              //   $location.url(url);
+              // }
+
+              $location.url(url);
             }
           }
 
