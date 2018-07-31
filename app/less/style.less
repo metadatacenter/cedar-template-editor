@@ -38,7 +38,7 @@
 //@latest: #8B0000;
 
 @draft: @dark-gray;
-@published: @dark-gray;
+@published: cadetblue;
 @latest: #444;
 
 @primary-accent: #cb6318;
@@ -898,6 +898,11 @@ button {
   //height: calc(~"100% - 55px");
   height: 100%;
 
+  // globe is the published icon
+  i.fa-globe {
+    color:@published;
+  }
+
   .center-panel {
     top: 0;
     right: 0;
@@ -1358,6 +1363,12 @@ button {
       font-size: smaller;
       padding: 0 5px 0 0;
       font-weight: normal;
+    }
+
+    .field-value {
+      i.fa-globe {
+        color:@published;
+      }
     }
 
     .description {
@@ -8169,6 +8180,9 @@ table.apiKey {
     }
     .field-value {
       overflow: auto;
+      &.published {
+        color:@published;
+      }
     }
     textarea.curlSample {
       width: 100%;

@@ -592,7 +592,7 @@
             <div ng-if="dc.getDerivedFrom()">
               <div class="flex flex-wrap padding-top">
                 <div class="field-label ng-cloak" translate>Derived From</div>
-                <div>
+                <div class="field-value">
                   <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getDerivedFrom()))"></i>
                   <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getResourceVersion(dc.getDerivedFrom()) }}</span>
                   {{ dc.getTitle(dc.getDerivedFrom()) }}</div>
