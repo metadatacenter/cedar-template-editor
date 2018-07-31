@@ -154,6 +154,10 @@
     "Draft": "Draft",
     "Latest": "Latest",
     "All": "All",
+    "Both": "Both",
+    "Status": "Status",
+    "Version": "Version",
+    "Publication": "Publication",
     "Field": "Field",
     "Publish": "Publish"
   },

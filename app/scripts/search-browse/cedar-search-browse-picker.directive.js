@@ -199,25 +199,26 @@ define([
           //  Publication  start
           //
 
-          vm.isToday = function(value) {
-            var today = new Date();
-            var v = new Date(value);
-            return today.getMonth() == v.getMonth() && today.getYear() == v.getYear() && today.getDay() == v.getDay();
-
-
-          };
-
           vm.filterDraft = function () {
-            return ((vm.getFilterStatus() == CONST.publication.DRAFT || vm.getFilterStatus() == CONST.publication.ALL));
+            return (vm.getFilterStatus() == CONST.publication.DRAFT) || (vm.getFilterStatus() == CONST.publication.ALL);
           };
 
           vm.filterPublished = function () {
-            return ((vm.getFilterStatus() == CONST.publication.PUBLISHED || vm.getFilterStatus() == CONST.publication.ALL));
+            return (vm.getFilterStatus() == CONST.publication.PUBLISHED) || (vm.getFilterStatus() == CONST.publication.ALL);
+          };
+
+          vm.filterBoth = function () {
+            return (vm.getFilterStatus() == CONST.publication.ALL);
           };
 
           vm.filterLatest = function () {
             return (vm.getFilterVersion() == CONST.publication.LATEST);
           };
+
+          vm.filterAll = function () {
+            return (vm.getFilterVersion() == CONST.publication.ALL);
+          };
+
 
           vm.setPublicationStatus = function (value) {
             vm.setResourcePublicationStatus(value);
@@ -232,30 +233,26 @@ define([
           };
 
           vm.setFilterPublished = function () {
-            switch (vm.getFilterStatus()) {
-              case CONST.publication.DRAFT:
-                vm.setResourcePublicationStatus(CONST.publication.ALL);
-                break;
-              case CONST.publication.PUBLISHED:
-                vm.setResourcePublicationStatus(CONST.publication.DRAFT);
-                break;
-              case CONST.publication.ALL:
-                vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
-                break;
-            }
+            vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
           };
 
           vm.setFilterDraft = function () {
-            switch (vm.getFilterStatus()) {
-              case CONST.publication.PUBLISHED:
-                vm.setResourcePublicationStatus(CONST.publication.ALL);
-                break;
-              case CONST.publication.DRAFT:
-                vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
-                break;
-              case CONST.publication.ALL:
-                vm.setResourcePublicationStatus(CONST.publication.DRAFT);
-                break;
+            vm.setResourcePublicationStatus(CONST.publication.DRAFT);
+          };
+
+          vm.toggleFilterPublished = function () {
+            if (vm.filterPublished()) {
+              vm.setResourcePublicationStatus(CONST.publication.DRAFT);
+            } else {
+              vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
+            }
+          };
+
+          vm.toggleFilterDraft = function () {
+            if (vm.filterDraft()) {
+              vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
+            } else {
+              vm.setResourcePublicationStatus(CONST.publication.DRAFT);
             }
           };
 
@@ -268,22 +265,30 @@ define([
           };
 
           vm.getDraftIcon = function () {
-            return 'fa-pencil-square';
+              return 'fa-check-circle';
+          };
+
+          vm.getBothIcon = function () {
+            return 'fa-check-circle';
+          };
+
+          vm.getAllIcon = function () {
+           return 'fa-check-circle';
           };
 
           vm.getPublishedIcon = function () {
-            return 'fa-check-square';
+            return 'fa-globe';
           };
 
           vm.getLatestIcon = function () {
-            return 'fa-clock-o';
+            return 'fa-check-circle';
           };
 
           vm.getVersionIcon = function(value) {
             switch (value) {
-              case CONST.publication.DRAFT:
-                return vm.getDraftIcon();
-                break;
+              // case CONST.publication.DRAFT:
+              //   return vm.getDraftIcon();
+              //   break;
               case CONST.publication.PUBLISHED:
                 return vm.getPublishedIcon();
                 break;
@@ -298,7 +303,7 @@ define([
           };
 
           vm.setFilterAll = function () {
-            vm.setResourceVersion(CONST.publication.LATEST);
+            vm.setResourceVersion(CONST.publication.ALL);
           };
 
           vm.toggleFilterLatest = function () {
@@ -313,14 +318,12 @@ define([
           };
 
           vm.setResourcePublicationStatus = function (value) {
-            //vm.resourcePublicationStatusFilterValue = value;
             CedarUser.setStatus(value);
             UISettingsService.saveStatus(value);
             init();
           };
 
           vm.setResourceVersion = function (value) {
-            //vm.resourceVersionFilterValue = value;
             CedarUser.setVersion(value);
             UISettingsService.saveVersion(value);
             init();

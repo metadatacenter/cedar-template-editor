@@ -37,7 +37,7 @@
 //@published: #000000;
 //@latest: #8B0000;
 
-@draft: @med-gray;
+@draft: @dark-gray;
 @published: @dark-gray;
 @latest: #444;
 
@@ -1441,39 +1441,47 @@ button {
 
       }
 
-      ul.filter-resource-version {
+      ul#filter-resource-version {
         li div {
           cursor: pointer;
           font-size: 14px;
           white-space: nowrap;
         }
-        li div.draft i {
-          color: @draft;
+        li div i {
           padding: 0;
           margin: 0 10px;
           border-width: 0;
           opacity: 0.2;
           font-size: 24px
         }
-        li div.published i {
-          color: @published;
-          padding: 0;
-          margin: 0 10px;
-          border-width: 0;
-          opacity: 0.8;
-          font-size: 24px
+        li div.draft {
+          &.active i {
+            color: @draft;
+            opacity: 1.0;
+          }
+          i {
+            color: @draft;
+          }
         }
-        li div.latest i {
-          color: @latest;
-          padding: 0;
-          margin: 0 10px;
-          border-width: 0;
-          opacity: 0.2;
-          font-size: 24px
+        li div.published {
+          &.active i {
+            color:@published;
+            opacity: 1.0;
+          }
+          i {
+            color:@published;
+          }
         }
-        li div.active i {
-          opacity: 1;
+        li div.latest {
+          &.active i {
+            color: @latest;
+            opacity: 1.0;
+          }
+          i {
+            color: @latest;
+          }
         }
+
 
       }
 

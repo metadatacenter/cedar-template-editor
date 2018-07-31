@@ -30,7 +30,6 @@
 
         </div>
 
-
         <div class="filter-options">
 
           <div class="shares">
@@ -108,37 +107,43 @@
 
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('version')">Version<i
-                  class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
+              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Publication' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <ul ng-if="dc.isFilterSection('version')" class="list-inline filter-resource-version ">
+                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>
+                <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">
                   <li>
-                    <div ng-click="dc.setFilterDraft()"
-                        class="draft no-select"
-                        ng-class="{ active: dc.filterDraft() }">
-                      <i class="btn fa" ng-class="dc.getDraftIcon()"></i>{{'GENERIC.Draft' | translate}}
+                    <div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">
+                      <i class="btn fa " ng-class="dc.getPublishedIcon()" ></i>{{'GENERIC.Published' |translate}}
                     </div>
                   </li>
                   <li>
-                    <div ng-click="dc.setFilterPublished()"
-                        class="published no-select"
-                        ng-class="{ active: dc.filterPublished() }">
-                      <i class="btn fa" ng-class="dc.getPublishedIcon()"></i>{{'GENERIC.Published' |
-                      translate}}
+                    <div ng-click="dc.setFilterDraft()" class="draft no-select" ng-class="{ active: dc.filterDraft()}">
+                      <i class="btn fa " ng-class="dc.getDraftIcon()" ></i>{{'GENERIC.Draft' |translate}}
                     </div>
                   </li>
                   <li>
-                    <div ng-click="dc.toggleFilterLatest()"
-                        class="latest no-select"
-                        ng-class="{ active: dc.filterLatest() }">
+                    <div ng-click="dc.setFilterBoth()" class="draft no-select" ng-class="{ active: dc.filterBoth()}">
+                      <i class="btn fa " ng-class="dc.getBothIcon()" ></i>{{'GENERIC.Both' |translate}}
+                    </div>
+                  </li>
+                </ul>
+
+                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Version' |translate}}</div>
+                <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  " >
+                  <li>
+                    <div ng-click="dc.setFilterLatest()" class="latest no-select" ng-class="{ active: dc.filterLatest() }">
                       <i class="btn fa " ng-class="dc.getLatestIcon()"></i>{{'GENERIC.Latest' | translate}}
+                    </div>
+                  </li>
+                  <li>
+                    <div ng-click="dc.setFilterAll()" class="latest no-select" ng-class="{ active: dc.filterAll() }">
+                      <i class="btn fa " ng-class="dc.getAllIcon()"></i>{{'GENERIC.All' | translate}}
                     </div>
                   </li>
                 </ul>
               </li>
-            </ul>
 
+            </ul>
 
           </div>
         </div>
@@ -290,7 +295,7 @@
                       ng-repeat="(index, resource) in dc.resources">
 
                     <div ng-click="dc.selectResource(resource)"
-                        ng-dblclick="dc.goToResource(resource)"
+                        ng-dblclick="dc.goToResource(resource,'populate')"
                         class="form-box">
 
                       <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
@@ -343,22 +348,21 @@
                   </div>
                 </div>
 
-                <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
-                    style="height:auto;position:relative">
+                <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto;position:relative">
 
                   <div class="box-title flex">
                     <div class="flex" style="width:100%;justify-content:space-between;">
-                      <cedar-resource-icon style="visibility:hidden"
-                          resource-type="resource.nodeType"></cedar-resource-icon>
-                      <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#"
-                          ng-click="dc.updateSort('name')">Title</a>
+                      <cedar-resource-icon style="visibility:hidden" resource-type="resource.nodeType"></cedar-resource-icon>
+                      <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#" ng-click="dc.updateSort('name')">Title</a>
                     </div>
 
-                    <a style="width:200px;" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
+                    <a class="ellipsis" style="width:100px;padding-right:10px;" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
                         ng-click="dc.updateSort('createdOnTS')">Created</a>
-                    <a style="width:200px;" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
+                    <a class="ellipsis" style="width:100px;padding-right:10px;" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
                         ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                    <div style="width:60px"></div>
+                    <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                    <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                    <div style="width:40px"></div>
 
                   </div>
 
@@ -379,18 +383,11 @@
                           dc.getTitle(resource)}}
                         </div>
                       </div>
-                      <div  class="ellipsis" style="width:200px;padding-right:10px;">{{  resource['pav:createdOn'] | prettyDate}}</div>
-                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
-                      <div class="flex" style="width:80px;justify-content:space-between;">
-
-                        <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
-                            uib-tooltip="{{dc.getResourceVersion(resource)}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="left"
-                            data-toggle="tooltip"
-                            ng-click="dc.createVersion(resource)"></i>
-
+                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{  resource['pav:createdOn'] | prettyDate}}</div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
+                      <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                      <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                      <div class="flex" style="width:40px;justify-content:flex-end;">
 
                         <button id="{{dc.getId(resource, 'list')}}" style="background-color:transparent;padding-right:15px;"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource )"
@@ -417,7 +414,6 @@
                             can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
                         </cedar-dropdown-menu>
 
-
                       </div>
                     </div>
                   </div>
@@ -427,30 +423,24 @@
                       dropdownId="{{getId(resource, 'list')}}"
                       ng-class="{ selected: dc.isResourceSelected(resource) }"
                       ng-click="dc.selectResource(resource)"
-                      ng-dblclick="dc.goToResource(resource)"
+                      ng-dblclick="dc.goToResource(resource,'populate')"
                       ng-repeat="(index, resource) in dc.resources">
 
                     <div class="outer flex">
                       <div class="flex ellipsis" style="justify-content:space-between">
-                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
-                        <div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
+                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon><div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
                       </div>
-                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:createdOn'] |
-                        prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{ resource['pav:createdOn'] | prettyDate }}
                       </div>
-                      <div class="ellipsis" style="width:200px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                        prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate }}
                       </div>
-                      <div class="flex" style="width:80px;justify-content:space-between;">
-
-                        <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
-                            uib-tooltip="{{dc.getResourceVersion(resource)}}"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="left"
-                            data-toggle="tooltip"
-                            ng-click="dc.createVersion(resource)"></i>
-
+                      <div ng-if="dc.filterPublished() && dc.filterLatest()" class="ellipsis"  style="width:40px;">
+                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i></div>
+                      </div>
+                      <div ng-if="dc.filterPublished() && !dc.filterLatest()" class="ellipsis"  style="width:100px;">
+                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i> {{dc.getResourceVersion(resource)}} </div>
+                      </div>
+                      <div class="flex" style="width:40px;justify-content:flex-end;">
                         <button id="{{dc.getId(resource, 'list')}}" title="More"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource)"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
@@ -536,8 +526,7 @@
 
             <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
             <div class="flex" >
-              <i class="padding-right action fa"
-                  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i>
+              <i class="padding-right action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i>
               <div class="padding-right" ng-class="{'latest-version': resource.isLatestVersion}"> {{resource['pav:version']}}</div>
               <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
             </div>

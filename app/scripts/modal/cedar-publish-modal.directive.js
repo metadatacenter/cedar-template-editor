@@ -85,6 +85,9 @@ define([
           vm.increment = function (index) {
             if (vm.parts && vm.parts.length > index) {
               vm.parts[index] = vm.parts[index] < 1000 ? vm.parts[index] + 1 : vm.parts[index];
+              for (var i=index+1; i<vm.parts.length; i++) {
+                vm.parts[i] = 0;
+              }
             }
           };
 
@@ -98,7 +101,6 @@ define([
           };
 
           vm.change = function (index, newValue, oldValue) {
-
             var value;
             if (isNaN(parseInt(newValue))) {
               value = parseInt(oldValue);
