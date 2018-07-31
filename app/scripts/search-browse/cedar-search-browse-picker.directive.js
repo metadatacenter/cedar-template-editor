@@ -473,7 +473,6 @@ define([
           };
 
           vm.canSubmit = function () {
-            console.log('canSubmit');
             return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "https://repo.metadatacenter.orgx/templates/81e3c19a-7237-4c4d-af78-dfe3eada047a";
           };
 
@@ -504,7 +503,6 @@ define([
                 id,
                 {sort: sort, limit: limit, offset: offset},
                 function (response) {
-                  console.log('hasMetadata', response);
                   vm.hasInstances = response.totalCount > 0;
                   vm.hasInstanceResources = response.resources;
                 },
