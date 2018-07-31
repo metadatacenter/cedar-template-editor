@@ -516,7 +516,7 @@
           <div class="element-toggle table-cell-style "
               ng-class="{active: dc.isVersionTab()}"
               ng-click="dc.setTab('resource-version');">
-            <span>Version</span>
+            <span>{{'GENERIC.Publication' |translate}}</span>
           </div>
         </div>
 
@@ -526,7 +526,7 @@
 
             <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
             <div class="flex" >
-              <i class="padding-right action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i>
+              <i ng-if="dc.isPublished(resource)" class="padding-right action fa" ng-class="dc.getPublishedIcon()"></i>
               <div class="padding-right" ng-class="{'latest-version': resource.isLatestVersion}"> {{resource['pav:version']}}</div>
               <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
             </div>
