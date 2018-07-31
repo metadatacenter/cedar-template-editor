@@ -385,9 +385,9 @@
       }
     },
     "sort": {
-      "name": "Name",
-      "createdOnTS": "Recently Created",
-      "lastUpdatedOnTS": "Recently Updated"
+      "name": "Title",
+      "createdOnTS": "Created",
+      "lastUpdatedOnTS": "Modified"
     },
     "back": "Your recent changes will be lost.",
     "rename": {
