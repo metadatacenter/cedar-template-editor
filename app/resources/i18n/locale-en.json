@@ -554,7 +554,8 @@
     "groupCanBeModifiedOnlyByGroupAdmin": "The group can be modified only by the administrators of the groups!",
     "groupCanBeDeletedOnlyByGroupAdmin": "The group can be deleted only by the administrators of the groups!",
     "specialGroupCanNotBeDeleted": "The special group <b>{{name}}</b> can not be deleted!",
-    "nothingToDo": "No change was requested!"
+    "nothingToDo": "No change was requested!",
+    "templateWithInstancesCanNotBeModified": "The template can not be modified because it has <b>{{count}}</b> instance(s)!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
