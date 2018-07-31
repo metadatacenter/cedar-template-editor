@@ -106,7 +106,6 @@ define([
           vm.isSelected = isSelected;
 
 
-
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
@@ -265,7 +264,7 @@ define([
           };
 
           vm.getDraftIcon = function () {
-              return 'fa-check-circle';
+            return 'fa-check-circle';
           };
 
           vm.getBothIcon = function () {
@@ -273,7 +272,7 @@ define([
           };
 
           vm.getAllIcon = function () {
-           return 'fa-check-circle';
+            return 'fa-check-circle';
           };
 
           vm.getPublishedIcon = function () {
@@ -284,11 +283,11 @@ define([
             return 'fa-check-circle';
           };
 
-          vm.getVersionIcon = function(value) {
+          vm.getVersionIcon = function (value) {
             switch (value) {
-              // case CONST.publication.DRAFT:
-              //   return vm.getDraftIcon();
-              //   break;
+                // case CONST.publication.DRAFT:
+                //   return vm.getDraftIcon();
+                //   break;
               case CONST.publication.PUBLISHED:
                 return vm.getPublishedIcon();
                 break;
@@ -333,21 +332,21 @@ define([
           //  publication end
           //
 
-          vm.titleLocation = function() {
+          vm.titleLocation = function () {
             return DataManipulationService.titleLocation();
           };
 
-          vm.descriptionLocation = function() {
+          vm.descriptionLocation = function () {
             return DataManipulationService.descriptionLocation();
           };
 
-          vm.getTitle = function(node) {
+          vm.getTitle = function (node) {
             if (node) {
               return DataManipulationService.getTitle(node);
             }
           };
 
-          vm.getDescription = function(node) {
+          vm.getDescription = function (node) {
             if (node) {
               return DataManipulationService.getDescription(node);
             }
@@ -380,7 +379,7 @@ define([
               var rowRect = row.getBoundingClientRect();
 
               menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
-              menu.style.setProperty("top", ($event.pageY - centerRect.top  + centerScrollTop  ) + "px");
+              menu.style.setProperty("top", ($event.pageY - centerRect.top + centerScrollTop  ) + "px");
             }
           };
 
@@ -505,7 +504,7 @@ define([
                 id,
                 {sort: sort, limit: limit, offset: offset},
                 function (response) {
-                  console.log('hasMetadata',response);
+                  console.log('hasMetadata', response);
                   vm.hasInstances = response.totalCount > 0;
                   vm.hasInstanceResources = response.resources;
                 },
@@ -514,7 +513,6 @@ define([
                 }
             );
           };
-
 
 
           // toggle the info panel with this resource or find one
@@ -1034,14 +1032,26 @@ define([
             );
           }
 
-          function launchInstance(resource) {
+          function launchInstance(value) {
+            var resource = value || getSelection();
+            if (resource) {
+              var status = vm.getResourcePublicationStatus(resource);
+              var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
-            if (!resource) {
-              resource = getSelection();
+              if (status  == CONST.publication.DRAFT) {
+                UIMessageService.confirmedExecution(
+                    function () {
+                      console.log('confirmed');
+                      $location.url(url);
+                    },
+                    'GENERIC.AreYouSure',
+                    'This template is a draft.',
+                    'YES'
+                );
+              } else {
+                $location.url(url);
+              }
             }
-
-            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-            $location.url(url);
           }
 
 
@@ -1241,7 +1251,7 @@ define([
 
           function isSelected(node) {
             if (hasSelection() && node) {
-              return  (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
+              return (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
             }
           }
 
@@ -1497,7 +1507,6 @@ define([
             UISettingsService.saveResourceType(type, vm.resourceTypes[type]);
             init();
           }
-
 
 
           /**
@@ -1827,22 +1836,22 @@ define([
 
           vm.search = function (searchTerm) {
 
-              vm.searchTerm = searchTerm;
-              var baseUrl = '/dashboard';
-              var queryParams = {};
-              var folderId = QueryParamUtilsService.getFolderId();
-              if (folderId) {
-                queryParams['folderId'] = folderId;
-              }
-              queryParams['search'] = searchTerm;
-              // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
-              // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
-              queryParams['t'] = Date.now();
-              var url = $rootScope.util.buildUrl(baseUrl, queryParams);
-              $location.url(url);
-              if (searchTerm) {
-                UIProgressService.start();
-              }
+            vm.searchTerm = searchTerm;
+            var baseUrl = '/dashboard';
+            var queryParams = {};
+            var folderId = QueryParamUtilsService.getFolderId();
+            if (folderId) {
+              queryParams['folderId'] = folderId;
+            }
+            queryParams['search'] = searchTerm;
+            // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+            // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+            queryParams['t'] = Date.now();
+            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            $location.url(url);
+            if (searchTerm) {
+              UIProgressService.start();
+            }
 
           };
 
