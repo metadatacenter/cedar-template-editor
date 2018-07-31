@@ -108,6 +108,10 @@ define([
       service.saveUIPreference('infoPanel.opened', prefValue);
     };
 
+    service.saveInfoTab = function(prefValue) {
+      service.saveUIPreference('infoPanel.activeTab', prefValue);
+    };
+
     service.saveResourceType = function(type, prefValue) {
       service.saveUIPreference('resourceTypeFilters.' + type, prefValue);
     };
@@ -126,6 +130,14 @@ define([
 
     service.saveSortByUpdated = function() {
       service.saveUIPreference('folderView.sortBy', 'lastUpdatedOnTS');
+    };
+
+    service.saveStatus = function(prefValue) {
+      service.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', prefValue);
+    };
+
+    service.saveVersion = function(prefValue) {
+      service.saveUIPreference('resourceVersionFilter.version', prefValue);
     };
 
     return service;

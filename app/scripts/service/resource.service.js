@@ -25,6 +25,7 @@ define([
           deleteFolder             : deleteFolder,
           deleteResource           : deleteResource,
           getFacets                : getFacets,
+          getResourceReport        : getResourceReport,
           getResourceDetail        : getResourceDetail,
           getResourceDetailFromId  : getResourceDetailFromId,
           getResources             : getResources,
@@ -279,6 +280,35 @@ define([
               break;
             case CONST.resourceType.INSTANCE:
               url = urlService.getTemplateInstance(id) + '/details';
+              break;
+          }
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function getResourceReport(resource, successCallback, errorCallback) {
+          var url;
+          var id = resource['@id'];
+          switch (resource.nodeType) {
+            case CONST.resourceType.FOLDER:
+              url = urlService.folders() + '/' + encodeURIComponent(id);
+              break;
+            case CONST.resourceType.ELEMENT:
+              url = urlService.getTemplateElement(id) + '/report';
+              break;
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id) + '/report';
+              break;
+            case CONST.resourceType.TEMPLATE:
+              url = urlService.getTemplate(id) + '/report';
+              break;
+            case CONST.resourceType.INSTANCE:
+              url = urlService.getTemplateInstance(id) + '/report';
               break;
           }
           authorizedBackendService.doCall(

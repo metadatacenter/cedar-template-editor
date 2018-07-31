@@ -1,23 +1,23 @@
 'use strict';
 
 define([
-  'angular','flow'
+  'angular', 'flow'
 ], function (angular, flow) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "TemplateService", "resourceService","TemplateInstanceService",
+                                      "HeaderService", "TemplateService", "resourceService", "TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
                                       "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
                                       "ValueRecommenderService", "UIUtilService", "DataManipulationService",
                                       "CedarUser"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
-                                    HeaderService, TemplateService, resourceService,TemplateInstanceService,
+                                    HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
-                                    ValueRecommenderService, UIUtilService, DataManipulationService,CedarUser) {
+                                    ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -76,16 +76,16 @@ define([
         DataManipulationService.stripTmps(copiedForm);
       }
 
-        UIUtilService.toRDF();
-        $scope.RDF = UIUtilService.getRDF();
-        $scope.RDFError = UIUtilService.getRDFError();
-        return copiedForm;
+      UIUtilService.toRDF();
+      $scope.RDF = UIUtilService.getRDF();
+      $scope.RDFError = UIUtilService.getRDFError();
+      return copiedForm;
     };
 
 
     $scope.canWrite = function () {
       var result = !$scope.details || resourceService.canWrite($scope.details);
-      $scope.cannotWrite  =!result;
+      $scope.cannotWrite = !result;
       return result;
     };
 
@@ -120,7 +120,7 @@ define([
               UIUtilService.logValidation(status, json);
 
               $timeout(function () {
-                $rootScope.$broadcast("form:validation", { state: status });
+                $rootScope.$broadcast("form:validation", {state: status});
               });
 
             },
@@ -170,7 +170,31 @@ define([
 
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
- 
+
+      var doSave = function (response) {
+        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+        // Reload page with element id
+        var newId = response.data['@id'];
+        $location.path(FrontendUrlService.getInstanceEdit(newId));
+        $rootScope.$broadcast("form:clean");
+        $rootScope.$broadcast("form:validation", {state: true});
+
+        $timeout(function () {
+          // don't show validation errors until after any redraws are done
+          // thus, call this within a timeout
+          $rootScope.$broadcast('submitForm');
+        }, 1000);
+
+      };
+
+      var doUpdate = function (response) {
+        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+        $rootScope.$broadcast("form:clean");
+        $rootScope.$broadcast('submitForm');
+      };
+
       this.disableSaveButton();
       var owner = this;
 
@@ -190,23 +214,10 @@ define([
                 "GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(
-            TemplateInstanceService.saveTemplateInstance((QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
+            TemplateInstanceService.saveTemplateInstance(
+                (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
-
-              UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-              UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
-              // Reload page with element id
-              var newId = response.data['@id'];
-              $location.path(FrontendUrlService.getInstanceEdit(newId));
-              $rootScope.$broadcast("form:clean");
-              $rootScope.$broadcast("form:validation", {state: true});
-
-              $timeout(function () {
-                // don't show validation errors until after any redraws are done
-                // thus, call this within a timeout
-                $rootScope.$broadcast('submitForm');
-              }, 1000);
-
+              doSave(response);
             },
             function (err) {
 
@@ -215,23 +226,8 @@ define([
                     TemplateInstanceService.saveTemplateInstance(CedarUser.getHomeFolderId(), $scope.instance),
                     function (response) {
 
-                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-                      UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
-
-                      // tell user where you put the instance
+                      doSave(response);
                       UIMessageService.flashWarning('SERVER.INSTANCE.create.homeFolder');
-
-                      // Reload page with element id
-                      var newId = response.data['@id'];
-                      $location.path(FrontendUrlService.getInstanceEdit(newId));
-                      $rootScope.$broadcast("form:clean");
-                      $rootScope.$broadcast("form:validation", {state: true});
-
-                      $timeout(function () {
-                        // don't show validation errors until after any redraws are done
-                        // thus, call this within a timeout
-                        $rootScope.$broadcast('submitForm');
-                      }, 1000);
 
                     },
                     function (err) {
@@ -242,24 +238,17 @@ define([
 
               } else {
                 UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+                owner.enableSaveButton();
               }
-              owner.enableSaveButton();
             }
         );
       }
       // Update instance
-      //else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
       else {
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
-
-              UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-              UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-              owner.enableSaveButton();
-              $rootScope.$broadcast("form:clean");
-              $rootScope.$broadcast('submitForm');
+              doUpdate(response);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
@@ -372,7 +361,6 @@ define([
         $scope.$broadcast('external-validation', [type]);
       }
     };
-
 
 
     // // open the airr submission modal

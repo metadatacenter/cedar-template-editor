@@ -17,11 +17,13 @@ define([
     'UIMessageService',
     'UIProgressService',
     'UIUtilService',
-    'CedarUser'
+    'CedarUser',
+    'FrontendUrlService',
+    'MessagingService'
   ];
 
   function HeaderController($rootScope, $location, $window, $timeout, $document, $translate,QueryParamUtilsService,
-                            UIMessageService, UIProgressService, UIUtilService,CedarUser) {
+                            UIMessageService, UIProgressService, UIUtilService,CedarUser, FrontendUrlService,MessagingService) {
 
     var vm = this;
 
@@ -57,7 +59,7 @@ define([
     };
 
     vm.confirmBack = function () {
-      if (UIUtilService.isLocked() || !UIUtilService.isDirty() || !UIUtilService.isValid()) {
+      if (UIUtilService.isLocked() || !UIUtilService.isDirty()) {
         vm.goToDashboardOrBack();
       } else {
 
@@ -90,7 +92,7 @@ define([
         if (sharing) {
           queryParams['sharing'] = sharing;
         }
-        var folderId = QueryParamUtilsService.getFolderId();
+        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
         if (folderId) {
           queryParams['folderId'] = folderId;
         }
@@ -149,6 +151,54 @@ define([
         $location.url(url);
         if (searchTerm) {
           UIProgressService.start();
+        }
+      }
+    };
+
+    vm.openMessaging = function() {
+      $location.url(FrontendUrlService.getMessaging(QueryParamUtilsService.getFolderId()));
+    };
+
+    vm.hasUnreadMessages = function() {
+      return MessagingService.unreadCount > 0;
+    };
+
+    vm.getUnreadMessageCount = function() {
+      return Math.min(MessagingService.unreadCount, 9);
+    };
+
+
+
+    vm.toggleUserMenuDropdown = function() {
+
+      var menuDropdown = document.getElementById('user-menu-dropdown');
+      var menuUser = document.getElementById('user-menu-dropdown-trigger');
+
+      if (menuDropdown && menuUser ) {
+        if (menuDropdown.style.display == "block") {
+
+          menuDropdown.style.setProperty("display", "none");
+          $window.onclick = null;
+          //$scope.$apply();
+
+        } else {
+
+          menuDropdown.style.setProperty("display", "block");
+          var menuRect = menuUser.getBoundingClientRect();
+          var dropdownRect = menuDropdown.getBoundingClientRect();
+          menuDropdown.style.setProperty("left", (menuRect.x  - dropdownRect.width) + "px");
+          menuDropdown.style.setProperty("top", (menuRect.y + menuRect.height) + "px");
+
+          $window.onclick = function (event) {
+
+            // make sure we are hitting something else
+            if (event.target.id != 'user-menu-dropdown' && event.target.id != 'user-menu-dropdown-trigger' ) {
+
+              menuDropdown.style.setProperty("display", "none");
+              $window.onclick = null;
+              //$scope.$apply();
+            }
+          };
         }
       }
     };

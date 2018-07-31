@@ -1,18 +1,21 @@
 
 <ul ng-cloak class="dropdown" on-toggle="toggled(open)" >
-  <li><a  href="#" class="open" ng-click="goTo(resource)">Open</a></li>
-  <li ng-if="!canNotPopulate"><a  class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Populate</a></li>
+  <li ng-if="!canNotPopulate"><a  class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Open</a></li>
+  <li><a  href="#" class="open" ng-click="goTo(resource)">Edit</a></li>
   <li role="separator" class="divider"></li>
   <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="share(resource)">Share...</a></li>
   <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="copy(resource)">Copy to...</a></li>
   <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)">Move to...</a></li>
   <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)">Rename...</a></li>
-  <li  role="separator" class="divider"></li>
-  <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publish(resource)">Publish</a></li>
-  <li ng-if="!canNotCreateDraft"><a class="createDraft" ng-class="{'link-disabled': canNotCreateDraft}"  href="#" ng-click="createDraft(resource)">Create Draft</a></li>
   <li ng-if="!canNotPublish || !canNotCreateDraft" role="separator" class="divider"></li>
-  <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotWrite}"  href="#"  ng-click="delete(resource)">Delete </a></li>
+  <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(resource, publishCallback, 'Publish')">Publish</a></li>
+  <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="publishModal(resource, draftCallback, 'Create Draft')">Create Draft</a></li>
+  <li  role="separator" class="divider"></li>
+  <li ><a ng-cloak class="submit"   href="#"  ng-click="submit(resource)">Submit </a></li>
+  <li ng-if="!canNotDelete && !canNotWrite" role="separator" class="divider"></li>
+  <li ng-if="!canNotDelete && !canNotWrite"><a ng-cloak class="delete"  href="#"  ng-click="delete(resource)">Delete </a></li>
 </ul>
+
 
 
 

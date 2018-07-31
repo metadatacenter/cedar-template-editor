@@ -1,150 +1,8 @@
-
 <!--all items view -->
 <section class="all-items-view " ng-class="{'as-modal': !dc.onDashboard()}">
 
-  <div class="controls-bar clearfix row-fluid navbar-fixed-top " style="background:#2a2a2a" ng-class="{'as-modal': !dc.onDashboard()}">
-
-  <div class="col-sm-2"></div>
-  <div class="col-sm-7">
-
-    <div class="breadcrumbs-sb ">
-      <p ng-if="dc.isSearching">
-        <span class="search-result">
-            <span ng-class="{'no-search-results':dc.searchTerm}">
-              <span>{{dc.breadcrumbTitle}}</span>
-            </span>
-          </span>
-      </p>
-
-      <p ng-if="!dc.isSearching">
-            <span class="folder-path" ng-repeat="folder in dc.pathInfo">
-              <a ng-click="dc.goToFolder(folder['@id'])"
-                  class="breadcrumbs">{{dc.breadcrumbName(folder['schema:name'])}}</a> /
-            </span>
-        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath['schema:name'])}}</a>
-
-      </p>
-    </div>
-
-    </div>
-    <div class="col-sm-3">
-
-      <div class="  pull-right no-wrap" id="workspace-toolbar">
-        <ul class="list-inline">
-
-          <li id="messaging">
-            <button class="inline" uib-tooltip='{{"HELP.message" | translate}}' tooltip-placement="bottom" type="button"
-                ng-click="dc.openMessaging()"><i class="fa fa-bell inline"></i></button>
-            <div id="messaging-number" ng-show="dc.hasUnreadMessages()">
-              <button type="button"
-                  uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
-                  tooltip-placement="bottom"
-                  ng-click="dc.openMessaging()">{{dc.getUnreadMessageCount()}}<span class="plus">+</span>
-              </button>
-            </div>
-          </li>
-
-          <li ng-if="dc.onDashboard()" class="repoSubmission">
-            <button type="button"
-                ng-disabled="!dc.canSubmit()"
-                uib-tooltip='{{"HELP.repoSubmission" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="bottom"
-                data-toggle="tooltip"
-                ng-click="dc.showFlowModal()"><i class="fa fa-upload"></i></button>
-          </li>
-
-          <li ng-if="dc.onDashboard() " class="more-options">
-            <div class="btn-group dropdown">
-              <button class="{'disabled': !dc.hasSelection()}"
-                  ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                  class="fa fa-ellipsis-v  inline "></i></button>
-
-              <cedar-dropdown-menu class="dropdown-menu dropdown-menu-right" resource="selectedResource"
-                  go-to="dc.goToResource"
-                  share="dc.showShareModal"
-                  move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
-                  publish="dc.publishResource" create-draft="dc.createDraftResource"
-                  can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                  can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                  can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-              </cedar-dropdown-menu>
-
-            </div>
-          </li>
-
-          <li ng-show="dc.onDashboard()" id="grid-view-tool">
-            <button type="button"
-                uib-tooltip='{{"HELP.viewAsList" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="bottom"
-                data-toggle="tooltip"
-                ng-click="dc.toggleView()">
-              <i class="inline fa "
-                  ng-class="{'fa-list-ul': dc.isGridView(), 'fa-th': dc.isListView()}"></i>
-            </button>
-          </li>
-
-
-          <li ng-if="dc.onDashboard()" class="toggleDetails"
-              ng-class="{'hidePanel':dc.isInfoOpen(), 'showPanel':!dc.isInfoOpen()}">
-            <button type="button"
-                uib-tooltip="{{ dc.toggleDirection() | translate  }}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="bottom"
-                data-toggle="tooltip"
-                ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
-          </li>
-
-
-          <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
-            <div class="btn-group dropdown">
-              <button type="button"
-                  uib-tooltip='{{"HELP.sortBy" | translate}}'
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="bottom"
-                  data-toggle="tooltip"><i class="fa fa-sort-amount-asc "></i></button>
-              <button class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                  class="fa fa-caret-down  "></i></button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li><a class="sortName" ng-click="dc.setSortByName()"><i class="fa fa-check"
-                    ng-class="dc.sortName()"></i><span
-                    translate="DASHBOARD.sort.name"></span></a></li>
-                <li><a class="sortCreated" ng-click="dc.setSortByCreated()"><i class="fa fa-check"
-                    ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                <li><a class="sortUpdated" ng-click="dc.setSortByUpdated()"><i class="fa fa-check"
-                    ng-class="dc.sortUpdated()"></i><span
-                    translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <li ng-if="dc.onDashboard()" id="user-tool">
-            <div class="btn-group dropdown">
-              <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                  class="fa fa-user inline "></i></button>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li id="user-profile-tool"><a href="/profile">Profile</a></li>
-                <li id="user-help"><a target="_blank" href="http://metadatacenter.org/tools-training/support">Help</a>
-                </li>
-                <li id="user-about"><a target="_blank"
-                    href="http://metadatacenter.org/tools-training/orientation">About</a></li>
-                <li id="user-privacy"><a href="/privacy">Privacy</a></li>
-                <li id="user-logout-tool"><a href="/logout">Logout</a></li>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-    </div>
+  <div class="controls-bar clearfix    navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}">
   </div>
-
 
   <!-- container -->
   <div class="container-fluid">
@@ -152,6 +10,25 @@
 
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
+
+        <div class="compose-options add-new">
+
+          <div class="btn-group dropdown" style="background-color: red;opacity:1">
+            <button type="button"
+                id="button-create"
+                class="btn btn-save template"
+                class="{'disabled': !dc.canWriteToCurrentFolder()}" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true">New <i
+                class="fa fa-plus template"></i></button>
+            <ul class="dropdown-menu ">
+              <li><a ng-click="dc.showNewFolderModal()">Folder</a></li>
+              <li><a ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+              <li><a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+              <li><a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+            </ul>
+          </div>
+
+        </div>
 
         <div class="filter-options">
 
@@ -164,7 +41,8 @@
 
           <div class="clearfix reset-text">
             <div class="pull-left " translate>DASHBOARD.filter.filterBy</div>
-            <div class="pull-right" ng-show="dc.resetFiltersEnabled()"><a href="#" ng-click="dc.resetFilters()" translate>DASHBOARD.filter.reset</a></div>
+            <div class="pull-right" ng-show="dc.resetFiltersEnabled()"><a href="#" ng-click="dc.resetFilters()"
+                translate>DASHBOARD.filter.reset</a></div>
           </div>
 
           <div>
@@ -184,535 +62,639 @@
 
                 <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
-                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
-                        uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        ng-click="dc.toggleResourceType('template')"
-                        class="template"
-                        ng-class="{ deselected: !dc.isResourceTypeActive('template'), selected: dc.isResourceTypeActive('template')}">
-                        </cedar-resource-icon>
+                  <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
+                      uib-tooltip="{{'GENERIC.Template' | translate}}"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      ng-click="dc.toggleResourceType('template')"
+                      class="template"
+                      ng-class="{ deselected: !dc.isResourceTypeActive('template'), selected: dc.isResourceTypeActive('template')}">
+                  </cedar-resource-icon>
 
-                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
-                        uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        ng-click="dc.toggleResourceType('element')"
-                        class="element"
-                        ng-class="{ deselected: !dc.isResourceTypeActive('element'), selected: dc.isResourceTypeActive('element') }"></cedar-resource-icon>
+                  <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
+                      uib-tooltip="{{'GENERIC.Element' | translate}}"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      ng-click="dc.toggleResourceType('element')"
+                      class="element"
+                      ng-class="{ deselected: !dc.isResourceTypeActive('element'), selected: dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
-                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
-                        uib-tooltip="{{dc.showOrHide('field')}} {{'GENERIC.Field' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        ng-click="dc.toggleResourceType('field')"
-                        class="field"
-                        ng-class="{ deselected: !dc.isResourceTypeActive('field'), selected: dc.isResourceTypeActive('field') }"></cedar-resource-icon>
+                  <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
+                      uib-tooltip="{{'GENERIC.Field' | translate}}"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      ng-click="dc.toggleResourceType('field')"
+                      class="field"
+                      ng-class="{ deselected: !dc.isResourceTypeActive('field'), selected: dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
-                    <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
-                        uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        ng-click="dc.toggleResourceType('instance')"
-                        class="metadata"
-                        ng-class="{ deselected: !dc.isResourceTypeActive('instance'), selected: dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
+                  <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
+                      uib-tooltip="{{'GENERIC.Metadata' | translate}}"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      ng-click="dc.toggleResourceType('instance')"
+                      class="metadata"
+                      ng-class="{ deselected: !dc.isResourceTypeActive('instance'), selected: dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
 
                 </div>
 
               </li>
 
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('publicationStatus')">Publication
-                Status<i class="fa pull-right"
-                    ng-class="{ 'fa-caret-down': dc.isFilterSection('publicationStatus'), 'fa-caret-left': !dc.isFilterSection('publicationStatus') }"></i></a>
+              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Publication' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <ul ng-if="dc.isFilterSection('publicationStatus')" class="list-inline ">
+                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>
+                <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">
                   <li>
-                    <button uib-tooltip="{{'GENERIC.Published' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="template"
-                        ng-click="dc.setResourcePublicationStatus('bibo:published')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:published') }"></i></button>
+                    <div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">
+                      <i class="btn fa " ng-class="dc.getPublishedIcon()" ></i>{{'GENERIC.Published' |translate}}
+                    </div>
                   </li>
                   <li>
-                    <button uib-tooltip="{{'GENERIC.Draft' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="element"
-                        ng-click="dc.setResourcePublicationStatus('bibo:draft')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-sitemap element"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('bibo:draft') }"></i></button>
+                    <div ng-click="dc.setFilterDraft()" class="draft no-select" ng-class="{ active: dc.filterDraft()}">
+                      <i class="btn fa " ng-class="dc.getDraftIcon()" ></i>{{'GENERIC.Draft' |translate}}
+                    </div>
                   </li>
                   <li>
-                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="metadata"
-                        ng-click="dc.setResourcePublicationStatus('all')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
-                        ng-class="{ active: dc.isResourcePublicationStatusActive('all') }"></i></button>
+                    <div ng-click="dc.setFilterBoth()" class="draft no-select" ng-class="{ active: dc.filterBoth()}">
+                      <i class="btn fa " ng-class="dc.getBothIcon()" ></i>{{'GENERIC.Both' |translate}}
+                    </div>
+                  </li>
+                </ul>
+
+                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Version' |translate}}</div>
+                <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  " >
+                  <li>
+                    <div ng-click="dc.setFilterLatest()" class="latest no-select" ng-class="{ active: dc.filterLatest() }">
+                      <i class="btn fa " ng-class="dc.getLatestIcon()"></i>{{'GENERIC.Latest' | translate}}
+                    </div>
+                  </li>
+                  <li>
+                    <div ng-click="dc.setFilterAll()" class="latest no-select" ng-class="{ active: dc.filterAll() }">
+                      <i class="btn fa " ng-class="dc.getAllIcon()"></i>{{'GENERIC.All' | translate}}
+                    </div>
                   </li>
                 </ul>
               </li>
 
-              <li ng-if="dc.versioningEnabled()"><a href="#" ng-click="dc.toggleFilters('version')">Version<i
-                  class="fa pull-right"
-                  ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
-
-                <ul ng-if="dc.isFilterSection('version')" class="list-inline ">
-                  <li>
-                    <button uib-tooltip="{{'GENERIC.Latest' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="template"
-                        ng-click="dc.setResourceVersion('latest')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourceVersionActive('latest') }"></i></button>
-                  </li>
-                  <li>
-                    <button uib-tooltip="{{'GENERIC.All' | translate}}"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        class="metadata"
-                        ng-click="dc.setResourceVersion('all')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-tag metadata"
-                        ng-class="{ active: dc.isResourceVersionActive('all') }"></i></button>
-                  </li>
-                </ul>
-              </li>
             </ul>
+
           </div>
         </div>
       </div>
       <!-- END LEFT SIDE -->
 
       <!-- center panel -->
-      <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"
-          ng-class="{ 'col-sm-7': dc.isInfoOpen() , 'without-info': !dc.isInfoOpen()}" id="center-panel">
-        <div style="height:auto;" ng-class="{ 'extraRight': !dc.isInfoOpen()}">
+      <div class="center-panel" ng-class="{ 'col-sm-7': dc.isInfoOpen() , 'col-sm-10': !dc.isInfoOpen()}"
+          id="center-panel">
 
-          <div class="no-selection" ng-if="!dc.hasResources()">
+        <div class="row">
+          <div class="col-xs-7">
+            <div class="breadcrumbs-sb ">
+              <p ng-if="dc.isSearching">
+        <span class="search-result">
+            <span ng-class="{'no-search-results':dc.searchTerm}">
+              <span>{{dc.breadcrumbTitle}}</span>
+            </span>
+          </span>
+              </p>
+
+              <p ng-if="!dc.isSearching">
+            <span class="folder-path" ng-repeat="folder in dc.pathInfo">
+              <a ng-click="dc.goToFolder(folder['@id'])"
+                  class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(folder))}}</a> /
+            </span>
+                <a class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(dc.currentPath))}}</a>
+
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-5">
+            <ul class="list-inline pull-right" style="white-space: nowrap;">
+
+              <li ng-show="dc.onDashboard()" id="grid-view-tool">
+                <button type="button"
+                    uib-tooltip='{{"View" | translate}}'
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="dc.toggleView()">
+                  <i class="inline fa "
+                      ng-class="{'fa-list-ul': dc.isGridView(), 'fa-th': dc.isListView()}"></i>
+                </button>
+              </li>
+
+              <li ng-if="dc.onDashboard()" class="toggleDetails" id="show-details"
+                  ng-class="{'hidePanel':dc.isInfoOpen(), 'showPanel':!dc.isInfoOpen()}">
+                <button type="button"
+                    uib-tooltip="{{ 'Details' | translate  }}"
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
+              </li>
+
+              <li ng-if="dc.onDashboard()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <div class="btn-group dropdown">
+                  <button type="button" class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                  ><i class="fa fa-sort-amount-asc "></i></button>
+                  <!--<button class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i-->
+                  <!--class="fa fa-caret-down  "></i></button>-->
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a class="sortName" ng-click="dc.setSortByName()"><i class="fa fa-check"
+                        ng-class="dc.sortName()"></i><span
+                        translate="DASHBOARD.sort.name"></span></a></li>
+                    <li><a class="sortCreated" ng-click="dc.setSortByCreated()"><i class="fa fa-check"
+                        ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
+                    <li><a class="sortUpdated" ng-click="dc.setSortByUpdated()"><i class="fa fa-check"
+                        ng-class="dc.sortUpdated()"></i><span
+                        translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+        <div id="workspace-view-container" cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content"
+            style="padding-top:0;overflow:scroll">
+          <div style="height:auto;">
+
+            <div class="no-selection" ng-if="!dc.hasResources()">
+              <div class="row no-file">
+                <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+              </div>
+              <div class="row no-message">
+                <div class="col-sm-12 center" translate>Nothing found</div>
+              </div>
+            </div>
+
+            <div ng-if="dc.hasResources()">
+              <div class=" populate-form-boxes">
+                <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
+
+                  <!-- show the folders first -->
+                  <div ng-if="dc.isFolder(resource)"
+                      class="form-box-container folder"
+                      ng-class="{ selected: dc.isResourceSelected(resource) }"
+                      ng-repeat="(index, resource) in dc.resources">
+
+                    <div dropdownId="{{getId(resource, 'populate')}}"
+                        ng-click="dc.selectResource(resource)"
+                        ng-dblclick="dc.goToResource(resource)"
+                        class="form-box  ">
+                      <div class="box-content text-center folder">
+                        <div class="folderIconContainer">
+                          <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
+                        </div>
+                        <div class="folderTitle">{{ dc.getTitle(resource) }}</div>
+
+                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}"
+                            append-to-body="true">
+                          <button style="display:none" title="More" append-to-body="true"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                              class="fa fa-ellipsis-v"></i>
+                          </button>
+
+                          <cedar-dropdown-menu style="flex-grow: 1" append-to-body="true" class="dropdown-menu "
+                              aria-labelledby="{{getId(resource, 'populate')}}"
+                              resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                              move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
+                              copy="dc.showCopyModal" rename="dc.showRenameModal"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
+                              can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                              can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                              can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
+                          </cedar-dropdown-menu>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
+
+
+                  <div ng-if="!dc.isFolder(resource)"
+                      class="form-box-container"
+                      ng-class="{ selected: dc.isResourceSelected(resource) }"
+                      ng-repeat="(index, resource) in dc.resources">
+
+                    <div ng-click="dc.selectResource(resource)"
+                        ng-dblclick="dc.goToResource(resource,'populate')"
+                        class="form-box">
+
+                      <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
+                        <div class="toolbar-right">
+                          <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
+                              uib-tooltip="{{dc.getResourceVersion(resource)}}"
+                              tooltip-trigger
+                              tooltip-animation="false"
+                              tooltip-placement="left"
+                              data-toggle="tooltip"></i>
+
+                          <button title="More"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="action fa fa-ellipsis-v"></i>
+                          </button>
+
+                          <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                              resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                              move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                              rename="dc.showRenameModal"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
+                              can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                              can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                              can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
+                          </cedar-dropdown-menu>
+                        </div>
+
+
+                        <div class="resource"><i class="fa" ng-class="dc.getResourceIconClass(resource)"></i></div>
+                        <div class="title">{{ dc.getTitle(resource) }}</div>
+                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
+                          <button style="display:none" title="More"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                              class="fa fa-ellipsis-v"></i>
+                          </button>
+
+                          <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                              resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                              move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                              rename="dc.showRenameModal"
+                              publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
+                              can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                              can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                              can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                          </cedar-dropdown-menu>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0" style="height:auto;position:relative">
+
+                  <div class="box-title flex">
+                    <div class="flex" style="width:100%;justify-content:space-between;">
+                      <cedar-resource-icon style="visibility:hidden" resource-type="resource.nodeType"></cedar-resource-icon>
+                      <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#" ng-click="dc.updateSort('name')">Title</a>
+                    </div>
+
+                    <a class="ellipsis" style="width:100px;padding-right:10px;" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
+                        ng-click="dc.updateSort('createdOnTS')">Created</a>
+                    <a class="ellipsis" style="width:100px;padding-right:10px;" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
+                        ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
+                    <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                    <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                    <div style="width:40px"></div>
+
+                  </div>
+
+                  <!-- show the folders first -->
+                  <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row "
+                      id="{{dc.getId(resource, 'row')}}"
+                      dropdownId="{{getId(resource, 'list')}}"
+                      ng-class="{ selected: dc.isResourceSelected(resource) }"
+                      ng-click="dc.selectResource(resource)"
+                      ng-dblclick="dc.goToResource(resource)"
+                      ng-repeat="(index, resource) in dc.resources">
+
+
+                    <div class="outer flex">
+                      <div class="flex ellipsis">
+                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                        <div class="ellipsis" style="width:100%;justify-content: space-between">{{
+                          dc.getTitle(resource)}}
+                        </div>
+                      </div>
+                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{  resource['pav:createdOn'] | prettyDate}}</div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
+                      <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                      <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                      <div class="flex" style="width:40px;justify-content:flex-end;">
+
+                        <button id="{{dc.getId(resource, 'list')}}" style="background-color:transparent;padding-right:15px;"
+                            ng-click="dc.toggledCedarDropdownMenu($event, resource )"
+                            title="More"
+                            class="dropup"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="true">
+                          <i class="action fa fa-ellipsis-v"></i>
+                        </button>
+
+                        <cedar-dropdown-menu  id="{{dc.getId(resource, 'menu')}}"
+                            class="dropdown-menu"
+                            toggle-id="dc.getId"
+                            aria-labelledby="{{dc.getId(resource, 'list')}}"
+                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                            rename="dc.showRenameModal"
+                            submit="dc.showFlowModal"
+                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
+                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                            can-not-submit="dc.canNotSubmit"
+                            can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
+                        </cedar-dropdown-menu>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="!dc.isFolder(resource)" class="box-row "
+                      id="{{dc.getId(resource, 'row')}}"
+                      dropdownId="{{getId(resource, 'list')}}"
+                      ng-class="{ selected: dc.isResourceSelected(resource) }"
+                      ng-click="dc.selectResource(resource)"
+                      ng-dblclick="dc.goToResource(resource,'populate')"
+                      ng-repeat="(index, resource) in dc.resources">
+
+                    <div class="outer flex">
+                      <div class="flex ellipsis" style="justify-content:space-between">
+                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon><div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
+                      </div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{ resource['pav:createdOn'] | prettyDate }}
+                      </div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate }}
+                      </div>
+                      <div ng-if="dc.filterPublished() && dc.filterLatest()" class="ellipsis"  style="width:40px;">
+                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i></div>
+                      </div>
+                      <div ng-if="dc.filterPublished() && !dc.filterLatest()" class="ellipsis"  style="width:100px;">
+                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i> {{dc.getResourceVersion(resource)}} </div>
+                      </div>
+                      <div class="flex" style="width:40px;justify-content:flex-end;">
+                        <button id="{{dc.getId(resource, 'list')}}" title="More"
+                            ng-click="dc.toggledCedarDropdownMenu($event, resource)"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                            style="background-color:transparent;padding-right:15px;">
+                          <i class="action fa fa-ellipsis-v"></i>
+                        </button>
+
+                        <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"
+                            toggle-id="dc.getId"
+                            class="dropdown-menu " aria-labelledby="{{dc.getId(resource, 'list')}}"
+                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                            rename="dc.showRenameModal"
+                            submit="dc.showFlowModal"
+                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource" draft-callback="dc.createDraftResource"
+                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
+                            can-not-submit="dc.canNotSubmit"
+                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                            can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete" is-folder="dc.isFolder()">
+                        </cedar-dropdown-menu>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- here is the end of the list view- hidden initially -->
+              </div>
+
+              <div class="row resource-count" ng-if="dc.showResourceCount()">
+                <div class="col-xs-12  center">
+                  <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span
+                    translate>GENERIC.Of</span>
+                  {{dc.totalCount}}
+                </div>
+              </div>
+
+
+            </div>
+
+            <div style="height:50px"></div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="col-sm-3 row-offcanvas-right ng-cloak" id="sidebar-right" ng-if="dc.isInfoOpen()" >
+
+        <div class="flex">
+          <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
+          <div class="title full-width" ng-class="dc.getSelectedNode().nodeType">
+            <span class="ellipsis" ng-bind="dc.getSelectedNode()[dc.titleLocation()]"></span>
+          </div>
+          <div class="goaway">
+            <button
+                ng-click="dc.toggleInfo()"
+                type="button"
+                class="close"
+                aria-label="Close">
+              <span aria-hidden="true">
+                <img src="/img/close_modal.png" width="16"/></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="element-toggles list table-style">
+          <div class="element-toggle table-cell-style "
+              ng-class="{active: dc.isInfoTab()}"
+              ng-click="dc.setTab('resource-info');">
+            <span>Info</span>
+          </div>
+          <div class="element-toggle table-cell-style "
+              ng-class="{active: dc.isVersionTab()}"
+              ng-click="dc.setTab('resource-version');">
+            <span>{{'GENERIC.Publication' |translate}}</span>
+          </div>
+        </div>
+
+        <div class="half-padding-top"  id="resource-version" ng-show="dc.isVersionTab()"  >
+          <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
+              ng-repeat="(index, resource) in dc.selectedResource.versions">
+
+            <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
+            <div class="flex" >
+              <i ng-if="dc.isPublished(resource)" class="padding-right action fa" ng-class="dc.getPublishedIcon()"></i>
+              <div class="padding-right" ng-class="{'latest-version': resource.isLatestVersion}"> {{resource['pav:version']}}</div>
+              <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
+            </div>
+
+            <div class="flex flex-wrap">
+              <div class="field-label">Created</div>
+              <div>{{ resource['pav:createdOn'] | prettyDate }}</div>
+            </div>
+            <div class="flex flex-wrap">
+              <div class="field-label" translate>Modified</div>
+              <div>{{ resource['pav:lastUpdatedOn'] | prettyDate }}</div>
+            </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div id="resource-info" ng-if="dc.isInfoTab('resource-info')">
+          <div class="info no-selection" ng-if="!dc.getSelectedNode()">
             <div class="row no-file">
               <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
             </div>
             <div class="row no-message">
-              <div class="col-sm-12 center" translate>Nothing found</div>
+              <div class="col-sm-12 center " translate>Select a file or folder to view.</div>
             </div>
           </div>
 
-          <div ng-if="dc.hasResources()">
-            <div class="row populate-form-boxes">
-              <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
+          <div class="info" ng-if="dc.getSelectedNode()">
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Location</div>
+              <div>{{ dc.getSelectedNode().parentPath }}</div>
+            </div>
 
-                <!-- show the folders first -->
-                <div ng-if="dc.isFolder(resource)"
-                    class="form-box-container folder"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
-                    ng-repeat="(index, resource) in dc.resources">
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Owner</div>
+              <div> {{ dc.getSelectedNode().ownedByUserName }}</div>
+            </div>
 
-
-                  <div rightclick offsetX="0" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
-                      ng-click="dc.selectResource(resource)"
-                      ng-dblclick="dc.goToResource(resource)"
-                      class="form-box  ">
-                    <div class="box-content text-center folder">
-                      <div class="folderIconContainer">
-                        <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
-                      </div>
-                      <div class="folderTitle">{{ resource['schema:name'] }}</div>
-
-                      <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
-                        <button style="display:none" title="More"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                            class="fa fa-ellipsis-v"></i>
-                        </button>
-
-                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
-                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
-                            move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
-                            copy="dc.showCopyModal" rename="dc.showRenameModal"
-                            publish="dc.publishResource" create-draft="dc.createDraftResource"
-                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-                        </cedar-dropdown-menu>
-
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Created</div>
+              <div>{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
+                dc.getSelectedNode().createdByUserName }}
               </div>
-              <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
+            </div>
 
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Modified</div>
+              <div>{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
+                {{ dc.getSelectedNode().lastUpdatedByUserName }}
+              </div>
+            </div>
 
-                <div ng-if="!dc.isFolder(resource)"
-                    class="form-box-container"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
-                    ng-repeat="(index, resource) in dc.resources">
+            <div class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Permission</div>
+              <div>
+                <span ng-if="dc.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
+                <span ng-if="dc.canWrite()" class="can-write ellipsis"><i class="fa fa-check"></i>write </span>
+                <span ng-if="dc.canChangeOwner()" class="can-change-owner ellipsis"><i class="fa fa-check"></i>edit owner</span>
+              </div>
+            </div>
 
-                  <div rightclick
-                      offsetX="0"
-                      offsetY="5"
-                      dropdownId="{{getId(resource, 'populate')}}"
-                      ng-click="dc.selectResource(resource)"
-                      ng-dblclick="dc.goToResource(resource)"
-                      class="form-box">
+            <div ng-if="dc.getDerivedFrom()">
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Derived From</div>
+                <div class="field-value">
+                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getDerivedFrom()))"></i>
+                  <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getResourceVersion(dc.getDerivedFrom()) }}</span>
+                  {{ dc.getTitle(dc.getDerivedFrom()) }}</div>
+              </div>
 
-                    <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
-                      <div ng-if="dc.versioningEnabled()"
-                          style="position:absolute;top:15px; left:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
-                        {{"PUBLICATIONSTATUS." + resource['bibo:status'] | translate}}
-                      </div>
-                      <div ng-if="dc.versioningEnabled()"
-                          style="position:absolute;top:15px; right:10px;height:20px;padding:0px;white-space:nowrap;color: #abcadc;font-size:10px;">
-                        {{ resource['pav:version'] }}
-                      </div>
-                      <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
-                          ng-class="dc.getResourceIconClass(resource)"></i>
-
-
-                      </div>
-                      <div class="title"
-                          style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                        {{ resource['schema:name'] }}
-                      </div>
-
-                      <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
-                        <button style="display:none" title="More"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                            class="fa fa-ellipsis-v"></i>
-                        </button>
-
-                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
-                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
-                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
-                            rename="dc.showRenameModal"
-                            publish="dc.publishResource" create-draft="dc.createDraftResource"
-                            can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-                        </cedar-dropdown-menu>
-
-                      </div>
-                    </div>
-                  </div>
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Created</div>
+                <div>{{ dc.getDerivedFrom()['pav:createdOn'] | prettyDate }}
                 </div>
               </div>
 
-              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
-                  style="height:auto">
-
-                <div class="box-title">
-                  <div class="cell type"></div>
-                  <a class="cell resource" ng-class="{'bold': dc.isSort('name')}" href="#" href="#"
-                      ng-click="dc.updateSort('name')">Title</a>
-                  <a class="cell date" ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
-                      ng-click="dc.updateSort('createdOnTS')">Created</a>
-                  <a class="cell date" ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
-                      ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                </div>
-
-                <!-- show the folders first -->
-                <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row"
-                    style="position:relative;width:100%"
-                    rightclick
-                    offsetx="0" offsety="0"
-                    dropdownId="{{getId(resource, 'list')}}"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
-                    ng-click="dc.selectResource(resource)"
-                    ng-dblclick="dc.goToResource(resource)"
-                    ng-repeat="(index, resource) in dc.resources">
-
-                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
-                  <div class="cell resource">{{ resource['schema:name'] }}</div>
-                  <div class="cell date">{{ resource['pav:createdOn'] | prettyDate }}</div>
-                  <div class="cell date">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
-                    <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
-                      <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                          class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                      </button>
-
-                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
-                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
-                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
-                          rename="dc.showRenameModal"
-                          publish="dc.publishResource" create-draft="dc.createDraftResource"
-                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-                      </cedar-dropdown-menu>
-                    </div>
-                  </div>
-                </div>
-
-                <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
-                    offsetx="0" offsety="0"
-                    dropdownId="{{getId(resource, 'list')}}"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
-                    ng-click="dc.selectResource(resource)"
-                    ng-dblclick="dc.goToResource(resource)"
-                    ng-repeat="(index, resource) in dc.resources">
-
-                  <div class="cell type"><cedar-resource-icon resource-type="resource.nodeType" ></cedar-resource-icon></div>
-                  <div class="cell resource">{{ resource['schema:name'] }}</div>
-                  <div class="cell date">{{ resource['pav:createdOn'] | prettyDate }}</div>
-                  <div class="cell date">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
-                    <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
-                      <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                          class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                      </button>
-
-                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
-                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
-                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
-                          rename="dc.showRenameModal"
-                          publish="dc.publishResource" create-draft="dc.createDraftResource"
-                          can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"
-                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
-                      </cedar-dropdown-menu>
-                    </div>
-                  </div>
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Modified</div>
+                <div>{{ dc.getDerivedFrom()['pav:lastUpdatedOn'] | prettyDate }}
                 </div>
               </div>
-              <!-- here is the end of the list view- hidden initially -->
             </div>
 
-            <div class="row resource-count" ng-if="dc.showResourceCount()">
-              <div class="col-xs-12  center">
-                <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span translate>GENERIC.Of</span>
-                {{dc.totalCount}}
+            <!-- based on a copy? -->
+            <div ng-if="dc.getBasedOn()">
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label" translate>Based On</div>
+                <div>
+                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getBasedOn()))"></i>
+                  <span  ng-class="{'latest-version': dc.getBasedOn().isLatestVersion}" > {{ dc.getResourceVersion(dc.getBasedOn()) }}</span>
+                  {{ dc.getTitle(dc.getBasedOn()) }}</div>
+              </div>
+
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Created</div>
+                <div>{{ dc.getBasedOn()['pav:createdOn'] | prettyDate }}
+                </div>
+              </div>
+
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label" translate>Modified</div>
+                <div>{{ dc.getBasedOn()['pav:lastUpdatedOn'] | prettyDate }}
+                </div>
               </div>
             </div>
 
+            <!-- templates have instances -->
+            <div ng-if="dc.getNumberOfInstances()" class="instance-list">
+              <div class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Instances</div>
+                <div class="field-value">{{ dc.getNumberOfInstances() }}</div>
+              </div>
 
-          </div>
-
-
-        </div>
-
-      </div>
-      <!-- end of center panel -->
-
-      <!-- RIGHT SIDE -->
-      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.isInfoOpen()">
-
-        <div class="header">
-          <div class="row">
-
-            <div class="col-sm-2 pull-right ">
-              <div class="goaway">
-                <button
-                    ng-click="dc.toggleInfo()"
-                    type="button"
-                    class="close"
-                    aria-label="Close"
-                ><span aria-hidden="true"><img
-                    src="/img/close_modal.png" width="22"/></span></button>
+              <div  cedar-infinite-scroll load-more="" class="scrollable-content"
+                  style="margin-top:10px;overflow-y:scroll;border:1px solid #ccc;height:100px">
+              <div ng-repeat="(index, resource) in dc.hasInstanceResources" class="instance-item" style="padding:2px;" ng-click="dc.goToResource(resource,'open')">
+                {{resource['schema:name']}}
+              </div>
               </div>
             </div>
 
-            <div class="col-sm-10">
-              <div class="title" ng-if="dc.getSelectedNode()" ng-class="dc.getSelectedNode().nodeType">
-                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span
-                  ng-bind="dc.getSelectedNode()['schema:name']"></span>
-              </div>
-              <div class="title" ng-if="!dc.getSelectedNode()">
-                &nbsp;
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="info no-selection" ng-if="!dc.getSelectedNode()">
-          <div class="row no-file">
-            <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
-          </div>
-          <div class="row no-message">
-            <div class="col-sm-12 center " translate>Select a file or folder to view.</div>
-          </div>
-        </div>
-
-        <div class="info" ng-if="dc.getSelectedNode()">
-          <div class="row">
-            <div class="col-sm-4" translate>Type</div>
-            <div class="col-sm-8 type">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 ">Location</div>
-            <div class="col-sm-8 location">{{ dc.getSelectedNode().path }}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left ">Owner</div>
-            <div class="col-sm-8 owner">{{ dc.getSelectedNode().ownedByUserName }}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left ">Modified</div>
-            <div class="col-sm-8 modified">
-              <span class="no-wrap">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }}</span>
-              by
-              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left ">Created</div>
-            <div class="col-sm-8 created">
-              <span class="no-wrap">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }}</span>
-              by
-              <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left">Can read</div>
-            <div class="col-sm-8 can-read">{{ dc.canRead() }}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left">Can write</div>
-            <div class="col-sm-8 can-write">{{ dc.canWrite() }}</div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4 left">Can change owner</div>
-            <div class="col-sm-8 can-change-owner">{{ dc.canChangeOwner() }}</div>
-          </div>
-          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
-            <div class="col-sm-4 left">Version</div>
-            <div class="col-sm-8 can-change-owner">{{ dc.getResourceVersion() }}</div>
-          </div>
-          <div class="row" ng-if="dc.canBeVersioned(dc.getSelectedNode())">
-            <div class="col-sm-4 left">Publication Status</div>
-            <div class="col-sm-8 can-change-owner">{{"PUBLICATIONSTATUS." + dc.getResourcePublicationStatus() |
-              translate}}
-            </div>
-          </div>
-        </div>
-
-        <div class="description flex-top " ng-if="dc.hasSelection()">
-          <div style="width:100%;">
-            <div ng-if="dc.editingDescription">
-              <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
-                <fieldset>
+            <div class="description flex-top " style="padding: 20px 0 0 0;" ng-if="dc.getSelectedNode()">
+              <div style="width:100%;">
+                <div ng-if="dc.editingDescription">
+                  <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
+                    <fieldset>
                 <textarea style="width:100%;resize:both" id="edit-description" type="text"
-                    ng-model="dc.selectedResource['schema:description']"
+                    ng-model="dc.selectedResource[dc.descriptionLocation()]"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
-                  <button type="submit" style=" display:none">Add</button>
-                </fieldset>
-              </form>
+                      <button type="submit" style=" display:none">Add</button>
+                    </fieldset>
+                  </form>
+
+                </div>
+                <div ng-if="!dc.editingDescription" class="title">
+                  {{ dc.getDescription(dc.selectedResource) }}
+                </div>
+              </div>
+
+              <div>
+                <button
+                    style="background:transparent"
+                    ng-show="!dc.editingDescription && dc.canWrite()"
+                    type="button"
+                    uib-tooltip='{{"HELP.editDescription" | translate}}'
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="left"
+                    data-toggle="tooltip"
+                    ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+              </div>
 
             </div>
-            <div ng-if="!dc.editingDescription" class="title">
-              {{ dc.selectedResource['schema:description'] }}
-            </div>
-          </div>
 
-          <div>
-            <button
-                style="background:transparent"
-                ng-show="!dc.editingDescription && dc.canWrite()"
-                type="button"
-                uib-tooltip='{{"HELP.editDescription" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip"
-                ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+            <hr />
+
           </div>
 
         </div>
+
       </div>
     </div>
-    <!-- END RIGHT SIDE -->
-
-    <!-- floating plus icon section -->
-    <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()"
-        ng-mouseleave="dc.showFloatingMenu = false">
-      <ul class="list-unstyled others">
-        <li style="margin:5px 0;" ng-show="dc.showFloatingMenu">
-          <cedar-resource-icon resource-type="'folder'"
-              id="button-create-folder"
-              uib-tooltip='{{"HELP.createFolder" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="left"
-              data-toggle="tooltip"
-              ng-click="dc.showNewFolderModal()"></cedar-resource-icon>
-        </li>
-
-        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
-          <a ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <cedar-resource-icon resource-type="'field'"
-                id="button-create-field"
-                uib-tooltip='{{"HELP.createField" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip" >
-            </cedar-resource-icon>
-          </a>
-        </li>
-
-        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
-          <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <cedar-resource-icon resource-type="'element'"
-                id="button-create-element"
-                uib-tooltip='{{"HELP.createElement" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip" >
-            </cedar-resource-icon>
-          </a>
-        </li>
 
 
-        <li style="margin:5px 0" ng-show="dc.showFloatingMenu">
-          <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <cedar-resource-icon  resource-type ="'template'"
-                id="button-create-template"
-                uib-tooltip='{{"HELP.createTemplate" | translate}}'
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip">
-            </cedar-resource-icon>
-          </a>
-        </li>
-
-        <li style="margin:5px 0">
-          <button type="button"
-              id="button-create"
-              class="btn btn-sm btn-info btn-circle compose"
-              ng-mouseenter="dc.showFloatingMenu = true"><i
-              class="fa fa-plus template"></i>
-          </button>
-        </li>
-
-      </ul>
-    </div>
-    <!-- end of floating plus icon section -->
 
   </div>
-  </div>
+
 
 </section>
 
@@ -748,10 +730,18 @@
   </cedar-move-modal>
 </section>
 
+<!-- publish modal -->
+<section>
+  <cedar-publish-modal cedar-modal-show modal-visible="dc.publishModalVisible" class="modal fade" id="publish-modal"
+      tabindex="-1" role="dialog" aria-labelledby="publishModalHeader"
+      data-keyboard="true" data-backdrop="static" move-resource="resource">
+  </cedar-publish-modal>
+</section>
+
 <!--- share modal  --->
 <section>
   <cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"
-      tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
+      tabindex="-1" role="dialog" aria-labelledby="shareModalHeader" style="padding:10px;list-style: none"
       data-keyboard="true" data-backdrop="static" share-resource="resource">
   </cedar-share-modal>
 </section>
@@ -763,20 +753,7 @@
   </flow-modal>
 </section>
 
-<!--<section>-->
-<!--<div class="row">-->
-<!--<div class="col-sm-4">-->
-<!--<uib-progressbar value="55"></uib-progressbar>-->
-<!--</div>-->
-<!--<div class="col-sm-4">-->
-<!--<uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar>-->
-<!--</div>-->
-<!--<div class="col-sm-4">-->
-<!--<uib-progressbar class="progress-striped active" max="200" value="166" type="danger"><i>166 / 200</i>-->
-<!--</uib-progressbar>-->
-<!--</div>-->
-<!--</div>-->
-<!--</section>-->
+
 
 
 

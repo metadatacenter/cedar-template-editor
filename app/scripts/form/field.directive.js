@@ -414,10 +414,10 @@ define([
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function () {
         $scope.hideModal();
+        UIUtilService.setDirty(true);
 
         // build the added fields map in this case
         $scope.setAddedFieldMap();
-
       });
 
 
