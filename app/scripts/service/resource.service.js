@@ -51,6 +51,7 @@ define([
           canChangeOwner           : canChangeOwner,
           canShare                 : canShare,
           canPublish               : canPublish,
+          canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
@@ -474,8 +475,8 @@ define([
         // private function
         function addCommonParameters(params, options) {
           var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function (obj) {
-            return obj.resourceType
-          });
+                return obj.resourceType
+              });
           params['resource_types'] = resourceTypes.join(',');
           if (angular.isArray(options.sort)) {
             params['sort'] = options.sort.join(',');
@@ -782,6 +783,15 @@ define([
           return false;
         }
 
+        function canSubmit(resource) {
+          if (resource != null) {
+            if (resource.nodeType === CONST.resourceType.INSTANCE) {
+              return resource[CONST.model.ISBASEDON] === "https://repo.metadatacenter.orgx/templates/81e3c19a-7237-4c4d-af78-dfe3eada047a";
+            }
+          }
+          return false;
+        }
+
         function canCreateDraft(resource) {
           if (resource != null) {
             var perms = resource.currentUserPermissions;
@@ -794,7 +804,7 @@ define([
 
         function renameNode(id, name, description) {
           var command = {
-            "id"      : id
+            "id": id
           };
           if (name != null) {
             command["name"] = name;

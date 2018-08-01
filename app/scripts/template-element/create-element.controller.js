@@ -111,6 +111,7 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
+            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);

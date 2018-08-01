@@ -2,8 +2,6 @@
     ng-click="canSelect(isSelectable()); $event.preventDefault();"
     ng-class="{'expanded-element':isExpanded(), 'nested-element':isNested(), 'selected-element': isEditState(),  'selectable-element': isSelectable(),  'sortable-element': isSortable(),'root-element': isRoot()}">
 
-  cedar-template-field.directive
-
   <div style="margin:0 16px">
     <!-- header  -->
     <div ng-if="!isRoot() && !nested" class="element-header input-type-container" style="position:relative;"
