@@ -51,7 +51,9 @@ define([
       "model": {
         "NAME": "schema:name",
         "DESCRIPTION": "schema:description",
-        "BASEDON": "schema:isBasedOn"
+        "ISBASEDON": "schema:isBasedOn",
+        "NUMBEROFINSTANCES" :'numberOfInstances',
+        "DERIVEDFROM": "derivedFrom"
       }
     });
 });

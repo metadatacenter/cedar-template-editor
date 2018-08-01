@@ -74,7 +74,7 @@ define([
 
     $scope.setClean = function () {
       $rootScope.$broadcast('form:clean');
-      UIUtilService.setDirty(false);
+      //UIUtilService.setDirty(false);
     };
 
 
@@ -108,6 +108,7 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
+            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'FIELD' + '.load.error', error);

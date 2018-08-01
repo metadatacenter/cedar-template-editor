@@ -120,7 +120,9 @@ define([
           vm.canNotPublish = false;
           vm.canNotCreateDraft = false;
           vm.canNotDelete = false;
+          vm.canNotRename = false;
           vm.currentFolder = null;
+
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
           vm.hasUnreadMessages = hasUnreadMessages;
@@ -473,24 +475,24 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" && vm.selectedResource[CONST.model.BASEDON] === "https://repo.metadatacenter.orgx/templates/81e3c19a-7237-4c4d-af78-dfe3eada047a";
+            return vm.selectedResource && resourceService.canSubmit(vm.selectedResource);
           };
 
           vm.getNumberOfInstances = function () {
-            if (vm.selectedResource && vm.selectedResource['numberOfInstances']) {
-              return vm.selectedResource['numberOfInstances'];
+            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
+              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
             }
           };
 
           vm.getDerivedFrom = function () {
-            if (vm.selectedResource && vm.selectedResource['derivedFrom']) {
-              return vm.selectedResource['derivedFrom'];
+            if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
+              return vm.selectedResource[CONST.model.DERIVEDFROM];
             }
           };
 
           vm.getBasedOn = function () {
-            if (vm.selectedResource && vm.selectedResource['isBasedOn']) {
-              return vm.selectedResource['isBasedOn'];
+            if (vm.selectedResource && vm.selectedResource[CONST.model.ISBASEDON]) {
+              return vm.selectedResource[CONST.model.ISBASEDON];
             }
           };
 
@@ -534,11 +536,11 @@ define([
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotSubmit = !vm.canSubmit();
                     vm.canNotShare = !vm.canShare();
-                    vm.canNotDelete = vm.isPublished();
-                    vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
+                    vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
+                    vm.canNotRename =  vm.canNotWrite;
+                    vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
-
                   }
 
                   vm.doSearchTemplateInstances(id);
@@ -1706,84 +1708,57 @@ define([
 
 
           // open the move modal
-          function showCopyModal(value) {
-            //var r = resource;
-            //if (!r && vm.selectedResource) {
-            //  r = vm.selectedResource;
-            //}
-            var resource = value || vm.selectedResource;
-            var homeFolderId = CedarUser.getHomeFolderId();
-            var folderId = vm.currentFolderId || homeFolderId;
-            vm.copyModalVisible = true;
-            $scope.$broadcast('copyModalVisible',
-                [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                 CedarUser.getSort()]);
+          function showCopyModal() {
+            if (vm.selectedResource) {
+              var homeFolderId = CedarUser.getHomeFolderId();
+              var folderId = vm.currentFolderId || homeFolderId;
+              vm.copyModalVisible = true;
+              $scope.$broadcast('copyModalVisible',
+                  [vm.copyModalVisible, vm.selectedResource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
+                   CedarUser.getSort()]);
+            }
           }
 
           // open the move modal
-          function showMoveModal(resource) {
-
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
-
-            if (vm.canWrite(r)) {
+          function showMoveModal() {
+            if (vm.selectedResource && !vm.canNotWrite) {
               vm.moveModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
+                  [vm.moveModalVisible, vm.selectedResource, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
 
           // open the publish modal
-          function showPublishModal(resource, callback, title) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
-
-            if (vm.canWrite(r)) {
+          function showPublishModal(callback, title) {
+            if (vm.selectedResource && !vm.canNotWrite) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, title]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, title]);
             }
           }
 
-
           function showFlowModal() {
-            vm.flowModalVisible = true;
-            var instanceId = null;
-            var name = null;
-            if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
-              instanceId = vm.selectedResource['@id'];
-              name = vm.selectedResource[CONST.model.NAME];
+            if (vm.selectedResource && !vm.canNotSubmit) {
+              vm.flowModalVisible = true;
+              $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, vm.selectedResource['@id'], vm.selectedResource[CONST.model.NAME]]);
             }
-            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }
 
           // open the share modal
-          function showShareModal(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
+          function showShareModal() {
+            if (vm.selectedResource && !vm.canNotShare) {
+              vm.shareModalVisible = true;
+              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, vm.selectedResource]);
             }
-            vm.shareModalVisible = true;
-            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
           }
 
           // open the rename modal
-          function showRenameModal(resource) {
-
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
-
-            if (vm.canWrite(r)) {
+          function showRenameModal() {
+            if (vm.selectedResource && !vm.canNotWrite) {
               vm.renameModalVisible = true;
-              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, vm.selectedResource]);
             }
           }
 

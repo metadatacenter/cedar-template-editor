@@ -379,10 +379,20 @@ define([
           startParseForm();
         });
 
-        // watch the dirty flag on the form and pass it up to root
-        $scope.$watch('forms.templateForm.$dirty', function (dirty) {
-          if (dirty) {
-            UIUtilService.setDirty(dirty);
+        // watch the dirty flag on the form
+        $scope.$watch('forms.templateForm.$dirty', function (value) {
+          UIUtilService.setForm($scope.forms.templateForm);
+          if (value) {
+            UIUtilService.setDirty(value);
+          }
+        });
+
+        $scope.$on("form:firstDirty", function (event) {
+          if (UIUtilService.hasMetadata()) {
+            UIMessageService.flashWarning("The template has metadata and should not be modified.");
+          }
+          if (UIUtilService.isLocked()) {
+            UIMessageService.flashWarning('Modifications cannot be saved without write permission.');
           }
         });
 

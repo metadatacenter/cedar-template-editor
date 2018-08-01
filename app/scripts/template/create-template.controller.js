@@ -93,14 +93,11 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                console.log('hasMetadata',response);
                 $scope.checkLocking();
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.hasInstanceResources = response.resources;
-                if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning",
-                      "The template has metadata and should not be modified.", "OK", "");
-                }
+                UIUtilService.setMetadata($scope.hasInstances);
+
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
