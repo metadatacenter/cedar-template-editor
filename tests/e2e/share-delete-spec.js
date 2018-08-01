@@ -121,7 +121,7 @@ describe('share-delete', function () {
       // user 2 should not be able to share or delete
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.moveShareDeleteDisabled(folder, 'folder');
+      shareModal.moveShareDisabled(folder, 'folder');
     });
 
     it("should fail to move, share, and delete a readable resource via group", function () {
@@ -137,7 +137,7 @@ describe('share-delete', function () {
       // user 2 should not be able to share or delete
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.moveShareDeleteDisabled(folder, 'folder');
+      shareModal.moveShareDisabled(folder, 'folder');
     });
 
   });
