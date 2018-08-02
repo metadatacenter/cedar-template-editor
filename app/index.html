@@ -90,7 +90,7 @@
 
       <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging()">
         <div class="navbar-back flex">
-          <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
+          <div class="back-arrow-click flex-left" ng-click="hc.windowHistoryBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
             <cedar-resource-icon resource-type="hc.resourceType"></cedar-resource-icon>
             <div class="document-title">{{hc.formatDocumentTitle()}}</div>
