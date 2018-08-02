@@ -184,11 +184,15 @@ define([
       var doSave = function (response) {
         UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
-        // Reload page with element id
-        var newId = response.data['@id'];
-        $location.path(FrontendUrlService.getInstanceEdit(newId));
-        $rootScope.$broadcast("form:clean");
+
+        //$rootScope.$broadcast("form:clean");
+        UIUtilService.setDirty(false);
         $rootScope.$broadcast("form:validation", {state: true});
+
+        $timeout(function () {
+          var newId = response.data['@id'];
+          $location.path(FrontendUrlService.getInstanceEdit(newId));
+        });
 
         $timeout(function () {
           // don't show validation errors until after any redraws are done

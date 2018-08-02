@@ -31,7 +31,7 @@ define([
     vm.confirmedBack = true;
 
     $window.onbeforeunload = function (event) {
-      if (!vm.confirmedBack) {
+      if (vm.isDirty() && !vm.confirmedBack) {
         return "You have some unsaved changes";
       }
     };
@@ -58,10 +58,10 @@ define([
       return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
     };
 
-    vm.windowHistoryBack = function() {
-      vm.confirmedBack = false;
-      $window.history.back();
-    };
+    // vm.windowHistoryBack = function() {
+    //   vm.confirmedBack = false;
+    //   $window.history.back();
+    // };
 
     vm.confirmBack = function () {
       vm.confirmedBack = true;
@@ -299,10 +299,11 @@ define([
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
-      if (!vm.confirmedBack) {
+      if (vm.isDirty() && !vm.confirmedBack && next.$$route.originalPath.startsWith('/dashboard')) {
         event.preventDefault();
         vm.confirmBack();
       }
+      vm.confirmedBack = true;
     });
 
     // clear the modal fade on location change
@@ -317,10 +318,11 @@ define([
         event.preventDefault();
       }
 
-      if (!vm.confirmedBack) {
+      if (vm.isDirty() && !vm.confirmedBack && newUrl.toString().startsWith('/dashboard')) {
         event.preventDefault();
         vm.confirmBack();
       }
+      vm.confirmedBack = true;
     });
 
     $rootScope.$on('$locationChangeSuccess', function (event, next, current) {
