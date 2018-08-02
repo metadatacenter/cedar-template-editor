@@ -30,6 +30,12 @@ define([
     vm.searchTerm = $location.search().search;
     vm.confirmedBack = true;
 
+    $window.onbeforeunload = function (event) {
+      if (!vm.confirmedBack) {
+        return "You have some unsaved changes";
+      }
+    };
+
     vm.isDirty = function() {
       return UIUtilService.isDirty();
     };
@@ -59,6 +65,7 @@ define([
 
     vm.confirmBack = function () {
       vm.confirmedBack = true;
+
       if (UIUtilService.isLocked() || !UIUtilService.isDirty()) {
         vm.goToDashboardOrBack();
       } else {
@@ -165,8 +172,6 @@ define([
     vm.getUnreadMessageCount = function() {
       return Math.min(MessagingService.unreadCount, 9);
     };
-
-
 
     vm.toggleUserMenuDropdown = function() {
 
@@ -289,16 +294,8 @@ define([
       UIUtilService.scrollToAnchor(hash);
     };
 
-
-
-
     vm.isPrivacy = function () {
       return ($location.path() === "/privacy");
-    };
-
-    $window.onbeforeunload = function (event) {
-      //$myService.onclose();
-      alert('onbeforeunload', event);
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
