@@ -26,15 +26,9 @@ define([
                             UIMessageService, UIProgressService, UIUtilService,CedarUser, FrontendUrlService,MessagingService) {
 
     var vm = this;
-
     vm.path = $location.path();
-
-
-
-    // $rootScope.$on("form:validation", function (even, options) {
-    //   vm.valid = options.state;
-    // });
-
+    vm.searchTerm = $location.search().search;
+    vm.confirmedBack = true;
 
     vm.isDirty = function() {
       return UIUtilService.isDirty();
@@ -58,7 +52,13 @@ define([
       return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
     };
 
+    vm.windowHistoryBack = function() {
+      vm.confirmedBack = false;
+      $window.history.back();
+    };
+
     vm.confirmBack = function () {
+      vm.confirmedBack = true;
       if (UIUtilService.isLocked() || !UIUtilService.isDirty()) {
         vm.goToDashboardOrBack();
       } else {
@@ -70,7 +70,6 @@ define([
                 UIUtilService.setDirty(false);
                 UIUtilService.setValidation(true);
               });
-
             },
             'GENERIC.AreYouSure',
             'DASHBOARD.back',
@@ -290,14 +289,28 @@ define([
       UIUtilService.scrollToAnchor(hash);
     };
 
-    //*********** ENTRY POINT
+
+
 
     vm.isPrivacy = function () {
       return ($location.path() === "/privacy");
     };
 
+    $window.onbeforeunload = function (event) {
+      //$myService.onclose();
+      alert('onbeforeunload', event);
+    };
+
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+      if (!vm.confirmedBack) {
+        event.preventDefault();
+        vm.confirmBack();
+      }
+    });
+
     // clear the modal fade on location change
     $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
+
       // Select open modal(s)
       var $openModalSelector = jQuery(".modal.fade.in");
       if (($openModalSelector.data('bs.modal') || {}).isShown == true) {
@@ -305,6 +318,11 @@ define([
         $openModalSelector.modal("hide");
         // Prevent page transition
         event.preventDefault();
+      }
+
+      if (!vm.confirmedBack) {
+        event.preventDefault();
+        vm.confirmBack();
       }
     });
 
@@ -316,25 +334,11 @@ define([
       $rootScope.setHeader();
       $document.unbind('keypress');
       $document.unbind('keyup');
-
-      if (UIUtilService.isDirty()) {
-
-        event.preventDefault();
-        //vm.confirmBack();
-
-        $timeout(function () {
-
-          vm.path = $location.path();
-          $rootScope.setHeader();
-
-        });
-      }
+      vm.confirmedBack = ($location.path() == '/dashboard');
 
     });
 
-    //*********** ENTRY POINT
 
-    vm.searchTerm = $location.search().search;
 
   }
 });
