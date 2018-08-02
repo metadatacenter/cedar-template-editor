@@ -692,6 +692,17 @@ define([
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+
+                      // UIMessageService.acknowledgedExecution(
+                      //     function () {
+                      //       $timeout(function () {
+                      //         $rootScope.goToHome();
+                      //       });
+                      //     },
+                      //     'GENERIC.Warning',
+                      //     $translate.instant(error.data.message),
+                      //     'GENERIC.Ok');
+
                     }
                 );
               }
@@ -730,6 +741,17 @@ define([
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        //
+                        // UIMessageService.acknowledgedExecution(
+                        //     function () {
+                        //       $timeout(function () {
+                        //         $rootScope.goToHome();
+                        //       });
+                        //     },
+                        //     'GENERIC.Warning',
+                        //     $translate.instant(error.data.message),
+                        //     'GENERIC.Ok');
+
                       }
                   );
                 } else {
@@ -1212,7 +1234,17 @@ define([
                     $scope.selectResourceById(resourceId);
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                   UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+
+                    // UIMessageService.acknowledgedExecution(
+                    //     function () {
+                    //       $timeout(function () {
+                    //         $rootScope.goToHome();
+                    //       });
+                    //     },
+                    //     'GENERIC.Warning',
+                    //     $translate.instant(error.data.message),
+                    //     'GENERIC.Ok');
                   }
               );
             } else {
@@ -1231,7 +1263,18 @@ define([
                   vm.currentFolder = response;
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  //UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+
+                  UIMessageService.acknowledgedExecution(
+                      function () {
+                        $timeout(function () {
+                          $rootScope.goToHome();
+                        });
+                      },
+                      'GENERIC.Warning',
+                      $translate.instant(error.data.message),
+                      'GENERIC.Ok');
+
                 }
             );
           }

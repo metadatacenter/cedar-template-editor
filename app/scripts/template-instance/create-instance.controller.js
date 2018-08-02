@@ -36,40 +36,50 @@ define([
 
           },
           function (err) {
-            UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
-            $rootScope.goToHome();
-          }
-      );
+            // var message = (err.data.errorKey == 'noReadAccessToResource') ? $translate.instant(
+            //     'REST_ERROR.noReadAccessToResource') : $translate.instant('SERVER.TEMPLATE.load.error');
+
+            UIMessageService.acknowledgedExecution(
+                function () {
+                  $timeout(function () {
+                    $rootScope.goToHome();
+                  });
+                },
+                'GENERIC.Warning',
+                $translate.instant(err.data.message),
+                'GENERIC.Ok');
+          });
+
     };
 
     $scope.details;
     $scope.cannotWrite;
 
-    // $scope.isShowOutput = function () {
-    //   return UIUtilService.isShowOutput();
-    // };
-    //
-    // $scope.toggleShowOutput = function() {
-    //   return UIUtilService.toggleShowOutput();
-    // };
-    //
-    // $scope.scrollToAnchor = function(hash) {
-    //   UIUtilService.scrollToAnchor(hash);
-    // };
-    //
-    // $scope.getShowOutputTab = function () {
-    //   return UIUtilService.getShowOutputTab();
-    // };
-    //
-    // $scope.setShowOutputTab = function (index) {
-    //   return UIUtilService.setShowOutputTab(index);
-    // };
-    //
-    // $scope.toggleShowOutputTab = function (index) {
-    //   return UIUtilService.toggleShowOutputTab(index);
-    // };
+// $scope.isShowOutput = function () {
+//   return UIUtilService.isShowOutput();
+// };
+//
+// $scope.toggleShowOutput = function() {
+//   return UIUtilService.toggleShowOutput();
+// };
+//
+// $scope.scrollToAnchor = function(hash) {
+//   UIUtilService.scrollToAnchor(hash);
+// };
+//
+// $scope.getShowOutputTab = function () {
+//   return UIUtilService.getShowOutputTab();
+// };
+//
+// $scope.setShowOutputTab = function (index) {
+//   return UIUtilService.setShowOutputTab(index);
+// };
+//
+// $scope.toggleShowOutputTab = function (index) {
+//   return UIUtilService.toggleShowOutputTab(index);
+// };
 
-    // create a copy of the form with the _tmp fields stripped out
+// create a copy of the form with the _tmp fields stripped out
     $scope.cleanForm = function () {
       var copiedForm = jQuery.extend(true, {}, $scope.instance);
       if (copiedForm) {
@@ -89,7 +99,7 @@ define([
       return result;
     };
 
-    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+// This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
       UIUtilService.setLocked($scope.cannotWrite);
     });
@@ -107,7 +117,7 @@ define([
       );
     };
 
-    // validate the resource
+// validate the resource
     var checkValidation = function (node) {
 
       if (node) {
@@ -131,8 +141,8 @@ define([
       }
     };
 
-    // Get/read instance with given id from $routeParams
-    // Also read the template for it
+// Get/read instance with given id from $routeParams
+// Also read the template for it
     $scope.getInstance = function () {
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
@@ -168,7 +178,7 @@ define([
     };
 
 
-    // Stores the data (instance) into the databases
+// Stores the data (instance) into the databases
     $scope.saveInstance = function () {
 
       var doSave = function (response) {
@@ -258,14 +268,14 @@ define([
       }
     };
 
-    //*********** ENTRY POINT
+//*********** ENTRY POINT
 
     $rootScope.showSearch = false;
 
-    // set Page Title variable when this controller is active
+// set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Metadata Editor';
 
-    // Giving $scope access to window.location for checking active state
+// Giving $scope access to window.location for checking active state
     $scope.$location = $location;
 
     $scope.saveButtonDisabled = false;
@@ -273,26 +283,26 @@ define([
     var pageId = CONST.pageId.RUNTIME;
     HeaderService.configure(pageId);
 
-    // Create empty form object
-    // Create empty instance object
+// Create empty form object
+// Create empty instance object
     $scope.form = {};
     $scope.instance = {};
     UIUtilService.instanceToSave = $scope.instance;
 
 
-    // Create new instance
+// Create new instance
     if (!angular.isUndefined($routeParams.templateId)) {
       $scope.getTemplate();
     }
 
-    // Edit existing instance
+// Edit existing instance
     if (!angular.isUndefined($routeParams.id)) {
       $scope.getInstance();
     }
 
-    // Initialize array for required fields left empty that fail required empty check
+// Initialize array for required fields left empty that fail required empty check
     $scope.emptyRequiredFields = {};
-    // Event listener waiting for emptyRequiredField $emit from field-directive.js
+// Event listener waiting for emptyRequiredField $emit from field-directive.js
     $scope.$on('emptyRequiredField', function (event, args) {
       if (args[0] == 'add') {
         $scope.emptyRequiredFields[args[2]] = args[1];
@@ -302,9 +312,9 @@ define([
       }
     });
 
-    // Initialize array for validation errors
+// Initialize array for validation errors
     $scope.validationErrors = {};
-    // Event listener waiting for validationError $emit from form-directive.js
+// Event listener waiting for validationError $emit from form-directive.js
     $scope.$on('validationError', function (event, args) {
       if (args[0] == 'add') {
         $scope.validationErrors[args[2]] = args[1];
@@ -316,9 +326,9 @@ define([
       }
     });
 
-    // Initialize array for fields that are not conform to valueConstraints
+// Initialize array for fields that are not conform to valueConstraints
     $scope.invalidFieldValues = {};
-    // Event listener waiting for emptyRequiredField $emit from field-directive.js
+// Event listener waiting for emptyRequiredField $emit from field-directive.js
     $scope.$on('invalidFieldValues', function (event, args) {
       if (args[0] == 'add') {
         $scope.invalidFieldValues[args[2]] = args[1];
@@ -328,7 +338,7 @@ define([
       }
     });
 
-    // cancel the form and go back to folder
+// cancel the form and go back to folder
     $scope.cancelTemplate = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
@@ -343,9 +353,9 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    //
-    // custom validation services
-    //
+//
+// custom validation services
+//
 
     $scope.isValidationTemplate = function (action) {
       var result;
@@ -363,13 +373,15 @@ define([
     };
 
 
-    // // open the airr submission modal
-    // $scope.flowModalVisible = false;
-    // $scope.showFlowModal = function () {
-    //   $scope.flowModalVisible = true;
-    //   $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
-    // };
+// // open the airr submission modal
+// $scope.flowModalVisible = false;
+// $scope.showFlowModal = function () {
+//   $scope.flowModalVisible = true;
+//   $scope.$broadcast('flowModalVisible', [$scope.flowModalVisible, $rootScope.instanceToSave]);
+// };
 
-  };
+  }
+  ;
 
-});
+})
+;
