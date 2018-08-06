@@ -1,117 +1,72 @@
-<div id="profile" class="container-fluid">
-  <div class="col-xs-8 col-xs-offset-2">
-    <div class="content">
+<div id="profile">
 
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>UUID</div>
-        <div class="col-xs-9">{{$root.cedarUser.getUserId()}}</div>
-      </div>
+  <div class="navbar-back flex" style="font-size: 16px;cursor: pointer;">
+    <div class="back-arrow-click flex-left" style="margin-right: 10px;font-weight: 100;font-size: 18px;"
+        ng-click="goToDashboardOrBack()">
+      <i class="back-arrow fa fa-arrow-left"></i>
+      <div class="document-title" style="margin-left: 10px;font-weight:normal">Profile</div>
+    </div>
+  </div>
 
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>Email</div>
-        <div class="col-xs-9">{{$root.cedarUser.getEmail()}}</div>
-      </div>
+  <div class="content">
 
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>First name</div>
-        <div class="col-xs-9">{{$root.cedarUser.getFirstName()}}</div>
-      </div>
+    <div class="field-label">UUID</div>
+    <div class="field-value">{{$root.cedarUser.getUserId()}}</div>
+    <div class="field-label">Email</div>
+    <div class="field-value">{{$root.cedarUser.getEmail()}}</div>
 
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Last name</div>
-        <div class="col-xs-9">{{$root.cedarUser.getLastName()}}</div>
-      </div>
+    <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
+      <div class="field-label">First name</div>
+      <div class="field-value"> {{$root.cedarUser.getFirstName()}}</div>
+      <div class="field-label">Last name</div>
+      <div class="field-value">{{$root.cedarUser.getLastName()}}</div>
+      <div class="field-label">Home folder id</div>
+      <div class="field-value">{{$root.cedarUser.getHomeFolderId()}}</div>
+      <div class="field-label">Encoded home folder id</div>
+      <div class="field-value">{{$root.cedarUser.getHomeFolderIdEncoded()}}</div>
+    </div>
 
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Home folder id:</div>
-        <div class="col-xs-9">{{$root.cedarUser.getHomeFolderId()}}</div>
-      </div>
+    <hr/>
+    <h4>API Keys</h4>
+    <div ng-if="$root.cedarUser.isCedarProfileAvailable()" ng-repeat="apiKey in $root.cedarUser.getApiKeys()"
+        style="border:1px solid #ccc;padding:20px;margin-bottom:20px">
 
-      <div class="row" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-        <div class="col-xs-3 text-right title" translate>Encoded home folder id:</div>
-        <div class="col-xs-9">{{$root.cedarUser.getHomeFolderIdEncoded()}}</div>
-      </div>
+      <div class="field-label">Service name</div>
+      <div class="field-value">{{apiKey.serviceName}}</div>
 
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>API Keys</div>
-        <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-          <ul class="profile">
-            <li ng-repeat="apiKey in $root.cedarUser.getApiKeys()">
 
-              <table class="apiKey">
-                <tr>
-                  <td>Service name:</td>
-                  <td>{{apiKey.serviceName}}</td>
-                </tr>
-                <tr>
-                  <td>Description:</td>
-                  <td>{{apiKey.description}}</td>
-                </tr>
-                <tr>
-                  <td>Enabled:</td>
-                  <td>{{apiKey.enabled}}</td>
-                </tr>
-                <tr>
-                  <td>Key:</td>
-                  <td>{{apiKey.key}}</td>
-                </tr>
-                <tr>
-                  <td colspan="2"><h4>Usage from REST client</h4>
-                    Set the <b>Authorization</b> header in the REST calls to:<br/>
-                    <pre>apiKey {{apiKey.key}}</pre>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2"><h5>Sample usage with cURL - Home folder contents</h5>
-                    <textarea class="curlSample" readonly="readonly" select-on-click>
+      <div class="field-label">Description</div>
+      <div class="field-value">{{apiKey.description}}</div>
+
+
+      <div class="field-label">Enabled</div>
+      <div class="field-value">{{apiKey.enabled}}</div>
+
+
+      <div class="field-label">Key</div>
+      <div class="field-value">{{apiKey.key}}</div>
+
+      <h4>Usage from REST client</h4>
+      <div>Set the <b>Authorization</b> header in the REST calls to:</div>
+
+      <textarea class="curlSample" readonly="readonly"
+          select-on-click>apiKey {{apiKey.key}}</textarea>
+
+
+      <h5>Sample usage with cURL - Home folder contents</h5>
+      <textarea class="curlSample" readonly="readonly" select-on-click>
 curl -H "Content-Type: application/json" \
 -H "Authorization: apiKey {{apiKey.key}}" \
 -X GET "{{urlService.base()}}/folders/\
 {{$root.cedarUser.getHomeFolderIdEncoded()}}\
 /contents?resource_types=instance,template,folder,element"</textarea>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2"><h5>Sample usage with cURL - Shared with me</h5>
-                    <textarea class="curlSample" readonly="readonly" select-on-click>
+
+      <h5>Sample usage with cURL - Shared with me</h5>
+      <textarea class="curlSample" readonly="readonly" select-on-click>
 curl -H "Content-Type: application/json" \
 -H "Authorization: apiKey {{apiKey.key}}" \
 -X GET "{{urlService.base()}}/search?sharing=shared-with-me"</textarea>
-                  </td>
-                </tr>
-              </table>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-
-      <!--<div class="row">
-        <div class="col-xs-3 text-right title" translate>Roles</div>
-        <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-          <ul class="profile">
-            <li ng-repeat="roleName in $root.cedarUser.getRoles()">{{roleName}}</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>Permissions</div>
-        <div class="col-xs-9">
-          <ul class="profile">
-            <li ng-repeat="permissionName in $root.cedarUser.getPermissions()">{{permissionName}}</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-3 text-right title" translate>Token validity</div>
-        <div class="col-xs-9">{{getTokenValidity()}} seconds</div>
-      </div>
--->
-
-      <!-- /.row -->
     </div>
-    <!-- /.container -->
+
   </div>
 </div>

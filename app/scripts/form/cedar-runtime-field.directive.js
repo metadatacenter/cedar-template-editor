@@ -36,7 +36,7 @@ define([
 
       var dms = DataManipulationService;
 
-      $scope.date = {dt:''};
+      $scope.date = {dt: ''};
 
 
       $scope.multipleDemo = {};
@@ -278,6 +278,11 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
+        $scope.setActive(0, true);
+        if (dms.getMaxItems($scope.field)) {
+          // create all the rows if the maxItems is a fixed number
+          $scope.createExtraRows();
+        }
 
         SpreadsheetService.switchToSpreadsheet($scope, $scope.field, 0, function () {
           return true;
@@ -292,8 +297,11 @@ define([
         })
       };
 
+
       $scope.cleanupSpreadsheet = function () {
         $scope.deleteExtraRows();
+        //$scope.expanded[0] = false;
+        SpreadsheetService.destroySpreadsheet($scope);
       };
 
       $scope.isTabView = function () {
@@ -310,7 +318,8 @@ define([
 
       // toggle through the list of view states
       $scope.toggleView = function () {
-        $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.switchToSpreadsheet);
+        console.log('toggleView');
+        $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.setActive);
       };
 
       $scope.toggleActive = function (index) {
@@ -327,6 +336,7 @@ define([
 
       // set this field and index active
       $scope.setActive = function (idx, value) {
+
         var active = (typeof value === "undefined") ? true : value;
         var index = $scope.isSpreadsheetView() ? 0 : idx;
 
@@ -341,9 +351,9 @@ define([
         if (dms.isDateType($scope.field)) {
           $scope.date.dt = $scope.valueArray[index]['@value'];
 
-            $timeout(function () {
-              $rootScope.$broadcast('runDateValidation');
-            }, 0);
+          $timeout(function () {
+            $rootScope.$broadcast('runDateValidation');
+          }, 0);
 
         }
 
@@ -425,7 +435,7 @@ define([
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
           // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
-          if ($scope.isMultipleCardinality() && !DataManipulationService.isMultipleChoiceField($scope.field)) {
+          if ($scope.isMultipleCardinality() && !dms.isMultipleChoiceField($scope.field)) {
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
@@ -1119,51 +1129,38 @@ define([
         }
       });
 
+      // spreadsheet view will use the 0th instance
+      $scope.zeroedLocator = function (value) {
+        var result = '';
+        if (value) {
+          var result = value.replace(/-([^-]*)$/, '-0');
+        }
+        return result;
+      };
 
-      // watch for changes in the selection for spreadsheet view to create and destroy the spreadsheet
+      // watch for changes in the selection for spreadsheet view to get out of spreadsheet mode
       $scope.$watch(
           function () {
             return ( UIUtilService.activeLocator);
           },
           function (newValue, oldValue) {
 
-
-            if ($scope.isSpreadsheetView()) {
-
-              // spreadsheet view will use the 0th instance
-              var zeroedLocator = function (value) {
-                var result = '';
-                if (value) {
-                  var result = value.replace(/-([^-]*)$/, '-0');
-                }
-                return result;
-              };
-
-              $timeout(function () {
-                var zeroLocator = $scope.getLocator(0);
-                if (zeroLocator === zeroedLocator(oldValue)) {
-                  SpreadsheetService.destroySpreadsheet($scope);
-                  $scope.$apply();
-                }
-                if (zeroLocator === zeroedLocator(newValue)) {
-                  $scope.switchToSpreadsheet();
-                  $scope.$apply();
-                }
-              }, 0);
+            if ($scope.zeroedLocator(newValue) != $scope.zeroedLocator(oldValue) &&  $scope.getLocator(0) == $scope.zeroedLocator(oldValue) && $scope.isSpreadsheetView()) {
+              $scope.toggleView();
             }
           }
       );
 
+      // make sure there are at least 10 entries in the spreadsheet
       $scope.createExtraRows = function () {
-        // make sure there are at least 10 entries in the spreadsheet
         var maxItems = dms.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
           $scope.addMoreInput();
         }
       };
 
+      // delete extra blank rows
       $scope.deleteExtraRows = function () {
-        // delete extra blank rows
         var location = dms.getValueLocation($scope.field);
         var min = dms.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
@@ -1180,13 +1177,13 @@ define([
       };
 
       $scope.isHidden = function () {
-        return DataManipulationService.isHidden($scope.field);
+        return dms.isHidden($scope.field);
       };
 
       $scope.initValue = function () {
-        if (DataManipulationService.hasDefault($scope.field)) {
-          var location = DataManipulationService.getValueLocation($scope.field);
-          var value = DataManipulationService.getDefault($scope.field);
+        if (dms.hasDefault($scope.field)) {
+          var location = dms.getValueLocation($scope.field);
+          var value = dms.getDefault($scope.field);
           if (angular.isArray($scope.model)) {
             angular.forEach($scope.model, function (model) {
               model[location] = model[location] || value;
@@ -1239,7 +1236,6 @@ define([
       };
 
 
-
       $scope.setDateValue = function (value) {
         if ($scope.model && $scope.model.length > 0) {
           $scope.model[$scope.index]['@value'] = $scope.parseDate(value);
@@ -1282,8 +1278,8 @@ define([
         parentKey     : '=',
         parentModel   : '=',
         parentInstance: '=',
-        labels: '=',
-        descriptions: '='
+        labels        : '=',
+        descriptions  : '='
 
       },
       controller : function ($scope, $element) {

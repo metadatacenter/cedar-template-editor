@@ -65,7 +65,7 @@ define([
           vm.clearTypeAheadUser = clearTypeAheadUser;
           vm.clearTypeAheadGroup = clearTypeAheadGroup;
           vm.selectedUserId = null;
-          vm.giveUserPermission = 'read';
+
           vm.selectedGroupId = null;
           vm.selectedNodeId = null;
           vm.giveNodePermission = 'read';
@@ -77,6 +77,7 @@ define([
           vm.typeaheadUser = null;
           vm.autoCompleteUserId = null;
           vm.getName = getName;
+          vm.incomplete = incomplete;
 
           // groups
           vm.addGroup = addGroup;
@@ -95,21 +96,39 @@ define([
           vm.hasSelectedGroup = hasSelectedGroup;
           vm.updateGroupName = updateGroupName;
           vm.updateGroupDescription = updateGroupDescription;
-          vm.showRemoveGroupConfirm = false;
           vm.editingTitle = false;
           vm.editingDescription = false;
           vm.newTitle = '';
           vm.newDescription = '';
 
+          vm.model = {
+            "show" : "users",
+            "users": {
+              "user" : null,
+              "group" : null,
+              "userPermission" : 'read',
+              "groupPermission" : 'read',
+            },
+            "groups": {
+              "user" : null,
+              "group" : null,
+              "name" : null,
+              "show": "people",
+              "removeConfirm": false
+            }
+          };
+
+
+
 
           vm.groupAdmins = [];
-          vm.showGroups = false;
           vm.showGroupMembers = true;
           vm.resourceGroups = null;
-          vm.giveGroupPermission = 'read';
-          vm.typeaheadGroup = null;
-          vm.newGroupName = null;
 
+
+          function incomplete() {
+              return   vm.model.users.user || vm.model.users.group ||  vm.model.users.name || vm.model.groups.user ||  vm.model.groups.group ||  vm.model.groups.name || vm.model.groups.removeConfirm;
+          };
 
           /* string utils  */
 
@@ -467,22 +486,16 @@ define([
             }
           }
 
-          function groupTypeaheadOnSelect(item, model, label) {
-            getGroupMembers(vm.typeaheadGroup);
-            vm.newTitle = vm.typeaheadGroup['schema:name'];
-            vm.newDescription = vm.typeaheadGroup['schema:description'];
-          }
-
           function isAdmin(id) {
             var index = vm.groupAdmins.indexOf(id);
             return (index > -1);
           }
 
-          function removeFromGroup(member, group) {
-            var index = group.users.indexOf(member);
+          function removeFromGroup(section,member) {
+            var index = vm.model[section].group.users.indexOf(member);
             if (index > -1) {
-              group.users.splice(index, 1);
-              updateGroupMembers(group);
+              vm.model[section].group.users.splice(index, 1);
+              updateGroupMembers(vm.model[section].group);
             }
           }
 
@@ -491,14 +504,19 @@ define([
             return true;
           }
 
-          //
-          function addGroup(group) {
+          function groupTypeaheadOnSelect(section, item, model, label) {
+            getGroupMembers(vm.model[section].group);
+            vm.newTitle = vm.model[section].group['schema:name'];
+            vm.newDescription = vm.model[section].group['schema:description'];
+          }
+
+          function addGroup(section, group) {
 
             vm.resourceGroups.push(group);
 
             // select the new group
-            vm.typeaheadGroup = group;
-            vm.newGroupName = '';
+            vm.model[section].group = group;
+            vm.model[section].name  = '';
 
 
             // resource nodes is the users and groups combined
@@ -513,11 +531,11 @@ define([
           }
 
           // create a new group
-          function createGroup(name) {
+          function createGroup(section, name) {
             resourceService.createGroup(name, '',
                 function (response) {
 
-                  addGroup(response);
+                  addGroup(section, response);
                   getGroupMembers(response);
 
                 },
@@ -528,23 +546,21 @@ define([
             );
           }
 
-          function updateGroupDescription(group, description) {
-
+          function updateGroupDescription(section,description) {
             vm.editingDescription = false;
             if (description.length > 0) {
-              group['schema:description'] = description;
-              vm.typeaheadGroup.description = description;
-              updateGroup(group);
+              vm.model[section].group['schema:description'] = description;
+              //vm.typeaheadGroup.description = description;
+              updateGroup(vm.model[section].group);
             }
           }
 
           // update the name of the group
-          function updateGroupName(group, name) {
+          function updateGroupName(section,name) {
             vm.editingTitle = false;
             if (name.length > 0) {
-              group['schema:name'] = name;
-              vm.typeaheadGroup.name = name;
-              updateGroup(group);
+              vm.model[section].group['schema:name'] = name;
+              updateGroup(vm.model[section].group);
             }
           }
 
@@ -565,21 +581,21 @@ define([
             );
           }
 
+          function deleteGroup(section,  resource) {
 
-          function deleteGroup(group, resource) {
-            resourceService.deleteGroup(group['@id'],
-                function (response) {
+            var id = vm.model[section].group['@id'];
+            resourceService.deleteGroup(id, function (response) {
 
-                  var i = vm.resourceGroups.indexOf(vm.typeaheadGroup);
+                  var i = vm.resourceGroups.indexOf(vm.model[section].group);
                   vm.resourceGroups.splice(i, 1);
-                  var j = vm.resourceNodes.indexOf(vm.typeaheadGroup);
+                  var j = vm.resourceNodes.indexOf(vm.model[section].group);
                   vm.resourceNodes.splice(j, 1);
-                  vm.typeaheadGroup = null;
+
 
                   // remove the shares for this group
                   var update = false;
                   for (var i=0;i<vm.shares.length;i++) {
-                    if (group['@id'] === vm.shares[i].node['@id']) {
+                    if (id === vm.shares[i].node['@id']) {
                       vm.shares.splice(i, 1);
                       update = true;
                     }
@@ -652,10 +668,6 @@ define([
             vm.resourceGroups = null;
             vm.resourceNodes = null;
             vm.resourcePermissions = null;
-            vm.showGroups = false;
-            vm.newGroupName = '';
-            vm.typeaheadUser = null;
-            vm.typeaheadGroup = null;
             vm.editingTitle = false;
             vm.editingDescription = false;
             vm.newTitle = "";

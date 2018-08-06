@@ -31,6 +31,7 @@ define([
           '$location',
           '$timeout',
           '$scope',
+          '$rootScope',
           '$window',
           '$translate',
           'CedarUser',
@@ -45,7 +46,7 @@ define([
           'MessagingService'
         ];
 
-        function cedarSearchBrowsePickerController($location, $timeout, $scope, $window, $translate, CedarUser,
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $window, $translate, CedarUser,
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService,
@@ -65,10 +66,12 @@ define([
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
+          vm.activeTab = 'resource-info';
 
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showPublishModal = showPublishModal;
           vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
@@ -76,10 +79,12 @@ define([
           vm.showFlowModal = showFlowModal;
           vm.copyModalVisible = false;
           vm.moveModalVisible = false;
+          vm.publishModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
           vm.flowModalVisible = false;
+
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -98,6 +103,8 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
+          vm.isSelected = isSelected;
+
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -106,17 +113,22 @@ define([
           vm.hash = $location.hash();
           vm.resources = [];
           vm.selectedResource = null;
+          vm.canNotSubmit = false;
           vm.canNotWrite = false;
           vm.canNotShare = false;
           vm.canNotPopulate = false;
           vm.canNotPublish = false;
           vm.canNotCreateDraft = false;
+          vm.canNotDelete = false;
+          vm.canNotRename = false;
           vm.currentFolder = null;
+
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
+          vm.isPublished = isPublished;
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -133,11 +145,14 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
 
-          vm.isResourcePublicationStatusActive = isResourcePublicationStatusActive;
-          vm.setResourcePublicationStatus = setResourcePublicationStatus;
+          //
+          // publication
+          //
+          vm.canPublish = canPublish;
+          vm.canPublishStatic = canPublishStatic;
+          vm.canCreateDraft = canCreateDraft;
+          vm.canCreateDraftStatic = canCreateDraftStatic;
 
-          vm.isResourceVersionActive = isResourceVersionActive;
-          vm.setResourceVersion = setResourceVersion;
 
           vm.isGridView = isGridView;
           vm.isListView = isListView;
@@ -154,6 +169,8 @@ define([
 
           vm.isInfoOpen = isInfoOpen;
           vm.toggleInfo = toggleInfo;
+          vm.isInfoTab = isInfoTab;
+          vm.isVersionTab = isVersionTab;
 
           vm.toggleResourceType = toggleResourceType;
 
@@ -162,10 +179,7 @@ define([
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
-          vm.canPublish = canPublish;
-          vm.canPublishStatic = canPublishStatic;
-          vm.canCreateDraft = canCreateDraft;
-          vm.canCreateDraftStatic = canCreateDraftStatic;
+
 
           vm.editingDescription = false;
           vm.editingDescriptionSelection = null;
@@ -178,25 +192,206 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
-          vm.versioningEnabled = function () {
-            return window.versioningEnabled;
+          vm.hasInstances = 0;
+          vm.hasInstanceResources = null;
+
+
+          //
+          //  Publication  start
+          //
+
+          vm.filterDraft = function () {
+            return (vm.getFilterStatus() == CONST.publication.DRAFT) || (vm.getFilterStatus() == CONST.publication.ALL);
+          };
+
+          vm.filterPublished = function () {
+            return (vm.getFilterStatus() == CONST.publication.PUBLISHED) || (vm.getFilterStatus() == CONST.publication.ALL);
+          };
+
+          vm.filterBoth = function () {
+            return (vm.getFilterStatus() == CONST.publication.ALL);
+          };
+
+          vm.filterLatest = function () {
+            return (vm.getFilterVersion() == CONST.publication.LATEST);
+          };
+
+          vm.filterAll = function () {
+            return (vm.getFilterVersion() == CONST.publication.ALL);
+          };
+
+
+          vm.setPublicationStatus = function (value) {
+            vm.setResourcePublicationStatus(value);
+          };
+
+          vm.setPublicationVersion = function (value) {
+            vm.setResourceVersion(value);
+          };
+
+          vm.setFilterBoth = function () {
+            vm.setResourcePublicationStatus(CONST.publication.ALL);
+          };
+
+          vm.setFilterPublished = function () {
+            vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
+          };
+
+          vm.setFilterDraft = function () {
+            vm.setResourcePublicationStatus(CONST.publication.DRAFT);
+          };
+
+          vm.toggleFilterPublished = function () {
+            if (vm.filterPublished()) {
+              vm.setResourcePublicationStatus(CONST.publication.DRAFT);
+            } else {
+              vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
+            }
+          };
+
+          vm.toggleFilterDraft = function () {
+            if (vm.filterDraft()) {
+              vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
+            } else {
+              vm.setResourcePublicationStatus(CONST.publication.DRAFT);
+            }
+          };
+
+          vm.getFilterVersion = function () {
+            return CedarUser.getVersion();
+          };
+
+          vm.getFilterStatus = function () {
+            return CedarUser.getStatus();
+          };
+
+          vm.getDraftIcon = function () {
+            return 'fa-check-circle';
+          };
+
+          vm.getBothIcon = function () {
+            return 'fa-check-circle';
+          };
+
+          vm.getAllIcon = function () {
+            return 'fa-check-circle';
+          };
+
+          vm.getPublishedIcon = function () {
+            return 'fa-globe';
+          };
+
+          vm.getLatestIcon = function () {
+            return 'fa-check-circle';
+          };
+
+          vm.getVersionIcon = function (value) {
+            switch (value) {
+                // case CONST.publication.DRAFT:
+                //   return vm.getDraftIcon();
+                //   break;
+              case CONST.publication.PUBLISHED:
+                return vm.getPublishedIcon();
+                break;
+              case CONST.publication.LATEST:
+                return vm.getLatestIcon();
+                break;
+            }
+          };
+
+          vm.setFilterLatest = function () {
+            vm.setResourceVersion(CONST.publication.LATEST);
+          };
+
+          vm.setFilterAll = function () {
+            vm.setResourceVersion(CONST.publication.ALL);
+          };
+
+          vm.toggleFilterLatest = function () {
+            switch (vm.getFilterVersion()) {
+              case CONST.publication.LATEST:
+                vm.setResourceVersion(CONST.publication.ALL);
+                break;
+              case CONST.publication.ALL:
+                vm.setResourceVersion(CONST.publication.LATEST);
+                break;
+            }
+          };
+
+          vm.setResourcePublicationStatus = function (value) {
+            CedarUser.setStatus(value);
+            UISettingsService.saveStatus(value);
+            init();
+          };
+
+          vm.setResourceVersion = function (value) {
+            CedarUser.setVersion(value);
+            UISettingsService.saveVersion(value);
+            init();
+          };
+
+          //
+          //  publication end
+          //
+
+          vm.titleLocation = function () {
+            return DataManipulationService.titleLocation();
+          };
+
+          vm.descriptionLocation = function () {
+            return DataManipulationService.descriptionLocation();
+          };
+
+          vm.getTitle = function (node) {
+            if (node) {
+              return DataManipulationService.getTitle(node);
+            }
+          };
+
+          vm.getDescription = function (node) {
+            if (node) {
+              return DataManipulationService.getDescription(node);
+            }
+          };
+
+          vm.getId = function (node, label) {
+            if (node) {
+              return DataManipulationService.getId(node) + label;
+            }
           };
 
           vm.hideModal = function (visible) {
             visible = false;
           };
 
-          vm.cancelDescriptionEditing = function() {
+          vm.cancelDescriptionEditing = function () {
+          };
+
+          // adjust the position of the context menu
+          vm.toggledCedarDropdownMenu = function ($event, resource) {
+
+            var centerPanel = document.getElementById('workspace-view-container');
+            var row = document.getElementById(vm.getId(resource, 'row'));
+            var menu = document.getElementById(vm.getId(resource, 'menu'));
+
+            if (centerPanel && row && menu) {
+
+              var centerScrollTop = centerPanel.scrollTop;
+              var centerRect = centerPanel.getBoundingClientRect();
+              var rowRect = row.getBoundingClientRect();
+
+              menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
+              menu.style.setProperty("top", ($event.pageY - centerRect.top + centerScrollTop  ) + "px");
+            }
           };
 
           vm.toggleDescriptionEditing = function () {
             if (vm.getSelection()) {
               vm.editingDescription = !vm.editingDescription;
 
-
               if (vm.editingDescription) {
                 vm.editingDescriptionSelection = vm.getSelection();
-                vm.editingDescriptionInitialValue = vm.selectedResource['schema:description'];
+                vm.editingDescriptionInitialValue = vm.selectedResource[CONST.model.DESCRIPTION];
 
                 $timeout(function () {
                   var jqDescriptionField = $('#edit-description');
@@ -217,7 +412,7 @@ define([
                       if (jqDescriptionField) {
                         jqDescriptionField.blur();
                       }
-                      if ( vm.editingDescriptionInitialValue != vm.editingDescriptionSelection['schema:description']) {
+                      if (vm.editingDescriptionInitialValue != vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
                         vm.updateDescription();
                       }
                       $window.onclick = null;
@@ -234,16 +429,24 @@ define([
           };
 
           vm.selectResource = function (resource) {
-            vm.editingDescription = false;
-            vm.selectedResource = resource;
-            //TODO: hide the write/read/share boolean vars in the info panel
+            if (vm.getId(resource) != vm.getId(vm.selectedResource)) {
 
-            $timeout(function () {
-              vm.getResourceDetails(resource);
-              if (typeof vm.selectResourceCallback === 'function') {
-                vm.selectResourceCallback(resource);
-              }
-            }, 0);
+              vm.editingDescription = false;
+              vm.selectedResource = resource;
+
+
+              $timeout(function () {
+                if (infoShowing()) {
+                  vm.getResourceReport(resource);
+                } else {
+                  vm.getResourceDetails(resource);
+                }
+
+                if (typeof vm.selectResourceCallback === 'function') {
+                  vm.selectResourceCallback(resource);
+                }
+              }, 0);
+            }
           };
 
           // show the info panel with this resource or find one
@@ -260,7 +463,7 @@ define([
               }
             }
 
-            vm.setResourceInfoVisibility(true);
+            //vm.setResourceInfoVisibility(true);
           };
 
           vm.isResourceSelected = function (resource) {
@@ -272,13 +475,80 @@ define([
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && vm.selectedResource.nodeType === "instance" &&  vm.selectedResource["schema:isBasedOn"] === "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933";
+            return vm.selectedResource && resourceService.canSubmit(vm.selectedResource);
+          };
+
+          vm.getNumberOfInstances = function () {
+            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
+              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+            }
+          };
+
+          vm.getDerivedFrom = function () {
+            if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
+              return vm.selectedResource[CONST.model.DERIVEDFROM];
+            }
+          };
+
+          vm.getBasedOn = function () {
+            if (vm.selectedResource && vm.selectedResource[CONST.model.ISBASEDON]) {
+              return vm.selectedResource[CONST.model.ISBASEDON];
+            }
+          };
+
+          vm.doSearchTemplateInstances = function (id) {
+            var limit = 100;
+            var offset = 0;
+            var sort = 'name';
+
+            resourceService.hasMetadata(
+                id,
+                {sort: sort, limit: limit, offset: offset},
+                function (response) {
+                  vm.hasInstances = response.totalCount > 0;
+                  vm.hasInstanceResources = response.resources;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                }
+            );
           };
 
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
-            return (vm.showResourceInfo ? 'Hide' : 'Show') + ' details';
+            return (infoShowing() ? 'Hide' : 'Show') + ' details';
+          };
+
+          vm.getResourceReport = function (resource) {
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
+            }
+            var id = resource['@id'];
+            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotPublish = !vm.canPublishStatic();
+            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
+            resourceService.getResourceReport(
+                resource,
+                function (response) {
+                  if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
+                    vm.selectedResource = response;
+                    vm.canNotWrite = !vm.canWrite();
+                    vm.canNotSubmit = !vm.canSubmit();
+                    vm.canNotShare = !vm.canShare();
+                    vm.canNotPublish = !vm.canPublish();
+                    vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
+                    vm.canNotRename =  vm.canNotWrite;
+                    vm.canNotPopulate = !vm.isTemplate();
+                    vm.canNotCreateDraft = !vm.canCreateDraft();
+                  }
+
+                  vm.doSearchTemplateInstances(id);
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
           };
 
 
@@ -297,6 +567,7 @@ define([
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
+                    vm.canNotDelete = vm.isPublished();
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
@@ -307,6 +578,7 @@ define([
                 }
             );
           };
+
 
           vm.canRead = function () {
             return resourceService.canRead(vm.getSelectedNode());
@@ -328,27 +600,26 @@ define([
             return resourceService.canWrite(vm.currentFolder);
           };
 
-          vm.getResourceVersion = function () {
-            var resource = vm.getSelection();
+          vm.getResourceVersion = function (resource) {
             if (resource != null) {
               return resource['pav:version'];
             }
           };
 
-          vm.getNextResourceVersion = function () {
-            var currentVersion = vm.getResourceVersion();
+          vm.getNextResourceVersion = function (resource) {
+            var currentVersion = vm.getResourceVersion(resource);
             var parts = currentVersion.split(".");
             if (parts.length == 3) {
               parts[2] = parseInt(parts[2]) + 1;
               return parts.join(".");
             }
             return null;
-          }
+          };
 
-          vm.getResourcePublicationStatus = function () {
-            var resource = vm.getSelection();
+          vm.getResourcePublicationStatus = function (value) {
+            var resource = value || vm.getSelection();
             if (resource != null) {
-              return resource['bibo:status'];
+              return resource[CONST.publication.STATUS];
             }
           };
 
@@ -360,7 +631,7 @@ define([
               var postData = {};
               var id = resource['@id'];
               var nodeType = resource.nodeType;
-              var description = resource['schema:description'];
+              var description = resource[CONST.model.DESCRIPTION];
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
@@ -377,7 +648,7 @@ define([
                     resourceService.renameNode(id, null, description),
                     function (response) {
 
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": title},
                           'GENERIC.Updated');
                     },
@@ -390,7 +661,7 @@ define([
                     resourceService.renameNode(id, null, description),
                     function (response) {
 
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": title},
                           'GENERIC.Updated');
                     },
@@ -404,7 +675,7 @@ define([
                     function (response) {
 
                       $scope.form = response.data;
-                      var title = DataManipulationService.getTitle(response.data);
+                      var title = vm.getTitle(response.data);
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                           {"title": title}, 'GENERIC.Updated');
                     },
@@ -421,6 +692,17 @@ define([
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+
+                      // UIMessageService.acknowledgedExecution(
+                      //     function () {
+                      //       $timeout(function () {
+                      //         $rootScope.goToHome();
+                      //       });
+                      //     },
+                      //     'GENERIC.Warning',
+                      //     $translate.instant(error.data.message),
+                      //     'GENERIC.Ok');
+
                     }
                 );
               }
@@ -459,6 +741,17 @@ define([
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        //
+                        // UIMessageService.acknowledgedExecution(
+                        //     function () {
+                        //       $timeout(function () {
+                        //         $rootScope.goToHome();
+                        //       });
+                        //     },
+                        //     'GENERIC.Warning',
+                        //     $translate.instant(error.data.message),
+                        //     'GENERIC.Ok');
+
                       }
                   );
                 } else {
@@ -535,12 +828,9 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type             : true,
-              publicationStatus: false,
-              version          : false
+              type   : true,
+              version: true
             };
-            vm.resourcePublicationStatusFilterValue = uip.resourcePublicationStatusFilter.publicationStatus == null ? "all" : uip.resourcePublicationStatusFilter.publicationStatus;
-            vm.resourceVersionFilterValue = uip.resourceVersionFilter.version == null ? "latest" : uip.resourceVersionFilter.version;
           }
 
           function init() {
@@ -624,8 +914,8 @@ define([
                   sort             : sortField(),
                   limit            : limit,
                   offset           : offset,
-                  version          : vm.resourceVersionFilterValue,
-                  publicationStatus: vm.resourcePublicationStatusFilterValue
+                  version          : vm.getFilterVersion(),
+                  publicationStatus: vm.getFilterStatus()
                 },
                 function (response) {
                   vm.searchTerm = term;
@@ -653,8 +943,8 @@ define([
                   sort             : sortField(),
                   limit            : limit,
                   offset           : offset,
-                  version          : vm.resourceVersionFilterValue,
-                  publicationStatus: vm.resourcePublicationStatusFilterValue
+                  version          : vm.getFilterVersion(),
+                  publicationStatus: vm.getFilterStatus()
                 },
                 function (response) {
                   vm.isSearching = true;
@@ -715,16 +1005,17 @@ define([
             );
           }
 
-          function publishResource(resource) {
+          // set publication status as published
+          function publishResource(resource, version) {
             if (!resource) {
               resource = getSelection();
             }
-            var newVersion = vm.getResourceVersion();
+            var newVersion = version || vm.getResourceVersion(resource);
             resourceService.publishResource(
                 resource,
                 newVersion,
                 function (response) {
-                  var title = DataManipulationService.getTitle(resource);
+                  var title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": title},
                       'GENERIC.Published');
                   vm.refreshWorkspace(resource);
@@ -735,7 +1026,8 @@ define([
             );
           }
 
-          function createDraftResource(resource) {
+          // set publication status as draft
+          function createDraftResource(resource, version) {
             if (!resource) {
               resource = getSelection();
             }
@@ -743,7 +1035,7 @@ define([
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
-            var newVersion = vm.getNextResourceVersion();
+            var newVersion = version || vm.getResourceVersion(resource);
             var propagateSharing = true;
             resourceService.createDraftResource(
                 resource,
@@ -751,7 +1043,7 @@ define([
                 newVersion,
                 propagateSharing,
                 function (response) {
-                  var title = DataManipulationService.getTitle(resource);
+                  var title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
                       'GENERIC.CreatedDraft');
                   vm.refreshWorkspace(resource);
@@ -762,14 +1054,27 @@ define([
             );
           }
 
-          function launchInstance(resource) {
+          function launchInstance(value) {
+            var resource = value || getSelection();
+            if (resource) {
+              var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
-            if (!resource) {
-              resource = getSelection();
+              // TODO exceptionally painful for users if we turn this on
+              // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
+              //   UIMessageService.confirmedExecution(
+              //       function () {
+              //         $location.url(url);
+              //       },
+              //       'GENERIC.AreYouSure',
+              //       'This template is a draft.',
+              //       'YES'
+              //   );
+              // } else {
+              //   $location.url(url);
+              // }
+
+              $location.url(url);
             }
-
-            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-            $location.url(url);
           }
 
 
@@ -915,8 +1220,8 @@ define([
                     sort             : sortField(),
                     limit            : limit,
                     offset           : offset,
-                    version          : vm.resourceVersionFilterValue,
-                    publicationStatus: vm.resourcePublicationStatusFilterValue
+                    version          : vm.getFilterVersion(),
+                    publicationStatus: vm.getFilterStatus()
                   },
                   function (response) {
                     vm.currentFolderId = folderId;
@@ -929,7 +1234,17 @@ define([
                     $scope.selectResourceById(resourceId);
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                   UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+
+                    // UIMessageService.acknowledgedExecution(
+                    //     function () {
+                    //       $timeout(function () {
+                    //         $rootScope.goToHome();
+                    //       });
+                    //     },
+                    //     'GENERIC.Warning',
+                    //     $translate.instant(error.data.message),
+                    //     'GENERIC.Ok');
                   }
               );
             } else {
@@ -948,7 +1263,18 @@ define([
                   vm.currentFolder = response;
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  //UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+
+                  UIMessageService.acknowledgedExecution(
+                      function () {
+                        $timeout(function () {
+                          $rootScope.goToHome();
+                        });
+                      },
+                      'GENERIC.Warning',
+                      $translate.instant(error.data.message),
+                      'GENERIC.Ok');
+
                 }
             );
           }
@@ -965,6 +1291,12 @@ define([
               }
             }
             return result;
+          }
+
+          function isSelected(node) {
+            if (hasSelection() && node) {
+              return (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
+            }
           }
 
           function getNodeType(resource) {
@@ -987,10 +1319,10 @@ define([
                   result += CONST.resourceIcon.INSTANCE;
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += CONST.resourceIcon.ELEMENT ;
+                  result += CONST.resourceIcon.ELEMENT;
                   break;
                 case CONST.resourceType.FIELD:
-                  result += CONST.resourceIcon.FIELD ;
+                  result += CONST.resourceIcon.FIELD;
                   break;
               }
             }
@@ -1037,26 +1369,33 @@ define([
             return false;
           }
 
-          function canPublish() {
-            return vm.versioningEnabled() && resourceService.canPublish(vm.getSelectedNode());
+          function canPublish(value) {
+            var resource = value || vm.selectedResource;
+            return resourceService.canPublish(resource);
+          };
+
+          function canCreateDraft(value) {
+            var resource = value || vm.selectedResource;
+            return resourceService.canCreateDraft(resource);
           };
 
           function canPublishStatic() {
-            return vm.versioningEnabled() && (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource['bibo:status'] == 'bibo:draft');
+            return (hasSelection() &&
+            (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+            vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+            vm.selectedResource[CONST.publication.STATUS] == CONST.publication.DRAFT);
           }
 
-          function canCreateDraft() {
-            return vm.versioningEnabled() && resourceService.canCreateDraft(vm.getSelectedNode());
+          function isPublished(resource) {
+            var node = resource || vm.selectedResource;
+            return node && (node[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           };
 
           function canCreateDraftStatic() {
-            return vm.versioningEnabled() && (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource['bibo:status'] == 'bibo:published');
+            return (hasSelection() &&
+            (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+            vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+            vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           }
 
           function isTemplate() {
@@ -1099,14 +1438,6 @@ define([
             return vm.resourceTypes[type];
           }
 
-          function isResourcePublicationStatusActive(publicationStatus) {
-            return vm.resourcePublicationStatusFilterValue == publicationStatus;
-          }
-
-          function isResourceVersionActive(version) {
-            return vm.resourceVersionFilterValue == version;
-          }
-
           function showOrHide(type) {
             return $translate.instant(isResourceTypeActive(type) ? 'GENERIC.Hide' : 'GENERIC.Show');
           }
@@ -1133,7 +1464,10 @@ define([
 
           // is something changed by the filters?  for now, just look at the resource types
           function resetFiltersEnabled() {
-            return Object.values(vm.resourceTypes).indexOf(false) > -1;
+            var notLatest = vm.getFilterVersion() != CONST.publication.LATEST;
+            var notPublishedAndDraft = vm.getFilterStatus() != CONST.publication.ALL;
+            var typeHidden = Object.values(vm.resourceTypes).indexOf(false) > -1
+            return typeHidden || notLatest || notPublishedAndDraft;
           }
 
           function resetFilters() {
@@ -1143,17 +1477,15 @@ define([
               var key = 'resourceTypeFilters.' + nodeType;
               updates[key] = true;
             }
-            vm.resourcePublicationStatusFilterValue = "all";
-            vm.resourceVersionFilterValue = "latest";
-            updates['resourcePublicationStatusFilter.publicationStatus'] = vm.resourcePublicationStatusFilterValue;
-            updates['resourceVersionFilter.version'] = vm.resourceVersionFilterValue;
+            updates['resourcePublicationStatusFilter.publicationStatus'] = CONST.publication.ALL;
+            updates['resourceVersionFilter.version'] = CONST.publication.LATEST;
 
             UISettingsService.saveUIPreferences(updates);
             init();
           }
 
           function infoShowing() {
-            return vm.showResourceInfo && onDashboard();
+            return CedarUser.isInfoOpen();
           }
 
           function narrowContent() {
@@ -1220,17 +1552,6 @@ define([
             init();
           }
 
-          function setResourcePublicationStatus(publicationStatus) {
-            vm.resourcePublicationStatusFilterValue = publicationStatus;
-            UISettingsService.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', publicationStatus);
-            init();
-          }
-
-          function setResourceVersion(version) {
-            vm.resourceVersionFilterValue = version;
-            UISettingsService.saveUIPreference('resourceVersionFilter.version', version);
-            init();
-          }
 
           /**
            * Watch functions.
@@ -1402,71 +1723,85 @@ define([
             UISettingsService.saveInfo(CedarUser.toggleInfo());
           }
 
-          // open the move modal
-          function showCopyModal(value) {
-            //var r = resource;
-            //if (!r && vm.selectedResource) {
-            //  r = vm.selectedResource;
-            //}
-            var resource = value || vm.selectedResource;
-            var homeFolderId = CedarUser.getHomeFolderId();
-            var folderId = vm.currentFolderId || homeFolderId;
-            vm.copyModalVisible = true;
-            $scope.$broadcast('copyModalVisible',
-                [vm.copyModalVisible, resource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                 CedarUser.getSort()]);
+          function isVersionTab() {
+            return CedarUser.isVersionTab();
           }
 
-          // open the move modal
-          function showMoveModal(resource) {
+          function isInfoTab() {
+            return CedarUser.isInfoTab();
+          }
 
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
+          function toggleInfoTab(tab) {
+            UISettingsService.saveInfoTab(CedarUser.toggleInfoTab(tab));
+          }
+
+          vm.isTabActive = function (item) {
+            return vm.activeTab === item;
+          };
+
+          vm.setTab = function (item) {
+            vm.activeTab = item;
+            if (vm.activeTab == 'resource-version') {
+              vm.getResourceReport(vm.getSelectedNode());
+              toggleInfoTab('version');
+            } else {
+              toggleInfoTab('info');
             }
+          };
 
-            if (vm.canWrite(r)) {
-              vm.moveModalVisible = true;
+
+          // open the move modal
+          function showCopyModal() {
+            if (vm.selectedResource) {
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
+              var folderId = vm.currentFolderId || homeFolderId;
+              vm.copyModalVisible = true;
+              $scope.$broadcast('copyModalVisible',
+                  [vm.copyModalVisible, vm.selectedResource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
 
+          // open the move modal
+          function showMoveModal() {
+            if (vm.selectedResource && !vm.canNotWrite) {
+              vm.moveModalVisible = true;
+              var homeFolderId = CedarUser.getHomeFolderId();
+              $scope.$broadcast('moveModalVisible',
+                  [vm.moveModalVisible, vm.selectedResource, vm.currentPath, vm.currentFolderId, homeFolderId, vm.resourceTypes,
+                   CedarUser.getSort()]);
+            }
+          }
+
+          // open the publish modal
+          function showPublishModal(callback, title) {
+            if (vm.selectedResource && !vm.canNotWrite) {
+              vm.publishModalVisible = true;
+              var homeFolderId = CedarUser.getHomeFolderId();
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, title]);
+            }
+          }
 
           function showFlowModal() {
-            vm.flowModalVisible = true;
-            var instanceId = null;
-            var name = null;
-            if (vm.selectedResource && vm.selectedResource.nodeType == CONST.resourceType.INSTANCE) {
-              instanceId = vm.selectedResource['@id'];
-              name = vm.selectedResource['schema:name'];
+            if (vm.selectedResource && !vm.canNotSubmit) {
+              vm.flowModalVisible = true;
+              $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, vm.selectedResource['@id'], vm.selectedResource[CONST.model.NAME]]);
             }
-            $scope.$broadcast('flowModalVisible', [vm.flowModalVisible, instanceId, name]);
           }
 
           // open the share modal
-          function showShareModal(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
+          function showShareModal() {
+            if (vm.selectedResource && !vm.canNotShare) {
+              vm.shareModalVisible = true;
+              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, vm.selectedResource]);
             }
-            vm.shareModalVisible = true;
-            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
           }
 
           // open the rename modal
-          function showRenameModal(resource) {
-
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
-
-            if (vm.canWrite(r)) {
+          function showRenameModal() {
+            if (vm.selectedResource && !vm.canNotWrite) {
               vm.renameModalVisible = true;
-              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, vm.selectedResource]);
             }
           }
 
@@ -1514,6 +1849,27 @@ define([
           // do we have any resources to show?
           vm.hasResources = function () {
             return vm.totalCount > 0;
+          };
+
+          vm.search = function (searchTerm) {
+
+            vm.searchTerm = searchTerm;
+            var baseUrl = '/dashboard';
+            var queryParams = {};
+            var folderId = QueryParamUtilsService.getFolderId();
+            if (folderId) {
+              queryParams['folderId'] = folderId;
+            }
+            queryParams['search'] = searchTerm;
+            // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+            // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+            queryParams['t'] = Date.now();
+            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            $location.url(url);
+            if (searchTerm) {
+              UIProgressService.start();
+            }
+
           };
 
 

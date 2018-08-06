@@ -39,12 +39,15 @@
 <![endif]-->
 <nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role=" navigation ">
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
-    <div class="navbar-header">
+    <div class="navbar-header ">
 
-      <!-- if we are in the workspace  --->
-      <div ng-if="hc.isDashboard()">
-        <div>
-          <div class="nav-search">
+      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging()">
+        <div class="row">
+          <div class="col-xs-2" ng-click="hc.goToDashboardOrBack()">
+            <a class="navbar-brand " alt="Cedar" href="javascript:">Cedar</a>
+          </div>
+
+          <div class="col-xs-7" style="margin-top:0;padding-top:0">
             <form>
               <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
@@ -56,12 +59,36 @@
               </div>
             </form>
           </div>
+
+          <div class="col-xs-3">
+            <ul class="list-inline pull-right" style="margin-top:10px;margin-right:-10px;white-space: nowrap;">
+
+
+              <li id="messaging">
+                <button  class="inline" uib-tooltip='{{"Messages" | translate}}' tooltip-placement="bottom"
+                    type="button"
+                    ng-click="hc.openMessaging()"><i class="fa fa-bell inline"></i></button>
+                <div id="messaging-number" ng-show="hc.hasUnreadMessages()">
+                  <button type="button"
+                      uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+                      tooltip-placement="bottom"
+                      ng-click="hc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
+                  </button>
+                </div>
+              </li>
+
+              <li id="user-menu"><button  id="user-menu-dropdown-trigger" class="inline"
+                  type="button"
+                  ng-click="hc.toggleUserMenuDropdown()"><i   class="fa fa-user inline"></i></button>
+               </li>
+
+            </ul>
+          </div>
+
         </div>
-        <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
-
-      <div ng-if="!hc.isDashboard()">
+      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging()">
         <div class="navbar-back flex">
           <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
@@ -69,10 +96,13 @@
             <div class="document-title">{{hc.formatDocumentTitle()}}</div>
           </div>
 
-          <div ng-if="!hc.isMessaging()" class="flex-right feedback-form" >
-            <div  uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
-            <div  uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-placement="bottom"><i class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
-            <div  uib-tooltip="{{hc.validInvalidTip()}}" tooltip-placement="bottom"><i class="fa "
+          <div  class="flex-right feedback-form">
+            <div uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
+            <div uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
+            <div uib-tooltip="{{hc.validInvalidTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa "
                 ng-class="{'fa-exclamation-triangle': !hc.isValid(), 'fa-check': hc.isValid()}"></i></div>
           </div>
 
@@ -80,13 +110,23 @@
       </div>
     </div>
   </div>
-
-  </div>
 </nav>
 
 <div id="angular-views-entry" ng-view="">Preloading CEDAR ...</div>
 
 <toasty></toasty>
+
+<section>
+  <div id="user-menu-dropdown">
+    <ul>
+      <a href="/profile"><li id="user-profile-tool" >Profile</li></a>
+      <a target="_blank" href="http://metadatacenter.org/tools-training/support"><li id="user-help">Help</li></a>
+      <a target="_blank" href="http://metadatacenter.org/tools-training/orientation"><li id="user-about" >About</li></a>
+      <a href="/privacy"><li id="user-privacy" >Privacy</li></a>
+      <a href="/logout"><li id="user-logout-tool" >Logout</li></a>
+    </ul>
+  </div>
+</section>
 
 <script src="scripts/keycloak/keycloak.min.js" type="text/javascript"></script>
 <script src="scripts/handlers/KeycloakUserHandler.js" type="text/javascript"></script>

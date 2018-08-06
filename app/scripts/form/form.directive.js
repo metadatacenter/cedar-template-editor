@@ -379,19 +379,27 @@ define([
           startParseForm();
         });
 
-        // watch the dirty flag on the form and pass it up to root
-        $scope.$watch('forms.templateForm.$dirty', function () {
-          //UIUtilService.setDirty($scope.forms.templateForm.$dirty);
+        // watch the dirty flag on the form
+        $scope.$watch('forms.templateForm.$dirty', function (value) {
+          UIUtilService.setForm($scope.forms.templateForm);
+          if (value) {
+            UIUtilService.setDirty(value);
+          }
+        });
+
+        $scope.$on("form:firstDirty", function (event) {
+          if (UIUtilService.hasMetadata()) {
+            UIMessageService.flashWarning("The template has metadata and should not be modified.");
+          }
+          if (UIUtilService.isLocked()) {
+            UIMessageService.flashWarning('Modifications cannot be saved without write permission.');
+          }
         });
 
         $scope.$on("form:clean", function () {
+          console.log('form:clean');
           UIUtilService.setDirty(false);
         });
-
-        // $scope.$on("form:dirty", function () {
-        //   $scope.forms.templateForm.$dirty = true;
-        //   console.log('form:dirty',$scope.forms.templateForm.$dirty);
-        // });
 
         $scope.$on("form:update", function () {
           startParseForm();

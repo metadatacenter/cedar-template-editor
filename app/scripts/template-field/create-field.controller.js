@@ -10,14 +10,14 @@ define([
                                    "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
-                                   "FrontendUrlService", "QueryParamUtilsService", "CONST"];
+                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                  HeaderService, StagingService, DataTemplateService, FieldTypeService,
                                  TemplateFieldService, resourceService, UIMessageService, DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
-                                 CONST) {
+                                 CONST,CedarUser) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -74,7 +74,7 @@ define([
 
     $scope.setClean = function () {
       $rootScope.$broadcast('form:clean');
-      UIUtilService.setDirty(false);
+      //UIUtilService.setDirty(false);
     };
 
 
@@ -108,6 +108,7 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
+            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'FIELD' + '.load.error', error);
@@ -277,6 +278,21 @@ define([
     // Saves the field in the database
     $scope.doSaveField = function () {
 
+      var doSave = function(response) {
+        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+        // confirm message
+        var title = dms.getTitle(response.data);
+        UIMessageService.flashSuccess('SERVER.FIELD.create.success',
+            {"title": title},
+            'GENERIC.Created');
+        // Reload page with field id
+        var newId = response.data['@id'];
+        dms.createDomIds(response.data);
+        $location.path(FrontendUrlService.getFieldEdit(newId));
+        $scope.setClean();
+      };
+
 
       // First check to make sure Field Name, Field Description are not blank
       $scope.fieldErrorMessages = [];
@@ -301,24 +317,24 @@ define([
           AuthorizedBackendService.doCall(
               TemplateFieldService.saveTemplateField(QueryParamUtilsService.getFolderId(), $scope.field),
               function (response) {
-
-                UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                // confirm message
-                var title = dms.getTitle(response.data);
-                UIMessageService.flashSuccess('SERVER.FIELD.create.success',
-                    {"title": title},
-                    'GENERIC.Created');
-                // Reload page with field id
-                var newId = response.data['@id'];
-                dms.createDomIds(response.data);
-                $location.path(FrontendUrlService.getFieldEdit(newId));
-
-                $scope.setClean();
+                doSave(response);
               },
               function (err) {
-                UIMessageService.showBackendError('SERVER.FIELD.create.error', err);
-                owner.enableSaveButton();
+                if (err.data.errorKey == "noWriteAccessToFolder") {
+                  AuthorizedBackendService.doCall(
+                      TemplateFieldService.saveTemplateField(CedarUser.getHomeFolderId(), $scope.field),
+                      function (response) {
+                        doSave(response);
+                        UIMessageService.flashWarning('SERVER.INSTANCE.create.homeFolder');
+                      },
+                      function (err) {
+                        UIMessageService.showBackendError('SERVER.FIELD.create.error', err);
+                        owner.enableSaveButton();
+                      });
+                } else {
+                  UIMessageService.showBackendError('SERVER.FIELD.create.error', err);
+                  owner.enableSaveButton();
+                }
               }
           );
         }
@@ -340,16 +356,11 @@ define([
                 function (response) {
 
                   UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                  // dms.createDomIds(response.data);
-                  // angular.extend($scope.field, response.data);
-
                   UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": response.data.title},
                       'GENERIC.Updated');
 
                   owner.enableSaveButton();
                   $scope.setClean();
-
 
                 },
                 function (err) {

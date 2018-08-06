@@ -764,6 +764,7 @@ define([
 
         // destroy the handsontable spreadsheet and set the container empty
         service.destroySpreadsheet = function ($scope) {
+
           if ($scope.spreadsheetDataScope) {
 
             // delete extra rows in the object
@@ -788,6 +789,7 @@ define([
         // create spreadsheet view using handsontable
         service.switchToSpreadsheet = function ($scope, $element, index, isField, addCallback, removeCallback,
                                                 createExtraRows, deleteExtraRows) {
+
 
 
           var type = isField() ? 'field' : 'element';

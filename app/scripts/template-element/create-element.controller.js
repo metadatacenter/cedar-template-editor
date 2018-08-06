@@ -10,14 +10,14 @@ define([
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
                                      "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
-                                     "FrontendUrlService", "QueryParamUtilsService", "CONST"];
+                                     "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
                                    TemplateElementService, resourceService, UIMessageService, DataManipulationService,
                                    DataUtilService,UIUtilService,
-                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
+                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser) {
 
     var dms = DataManipulationService;
 
@@ -111,6 +111,7 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
+            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
@@ -311,6 +312,32 @@ define([
     // Stores the element into the database
     $scope.doSaveElement = function () {
 
+      var doSave = function(response) {
+        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+        // confirm message
+        var title = dms.getTitle(response.data);
+        UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
+            {"title": title},
+            'GENERIC.Created');
+        // Reload page with element id
+        var newId = response.data['@id'];
+        dms.createDomIds(response.data);
+        $location.path(FrontendUrlService.getElementEdit(newId));
+
+        $scope.setClean();
+      };
+
+      var doUpdate = function(response) {
+        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+        UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+            'GENERIC.Updated');
+
+        owner.enableSaveButton();
+        $scope.setClean();
+      };
+
       // First check to make sure Element Name, Element Description are not blank
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
@@ -340,24 +367,25 @@ define([
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
-
-                UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                // confirm message
-                var title = dms.getTitle(response.data);
-                UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
-                    {"title": title},
-                    'GENERIC.Created');
-                // Reload page with element id
-                var newId = response.data['@id'];
-                dms.createDomIds(response.data);
-                $location.path(FrontendUrlService.getElementEdit(newId));
-
-                $scope.setClean();
+                doSave(response);
               },
               function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
-                owner.enableSaveButton();
+
+                if (err.data.errorKey == "noWriteAccessToFolder") {
+                  AuthorizedBackendService.doCall(
+                      TemplateElementService.saveTemplateElement(CedarUser.getHomeFolderId(), $scope.element),
+                      function (response) {
+                        doSave(response);
+                        UIMessageService.flashWarning('SERVER.INSTANCE.create.homeFolder');
+                      },
+                      function (err) {
+                        UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+                        owner.enableSaveButton();
+                      });
+                } else {
+                  UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+                  owner.enableSaveButton();
+                }
               }
           );
         }
@@ -372,28 +400,14 @@ define([
             // strip the temps from the copied form only, and save the copy
             DataManipulationService.stripTmps(copiedForm);
 
-
-
             AuthorizedBackendService.doCall(
                 TemplateElementService.updateTemplateElement(id, copiedForm),
                 function (response) {
-
-                  UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                  // dms.createDomIds(response.data);
-                  // angular.extend($scope.element, response.data);
-
-                  UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-                      'GENERIC.Updated');
-
-                  owner.enableSaveButton();
-                  $scope.setClean();
-
-
+                  doUpdate(response);
                 },
                 function (err) {
-                  UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                  owner.enableSaveButton();
+                    UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                    owner.enableSaveButton();
                 }
             );
           }
