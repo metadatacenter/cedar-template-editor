@@ -18,9 +18,9 @@ define([
       if (today.getMonth() == v.getMonth() && today.getYear() == v.getYear() && today.getDay() == v.getDay()) {
         return $filter('date')(value, 'shortTime');
       }
-      if (today.getYear() == v.getYear()) {
-        return $filter('date')(value, 'MMM d');
-      }
+      // if (today.getYear() == v.getYear()) {
+      //   return $filter('date')(value, 'MMM d');
+      // }
       return $filter('date')(value, 'shortDate');
     };
   };

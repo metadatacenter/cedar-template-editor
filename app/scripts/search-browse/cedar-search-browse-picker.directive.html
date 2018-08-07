@@ -383,8 +383,8 @@
                           dc.getTitle(resource)}}
                         </div>
                       </div>
-                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{  resource['pav:createdOn'] | prettyDate}}</div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
+                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] | prettyDate}}</div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
                       <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
                       <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
                       <div class="flex" style="width:40px;justify-content:flex-end;">
@@ -430,9 +430,9 @@
                       <div class="flex ellipsis" style="justify-content:space-between">
                         <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon><div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
                       </div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{ resource['pav:createdOn'] | prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:createdOn'] | prettyDate }}
                       </div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
                       </div>
                       <div ng-if="dc.filterPublished() && dc.filterLatest()" class="ellipsis"  style="width:40px;">
                         <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i></div>
