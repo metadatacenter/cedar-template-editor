@@ -399,6 +399,26 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createLogo));
   };
 
+  this.createPage = function (type, title, description) {
+
+    browser.wait(EC.visibilityOf(createButton));
+    browser.wait(EC.elementToBeClickable(createButton));
+    createButton.click();
+
+    var button = createResourceButtons[type];
+    browser.wait(EC.visibilityOf(button));
+    browser.wait(EC.elementToBeClickable(button));
+    button.click();
+
+    if (title) {
+      templateCreatorPage.setTitle(type, title);
+    }
+    if (description) {
+      templateCreatorPage.setDescription(type, description);
+    }
+    return title;
+  };
+
   // create a template or folder resource and set the title, return to the workspace
   this.createResource = function (type, title, description) {
 

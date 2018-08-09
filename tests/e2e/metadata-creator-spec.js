@@ -45,7 +45,6 @@ describe('metadata-creator', function () {
   });
 
   it("should be on the workspace", function () {
-    console.log("metadata-creator should be on the workspace");
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     workspacePage.onWorkspace();
     workspacePage.hasLogo();

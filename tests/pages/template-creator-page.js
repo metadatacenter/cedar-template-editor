@@ -13,8 +13,7 @@ var TemplateCreatorPage = function () {
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
 
-  var createButton = element(by.id('button-create'));
-  var createTemplateButton = element(by.id('button-create-template'));
+
   var createTemplatePage = element(by.css('#top-navigation.template'));
   var createTextFieldButton = element(by.id('button-add-field-textfield'));
   var createTextAreaButton = element(by.id('button-add-field-textarea'));
@@ -38,7 +37,7 @@ var TemplateCreatorPage = function () {
   var createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
   var createSearchResult = element(by.id('search-browse-modal')).element(by.css('.search-result'));
   var createFirstElement = element.all(by.css('.form-box .element')).first();
-  var createElementButton = element(by.id('button-create-element'));
+
   var createElementPage = element(by.css('#top-navigation.element'));
   var createSearchForm = element(by.css('.nav-search')).element(by.tagName('form'));
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
@@ -108,6 +107,99 @@ var TemplateCreatorPage = function () {
   var metadataType = 'metadata';
   var dashboardType = 'dashboard';
   var cssDetailOptions = '.detail-options';
+
+  var fieldTypes = [
+    {
+      "cedarType"                : "textfield",
+      "iconClass"                : "fa-font",
+      "label"                    : "Text",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : true,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": true
+    },
+    {
+      "cedarType"                : "date",
+      "iconClass"                : "fa-calendar",
+      "label"                    : "Date",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "email",
+      "iconClass"                : "fa-envelope",
+      "label"                    : "Email",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "numeric",
+      "iconClass"                : "fa-hashtag",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "label"                    : "Number",
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "textarea",
+      "iconClass"                : "fa-paragraph",
+      "label"                    : "Text Area",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "radio",
+      "iconClass"                : "fa-dot-circle-o",
+      "label"                    : "Multiple Choice",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "checkbox",
+      "iconClass"                : "fa-check-square-o",
+      "label"                    : "Checkbox",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    },
+
+    {
+      "cedarType"                : "list",
+      "iconClass"                : "fa-list",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "label"                    : "List",
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    }
+  ];
+  this.fieldTypes = fieldTypes;
 
 
   // template creator
@@ -498,50 +590,22 @@ var TemplateCreatorPage = function () {
     return createYoutube;
   };
 
+  this.setTitle = function (type, text) {
+    var title = getTitle(type);
+    browser.wait(EC.visibilityOf(title));
+    browser.wait(EC.elementToBeClickable(title));
+    browser.actions().doubleClick(title).perform();
+    title.sendKeys(text);
+    title.submit();
+  };
 
-  this.createPage = function (type, title, description) {
-
-    browser.actions().mouseMove(createButton).perform();
-
-    if (type === 'template') {
-
-      browser.wait(EC.elementToBeClickable(createTemplateButton));
-      createTemplateButton.click();
-
-      if (title) {
-        browser.wait(EC.elementToBeClickable(templateTitle));
-        browser.actions().doubleClick(templateTitle).perform();
-        templateTitle.sendKeys(title);
-        templateTitleForm.submit();
-      }
-      if (description) {
-        browser.wait(EC.elementToBeClickable(templateDescription));
-        browser.actions().doubleClick(templateDescription).perform();
-        templateDescription.sendKeys(description);
-        templateDescriptionForm.submit();
-      }
-
-      browser.wait(EC.presenceOf(createSaveTemplateButton));
-
-    } else {
-      browser.wait(EC.elementToBeClickable(createElementButton));
-      createElementButton.click();
-
-      if (title) {
-        browser.wait(EC.elementToBeClickable(elementTitle));
-        browser.actions().doubleClick(elementTitle).perform();
-        elementTitle.sendKeys(title);
-        elementTitleForm.submit();
-      }
-      if (description) {
-        browser.wait(EC.elementToBeClickable(elementDescription));
-        browser.actions().doubleClick(elementDescription).perform();
-        elementDescription.sendKeys(description);
-        elementDescriptionForm.submit();
-      }
-
-      browser.wait(EC.presenceOf(createSaveElementButton));
-    }
+  this.setDescription = function (type, text) {
+    var description = getDescription(type);
+    browser.wait(EC.visibilityOf(description));
+    browser.wait(EC.elementToBeClickable(description));
+    browser.actions().doubleClick(description).perform();
+    description.sendKeys(text);
+    description.submit();
   };
 
   this.showJson = function () {
@@ -588,6 +652,7 @@ var TemplateCreatorPage = function () {
     var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
     browser.wait(EC.visibilityOf(valid));
   };
+
   this.isInvalid = function () {
     var invalid = element(by.css('#headerCtrl .feedback-form i.fa-exclamation-triangle'));
     browser.wait(EC.visibilityOf(invalid));
@@ -628,13 +693,10 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickCancel = function (type) {
-    if (type === 'template') {
-      browser.wait(EC.elementToBeClickable(createCancelTemplateButton));
-      createCancelTemplateButton.click();
-    } else {
-      browser.wait(EC.elementToBeClickable(createCancelElementButton));
-      createCancelElementButton.click();
-    }
+    var btn = type === 'template' ? createCancelTemplateButton : createCancelElementButton;
+    browser.wait(EC.visibilityOf(btn));
+    browser.wait(EC.elementToBeClickable(btn));
+    btn.click();
   };
 
   var getTitle = function (type) {
@@ -663,23 +725,7 @@ var TemplateCreatorPage = function () {
     return btn;
   };
 
-  this.setTitle = function (type, text) {
-    var title = getTitle(type);
-    browser.wait(EC.visibilityOf(title));
-    browser.wait(EC.elementToBeClickable(title));
-    browser.actions().doubleClick(title).perform();
-    title.sendKeys(text);
-    title.submit();
-  };
 
-  this.setDescription = function (type, text) {
-    var description = getDescription(type);
-    browser.wait(EC.visibilityOf(description));
-    browser.wait(EC.elementToBeClickable(description));
-    browser.actions().doubleClick(description).perform();
-    description.sendKeys(text);
-    description.submit();
-  };
 
   this.isTitle = function (type, text) {
     var title = getTitle(type);
