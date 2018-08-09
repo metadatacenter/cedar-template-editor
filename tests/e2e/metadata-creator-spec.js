@@ -60,8 +60,6 @@ describe('metadata-creator', function () {
    */
   describe('create metadata', function () {
 
-
-
     it("should create the sample template", function () {
       template = workspacePage.createTitle('Source');
       workspacePage.createResource('template', template, workspacePage.createDescription('Source'));

@@ -201,6 +201,9 @@ var TemplateCreatorPage = function () {
   ];
   this.fieldTypes = fieldTypes;
 
+  var pageTypes = ['template', 'element', 'field'];
+  this.pageTypes = pageTypes;
+
 
   // template creator
   var templateTitle = element(by.id('template-name'));

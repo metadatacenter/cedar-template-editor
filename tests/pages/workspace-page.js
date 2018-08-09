@@ -120,6 +120,7 @@ var WorkspacePage = function () {
 
   // create new buttons
   var createButton = element(by.id('button-create'));
+  var createDropdown = element(by.css('ul.dropdown-menu.composeOpen'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createFieldButton = element(by.id('button-create-field'));
   var createElementButton = element(by.id('button-create-element'));
@@ -404,6 +405,7 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
     createButton.click();
+    browser.wait(EC.visibilityOf(createDropdown));
 
     var button = createResourceButtons[type];
     browser.wait(EC.visibilityOf(button));
@@ -425,45 +427,32 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
     createButton.click();
+    browser.wait(EC.visibilityOf(createDropdown));
 
     var button = createResourceButtons[type];
     browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
 
-    switch (type) {
-      case "template":
-        if (title) {
-          templateCreatorPage.setTitle('template', title);
-        }
-        if (description) {
-          templateCreatorPage.setDescription('template', description);
-        }
-        templateCreatorPage.clickSave('template');
-        toastyModal.isSuccess();
-        templateCreatorPage.clickBackArrow();
-        break;
-      case "element":
-        if (title) {
-          templateCreatorPage.setTitle('element', title);
-        }
-        if (description) {
-          templateCreatorPage.setDescription('element', description);
-        }
-        templateCreatorPage.clickSave('element');
-        toastyModal.isSuccess();
-        templateCreatorPage.clickBackArrow();
-        break;
-      case "folder":
-        browser.wait(EC.visibilityOf(createFolderModal));
-        if (title) {
-          createFolderName.sendKeys(title);
-        }
-        browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
-        createFolderSubmitButton.click();
-        toastyModal.isSuccess();
-        break;
-    }
+    if (type == 'folder') {
+      browser.wait(EC.visibilityOf(createFolderModal));
+      if (title) {
+        createFolderName.sendKeys(title);
+      }
+      browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
+      createFolderSubmitButton.click();
+      toastyModal.isSuccess();
+    } else {
+      if (title) {
+        templateCreatorPage.setTitle(type, title);
+      }
+      if (description) {
+        templateCreatorPage.setDescription(type, description);
+      }
+      templateCreatorPage.clickSave(type);
+      toastyModal.isSuccess();
+      templateCreatorPage.clickBackArrow();
+    };
     return title;
   };
 
@@ -580,7 +569,6 @@ var WorkspacePage = function () {
   };
 
 
-
   // // delete until everything is gone from the workspace by looking for the empty folder icon
   // var deleteAll = function (type) {
   //
@@ -639,7 +627,7 @@ var WorkspacePage = function () {
     var results = element.all(by.css(selector));
     results.count().then(function (count) {
       if (count > 1) {
-        console.log('Error: ' + count + ' results for ' + name + ' of type '+  type);
+        console.log('Error: ' + count + ' results for ' + name + ' of type ' + type);
       }
     });
     var createFirst = results.first();
@@ -653,7 +641,6 @@ var WorkspacePage = function () {
     createFirst.click();
     return createFirst;
   };
-
 
 
   // search for a particular resource
@@ -691,7 +678,6 @@ var WorkspacePage = function () {
   this.clearSearch = function (name, type) {
     doClear(name, type);
   };
-
 
 
   // edit a resource
@@ -854,8 +840,8 @@ var WorkspacePage = function () {
 
   // delete a resource
   var deleteResource = function (name, type) {
-    console.log('deleteResource',name,type);
-    var createFirst = doSelect(name,type);
+    console.log('deleteResource', name, type);
+    var createFirst = doSelect(name, type);
 
     // create more on the toolbar
     var moreButton = createFirst.all(by.css('button.more-button')).get(0);
@@ -875,12 +861,12 @@ var WorkspacePage = function () {
   };
   this.deleteResource = deleteResource;
 
-  this.getAllResources = function() {
+  this.getAllResources = function () {
     console.log('getAllResources');
     var selector = createResourceInstanceCss;
     var results = element.all(by.css(selector));
     results.count().then(function (count) {
-      console.log('getAllResources',count);
+      console.log('getAllResources', count);
     });
     browser.wait(EC.visibilityOf(results.first()));
     return results;
@@ -920,7 +906,8 @@ var WorkspacePage = function () {
     var n = name;
     var t = type;
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var selector = createResourceInstanceCss + '.' + type;;
+    var selector = createResourceInstanceCss + '.' + type;
+    ;
     var results = element.all(by.css(selector));
     doClear();
 

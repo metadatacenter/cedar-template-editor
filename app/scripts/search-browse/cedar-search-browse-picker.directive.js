@@ -144,6 +144,7 @@ define([
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
+          vm.composeOpen;
 
           //
           // publication

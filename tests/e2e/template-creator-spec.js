@@ -18,16 +18,6 @@ describe('template-creator', function () {
   var dirtyJson;
   var templateOrElement;
   var sampleDescription;
-  var sampleJson;
-
-
-  var fieldType = templatePage.fieldTypes[0];
-  var field = element(by.css('.field-root .' + fieldType.iconClass));
-  var isMore = !fieldType.primaryField;
-  var title = fieldType.label;
-  var description = fieldType.label + ' description';
-  var pageTypes = ['template', 'element'];
-  var template;
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -54,14 +44,14 @@ describe('template-creator', function () {
   });
 
   it("should create the sample template ", function () {
-    template = workspacePage.createTitle('Source');
-    workspacePage.createResource('template', template, workspacePage.createDescription('Source'));
-    resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+    templateOrElement = workspacePage.createTitle('Source');
+    workspacePage.createResource('template', templateOrElement, workspacePage.createDescription('Source'));
+    resources.push(createResource(templateOrElement, 'template', testConfig.testUser1, testConfig.testPassword1));
   });
 
   it("should update the json when changes ", function () {
 
-    workspacePage.editResource(template, 'template');
+    workspacePage.editResource(templateOrElement, 'template');
     templatePage.isHiddenJson();
     templatePage.clickJsonPreview();
     templatePage.jsonPreview().getText().then(function (value) {
@@ -79,7 +69,7 @@ describe('template-creator', function () {
   });
 
   it("should check valid and dirty", function () {
-    workspacePage.editResource(template, 'template');
+    workspacePage.editResource(templateOrElement, 'template');
     templatePage.isValid();
     templatePage.isClean();
     templatePage.addField('textfield', false, 'title', 'description');
@@ -93,7 +83,7 @@ describe('template-creator', function () {
   describe('create resource', function () {
 
     // repeat tests for both template and element editors
-    for (var j = 0; j < pageTypes.length; j++) {
+    for (var j = 0; j < templatePage.pageTypes.length; j++) {
       (function (pageType) {
 
         it("template-creator should create the sample " + pageType, function () {
@@ -332,7 +322,7 @@ describe('template-creator', function () {
         });
 
       })
-      (pageTypes[j]);
+      (templatePage.pageTypes[j]);
     }
   });
 
