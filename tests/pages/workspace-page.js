@@ -8,6 +8,7 @@ var WorkspacePage = function () {
   var toastyModal = require('../modals/toasty-modal.js');
   var sweetAlertModal = require('../modals/sweet-alert-modal.js');
   var templateCreatorPage = require('../pages/template-creator-page.js');
+  var metadataCreatorPage = require('../pages/metadata-page.js');
   var createRootElement = element(by.css('body#rootElement'));
 
   var url = testConfig.baseUrl + '/dashboard';
@@ -22,8 +23,8 @@ var WorkspacePage = function () {
   var createNavbarWorkspace = element(by.css('.navbar.dashboard'));
   var createNavbarMetadata = element(by.css('.navbar.metadata'));
   var createControlsBar = element(by.css('.controls-bar'));
-  var createNavbarElement = element(by.css('.navbar.element'));
-  var createNavbarTemplate = element(by.css('.navbar.emplate'));
+  var createNavbarElement = element(by.css('#top-navigation.element'));
+  var createNavbarTemplate = element(by.css('#top-navigation.template'));
 
 
   // page content
@@ -34,13 +35,10 @@ var WorkspacePage = function () {
 
 
   // search navigation
-  var createSearchNav = element(by.css('#top-navigation  .nav-search'));
-  var createSearchNavForm = element(by.css('#top-navigation  .nav-search form'));
+
+  var createSearchNav = element(by.css('#search'));
   var createSearchNavInput = element(by.model('hc.searchTerm'));
-  var createSearchNavSearchButton = element(by.css('#top-navigation .nav-search form a.do-search'));
-  var createSearchNavClearButton = element(by.css('#top-navigation .nav-search form a.clear-search'));
-  var createTopNavWorkspace = element(by.css('.navbar.metadata'));
-  var createFirstSelected = element(by.css('.form-box-container.selected'));
+  var createSearchNavClearButton = element(by.css('#headerCtrl a.clear.clear-search'));
 
 
   // resources
@@ -51,30 +49,34 @@ var WorkspacePage = function () {
   var templates = element.all(by.css('.center-panel .grid-view .form-box .template'));
   var createFirstTemplate = templates.first();
   var createFirstCss = '.center-panel .grid-view .form-box .';
+  var createResourceInstanceCss = '#workspace-view-container div.populate-form-boxes div.resource-instance';
   var resourceTypes = ['metadata', 'element', 'template', 'folder'];
   var defaultTitle = 'Protractor';
 
 
-  // toolbar
-  var createToolbar = element(by.id('workspace-toolbar'));
-  var createMoreOptionsButton = createToolbar.element(by.css('.more-options > div > button'));
-  var createPopulateResourceButton = createToolbar.element(by.css('.more-options .dropdown .populate'));
-  var createMoveToResourceButton = createToolbar.element(by.css('.more-options .dropdown .move'));
-  var createOpenResourceButton = createToolbar.element(by.css('.more-options .dropdown .open'));
-  var createCopyResourceButton = createToolbar.element(by.css('.more-options .dropdown .copy'));
-  var createRenameResourceButton = createToolbar.element(by.css('.more-options .dropdown .rename'));
-  var createShareMenuItem = createToolbar.element(by.css('.more-options .dropdown .share'));
-  var createDeleteResourceButton = createToolbar.element(by.css('.more-options .dropdown .delete'));
-  var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
-  var createListViewButton = createToolbar.element(by.css('#list-view-tool'));
-  var createShowDetailsButton = createToolbar.element(by.css('.toggleDetails.showPanel'));
-  var createHideDetailsButton = createToolbar.element(by.css('.toggleDetails.hidePanel'));
-  var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool .menu'));
-  var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
-  var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
-  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logout-tool a'));
-  var createListView = element(by.css('.center-panel .list-view'));
-  var createGridView = element(by.css('.center-panel .grid-view'));
+  // create more ellipsis on resource
+  var createMoreOptionsButton = element(
+      by.css('#workspace-view-container  div.form-box-container.selected  div.toolbar-right > button'));
+  // create more dropdown and items inside
+  var createMoreOptionsDropdown = element(
+      by.css('#workspace-view-container  div.form-box-container.selected  div.toolbar-right.open'));
+  var createOpenResourceButton = createMoreOptionsDropdown.element(by.css('li.open'));
+  var createEditResourceButton = createMoreOptionsDropdown.element(by.css('li.edit'));
+  var createMoveToResourceButton = createMoreOptionsDropdown.element(by.css('li.move'));
+
+  var createCopyResourceButton = createMoreOptionsDropdown.element(by.css('li.copy'));
+  var createRenameResourceButton = createMoreOptionsDropdown.element(by.css('li.rename'));
+  var createShareMenuItem = createMoreOptionsDropdown.element(by.css('li.share'));
+  var createDeleteResourceButton = createMoreOptionsDropdown.element(by.css('li.delete'));
+
+  var createShowDetailsButton = element(by.css('#show-details.showPanel > button'));
+  var createHideDetailsButton = element(by.css(' #show-details.hidePanel > button'));
+  var createSortDropdownButton = element(by.css('#workspace-sort-tool > div > button'));
+  var createUserDropdownButton = element(by.css('#user-menu-dropdown-trigger'));
+  var createProfileMenuItem = element(by.css('#user-profile-tool'));
+  var createLogoutMenuItem = element(by.css('#user-logout-tool'));
+  var createListView = element(by.css('li.grid-view > button'));
+  var createGridView = element(by.css('li.list-view > button'));
 
 
   // details panel
@@ -368,6 +370,11 @@ var WorkspacePage = function () {
   };
 
   // are we on the element page
+  this.onTemplate = function () {
+    browser.wait(EC.presenceOf(createNavbarTemplate));
+  };
+
+  // are we on the element page
   this.onElement = function () {
     browser.wait(EC.presenceOf(createNavbarElement));
   };
@@ -397,10 +404,9 @@ var WorkspacePage = function () {
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
-    browser.actions().mouseMove(createButton).perform();
+    createButton.click();
 
     var button = createResourceButtons[type];
-
     browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
@@ -438,14 +444,13 @@ var WorkspacePage = function () {
         toastyModal.isSuccess();
         break;
     }
+    return title;
   };
 
 
   // create a folder
   this.createFolder = function (name) {
-    var folderTitle = this.createTitle(name);
-    this.createResource('folder', folderTitle);
-    return folderTitle;
+    return this.createResource('folder', this.createTitle(name), this.createDescription(name));
   };
 
   // create an element
@@ -459,39 +464,22 @@ var WorkspacePage = function () {
   // create a template
   this.createTemplate = function (name) {
     var templateTitle = this.createTitle(name);
-    this.createResource('template', templateTitle);
+    var templateDescription = this.createDescription(name);
+    this.createResource('template', templateTitle, templateDescription);
     return templateTitle;
   };
 
-  // delete a resource
-  this.deleteResource = function (name, type) {
-    this.selectResource(name, type);
 
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
-
-    // delete menu item
-    browser.wait(EC.visibilityOf(createDeleteResourceButton));
-    browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
-    createDeleteResourceButton.click();
-
-    sweetAlertModal.confirm();
-    toastyModal.isSuccess();
-    clearSearch();
-  };
-
-  var deleteResourceViaRightClick = function (name, type) {
-    rightClickResource(name, type);
-    browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
-    // is delete enabled?
-    browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
-    createRightClickDeleteMenuItem.click();
-    sweetAlertModal.confirm();
-    return true;
-  };
-  this.deleteResourceViaRightClick = deleteResourceViaRightClick;
+  // var deleteResourceViaRightClick = function (name, type) {
+  //   rightClickResource(name, type);
+  //   browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
+  //   // is delete enabled?
+  //   browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
+  //   createRightClickDeleteMenuItem.click();
+  //   sweetAlertModal.confirm();
+  //   return true;
+  // };
+  // this.deleteResourceViaRightClick = deleteResourceViaRightClick;
 
   this.setSortOrder = function (order) {
 
@@ -533,9 +521,8 @@ var WorkspacePage = function () {
 
     createListView.isPresent().then(function (result) {
       if (result) {
-        browser.wait(EC.visibilityOf(createGridView));
-        browser.wait(EC.elementToBeClickable(createGridView));
-        createGridView.click();
+        browser.wait(EC.elementToBeClickable(createListView));
+        createListView.click();
       }
     });
   };
@@ -572,131 +559,99 @@ var WorkspacePage = function () {
     this.setGridView();
   };
 
-  // delete a resource whose name contains this string if possible
-  var deleteAllBySearching = function (name, type) {
 
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var result = "Search Results For: '" + name + "'";
-    var searchResult = element(by.css('.search-result'));
-    browser.wait(EC.textToBePresentInElement(searchResult, result));
 
-    // single click on the first result
-    var results = element.all(by.css('.center-panel .grid-view .form-box' + ' .' + type));
-
-    results.count().then(function (count) {
-
-      if (count) {
-
-        results.first().isPresent().then(function (value) {
-
-          if (value) {
-
-            // select it
-            var createFirst = results.first();
-            browser.wait(EC.visibilityOf(createFirst));
-            browser.wait(EC.elementToBeClickable(createFirst));
-            createFirst.click();
-
-            // create more on the toolbar
-            browser.wait(EC.visibilityOf(createMoreOptionsButton));
-            browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-            createMoreOptionsButton.click();
-
-            // delete menu item
-            browser.wait(EC.visibilityOf(createDeleteResourceButton));
-            browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
-            createDeleteResourceButton.click();
-
-            // confirm
-            sweetAlertModal.confirm();
-            toastyModal.isSuccess();
-
-            // clean up and look for another
-            clearSearch();
-            deleteAllBySearching(name, type);
-          }
-        });
-      } else {
-        clearSearch();
-      }
-    });
-  };
-  this.deleteAllBySearching = deleteAllBySearching;
-
-  // delete until everything is gone from the workspace by looking for the empty folder icon
-  var deleteAll = function (type) {
-
-    // single click on the first result
-    var noSelection = element(by.css('.center-panel .no-selection'));
-    noSelection.isPresent().then(function (value) {
-      if (!value) {
-
-        // select it
-        var results = element.all(by.css('.center-panel .grid-view .form-box ' + '.' + type));
-        var createFirst = results.first();
-        browser.wait(EC.visibilityOf(createFirst));
-        browser.wait(EC.elementToBeClickable(createFirst));
-        createFirst.click();
-
-        // create more on the toolbar
-        browser.wait(EC.visibilityOf(createMoreOptionsButton));
-        browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-        createMoreOptionsButton.click();
-
-        // delete menu item
-        browser.wait(EC.visibilityOf(createDeleteResourceButton));
-        browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
-        createDeleteResourceButton.click();
-
-        // confirm
-        sweetAlertModal.confirm();
-        toastyModal.isSuccess();
-
-        deleteAll(type);
-      }
-    });
-  };
-  this.deleteAll = deleteAll;
-
-  // search for a particular resource
-  this.searchForResource = function (name, type) {
-
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-
-  };
+  // // delete until everything is gone from the workspace by looking for the empty folder icon
+  // var deleteAll = function (type) {
+  //
+  //   // single click on the first result
+  //   var noSelection = element(by.css('.center-panel .no-selection'));
+  //   noSelection.isPresent().then(function (value) {
+  //     if (!value) {
+  //
+  //       // select it
+  //       var results = element.all(by.css('.center-panel .grid-view .form-box ' + '.' + type));
+  //       var createFirst = results.first();
+  //       browser.wait(EC.visibilityOf(createFirst));
+  //       browser.wait(EC.elementToBeClickable(createFirst));
+  //       createFirst.click();
+  //
+  //       // create more on the toolbar
+  //       browser.wait(EC.visibilityOf(createMoreOptionsButton));
+  //       browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+  //       createMoreOptionsButton.click();
+  //
+  //       // delete menu item
+  //       browser.wait(EC.visibilityOf(createDeleteResourceButton));
+  //       browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
+  //       createDeleteResourceButton.click();
+  //
+  //       // confirm
+  //       sweetAlertModal.confirm();
+  //       toastyModal.isSuccess();
+  //
+  //       deleteAll(type);
+  //     }
+  //   });
+  // };
+  // this.deleteAll = deleteAll;
 
   // clear any ongoing search
-  var clearSearch = function () {
-
+  var doClear = function () {
     browser.wait(EC.visibilityOf(createSearchNavClearButton));
     browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
     createSearchNavClearButton.click();
     browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
-
   };
-  this.clearSearch = clearSearch;
+
+  // #workspace-view-container div.form-box-container.selected div.toolbar-right  button
+  var doSearch = function (name, type) {
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+
+    // wait for search results to appear
+    var result = "Search Results For: '" + name + "'";
+    var searchSelector = '.search-result';
+    var searchResult = element(by.css(searchSelector));
+    browser.wait(EC.textToBePresentInElement(searchResult, result));
+
+    // get the results
+    var selector = createResourceInstanceCss + '.' + type;
+    var results = element.all(by.css(selector));
+    results.count().then(function (count) {
+      if (count > 1) {
+        console.log('Error: ' + count + ' results for ' + name + ' of type '+  type);
+      }
+    });
+    var createFirst = results.first();
+    browser.wait(EC.visibilityOf(createFirst));
+    return createFirst;
+  };
+
+  var doSelect = function (name, type) {
+    var createFirst = doSearch(name, type);
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+    return createFirst;
+  };
+
+
+
+  // search for a particular resource
+  this.selectForResource = function (name, type) {
+    doSelect(name, type);
+  };
+
+  // search for a particular resource
+  this.searchForResource = function (name, type) {
+    doSearch(name, type);
+  };
 
   this.populateResource = function (name, type) {
 
-    // find the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
+    this.doubleClickResource(name, type);
 
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
-
-    // populate menu item
-    browser.wait(EC.visibilityOf(createPopulateResourceButton));
-    browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
-    createPopulateResourceButton.click();
+    // on metadata page
+    browser.wait(EC.presenceOf(createNavbarMetadata));
 
     // save this instance and check for success
     browser.wait(EC.visibilityOf(createMetadataButton));
@@ -705,44 +660,42 @@ var WorkspacePage = function () {
     toastyModal.isSuccess();
 
     // return to workspace
-    var backArrow = element(by.css('.back-arrow-click'));
-    browser.wait(EC.visibilityOf(backArrow));
-    browser.wait(EC.elementToBeClickable(backArrow));
-    backArrow.click();
+    metadataCreatorPage.clickBackArrow();
+    // var backArrow = element(by.css('.back-arrow-click'));
+    // browser.wait(EC.visibilityOf(backArrow));
+    // browser.wait(EC.elementToBeClickable(backArrow));
+    // backArrow.click();
 
   };
 
+  this.clearSearch = function (name, type) {
+    doClear(name, type);
+  };
+
+
+
   // edit a resource
   this.editResource = function (name, type) {
-
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
+    var createFirst = doSelect(name, type);
 
     // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
+    // var moreSelector = '#workspace-view-container div.selected button.more-button';
+    // var moreButton = element(by.css(moreSelector));
+    var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+    browser.wait(EC.visibilityOf(moreButton));
+    browser.wait(EC.elementToBeClickable(moreButton));
+    moreButton.click();
 
     // edit menu item
-    browser.wait(EC.visibilityOf(createOpenResourceButton));
-    browser.wait(EC.elementToBeClickable(createOpenResourceButton));
-    createOpenResourceButton.click();
-
+    var editButton = createFirst.all(by.css('ul.dropdown-menu li a.edit')).get(0);
+    browser.wait(EC.visibilityOf(editButton));
+    browser.wait(EC.elementToBeClickable(editButton));
+    editButton.click();
   };
 
   // move a resource
   this.moveResource = function (name, type) {
-
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
+    doSelect(name, type);
 
     // create more on the toolbar
     browser.wait(EC.visibilityOf(createMoreOptionsButton));
@@ -755,21 +708,9 @@ var WorkspacePage = function () {
     createMoveToResourceButton.click();
   };
 
-  // move a resource using the right-click menu item
-  this.moveResourceViaRightClick = function (name, type) {
-    this.rightClickResource(name, type);
-    browser.wait(EC.elementToBeClickable(createRightClickMoveToMenuItem));
-    createRightClickMoveToMenuItem.click();
-  };
-
   // copy a resource using the right-click menu item
   this.copyResource = function (name, type) {
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
+    doSelect(name, type);
 
     // create more on the toolbar
     browser.wait(EC.visibilityOf(createMoreOptionsButton));
@@ -782,44 +723,15 @@ var WorkspacePage = function () {
     createCopyResourceButton.click();
   };
 
-  // copy a resource using the right-click menu item
-  this.copyResourceViaRightClick = function (name, type) {
-    this.rightClickResource(name, type);
-    browser.wait(EC.elementToBeClickable(createRightClickCopyToMenuItem));
-    createRightClickCopyToMenuItem.click();
-  };
-
   // select a resource
-  var selectResource = function (name, type) {
-
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var result = "Search Results For: '" + name + "'";
-    var searchResult = element(by.css('.search-result'));
-    browser.wait(EC.textToBePresentInElement(searchResult, result));
-
-    // single click on the first result
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    return createFirst;
+  this.selectResource = function (name, type) {
+    return doSelect(name, type);
   };
-  this.selectResource = selectResource;
 
   // double click the resource
   this.doubleClickResource = function (name, type) {
 
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var result = "Search Results For: '" + name + "'";
-    var searchResult = element(by.css('.search-result'));
-    browser.wait(EC.textToBePresentInElement(searchResult, result));
-
-    // double click on the first result
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
+    var createFirst = doSearch(name, type);
     browser.wait(EC.elementToBeClickable(createFirst));
     browser.actions().doubleClick(createFirst).perform();
 
@@ -916,26 +828,94 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
-  // right-click on a resource
-  var rightClickResource = function (name, type) {
-    var element = selectResource(name, type);
-    browser.actions().mouseMove(element).perform();
-    browser.actions().click(protractor.Button.RIGHT).perform();
-  };
-  this.rightClickResource = rightClickResource;
+  //
+  // deleting resources
+  //
 
-  this.deleteResources = function (resources) {
+  // delete a resource
+  var deleteResource = function (name, type) {
+    console.log('deleteResource',name,type);
+    var createFirst = doSelect(name,type);
+
+    // create more on the toolbar
+    var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+    browser.wait(EC.visibilityOf(moreButton));
+    browser.wait(EC.elementToBeClickable(moreButton));
+    moreButton.click();
+
+    var deleteButton = createFirst.all(by.css('ul.dropdown-menu li a.delete')).get(0);
+    browser.wait(EC.visibilityOf(deleteButton));
+    browser.wait(EC.elementToBeClickable(deleteButton));
+    deleteButton.click();
+
+    // confirm
+    sweetAlertModal.confirm();
+    toastyModal.isSuccess();
+    doClear();
+  };
+  this.deleteResource = deleteResource;
+
+  this.getAllResources = function() {
+    console.log('getAllResources');
+    var selector = createResourceInstanceCss;
+    var results = element.all(by.css(selector));
+    results.count().then(function (count) {
+      console.log('getAllResources',count);
+    });
+    browser.wait(EC.visibilityOf(results.first()));
+    return results;
+  };
+
+  this.deleteResources = function (resources, username) {
+    console.log('deleteResources', resources.count());
+    var resourceTypeOrder = ['metadata', 'field', 'element', 'template', 'folder'];
+    for (var j = 0; j < resourceTypeOrder.length; j++) {
+      for (var i = 0; i < resources.length; i++) {
+        (function (resource, type, user) {
+          if (resource.type == type && resource.username == user) {
+            deleteResource(resource.title, resource.type);
+          }
+        })
+        (resources[i], resourceTypeOrder[j], username);
+      }
+    }
+  };
+
+  // delete a resource whose name contains this string if possible
+  this.deleteAll = function (value) {
+    var resources = value.slice();
     for (var i = 0; i < resources.length; i++) {
       (function (resource) {
-        console.log('should delete resource ' + resource.title + ' for user ' + resource.username);
         login(resource.username, resource.password);
-        deleteResourceViaRightClick(resource.title, resource.type);
-        toastyModal.isSuccess();
-        clearSearch();
+        deleteResource(resource.title, resource.type);
       })
       (resources[i]);
     }
   };
+
+  // delete a resource whose name contains this string if possible
+  this.deleteAllBySearching = function (name, type, user) {
+    console.log('deleteAllBySearching', name, type, user);
+
+    var n = name;
+    var t = type;
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var selector = createResourceInstanceCss + '.' + type;;
+    var results = element.all(by.css(selector));
+    doClear();
+
+    results.count().then(function (count) {
+      if (count) {
+        for (var i = 0; i < count; i++) {
+          (function (name, type) {
+            deleteResource(name, type);
+          })
+          (name, type);
+        }
+      }
+    });
+  };
+
 
 };
 

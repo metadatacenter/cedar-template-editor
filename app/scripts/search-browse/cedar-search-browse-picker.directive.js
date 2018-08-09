@@ -195,6 +195,8 @@ define([
           vm.hasInstances = 0;
           vm.hasInstanceResources = null;
 
+          console.log('cedar-search-browser-picker');
+
 
           //
           //  Publication  start
@@ -429,6 +431,7 @@ define([
           };
 
           vm.selectResource = function (resource) {
+            console.log('selectResource',resource);
             if (vm.getId(resource) != vm.getId(vm.selectedResource)) {
 
               vm.editingDescription = false;
@@ -1151,6 +1154,7 @@ define([
 
 
           function deleteResource(resource) {
+            console.log('deleteResource',resource);
             if (!resource && hasSelection()) {
               resource = getSelection();
             }

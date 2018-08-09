@@ -152,6 +152,18 @@ gulp.task('test-env', function (done) {
 });
 
 // Protractor tests
+gulp.task('test-clean-up', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
@@ -276,6 +288,7 @@ gulp.task('test--update-permissions', gulp.series('test-env', function () {
 
 gulp.task('test-metadata', gulp.series('test-env', function () {
   return gulp.src([
+    './tests/e2e/clean-up-spec.js',
     './tests/e2e/metadata-creator-spec.js'
   ])
       .pipe(protractor({
