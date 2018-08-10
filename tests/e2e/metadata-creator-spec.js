@@ -62,8 +62,15 @@ describe('metadata-creator', function () {
 
     it("should create the sample template", function () {
       template = workspacePage.createTitle('Source');
-      workspacePage.createResource('template', template, workspacePage.createDescription('Source'));
+      workspacePage.createPage('template', template, 'description');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+      templatePage.clickSave('template');
+      toastyModal.isSuccess();
+
+      workspacePage.onTemplate();
+      templatePage.isClean();
+      templatePage.clickBackArrow();
+      workspacePage.onWorkspace();
     });
 
     // put a test between the creation of a resource and the search for it

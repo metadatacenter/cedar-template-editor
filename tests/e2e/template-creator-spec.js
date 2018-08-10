@@ -43,7 +43,7 @@ describe('template-creator', function () {
 
   it("should create the sample template ", function () {
     templateOrElement = workspacePage.createTitle('Source');
-    workspacePage.createResource('template', templateOrElement, workspacePage.createDescription('Source'));
+    workspacePage.createResource('template', templateOrElement, 'description');
     resources.push(createResource(templateOrElement, 'template', testConfig.testUser1, testConfig.testPassword1));
   });
 

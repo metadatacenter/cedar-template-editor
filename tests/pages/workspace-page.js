@@ -400,7 +400,7 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createLogo));
   };
 
-  this.createPage = function (type, title, description) {
+  var createPage = function (type, title, description) {
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
@@ -420,21 +420,27 @@ var WorkspacePage = function () {
     }
     return title;
   };
+  this.createPage = createPage;
 
   // create a template or folder resource and set the title, return to the workspace
   this.createResource = function (type, title, description) {
 
-    browser.wait(EC.visibilityOf(createButton));
-    browser.wait(EC.elementToBeClickable(createButton));
-    createButton.click();
-    browser.wait(EC.visibilityOf(createDropdown));
+    if (type != 'folder') {
+      createPage(type, title, description);
+      templateCreatorPage.clickSave(type);
+      toastyModal.isSuccess();
+      templateCreatorPage.clickBackArrow();
+    } else {
 
-    var button = createResourceButtons[type];
-    browser.wait(EC.visibilityOf(button));
-    browser.wait(EC.elementToBeClickable(button));
-    button.click();
+      browser.wait(EC.visibilityOf(createButton));
+      browser.wait(EC.elementToBeClickable(createButton));
+      createButton.click();
 
-    if (type == 'folder') {
+      var button = createResourceButtons[type];
+      browser.wait(EC.visibilityOf(button));
+      browser.wait(EC.elementToBeClickable(button));
+      button.click();
+
       browser.wait(EC.visibilityOf(createFolderModal));
       if (title) {
         createFolderName.sendKeys(title);
@@ -442,16 +448,7 @@ var WorkspacePage = function () {
       browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
       createFolderSubmitButton.click();
       toastyModal.isSuccess();
-    } else {
-      if (title) {
-        templateCreatorPage.setTitle(type, title);
-      }
-      if (description) {
-        templateCreatorPage.setDescription(type, description);
-      }
-      templateCreatorPage.clickSave(type);
-      toastyModal.isSuccess();
-      templateCreatorPage.clickBackArrow();
+
     };
     return title;
   };
