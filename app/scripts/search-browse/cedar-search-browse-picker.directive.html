@@ -11,29 +11,29 @@
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
 
-        <!--<div class="compose-options add-new">-->
+        <div class="compose-options add-new">
 
-          <!--<div class="btn-group dropdown"  >-->
-            <!--<button type="button"-->
-                <!--id="button-create"-->
-                <!--class="btn btn-save template" aria-haspopup="true"-->
-                <!--aria-expanded="true">New <i-->
-                <!--class="fa fa-plus"></i></button>-->
-            <!--<ul class="dropdown-menu "  role="menu" aria-labelledby="button-create">-->
-              <!--<li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>-->
-              <!--<li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>-->
-              <!--<li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>-->
-              <!--<li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>-->
-            <!--</ul>-->
-          <!--</div>-->
+          <div class="btn-group dropdown"  >
+            <button type="button"
+                id="button-create1"
+                class="btn btn-save template" aria-haspopup="true"
+                aria-expanded="true">New <i
+                class="fa fa-plus"></i></button>
+            <ul class="dropdown-menu "  role="menu" aria-labelledby="button-create1">
+              <li><a id="button-create-folder1" ng-click="dc.showNewFolderModal()">Folder</a></li>
+              <li><a id="button-create-field1" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+              <li><a  id="button-create-element1" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+              <li><a  id="button-create-template1" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+            </ul>
+          </div>
 
-        <!--</div>-->
+        </div>
 
         <div class="filter-options">
 
           <div class="shares">
-            <a class="share" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-            <a class="share" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+            <a class="share workspace" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share shared" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
             <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
           </div>
 
@@ -279,14 +279,14 @@
                         </div>
                         <div class="folderTitle">{{ dc.getTitle(resource) }}</div>
 
-                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}"
+                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" style="background-color:red" id="{{getId(resource, 'populate')}}"
                             append-to-body="true">
-                          <button style="display:none" title="More" class="more-button" append-to-body="true"
+                          <button  title="More"  append-to-body="true"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                               class="fa fa-ellipsis-v"></i>
                           </button>
 
-                          <cedar-dropdown-menu style="flex-grow: 1" append-to-body="true" class="dropdown-menu "
+                          <cedar-dropdown-menu  append-to-body="true" class="dropdown-menu "
                               aria-labelledby="{{getId(resource, 'populate')}}"
                               resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                               move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"

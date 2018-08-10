@@ -164,17 +164,17 @@ describe('template-creator', function () {
         for (var k = 0; k < templatePage.fieldTypes.length; k++) {
           (function (fieldType) {
 
-            var field = element(by.css('.field-root .' + fieldType.iconClass));
+            var field = element(by.css('.item-root.field-root i.' + fieldType.iconClass));
             if (!fieldType.staticField) {
 
-              it("should add and delete a " + fieldType.CedarType + " in " + pageType, function () {
+              it("should add and delete a " + fieldType.cedarType + " in " + pageType, function () {
 
                 workspacePage.createPage(pageType);
                 templatePage.addFieldType(fieldType,  fieldType.label, fieldType.label + 'description', pageType);
 
                 // delete the field
                 browser.actions().mouseMove(field).perform();
-                var removeFieldButton = element(by.css('.field-root  .save-options .trash'));
+                var removeFieldButton = element(by.css('div.item-root.field-root  .save-options .trash'));
                 browser.wait(EC.visibilityOf(removeFieldButton));
                 browser.wait(EC.elementToBeClickable(removeFieldButton));
                 removeFieldButton.click();

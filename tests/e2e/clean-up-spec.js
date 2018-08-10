@@ -33,11 +33,12 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  xit('should remove all resources for user 1', function () {
+  it('should remove all resources for user 1', function () {
     workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser1);
     workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser1);
     workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser1);
     workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser1);
+    // workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser1);
   });
 
   // reset user selections to defaults
@@ -47,17 +48,12 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  xit('should remove all resources for user 2', function () {
+  it('should remove all resources for user 2', function () {
     workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser2);
     workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser2);
     workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser2);
     workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser2);
-  });
-
-  it("should create the sample folder", function () {
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    var target1Folder = workspacePage.createFolder('Target');
-    console.log('target1Folder',target1Folder); 
+    // workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser2);
   });
 
 });

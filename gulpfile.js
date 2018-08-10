@@ -164,6 +164,18 @@ gulp.task('test-clean-up', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('test-work-space', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/workspace-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',

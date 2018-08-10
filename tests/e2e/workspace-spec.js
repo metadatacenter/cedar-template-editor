@@ -5,12 +5,13 @@ var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var MoveModal = require('../modals/move-modal.js');
-
+var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
-var sampleFolderTitle;
-var sampleTemplateTitle;
 
-xdescribe('workspace', function () {
+var folder;
+var template;
+
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
 
   var workspacePage = WorkspacePage;
@@ -20,86 +21,124 @@ xdescribe('workspace', function () {
   var sweetAlertModal = SweetAlertModal;
   var moveModal = MoveModal;
 
-  // before each test, load a new page and create a template
-  // maximize the window area for clicking
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
+
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
+
   beforeEach(function () {
-    workspacePage.appLoaded();
   });
 
   afterEach(function () {
   });
 
-  it("should have a logo", function () {
+  it("should be on the workspace page", function () {
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     workspacePage.onWorkspace();
     workspacePage.hasLogo();
+    workspacePage.hasBreadcrumb();
+    workspacePage.hasSearchNav();
+    workspacePage.hasCreateNew();
+    workspacePage.hasMessaging();
+    workspacePage.hasUserMenu();
   });
 
-  for (var j = 0; j < 1; j++) {
-    (function () {
+  describe('create resources', function () {
 
-      // functioning trash and options buttons
-      it("should create a folder", function () {
-        sampleFolderTitle = workspacePage.createTitle('folder');
-        workspacePage.createResource('folder', sampleFolderTitle);
-      });
+    it("should show left panel", function () {
+      workspacePage.hasWorkspace();
+      workspacePage.hasSharedWithMe();
+    });
 
-      it("should have search visible and empty", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createSearchNav()));
-        workspacePage.createSearchNavInput().getText().then(function (value) {
-          expect(value).toBe('');
+    // create resources
+    it("should create a folder", function () {
+      folder = workspacePage.createTitle('Source');
+      workspacePage.createResource('folder', folder, 'description');
+      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should create a  template", function () {
+      template = workspacePage.createTitle('Source');
+      workspacePage.createResource('template', template, 'description');
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    // top navigation
+    it("should open messaging", function () {
+      workspacePage.openMessaging();
+      workspacePage.closeMessaging();
+      workspacePage.onWorkspace();
+    });
+
+    it("should open user profile", function () {
+      workspacePage.openUserProfile();
+      workspacePage.closeUserProfile();
+      workspacePage.onWorkspace();
+    });
+
+
+
+    it("should open grid and list views", function () {
+      workspacePage.setView('grid');
+      workspacePage.setView('list');
+    });
+
+    // workspace navigation
+    it("should open the folder in the bread crumb", function () {
+      workspacePage.clickBreadcrumb(1);
+      workspacePage.createBreadcrumbFolders().getText().then(function(first) {
+        workspacePage.clickSharedWithMe();
+        workspacePage.createBreadcrumbFolders().getText().then(function(second) {
+          expect(first == second).toBe(false);
+          workspacePage.clickWorkspace();
+          workspacePage.createBreadcrumbFolders().getText().then(function(third) {
+            expect(third == second).toBe(false);
+          });
         });
       });
+    });
 
-      it("should have breadcrumb visible and empty", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createBreadcrumb()));
+    it("should open info panel and inspect title", function () {
+      workspacePage.openInfoPanel();
+      expect(workspacePage.infoPanelTabs().isDisplayed()).toBe(true);
+      workspacePage.infoPanelTitle().getText().then(function(title) {
+        workspacePage.createBreadcrumbUserName().getText().then(function(user) {
+          expect(title == user).toBe(true);
+
+          workspacePage.selectResource(folder,'folder');
+          workspacePage.infoPanelTitle().getText().then(function(value) {
+            expect(folder == value).toBe(true);
+
+            workspacePage.clickWorkspace();
+            workspacePage.closeInfoPanel();
+          });
+        });
       });
+    });
 
-      it("should have create button visible and empty", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createButton()));
-      });
+  });
 
-      // functioning trash and options buttons
-      it("should have more options button visible if folder is selected", function () {
-        browser.wait(EC.elementToBeClickable(workspacePage.createFirstFolder()));
-        workspacePage.createFirstFolder().click();
-        expect(workspacePage.createMoreOptionsButton().isPresent()).toBe(true);
-      });
+  describe('remove all created resources', function () {
 
-      it("should create a sample template", function () {
-        sampleTemplateTitle = workspacePage.createTitle('template');
-        workspacePage.createResource( 'template', sampleTemplateTitle, "sample description");
-        workspacePage.onWorkspace();
-      });
+    // clean up created resources
+    it('should delete resource from the user workspace for user', function () {
+      for (var i = 0; i < resources.length; i++) {
+        (function (resource) {
+          workspacePage.login(resource.username, resource.password);
+          workspacePage.deleteResource(resource.title, resource.type);
+        })
+        (resources[i]);
+      }
+    });
 
-      // TODO not working on Travis
-      //  timeout: timed out after 100000 msec waiting for spec to complete
-      xit("should move the template into the sample folder", function () {
-        workspacePage.moveResource(sampleTemplateTitle, 'template');
-        moveModal.moveToDestination(sampleFolderTitle);
-        toastyModal.isSuccess();
-        workspacePage.clickLogo();
-      });
-
-      it("should open the folder in the bread crumb", function () {
-        workspacePage.clickBreadcrumb(1);
-        workspacePage.clickLogo();
-      });
-
-      it("should delete the sample template", function () {
-        workspacePage.deleteResource(sampleTemplateTitle, 'template');
-        workspacePage.onWorkspace();
-      });
-
-      // TODO does not work for some reason
-      it("should delete the sample folder", function () {
-        workspacePage.deleteResource(sampleFolderTitle, 'folder');
-        workspacePage.onWorkspace();
-      });
-
-
-    })
-    (j);
-  }
+  });
 
 });
 

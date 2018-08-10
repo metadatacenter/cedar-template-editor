@@ -30,25 +30,24 @@ var WorkspacePage = function () {
   // page content
   var createSidebarRight = element(by.css('#sidebar-right'));
   var createSidebarLeft = element(by.css('#sidebar-left'));
-  var createWorkspaceLink = createSidebarLeft.element(by.css('div > div.shared > a [ng-click="dc.goToMyWorkspace()"]'));
-  var createSharedWithMeLink = element(by.css('div > div.shared > a [ng-click="dc.goToSharedWithMe()"]'));
+  var createWorkspaceLink = element(by.css('#sidebar-left > div.filter-options > div.shares > a.share.workspace'));
+  var createSharedWithMeLink = element(by.css('#sidebar-left > div.filter-options > div.shares > a.share.shared'));
 
 
   // search navigation
-
   var createSearchNav = element(by.css('#search'));
   var createSearchNavInput = element(by.model('hc.searchTerm'));
   var createSearchNavClearButton = element(by.css('#headerCtrl a.clear.clear-search'));
 
 
   // resources
-  var folders = element.all(by.css('.center-panel .grid-view .form-box .folder'));
+  var folders = element.all(by.css('.center-panel .populate-form-boxes .form-box .folder'));
   var createFirstFolder = folders.first();
-  var elements = element.all(by.css('.center-panel .grid-view .form-box .element'));
+  var elements = element.all(by.css('.center-panel populate-form-boxes .form-box .element'));
   var createFirstElement = elements.first();
-  var templates = element.all(by.css('.center-panel .grid-view .form-box .template'));
+  var templates = element.all(by.css('.center-panel populate-form-boxes .form-box .template'));
   var createFirstTemplate = templates.first();
-  var createFirstCss = '.center-panel .grid-view .form-box .';
+  var createFirstCss = '.center-panel populate-form-boxes .form-box .';
   var createResourceInstanceCss = '#workspace-view-container div.populate-form-boxes div.resource-instance';
   var resourceTypes = ['metadata', 'element', 'template', 'folder'];
   var defaultTitle = 'Protractor';
@@ -71,6 +70,9 @@ var WorkspacePage = function () {
 
   var createShowDetailsButton = element(by.css('#show-details.showPanel > button'));
   var createHideDetailsButton = element(by.css(' #show-details.hidePanel > button'));
+  var infoPanelTabs = element(by.css('#sidebar-right .element-toggles'));
+  var infoPanelTitle = element(by.css('#sidebar-right div.flex div.title span'));
+
   var createSortDropdownButton = element(by.css('#workspace-sort-tool > div > button'));
   var createUserDropdownButton = element(by.css('#user-menu-dropdown-trigger'));
   var createProfileMenuItem = element(by.css('#user-profile-tool'));
@@ -156,6 +158,15 @@ var WorkspacePage = function () {
   var sharedWithMe = element(by.css('#sidebar-left > div > div.shares > a.share.ng-scope.active'));
 
 
+  var messagingButton = element(by.id('messaging'));
+  var messagingReport = element(by.id('messaging-report'));
+  var messagingBackArrow = element(by.css('#messaging-report div.back-arrow-click'));
+  var userMenuButton = element(by.id('user-menu'));
+  var userProfileButton = element(by.id('user-profile-tool'));
+  var userProfileReport = element(by.id('profile'));
+  var userProfileBackButton = element(by.css('#profile div.back-arrow-click'));
+
+
   this.myReporter = function () {
     var reporter = {
       specDone: function (result) {
@@ -186,6 +197,13 @@ var WorkspacePage = function () {
     return createButton;
   };
 
+  this.infoPanelTabs = function() {
+    return infoPanelTabs;
+  };
+
+  this.infoPanelTitle = function() {
+    return infoPanelTitle;
+  };
 
   this.createTemplateButton = function () {
     return createTemplateButton;
@@ -396,7 +414,60 @@ var WorkspacePage = function () {
   };
 
   this.hasLogo = function () {
-    browser.wait(EC.presenceOf(createLogo));
+    browser.wait(EC.visibilityOf(createLogo));
+  };
+
+  this.hasBreadcrumb = function () {
+    browser.wait(EC.visibilityOf(createBreadcrumb));
+  };
+
+  this.hasCreateNew = function () {
+    browser.wait(EC.visibilityOf(createButton));
+  };
+
+  this.hasSearchNav = function () {
+    browser.wait(EC.visibilityOf(createSearchNav));
+  };
+
+  this.hasMessaging = function () {
+    browser.wait(EC.visibilityOf(messagingButton));
+  };
+
+  this.openMessaging = function () {
+    browser.wait(EC.visibilityOf(messagingButton));
+    messagingButton.click();
+    browser.wait(EC.visibilityOf(messagingReport));
+  };
+
+  this.closeMessaging = function () {
+    browser.wait(EC.visibilityOf(messagingBackArrow));
+    messagingBackArrow.click();
+  };
+
+  this.hasMessagingReport = function () {
+    browser.wait(EC.visibilityOf(messagingReport));
+  };
+
+  this.hasUserMenu = function () {
+    browser.wait(EC.visibilityOf(userMenuButton));
+  };
+
+  this.openUserProfile = function () {
+    browser.wait(EC.visibilityOf(userMenuButton));
+    browser.wait(EC.elementToBeClickable(userMenuButton));
+    userMenuButton.click();
+
+    browser.wait(EC.visibilityOf(userProfileButton));
+    browser.wait(EC.elementToBeClickable(userProfileButton));
+    userProfileButton.click();
+
+    browser.wait(EC.visibilityOf(userProfileReport));
+  };
+
+  this.closeUserProfile = function () {
+    browser.wait(EC.visibilityOf(userProfileBackButton));
+    browser.wait(EC.elementToBeClickable(userProfileBackButton));
+    userProfileBackButton.click();
   };
 
   var createPage = function (type, title, description) {
@@ -450,7 +521,8 @@ var WorkspacePage = function () {
       createFolderSubmitButton.click();
       toastyModal.isSuccess();
 
-    };
+    }
+    ;
     return title;
   };
 
@@ -503,7 +575,6 @@ var WorkspacePage = function () {
   };
 
   this.closeInfoPanel = function () {
-
     createSidebarRight.isPresent().then(function (result) {
       if (result) {
         browser.wait(EC.visibilityOf(createHideDetailsButton));
@@ -519,17 +590,19 @@ var WorkspacePage = function () {
         browser.wait(EC.visibilityOf(createShowDetailsButton));
         browser.wait(EC.elementToBeClickable(createShowDetailsButton));
         createShowDetailsButton.click();
-        browser.wait(EC.visibilityOf(createSidebarRight));
+        browser.wait(EC.visibilityOf(infoPanelTabs));
       }
     });
   };
 
-  this.setGridView = function () {
-
-    createListView.isPresent().then(function (result) {
-      if (result) {
-        browser.wait(EC.elementToBeClickable(createListView));
-        createListView.click();
+  this.setView = function (view) {
+    var current = view == 'grid' ? element(by.css('#grid-view-tool.grid-view')) : element(by.css('#grid-view-tool.list-view'));
+    current.isPresent().then(function (result) {
+      if (!result) {
+        var link = element(by.css('#grid-view-tool'));
+        browser.wait(EC.visibilityOf(link));
+        browser.wait(EC.elementToBeClickable(link));
+        link.click();
       }
     });
   };
@@ -563,7 +636,7 @@ var WorkspacePage = function () {
     this.resetFiltering();
     this.closeInfoPanel();
     this.setSortOrder('sortCreated');
-    this.setGridView();
+    this.setView('list');
   };
 
 
@@ -625,7 +698,7 @@ var WorkspacePage = function () {
     var results = element.all(by.css(selector));
     results.count().then(function (count) {
       if (count > 1) {
-        console.log('Error: ' + count + ' results for ' + name + ' of type ' + type);
+        console.log('Warning: ' + count + ' results for ' + name + ' of type ' + type);
       }
     });
     var createFirst = results.first();
@@ -763,8 +836,20 @@ var WorkspacePage = function () {
     createLogo.click();
   };
 
+
+  this.hasWorkspace = function () {
+    // #sidebar-left > div.filter-options > div.shares > a.share.workspace
+    browser.wait(EC.visibilityOf(createWorkspaceLink));
+  };
+
+  this.hasSharedWithMe = function () {
+    browser.wait(EC.visibilityOf(createSharedWithMeLink));
+  };
+
+
   // click on the workspace link
   this.clickWorkspace = function () {
+    browser.wait(EC.visibilityOf(createWorkspaceLink));
     browser.wait(EC.elementToBeClickable(createWorkspaceLink));
     createWorkspaceLink.click();
   };
@@ -838,24 +923,26 @@ var WorkspacePage = function () {
 
   // delete a resource
   var deleteResource = function (name, type) {
-    console.log('deleteResource', name, type);
-    var createFirst = doSelect(name, type);
+    if (type != 'folder') {
+      console.log('deleteResource', name, type);
+      var createFirst = doSelect(name, type);
 
-    // create more on the toolbar
-    var moreButton = createFirst.all(by.css('button.more-button')).get(0);
-    browser.wait(EC.visibilityOf(moreButton));
-    browser.wait(EC.elementToBeClickable(moreButton));
-    moreButton.click();
+      // create more on the toolbar
+      var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+      browser.wait(EC.visibilityOf(moreButton));
+      browser.wait(EC.elementToBeClickable(moreButton));
+      moreButton.click();
 
-    var deleteButton = createFirst.all(by.css('ul.dropdown-menu li a.delete')).get(0);
-    browser.wait(EC.visibilityOf(deleteButton));
-    browser.wait(EC.elementToBeClickable(deleteButton));
-    deleteButton.click();
+      var deleteButton = createFirst.all(by.css('ul.dropdown-menu li a.delete')).get(0);
+      browser.wait(EC.visibilityOf(deleteButton));
+      browser.wait(EC.elementToBeClickable(deleteButton));
+      deleteButton.click();
 
-    // confirm
-    sweetAlertModal.confirm();
-    toastyModal.isSuccess();
-    doClear();
+      // confirm
+      sweetAlertModal.confirm();
+      toastyModal.isSuccess();
+      doClear();
+    }
   };
   this.deleteResource = deleteResource;
 
