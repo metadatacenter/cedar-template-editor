@@ -13,14 +13,13 @@
 
         <!--<div class="compose-options add-new">-->
 
-          <!--<div class="btn-group dropdown"  uib-dropdown is-open="dc.composeOpen">-->
-            <!--<button type="button" uib-dropdown-toggle-->
+          <!--<div class="btn-group dropdown"  >-->
+            <!--<button type="button"-->
                 <!--id="button-create"-->
-                <!--class="btn btn-save template"-->
-                <!--class="{'disabled': !dc.canWriteToCurrentFolder()}"  aria-haspopup="true"-->
+                <!--class="btn btn-save template" aria-haspopup="true"-->
                 <!--aria-expanded="true">New <i-->
-                <!--class="fa fa-plus template"></i></button>-->
-            <!--<ul class="dropdown-menu " ng-class="{'composeOpen':dc.composeOpen}" uib-dropdown-menu role="menu" aria-labelledby="button-create">-->
+                <!--class="fa fa-plus"></i></button>-->
+            <!--<ul class="dropdown-menu "  role="menu" aria-labelledby="button-create">-->
               <!--<li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>-->
               <!--<li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>-->
               <!--<li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>-->
@@ -178,7 +177,18 @@
           <div class="col-xs-5">
             <ul class="list-inline pull-right" style="white-space: nowrap;">
 
-
+              <li id="compose-options">
+                <div class="btn-group dropdown">
+                  <button type="button" id="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    New <i class="fa fa-plus template"></i></button>
+                  <ul class="dropdown-menu "   aria-labelledby="button-create">
+                    <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
+                    <li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+                    <li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+                    <li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+                  </ul>
+                </div>
+              </li>
 
               <li ng-show="dc.onDashboard()" id="grid-view-tool"  ng-class="{'grid-view': dc.isGridView(), 'list-view':dc.isListView()}">
                 <button type="button"
@@ -204,18 +214,7 @@
                     ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
               </li>
 
-              <li id="compose-options">
-                <div class="btn-group dropdown">
-                  <button type="button" id="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    New <i class="fa fa-plus template"></i></button>
-                  <ul class="dropdown-menu "   aria-labelledby="button-create">
-                    <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
-                    <li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
-                    <li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
-                    <li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
-                  </ul>
-                </div>
-              </li>
+
 
               <li ng-if="dc.onDashboard()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
                   tooltip-trigger
@@ -240,6 +239,8 @@
                   </ul>
                 </div>
               </li>
+
+
 
             </ul>
           </div>
