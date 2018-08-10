@@ -430,6 +430,7 @@ var WorkspacePage = function () {
       toastyModal.isSuccess();
       templateCreatorPage.clickBackArrow();
 
+
     } else {
 
       browser.wait(EC.visibilityOf(createButton));
