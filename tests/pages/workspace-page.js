@@ -120,7 +120,6 @@ var WorkspacePage = function () {
 
   // create new buttons
   var createButton = element(by.id('button-create'));
-  var createDropdown = element(by.css('ul.dropdown-menu.composeOpen'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createFieldButton = element(by.id('button-create-field'));
   var createElementButton = element(by.id('button-create-element'));
@@ -405,7 +404,6 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
     createButton.click();
-    browser.wait(EC.visibilityOf(createDropdown));
 
     var button = createResourceButtons[type];
     browser.wait(EC.visibilityOf(button));
