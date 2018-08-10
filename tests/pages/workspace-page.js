@@ -424,10 +424,12 @@ var WorkspacePage = function () {
   this.createResource = function (type, title, description) {
 
     if (type != 'folder') {
+
       createPage(type, title, description);
       templateCreatorPage.clickSave(type);
       toastyModal.isSuccess();
       templateCreatorPage.clickBackArrow();
+
     } else {
 
       browser.wait(EC.visibilityOf(createButton));
