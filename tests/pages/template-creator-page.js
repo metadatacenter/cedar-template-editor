@@ -31,6 +31,7 @@ var TemplateCreatorPage = function () {
 
   var showJsonLink = element(by.css('.accordion-toggle'));
   var jsonPreview = element(by.id('form-json-preview'));
+  var jsonPreviewHidden = element(by.css('#form-json-preview.ng-hide'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
@@ -201,9 +202,8 @@ var TemplateCreatorPage = function () {
   ];
   this.fieldTypes = fieldTypes;
 
-  var pageTypes = ['template', 'element', 'field'];
+  var pageTypes = ['template', 'element'];
   this.pageTypes = pageTypes;
-
 
   // template creator
   var templateTitle = element(by.id('template-name'));
@@ -476,8 +476,6 @@ var TemplateCreatorPage = function () {
     "bibo:status"         : "bibo:draft"
   };
 
-
-
   // element creator
   var elementTitle = element(by.id('element-name'));
   var elementDescription = element(by.id('element-description'));
@@ -568,7 +566,6 @@ var TemplateCreatorPage = function () {
     "bibo:status"         : "bibo:draft"
   };
 
-
   this.isWorkspace = function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
   };
@@ -611,25 +608,33 @@ var TemplateCreatorPage = function () {
     description.submit();
   };
 
+  this.isHiddenJson = function () {
+    return EC.presenceOf(element(by.css('#form-json-preview.preview-closed')));
+  };
+
   this.showJson = function () {
-    browser.wait(EC.invisibilityOf(jsonPreview));
-    browser.wait(EC.visibilityOf(showJsonLink));
-    browser.wait(EC.elementToBeClickable(showJsonLink));
-    showJsonLink.click();
-    browser.wait(EC.visibilityOf(jsonPreview));
+    var closed = EC.presenceOf(element(by.css('#form-json-preview.preview-closed')));
+    if (closed) {
+      var openLink = element(by.css('.accordion-toggle'));
+      browser.wait(EC.visibilityOf(openLink));
+      browser.wait(EC.elementToBeClickable(openLink));
+      openLink.click();
+      browser.wait(EC.presenceOf(element(by.css('#form-json-preview.preview-open'))));
+    }
+
   };
 
   this.hideJson = function () {
-    browser.wait(EC.visibilityOf(jsonPreview));
-    browser.wait(EC.visibilityOf(showJsonLink));
-    browser.wait(EC.elementToBeClickable(showJsonLink));
-    showJsonLink.click();
-    browser.wait(EC.invisibilityOf(jsonPreview));
+    var open = EC.presenceOf(element(by.css('#form-json-preview.preview-open')));
+    if (open) {
+      var closeLink = element(by.css('.accordion-toggle'));
+      browser.wait(EC.visibilityOf(closeLink));
+      browser.wait(EC.elementToBeClickable(closeLink));
+      closeLink.click();
+      browser.wait(EC.presenceOf(element(by.css('#form-json-preview.preview-closed'))));
+    }
   };
 
-  this.isHiddenJson = function () {
-    browser.wait(EC.invisibilityOf(jsonPreview));
-  };
 
   this.isLocked = function () {
     var lock = element(by.css('#headerCtrl .feedback-form i.fa-lock'));
@@ -686,13 +691,10 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickClear = function (type) {
-    if (type === 'template') {
-      browser.wait(EC.elementToBeClickable(createClearTemplateButton));
-      createClearTemplateButton.click();
-    } else {
-      browser.wait(EC.elementToBeClickable(createClearElementButton));
-      createClearElementButton.click();
-    }
+    var btn = type === 'template' ? createClearTemplateButton : createClearElementButton;
+    browser.wait(EC.visibilityOf(btn));
+    browser.wait(EC.elementToBeClickable(btn));
+    btn.click();
   };
 
   this.clickCancel = function (type) {
@@ -727,7 +729,6 @@ var TemplateCreatorPage = function () {
     }
     return btn;
   };
-
 
 
   this.isTitle = function (type, text) {
@@ -1002,6 +1003,80 @@ var TemplateCreatorPage = function () {
     return removeFieldButton;
   };
 
+  this.addFieldType = function (fieldType, title, description, pageType, content) {
+    var btn;
+
+    if (!fieldType.primaryField) {
+      browser.wait(EC.visibilityOf(createMore));
+      browser.wait(EC.elementToBeClickable(createMore));
+      createMore.click();
+    }
+    switch (fieldType.cedarType) {
+      case "textfield":
+        btn = createTextFieldButton;
+        break;
+      case "textarea":
+        btn = createTextAreaButton;
+        break;
+      case "radio":
+        btn = createRadioButton;
+        break;
+      case "checkbox":
+        btn = createCheckboxButton;
+        break;
+      case "date":
+        btn = createDateButton;
+        break;
+      case "email":
+        btn = createEmailButton;
+        break;
+      case "list":
+        btn = createListButton;
+        break;
+      case"numeric":
+        btn = createNumericButton;
+        break;
+      case "phone-number":
+        btn = createPhoneNumberButton;
+        break;
+      case "image":
+        btn = createImageButton;
+        break;
+      case "richtext":
+        btn = createRichTextButton;
+        break;
+    }
+
+    if (btn) {
+      browser.wait(EC.visibilityOf(btn));
+      browser.wait(EC.elementToBeClickable(btn));
+      btn.click();
+
+      // enter the name and description
+      browser.wait(EC.elementToBeClickable(createFieldTitle));
+      createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.wait(EC.elementToBeClickable(createFieldDescription));
+      createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+    }
+
+    switch (fieldType.cedarType) {
+      case "image":
+        browser.wait(EC.elementToBeClickable(createFieldContent));
+        createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        break;
+        // case "richtext":
+        //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
+        //   browser.wait(EC.elementToBeClickable(richTextContent));
+        //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        //   break;
+    }
+
+    // wait for field to appear
+    var root = pageType == 'template' ? 'field' : 'element';
+    var field = element(by.css('.' + root + '-root .' + fieldType.iconClass));
+    browser.wait(EC.visibilityOf(field));
+  };
+
 
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
@@ -1074,6 +1149,9 @@ var TemplateCreatorPage = function () {
         //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
         //   break;
     }
+
+    // var field = element(by.css('.field-root .' + fieldType.iconClass));
+    // browser.wait(EC.visibilityOf(field));
   };
 
   this.removeElementButton = function () {

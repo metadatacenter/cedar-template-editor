@@ -14,8 +14,6 @@ describe('template-creator', function () {
   var toastyModal = ToastyModal;
   var sweetAlertModal = SweetAlertModal;
 
-  var cleanJson;
-  var dirtyJson;
   var templateOrElement;
   var sampleDescription;
 
@@ -50,17 +48,22 @@ describe('template-creator', function () {
   });
 
   it("should update the json when changes ", function () {
+    var cleanJson;
+    var dirtyJson;
 
     workspacePage.editResource(templateOrElement, 'template');
-    templatePage.isHiddenJson();
-    templatePage.clickJsonPreview();
+    templatePage.showJson();
     templatePage.jsonPreview().getText().then(function (value) {
-      cleanJson = JSON.parse(value);
-      templatePage.addField('textfield', isMore, title, description);
-      templatePage.jsonPreview().getText().then(function (value) {
-        dirtyJson = JSON.parse(value);
-        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
+      cleanJson = JSON.parse(value);
+      delete cleanJson._tmp;
+      var fieldType = templatePage.fieldTypes[0];
+      templatePage.addFieldType(fieldType, 'title', 'description', 'template');
+      templatePage.jsonPreview().getText().then(function (value) {
+
+        dirtyJson = JSON.parse(value);
+        delete dirtyJson._tmp;
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
         templatePage.clickBackArrow();
         sweetAlertModal.confirm();
         workspacePage.onWorkspace();
@@ -72,7 +75,8 @@ describe('template-creator', function () {
     workspacePage.editResource(templateOrElement, 'template');
     templatePage.isValid();
     templatePage.isClean();
-    templatePage.addField('textfield', false, 'title', 'description');
+    templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description','template');
+
     templatePage.isValid();
     templatePage.isDirty();
     templatePage.clickBackArrow();
@@ -102,6 +106,25 @@ describe('template-creator', function () {
           workspacePage.onWorkspace();
         });
 
+        it("should have cancel button present and active", function () {
+          workspacePage.createPage(pageType);
+          templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description', pageType);
+          templatePage.isValid();
+          templatePage.isDirty();
+          templatePage.clickCancel(pageType);
+          sweetAlertModal.confirm();
+          workspacePage.onWorkspace();
+        });
+
+        it("should have clear present and active if " + pageType + " is dirty", function () {
+          workspacePage.createPage(pageType);
+          templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description', pageType);
+          templatePage.clickClear(pageType);
+          sweetAlertModal.confirm();
+          templatePage.clickBackArrow();
+          workspacePage.onWorkspace();
+        });
+
         it("should show " + pageType + " header and be valid and clean ", function () {
           workspacePage.createPage(pageType);
           browser.wait(EC.visibilityOf(templatePage.topNavigation()));
@@ -112,55 +135,29 @@ describe('template-creator', function () {
           workspacePage.onWorkspace();
         });
 
-        it("should have cancel button present and active", function () {
-          workspacePage.createPage(pageType);
-          templatePage.addField('textfield', isMore, title, description);
-          templatePage.isValid();
-          templatePage.isDirty();
-          templatePage.clickCancel(pageType);
-          sweetAlertModal.confirm();
-          workspacePage.onWorkspace();
-        });
-
-        it("should have clear displayed if " + pageType + " is dirty", function () {
-          workspacePage.createPage(pageType);
-          templatePage.addField('textfield', isMore, title, description);
-          templatePage.isDirty();
-          templatePage.isValid();
-          templatePage.clickClear(pageType);
-          sweetAlertModal.confirm();
-          templatePage.clickBackArrow();
-          workspacePage.onWorkspace();
-        });
-
-        xit("should not change the " + pageType + " when cleared and cancelled", function () {
+        it("should not change the " + pageType + " when cleared and cancelled", function () {
 
           workspacePage.createPage(pageType);
-          templatePage.addField('textfield', isMore, title, description);
-          templatePage.isDirty();
-          templatePage.isValid();
+          templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description', pageType);
+
           templatePage.showJson();
-
-          browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
           templatePage.jsonPreview().getText().then(function (value) {
-            var beforeJson = JSON.parse(value);
+            var dirtyJson = JSON.parse(value);
+            delete dirtyJson._tmp;
 
             templatePage.clickClear(pageType);
             sweetAlertModal.cancel();
 
-            browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
-
             templatePage.jsonPreview().getText().then(function (value) {
               var afterJson = JSON.parse(value);
-              expect(_.isEqual(beforeJson, afterJson)).toBe(true);
+              delete afterJson._tmp;
+              expect(_.isEqual(dirtyJson, afterJson)).toBe(true);
+
+              templatePage.clickBackArrow();
+              sweetAlertModal.confirm();
+              workspacePage.onWorkspace();
             });
           });
-
-          templatePage.hideJson();
-          templatePage.isValid();
-          templatePage.clickBackArrow();
-          sweetAlertModal.confirm();
-          workspacePage.onWorkspace();
         });
 
         // for each field type
@@ -168,18 +165,12 @@ describe('template-creator', function () {
           (function (fieldType) {
 
             var field = element(by.css('.field-root .' + fieldType.iconClass));
-            var isMore = !fieldType.primaryField;
-            var title = fieldType.label;
-            var description = fieldType.label + ' description';
-            var type = fieldType.cedarType;
             if (!fieldType.staticField) {
 
-              it("should add and delete a " + type + " in " + pageType, function () {
+              it("should add and delete a " + fieldType.CedarType + " in " + pageType, function () {
 
                 workspacePage.createPage(pageType);
-                templatePage.addField(type, isMore, title, description);
-                browser.wait(EC.visibilityOf(field));
-
+                templatePage.addFieldType(fieldType,  fieldType.label, fieldType.label + 'description', pageType);
 
                 // delete the field
                 browser.actions().mouseMove(field).perform();
@@ -196,15 +187,15 @@ describe('template-creator', function () {
                 workspacePage.onWorkspace();
               });
 
-              it("should select and deselect a " + type + " in " + pageType, function () {
+              it("should select and deselect a " + fieldType.cedarType + " in " + pageType, function () {
 
                 var firstField;
                 var lastField;
                 workspacePage.createPage(pageType);
 
                 // add two fields
-                templatePage.addField(type, isMore, title, description);
-                templatePage.addField(type, isMore, title, description);
+                templatePage.addFieldType(fieldType,  fieldType.label, fieldType.label + 'description', pageType);
+                templatePage.addFieldType(fieldType,  fieldType.label, fieldType.label + 'description', pageType);
 
                 var fields = element.all(by.css(templatePage.cssFieldRoot));
                 fields.count().then(function (value) {
@@ -233,8 +224,7 @@ describe('template-creator', function () {
                 expect(lastField.element(by.model('fieldLabel[fieldLabelKey]')).isPresent()).toBe(false);
 
                 templatePage.isDirty();
-                // TODO valid not working for elements
-                //templatePage.isValid();
+                templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
@@ -266,16 +256,18 @@ describe('template-creator', function () {
         });
 
         // fails on travis
-        xit("should update the json when " + pageType + " changes ", function () {
+        it("should update the json when " + pageType + " changes ", function () {
 
           workspacePage.createPage(pageType);
-          templatePage.addField('textfield', isMore, title, description);
+          var fieldType = templatePage.fieldTypes[0];
+          templatePage.addFieldType(fieldType, 'title', 'description', pageType);
+          templatePage.isDirty();
           templatePage.showJson();
 
           // get the dirty json
           browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
           templatePage.jsonPreview().getText().then(function (value) {
-            dirtyJson = JSON.parse(value);
+            var dirtyJson = JSON.parse(value);
             delete dirtyJson._tmp;
             if (pageType === 'template') {
               expect(_.isEqual(templatePage.emptyTemplateJson, dirtyJson)).toBe(false);
@@ -296,7 +288,8 @@ describe('template-creator', function () {
         xit("should should restore the " + pageType + " when clear is clicked and confirmed", function () {
 
           workspacePage.createPage(pageType);
-          templatePage.addField('textfield', isMore, title, description);
+          var fieldType = templatePage.fieldTypes[0];
+          templatePage.addFieldType(fieldType, 'title', 'description', pageType);
           templatePage.clickClear(pageType);
           sweetAlertModal.confirm();
           sweetAlertModal.isHidden();
