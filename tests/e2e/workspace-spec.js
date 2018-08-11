@@ -162,7 +162,7 @@ describe('workspace', function () {
           workspacePage.infoPanelTitle().getText().then(function(value) {
             expect(folder == value).toBe(true);
 
-            workspacePage.clickLogo();
+            workspacePage.clickLogo(); 
             workspacePage.closeInfoPanel();
           });
         });
