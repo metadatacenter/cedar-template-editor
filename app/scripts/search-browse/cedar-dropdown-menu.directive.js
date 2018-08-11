@@ -26,14 +26,20 @@ define([
         delete           : '=',
         copy             : '=',
         rename           : '=',
-        publish          : '=',
-        createDraft      : '=',
+        publishModal     : '=',
+        publishCallback  : '=',
+        draftCallback    : '=',
+        submit           : '=',
         canNotPopulate   : '=',
         canNotPublish    : '=',
         canNotCreateDraft: '=',
         canNotWrite      : '=',
         canNotShare      : '=',
-        isFolder         : '='
+        canNotDelete     : '=',
+        canNotSubmit     : '=',
+        isFolder         : '=',
+        toggleId         : "="
+
       },
       controller : function ($scope, $element) {
       },

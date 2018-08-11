@@ -18,7 +18,8 @@ define([
     return {
       restrict: 'A',
       scope   : {
-        field: '='
+        field: '=',
+        block: '='
       },
       link    : function ($scope, $element, attrs) {
         // update local $scope.model to value of $parent.model if available
@@ -65,7 +66,25 @@ define([
             $element.selectpicker('val', default_array);
           }
 
-          $('.caret').addClass('glyphicon').addClass('glyphicon-chevron-down');
+          // if a block id is defined, then toggle stuff inside the block.  this is for the share dialog
+          if ( $scope.block) {
+            var str = "<i style='font-size:16px;margin-right:10px' class='fa fa-pencil pull-right'></i><span class='caret glyphicon glyphicon-chevron-down' style='display:block'></span>";
+
+            jQuery($scope.block + "  > div.confirmation > div > button.btn.btn-save" ).click(function() {
+              $timeout(function () {
+                jQuery($scope.block + " > div.row > div.btn-group.bootstrap-select.select-picker > button > span.filter-option.pull-left").html(str);
+              });
+            });
+
+            jQuery($scope.block + "  > div.confirmation > div > button.btn.btn-clear").click(function() {
+              $timeout(function () {
+                jQuery($scope.block + " > div.row > div.btn-group.bootstrap-select.select-picker > button > span.filter-option.pull-left").html(str);
+              });
+            });
+
+            jQuery($scope.block + " > div.row > div.btn-group.bootstrap-select.select-picker > button > span.filter-option.pull-left").html(str);
+            jQuery('.caret').addClass('glyphicon').addClass('glyphicon-chevron-down');
+          }
 
         }, 25);
         $element.on('change', function () {
@@ -74,8 +93,6 @@ define([
 
           $scope.model = $element.val();
           jQuery('.bootstrap-select').toggleClass('open');
-
-
         });
       }
     };

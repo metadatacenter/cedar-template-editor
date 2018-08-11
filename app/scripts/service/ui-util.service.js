@@ -22,7 +22,7 @@ define([
       modalType             : null,
       selectedFieldOrElement: null,
       instanceToSave        : null,
-      documentState         : {valid: true, dirty: false, locked: false}
+      documentState         : {form: null, valid: true, dirty: false, locked: false, message: true, metadata: false}
     };
 
     var jsonld = require('jsonld');
@@ -44,9 +44,31 @@ define([
       return service.documentState.valid;
     };
 
-    service.setDirty = function (value) {
-      service.documentState.dirty = value;
+    service.setMetadata = function(value) {
+      service.documentState.metadata = value;
     };
+
+    service.hasMetadata = function() {
+      return service.documentState.metadata;
+    };
+
+    service.setDirty = function (value) {
+      if (service.documentState.dirty != value) {
+        if (value) {
+          $rootScope.$broadcast("form:firstDirty");
+        }
+        service.documentState.dirty = value;
+
+        if (service.documentState.form) {
+          service.documentState.form.$dirty = value;
+        }
+      }
+    };
+
+    service.setForm = function (value) {
+      service.documentState.form = value;
+    };
+
     service.isDirty = function () {
       return service.documentState.dirty;
     };
@@ -112,17 +134,22 @@ define([
 
     // toggle through the list of view states, call the callback for spreadsheets
     service.toggleView = function (viewState) {
+
+      var oldState = viewState.selected;
       var index = viewState.views.indexOf(viewState.selected);
       index = (index + 1) % viewState.views.length;
       viewState.selected = viewState.views[index];
-      if (service.isSpreadsheetView(viewState)) {
+
+      // throw away the old spreadsheet
+      if (oldState === 'spreadsheet' && oldState != viewState.selected && typeof viewState.cleanupCallback == 'function') {
+        viewState.cleanupCallback();
+      }
+
+      // create the new spreadsheet
+      if (viewState.selected == 'spreadsheet' && typeof viewState.spreadsheetCallback == 'function') {
         setTimeout(function () {
           viewState.spreadsheetCallback();
         });
-      } else {
-        if (typeof viewState.cleanupCallback == 'function') {
-          viewState.cleanupCallback()
-        }
       }
       return viewState;
     };

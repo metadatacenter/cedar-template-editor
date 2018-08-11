@@ -148,11 +148,18 @@
     "eight": "eight",
     "unlimited": "unlimited",
     "Published": "Published",
+    "PublishedLatest": "Latest Published",
+    "PublishedAll": "All Published",
     "CreatedDraft": "Draft Created",
     "Draft": "Draft",
     "Latest": "Latest",
     "All": "All",
-    "Field": "Field"
+    "Both": "Both",
+    "Status": "Status",
+    "Version": "Version",
+    "Publication": "Publication",
+    "Field": "Field",
+    "Publish": "Publish"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -378,21 +385,25 @@
       }
     },
     "sort": {
-      "name": "Name",
-      "createdOnTS": "Recently Created",
-      "lastUpdatedOnTS": "Recently Updated"
+      "name": "Title",
+      "createdOnTS": "Created",
+      "lastUpdatedOnTS": "Modified"
     },
     "back": "Your recent changes will be lost.",
     "rename": {
       "title": "Rename",
       "label": "Enter a name"
     },
+    "publish" : {
+      "title": "Publish",
+      "version": "Version"
+    },
     "newFolder": {
       "title": "New folder"
     },
     "share": {
-      "share": "Share",
-      "groups": "Groups",
+      "share": "Share settings",
+      "groups": "Group settings",
       "add": "With users",
       "addHint": "Share with user",
       "public": "With groups",
@@ -555,7 +566,8 @@
     "groupCanBeModifiedOnlyByGroupAdmin": "The group can be modified only by the administrators of the groups!",
     "groupCanBeDeletedOnlyByGroupAdmin": "The group can be deleted only by the administrators of the groups!",
     "specialGroupCanNotBeDeleted": "The special group <b>{{name}}</b> can not be deleted!",
-    "nothingToDo": "No change was requested!"
+    "nothingToDo": "No change was requested!",
+    "templateWithInstancesCanNotBeModified": "The template can not be modified because it has <b>{{count}}</b> instance(s)!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",

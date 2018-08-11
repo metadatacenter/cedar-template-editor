@@ -156,7 +156,6 @@ gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/sidebar-spec.js',
-    './tests/e2e/update-description-spec.js',
     './tests/e2e/update-name-spec.js',
     './tests/e2e/update-ownership-spec.js',
     './tests/e2e/update-permissions-spec.js'

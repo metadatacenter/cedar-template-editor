@@ -139,13 +139,36 @@ define([
       return value;
     };
 
+    // TBD infoPanel.activeTab   'info' or 'version' or 'share'
+
     service.isInfoOpen = function () {
       return service.getUIPreferences().infoPanel.opened;
+    };
+
+    service.isVersionTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'version';
+    };
+
+    service.getInfoTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab;
+    };
+
+    service.isInfoTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'info';
+    };
+
+    service.isShareTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'share';
     };
 
     service.toggleInfo = function () {
       service.saveUIPreference('infoPanel', 'opened', !service.isInfoOpen());
       return service.isInfoOpen();
+    };
+
+    service.toggleInfoTab = function (tab) {
+      service.saveUIPreference('infoPanel', 'activeTab', tab);
+      return service.getInfoTab();
     };
 
     service.isGridView = function () {
@@ -187,11 +210,25 @@ define([
       return service.getSort();
     };
 
-
-
     service.setSortByUpdated = function () {
       service.saveUIPreference('folderView', 'sortBy', 'lastUpdatedOnTS');
       return service.getSort();
+    };
+
+    service.setStatus = function (status) {
+      service.saveUIPreference('resourcePublicationStatusFilter', 'publicationStatus', status);
+    };
+
+    service.getStatus = function (version) {
+      return service.getUIPreferences().resourcePublicationStatusFilter.publicationStatus;
+    };
+
+    service.setVersion = function (version) {
+      service.saveUIPreference('resourceVersionFilter', 'version', version);
+    };
+
+    service.getVersion = function (version) {
+      return service.getUIPreferences().resourceVersionFilter.version;
     };
 
     return service;

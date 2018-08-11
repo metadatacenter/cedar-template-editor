@@ -40,6 +40,20 @@ define([
         "LINK": "fa fa-link",
         "FOLDER":  "fa fa-folder",
         "METADATA": "fa fa-tag",
+      },
+      "publication" : {
+        "STATUS": "bibo:status",
+        "DRAFT": "bibo:draft",
+        "PUBLISHED": "bibo:published",
+        "ALL": "all",
+        "LATEST": "latest"
+      },
+      "model": {
+        "NAME": "schema:name",
+        "DESCRIPTION": "schema:description",
+        "ISBASEDON": "schema:isBasedOn",
+        "NUMBEROFINSTANCES" :'numberOfInstances',
+        "DERIVEDFROM": "derivedFrom"
       }
     });
 });

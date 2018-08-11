@@ -79,6 +79,12 @@ define([
       return this.base() + '/template-instances';
     };
 
+    service.templateInstancesBasedOn = function (query,  size) {
+      var url = this.base() + "/search?is_based_on=" + encodeURIComponent(query)
+          +  "&page=1&page_size=" + size;
+      return url;
+    };
+
     service.getTemplateInstance = function (id) {
       return this.templateInstances() + '/' + encodeURIComponent(id);
     };

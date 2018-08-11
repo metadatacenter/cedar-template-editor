@@ -13,7 +13,7 @@ define([
                                           "DataManipulationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
-                                          "FrontendUrlService", "QueryParamUtilsService", "CONST"];
+                                          "FrontendUrlService", "QueryParamUtilsService", "CONST",  "CedarUser"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
@@ -21,7 +21,7 @@ define([
                                         UIUtilService, DataManipulationService, controlledTermDataService,
                                         StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
-                                        FrontendUrlService, QueryParamUtilsService, CONST) {
+                                        FrontendUrlService, QueryParamUtilsService, CONST,  CedarUser) {
 
         $rootScope.showSearch = false;
 
@@ -43,6 +43,7 @@ define([
         // template details
         $scope.details;
         $scope.hasInstances;
+        $scope.hasInstanceResources;
         $scope.cannotWrite;
 
         $scope.isTemplate = true;
@@ -94,10 +95,9 @@ define([
               function (response) {
                 $scope.checkLocking();
                 $scope.hasInstances = response.totalCount > 0;
-                if ($scope.hasInstances) {
-                  UIMessageService.showWarning("Warning",
-                      "The template has metadata and should not be modified.", "OK", "");
-                }
+                $scope.hasInstanceResources = response.resources;
+                UIUtilService.setMetadata($scope.hasInstances);
+
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -322,6 +322,34 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
+
+
+          var doSave = function(response) {
+            UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+            // confirm message
+            var title = dms.getTitle(response.data);
+            UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": title},
+                'GENERIC.Created');
+
+            // Reload page with template id
+            DataManipulationService.createDomIds(response.data);
+            var newId = response.data['@id'];
+            $location.path(FrontendUrlService.getTemplateEdit(newId));
+
+            UIUtilService.setDirty(false);
+          };
+
+          var doUpdate = function(response) {
+            UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+
+            UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
+            owner.enableSaveButton();
+
+            UIUtilService.setDirty(false);
+          };
+
           this.disableSaveButton();
           var owner = this;
 
@@ -353,26 +381,25 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
-
-
-                    UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                    // confirm message
-                    var title = dms.getTitle(response.data);
-                    UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": title},
-                        'GENERIC.Created');
-
-                    // Reload page with template id
-                    DataManipulationService.createDomIds(response.data);
-                    var newId = response.data['@id'];
-                    $location.path(FrontendUrlService.getTemplateEdit(newId));
-
-                    //$rootScope.$broadcast('form:clean');
-                    UIUtilService.setDirty(false);
+                    doSave(response);
                   },
                   function (err) {
-                    UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
-                    owner.enableSaveButton();
+                    if (err.data.errorKey == "noWriteAccessToFolder") {
+                      AuthorizedBackendService.doCall(
+                          TemplateService.saveTemplate(CedarUser.getHomeFolderId(), $scope.form),
+                          function (response) {
+                            doSave(response);
+                            // tell user where you put it
+                            UIMessageService.flashWarning('SERVER.INSTANCE.create.homeFolder');
+                          },
+                          function (err) {
+                            UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
+                            owner.enableSaveButton();
+                          });
+                    } else {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
+                      owner.enableSaveButton();
+                    }
                   }
               );
             }
@@ -388,24 +415,11 @@ define([
                 AuthorizedBackendService.doCall(
                     TemplateService.updateTemplate(id, copiedForm),
                     function (response) {
-
-                      UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
-
-                      //$rootScope.jsonToSave = response.data;
-                      //DataManipulationService.createDomIds(response.data);
-                      //$scope.form = response.data;
-
-                      //var title = dms.getTitle(response.data);
-                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
-                      owner.enableSaveButton();
-
-                      //$rootScope.$broadcast('form:clean');
-                      UIUtilService.setDirty(false);
+                      doUpdate(response);
                     },
                     function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                      owner.enableSaveButton();
+                        UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                        owner.enableSaveButton();
                     }
                 );
               }
