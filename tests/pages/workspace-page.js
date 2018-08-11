@@ -191,6 +191,14 @@ var WorkspacePage = function () {
     return createShares;
   };
 
+  this.createWorkspaceLink = function () {
+    return createWorkspaceLink;
+  };
+
+  this.createSharedWithMeLink = function () {
+    return createSharedWithMeLink;
+  };
+
   this.createMoreOptionsButton = function () {
     return createMoreOptionsButton;
   };

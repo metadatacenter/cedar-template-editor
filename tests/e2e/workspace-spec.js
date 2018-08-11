@@ -70,10 +70,35 @@ describe('workspace', function () {
       });
     });
 
+    it("should show workspace link", function () {
+      workspacePage.createWorkspaceLink().isPresent().then(function (result) {
+        console.log('workspace present',result);
+      });
+    });
+
+    it("should show shared link", function () {
+      workspacePage.createSharedWithMeLink().isPresent().then(function (result) {
+        console.log('shared present',result);
+      });
+    });
+
+
+    it("should display workspace link", function () {
+      workspacePage.createWorkspaceLink().isDisplayed().then(function (result) {
+        console.log('workspace displayed',result);
+      });
+    });
+
+    it("should show shared link", function () {
+      workspacePage.createSharedWithMeLink().isDisplayed().then(function (result) {
+        console.log('shared displayed',result);
+      });
+    });
+
     it("should show work space", function () {
       workspacePage.hasWorkspace();
     });
-    
+
     it("should show shared with me", function () {
       workspacePage.hasSharedWithMe();
     });
