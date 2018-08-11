@@ -30,7 +30,9 @@ var WorkspacePage = function () {
   // page content
   var createSidebarRight = element(by.css('#sidebar-right'));
   var createSidebarLeft = element(by.css('#sidebar-left'));
-  var createWorkspaceLink = element(by.css('#sidebar-left > div.filter-options > div.shares > a.share.workspace'));
+  var createFilterOptions = element(by.css('#sidebar-left  div.filter-options'));
+  var createShares = element(by.css('#sidebar-left  div.filter-options div.shares'));
+  var createWorkspaceLink = element(by.css('#sidebar-left  div.filter-options  div.shares  a.share.workspace'));
   var createSharedWithMeLink = element(by.css('#sidebar-left > div.filter-options > div.shares > a.share.shared'));
 
 
@@ -176,6 +178,18 @@ var WorkspacePage = function () {
     return reporter;
   };
 
+
+  this.createSidebarLeft = function () {
+    return createSidebarLeft;
+  };
+
+  this.createFilterOptions = function () {
+    return createFilterOptions;
+  };
+
+  this.createShares = function () {
+    return createShares;
+  };
 
   this.createMoreOptionsButton = function () {
     return createMoreOptionsButton;
@@ -838,6 +852,7 @@ var WorkspacePage = function () {
 
 
   this.hasWorkspace = function () {
+    //#sidebar-left > div.filter-options > div.shares > a.share.workspace.ng-scope.active
     // #sidebar-left > div.filter-options > div.shares > a.share.workspace
     browser.wait(EC.visibilityOf(createWorkspaceLink));
   };

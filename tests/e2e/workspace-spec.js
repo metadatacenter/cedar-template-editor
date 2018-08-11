@@ -52,8 +52,29 @@ describe('workspace', function () {
 
   describe('create resources', function () {
 
-    it("should show left panel", function () {
+    it("should show left sidebar", function () {
+      workspacePage.createSidebarLeft().isPresent().then(function (result) {
+        console.log('left sidebar present',result);
+      });
+    });
+
+    it("should show filter options", function () {
+      workspacePage.createFilterOptions().isPresent().then(function (result) {
+        console.log('filter options present',result);
+      });
+    });
+
+    it("should show shares", function () {
+      workspacePage.createShares().isPresent().then(function (result) {
+        console.log('shares present',result);
+      });
+    });
+
+    it("should show work space", function () {
       workspacePage.hasWorkspace();
+    });
+    
+    it("should show shared with me", function () {
       workspacePage.hasSharedWithMe();
     });
 
