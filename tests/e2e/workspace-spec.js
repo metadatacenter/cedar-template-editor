@@ -95,11 +95,11 @@ describe('workspace', function () {
       });
     });
 
-    it("should show work space", function () {
+    xit("should show work space", function () {
       workspacePage.hasWorkspace();
     });
 
-    it("should show shared with me", function () {
+    xit("should show shared with me", function () {
       workspacePage.hasSharedWithMe();
     });
 
@@ -143,7 +143,7 @@ describe('workspace', function () {
         workspacePage.clickSharedWithMe();
         workspacePage.createBreadcrumbFolders().getText().then(function(second) {
           expect(first == second).toBe(false);
-          workspacePage.clickWorkspace();
+          workspacePage.clickLogo();
           workspacePage.createBreadcrumbFolders().getText().then(function(third) {
             expect(third == second).toBe(false);
           });
@@ -162,7 +162,7 @@ describe('workspace', function () {
           workspacePage.infoPanelTitle().getText().then(function(value) {
             expect(folder == value).toBe(true);
 
-            workspacePage.clickWorkspace();
+            workspacePage.clickLogo();
             workspacePage.closeInfoPanel();
           });
         });

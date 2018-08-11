@@ -179,13 +179,13 @@
 
               <li id="compose-options">
                 <div class="btn-group dropdown">
-                  <button type="button" id="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <button type="button" class="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     New <i class="fa fa-plus template"></i></button>
                   <ul class="dropdown-menu "   aria-labelledby="button-create">
-                    <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
-                    <li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
-                    <li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
-                    <li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+                    <li class="button-create-folder"><a  ng-click="dc.showNewFolderModal()">Folder</a></li>
+                    <li class="button-create-field"><a  ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+                    <li class="button-create-element"><a  ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+                    <li class="button-create-template"><a  ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
                   </ul>
                 </div>
               </li>
