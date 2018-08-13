@@ -42,6 +42,9 @@ describe('workspace', function () {
   it("should be on the workspace page", function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     workspacePage.onWorkspace();
+  });
+
+  it("should have workspace stuff", function () {
     workspacePage.hasLogo();
     workspacePage.hasBreadcrumb();
     workspacePage.hasSearchNav();
@@ -83,13 +86,13 @@ describe('workspace', function () {
     });
 
 
-    it("should display workspace link", function () {
+    xit("should display workspace link", function () {
       workspacePage.createWorkspaceLink().isDisplayed().then(function (result) {
         console.log('workspace displayed',result);
       });
     });
 
-    it("should show shared link", function () {
+    xit("should show shared link", function () {
       workspacePage.createSharedWithMeLink().isDisplayed().then(function (result) {
         console.log('shared displayed',result);
       });
@@ -162,7 +165,7 @@ describe('workspace', function () {
           workspacePage.infoPanelTitle().getText().then(function(value) {
             expect(folder == value).toBe(true);
 
-            workspacePage.clickLogo(); 
+            workspacePage.clickLogo();
             workspacePage.closeInfoPanel();
           });
         });
