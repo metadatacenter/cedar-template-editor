@@ -33,7 +33,7 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  it('should remove all resources for user 1', function () {
+  xit('should remove all resources for user 1', function () {
     workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser1);
     workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser1);
     workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser1);
@@ -48,7 +48,7 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  it('should remove all resources for user 2', function () {
+  xit('should remove all resources for user 2', function () {
     workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser2);
     workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser2);
     workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser2);
