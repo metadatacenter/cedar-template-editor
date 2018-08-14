@@ -8,20 +8,22 @@ var ShareModal = function () {
   var shareModal = element(by.id('share-modal'));
   var shareModalBody = shareModal.element(by.css('div > div > div.modal-body '));
   var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
-  var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
-  var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
-  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7 > input'));
-  var shareModalGroupName = shareWithGroupRow.element(by.css('div.col-sm-7 > input'));
-  var sharedModalUserPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropup.select-picker'));
-  var sharedModalGroupPermissionsList = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.select-picker'));
-  var shareModalUserPermissions = sharedModalUserPermissionsList.element(by.css('button'));
-  var shareModalGroupPermissions = sharedModalGroupPermissionsList.element(by.css('button'));
-  var shareModalUserReadPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));
-  var shareModalGroupReadPermission = sharedModalGroupPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));
-  var shareModalUserWritePermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(2) > a'));
-  var shareModalGroupWritePermission = sharedModalGroupPermissionsList.element(by.css('div > ul > li:nth-child(2) > a'));
-  var shareModalUserOwnerPermission = sharedModalUserPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
-  var shareModalGroupOwnerPermission = sharedModalGroupPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
+
+  var shareWithUserRow = element(by.css('#share-people > div.row'));
+  var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-8 > input'));
+  var shareModalUserPermissions = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.select-picker'));
+  var shareModalUserOwnerPermission = shareModalUserPermissions.element(by.css('div > ul > li:nth-child(3) > a'));
+  var shareModalUserWritePermission = shareModalUserPermissions.element(by.css('div > ul > li:nth-child(2) > a'));
+  var shareModalUserReadPermission = shareModalUserPermissions.element(by.css('div > ul > li:nth-child(1) > a'));
+
+
+  var shareWithGroupRow = element(by.css('#share-group > div.row'));
+  var shareModalGroupName = shareWithGroupRow.element(by.css('div.col-sm-8 > input'));
+  var shareModalGroupPermissions = shareWithGroupRow.element(by.css('div.btn-group.bootstrap-select.select-picker'));
+  var shareModalGroupReadPermission = shareModalGroupPermissions.element(by.css('div > ul > li:nth-child(1) > a'));
+  var shareModalGroupWritePermission = shareModalGroupPermissions.element(by.css('div > ul > li:nth-child(2) > a'));
+  var shareModalGroupOwnerPermission = shareModalGroupPermissions.element(by.css('div > ul > li:nth-child(3) > a'));
+
   var shareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
   var shareModalAddGroupButton = shareWithGroupRow.element(by.css('div.col-sm-1.pull-right > button'));
   var shareModalDoneButton = shareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
@@ -103,22 +105,6 @@ var ShareModal = function () {
     shareMenuItem.click();
   };
 
-
-  // open the share dialog of the given resource via the right-click menu item
-  this.openDialogViaRightClick = function (name, type) {
-    WorkspacePage.rightClickResource(name, type);
-    var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
-    browser.wait(EC.visibilityOf(shareMenuItem));
-    browser.wait(EC.elementToBeClickable(shareMenuItem));
-    shareMenuItem.click();
-  };
-
-  this.deleteDisabledViaRightClick = function (name, type) {
-    WorkspacePage.rightClickResource(name, type);
-    var deleteMenuItem = WorkspacePage.createDeleteDisabled();
-    browser.wait(EC.visibilityOf(deleteMenuItem));
-  };
-
   // open the share dialog of the given resource via the right-click menu item
   this.moveDisabledCopyEnabled = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
@@ -148,14 +134,6 @@ var ShareModal = function () {
     browser.wait(EC.visibilityOf(moveMenuItem));
   };
 
-  // open the share dialog of the given resource via the right-click menu item
-  this.moveShareDisabled = function (name, type) {
-    WorkspacePage.rightClickResource(name, type);
-    var shareMenuItem = WorkspacePage.createShareDisabled();
-    browser.wait(EC.visibilityOf(shareMenuItem));
-    var moveMenuItem = WorkspacePage.createMoveDisabled();
-    browser.wait(EC.visibilityOf(moveMenuItem));
-  };
 
   // open the share dialog of the given resource via the right-click menu item
   this.shareAndDeleteEnabled = function (name, type) {
@@ -182,16 +160,16 @@ var ShareModal = function () {
 
 
   // share the given resource with the specified user name with or without write and ownership permissions
-  this.shareResource = function(name, type, username, canWrite, isOwner) {
-    this.openDialogViaRightClick(name, type);
+  this.shareResource = function (name, type, username, canWrite, isOwner) {
+    // dialog is open
     this.shareWithUser(username, canWrite, isOwner);
     //browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
 
 
   // share the given resource with the specified group name with or without write and ownership permissions
-  this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
-    this.openDialogViaRightClick(name, type);
+  this.shareResourceWithGroup = function (name, type, groupname, canWrite, isOwner) {
+    this.openDialogViaMoreOptions(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
     //browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
@@ -199,70 +177,70 @@ var ShareModal = function () {
 
   // share with a user given a user name, whether user has write permissions, and whether user is owner
   this.shareWithUser = function (username, canWrite, isOwner) {
-    var usernameField = this.createShareModalUserName();
-    browser.wait(EC.visibilityOf(usernameField));
-    usernameField.sendKeys(username);
-    browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    var permissionsList = this.createShareModalUserPermissions();
-    browser.wait(EC.elementToBeClickable(permissionsList));
-    permissionsList.click();
+    var dialog = element(by.css('#share-modal'));
+    var row = element(by.css('#share-people > div.row'));
+    var name = row.element(by.css('div.col-sm-8 > input'));
+    var perms = row.element(by.css('div.btn-group.bootstrap-select.select-picker'));
+    var owner = perms.element(by.css('div > ul > li:nth-child(3) > a'));
+    var write = perms.element(by.css('div > ul > li:nth-child(2) > a'));
+    var read = perms.element(by.css('div > ul > li:nth-child(1) > a'));
+    var perm = isOwner ? owner : (canWrite ? write : read);
+    var confirm = element(by.css('#share-people  div.confirmation'));
+    var add = element(by.css('#share-people div.confirmation button.btn-save'));
+    var done = dialog.element(by.css('div.modal-footer.actions  button.btn-save.confirm'));
 
-    if (canWrite) {
-      browser.wait(EC.elementToBeClickable(this.createShareModalUserWritePermission()));
-      this.createShareModalUserWritePermission().click();
-    }
-    else if (isOwner) {
-      browser.wait(EC.elementToBeClickable(this.createShareModalUserOwnerPermission()));
-      this.createShareModalUserOwnerPermission().click();
-    }
-    else {
-      browser.wait(EC.elementToBeClickable(this.createShareModalUserReadPermission()));
-      this.createShareModalUserReadPermission().click();
-    }
-
-    var addButton = this.createShareModalAddUserButton();
-    browser.wait(EC.elementToBeClickable(addButton));
-    addButton.click();
-
-    this.clickDone();
+    browser.wait(EC.visibilityOf(dialog));
+    browser.wait(EC.visibilityOf(name));
+    name.sendKeys(username);
+    browser.wait(EC.visibilityOf(confirm));
+    browser.wait(EC.elementToBeClickable(perms));
+    perms.click();
+    browser.wait(EC.elementToBeClickable(perm));
+    perm.click();
+    browser.wait(EC.visibilityOf(add));
+    browser.wait(EC.elementToBeClickable(add));
+    add.click();
+    browser.wait(EC.elementToBeClickable(done));
+    done.click();
+    browser.wait(EC.stalenessOf(done))
   };
 
+  // share with a user given a user name, whether user has write permissions, and whether user is owner
+  this.shareWithGroup = function (groupName, canWrite, isOwner) {
 
-  // share with a group given its name, whether group has write permissions, and whether group is owner
-  this.shareWithGroup = function(groupName, canWrite, isOwner) {
-    var groupnameField = this.createShareModalGroupName();
-    browser.wait(EC.visibilityOf(groupnameField));
-    groupnameField.sendKeys(groupName);
-    browser.actions().sendKeys(protractor.Key.ENTER).perform();
+    var dialog = element(by.css('#share-modal'));
+    var share = element(by.css('#share-group'));
+    var row = share.element(by.css('div.row.first'));
+    var group = row.element(by.css('div.col-sm-8 > input'));
+    var perms = row.element(by.css('div.btn-group.bootstrap-select.select-picker'));
+    var read = perms.element(by.css('div > ul > li:nth-child(1) > a'));
+    var write = perms.element(by.css('div > ul > li:nth-child(2) > a'));
+    var owner = perms.element(by.css('div > ul > li:nth-child(3) > a'));
+    var perm = isOwner ? owner : (canWrite ? write : read);
+    var confirm = share.element(by.css('div.confirmation.first'));
+    var add = confirm.element(by.css('button.btn.btn-save'));
+    var done = dialog.element(by.css('div.modal-footer.actions  button.btn-save.confirm'));
 
-    var permissionsList = this.createShareModalGroupPermissions();
-    browser.wait(EC.elementToBeClickable(permissionsList));
-    permissionsList.click();
-
-    if (canWrite) {
-      browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
-      this.createShareModalGroupWritePermission().click();
-    }
-    else if (isOwner) {
-      browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
-      this.createShareModalGroupOwnerPermission().click();
-    }
-    else {
-      browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
-      this.createShareModalGroupReadPermission().click();
-    }
-
-    var addButton = this.createShareModalAddGroupButton();
-    browser.wait(EC.elementToBeClickable(addButton));
-    addButton.click();
-
-    this.clickDone();
+    browser.wait(EC.visibilityOf(dialog));
+    browser.wait(EC.visibilityOf(group));
+    group.sendKeys(groupName);
+    browser.wait(EC.visibilityOf(confirm));
+    browser.wait(EC.elementToBeClickable(perms));
+    perms.click();
+    browser.wait(EC.elementToBeClickable(perm));
+    perm.click();
+    browser.wait(EC.visibilityOf(add));
+    browser.wait(EC.elementToBeClickable(add));
+    add.click();
+    browser.wait(EC.elementToBeClickable(done));
+    done.click();
+    browser.wait(EC.stalenessOf(done))
   };
 
 
   // checks whether the current user can share the selected item
-  this.canShare = function() {
+  this.canShare = function () {
     return shareColumn.isPresent();
   };
 
@@ -270,7 +248,7 @@ var ShareModal = function () {
   // checks whether the current user can change ownership of the selected item
   this.canChangeOwnership = function () {
     var permissionsList = this.createShareModalUserPermissions();
-    if(!permissionsList.isPresent()) {
+    if (!permissionsList.isPresent()) {
       return false;
     }
     browser.wait(EC.elementToBeClickable(permissionsList));
@@ -282,7 +260,7 @@ var ShareModal = function () {
 
 
   // click on the done button of the share dialog
-  this.clickDone = function() {
+  this.clickDone = function () {
     var doneButton = this.createShareModalDoneButton();
     browser.wait(EC.elementToBeClickable(doneButton));
     doneButton.click();

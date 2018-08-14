@@ -50,6 +50,7 @@ var WorkspacePage = function () {
   var templates = element.all(by.css('.center-panel populate-form-boxes .form-box .template'));
   var createFirstTemplate = templates.first();
   var createFirstCss = '.center-panel populate-form-boxes .form-box .';
+
   var createResourceInstanceCss = '#workspace-view-container div.populate-form-boxes div.resource-instance';
   var resourceTypes = ['metadata', 'element', 'template', 'folder'];
   var defaultTitle = 'Protractor';
@@ -122,19 +123,20 @@ var WorkspacePage = function () {
   ];
 
 
-  // create new buttons
-  // var createButton = element(by.id('button-create'));
-  // var createTemplateButton = element(by.id('button-create-template'));
-  // var createFieldButton = element(by.id('button-create-field'));
-  // var createElementButton = element(by.id('button-create-element'));
-  // var createFolderButton = element(by.id('button-create-folder'));
-  // var createMetadataButton = element(by.id('button-save-metadata'));
-  var createButton = element(by.css('#compose-options button.button-create'));
-  var createTemplateButton = element(by.css('li.button-create-template'));
-  var createFieldButton = element(by.css('li.button-create-field'));
-  var createElementButton = element(by.css('li.button-create-element'));
-  var createFolderButton = element(by.css('li.button-create-folder'));
-  var createMetadataButton = element(by.id('button-save-metadata'));
+  // create new buttons left side bar
+  var createButton = element(by.id('button-create'));
+  var createTemplateButton = element(by.id('button-create-template'));
+  var createFieldButton = element(by.id('button-create-field'));
+  var createElementButton = element(by.id('button-create-element'));
+  var createFolderButton = element(by.id('button-create-folder'));
+
+  // create  buttons top nav
+  // var createButton = element(by.css('#compose-options button.button-create'));
+  // var createTemplateButton = element(by.css('li.button-create-template'));
+  // var createFieldButton = element(by.css('li.button-create-field'));
+  // var createElementButton = element(by.css('li.button-create-element'));
+  // var createFolderButton = element(by.css('li.button-create-folder'));
+
   var createResourceButtons = {
     "template": createTemplateButton,
     "element" : createElementButton,
@@ -144,6 +146,7 @@ var WorkspacePage = function () {
 
   // main center panel
   var createCenterPanel = element(by.id('center-panel'));
+  var createMetadataButton = element(by.id('button-save-metadata'));
 
   // create folder modal
   var createFolderModal = element(by.id('new-folder-modal'));
@@ -225,11 +228,11 @@ var WorkspacePage = function () {
     return createButton;
   };
 
-  this.infoPanelTabs = function() {
+  this.infoPanelTabs = function () {
     return infoPanelTabs;
   };
 
-  this.infoPanelTitle = function() {
+  this.infoPanelTitle = function () {
     return infoPanelTitle;
   };
 
@@ -577,17 +580,6 @@ var WorkspacePage = function () {
   };
 
 
-  // var deleteResourceViaRightClick = function (name, type) {
-  //   rightClickResource(name, type);
-  //   browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
-  //   // is delete enabled?
-  //   browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
-  //   createRightClickDeleteMenuItem.click();
-  //   sweetAlertModal.confirm();
-  //   return true;
-  // };
-  // this.deleteResourceViaRightClick = deleteResourceViaRightClick;
-
   this.setSortOrder = function (order) {
 
     // create more on the toolbar
@@ -624,7 +616,8 @@ var WorkspacePage = function () {
   };
 
   this.setView = function (view) {
-    var current = view == 'grid' ? element(by.css('#grid-view-tool.grid-view')) : element(by.css('#grid-view-tool.list-view'));
+    var current = view == 'grid' ? element(by.css('#grid-view-tool.grid-view')) : element(
+        by.css('#grid-view-tool.list-view'));
     current.isPresent().then(function (result) {
       if (!result) {
         var link = element(by.css('#grid-view-tool'));
@@ -943,7 +936,129 @@ var WorkspacePage = function () {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
     browser.wait(EC.elementToBeClickable(userFolder));
-    browser.actions().doubleClick(userFolder).perform();
+    browser.actions().doubleClick(userFolder);
+    createBreadcrumbUserName.getText().then(function (text) {
+      console.log('navigateToUserFolder', text);
+    });
+  };
+
+  //
+  //   sharing resources
+  //
+
+  // open share modal
+  this.shareResource = function (name, type) {
+
+    var createFirst = doSelect(name, type);
+    var moreButtons;
+    var shareButtons;
+
+    // create more on the toolbar
+    moreButtons = createFirst.all(by.css('button.more-button'));
+    moreButtons.count().then(function (count) {
+
+      if (count == 1) {
+        var moreButton = moreButtons.get(0);
+        browser.wait(EC.visibilityOf(moreButton));
+        browser.wait(EC.elementToBeClickable(moreButton));
+        moreButton.click();
+
+        shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share'));
+        shareButtons.count().then(function (count) {
+
+          if (count == 1) {
+
+            var shareButton = shareButtons.get(0);
+
+            browser.wait(EC.visibilityOf(shareButton));
+            browser.wait(EC.elementToBeClickable(shareButton));
+            shareButton.click();
+
+          } else {
+            console.log("Error: shareResource shareButton not found", count);
+          }
+        });
+      } else {
+        console.log("Error: shareResource moreButton not found", count);
+      }
+    });
+
+  };
+
+
+  // open the share dialog of the given resource via the right-click menu item
+  this.moveShareDisabled = function (name, type) {
+    var createFirst = doSelect(name, type);
+    var moreButtons;
+    var moveButtons;
+    var shareButtons;
+
+    // create more on the toolbar
+    moreButtons = createFirst.all(by.css('button.more-button'));
+    moreButtons.count().then(function (count) {
+
+      if (count == 1) {
+        var moreButton = moreButtons.get(0);
+        browser.wait(EC.visibilityOf(moreButton));
+        browser.wait(EC.elementToBeClickable(moreButton));
+        moreButton.click();
+
+        moveButtons = createFirst.all(by.css('ul.dropdown-menu li a.move.link-disabled'));
+        moveButtons.count().then(function (count) {
+
+          if (count == 1) {
+
+            var moveButton = moveButtons.get(0);
+            browser.wait(EC.visibilityOf(moveButton));
+            browser.wait(EC.elementToBeClickable(moveButton));
+
+            shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share.link-disabled'));
+            shareButtons.count().then(function (count) {
+
+              if (count == 1) {
+
+                var shareButton = shareButtons.get(0);
+                browser.wait(EC.visibilityOf(shareButton));
+                browser.wait(EC.elementToBeClickable(shareButton));
+
+
+              } else {
+                console.log("Error: shareAndDeleteEnabled shareButton not found", count);
+              }
+            });
+
+
+          } else {
+            console.log("Error: shareAndDeleteEnabled deleteButton not found", count);
+          }
+        });
+      } else {
+        console.log("Error: shareAndDeleteEnabled moreButton not found", count);
+      }
+    });
+
+
+  };
+
+  this.shareAndDeleteEnabled = function (name, type) {
+    var createFirst = doSelect(name, type);
+    var moreButtons = createFirst.all(by.css('button.more-button'));
+    var deleteButtons = createFirst.all(by.css('ul.dropdown-menu li a.delete'));
+    var shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share'));
+
+    // create more on the toolbar
+    var moreButton = moreButtons.get(0);
+    browser.wait(EC.visibilityOf(moreButton));
+    browser.wait(EC.elementToBeClickable(moreButton));
+    moreButton.click();
+
+    var deleteButton = deleteButtons.get(0);
+    browser.wait(EC.visibilityOf(deleteButton));
+    browser.wait(EC.elementToBeClickable(deleteButton));
+
+    var shareButton = shareButtons.get(0);
+    browser.wait(EC.visibilityOf(shareButton));
+    browser.wait(EC.elementToBeClickable(shareButton));
   };
 
   //
@@ -952,26 +1067,45 @@ var WorkspacePage = function () {
 
   // delete a resource
   var deleteResource = function (name, type) {
-    if (type != 'folder') {
-      console.log('deleteResource', name, type);
-      var createFirst = doSelect(name, type);
 
-      // create more on the toolbar
-      var moreButton = createFirst.all(by.css('button.more-button')).get(0);
-      browser.wait(EC.visibilityOf(moreButton));
-      browser.wait(EC.elementToBeClickable(moreButton));
-      moreButton.click();
+    var createFirst = doSelect(name, type);
+    var moreButtons;
+    var deleteButtons;
 
-      var deleteButton = createFirst.all(by.css('ul.dropdown-menu li a.delete')).get(0);
-      browser.wait(EC.visibilityOf(deleteButton));
-      browser.wait(EC.elementToBeClickable(deleteButton));
-      deleteButton.click();
+    // create more on the toolbar
+    moreButtons = createFirst.all(by.css('button.more-button'));
+    moreButtons.count().then(function (count) {
 
-      // confirm
-      sweetAlertModal.confirm();
-      toastyModal.isSuccess();
-      doClear();
-    }
+      if (count == 1) {
+        var moreButton = moreButtons.get(0);
+        browser.wait(EC.visibilityOf(moreButton));
+        browser.wait(EC.elementToBeClickable(moreButton));
+        moreButton.click();
+
+        deleteButtons = createFirst.all(by.css('ul.dropdown-menu li a.delete'));
+        deleteButtons.count().then(function (count) {
+
+          if (count == 1) {
+
+            var deleteButton = deleteButtons.get(0);
+
+            browser.wait(EC.visibilityOf(deleteButton));
+            browser.wait(EC.elementToBeClickable(deleteButton));
+            deleteButton.click();
+
+            // confirm
+            sweetAlertModal.confirm();
+            toastyModal.isSuccess();
+            doClear();
+          } else {
+            console.log("Error: deleteResource deleteButton not found", count);
+          }
+        });
+      } else {
+        console.log("Error: deleteResource moreButton not found", count);
+      }
+    });
+
   };
   this.deleteResource = deleteResource;
 
@@ -987,7 +1121,6 @@ var WorkspacePage = function () {
   };
 
   this.deleteResources = function (resources, username) {
-    console.log('deleteResources', resources.count());
     var resourceTypeOrder = ['metadata', 'field', 'element', 'template', 'folder'];
     for (var j = 0; j < resourceTypeOrder.length; j++) {
       for (var i = 0; i < resources.length; i++) {
@@ -1021,11 +1154,11 @@ var WorkspacePage = function () {
     var t = type;
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
     var selector = createResourceInstanceCss + '.' + type;
-    ;
     var results = element.all(by.css(selector));
     doClear();
 
     results.count().then(function (count) {
+      console.log('deleteAllBySearching', type, count);
       if (count) {
         for (var i = 0; i < count; i++) {
           (function (name, type) {

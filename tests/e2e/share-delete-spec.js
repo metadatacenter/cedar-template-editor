@@ -19,6 +19,7 @@ describe('share-delete', function () {
   var target1Folder;
   var target2Folder;
   var target1Writable;
+  var folder;
 
 
   var resources = [];
@@ -46,100 +47,64 @@ describe('share-delete', function () {
 
   describe('share and delete', function () {
 
-    it("should delete a resource with more options", function () {
+    it("should create a folder", function () {
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
-
-      // delete it
-      workspacePage.deleteResource(folder, 'folder');
+      folder = workspacePage.createFolder('Writable');
+      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    it("should delete a resource  with right click", function () {
-      // create a resource for user 2
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
-
-      // delete it
-      workspacePage.deleteResourceViaRightClick(folder, 'folder');
-      toastyModal.isSuccess();
-    });
-
-    it("should share and delete a writable resource via user", function () {
-      // create a resource for user 2
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
-
-      // give user 1 write access
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
-
-      // can user 1 share and delete?
+    it("should share a writable resource via user", function () {
+      workspacePage.shareResource(folder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName1, true, false);
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareAndDeleteEnabled(folder, 'folder');
-      workspacePage.clearSearch();
-
-      // user 1 updates sharing and deletes
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-      workspacePage.deleteResource(folder, 'folder');
+      workspacePage.shareAndDeleteEnabled(folder, 'folder');
     });
 
-    it("should share and delete a writable resource via group", function () {
+    it("should create a folder", function () {
       // create a resource for user 2
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var folder = workspacePage.createFolder('Writable');
+      folder = workspacePage.createFolder('Writable');
+      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    });
 
+    it("should share a writable resource with group", function () {
       // give everybody write access
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-      workspacePage.clearSearch();
-
-      // can user 1 share and delete?
+      workspacePage.shareResource(folder, 'folder');
+      shareModal.shareWithGroup(testConfig.everybodyGroup, true, false);
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareAndDeleteEnabled(folder, 'folder');
-      workspacePage.clearSearch();
+      workspacePage.shareAndDeleteEnabled(folder, 'folder');
+    });
 
-      // user 1 updates sharing and deletes
-      workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, true, false);
-      workspacePage.clearSearch();
-      workspacePage.deleteResource(folder, 'folder');
+    it("should create a folder", function () {
+      // create a resource for user 1
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      folder = workspacePage.createFolder('Readable');
+      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should fail to move, share, and delete a readable resource", function () {
-      // create a resource for user 1
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var folder = workspacePage.createFolder('Readable');
-      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-
       // give read access to user 2
-      shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
-      workspacePage.clearSearch();
-
-      // user 2 should not be able to share or delete
+      workspacePage.shareResource(folder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName2, false, false);
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.moveShareDisabled(folder, 'folder');
+      workspacePage.moveShareDisabled(folder, 'folder');
     });
 
-    it("should fail to move, share, and delete a readable resource via group", function () {
+    it("should create a folder", function () {
       // create a resource for user 1
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var folder = workspacePage.createFolder('Readable');
+      folder = workspacePage.createFolder('Readable');
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-
-      // give read access to everybody
-      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-      workspacePage.clearSearch();
-
-      // user 2 should not be able to share or delete
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      workspacePage.navigateToUserFolder(testConfig.testUserName1);
-      shareModal.moveShareDisabled(folder, 'folder');
     });
 
+    it("should fail to move, share, and delete a readable resource shared via group", function () {
+      // give read access to everybody
+      workspacePage.shareResource(folder, 'folder');
+      shareModal.shareWithGroup(testConfig.everybodyGroup, false, false);
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      workspacePage.moveShareDisabled(folder, 'folder');
+    });
   });
 
   describe('remove created resources', function () {

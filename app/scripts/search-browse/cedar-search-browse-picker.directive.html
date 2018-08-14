@@ -13,17 +13,17 @@
 
         <div class="compose-options add-new">
 
+
           <div class="btn-group dropdown"  >
             <button type="button"
-                id="button-create1"
-                class="btn btn-save template" aria-haspopup="true"
-                aria-expanded="true">New <i
+                id="button-create"
+                class="btn btn-save template" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">New <i
                 class="fa fa-plus"></i></button>
-            <ul class="dropdown-menu "  role="menu" aria-labelledby="button-create1">
-              <li><a id="button-create-folder1" ng-click="dc.showNewFolderModal()">Folder</a></li>
-              <li><a id="button-create-field1" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
-              <li><a  id="button-create-element1" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
-              <li><a  id="button-create-template1" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+            <ul class="dropdown-menu "  role="menu" aria-labelledby="button-create">
+              <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
+              <li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+              <li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+              <li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
             </ul>
           </div>
 
@@ -281,7 +281,7 @@
 
                         <div ng-if="dc.onDashboard()" class="btn-group dropdown" style="background-color:red" id="{{getId(resource, 'populate')}}"
                             append-to-body="true">
-                          <button  title="More"  append-to-body="true"
+                          <button  title="More" class="more-button"  append-to-body="true"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                               class="fa fa-ellipsis-v"></i>
                           </button>

@@ -12,7 +12,7 @@
 
     <div class="modal-body">
       <!-- body  for share  -->
-      <div ng-if="share.model.show == 'users'">
+      <div ng-if="share.model.show == 'users'" >
 
         <div class="row">
           <div ng-if="share.canWrite()" class="col-sm-6">
@@ -46,7 +46,7 @@
                 </select>
 
               </div>
-              <div ng-show="share.canWrite() && share.model.users.user" class="confirmation">
+              <div ng-show="share.canWrite() && share.model.users.user" class="confirmation first">
                 <div class="flex-left clear-save">
                   <button type="button" class="btn btn-save" translate
                       ng-click="share.addShare(share.model.users.user['@id'], share.model.users.userPermission, 'shared-users', resource);share.model.users.user = null;">
@@ -68,7 +68,7 @@
 
             <div class="half-padding-top" id="share-group" >
               <!-- share with groups -->
-              <div class="row">
+              <div class="row first">
                 <div class="col-sm-8">
                   <input auto-focus placeholder="enter group name" type="text"
                       ng-change="share.updateGroupPermission(share.model.users.group['@id'])"
@@ -92,7 +92,7 @@
 
               </div>
 
-              <div ng-show="share.canWrite() && share.model.users.group" class="confirmation">
+              <div ng-show="share.canWrite() && share.model.users.group" class="confirmation first">
                 <div class="flex-left clear-save">
                   <button type="button" class="btn btn-save" translate
                       ng-click="share.addShare(share.model.users.group['@id'], share.model.users.groupPermission, 'shared-users', resource);share.model.users.group = null">
@@ -105,7 +105,7 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row second">
                 <div class="col-sm-12">
                   <form ng-submit="share.createGroup('users',share.model.users.name)">
                     <input ng-model="share.model.users.name" type="text"
@@ -114,7 +114,7 @@
                 </div>
               </div>
 
-              <div class="confirmation" ng-if="share.canWrite() && share.model.users.name">
+              <div class="confirmation second" ng-if="share.canWrite() && share.model.users.name">
                 <div class="flex-left clear-save">
 
                   <button type="button" class="btn btn-save " translate
@@ -199,7 +199,7 @@
       </div>
 
       <!-- body  for groups  -->
-      <div ng-show="share.model.show == 'groups'">
+      <div ng-show="share.model.show == 'groups'" class="groups">
         <div class="row">
           <div class="col-sm-6">
 
