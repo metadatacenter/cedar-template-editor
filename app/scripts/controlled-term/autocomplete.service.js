@@ -91,8 +91,13 @@ define([
         for (i = 0; i < response.collection.length; i++) {
           if (!response.collection[i].found) {
             var results;
-            var vsCollectionShortId = StringUtilsService.getShortId(response.collection[i].vsCollection);
-            if (vsCollectionShortId == 'CADSR-VS') {
+            var isCadsrVs = false;
+            if (response.collection[i].vsCollection) {
+              if (StringUtilsService.getShortId(response.collection[i].vsCollection) == 'CADSR-VS') {
+                isCadsrVs = true;
+              }
+            }
+            if (isCadsrVs) {
               // Values from the CADSR-VS value set collection are treated differently.
               // The relatedMatch property contains the URI of the source term, so we map it to @id. Additionally,
               // these values contain a 'notation' property that contains the value that will be stored in the JSON-LD
