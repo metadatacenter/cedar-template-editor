@@ -11,11 +11,11 @@ define([
                                "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "UIUtilService", "autocompleteService",
-                               "ValueRecommenderService"];
+                               "ValueRecommenderService", "uibDateParser", "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
                              $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService,
-                             ValueRecommenderService) {
+                             ValueRecommenderService, uibDateParser, CONST) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -35,9 +35,7 @@ define([
       $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
 
       var dms = DataManipulationService;
-
-      $scope.date = {dt: ''};
-
+      $scope.CONST = CONST;
 
       $scope.multipleDemo = {};
       $scope.multipleDemo.colors = ['Red', 'Green'];
@@ -230,19 +228,19 @@ define([
       };
 
 
-      // strip midnight off the date time string
-      $scope.formatDateTime = function (value) {
-
-        var result = value;
-        if (value) {
-
-          var index = value.indexOf($scope.midnight);
-          if (index != -1) {
-            result = value.substring(0, index);
-          }
-        }
-        return result;
-      };
+      // // strip midnight off the date time string
+      // $scope.formatDateTime = function (value) {
+      //
+      //   var result = value;
+      //   if (value) {
+      //
+      //     var index = value.indexOf($scope.midnight);
+      //     if (index != -1) {
+      //       result = value.substring(0, index);
+      //     }
+      //   }
+      //   return result;
+      // };
 
       // can this be expanded
       $scope.isExpandable = function () {
@@ -318,7 +316,6 @@ define([
 
       // toggle through the list of view states
       $scope.toggleView = function () {
-        console.log('toggleView');
         $scope.viewState = UIUtilService.toggleView($scope.viewState, $scope.setActive);
       };
 
@@ -349,7 +346,7 @@ define([
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
         if (dms.isDateType($scope.field)) {
-          $scope.date.dt = $scope.valueArray[index]['@value'];
+          $scope.setDateValue(index);
 
           $timeout(function () {
             $rootScope.$broadcast('runDateValidation');
@@ -612,12 +609,11 @@ define([
         var attributeName;
 
         if (dms.isDateType($scope.field)) {
-
-          $scope.valueArray[$scope.index]['@value'] = $scope.date.dt;
+          var str = $scope.toXSDDate(newValue);
           if ($scope.model.length > 0) {
-            $scope.model[$scope.index]['@value'] = $scope.date.dt;
+            $scope.model[$scope.index]['@value'] = str;
           } else {
-            $scope.model['@value'] = $scope.date.dt;
+            $scope.model['@value'] = str;
           }
         }
 
@@ -729,11 +725,14 @@ define([
         }
       };
 
+
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
 
+
         if (dms.isDateType($scope.field)) {
-          $scope.date.dt = $scope.valueArray[$scope.index]['@value'];
+          var date = new Date($scope.valueArray[$scope.index]['@value']);
+          $scope.date.dt = date;
         }
 
         if ($scope.isMultiAnswer()) {
@@ -1145,7 +1144,8 @@ define([
           },
           function (newValue, oldValue) {
 
-            if ($scope.zeroedLocator(newValue) != $scope.zeroedLocator(oldValue) &&  $scope.getLocator(0) == $scope.zeroedLocator(oldValue) && $scope.isSpreadsheetView()) {
+            if ($scope.zeroedLocator(newValue) != $scope.zeroedLocator(oldValue) && $scope.getLocator(
+                    0) == $scope.zeroedLocator(oldValue) && $scope.isSpreadsheetView()) {
               $scope.toggleView();
             }
           }
@@ -1173,6 +1173,7 @@ define([
               break loop;
             }
           }
+          f
         }
       };
 
@@ -1199,6 +1200,49 @@ define([
       };
 
       //
+      // date picker  date parser
+      //
+
+      $scope.date = {
+        dt             : '',
+        language       : navigator.language,
+        format         : CONST.dateFormats[navigator.language] || 'dd/MM/yyyy',
+        opened         : false,
+        altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy']
+      };
+
+      // always store the xsd:date format
+      $scope.toXSDDate = function (value) {
+        if ($scope.isInvalidDate(value)) {
+          return null;
+        } else {
+          return $filter('date')(new Date(value), 'MM-dd-yyyy');
+        }
+      };
+
+      $scope.setDateValue = function (index) {
+        if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
+          var date = new Date($scope.valueArray[index]['@value']);
+          date.setMinutes(date.getTimezoneOffset());
+          $scope.date.dt = date;
+        } else {
+          $scope.date.dt = null;
+        }
+      };
+
+      $scope.dateFormat = function (value) {
+        if (value) {
+          var date = new Date(value);
+          return date.toLocaleDateString(navigator.language);
+        }
+      };
+
+      $scope.isInvalidDate = function (value) {
+        var date = uibDateParser.parse(value);
+        return date == null;
+      };
+
+      //
       // initialization
       //
 
@@ -1208,56 +1252,6 @@ define([
 
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
-
-
-      //
-      // date picker
-      //
-
-      $scope.parseDate = function (value) {
-
-        var result = null;
-        if (value && value.length > 0) {
-
-          var date = new Date(value);
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-
-          if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
-            result = year + '-' + month + '-' + day;
-          }
-        }
-        return result || value;
-      };
-
-      $scope.setDate = function (year, month, day) {
-        $scope.date.dt = new Date(year, month, day);
-      };
-
-
-      $scope.setDateValue = function (value) {
-        if ($scope.model && $scope.model.length > 0) {
-          $scope.model[$scope.index]['@value'] = $scope.parseDate(value);
-        } else {
-          $scope.model['@value'] = $scope.parseDate(value);
-        }
-
-      };
-
-      $scope.isInvalidDate = function (value) {
-
-        var result = true;
-        if (value && value.length > 0) {
-
-          var date = new Date(value);
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
-          result = (isNaN(year) || isNaN(month) || isNaN(day));
-        }
-        return result;
-      };
 
     };
 

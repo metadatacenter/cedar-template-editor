@@ -397,7 +397,6 @@ define([
         });
 
         $scope.$on("form:clean", function () {
-          console.log('form:clean');
           UIUtilService.setDirty(false);
         });
 

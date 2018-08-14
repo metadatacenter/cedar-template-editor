@@ -144,6 +144,7 @@ define([
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
+          vm.composeOpen;
 
           //
           // publication
@@ -194,6 +195,8 @@ define([
 
           vm.hasInstances = 0;
           vm.hasInstanceResources = null;
+
+          console.log('cedar-search-browser-picker');
 
 
           //
@@ -429,6 +432,7 @@ define([
           };
 
           vm.selectResource = function (resource) {
+            console.log('selectResource',resource);
             if (vm.getId(resource) != vm.getId(vm.selectedResource)) {
 
               vm.editingDescription = false;
@@ -1151,6 +1155,7 @@ define([
 
 
           function deleteResource(resource) {
+            console.log('deleteResource',resource);
             if (!resource && hasSelection()) {
               resource = getSelection();
             }

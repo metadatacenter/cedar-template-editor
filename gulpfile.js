@@ -152,6 +152,30 @@ gulp.task('test-env', function (done) {
 });
 
 // Protractor tests
+gulp.task('test-clean-up', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('test-work-space', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/workspace-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
@@ -209,7 +233,6 @@ gulp.task('test-copy-move', gulp.series('test-env', function () {
 
 gulp.task('test-share-delete', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
     './tests/e2e/share-delete-spec.js',
   ])
       .pipe(protractor({
@@ -222,7 +245,6 @@ gulp.task('test-share-delete', gulp.series('test-env', function () {
 
 gulp.task('test-permissions', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
     './tests/e2e/delete-resource-spec.js',
     './tests/e2e/folder-permissions-spec.js',
     './tests/e2e/resource-permissions-spec.js',
@@ -238,7 +260,6 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
 
 gulp.task('test-update-permissions', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
@@ -263,7 +284,6 @@ gulp.task('test-delete', gulp.series('test-env', function () {
 
 gulp.task('test--update-permissions', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/clean-up-spec.js',
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
@@ -288,7 +308,6 @@ gulp.task('test-metadata', gulp.series('test-env', function () {
 
 gulp.task('test-template', gulp.series('test-env', function () {
   return gulp.src([
-    './tests/e2e/metadata-creator-spec.js',
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({

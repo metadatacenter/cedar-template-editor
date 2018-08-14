@@ -3545,6 +3545,7 @@ section.dashboard-elements {
       top: 10px;
       right: 10px;
 
+
       .cedar-svg-check-circle {
         color: @button-ok;
         display: none;
@@ -3568,7 +3569,7 @@ section.dashboard-elements {
       display: block;
       margin-top: -7px;
     }
-    .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle {
+    .ng-valid:not(.ng-empty) ~ .input-indicator-icons .cedar-svg-check-circle {
       display: block;
       margin-top: -7px;
     }
@@ -7288,6 +7289,8 @@ table.apiKey {
 
         .populate-form-boxes {
           margin: 0 10px;
+          .resource-instance {
+          }
         }
 
         .class-actions {

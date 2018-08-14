@@ -27,8 +27,8 @@
         <i class="cedar-svg-json-schema"></i> JSON Schema <i class="pull-right glyphicon"
           ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
       </uib-accordion-heading>
-      <div ng-if="openStatus">
-      <pre id='form-json-preview'
+      <div >
+      <pre id='form-json-preview' ng-show="openStatus" ng-class="{'preview-open': openStatus, 'preview-closed': !openStatus}"
           style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>
         <!--<pre id='form-json-preview'-->
             <!--style="background:white;border:0px;border-radius: 0px;">{{ $root.jsonToSave | json }}</pre>-->

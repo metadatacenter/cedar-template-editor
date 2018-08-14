@@ -13,18 +13,17 @@
 
         <div class="compose-options add-new">
 
-          <div class="btn-group dropdown" style="background-color: red;opacity:1">
+
+          <div class="btn-group dropdown"  >
             <button type="button"
                 id="button-create"
-                class="btn btn-save template"
-                class="{'disabled': !dc.canWriteToCurrentFolder()}" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="true">New <i
-                class="fa fa-plus template"></i></button>
-            <ul class="dropdown-menu ">
-              <li><a ng-click="dc.showNewFolderModal()">Folder</a></li>
-              <li><a ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
-              <li><a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
-              <li><a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+                class="btn btn-save template" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">New <i
+                class="fa fa-plus"></i></button>
+            <ul class="dropdown-menu "  role="menu" aria-labelledby="button-create">
+              <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
+              <li><a id="button-create-field" ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+              <li><a  id="button-create-element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+              <li><a  id="button-create-template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
             </ul>
           </div>
 
@@ -33,8 +32,8 @@
         <div class="filter-options">
 
           <div class="shares">
-            <a class="share" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-            <a class="share" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+            <a class="share workspace" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share shared" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
             <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
           </div>
 
@@ -178,7 +177,20 @@
           <div class="col-xs-5">
             <ul class="list-inline pull-right" style="white-space: nowrap;">
 
-              <li ng-show="dc.onDashboard()" id="grid-view-tool">
+              <li id="compose-options">
+                <div class="btn-group dropdown">
+                  <button type="button" class="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    New <i class="fa fa-plus template"></i></button>
+                  <ul class="dropdown-menu "   aria-labelledby="button-create">
+                    <li class="button-create-folder"><a  ng-click="dc.showNewFolderModal()">Folder</a></li>
+                    <li class="button-create-field"><a  ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
+                    <li class="button-create-element"><a  ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
+                    <li class="button-create-template"><a  ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+                  </ul>
+                </div>
+              </li>
+
+              <li ng-show="dc.onDashboard()" id="grid-view-tool"  ng-class="{'grid-view': dc.isGridView(), 'list-view':dc.isListView()}">
                 <button type="button"
                     uib-tooltip='{{"View" | translate}}'
                     tooltip-trigger
@@ -201,6 +213,8 @@
                     data-toggle="tooltip"
                     ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
               </li>
+
+
 
               <li ng-if="dc.onDashboard()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
                   tooltip-trigger
@@ -226,6 +240,8 @@
                 </div>
               </li>
 
+
+
             </ul>
           </div>
         </div>
@@ -244,7 +260,7 @@
             </div>
 
             <div ng-if="dc.hasResources()">
-              <div class=" populate-form-boxes">
+              <div class="populate-form-boxes">
                 <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
 
                   <!-- show the folders first -->
@@ -256,21 +272,21 @@
                     <div dropdownId="{{getId(resource, 'populate')}}"
                         ng-click="dc.selectResource(resource)"
                         ng-dblclick="dc.goToResource(resource)"
-                        class="form-box  ">
+                        class="form-box resource-instance " ng-class="dc.getResourceTypeClass(resource)">
                       <div class="box-content text-center folder">
                         <div class="folderIconContainer">
                           <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
                         </div>
                         <div class="folderTitle">{{ dc.getTitle(resource) }}</div>
 
-                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}"
+                        <div ng-if="dc.onDashboard()" class="btn-group dropdown" style="background-color:red" id="{{getId(resource, 'populate')}}"
                             append-to-body="true">
-                          <button style="display:none" title="More" append-to-body="true"
+                          <button  title="More" class="more-button"  append-to-body="true"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                               class="fa fa-ellipsis-v"></i>
                           </button>
 
-                          <cedar-dropdown-menu style="flex-grow: 1" append-to-body="true" class="dropdown-menu "
+                          <cedar-dropdown-menu  append-to-body="true" class="dropdown-menu "
                               aria-labelledby="{{getId(resource, 'populate')}}"
                               resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                               move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
@@ -296,7 +312,7 @@
 
                     <div ng-click="dc.selectResource(resource)"
                         ng-dblclick="dc.goToResource(resource,'populate')"
-                        class="form-box">
+                        class="form-box resource-instance" ng-class="dc.getResourceTypeClass(resource)">
 
                       <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
                         <div class="toolbar-right">
@@ -307,7 +323,7 @@
                               tooltip-placement="left"
                               data-toggle="tooltip"></i>
 
-                          <button title="More"
+                          <button title="More" class="more-button"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="action fa fa-ellipsis-v"></i>
                           </button>
@@ -327,7 +343,7 @@
                         <div class="resource"><i class="fa" ng-class="dc.getResourceIconClass(resource)"></i></div>
                         <div class="title">{{ dc.getTitle(resource) }}</div>
                         <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
-                          <button style="display:none" title="More"
+                          <button style="display:none" title="More" class="more-button"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                               class="fa fa-ellipsis-v"></i>
                           </button>
@@ -376,15 +392,15 @@
                       ng-repeat="(index, resource) in dc.resources">
 
 
-                    <div class="outer flex">
+                    <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                       <div class="flex ellipsis">
                         <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
                         <div class="ellipsis" style="width:100%;justify-content: space-between">{{
                           dc.getTitle(resource)}}
                         </div>
                       </div>
-                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{  resource['pav:createdOn'] | prettyDate}}</div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
+                      <div  class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] | prettyDate}}</div>
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
                       <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
                       <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
                       <div class="flex" style="width:40px;justify-content:flex-end;">
@@ -392,7 +408,7 @@
                         <button id="{{dc.getId(resource, 'list')}}" style="background-color:transparent;padding-right:15px;"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource )"
                             title="More"
-                            class="dropup"
+                            class="dropup more-button"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="true">
@@ -426,13 +442,13 @@
                       ng-dblclick="dc.goToResource(resource,'populate')"
                       ng-repeat="(index, resource) in dc.resources">
 
-                    <div class="outer flex">
+                    <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                       <div class="flex ellipsis" style="justify-content:space-between">
                         <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon><div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
                       </div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:createdOn'])}} {{ resource['pav:createdOn'] | prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:createdOn'] | prettyDate }}
                       </div>
-                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{dc.prettyDate(resource['pav:lastUpdatedOn'])}} {{ resource['pav:lastUpdatedOn'] | prettyDate }}
+                      <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
                       </div>
                       <div ng-if="dc.filterPublished() && dc.filterLatest()" class="ellipsis"  style="width:40px;">
                         <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i></div>
@@ -441,7 +457,7 @@
                         <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i> {{dc.getResourceVersion(resource)}} </div>
                       </div>
                       <div class="flex" style="width:40px;justify-content:flex-end;">
-                        <button id="{{dc.getId(resource, 'list')}}" title="More"
+                        <button id="{{dc.getId(resource, 'list')}}" title="More" class="more-button"
                             ng-click="dc.toggledCedarDropdownMenu($event, resource)"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
                             style="background-color:transparent;padding-right:15px;">

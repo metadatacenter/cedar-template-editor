@@ -184,8 +184,9 @@ var MetadataPage = function () {
   };
 
   this.clickBackArrow = function () {
-    // browser.wait(EC.visibilityOf(topNavBackArrow));
-    // browser.wait(EC.elementToBeClickable(topNavBackArrow));
+    var backArrow = element(by.css('.back-arrow-click'));
+    browser.wait(EC.visibilityOf(backArrow));
+    browser.wait(EC.elementToBeClickable(backArrow));
     topNavBackArrow.click();
   };
 

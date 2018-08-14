@@ -1,7 +1,9 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
+
 
 
 
@@ -13,6 +15,7 @@ var _ = require('../libs/lodash.min.js');
 describe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
+  var sweetAlertModal = SweetAlertModal;
   jasmine.getEnv().addReporter(workspacePage.myReporter());
 
   // before each test maximize the window area for clicking
@@ -22,9 +25,20 @@ describe('clean-up', function () {
   afterEach(function () {
   });
 
+
   // reset user selections to defaults
-  it('should be on the workspace', function () {
-    workspacePage.onWorkspace();
+  it('should default user selections for user 1', function () {
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.initPreferences();
+  });
+
+  // reset user selections to defaults
+  it('should remove all resources for user 1', function () {
+    workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser1);
   });
 
   // reset user selections to defaults
@@ -34,11 +48,13 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  it('should default user selections for user 1', function () {
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.initPreferences();
+  it('should remove all resources for user 2', function () {
+    workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser2);
   });
-
 
 });
 
