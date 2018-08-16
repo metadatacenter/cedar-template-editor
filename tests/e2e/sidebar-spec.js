@@ -6,6 +6,7 @@ var ShareModal = require('../modals/share-modal.js');
 describe('workspace-sidebar', function () {
   var workspacePage = WorkspacePage;
   var shareModal = ShareModal;
+  var EC = protractor.ExpectedConditions;
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -38,30 +39,36 @@ describe('workspace-sidebar', function () {
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it('should show the template title, owner, and location', function () {
+    it('select the template', function () {
       workspacePage.openInfoPanel();
       workspacePage.selectResource(template, 'template');
+    });
 
-      workspacePage.isInfoPanelOwner(testConfig.testUserName1);
+    it('should show the template title, owner, and location', function () {
       workspacePage.isInfoPanelTitle(template);
       workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
-
+      expect(workspacePage.getOwner()).toBe(testConfig.testUserName1);
+      expect(workspacePage.getPermission('owner').count()).toBe(1);
+      expect(workspacePage.getPermission('write').count()).toBe(1);
+      expect(workspacePage.getPermission('read').count()).toBe(1);
       workspacePage.clearSearch();
     });
 
-    it('should update owner', function () {
+    it('should transfer ownership to user 2', function () {
       workspacePage.shareResource(template, 'template');
       shareModal.shareWithUser(testConfig.testUserName2, true, true);
+    });
 
-      workspacePage.selectResource(template, 'template');
-      workspacePage.isInfoPanelOwner(testConfig.testUserName2);
-
-      //workspacePage.hasPermissionOwner();
-      //workspacePage.hasPermissionWrite(testConfig.testUserName2, true);
-      //workspacePage.hasPermissionRead(testConfig.testUserName2, true);
-
+    it('should transfer ownership to user 2', function () {
+      workspacePage.isInfoPanelTitle(template);
+      workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+      expect(workspacePage.getOwner()).toBe(testConfig.testUserName2);
+      expect(workspacePage.getPermission('owner').count()).toBe(0);
+      expect(workspacePage.getPermission('write').count()).toBe(1);
+      expect(workspacePage.getPermission('read').count()).toBe(1);
       workspacePage.clearSearch();
     });
+    
 
   });
 
