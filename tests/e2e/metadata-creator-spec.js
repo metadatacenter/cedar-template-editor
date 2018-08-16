@@ -17,7 +17,6 @@ describe('metadata-creator', function () {
   var finderModal = FinderModal;
   var sweetAlertModal = SweetAlertModal;
 
-
   var template;
   var element;
   var folder;
@@ -34,7 +33,6 @@ describe('metadata-creator', function () {
     result.password = password;
     return result;
   };
-
 
   jasmine.getEnv().addReporter(workspacePage.myReporter());
 

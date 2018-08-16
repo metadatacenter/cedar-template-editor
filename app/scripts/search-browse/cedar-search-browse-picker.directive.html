@@ -574,24 +574,24 @@
           <div class="info" ng-if="dc.getSelectedNode()">
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Location</div>
-              <div>{{ dc.getSelectedNode().parentPath }}</div>
+              <div class="parent-path">{{ dc.getSelectedNode().parentPath }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Owner</div>
-              <div> {{ dc.getSelectedNode().ownedByUserName }}</div>
+              <div class="owner-name"> {{ dc.getSelectedNode().ownedByUserName }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Created</div>
-              <div>{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
+              <div class="created-date">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
                 dc.getSelectedNode().createdByUserName }}
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Modified</div>
-              <div>{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
+              <div class="updated-date">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
                 {{ dc.getSelectedNode().lastUpdatedByUserName }}
               </div>
             </div>

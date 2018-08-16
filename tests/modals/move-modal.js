@@ -20,6 +20,10 @@ var MoveModal = function () {
     expect(createMoveToModalOpen.isPresent()).toBe(true);
   };
 
+  this.clickMoveButton = function () {
+    browser.wait(EC.elementToBeClickable(createMoveButton));
+    createMoveButton.click();
+  };
 
   this.moveToDestination = function(title) {
     var folder = createMoveToModal.element(by.linkText(title));
@@ -29,7 +33,6 @@ var MoveModal = function () {
 
     this.clickMoveButton();
   };
-
 
   this.moveToUserFolder = function(userName, title) {
     browser.wait(EC.visibilityOf(createBackToParentButton));
@@ -52,27 +55,6 @@ var MoveModal = function () {
     
     this.clickMoveButton();
   };
-
-
-  this.clickMoveButton = function () {
-    browser.wait(EC.elementToBeClickable(createMoveButton));
-    createMoveButton.click();
-  };
-
-  this.moveDisabledViaRightClick = function (name, type) {
-    WorkspacePage.rightClickResource(name, type);
-    var moveMenuItem = WorkspacePage.createMoveDisabled();
-    browser.wait(EC.visibilityOf(moveMenuItem),10000);
-  };
-
-  this.moveEnabledViaRightClick = function (name, type) {
-    WorkspacePage.rightClickResource(name, type);
-    var moveMenuItem = WorkspacePage.createRightClickMoveToMenuItem();
-    browser.wait(EC.visibilityOf(moveMenuItem),10000);
-  };
-
-
-
 
 };
 module.exports = new MoveModal(); 

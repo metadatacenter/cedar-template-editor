@@ -1,9 +1,23 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
+var testConfig = require('../config/test-env.js');
+var ShareModal = require('../modals/share-modal.js');
 
 describe('workspace-sidebar', function () {
-  var page = WorkspacePage;
-  var folder;
+  var workspacePage = WorkspacePage;
+  var shareModal = ShareModal;
+
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
+
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
 
   beforeEach(function () {
   });
@@ -11,53 +25,52 @@ describe('workspace-sidebar', function () {
   afterEach(function () {
   });
 
-
   it("should show the details sidebar", function () {
-    console.log("workspace-sidebar should show the details sidebar");
-    page.onWorkspace();
-    page.isInfoPanelOpen().then(function(result) {
-      if(result) {
-        page.closeInfoPanel();
-      }
+    workspacePage.onWorkspace();
+  });
+
+  describe('remove created resources', function () {
+    var template;
+
+    it("should show the details sidebar", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      template = workspacePage.createTemplate('Sidebar');
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
-    expect(page.createDetailsPanel().isPresent()).toBe(false);
-    page.openInfoPanel();
-    expect(page.createDetailsPanel().isDisplayed()).toBe(true);
+
+    it('should show the template title, owner, and location', function () {
+      workspacePage.openInfoPanel();
+      workspacePage.selectResource(template, 'template');
+
+      workspacePage.isInfoPanelOwner(testConfig.testUserName1);
+      workspacePage.isInfoPanelTitle(template);
+      workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+
+      workspacePage.clearSearch();
+    });
+
+    it('should update owner', function () {
+      workspacePage.shareResource(template, 'template');
+      shareModal.shareWithUser(testConfig.testUserName2, true, true);
+
+      workspacePage.selectResource(template, 'template');
+      workspacePage.isInfoPanelOwner(testConfig.testUserName2);
+
+      //workspacePage.hasPermissionOwner();
+      //workspacePage.hasPermissionWrite(testConfig.testUserName2, true);
+      //workspacePage.hasPermissionRead(testConfig.testUserName2, true);
+
+      workspacePage.clearSearch();
+    });
+
   });
 
 
-  it('should show the user name in the title', function () {
-    console.log("workspace-sidebar should show the user name in the title");
-    page.onWorkspace();
-    page.openInfoPanel(); // ensure that info panel is open
-    expect(page.createDetailsPanelTitle().getText()).toBe(page.createBreadcrumbUserName().getText());
+  describe('remove created resources', function () {
+
+    it('should delete resource from the user workspace', function () {
+      workspacePage.deleteResources(resources);
+    });
+
   });
-
-
-  it("should show folder name on the title of the sidebar", function () {
-    console.log("workspace-sidebar should show folder name on the title of the sidebar");
-    page.onWorkspace();
-    page.openInfoPanel(); // ensure that info panel is open
-    folder = page.createFolder('TestSidebar');
-    page.selectResource(folder, 'folder');
-    expect(page.createDetailsPanelTitle().isPresent()).toBe(true);
-    expect(page.createDetailsPanelTitle().getText()).toBe(folder);
-    page.clearSearch();
-  });
-
-
-  it("should hide the details sidebar", function () {
-    console.log("workspace-sidebar should hide the details sidebar");
-    page.onWorkspace();
-    page.closeInfoPanel();
-    expect(page.createDetailsPanel().isPresent()).toBe(false);
-  });
-
-
-  it("should delete the test folder created", function () {
-    console.log("workspace-sidebar should delete the test folder created");
-    page.deleteResource(folder, 'folder');
-  });
-
-
 });

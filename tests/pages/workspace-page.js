@@ -87,7 +87,10 @@ var WorkspacePage = function () {
   // details panel
   var createDetailsPanel = element(by.id('sidebar-right'));
   var createDetailsPanelTitle = createDetailsPanel.element(by.css('.title span'));
-  var createDetailsPanelOwner = createDetailsPanel.element(by.css('.owner'));
+  var createDetailsPanelOwner = createDetailsPanel.element(by.css('.owner-name'));
+  var createDetailsPanelPath = createDetailsPanel.element(by.css('.parent-path'));
+  var createDetailsPanelUpdated = createDetailsPanel.element(by.css('.created-date'));
+  var createDetailsPanelCreated = createDetailsPanel.element(by.css('.updated-name'));
   var createDetailsPanelOwnerValue = createDetailsPanel.element(by.css('div.info > div> div.owner'));
   var createDetailsPanelDescription = createDetailsPanel.element(by.id('edit-description'));
   var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(
@@ -433,11 +436,6 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createControlsBar));
   };
 
-  this.moveDisabled = function (name, type) {
-    this.rightClickResource(name, type);
-    var moveMenuItem = this.createMoveDisabled();
-    browser.wait(EC.visibilityOf(moveMenuItem));
-  };
 
   this.clickSharedWithMe = function () {
     browser.wait(EC.elementToBeClickable(sharedWithMe));
@@ -615,7 +613,31 @@ var WorkspacePage = function () {
     });
   };
 
-  this.setView = function (view) {
+  this.isInfoPanelOwner = function (owner) {
+    createDetailsPanelOwner.getText().then(function(value){
+      console.log('isInfoPanelOwner',value);
+    });
+    //expect(createDetailsPanelOwner.getText()).toBe(owner);
+  };
+
+  this.isInfoPanelTitle = function (name) {
+    expect(createDetailsPanelTitle.isPresent()).toBe(true);
+    expect(createDetailsPanelTitle.getText()).toBe(name);
+  };
+
+  this.isInfoPanelPath = function (path) {
+    expect(createDetailsPanelPath.isPresent()).toBe(true);
+    expect(createDetailsPanelPath.getText()).toBe(path);
+  };
+
+  this.hasPermissionOwner = function (value) {
+    expect(createDetailsPanelOwner.getText()).toBe(value);
+  };
+
+  // owner name
+
+
+  var setView = function (view) {
     var current = view == 'grid' ? element(by.css('#grid-view-tool.grid-view')) : element(
         by.css('#grid-view-tool.list-view'));
     current.isPresent().then(function (result) {
@@ -627,6 +649,7 @@ var WorkspacePage = function () {
       }
     });
   };
+  this.setView = setView;
 
   this.isInfoPanelOpen = function () {
     return createSidebarRight.isPresent();
@@ -660,42 +683,6 @@ var WorkspacePage = function () {
     this.setView('list');
   };
 
-
-  // // delete until everything is gone from the workspace by looking for the empty folder icon
-  // var deleteAll = function (type) {
-  //
-  //   // single click on the first result
-  //   var noSelection = element(by.css('.center-panel .no-selection'));
-  //   noSelection.isPresent().then(function (value) {
-  //     if (!value) {
-  //
-  //       // select it
-  //       var results = element.all(by.css('.center-panel .grid-view .form-box ' + '.' + type));
-  //       var createFirst = results.first();
-  //       browser.wait(EC.visibilityOf(createFirst));
-  //       browser.wait(EC.elementToBeClickable(createFirst));
-  //       createFirst.click();
-  //
-  //       // create more on the toolbar
-  //       browser.wait(EC.visibilityOf(createMoreOptionsButton));
-  //       browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-  //       createMoreOptionsButton.click();
-  //
-  //       // delete menu item
-  //       browser.wait(EC.visibilityOf(createDeleteResourceButton));
-  //       browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
-  //       createDeleteResourceButton.click();
-  //
-  //       // confirm
-  //       sweetAlertModal.confirm();
-  //       toastyModal.isSuccess();
-  //
-  //       deleteAll(type);
-  //     }
-  //   });
-  // };
-  // this.deleteAll = deleteAll;
-
   // clear any ongoing search
   var doClear = function () {
     browser.wait(EC.visibilityOf(createSearchNavClearButton));
@@ -722,9 +709,9 @@ var WorkspacePage = function () {
         console.log('Warning: ' + count + ' results for ' + name + ' of type ' + type);
       }
     });
-    var createFirst = results.first();
-    browser.wait(EC.visibilityOf(createFirst));
-    return createFirst;
+    //var createFirst = results.first();
+    //browser.wait(EC.visibilityOf(createFirst));
+    return results.get(0);
   };
 
   var doSelect = function (name, type) {
@@ -732,12 +719,6 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
     return createFirst;
-  };
-
-
-  // search for a particular resource
-  this.selectForResource = function (name, type) {
-    doSelect(name, type);
   };
 
   // search for a particular resource
@@ -767,8 +748,8 @@ var WorkspacePage = function () {
 
   };
 
-  this.clearSearch = function (name, type) {
-    doClear(name, type);
+  this.clearSearch = function () {
+    doClear();
   };
 
 
@@ -776,9 +757,6 @@ var WorkspacePage = function () {
   this.editResource = function (name, type) {
     var createFirst = doSelect(name, type);
 
-    // create more on the toolbar
-    // var moreSelector = '#workspace-view-container div.selected button.more-button';
-    // var moreButton = element(by.css(moreSelector));
     var moreButton = createFirst.all(by.css('button.more-button')).get(0);
     browser.wait(EC.visibilityOf(moreButton));
     browser.wait(EC.elementToBeClickable(moreButton));
@@ -793,32 +771,35 @@ var WorkspacePage = function () {
 
   // move a resource
   this.moveResource = function (name, type) {
-    doSelect(name, type);
+    var createFirst = doSelect(name, type);
 
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
+    var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+    browser.wait(EC.visibilityOf(moreButton));
+    browser.wait(EC.elementToBeClickable(moreButton));
+    moreButton.click();
 
-    // move menu item
-    browser.wait(EC.visibilityOf(createMoveToResourceButton));
-    browser.wait(EC.elementToBeClickable(createMoveToResourceButton));
-    createMoveToResourceButton.click();
+    // edit menu item
+    var editButton = createFirst.all(by.css('ul.dropdown-menu li a.move')).get(0);
+    browser.wait(EC.visibilityOf(editButton));
+    browser.wait(EC.elementToBeClickable(editButton));
+    editButton.click();
   };
+
 
   // copy a resource using the right-click menu item
   this.copyResource = function (name, type) {
-    doSelect(name, type);
+    var createFirst = doSelect(name, type);
 
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
+    var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+    browser.wait(EC.visibilityOf(moreButton));
+    browser.wait(EC.elementToBeClickable(moreButton));
+    moreButton.click();
 
-    // move menu item
-    browser.wait(EC.visibilityOf(createCopyResourceButton));
-    browser.wait(EC.elementToBeClickable(createCopyResourceButton));
-    createCopyResourceButton.click();
+    // edit menu item
+    var editButton = createFirst.all(by.css('ul.dropdown-menu li a.copy')).get(0);
+    browser.wait(EC.visibilityOf(editButton));
+    browser.wait(EC.elementToBeClickable(editButton));
+    editButton.click();
   };
 
   // select a resource
@@ -956,8 +937,10 @@ var WorkspacePage = function () {
     // create more on the toolbar
     moreButtons = createFirst.all(by.css('button.more-button'));
     moreButtons.count().then(function (count) {
+      console.log('shareResource',count);
 
-      if (count == 1) {
+      if (count > 0 ) {
+
         var moreButton = moreButtons.get(0);
         browser.wait(EC.visibilityOf(moreButton));
         browser.wait(EC.elementToBeClickable(moreButton));
@@ -965,8 +948,9 @@ var WorkspacePage = function () {
 
         shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share'));
         shareButtons.count().then(function (count) {
+          console.log('shareResource',count);
 
-          if (count == 1) {
+          if (count > 0) {
 
             var shareButton = shareButtons.get(0);
 
@@ -1021,6 +1005,7 @@ var WorkspacePage = function () {
                 browser.wait(EC.visibilityOf(shareButton));
                 browser.wait(EC.elementToBeClickable(shareButton));
 
+                moreButton.click();
 
               } else {
                 console.log("Error: shareAndDeleteEnabled shareButton not found", count);
@@ -1076,7 +1061,7 @@ var WorkspacePage = function () {
     moreButtons = createFirst.all(by.css('button.more-button'));
     moreButtons.count().then(function (count) {
 
-      if (count == 1) {
+      if (count) {
         var moreButton = moreButtons.get(0);
         browser.wait(EC.visibilityOf(moreButton));
         browser.wait(EC.elementToBeClickable(moreButton));
@@ -1085,13 +1070,15 @@ var WorkspacePage = function () {
         deleteButtons = createFirst.all(by.css('ul.dropdown-menu li a.delete'));
         deleteButtons.count().then(function (count) {
 
-          if (count == 1) {
+          if (count) {
 
             var deleteButton = deleteButtons.get(0);
 
             browser.wait(EC.visibilityOf(deleteButton));
             browser.wait(EC.elementToBeClickable(deleteButton));
             deleteButton.click();
+
+            console.log('deleteResource', name, type);
 
             // confirm
             sweetAlertModal.confirm();
@@ -1109,27 +1096,19 @@ var WorkspacePage = function () {
   };
   this.deleteResource = deleteResource;
 
-  this.getAllResources = function () {
-    console.log('getAllResources');
-    var selector = createResourceInstanceCss;
-    var results = element.all(by.css(selector));
-    results.count().then(function (count) {
-      console.log('getAllResources', count);
-    });
-    browser.wait(EC.visibilityOf(results.first()));
-    return results;
-  };
 
-  this.deleteResources = function (resources, username) {
+  this.deleteResources = function (resources) {
     var resourceTypeOrder = ['metadata', 'field', 'element', 'template', 'folder'];
     for (var j = 0; j < resourceTypeOrder.length; j++) {
       for (var i = 0; i < resources.length; i++) {
-        (function (resource, type, user) {
-          if (resource.type == type && resource.username == user) {
+        (function (resource, type) {
+          if (resource.type == type) {
+            console.log('deleteResources',resource.title, resource.type, resource.username);
+            login(resource.username, resource.password);
             deleteResource(resource.title, resource.type);
           }
         })
-        (resources[i], resourceTypeOrder[j], username);
+        (resources[i], resourceTypeOrder[j]);
       }
     }
   };
@@ -1148,24 +1127,29 @@ var WorkspacePage = function () {
 
   // delete a resource whose name contains this string if possible
   this.deleteAllBySearching = function (name, type, user) {
-    console.log('deleteAllBySearching', name, type, user);
-
     var n = name;
     var t = type;
+
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+
+    // wait for search results to appear
+    var result = "Search Results For: '" + name + "'";
+    var searchSelector = '.search-result';
+    var searchResult = element(by.css(searchSelector));
+    browser.wait(EC.textToBePresentInElement(searchResult, result));
+
+    // get the results
     var selector = createResourceInstanceCss + '.' + type;
     var results = element.all(by.css(selector));
-    doClear();
 
+    doClear();
     results.count().then(function (count) {
-      console.log('deleteAllBySearching', type, count);
-      if (count) {
-        for (var i = 0; i < count; i++) {
-          (function (name, type) {
-            deleteResource(name, type);
-          })
-          (name, type);
-        }
+      console.log('deleteAllBySearching', name, type, user, count);
+      for (var i = 0; i < count; i++) {
+        (function (name, type) {
+          deleteResource(name, type);
+        })
+        (name, type);
       }
     });
   };

@@ -1,26 +1,13 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
-var ToastyModal = require('../modals/toasty-modal.js');
 var testConfig = require('../config/test-env.js');
-var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
-var CopyModal = require('../modals/copy-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 describe('share-delete', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
-  var toastyModal = ToastyModal;
-  var moveModal = MoveModal;
   var shareModal = ShareModal;
-  var copyModal = CopyModal;
-  var sweetAlertModal = SweetAlertModal;
-  var target1Folder;
-  var target2Folder;
-  var target1Writable;
-  var folder;
-
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -46,6 +33,7 @@ describe('share-delete', function () {
   });
 
   describe('share and delete', function () {
+    var folder;
 
     it("should create a folder", function () {
       // create a resource for user 2
