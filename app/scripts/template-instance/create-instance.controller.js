@@ -26,6 +26,7 @@ define([
           function (response) {
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
+            UIUtilService.setStatus($scope.form['bibo:status']);
             $rootScope.jsonToSave = $scope.form;
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
@@ -160,6 +161,7 @@ define([
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
+                  UIUtilService.setStatus($scope.form['bibo:status']);
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
                   var templateId = instanceResponse.data['schema:isBasedOn'];

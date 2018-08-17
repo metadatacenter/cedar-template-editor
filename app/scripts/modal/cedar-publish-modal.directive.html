@@ -3,11 +3,16 @@
     <div class="modal-header" id="publishModalHeader">
       <button type="button" class="close" ng-click="dc.publishModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" translate>{{publish.titleText}}</h4>
+      <h4 class="modal-title" ><span translate>{{publish.titleText}}</span> <i class="fa fa-globe"></i></h4>
     </div>
     <div class="modal-body">
 
-      <h5 translate>Set Version</h5>
+      <h5 translate>Set Published Version</h5>
+
+      <p>
+        Publishing allows you to add a version number to the document.
+        Published documents are not modifiable and cannot be deleted.
+      </p>
 
       <form ng-submit="publish.updateResource();dc.publishModalVisible=false">
         <div class="publish" >

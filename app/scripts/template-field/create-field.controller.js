@@ -126,6 +126,7 @@ define([
             function (response) {
               $scope.field = response.data;
 
+
               var copiedForm = jQuery.extend(true, {}, $scope.field);
               checkValidation(copiedForm);
 
@@ -137,6 +138,7 @@ define([
               $rootScope.rootElement = $scope.form;
               $rootScope.jsonToSave = $scope.field;
               $rootScope.documentTitle = dms.getTitle($scope.form);
+              UIUtilService.setStatus($scope.form['bibo:status']);
 
               dms.createDomIds($scope.field);
               $scope.fieldSchema = dms.schemaOf($scope.field);

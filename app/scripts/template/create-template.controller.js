@@ -98,6 +98,7 @@ define([
                 $scope.hasInstances = response.totalCount > 0;
                 $scope.hasInstanceResources = response.resources;
                 UIUtilService.setMetadata($scope.hasInstances);
+                UIUtilService.setVisibleMetadataCount(response.totalCount);
 
               },
               function (error) {
@@ -142,6 +143,7 @@ define([
                           $rootScope.keyOfRootElement = $scope.form["@id"];
                           $rootScope.rootElement = $scope.form;
                           $rootScope.jsonToSave = $scope.form;
+                          UIUtilService.setStatus($scope.form['bibo:status']);
                           DataManipulationService.createDomIds($scope.form);
                           //$scope.getType();
                           $rootScope.$broadcast('form:clean');

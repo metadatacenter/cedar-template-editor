@@ -389,10 +389,13 @@ define([
 
         $scope.$on("form:firstDirty", function (event) {
           if (UIUtilService.hasMetadata()) {
-            UIMessageService.flashWarning("The template has metadata and should not be modified.");
+            UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
           }
           if (UIUtilService.isLocked()) {
-            UIMessageService.flashWarning('Modifications cannot be saved without write permission.');
+            UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
+          }
+          if (UIUtilService.isRuntime() && UIUtilService.isDraft()) {
+            UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
           }
         });
 

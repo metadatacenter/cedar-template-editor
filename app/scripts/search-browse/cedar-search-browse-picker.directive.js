@@ -195,11 +195,14 @@ define([
 
           vm.hasInstances = 0;
           vm.hasInstanceResources = null;
+          vm.hasVisibleMetadataCount = 0;
 
 
           //
           //  Publication  start
           //
+
+
 
           vm.filterDraft = function () {
             return (vm.getFilterStatus() == CONST.publication.DRAFT) || (vm.getFilterStatus() == CONST.publication.ALL);
@@ -234,6 +237,7 @@ define([
             vm.setResourcePublicationStatus(CONST.publication.ALL);
           };
 
+
           vm.setFilterPublished = function () {
             vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
           };
@@ -267,7 +271,7 @@ define([
           };
 
           vm.getDraftIcon = function () {
-            return 'fa-check-circle';
+            return 'fa-unlock';
           };
 
           vm.getBothIcon = function () {
@@ -288,9 +292,9 @@ define([
 
           vm.getVersionIcon = function (value) {
             switch (value) {
-                // case CONST.publication.DRAFT:
-                //   return vm.getDraftIcon();
-                //   break;
+                case CONST.publication.DRAFT:
+                  return vm.getDraftIcon();
+                  break;
               case CONST.publication.PUBLISHED:
                 return vm.getPublishedIcon();
                 break;
@@ -485,6 +489,12 @@ define([
             }
           };
 
+          vm.getNumberOfVisibleInstances = function () {
+            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
+              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+            }
+          };
+
           vm.getDerivedFrom = function () {
             if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
               return vm.selectedResource[CONST.model.DERIVEDFROM];
@@ -508,6 +518,7 @@ define([
                 function (response) {
                   vm.hasInstances = response.totalCount > 0;
                   vm.hasInstanceResources = response.resources;
+                  vm.hasVisibleMetadataCount = response.totalCount;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -816,6 +827,8 @@ define([
           //*********** ENTRY POINT
 
           getPreferences();
+          CedarUser.setStatus(CONST.publication.ALL);
+          UISettingsService.saveStatus(CONST.publication.ALL);
           init();
 
 
@@ -830,7 +843,7 @@ define([
             };
             vm.filterSections = {
               type   : true,
-              version: true
+              version: false
             };
           }
 

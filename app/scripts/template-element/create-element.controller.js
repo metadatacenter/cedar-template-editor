@@ -128,6 +128,7 @@ define([
             TemplateElementService.getTemplateElement($routeParams.id),
             function (response) {
               $scope.element = response.data;
+              UIUtilService.setStatus($scope.element['bibo:status']);
 
               var copiedForm = jQuery.extend(true, {}, $scope.element);
               checkValidation(copiedForm);

@@ -106,39 +106,39 @@
 
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Publication' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
+              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Version' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
                 <!--<div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>-->
-                <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">
-                  <li>
-                    <div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">
-                      <i class="btn fa " ng-class="dc.getPublishedIcon()" ></i>{{'GENERIC.Published' |translate}}
-                    </div>
-                  </li>
-                  <li>
-                    <div ng-click="dc.setFilterDraft()" class="draft no-select" ng-class="{ active: dc.filterDraft()}">
-                      <i class="btn fa " ng-class="dc.getDraftIcon()" ></i>{{'GENERIC.Draft' |translate}}
-                    </div>
-                  </li>
-                  <li>
-                    <div ng-click="dc.setFilterBoth()" class="draft no-select" ng-class="{ active: dc.filterBoth()}">
-                      <i class="btn fa " ng-class="dc.getBothIcon()" ></i>{{'GENERIC.Both' |translate}}
-                    </div>
-                  </li>
-                </ul>
+                <!--<ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">-->
+                  <!--<li>-->
+                    <!--<div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">-->
+                      <!--<i class="btn fa " ng-class="dc.getPublishedIcon()" ></i>{{'GENERIC.Published' |translate}}-->
+                    <!--</div>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<div ng-click="dc.setFilterDraft()" class="draft no-select" ng-class="{ active: dc.filterDraft()}">-->
+                      <!--<i class="btn fa " ng-class="dc.getDraftIcon()" ></i>{{'GENERIC.Draft' |translate}}-->
+                    <!--</div>-->
+                  <!--</li>-->
+                  <!--<li>-->
+                    <!--<div ng-click="dc.setFilterBoth()" class="draft no-select" ng-class="{ active: dc.filterBoth()}">-->
+                      <!--<i class="btn fa " ng-class="dc.getBothIcon()" ></i>{{'GENERIC.Both' |translate}}-->
+                    <!--</div>-->
+                  <!--</li>-->
+                <!--</ul>-->
 
-                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Version' |translate}}</div>
+                <!--<div ng-if="dc.isFilterSection('version')">{{'GENERIC.Version' |translate}}</div>-->
                 <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  " >
                   <li>
-                    <div ng-click="dc.setFilterLatest()" class="latest no-select" ng-class="{ active: dc.filterLatest() }">
+                    <div ng-click="dc.toggleFilterLatest()" class="latest no-select" ng-class="{ active: dc.filterLatest() }">
                       <i class="btn fa " ng-class="dc.getLatestIcon()"></i>{{'GENERIC.Latest' | translate}}
                     </div>
                   </li>
-                  <li>
-                    <div ng-click="dc.setFilterAll()" class="latest no-select" ng-class="{ active: dc.filterAll() }">
-                      <i class="btn fa " ng-class="dc.getAllIcon()"></i>{{'GENERIC.All' | translate}}
-                    </div>
-                  </li>
+                  <!--<li>-->
+                    <!--<div ng-click="dc.setFilterAll()" class="latest no-select" ng-class="{ active: dc.filterAll() }">-->
+                      <!--<i class="btn fa " ng-class="dc.getAllIcon()"></i>{{'GENERIC.All' | translate}}-->
+                    <!--</div>-->
+                  <!--</li>-->
                 </ul>
               </li>
 
@@ -303,7 +303,7 @@
 
                       <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
                         <div class="toolbar-right">
-                          <i class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"
+                          <i class="action fa fa-globe"
                               uib-tooltip="{{dc.getResourceVersion(resource)}}"
                               tooltip-trigger
                               tooltip-animation="false"
@@ -437,11 +437,12 @@
                       </div>
                       <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate }}
                       </div>
-                      <div ng-if="dc.filterPublished() && dc.filterLatest()" class="ellipsis"  style="width:40px;">
-                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i></div>
+                      <div ng-if="dc.filterLatest()" class="ellipsis"  style="width:40px;">
+                        <div ng-if="dc.isPublished(resource)"><i class="action fa fa-globe"></i></div>
                       </div>
-                      <div ng-if="dc.filterPublished() && !dc.filterLatest()" class="ellipsis"  style="width:100px;">
-                        <div ng-if="dc.isPublished(resource)"><i  class="action fa" ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(resource))"></i> {{dc.getResourceVersion(resource)}} </div>
+                      <div ng-if="!dc.filterLatest()" class="ellipsis"  style="width:100px;">
+                        <div ng-if="!dc.isPublished(resource)"><i class="action fa fa-globe" style="visibility:hidden"></i><span ng-show="dc.getResourceVersion(resource) != '0.0.1'"> {{dc.getResourceVersion(resource)}}</span></div>
+                        <div ng-if="dc.isPublished(resource)"><i  class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}</div>
                       </div>
                       <div class="flex" style="width:40px;justify-content:flex-end;">
                         <button id="{{dc.getId(resource, 'list')}}" title="More" class="more-button"
@@ -519,7 +520,7 @@
           <div class="element-toggle table-cell-style "
               ng-class="{active: dc.isVersionTab()}"
               ng-click="dc.setTab('resource-version');">
-            <span>{{'GENERIC.Publication' |translate}}</span>
+            <span>{{'GENERIC.Version' |translate}}</span>
           </div>
         </div>
 
@@ -596,7 +597,7 @@
               <div class="flex flex-wrap padding-top">
                 <div class="field-label ng-cloak" translate>Derived From</div>
                 <div class="field-value">
-                  <i class=" action fa"  ng-class="dc.getVersionIcon(dc.getResourcePublicationStatus(dc.getDerivedFrom()))"></i>
+                  <i class=" action fa fa-globe" ></i>
                   <span class="" ng-class="{'latest-version': dc.getDerivedFrom().isLatestVersion}" > {{ dc.getResourceVersion(dc.getDerivedFrom()) }}</span>
                   {{ dc.getTitle(dc.getDerivedFrom()) }}</div>
               </div>
@@ -641,7 +642,7 @@
             <div ng-if="dc.getNumberOfInstances()" class="instance-list">
               <div class="flex flex-wrap padding-top">
                 <div class="field-label ng-cloak" translate>Instances</div>
-                <div class="field-value">{{ dc.getNumberOfInstances() }}</div>
+                <div class="field-value">{{ dc.getNumberOfInstances() }} ({{ dc.hasVisibleMetadataCount }} <span translate>accessible</span>) </div>
               </div>
 
               <div  cedar-infinite-scroll load-more="" class="scrollable-content"

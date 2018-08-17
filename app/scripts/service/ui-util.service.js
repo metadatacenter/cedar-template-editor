@@ -22,7 +22,16 @@ define([
       modalType             : null,
       selectedFieldOrElement: null,
       instanceToSave        : null,
-      documentState         : {form: null, valid: true, dirty: false, locked: false, message: true, metadata: false}
+      documentState         : {
+        form         : null,
+        valid        : true,
+        dirty        : false,
+        locked       : false,
+        message      : true,
+        metadata     : false,
+        metadataCount: 0,       // visible metadata count
+        status       : 'draft'
+      }
     };
 
     var jsonld = require('jsonld');
@@ -44,12 +53,33 @@ define([
       return service.documentState.valid;
     };
 
-    service.setMetadata = function(value) {
+    service.setMetadata = function (value) {
       service.documentState.metadata = value;
     };
 
-    service.hasMetadata = function() {
+    service.hasMetadata = function () {
       return service.documentState.metadata;
+    };
+
+    service.setVisibleMetadataCount = function (value) {
+      service.documentState.metadataCount = value;
+    };
+
+    service.getVisibleMetadataCount = function () {
+      return service.documentState.metadataCount;
+    };
+
+
+    service.setStatus = function (value) {
+      service.documentState.status = value;
+    };
+
+    service.isDraft = function () {
+      return service.documentState.status == 'bibo:draft';
+    };
+
+    service.isPublished = function () {
+      return service.documentState.status == 'bibo:published';
     };
 
     service.setDirty = function (value) {

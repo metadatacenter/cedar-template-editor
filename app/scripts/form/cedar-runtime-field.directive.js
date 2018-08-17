@@ -1208,7 +1208,7 @@ define([
         language       : navigator.language,
         format         : CONST.dateFormats[navigator.language] || 'dd/MM/yyyy',
         opened         : false,
-        altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy']
+        altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy','yyyy-MM-dd']
       };
 
       // always store the xsd:date format
@@ -1216,7 +1216,7 @@ define([
         if ($scope.isInvalidDate(value)) {
           return null;
         } else {
-          return $filter('date')(new Date(value), 'MM-dd-yyyy');
+          return $filter('date')(new Date(value), 'yyyy-MM-dd');
         }
       };
 
