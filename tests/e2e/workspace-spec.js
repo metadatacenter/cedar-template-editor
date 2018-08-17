@@ -40,61 +40,71 @@ describe('workspace', function () {
   });
 
   it("should be on the workspace page", function () {
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     workspacePage.onWorkspace();
-  });
-
-  it("should have workspace stuff", function () {
-    workspacePage.hasLogo();
-    workspacePage.hasBreadcrumb();
-    workspacePage.hasSearchNav();
-    workspacePage.hasCreateNew();
-    workspacePage.hasMessaging();
-    workspacePage.hasUserMenu();
   });
 
   describe('create resources', function () {
 
+    it("should create a  template", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      template = workspacePage.createTitle('Source');
+      workspacePage.createResource('template', template, 'description');
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+  });
+
+  xdescribe('create resources', function () {
+
+    it("should have workspace stuff", function () {
+      workspacePage.hasLogo();
+      workspacePage.hasBreadcrumb();
+      workspacePage.hasSearchNav();
+      workspacePage.hasCreateNew();
+      workspacePage.hasMessaging();
+      workspacePage.hasUserMenu();
+    });
+
     it("should show left sidebar", function () {
       workspacePage.createSidebarLeft().isPresent().then(function (result) {
-        console.log('left sidebar present',result);
+        console.log('left sidebar present', result);
       });
     });
 
     it("should show filter options", function () {
       workspacePage.createFilterOptions().isPresent().then(function (result) {
-        console.log('filter options present',result);
+        console.log('filter options present', result);
       });
     });
 
     it("should show shares", function () {
       workspacePage.createShares().isPresent().then(function (result) {
-        console.log('shares present',result);
+        console.log('shares present', result);
       });
     });
 
     it("should show workspace link", function () {
       workspacePage.createWorkspaceLink().isPresent().then(function (result) {
-        console.log('workspace present',result);
+        console.log('workspace present', result);
       });
     });
 
     it("should show shared link", function () {
       workspacePage.createSharedWithMeLink().isPresent().then(function (result) {
-        console.log('shared present',result);
+        console.log('shared present', result);
       });
     });
 
 
     xit("should display workspace link", function () {
       workspacePage.createWorkspaceLink().isDisplayed().then(function (result) {
-        console.log('workspace displayed',result);
+        console.log('workspace displayed', result);
       });
     });
 
     xit("should show shared link", function () {
       workspacePage.createSharedWithMeLink().isDisplayed().then(function (result) {
-        console.log('shared displayed',result);
+        console.log('shared displayed', result);
       });
     });
 
@@ -133,7 +143,6 @@ describe('workspace', function () {
     });
 
 
-
     it("should open grid and list views", function () {
       workspacePage.setView('grid');
       workspacePage.setView('list');
@@ -142,12 +151,12 @@ describe('workspace', function () {
     // workspace navigation
     it("should open the folder in the bread crumb", function () {
       workspacePage.clickBreadcrumb(1);
-      workspacePage.createBreadcrumbFolders().getText().then(function(first) {
+      workspacePage.createBreadcrumbFolders().getText().then(function (first) {
         workspacePage.clickSharedWithMe();
-        workspacePage.createBreadcrumbFolders().getText().then(function(second) {
+        workspacePage.createBreadcrumbFolders().getText().then(function (second) {
           expect(first == second).toBe(false);
           workspacePage.clickLogo();
-          workspacePage.createBreadcrumbFolders().getText().then(function(third) {
+          workspacePage.createBreadcrumbFolders().getText().then(function (third) {
             expect(third == second).toBe(false);
           });
         });
@@ -157,12 +166,12 @@ describe('workspace', function () {
     it("should open info panel and inspect title", function () {
       workspacePage.openInfoPanel();
       expect(workspacePage.infoPanelTabs().isDisplayed()).toBe(true);
-      workspacePage.infoPanelTitle().getText().then(function(title) {
-        workspacePage.createBreadcrumbUserName().getText().then(function(user) {
+      workspacePage.infoPanelTitle().getText().then(function (title) {
+        workspacePage.createBreadcrumbUserName().getText().then(function (user) {
           expect(title == user).toBe(true);
 
-          workspacePage.selectResource(folder,'folder');
-          workspacePage.infoPanelTitle().getText().then(function(value) {
+          workspacePage.selectResource(folder, 'folder');
+          workspacePage.infoPanelTitle().getText().then(function (value) {
             expect(folder == value).toBe(true);
 
             workspacePage.clickLogo();

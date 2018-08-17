@@ -64,7 +64,7 @@ describe('copy and move', function () {
     it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.shareResource(targetFolder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName2, false, false);
+      shareModal.shareWithUser(testConfig.testUserName2, 'read');
     });
 
     it('should create folder for user ' + testConfig.testUser2, function () {
@@ -113,7 +113,7 @@ describe('copy and move', function () {
     it("should share folder with " + testConfig.testUserName2 + ' as writable ', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.shareResource(targetFolder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName2, true, false);
+      shareModal.shareWithUser(testConfig.testUserName2, 'write');
     });
 
     it('should create folder and template for user ' + testConfig.testUser2, function () {
@@ -152,7 +152,7 @@ describe('copy and move', function () {
 
     it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
       workspacePage.shareResource(targetFolder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName2, false, false);
+      shareModal.shareWithUser(testConfig.testUserName2, 'read');
     });
 
     it("should create a resource for user " + testConfig.testUser2, function () {
@@ -195,7 +195,7 @@ describe('copy and move', function () {
 
     it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
       workspacePage.shareResource(targetFolder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName2, true, false);
+      shareModal.shareWithUser(testConfig.testUserName2, 'write');
     });
 
     it("should create a resource for user " + testConfig.testUser2, function () {
