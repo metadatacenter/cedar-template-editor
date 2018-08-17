@@ -16,10 +16,6 @@ describe('copy and move', function () {
   var shareModal = ShareModal;
   var copyModal = CopyModal;
   var sweetAlertModal = SweetAlertModal;
-  var target1Folder;
-  var target2Folder;
-  var target1Writable;
-
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -39,116 +35,188 @@ describe('copy and move', function () {
   afterEach(function () {
   });
 
-  // reset user selections to defaults
   it('should be on the workspace', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('copy and move', function () {
+  // copy and move a readable template into a local folder
+  describe('readable source', function () {
 
-    it('should create target folders', function () {
+    var sourceTemplate;
+    var targetFolder;
+    var destFolder;
+
+    it('should create folder and template for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      target1Folder = workspacePage.createFolder('Target');
-      shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      target1Writable = workspacePage.createFolder('Target');
-      shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
-      workspacePage.clearSearch();
-
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      target2Folder = workspacePage.createFolder('Target');
-      shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
-      workspacePage.clearSearch();
+      sourceTemplate = workspacePage.createTemplate('SourceA');
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+      targetFolder = workspacePage.createFolder('Target');
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    xit("should copy and move resource to folder", function () {
-      // create a user 1 resource
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-
-      // copy resource to user 1 target
+    it("should copy template to folder", function () {
       workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Folder);
+      copyModal.copyToDestination(targetFolder);
+      toastyModal.isSuccess();
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.shareResource(targetFolder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName2, 'read');
+    });
+
+    it('should create folder for user ' + testConfig.testUser2, function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      destFolder = workspacePage.createFolder('Destination');
+      resources.push(createResource(destFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    // TODO failing
+    xit("should fail to move the readable resource", function () {
+      workspacePage.moveShareDisabled(sourceTemplate, 'template');
+    });
+
+    it("should succeed to copy the readable resource", function () {
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToDestination(destFolder);
       toastyModal.isSuccess();
       workspacePage.clearSearch();
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
+  });
 
-      // move resource to user 1 target
+  // copy and move a writable template into a local folder
+  describe('writable source', function () {
+
+    var targetFolder;
+    var destFolder;
+    var sourceTemplate;
+
+    it('should create folder and template for user ' + testConfig.testUser1, function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      sourceTemplate = workspacePage.createTemplate('SourceB');
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+      targetFolder = workspacePage.createFolder('Target');
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should copy template to folder", function () {
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToDestination(targetFolder);
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should share folder with " + testConfig.testUserName2 + ' as writable ', function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.shareResource(targetFolder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName2, 'write');
+    });
+
+    it('should create folder and template for user ' + testConfig.testUser2, function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      destFolder = workspacePage.createFolder('Destination');
+      resources.push(createResource(destFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    it("should succeed to copy the writable resource", function () {
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToDestination(destFolder);
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    it("should succeed to move the writable resource", function () {
       workspacePage.moveResource(sourceTemplate, 'template');
-      moveModal.moveToDestination(target1Folder);
+      moveModal.moveToDestination(destFolder);
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     });
+  });
 
-    // TODO failed
-   xit("should fail to move and succeed to copy a readable resource", function () {
-      // share readable resource with user 1
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
-      workspacePage.clearSearch();
+  // copy and move a template into a readable folder
+  describe('readable destination', function () {
 
-      // succeed to copy readable resource
+    var targetFolder;
+    var sourceTemplate;
+
+    it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToUserFolder(testConfig.testUserName1, target1Writable);
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-
-      // TODO fail to move to readable resource
-      //workspacePage.navigateToUserFolder(testConfig.testUserName2);
-      //workspacePage.moveDisabled(sourceTemplate, 'template');
-
+      targetFolder = workspacePage.createFolder('Target');
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    xit("should fail to copy and move to a readable folder", function () {
-      // create a user 2 resource
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+    it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
+      workspacePage.shareResource(targetFolder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName2, 'read');
+    });
 
-      // cannot copy resource to user 1's readable folder
+    it("should create a resource for user " + testConfig.testUser2, function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      sourceTemplate = workspacePage.createTemplate('SourceC');
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    // fails
+    it("should fail to copy  to a readable folder", function () {
+      //workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToUserFolder(testConfig.testUserName1, target1Folder);
+      copyModal.copyToUserFolder(testConfig.testUserName1, targetFolder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
+    });
 
-      // cannot move resource to user 1's readable folder
+    it("should fail to move to a readable folder", function () {
+      //workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.moveResource(sourceTemplate, 'template');
-      moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
+      moveModal.moveToUserFolder(testConfig.testUserName1, targetFolder);
       sweetAlertModal.noWriteAccess();
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
     });
+  });
 
-    xit("should move resource to a writable folder", function () {
-      // create user 2 resource
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
-      shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
-      workspacePage.clearSearch();
+  // copy and move a template into a writable folder
+  describe('writable destination', function () {
 
-      // copy resource to user 1 writable target
+    var targetFolder;
+    var sourceTemplate;
+
+    it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      workspacePage.copyResource(sourceTemplate, 'template');
-      copyModal.copyToDestination(target1Writable);
-      resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-
+      targetFolder = workspacePage.createFolder('Target');
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should mark targets as deletable", function () {
-      resources.push(createResource(target1Folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
-      resources.push(createResource(target1Writable, 'folder', testConfig.testUser1, testConfig.testPassword1));
-      resources.push(createResource(target2Folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    it("should share folder with " + testConfig.testUserName2 + ' as readable ', function () {
+      workspacePage.shareResource(targetFolder, 'folder');
+      shareModal.shareWithUser(testConfig.testUserName2, 'write');
+    });
+
+    it("should create a resource for user " + testConfig.testUser2, function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      sourceTemplate = workspacePage.createTemplate('SourceD');
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    it("should copy to a readable folder", function () {
+      workspacePage.copyResource(sourceTemplate, 'template');
+      copyModal.copyToUserFolder(testConfig.testUserName1, targetFolder);
+      toastyModal.isSuccess();
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+      workspacePage.clearSearch();
+    });
+
+    it("should fail to move to a readable folder", function () {
+      workspacePage.moveResource(sourceTemplate, 'template');
+      moveModal.moveToUserFolder(testConfig.testUserName1, targetFolder);
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
     });
   });
 
@@ -157,6 +225,7 @@ describe('copy and move', function () {
     it('should delete resource from the user workspace', function () {
       workspacePage.deleteResources(resources);
     });
+
   });
 
 });

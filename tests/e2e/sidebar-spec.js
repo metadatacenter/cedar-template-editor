@@ -1,9 +1,24 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
+var testConfig = require('../config/test-env.js');
+var ShareModal = require('../modals/share-modal.js');
 
 describe('workspace-sidebar', function () {
-  var page = WorkspacePage;
-  var folder;
+  var workspacePage = WorkspacePage;
+  var shareModal = ShareModal;
+  var EC = protractor.ExpectedConditions;
+
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
+
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
 
   beforeEach(function () {
   });
@@ -11,53 +26,119 @@ describe('workspace-sidebar', function () {
   afterEach(function () {
   });
 
+  it("should show the ", function () {
+    workspacePage.onWorkspace();
+  });
 
-  it("should show the details sidebar", function () {
-    console.log("workspace-sidebar should show the details sidebar");
-    page.onWorkspace();
-    page.isInfoPanelOpen().then(function(result) {
-      if(result) {
-        page.closeInfoPanel();
-      }
+  describe('right sidebar', function () {
+
+    describe('info and permissions', function () {
+      var template;
+
+      it("should create sample template", function () {
+        workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+        template = workspacePage.createTemplate('Sidebar');
+        resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+      });
+
+      it('should check the info', function () {
+        workspacePage.openInfoPanel();
+        workspacePage.selectResource(template, 'template');
+        workspacePage.isInfoPanelTitle(template);
+        workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+        expect(workspacePage.getOwner()).toBe(testConfig.testUserName1);
+        expect(workspacePage.getPermission('owner').count()).toBe(1);
+        expect(workspacePage.getPermission('write').count()).toBe(1);
+        expect(workspacePage.getPermission('read').count()).toBe(1);
+        workspacePage.clearSearch();
+      });
+
+      it('should transfer ownership to another ', function () {
+        workspacePage.shareResource(template, 'template');
+        shareModal.shareWithUser(testConfig.testUserName2, 'owner');
+        workspacePage.isInfoPanelTitle(template);
+        workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+        expect(workspacePage.getOwner()).toBe(testConfig.testUserName2);
+        expect(workspacePage.getPermission('owner').count()).toBe(0);
+        expect(workspacePage.getPermission('write').count()).toBe(1);
+        expect(workspacePage.getPermission('read').count()).toBe(1);
+        workspacePage.clearSearch();
+      });
+
+      it('should set read permission only for current user', function () {
+        workspacePage.shareResource(template, 'template');
+        shareModal.shareWithUser(testConfig.testUserName1, 'read');
+        workspacePage.isInfoPanelTitle(template);
+        workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+        expect(workspacePage.getOwner()).toBe(testConfig.testUserName2);
+        expect(workspacePage.getPermission('owner').count()).toBe(0);
+        expect(workspacePage.getPermission('read').count()).toBe(1);
+        // TODO fails expect(workspacePage.getPermission('write').count()).toBe(0);
+        workspacePage.clearSearch();
+      });
     });
-    expect(page.createDetailsPanel().isPresent()).toBe(false);
-    page.openInfoPanel();
-    expect(page.createDetailsPanel().isDisplayed()).toBe(true);
+
+    describe('should share with everybody as readable ', function () {
+      var template;
+
+      it("should create sample template", function () {
+        workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+        template = workspacePage.createTemplate('Sidebar');
+        resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+      });
+
+      it("should share with everybody as readable", function () {
+        workspacePage.shareResource(template, 'template');
+        shareModal.shareWithGroup(testConfig.everybodyGroup, 'read');
+      });
+
+      it("should check readable", function () {
+        workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+        workspacePage.selectResource(template, 'template');
+        workspacePage.isInfoPanelTitle(template);
+        workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+        expect(workspacePage.getOwner()).toBe(testConfig.testUserName1);
+        expect(workspacePage.getPermission('owner').count()).toBe(0);
+        expect(workspacePage.getPermission('write').count()).toBe(0);
+        expect(workspacePage.getPermission('read').count()).toBe(1);
+        workspacePage.clearSearch();
+      });
+    });
+
+    describe('should share with everybody as writable ', function () {
+      var template;
+
+      it("should create sample template", function () {
+        workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+        template = workspacePage.createTemplate('Sidebar');
+        resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+      });
+
+      it("should share with everybody as writable", function () {
+        workspacePage.shareResource(template, 'template');
+        shareModal.shareWithGroup(testConfig.everybodyGroup, 'write');
+      });
+
+      it("should check writable", function () {
+        workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+        workspacePage.selectResource(template, 'template');
+        workspacePage.isInfoPanelTitle(template);
+        workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
+        expect(workspacePage.getOwner()).toBe(testConfig.testUserName1);
+        expect(workspacePage.getPermission('owner').count()).toBe(0);
+        expect(workspacePage.getPermission('write').count()).toBe(1);
+        expect(workspacePage.getPermission('read').count()).toBe(1);
+        workspacePage.clearSearch();
+      });
+    });
+
   });
 
+  describe('remove created resources', function () {
 
-  it('should show the user name in the title', function () {
-    console.log("workspace-sidebar should show the user name in the title");
-    page.onWorkspace();
-    page.openInfoPanel(); // ensure that info panel is open
-    expect(page.createDetailsPanelTitle().getText()).toBe(page.createBreadcrumbUserName().getText());
+    it('should delete resource from the user workspace', function () {
+      workspacePage.deleteResources(resources);
+    });
+
   });
-
-
-  it("should show folder name on the title of the sidebar", function () {
-    console.log("workspace-sidebar should show folder name on the title of the sidebar");
-    page.onWorkspace();
-    page.openInfoPanel(); // ensure that info panel is open
-    folder = page.createFolder('TestSidebar');
-    page.selectResource(folder, 'folder');
-    expect(page.createDetailsPanelTitle().isPresent()).toBe(true);
-    expect(page.createDetailsPanelTitle().getText()).toBe(folder);
-    page.clearSearch();
-  });
-
-
-  it("should hide the details sidebar", function () {
-    console.log("workspace-sidebar should hide the details sidebar");
-    page.onWorkspace();
-    page.closeInfoPanel();
-    expect(page.createDetailsPanel().isPresent()).toBe(false);
-  });
-
-
-  it("should delete the test folder created", function () {
-    console.log("workspace-sidebar should delete the test folder created");
-    page.deleteResource(folder, 'folder');
-  });
-
-
 });

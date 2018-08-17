@@ -160,32 +160,33 @@ var ShareModal = function () {
 
 
   // share the given resource with the specified user name with or without write and ownership permissions
-  this.shareResource = function (name, type, username, canWrite, isOwner) {
+  this.shareResource = function (name, type, username, permission) {
     // dialog is open
-    this.shareWithUser(username, canWrite, isOwner);
-    //browser.wait(EC.stalenessOf(shareModalBody), 1500);
+    this.shareWithUser(username, permission);
   };
 
 
-  // share the given resource with the specified group name with or without write and ownership permissions
-  this.shareResourceWithGroup = function (name, type, groupname, canWrite, isOwner) {
-    this.openDialogViaMoreOptions(name, type);
-    this.shareWithGroup(groupname, canWrite, isOwner);
-    //browser.wait(EC.stalenessOf(shareModalBody), 1500);
-  };
+  // // share the given resource with the specified group name with or without write and ownership permissions
+  // this.shareResourceWithGroup = function (name, type, groupname, canWrite, isOwner) {
+  //   this.openDialogViaMoreOptions(name, type);
+  //   this.shareWithGroup(groupname, canWrite, isOwner);
+  //   //browser.wait(EC.stalenessOf(shareModalBody), 1500);
+  // };
 
 
   // share with a user given a user name, whether user has write permissions, and whether user is owner
-  this.shareWithUser = function (username, canWrite, isOwner) {
+  this.shareWithUser = function (username, permission) {
 
     var dialog = element(by.css('#share-modal'));
     var row = element(by.css('#share-people > div.row'));
     var name = row.element(by.css('div.col-sm-8 > input'));
     var perms = row.element(by.css('div.btn-group.bootstrap-select.select-picker'));
-    var owner = perms.element(by.css('div > ul > li:nth-child(3) > a'));
-    var write = perms.element(by.css('div > ul > li:nth-child(2) > a'));
-    var read = perms.element(by.css('div > ul > li:nth-child(1) > a'));
-    var perm = isOwner ? owner : (canWrite ? write : read);
+    var permElements = {
+      "read": perms.element(by.css('div > ul > li:nth-child(1) > a')),
+      "write": perms.element(by.css('div > ul > li:nth-child(2) > a')),
+      "owner" : perms.element(by.css('div > ul > li:nth-child(3) > a'))
+    };
+    var perm =  permElements[permission];
     var confirm = element(by.css('#share-people  div.confirmation'));
     var add = element(by.css('#share-people div.confirmation button.btn-save'));
     var done = dialog.element(by.css('div.modal-footer.actions  button.btn-save.confirm'));
@@ -207,17 +208,19 @@ var ShareModal = function () {
   };
 
   // share with a user given a user name, whether user has write permissions, and whether user is owner
-  this.shareWithGroup = function (groupName, canWrite, isOwner) {
+  this.shareWithGroup = function (groupName, permission) {
 
     var dialog = element(by.css('#share-modal'));
     var share = element(by.css('#share-group'));
     var row = share.element(by.css('div.row.first'));
     var group = row.element(by.css('div.col-sm-8 > input'));
     var perms = row.element(by.css('div.btn-group.bootstrap-select.select-picker'));
-    var read = perms.element(by.css('div > ul > li:nth-child(1) > a'));
-    var write = perms.element(by.css('div > ul > li:nth-child(2) > a'));
-    var owner = perms.element(by.css('div > ul > li:nth-child(3) > a'));
-    var perm = isOwner ? owner : (canWrite ? write : read);
+    var permElements = {
+      "read": perms.element(by.css('div > ul > li:nth-child(1) > a')),
+      "write": perms.element(by.css('div > ul > li:nth-child(2) > a')),
+      "owner" : perms.element(by.css('div > ul > li:nth-child(3) > a'))
+    };
+    var perm =  permElements[permission];
     var confirm = share.element(by.css('div.confirmation.first'));
     var add = confirm.element(by.css('button.btn.btn-save'));
     var done = dialog.element(by.css('div.modal-footer.actions  button.btn-save.confirm'));

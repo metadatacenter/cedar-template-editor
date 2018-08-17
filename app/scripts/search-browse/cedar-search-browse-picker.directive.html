@@ -108,7 +108,7 @@
 
               <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Publication' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>
+                <!--<div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>-->
                 <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">
                   <li>
                     <div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">
@@ -176,19 +176,6 @@
           </div>
           <div class="col-xs-5">
             <ul class="list-inline pull-right" style="white-space: nowrap;">
-
-              <li id="compose-options">
-                <div class="btn-group dropdown">
-                  <button type="button" class="button-create" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    New <i class="fa fa-plus template"></i></button>
-                  <ul class="dropdown-menu "   aria-labelledby="button-create">
-                    <li class="button-create-folder"><a  ng-click="dc.showNewFolderModal()">Folder</a></li>
-                    <li class="button-create-field"><a  ng-href="/fields/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Field</a></li>
-                    <li class="button-create-element"><a  ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
-                    <li class="button-create-template"><a  ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
-                  </ul>
-                </div>
-              </li>
 
               <li ng-show="dc.onDashboard()" id="grid-view-tool"  ng-class="{'grid-view': dc.isGridView(), 'list-view':dc.isListView()}">
                 <button type="button"
@@ -574,24 +561,24 @@
           <div class="info" ng-if="dc.getSelectedNode()">
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Location</div>
-              <div>{{ dc.getSelectedNode().parentPath }}</div>
+              <div class="parent-path">{{ dc.getSelectedNode().parentPath }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Owner</div>
-              <div> {{ dc.getSelectedNode().ownedByUserName }}</div>
+              <div class="owner-name"> {{ dc.getSelectedNode().ownedByUserName }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Created</div>
-              <div>{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
+              <div class="created-date">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
                 dc.getSelectedNode().createdByUserName }}
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Modified</div>
-              <div>{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
+              <div class="updated-date">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
                 {{ dc.getSelectedNode().lastUpdatedByUserName }}
               </div>
             </div>

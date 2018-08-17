@@ -11,7 +11,7 @@ var _ = require('../libs/lodash.min.js');
 var folder;
 var template;
 
-describe('workspace', function () {
+describe('staging', function () {
   var EC = protractor.ExpectedConditions;
 
   var workspacePage = WorkspacePage;
@@ -40,10 +40,19 @@ describe('workspace', function () {
   });
 
   it("should be on the workspace page", function () {
+    console.log('staging-spec');
     workspacePage.onWorkspace();
   });
 
-  describe('create resources', function () {
+  it("should not have publication status title", function () {
+    var css = '#sidebar-left > div.filter-options > div:nth-child(3) > ul > li:nth-child(2) > div:nth-child(2)';
+    var e = element(by.css(css));
+    e.isPresent().then(function (result) {
+      console.log('has publication status title', result);
+    });
+  });
+
+  xdescribe('create resources', function () {
     var template;
 
     it("should create a  template", function () {
