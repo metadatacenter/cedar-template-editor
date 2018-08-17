@@ -44,7 +44,7 @@ describe('share-delete', function () {
 
     it("should share a writable resource via user", function () {
       workspacePage.shareResource(folder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName1, true, false);
+      shareModal.shareWithUser(testConfig.testUserName1, 'write');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.shareAndDeleteEnabled(folder, 'folder');
     });
@@ -59,7 +59,7 @@ describe('share-delete', function () {
     it("should share a writable resource with group", function () {
       // give everybody write access
       workspacePage.shareResource(folder, 'folder');
-      shareModal.shareWithGroup(testConfig.everybodyGroup, true, false);
+      shareModal.shareWithGroup(testConfig.everybodyGroup, 'write');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       workspacePage.shareAndDeleteEnabled(folder, 'folder');
     });
@@ -74,7 +74,7 @@ describe('share-delete', function () {
     it("should fail to move, share, and delete a readable resource", function () {
       // give read access to user 2
       workspacePage.shareResource(folder, 'folder');
-      shareModal.shareWithUser(testConfig.testUserName2, false, false);
+      shareModal.shareWithUser(testConfig.testUserName2, 'read');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.moveShareDisabled(folder, 'folder');
     });
@@ -89,7 +89,7 @@ describe('share-delete', function () {
     it("should fail to move, share, and delete a readable resource shared via group", function () {
       // give read access to everybody
       workspacePage.shareResource(folder, 'folder');
-      shareModal.shareWithGroup(testConfig.everybodyGroup, false, false);
+      shareModal.shareWithGroup(testConfig.everybodyGroup, 'read');
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.moveShareDisabled(folder, 'folder');
     });

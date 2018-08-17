@@ -89,6 +89,7 @@ define([
           var offset = 0;
           var sort = 'name';
 
+          // TODO this should use the /report call to get the invisible instances as well as the visible
           resourceService.hasMetadata(
               id,
               {sort: sort, limit: limit, offset: offset},

@@ -188,13 +188,15 @@ gulp.task('test-sidebar', gulp.series('test-env', function () {
       });
 }));
 
-gulp.task('test-workspace', gulp.series('test-env', function () {
+gulp.task('test-all', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/sidebar-spec.js',
-    './tests/e2e/update-name-spec.js',
-    './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js'
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/template-creator-spec.js',
+    './tests/e2e/copy-move-spec.js',
+    './tests/e2e/share-delete-spec.js',
+
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"

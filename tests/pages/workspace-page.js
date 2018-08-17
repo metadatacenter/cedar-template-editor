@@ -602,39 +602,9 @@ var WorkspacePage = function () {
         });
       };
 
-      this.openInfoPanel = function () {
-        createSidebarRight.isPresent().then(function (result) {
-          if (!result) {
-            browser.wait(EC.visibilityOf(createShowDetailsButton));
-            browser.wait(EC.elementToBeClickable(createShowDetailsButton));
-            createShowDetailsButton.click();
-            browser.wait(EC.visibilityOf(infoPanelTabs));
-          }
-        });
-      };
 
-      this.getOwner = function () {
-        return createDetailsPanelOwner.getText();
-      };
 
-      this.isInfoPanelTitle = function (name) {
-        expect(createDetailsPanelTitle.isPresent()).toBe(true);
-        expect(createDetailsPanelTitle.getText()).toBe(name);
-      };
 
-      this.isInfoPanelPath = function (path) {
-        expect(createDetailsPanelPath.isPresent()).toBe(true);
-        expect(createDetailsPanelPath.getText()).toBe(path);
-      };
-
-      this.getPermission = function (prop) {
-        var props = {
-          'read' : '#resource-info span.can-read',
-          'write': '#resource-info  span.can-write',
-          'owner': '#resource-info  span.can-change-owner'
-        };
-        return element.all(by.css(props[prop]));
-      };
 
       // owner name
 
@@ -680,7 +650,7 @@ var WorkspacePage = function () {
       this.initPreferences = function () {
         this.onWorkspace();
         this.resetFiltering();
-        this.closeInfoPanel();
+        this.openInfoPanel();
         this.setSortOrder('sortCreated');
         this.setView('list');
       };
@@ -984,7 +954,7 @@ var WorkspacePage = function () {
         moreButtons = createFirst.all(by.css('button.more-button'));
         moreButtons.count().then(function (count) {
 
-          if (count == 1) {
+          if (count) {
             var moreButton = moreButtons.get(0);
             browser.wait(EC.visibilityOf(moreButton));
             browser.wait(EC.elementToBeClickable(moreButton));
@@ -993,7 +963,7 @@ var WorkspacePage = function () {
             moveButtons = createFirst.all(by.css('ul.dropdown-menu li a.move.link-disabled'));
             moveButtons.count().then(function (count) {
 
-              if (count == 1) {
+              if (count) {
 
                 var moveButton = moveButtons.get(0);
                 browser.wait(EC.visibilityOf(moveButton));
@@ -1002,7 +972,7 @@ var WorkspacePage = function () {
                 shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share.link-disabled'));
                 shareButtons.count().then(function (count) {
 
-                  if (count == 1) {
+                  if (count) {
 
                     var shareButton = shareButtons.get(0);
                     browser.wait(EC.visibilityOf(shareButton));
@@ -1010,22 +980,37 @@ var WorkspacePage = function () {
 
                     moreButton.click();
 
-                  } else {
-                    console.log("Error: shareAndDeleteEnabled shareButton not found", count);
-                  }
+                  } console.log("Error: shareAndDeleteEnabled shareButton not found", count);
+
                 });
 
 
-              } else {
-                console.log("Error: shareAndDeleteEnabled deleteButton not found", count);
-              }
+              } console.log("Error: shareAndDeleteEnabled deleteButton not found", count);
+
             });
-          } else {
-            console.log("Error: shareAndDeleteEnabled moreButton not found", count);
-          }
+          } console.log("Error: shareAndDeleteEnabled moreButton not found", count);
         });
+      };
 
+      this.moveShareEnabled = function (name, type) {
+        var createFirst = doSelect(name, type);
+        var moreButtons = createFirst.all(by.css('button.more-button'));
+        var moveButtons = createFirst.all(by.css('ul.dropdown-menu li a.move'));
+        var shareButtons = createFirst.all(by.css('ul.dropdown-menu li a.share'));
 
+        // create more on the toolbar
+        var moreButton = moreButtons.get(0);
+        browser.wait(EC.visibilityOf(moreButton));
+        browser.wait(EC.elementToBeClickable(moreButton));
+        moreButton.click();
+
+        var moveButton = moveButtons.get(0);
+        browser.wait(EC.visibilityOf(moveButton));
+        browser.wait(EC.elementToBeClickable(moveButton));
+
+        var shareButton = shareButtons.get(0);
+        browser.wait(EC.visibilityOf(shareButton));
+        browser.wait(EC.elementToBeClickable(shareButton));
       };
 
       this.shareAndDeleteEnabled = function (name, type) {
@@ -1053,49 +1038,96 @@ var WorkspacePage = function () {
 // deleting resources
 //
 
-// delete a resource
+      var openInfoPanel = function () {
+        createSidebarRight.isPresent().then(function (result) {
+          if (!result) {
+            browser.wait(EC.visibilityOf(createShowDetailsButton));
+            browser.wait(EC.elementToBeClickable(createShowDetailsButton));
+            createShowDetailsButton.click();
+            browser.wait(EC.visibilityOf(infoPanelTabs));
+          }
+        });
+      };
+      this.openInfoPanel = openInfoPanel;
+
+      var getOwner = function () {
+        return createDetailsPanelOwner.getText();
+      };
+      this.getOwner = getOwner;
+
+      var isInfoPanelTitle = function (name) {
+        expect(createDetailsPanelTitle.isPresent()).toBe(true);
+        expect(createDetailsPanelTitle.getText()).toBe(name);
+      };
+      this.isInfoPanelTitle = isInfoPanelTitle;
+
+      var isInfoPanelPath = function (path) {
+        expect(createDetailsPanelPath.isPresent()).toBe(true);
+        expect(createDetailsPanelPath.getText()).toBe(path);
+      };
+      this.isInfoPanelPath = isInfoPanelPath;
+
+      var getPermission = function (prop) {
+        var props = {
+          'read' : '#resource-info span.can-read',
+          'write': '#resource-info  span.can-write',
+          'owner': '#resource-info  span.can-change-owner'
+        };
+        return element.all(by.css(props[prop]));
+      };
+      this.getPermission = getPermission;
+
+      // delete a resource
       var deleteResource = function (name, type) {
+
 
         var createFirst = doSelect(name, type);
         var moreButtons;
         var deleteButtons;
 
-        // create more on the toolbar
-        moreButtons = createFirst.all(by.css('button.more-button'));
-        moreButtons.count().then(function (count) {
-
+        openInfoPanel();
+        getPermission('write').count().then(function (count) {
           if (count) {
-            var moreButton = moreButtons.get(0);
-            browser.wait(EC.visibilityOf(moreButton));
-            browser.wait(EC.elementToBeClickable(moreButton));
-            moreButton.click();
 
-            deleteButtons = createFirst.all(by.css('ul.dropdown-menu li a.delete'));
-            deleteButtons.count().then(function (count) {
+            // create more on the toolbar
+            moreButtons = createFirst.all(by.css('button.more-button'));
+            moreButtons.count().then(function (count) {
 
               if (count) {
+                var moreButton = moreButtons.get(0);
+                browser.wait(EC.visibilityOf(moreButton));
+                browser.wait(EC.elementToBeClickable(moreButton));
+                moreButton.click();
 
-                var deleteButton = deleteButtons.get(0);
+                deleteButtons = createFirst.all(by.css('ul.dropdown-menu li a.delete'));
+                deleteButtons.count().then(function (count) {
 
-                browser.wait(EC.visibilityOf(deleteButton));
-                browser.wait(EC.elementToBeClickable(deleteButton));
-                deleteButton.click();
+                  if (count) {
 
-                console.log('deleteResource', name, type);
+                    var deleteButton = deleteButtons.get(0);
 
-                // confirm
-                sweetAlertModal.confirm();
-                toastyModal.isSuccess();
-                doClear();
+                    browser.wait(EC.visibilityOf(deleteButton));
+                    browser.wait(EC.elementToBeClickable(deleteButton));
+                    deleteButton.click();
+
+                    console.log('deleteResource', name, type);
+
+                    // confirm
+                    sweetAlertModal.confirm();
+                    toastyModal.isSuccess();
+                    doClear();
+                  } else {
+                    console.log("Error: deleteResource deleteButton not found", count);
+                  }
+                });
               } else {
-                console.log("Error: deleteResource deleteButton not found", count);
+                console.log("Error: deleteResource moreButton not found", count);
               }
             });
           } else {
-            console.log("Error: deleteResource moreButton not found", count);
+            console.log('Error: no write permission',name,type);
           }
         });
-
       };
       this.deleteResource = deleteResource;
 
