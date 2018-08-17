@@ -52,6 +52,11 @@ describe('workspace', function () {
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
+    it("should open info panel and inspect title", function () {
+      workspacePage.openInfoPanel();
+    });
+    
+
   });
 
   xdescribe('create resources', function () {
@@ -183,7 +188,7 @@ describe('workspace', function () {
 
   });
 
-  describe('remove all created resources', function () {
+  xdescribe('remove all created resources', function () {
 
     // clean up created resources
     it('should delete resource from the user workspace for user', function () {
