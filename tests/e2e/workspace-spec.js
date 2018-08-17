@@ -44,11 +44,11 @@ describe('workspace', function () {
   });
 
   describe('create resources', function () {
+    var template;
 
     it("should create a  template", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      template = workspacePage.createTitle('Source');
-      workspacePage.createResource('template', template, 'description');
+      template = workspacePage.createTemplate('SourceWorkspace');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 

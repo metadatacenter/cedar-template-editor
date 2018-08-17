@@ -128,10 +128,10 @@ var WorkspacePage = function () {
 
       // create new buttons left side bar
       var createButton = element(by.id('button-create'));
-      var createTemplateButton = element(by.id('button-create-template'));
-      var createFieldButton = element(by.id('button-create-field'));
-      var createElementButton = element(by.id('button-create-element'));
-      var createFolderButton = element(by.id('button-create-folder'));
+      var createFolderButton = element(by.css('#sidebar-left > div.compose-options.add-new > div > ul > li:nth-child(1) > a'));
+      var createFieldButton = element(by.css('#sidebar-left > div.compose-options.add-new > div > ul > li:nth-child(2) > a'));
+      var createElementButton = element(by.css('#sidebar-left > div.compose-options.add-new > div > ul > li:nth-child(3) > a'));
+      var createTemplateButton = element(by.css('#sidebar-left > div.compose-options.add-new > div > ul > li:nth-child(4) > a'));
 
       // create  buttons top nav
       // var createButton = element(by.css('#compose-options button.button-create'));
@@ -500,6 +500,7 @@ var WorkspacePage = function () {
       };
 
       var createPage = function (type, title, description) {
+        console.log('createPage',type);
 
         browser.wait(EC.visibilityOf(createButton));
         browser.wait(EC.elementToBeClickable(createButton));
@@ -522,10 +523,13 @@ var WorkspacePage = function () {
 
       // create a template or folder resource and set the title, return to the workspace
       this.createResource = function (type, title, description) {
+        console.log('createResource',type);
 
         if (type != 'folder') {
 
+
           createPage(type, title, description);
+
           templateCreatorPage.clickSave(type);
           toastyModal.isSuccess();
           templateCreatorPage.clickBackArrow();
@@ -571,6 +575,7 @@ var WorkspacePage = function () {
 
       // create a template
       this.createTemplate = function (name) {
+        console.log('createTemplate',name);
         var templateTitle = this.createTitle(name);
         var templateDescription = this.createDescription(name);
         this.createResource('template', templateTitle, templateDescription);
