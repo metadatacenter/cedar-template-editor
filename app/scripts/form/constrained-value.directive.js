@@ -91,11 +91,13 @@ define([
           if (angular.isArray($scope.model)) {
             delete $scope.model[index]['@id'];
             delete $scope.model[index]['rdfs:label'];
+            delete $scope.model[index]['skos:notation'];
           }
           // Single object
           else {
             delete $scope.model['@id'];
             delete $scope.model['rdfs:label'];
+            delete $scope.model['skos:notation'];
           }
         }
       };
