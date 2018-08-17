@@ -11,7 +11,7 @@ var _ = require('../libs/lodash.min.js');
 var folder;
 var template;
 
-describe('workspace', function () {
+describe('staging', function () {
   var EC = protractor.ExpectedConditions;
 
   var workspacePage = WorkspacePage;
@@ -40,10 +40,11 @@ describe('workspace', function () {
   });
 
   it("should be on the workspace page", function () {
+    console.log('staging-spec');
     workspacePage.onWorkspace();
   });
 
-  describe('create resources', function () {
+  xdescribe('create resources', function () {
     var template;
 
     it("should create a  template", function () {
