@@ -108,7 +108,7 @@
 
               <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Publication' |translate}}<i class="fa pull-right" ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
-                <div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>
+                <!--<div ng-if="dc.isFilterSection('version')">{{'GENERIC.Status' |translate}}</div>-->
                 <ul id="filter-resource-version" ng-if="dc.isFilterSection('version')" class="list-inline  ">
                   <li>
                     <div ng-click="dc.setFilterPublished()" class="published no-select" ng-class="{ active: dc.filterPublished()}">

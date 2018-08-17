@@ -44,6 +44,14 @@ describe('staging', function () {
     workspacePage.onWorkspace();
   });
 
+  it("should not have publication status title", function () {
+    var css = '#sidebar-left > div.filter-options > div:nth-child(3) > ul > li:nth-child(2) > div:nth-child(2)';
+    var e = element(by.css(css));
+    e.isPresent().then(function (result) {
+      console.log('has publication status title', result);
+    });
+  });
+
   xdescribe('create resources', function () {
     var template;
 
