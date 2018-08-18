@@ -23,14 +23,16 @@ define([
       selectedFieldOrElement: null,
       instanceToSave        : null,
       documentState         : {
-        form         : null,
-        valid        : true,
-        dirty        : false,
-        locked       : false,
-        message      : true,
-        metadata     : false,
-        metadataCount: 0,       // visible metadata count
-        status       : 'draft'
+        form           : null,
+        valid          : true,
+        dirty          : false,
+        locked         : false,
+        message        : true,
+        totalMetadata  : 0,
+        visibleMetadata: 0,
+        instances      : null,
+        status         : 'draft',
+        version        : '0.0.1'
       }
     };
 
@@ -53,22 +55,33 @@ define([
       return service.documentState.valid;
     };
 
-    service.setMetadata = function (value) {
-      service.documentState.metadata = value;
+    service.setTotalMetadata = function (value) {
+      service.documentState.totalMetadata = value;
     };
 
-    service.hasMetadata = function () {
-      return service.documentState.metadata;
+    service.getTotalMetadata = function (value) {
+      return service.documentState.totalMetadata;
     };
 
-    service.setVisibleMetadataCount = function (value) {
-      service.documentState.metadataCount = value;
+    service.hasTotalMetadata = function () {
+      return service.documentState.totalMetadata;
     };
 
-    service.getVisibleMetadataCount = function () {
-      return service.documentState.metadataCount;
+    service.setVisibleMetadata = function (value) {
+      service.documentState.visibleMetadata = value;
     };
 
+    service.getVisibleMetadata = function () {
+      return service.documentState.visibleMetadata;
+    };
+
+    service.setInstances = function (value) {
+      service.documentState.instances = value;
+    };
+
+    service.getInstances = function () {
+      return service.documentState.instances;
+    };
 
     service.setStatus = function (value) {
       service.documentState.status = value;
@@ -80,6 +93,18 @@ define([
 
     service.isPublished = function () {
       return service.documentState.status == 'bibo:published';
+    };
+
+    service.setVersion = function (value) {
+      service.documentState.version = value;
+    };
+
+    service.getVersion = function () {
+      return service.documentState.version;
+    };
+
+    service.isFirstVersion = function () {
+      return service.documentState.version == '0.0.1';
     };
 
     service.setDirty = function (value) {

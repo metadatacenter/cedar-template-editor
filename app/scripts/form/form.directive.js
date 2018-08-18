@@ -388,14 +388,18 @@ define([
         });
 
         $scope.$on("form:firstDirty", function (event) {
-          if (UIUtilService.hasMetadata()) {
-            UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
-          }
-          if (UIUtilService.isLocked()) {
-            UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
-          }
-          if (UIUtilService.isRuntime() && UIUtilService.isDraft()) {
-            UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
+          if (UIUtilService.isRuntime()) {
+            if (UIUtilService.isDraft() && !UIUtilService.isFirstVersion()) {
+              // if this is metadata editor, the template is a draft of a published version
+              UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
+            }
+          } else {
+            if (UIUtilService.hasTotalMetadata()) {
+              UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
+            }
+            if (UIUtilService.isLocked()) {
+              UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
+            }
           }
         });
 

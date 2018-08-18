@@ -42,8 +42,6 @@ define([
 
         // template details
         $scope.details;
-        $scope.hasInstances;
-        $scope.hasInstanceResources;
         $scope.cannotWrite;
 
         $scope.isTemplate = true;
@@ -94,11 +92,12 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
+
                 $scope.checkLocking();
-                $scope.hasInstances = response.totalCount > 0;
-                $scope.hasInstanceResources = response.resources;
-                UIUtilService.setMetadata($scope.hasInstances);
-                UIUtilService.setVisibleMetadataCount(response.totalCount);
+
+                UIUtilService.setTotalMetadata(0);
+                UIUtilService.setVisibleMetadata(response.totalCount || 0);
+                UIUtilService.setInstances(response.resources);
 
               },
               function (error) {
@@ -143,7 +142,12 @@ define([
                           $rootScope.keyOfRootElement = $scope.form["@id"];
                           $rootScope.rootElement = $scope.form;
                           $rootScope.jsonToSave = $scope.form;
-                          UIUtilService.setStatus($scope.form['bibo:status']);
+
+                          UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+                          UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
+                          UIUtilService.setTotalMetadata(0);
+                          UIUtilService.setVisibleMetadata(0);
+
                           DataManipulationService.createDomIds($scope.form);
                           //$scope.getType();
                           $rootScope.$broadcast('form:clean');
@@ -178,6 +182,11 @@ define([
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
+
+            UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+            UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
+            UIUtilService.setTotalMetadata(0);
+            UIUtilService.setVisibleMetadata(0);
 
             DataManipulationService.createDomIds($scope.form);
             $rootScope.$broadcast('form:clean');

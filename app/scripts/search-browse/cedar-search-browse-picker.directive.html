@@ -639,15 +639,15 @@
             </div>
 
             <!-- templates have instances -->
-            <div ng-if="dc.getNumberOfInstances()" class="instance-list">
+            <div ng-if="dc.getTotalMetadata()" class="instance-list">
               <div class="flex flex-wrap padding-top">
                 <div class="field-label ng-cloak" translate>Instances</div>
-                <div class="field-value">{{ dc.getNumberOfInstances() }} ({{ dc.hasVisibleMetadataCount }} <span translate>accessible</span>) </div>
+                <div class="field-value">{{ dc.getTotalMetadata() }} ({{ dc.getVisibleMetadata() }} <span translate>accessible</span>) </div>
               </div>
 
-              <div  cedar-infinite-scroll load-more="" class="scrollable-content"
+              <div ng-if="dc.getVisibleMetadata()" cedar-infinite-scroll load-more="" class="scrollable-content"
                   style="margin-top:10px;overflow-y:scroll;border:1px solid #ccc;height:100px">
-              <div ng-repeat="(index, resource) in dc.hasInstanceResources" class="instance-item" style="padding:2px;" ng-click="dc.goToResource(resource,'open')">
+              <div ng-repeat="(index, resource) in dc.getInstances()" class="instance-item" style="padding:2px;" ng-click="dc.goToResource(resource,'open')">
                 {{resource['schema:name']}}
               </div>
               </div>

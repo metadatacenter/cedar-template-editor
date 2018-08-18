@@ -108,7 +108,6 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
-            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'FIELD' + '.load.error', error);
@@ -138,7 +137,11 @@ define([
               $rootScope.rootElement = $scope.form;
               $rootScope.jsonToSave = $scope.field;
               $rootScope.documentTitle = dms.getTitle($scope.form);
-              UIUtilService.setStatus($scope.form['bibo:status']);
+
+              UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+              UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
+              UIUtilService.setTotalMetadata(0);
+              UIUtilService.setVisibleMetadata(0);
 
               dms.createDomIds($scope.field);
               $scope.fieldSchema = dms.schemaOf($scope.field);

@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','UIUtilService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, UIUtilService) {
 
         var directive = {
           bindToController: {
@@ -193,9 +193,22 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
-          vm.hasInstances = 0;
-          vm.hasInstanceResources = null;
-          vm.hasVisibleMetadataCount = 0;
+
+          UIUtilService.setTotalMetadata(0);
+          UIUtilService.setVisibleMetadata(0);
+          UIUtilService.setInstances(null);
+
+          vm.getTotalMetadata = function() {
+            return  UIUtilService.getTotalMetadata();
+          };
+
+          vm.getVisibleMetadata = function() {
+            return  UIUtilService.getVisibleMetadata();
+          };
+
+          vm.getInstances = function() {
+            return  UIUtilService.getInstances();
+          };
 
 
           //
@@ -438,6 +451,8 @@ define([
 
               vm.editingDescription = false;
               vm.selectedResource = resource;
+              UIUtilService.setVisibleMetadata(0);
+              UIUtilService.setTotalMetadata(0);
 
 
               $timeout(function () {
@@ -485,15 +500,13 @@ define([
 
           vm.getNumberOfInstances = function () {
             if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
-              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+              var value = vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+              UIUtilService.setTotalMetadata(value);
+              return value;
             }
           };
 
-          vm.getNumberOfVisibleInstances = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
-              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
-            }
-          };
+
 
           vm.getDerivedFrom = function () {
             if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
@@ -516,9 +529,8 @@ define([
                 id,
                 {sort: sort, limit: limit, offset: offset},
                 function (response) {
-                  vm.hasInstances = response.totalCount > 0;
-                  vm.hasInstanceResources = response.resources;
-                  vm.hasVisibleMetadataCount = response.totalCount;
+                  UIUtilService.setVisibleMetadata(response.totalCount);
+                  UIUtilService.setInstances(response.resources);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -553,6 +565,9 @@ define([
                     vm.canNotRename =  vm.canNotWrite;
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
+                    vm.getNumberOfInstances();
+                    vm.getResourcePublicationStatus();
+
                   }
 
                   vm.doSearchTemplateInstances(id);
@@ -583,6 +598,10 @@ define([
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
+                    vm.getNumberOfInstances();
+
+
+
                   }
                 },
                 function (error) {
@@ -1583,6 +1602,8 @@ define([
                   var resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
                   vm.selectedResource = resource;
+
+
                   vm.getResourceDetails(resource);
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);
