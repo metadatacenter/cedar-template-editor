@@ -37,7 +37,7 @@ exports.config = {
     // sign in before all tests
     browser.driver.get('http://localhost/');
 
-    var disableNgAnimate = function () {$location
+    var disableNgAnimate = function () {
       angular
           .module('disableNgAnimate', [])
           .run(['$animate', function ($animate) {
