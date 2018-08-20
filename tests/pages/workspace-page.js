@@ -387,12 +387,8 @@ var WorkspacePage = function () {
       };
 
       // page load
-      this.get = function () {
-        var url  = '/dashboard';
-        var baseUrl = browser.baseUrl;
-        console.log('workspace.get',url, baseUrl);
+      this.get = function () {;
         browser.get(url);
-        //browser.sleep(1000);
       };
 
       var getRandomInt = function (min, max) {
