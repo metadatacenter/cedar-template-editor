@@ -35,7 +35,7 @@ exports.config = {
     browser.ignoreSynchronization = true;
 
     // sign in before all tests
-    browser.driver.get(testConfig.baseUrl);
+    browser.driver.get('http://localhost/');
 
     var disableNgAnimate = function () {$location
       angular
