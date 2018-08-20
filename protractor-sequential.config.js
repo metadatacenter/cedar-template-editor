@@ -35,7 +35,7 @@ exports.config = {
     // sign in before all tests
     browser.driver.get(testConfig.baseUrl);
 
-    var disableNgAnimate = function () {
+    var disableNgAnimate = function () {$location
       angular
           .module('disableNgAnimate', [])
           .run(['$animate', function ($animate) {
@@ -73,10 +73,12 @@ exports.config = {
       });
     });
 
-    console.log('config');
+    console.log('exports');
     console.log(exports);
     console.log('location');
-    console.log($window.location);
+    browser.getCurrentUrl().then(function(actualUrl) {
+      console.log(actualUrl);
+    });
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
