@@ -73,6 +73,7 @@ exports.config = {
       });
     });
 
+    console.log('baserUrl: ' + exports.baseUrl);
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
