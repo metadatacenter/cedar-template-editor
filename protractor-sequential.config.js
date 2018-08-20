@@ -79,6 +79,8 @@ exports.config = {
     browser.getCurrentUrl().then(function(actualUrl) {
       console.log(actualUrl);
     });
+    console.log("page source");
+    console.log(browser.driver.getPageSource());
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
