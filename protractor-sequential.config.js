@@ -74,9 +74,9 @@ exports.config = {
     });
 
     console.log('config');
-    console.log(exports.config);
+    console.log(exports);
     console.log('location');
-    console.log(window.location)
+    console.log($window.location);
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
