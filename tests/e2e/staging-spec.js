@@ -41,6 +41,7 @@ describe('staging', function () {
 
   it("should be on the workspace page", function () {
     console.log('staging-spec');
+    workspacePage.get();
     workspacePage.onWorkspace();
   });
 
