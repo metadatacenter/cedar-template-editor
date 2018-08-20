@@ -1,8 +1,8 @@
 sudo: required
 dist: trusty
 addons:
-#  hosts:
-#  - cedar.metadatacenter.orgx
+  hosts:
+  - cedar.metadatacenter.orgx
   apt:
     sources:
     - google-chrome
