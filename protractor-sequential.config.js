@@ -1,7 +1,7 @@
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
-  baseUrl: 'http://localhost/',
+  // baseUrl: 'http://localhost/',
 
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs          : ['tests/e2e/**/*.js'],
