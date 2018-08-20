@@ -54,7 +54,7 @@ define([
     service.getAttributeValueField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.attributeValueField);
       clonedField['items']['@id'] = tempId;
-      setSchemaVersion(clonedField);
+      setSchemaVersion(clonedField['items']);
       return clonedField;
     };
 
