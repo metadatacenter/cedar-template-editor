@@ -35,7 +35,7 @@ exports.config = {
     browser.ignoreSynchronization = true;
 
     // sign in before all tests
-    browser.driver.get('http://localhost/');
+    browser.driver.get('https://cedar.staging.metadatacenter.org');
 
     var disableNgAnimate = function () {$location
       angular
