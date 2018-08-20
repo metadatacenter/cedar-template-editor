@@ -11,7 +11,8 @@ var WorkspacePage = function () {
       var metadataCreatorPage = require('../pages/metadata-page.js');
       var createRootElement = element(by.css('body#rootElement'));
 
-      var url = testConfig.baseUrl + '/dashboard';
+      //var url = testConfig.baseUrl + '/dashboard';
+      var url = 'https://localhost' + '/dashboard';
       var EC = protractor.ExpectedConditions;
 
 
