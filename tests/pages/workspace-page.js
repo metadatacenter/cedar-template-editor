@@ -388,9 +388,8 @@ var WorkspacePage = function () {
 
       // page load
       this.get = function () {
-        browser.get(url).then(function(value) {
-          console.log('get url',value);
-        })
+        console.log('workspace.get',url);
+        browser.get(url);
         //browser.sleep(1000);
       };
 
