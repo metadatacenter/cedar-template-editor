@@ -389,7 +389,8 @@ var WorkspacePage = function () {
       // page load
       this.get = function () {
         var url  = '/dashboard';
-        console.log('workspace.get',url);
+        var baseUrl = browser.baseUrl;
+        console.log('workspace.get',url, baseUrl);
         browser.get(url);
         //browser.sleep(1000);
       };
