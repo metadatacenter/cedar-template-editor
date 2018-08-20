@@ -509,14 +509,16 @@ define([
 
 
           vm.getDerivedFrom = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
-              return vm.selectedResource[CONST.model.DERIVEDFROM];
+            if (vm.selectedResource && vm.selectedResource.derivedFrom) {
+              console.log(vm.selectedResource);
+              return vm.selectedResource.derivedFrom;
             }
           };
 
           vm.getBasedOn = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.ISBASEDON]) {
-              return vm.selectedResource[CONST.model.ISBASEDON];
+            if (vm.selectedResource && vm.selectedResource.isBasedOn) {
+              console.log(vm.selectedResource.isBasedOn);
+              return vm.selectedResource.isBasedOn;
             }
           };
 
