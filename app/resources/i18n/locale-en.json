@@ -440,7 +440,8 @@
     }
   },
   "METADATAEDITOR": {
-    "invalidTerm": "Invalid term"
+    "invalidTerm": "Invalid term",
+    "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date."
   },
   "TEMPLATEEDITOR": {
     "clear": {
@@ -448,7 +449,9 @@
     },
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
-    }
+    },
+    "hasMetadataWarning":"The template has metadata and should not be modified.",
+    "isLockedWarning": "Modifications cannot be saved without write permission."
   },
   "TERMINOLOGY": {
     "errorBioPortal": "Error establishing a connection to BioPortal. Please try again later",
@@ -517,7 +520,7 @@
     "enterElementTitle": "Enter Element Name",
     "enterElementKey": "Enter Element Name",
     "enterElementDescription": "Enter Element Help Text",
-    "enterDate": "Enter Date (yyyy-mm-dd)"
+    "enterDate": "Enter Date"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

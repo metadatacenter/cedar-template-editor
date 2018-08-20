@@ -26,6 +26,8 @@ define([
           function (response) {
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
+            UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+            UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
             $rootScope.jsonToSave = $scope.form;
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
@@ -155,6 +157,7 @@ define([
             getDetails($scope.instance['@id']);
 
 
+
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
@@ -164,6 +167,8 @@ define([
                   // Initialize value recommender service
                   var templateId = instanceResponse.data['schema:isBasedOn'];
                   ValueRecommenderService.init(templateId, $scope.form);
+                  UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+                  UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);

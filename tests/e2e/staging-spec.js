@@ -40,7 +40,6 @@ describe('staging', function () {
   });
 
   it("should be on the workspace page", function () {
-    console.log('staging-spec');
     workspacePage.onWorkspace();
   });
 
@@ -48,8 +47,9 @@ describe('staging', function () {
     var css = '#sidebar-left > div.filter-options > div:nth-child(3) > ul > li:nth-child(2) > div:nth-child(2)';
     var e = element(by.css(css));
     e.isPresent().then(function (result) {
-      console.log('has publication status title', result);
+      console.log('running against staging front end=', result);
     });
+    //expect(e.isPresent()).toBe(false);
   });
 
   xdescribe('create resources', function () {

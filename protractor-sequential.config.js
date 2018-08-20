@@ -33,6 +33,7 @@ exports.config = {
     browser.ignoreSynchronization = true;
 
     // sign in before all tests
+    //browser.driver.get('https://auth.staging.metadatacenter.org/auth/realms/CEDAR/protocol/openid-connect/auth?client_id=cedar-angular-app&redirect_uri=https%3A%2F%2Fcedar.metadatacenter.orgx%2F&response_mode=fragment&response_type=code&scope=openid');
     browser.driver.get(testConfig.baseUrl);
 
     var disableNgAnimate = function () {
@@ -73,6 +74,17 @@ exports.config = {
       });
     });
 
+    console.log('exports');
+    console.log(exports);
+
+    browser.getCurrentUrl().then(function(value) {
+      console.log('getCurrentUrl');
+      console.log(value);
+    });
+    browser.getPageSource().then(function(value) {
+      console.log("getPageSource");
+      console.log(value);
+    });
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {

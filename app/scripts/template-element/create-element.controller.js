@@ -111,7 +111,6 @@ define([
           function (response) {
             $scope.details = response;
             $scope.canWrite();
-            UIUtilService.setMetadata(false);
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
@@ -128,6 +127,11 @@ define([
             TemplateElementService.getTemplateElement($routeParams.id),
             function (response) {
               $scope.element = response.data;
+
+              UIUtilService.setStatus($scope.element[CONST.publication.STATUS]);
+              UIUtilService.setVersion($scope.element[CONST.publication.VERSION]);
+              UIUtilService.setTotalMetadata(0);
+              UIUtilService.setVisibleMetadata(0);
 
               var copiedForm = jQuery.extend(true, {}, $scope.element);
               checkValidation(copiedForm);
@@ -178,6 +182,11 @@ define([
         $scope.form._ui = $scope.form._ui || {};
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
+
+        UIUtilService.setStatus($scope.element[CONST.publication.STATUS]);
+        UIUtilService.setVersion($scope.element[CONST.publication.VERSION]);
+        UIUtilService.setTotalMetadata(0);
+        UIUtilService.setVisibleMetadata(0);
 
         $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 

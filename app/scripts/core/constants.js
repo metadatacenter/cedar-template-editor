@@ -42,6 +42,7 @@ define([
         "METADATA": "fa fa-tag",
       },
       "publication" : {
+        "VERSION": "pav:version",
         "STATUS": "bibo:status",
         "DRAFT": "bibo:draft",
         "PUBLISHED": "bibo:published",
