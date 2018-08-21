@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "@value": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "@type": {
+      "type": "string",
+      "format": "uri"
+    }
+  },
+  "required": [
+    "@value"
+  ],
+  "additionalProperties": false
+}

@@ -7,8 +7,11 @@ define([
   'json!resources/element-empty.json',
   'json!resources/template-empty.json',
   'json!resources/field-attribute-value-empty.json',
-  'json!resources/field-container-empty.json'
-], function (angular, emptyField, emptyStaticField, emptyElement, emptyTemplate, emptyAttributeValue, emptyContainerField) {
+  'json!resources/field-container-empty.json',
+  'json!resources/additionalproperties-attributevaluefield.json',
+  'json!resources/additionalproperties-context-attributevaluefield.json'
+], function (angular, emptyField, emptyStaticField, emptyElement, emptyTemplate, emptyAttributeValue,
+             emptyContainerField, additionalPropertiesAttValueField, additionalPropertiesContextAttValueField) {
   angular.module('cedar.templateEditor.service.dataTemplateService', [])
       .service('DataTemplateService', DataTemplateService);
 
@@ -28,6 +31,8 @@ define([
       dataTemplate.template = emptyTemplate;
       dataTemplate.attributeValueField = emptyAttributeValue;
       dataTemplate.containerField = emptyContainerField;
+      dataTemplate.additionalPropertiesAttValueField = additionalPropertiesAttValueField;
+      dataTemplate.additionalPropertiesContextAttValueField = additionalPropertiesContextAttValueField;
     };
 
     service.getField = function (tempId) {
@@ -68,6 +73,14 @@ define([
       var clonedTemplate = angular.copy(dataTemplate.template);
       setSchemaVersion(clonedTemplate);
       return clonedTemplate;
+    };
+
+    service.getAdditionalPropertiesForAttributeValueField = function () {
+      return dataTemplate.additionalPropertiesAttValueField;
+    };
+
+    service.getAdditionalPropertiesForContextOfAttributeValueField = function () {
+      return dataTemplate.additionalPropertiesContextAttValueField;
     };
 
     /**
