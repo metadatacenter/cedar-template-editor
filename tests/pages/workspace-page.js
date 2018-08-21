@@ -500,7 +500,6 @@ var WorkspacePage = function () {
       };
 
       var createPage = function (type, title, description) {
-        console.log('createPage',type);
 
         browser.wait(EC.visibilityOf(createButton));
         browser.wait(EC.elementToBeClickable(createButton));
@@ -523,7 +522,6 @@ var WorkspacePage = function () {
 
       // create a template or folder resource and set the title, return to the workspace
       this.createResource = function (type, title, description) {
-        console.log('createResource',type);
 
         if (type != 'folder') {
 
@@ -575,7 +573,6 @@ var WorkspacePage = function () {
 
       // create a template
       this.createTemplate = function (name) {
-        console.log('createTemplate',name);
         var templateTitle = this.createTitle(name);
         var templateDescription = this.createDescription(name);
         this.createResource('template', templateTitle, templateDescription);

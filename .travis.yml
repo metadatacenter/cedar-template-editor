@@ -15,7 +15,7 @@ branches:
   only:
   - develop
   - master
-  - feature/todo-versioning
+  - feature/issue-750
 notifications:
   slack:
     on_success: always
@@ -36,11 +36,12 @@ jobs:
     before_script: gulp karma-travis-env # sets up the environment to run the karma tests
     script: gulp karma-tests  # karma stage
   - script: gulp test-staging # e2e stage
-  #- script: gulp test-work-space # e2e stage
-  #- script: gulp test-metadata # e2e stage
-  #- script: gulp test-template # e2e stage
-  #- script: gulp test-share-delete # e2e stage
-  #- script: gulp test-copy-move # e2e git stage
+  - script: gulp test-work-space # e2e stage
+  - script: gulp test-metadata # e2e stage
+  - script: gulp test-template # e2e stage
+  - script: gulp test-share-delete # e2e stage
+  - script: gulp test-copy-move # e2e git stage
+  - script: gulp test-sidebar # e2e git stage
 
 env:
   global:

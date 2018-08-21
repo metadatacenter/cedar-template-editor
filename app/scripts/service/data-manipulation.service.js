@@ -203,6 +203,67 @@ define([
           }
         };
 
+        // min/max string length
+        service.hasMinLength = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('minLength');
+        }
+
+        service.getMinLength = function (node) {
+          return service.hasMinLength(node) && service.getValueConstraint(node).minLength;
+        }
+
+        service.hasMaxLength = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('maxLength');
+        }
+
+        service.getMaxLength = function (node) {
+          return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
+        }
+
+        // min/max numeric value
+        service.hasMinValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('minValue');
+        }
+
+        service.getMinValue = function (node) {
+          return service.hasMinValue(node) && service.getValueConstraint(node).minValue;
+        }
+
+        service.hasMaxValue = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('maxValue')
+        }
+
+        service.getMaxValue = function (node) {
+          return service.hasMaxValue(node) && service.getValueConstraint(node).maxValue;
+        }
+
+        // decimal places
+        service.hasDecimalPlace = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('decimalPlace');
+        }
+
+        service.getDecimalPlace = function (node) {
+          return service.hasDecimalPlace(node) && service.getValueConstraint(node).decimalPlace;
+        }
+
+        // number type
+        service.hasNumberType = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('numberType');
+        }
+
+        service.getNumberType = function (node) {
+          return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
+        }
+
+        // unit of measure
+        service.hasUnitOfMeasure = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('unitOfMeasure');
+        }
+
+        service.getUnitOfMeasure = function (node) {
+          return service.hasUnitOfMeasure(node) && service.getValueConstraint(node).unitOfMeasure;
+        }
+
         // schema title and description
         service.setSchemaTitle = function (node, value) {
           service.schemaOf(node).title = value;
@@ -271,7 +332,7 @@ define([
         };
 
         service.isTextFieldType = function (node) {
-          return (service.getInputType(node) == 'textField');
+          return (service.getInputType(node) == 'textfield');
         };
 
         service.isDateType = function (node) {
@@ -1039,8 +1100,8 @@ define([
           return "xsd:date";
         };
 
-        service.generateInstanceTypeForNumericField = function () {
-          return "xsd:decimal";
+        service.generateInstanceTypeForNumericField = function (node) {
+          return service.getNumberType(node);
         };
 
         // returns the properties of a template, element, or field schema
@@ -1224,7 +1285,7 @@ define([
         service.initializeValueType = function (field, model) {
           var fieldType;
           if (service.isNumericField(field)) {
-            fieldType = service.generateInstanceTypeForNumericField();
+            fieldType = service.generateInstanceTypeForNumericField(field);
           }
           else if (service.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();

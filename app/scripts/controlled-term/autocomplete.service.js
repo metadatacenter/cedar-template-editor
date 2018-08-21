@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.autocompleteService', [])
       .factory('autocompleteService', autocompleteService);
 
-  autocompleteService.$inject = ['$translate', 'controlledTermDataService', 'DataManipulationService'];
+  autocompleteService.$inject = ['$translate', 'controlledTermDataService', 'DataManipulationService', 'StringUtilsService'];
 
-  function autocompleteService($translate, controlledTermDataService, DataManipulationService) {
+  function autocompleteService($translate, controlledTermDataService, DataManipulationService, StringUtilsService) {
     var service = {
       serviceId               : "autocompleteService",
       autocompleteResultsCache: {}
@@ -90,14 +90,35 @@ define([
       if (angular.isDefined(response.collection)) {
         for (i = 0; i < response.collection.length; i++) {
           if (!response.collection[i].found) {
-            service.autocompleteResultsCache[id][query].results.push(
-                {
-                  '@id'      : response.collection[i]['@id'],
-                  'label'    : response.collection[i].prefLabel,
-                  'type'     : field_type,
-                  'sourceUri': source_uri
-                }
-            );
+            var results;
+            var isCadsrVs = false;
+            if (response.collection[i].vsCollection) {
+              if (StringUtilsService.getShortId(response.collection[i].vsCollection) == 'CADSR-VS') {
+                isCadsrVs = true;
+              }
+            }
+            if (isCadsrVs) {
+              // Values from the CADSR-VS value set collection are treated differently.
+              // The relatedMatch property contains the URI of the source term, so we map it to @id. Additionally,
+              // these values contain a 'notation' property that contains the value that will be stored in the JSON-LD
+              // representation using the skos:notation property.
+              results = {
+                '@id'      : response.collection[i]['relatedMatch'],
+                'notation' : response.collection[i]['notation'],
+                'label'    : response.collection[i].prefLabel,
+                'type'     : field_type,
+                'sourceUri': source_uri
+              }
+            }
+            else {
+              results = {
+                '@id'      : response.collection[i]['@id'],
+                'label'    : response.collection[i].prefLabel,
+                'type'     : field_type,
+                'sourceUri': source_uri
+              }
+            }
+            service.autocompleteResultsCache[id][query].results.push(results);
           }
         }
       }
