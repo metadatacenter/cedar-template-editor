@@ -12,12 +12,14 @@
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
       <input type="text"
+          name="activeTextField"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter value' : ''}}"
-          aria-label="{{getHelp()}}"
+          placeholder="{{isActive(index) ? getPlaceholderText() : ''}}"
+          aria-label="{{getDescription()}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@value']">
+          ng-model="valueElement['@value']"
+          ng-change="checkStringLength()">
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>

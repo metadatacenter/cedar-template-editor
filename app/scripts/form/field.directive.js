@@ -29,6 +29,13 @@ define([
       $scope.status = {
         isopen: false
       };
+      $scope.numberTypes = [
+        {id: "xsd:decimal", label: "Any numbers"},
+        {id: "xsd:long", label: "Long integer numbers"},
+        {id: "xsd:int", label: "Integer numbers"},
+        {id: "xsd:double", label: "Double-precision real numbers"},
+        {id: "xsd:float", label: "Single-precision real numbers"},
+      ];
 
       var dms = DataManipulationService;
 
@@ -176,6 +183,22 @@ define([
       $scope.getDescription = function () {
         return dms.getDescription($scope.field);
       };
+
+      $scope.hasMinLength = function () {
+        return dms.hasMinLength($scope.field);
+      }
+
+      $scope.getMinLength = function () {
+        return dms.getMinLength($scope.field);
+      }
+
+      $scope.hasMaxLength = function () {
+        return dms.hasMaxLength($scope.field);
+      }
+
+      $scope.getMaxLength = function () {
+        return dms.getMaxLength($scope.field);
+      }
 
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
@@ -594,6 +617,28 @@ define([
           }
         }
       };
+
+      // Sets the number type based on the item stored at the model
+      $scope.setNumberTypeFromModel = function () {
+        var typeId = $scope.field._valueConstraints.numberType || "xsd:decimal";
+        var getNumericLabel = function (id) {
+          for (var i = 0; i < $scope.numberTypes.length; i++) {
+            var type = $scope.numberTypes[i];
+            if (type.id == id) {
+              return type.label;
+            }
+          }
+        }
+        $scope.selectedNumberType = {
+          id: typeId,
+          label: getNumericLabel(typeId)
+        }
+      }
+
+      // Sets the number type based on the item selected at the UI
+      $scope.setNumberTypeFromUI = function (item) {
+        $scope.field._valueConstraints.numberType = item.id;
+      }
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
@@ -1122,9 +1167,6 @@ define([
         $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
         $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
       }
-
-
-
     };
 
 
