@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','UIUtilService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, UIUtilService) {
 
         var directive = {
           bindToController: {
@@ -144,6 +144,7 @@ define([
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
+          vm.composeOpen;
 
           //
           // publication
@@ -192,13 +193,29 @@ define([
           vm.breadcrumbTitle = null;
           vm.forms = null;
 
-          vm.hasInstances = 0;
-          vm.hasInstanceResources = null;
+
+          UIUtilService.setTotalMetadata(0);
+          UIUtilService.setVisibleMetadata(0);
+          UIUtilService.setInstances(null);
+
+          vm.getTotalMetadata = function() {
+            return  UIUtilService.getTotalMetadata();
+          };
+
+          vm.getVisibleMetadata = function() {
+            return  UIUtilService.getVisibleMetadata();
+          };
+
+          vm.getInstances = function() {
+            return  UIUtilService.getInstances();
+          };
 
 
           //
           //  Publication  start
           //
+
+
 
           vm.filterDraft = function () {
             return (vm.getFilterStatus() == CONST.publication.DRAFT) || (vm.getFilterStatus() == CONST.publication.ALL);
@@ -233,6 +250,7 @@ define([
             vm.setResourcePublicationStatus(CONST.publication.ALL);
           };
 
+
           vm.setFilterPublished = function () {
             vm.setResourcePublicationStatus(CONST.publication.PUBLISHED);
           };
@@ -266,7 +284,7 @@ define([
           };
 
           vm.getDraftIcon = function () {
-            return 'fa-check-circle';
+            return 'fa-unlock';
           };
 
           vm.getBothIcon = function () {
@@ -287,9 +305,9 @@ define([
 
           vm.getVersionIcon = function (value) {
             switch (value) {
-                // case CONST.publication.DRAFT:
-                //   return vm.getDraftIcon();
-                //   break;
+                case CONST.publication.DRAFT:
+                  return vm.getDraftIcon();
+                  break;
               case CONST.publication.PUBLISHED:
                 return vm.getPublishedIcon();
                 break;
@@ -433,6 +451,8 @@ define([
 
               vm.editingDescription = false;
               vm.selectedResource = resource;
+              UIUtilService.setVisibleMetadata(0);
+              UIUtilService.setTotalMetadata(0);
 
 
               $timeout(function () {
@@ -480,19 +500,25 @@ define([
 
           vm.getNumberOfInstances = function () {
             if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
-              return vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+              var value = vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+              UIUtilService.setTotalMetadata(value);
+              return value;
             }
           };
 
+
+
           vm.getDerivedFrom = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.DERIVEDFROM]) {
-              return vm.selectedResource[CONST.model.DERIVEDFROM];
+            if (vm.selectedResource && vm.selectedResource.derivedFrom) {
+              console.log(vm.selectedResource);
+              return vm.selectedResource.derivedFrom;
             }
           };
 
           vm.getBasedOn = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.ISBASEDON]) {
-              return vm.selectedResource[CONST.model.ISBASEDON];
+            if (vm.selectedResource && vm.selectedResource.isBasedOn) {
+              console.log(vm.selectedResource.isBasedOn);
+              return vm.selectedResource.isBasedOn;
             }
           };
 
@@ -505,8 +531,8 @@ define([
                 id,
                 {sort: sort, limit: limit, offset: offset},
                 function (response) {
-                  vm.hasInstances = response.totalCount > 0;
-                  vm.hasInstanceResources = response.resources;
+                  UIUtilService.setVisibleMetadata(response.totalCount);
+                  UIUtilService.setInstances(response.resources);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -541,6 +567,9 @@ define([
                     vm.canNotRename =  vm.canNotWrite;
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
+                    vm.getNumberOfInstances();
+                    vm.getResourcePublicationStatus();
+
                   }
 
                   vm.doSearchTemplateInstances(id);
@@ -571,6 +600,10 @@ define([
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
+                    vm.getNumberOfInstances();
+
+
+
                   }
                 },
                 function (error) {
@@ -815,6 +848,8 @@ define([
           //*********** ENTRY POINT
 
           getPreferences();
+          CedarUser.setStatus(CONST.publication.ALL);
+          UISettingsService.saveStatus(CONST.publication.ALL);
           init();
 
 
@@ -829,7 +864,7 @@ define([
             };
             vm.filterSections = {
               type   : true,
-              version: true
+              version: false
             };
           }
 
@@ -1569,6 +1604,8 @@ define([
                   var resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
                   vm.selectedResource = resource;
+
+
                   vm.getResourceDetails(resource);
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);

@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
 addons:
+  hosts:
+  - cedar.metadatacenter.orgx
   apt:
     sources:
     - google-chrome
@@ -13,11 +15,11 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-852-again
+  - feature/todo-versioning
 notifications:
   slack:
-    on_success: never
-    on_failure: never
+    on_success: always
+    on_failure: always
     secure: xQQEo+EtbJkzgG8peEhrIkXvq96RWsWQ3HSZTNrS/k11DEjp1//8m1yHk7JrM1sCz8rdEbvyQz79LQvAqN2UwQCIiExRs9NGh+tgHPfNrCk0pXRHNqaCrSSbcZGIXLaxDddUKXbOFqfOxjs7PhyFNjzcVN81GQ7E7fRLqfF75YYG1IY2kzMz7uuPYVB/uZ+EfWgJtoXNZy3vbLu8g5be6PHLj3nQGDU46IGUFLXxuANRzUC73EfKWNWaRRDw34Q7ThH767fvQkmX7CcO4v1EeHfvPMMXBAhyCF7kTQPkXXB+dmuirJKGNfD/7LX5/hSKBwvNKE5ZBLkCPVvLy7M627JuP61v87P9udLPcmrGeUBnfPq6s1oIHE+ihkeJGyGjKaFnOkVYx2B/3L+rHSk14cepsnhnP3dXgs2DPVsKZbilkstFQWbaGnpk3DMFpBGvh4GI/TPYXupNVn01Y5huNG5KITe7nEwO5nhow8L5gxZmLsHLI0W4bM+0SZmIdD3rfmz/jdfgUbfk9noXKP21q1Gf9+qlFqgE36yYqzzYq4xjyQus93wHxEaV7UqUz7Ici/PQE1o2yIQifa1tMQJvx7rhr+paToX95LrRF+4xRXL9+5iTwQDbRvKgUUB8cDi5d7RMyhn9upBfnEWAgDHCqgLb9M2rqU1yq2oi6HS16cM=
 before_install:
 - export DISPLAY=:99.0
@@ -33,17 +35,19 @@ jobs:
   - stage: karma and e2e tests
     before_script: gulp karma-travis-env # sets up the environment to run the karma tests
     script: gulp karma-tests  # karma stage
-  - script: gulp test-metadata # e2e stage
-  - script: gulp test-template # e2e stage
-  - script: gulp test-share-delete # e2e stage
-  - script: gulp test-copy-move # e2e git stage
+  - script: gulp test-staging # e2e stage
+  #- script: gulp test-work-space # e2e stage
+  #- script: gulp test-metadata # e2e stage
+  #- script: gulp test-template # e2e stage
+  #- script: gulp test-share-delete # e2e stage
+  #- script: gulp test-copy-move # e2e git stage
 
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
   - CEDAR_FRONTEND_BEHAVIOR=server
   - CEDAR_FRONTEND_TARGET=staging
-  - CEDAR_VERSION="1.9.1"
+  - CEDAR_VERSION="1.9.2"
   - CEDAR_VERSION_MODIFIER=""
   - CEDAR_FRONTEND_staging_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_USER1_LOGIN="test1@test.com"
@@ -55,6 +59,7 @@ env:
   - CEDAR_FRONTEND_local_UI_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_REST_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_UI_HOST=staging.metadatacenter.org
+#  - CEDAR_FRONTEND_staging_UI_HOST=metadatacenter.orgx
   - secure: dPByyBBrEqVeKyiPMo6jSecFpTgCS0Lz1h2cuNjACHfp2U5VTL4ikbZew09Kt/xDbBy3lUNQD0B/p0YX0qY+R41QG4hy3FbKnsTkzquIHsOwx2LVh6q3cK9DDCvpQv37HDHaU4zhphl9qQAWVZMczRkaQIFTtlGa30/IE/vIZoxHLkNcTnGoAc5OSJ2T/T55CGj+NCoD4XVqXQzZxQ7xNpJ/ZN7PFI1cobjuzxfzKzKRehmHx6/pNuoW7RiCYXWYLkV2SyslMKy9JUPX0TrZhm2OOI3iJNFLCcDJKBNiv/apTp03Tnbo6FOmBbW5jv/X4qtsBw66gIDhRq7N9iEmrl9mY3ZcpjNH4VfkuJit+kJ0O3ot7XtoYgbsWOkwIvuvnT56vFJ/FZPxoV6SF/F3NWedYRMyqXgcZ12ajcOLQyNFFdHz0mPLaFih2XFVtJ5qNuNJWshMTihk1Cm81Zs7hdd7qDgWDvZ+cxoqTrXZNC9sblOMsPI25hOjBbUF5GnIc9cZtKx3dGTk3v6WDnmwhtMUM+WtEEM/NZSU0hKoMZBaDHbUMqYkwj8CK81/OIXdfq9kX6yo81Zzj0nu4bjUz4jmn8huJifowIn8QV3yTtn6TWaKh4THB6pl9Gy2JFly6UJnRsJZGgV8mYACjEa4EGcsP6LX0Gl1HfS9HwabTVo=
   - secure: TNWxZziUWq8Mh8PafZO9iQoz45hOf6U8IukYC4gKzbgPo9era0AyotjxqH+dpsHjG/8n2a7+WTkohEUX2KFk2DeAQpS1x1I36u5VcVFzUZHfiSw4dm8mpYfXiN+lxmVfosfac/3bLYMYzECbHSb1AoQcLECCY1IwvENG03k1mL6rGhP37qKtUoI9QTciILmmmv2f98T4kirXTiHvskBvH+gHkJCKWEUoqHcnE6ZtPIJwXOnTT8yJ55qC+eklAxCuj9Xdf7m8SwFBDI6vTB3SGnzGxW5SojOk9GPIQ8HPxYgnkCkhP+3XOGOccZdyrQkdcqc8qprMMI6HdaZhlrEze0CT3NCzJmkX3MLf3oE7DFLUT6u0JHaEH9qxaLaYIVS73jaCog98dUkTBI+5sLGrBBKLrNXQgBeIGBUC+ceT53egRasdUg8yDnGwbNpbvosEQfygQx6pI2bB9hO7Bgr9GCg+i9vjqFAxKT5UIG2qMiIbzUdGGhyq/He/siYwKzqhFMSq6M/9px26hwJ+AFSGWCD0n+6iKgz/bA4iNTRIl+N5lkTI+m4JFDd9A1iVZLFzrXY8Os+khP5k99cxAVFVj6UhQ7S/t/6WcFMfgY96KNrK6tSIxOn8N1NnW9pUMqpH6oO8vU06ngq4FmBEYDQS9jrC0K24bNhcIAWWcTge8vo=
 cache:

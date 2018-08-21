@@ -1,26 +1,33 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
-  <div ng-if="isActive(index)">
-    <div class="form-group has-success has-feedback" >
-      <input type="text"
-          class="form-control select dateField"
+  <div ng-if="isActive(index)" class="form-group input-group has-success has-feedback">
+
+
+      <input 
+          type="text"
+          class="form-control select dateField "
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          ng-change="setDateValue(date.dt)"
+          uib-datepicker-popup="{{date.format}}"
           ng-model="date.dt"
-          aria-label="{{getHelp()}}"
-          placeholder="{{'CREATOR.enterDate' | translate}}"
-          ng-model-options="{allowInvalid:true}"
-          date-validation>
-      </input>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
+          ng-change="updateModelFromUI(date.dt, '{{valueArray[index]['@value']}}',false); "
+          is-open="date.opened"
+          ng-required="true" close-text="Close"
+          alt-input-formats="date.altInputFormats"/>
+      <div class="input-indicator-icons"
+           style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+     <span class="input-group-btn">
+            <button type="button"
+                class="btn btn-default"
+                ng-click="setDateValue(); date.opened = true">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
   </div>
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
+    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{dateFormat(valueArray[index]['@value'])}}</div>
   </div>
 
 </div>
-
 

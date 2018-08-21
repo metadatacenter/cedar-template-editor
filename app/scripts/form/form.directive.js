@@ -388,16 +388,22 @@ define([
         });
 
         $scope.$on("form:firstDirty", function (event) {
-          if (UIUtilService.hasMetadata()) {
-            UIMessageService.flashWarning("The template has metadata and should not be modified.");
-          }
-          if (UIUtilService.isLocked()) {
-            UIMessageService.flashWarning('Modifications cannot be saved without write permission.');
+          if (UIUtilService.isRuntime()) {
+            if (UIUtilService.isDraft() && !UIUtilService.isFirstVersion()) {
+              // if this is metadata editor, the template is a draft of a published version
+              UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
+            }
+          } else {
+            if (UIUtilService.hasTotalMetadata()) {
+              UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
+            }
+            if (UIUtilService.isLocked()) {
+              UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
+            }
           }
         });
 
         $scope.$on("form:clean", function () {
-          console.log('form:clean');
           UIUtilService.setDirty(false);
         });
 

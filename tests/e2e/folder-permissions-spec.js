@@ -30,6 +30,8 @@ describe('folder-permissions', function () {
     return result;
   };
 
+  jasmine.getEnv().addReporter(workspacePage.myReporter());
+
   beforeEach(function () {
   });
 
@@ -38,14 +40,12 @@ describe('folder-permissions', function () {
 
   // reset user selections to defaults
   it('should be on the workspace', function () {
-    console.log('folder-permissions should be on the workspace');
     workspacePage.onWorkspace();
   });
 
   describe('moving folders', function () {
 
     it("should move a folder owned by current user to a writable folder", function () {
-      console.log('folder-permissions moving folders should move a folder owned by current user to a writable folder');
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
@@ -316,20 +316,12 @@ describe('folder-permissions', function () {
 
   describe('remove created resources', function () {
 
-    it('should delete ' + resources.length + ' resource from the user workspace', function () {
-      console.log('folder permissions should delete  '+ resources.length + ' resources should delete resource from the user workspace');
-      for (var i = 0; i < resources.length; i++) {
-        (function (resource) {
-          console.log("folder-permissions should delete " + resource.title + " for user " + resource.username);
-          workspacePage.login(resource.username, resource.password);
-          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
-          toastyModal.isSuccess();
-          workspacePage.clearSearch();
-        })
-        (resources[i]);
-      }
+    it('should delete resource from the user workspace', function () {
+      workspacePage.deleteResources(resources);
     });
+
   });
+
 
 
 });

@@ -13,8 +13,7 @@ var TemplateCreatorPage = function () {
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
 
-  var createButton = element(by.id('button-create'));
-  var createTemplateButton = element(by.id('button-create-template'));
+
   var createTemplatePage = element(by.css('#top-navigation.template'));
   var createTextFieldButton = element(by.id('button-add-field-textfield'));
   var createTextAreaButton = element(by.id('button-add-field-textarea'));
@@ -32,13 +31,14 @@ var TemplateCreatorPage = function () {
 
   var showJsonLink = element(by.css('.accordion-toggle'));
   var jsonPreview = element(by.id('form-json-preview'));
+  var jsonPreviewHidden = element(by.css('#form-json-preview.ng-hide'));
 
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
   var createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
   var createSearchResult = element(by.id('search-browse-modal')).element(by.css('.search-result'));
   var createFirstElement = element.all(by.css('.form-box .element')).first();
-  var createElementButton = element(by.id('button-create-element'));
+
   var createElementPage = element(by.css('#top-navigation.element'));
   var createSearchForm = element(by.css('.nav-search')).element(by.tagName('form'));
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
@@ -109,6 +109,101 @@ var TemplateCreatorPage = function () {
   var dashboardType = 'dashboard';
   var cssDetailOptions = '.detail-options';
 
+  var fieldTypes = [
+    {
+      "cedarType"                : "textfield",
+      "iconClass"                : "fa-font",
+      "label"                    : "Text",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : true,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": true
+    },
+    {
+      "cedarType"                : "date",
+      "iconClass"                : "fa-calendar",
+      "label"                    : "Date",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "email",
+      "iconClass"                : "fa-envelope",
+      "label"                    : "Email",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "numeric",
+      "iconClass"                : "fa-hashtag",
+      "allowedInElement"         : true,
+      "primaryField"             : true,
+      "label"                    : "Number",
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "textarea",
+      "iconClass"                : "fa-paragraph",
+      "label"                    : "Text Area",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : true,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "radio",
+      "iconClass"                : "fa-dot-circle-o",
+      "label"                    : "Multiple Choice",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType"                : "checkbox",
+      "iconClass"                : "fa-check-square-o",
+      "label"                    : "Checkbox",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    },
+
+    {
+      "cedarType"                : "list",
+      "iconClass"                : "fa-list",
+      "allowedInElement"         : true,
+      "primaryField"             : false,
+      "label"                    : "List",
+      "hasControlledTerms"       : false,
+      "staticField"              : false,
+      "allowsMultiple"           : false,
+      "allowsValueRecommendation": false
+    }
+  ];
+  this.fieldTypes = fieldTypes;
+
+  var pageTypes = ['template', 'element'];
+  this.pageTypes = pageTypes;
 
   // template creator
   var templateTitle = element(by.id('template-name'));
@@ -381,8 +476,6 @@ var TemplateCreatorPage = function () {
     "bibo:status"         : "bibo:draft"
   };
 
-
-
   // element creator
   var elementTitle = element(by.id('element-name'));
   var elementDescription = element(by.id('element-description'));
@@ -473,7 +566,6 @@ var TemplateCreatorPage = function () {
     "bibo:status"         : "bibo:draft"
   };
 
-
   this.isWorkspace = function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
   };
@@ -498,71 +590,51 @@ var TemplateCreatorPage = function () {
     return createYoutube;
   };
 
-
-  this.createPage = function (type, title, description) {
-
-    browser.actions().mouseMove(createButton).perform();
-
-    if (type === 'template') {
-
-      browser.wait(EC.elementToBeClickable(createTemplateButton));
-      createTemplateButton.click();
-
-      if (title) {
-        browser.wait(EC.elementToBeClickable(templateTitle));
-        browser.actions().doubleClick(templateTitle).perform();
-        templateTitle.sendKeys(title);
-        templateTitleForm.submit();
-      }
-      if (description) {
-        browser.wait(EC.elementToBeClickable(templateDescription));
-        browser.actions().doubleClick(templateDescription).perform();
-        templateDescription.sendKeys(description);
-        templateDescriptionForm.submit();
-      }
-
-      browser.wait(EC.presenceOf(createSaveTemplateButton));
-
-    } else {
-      browser.wait(EC.elementToBeClickable(createElementButton));
-      createElementButton.click();
-
-      if (title) {
-        browser.wait(EC.elementToBeClickable(elementTitle));
-        browser.actions().doubleClick(elementTitle).perform();
-        elementTitle.sendKeys(title);
-        elementTitleForm.submit();
-      }
-      if (description) {
-        browser.wait(EC.elementToBeClickable(elementDescription));
-        browser.actions().doubleClick(elementDescription).perform();
-        elementDescription.sendKeys(description);
-        elementDescriptionForm.submit();
-      }
-
-      browser.wait(EC.presenceOf(createSaveElementButton));
-    }
+  this.setTitle = function (type, text) {
+    var title = getTitle(type);
+    browser.wait(EC.visibilityOf(title));
+    browser.wait(EC.elementToBeClickable(title));
+    browser.actions().doubleClick(title).perform();
+    title.sendKeys(text);
+    title.submit();
   };
 
-  this.showJson = function () {
-    browser.wait(EC.invisibilityOf(jsonPreview));
-    browser.wait(EC.visibilityOf(showJsonLink));
-    browser.wait(EC.elementToBeClickable(showJsonLink));
-    showJsonLink.click();
-    browser.wait(EC.visibilityOf(jsonPreview));
-  };
-
-  this.hideJson = function () {
-    browser.wait(EC.visibilityOf(jsonPreview));
-    browser.wait(EC.visibilityOf(showJsonLink));
-    browser.wait(EC.elementToBeClickable(showJsonLink));
-    showJsonLink.click();
-    browser.wait(EC.invisibilityOf(jsonPreview));
+  this.setDescription = function (type, text) {
+    var description = getDescription(type);
+    browser.wait(EC.visibilityOf(description));
+    browser.wait(EC.elementToBeClickable(description));
+    browser.actions().doubleClick(description).perform();
+    description.sendKeys(text);
+    description.submit();
   };
 
   this.isHiddenJson = function () {
-    browser.wait(EC.invisibilityOf(jsonPreview));
+    return EC.presenceOf(element(by.css('#form-json-preview.preview-closed')));
   };
+
+  this.showJson = function () {
+    var closed = EC.presenceOf(element(by.css('#form-json-preview.preview-closed')));
+    if (closed) {
+      var openLink = element(by.css('.accordion-toggle'));
+      browser.wait(EC.visibilityOf(openLink));
+      browser.wait(EC.elementToBeClickable(openLink));
+      openLink.click();
+      browser.wait(EC.presenceOf(element(by.css('#form-json-preview.preview-open'))));
+    }
+
+  };
+
+  this.hideJson = function () {
+    var open = EC.presenceOf(element(by.css('#form-json-preview.preview-open')));
+    if (open) {
+      var closeLink = element(by.css('.accordion-toggle'));
+      browser.wait(EC.visibilityOf(closeLink));
+      browser.wait(EC.elementToBeClickable(closeLink));
+      closeLink.click();
+      browser.wait(EC.presenceOf(element(by.css('#form-json-preview.preview-closed'))));
+    }
+  };
+
 
   this.isLocked = function () {
     var lock = element(by.css('#headerCtrl .feedback-form i.fa-lock'));
@@ -588,6 +660,7 @@ var TemplateCreatorPage = function () {
     var valid = element(by.css('#headerCtrl .feedback-form i.fa-check'));
     browser.wait(EC.visibilityOf(valid));
   };
+
   this.isInvalid = function () {
     var invalid = element(by.css('#headerCtrl .feedback-form i.fa-exclamation-triangle'));
     browser.wait(EC.visibilityOf(invalid));
@@ -595,6 +668,7 @@ var TemplateCreatorPage = function () {
 
 
   this.clickSave = function (type) {
+    console.log('clickSave',type);
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
     browser.executeScript("arguments[0].scrollIntoView();", button.getWebElement());
     browser.wait(EC.elementToBeClickable(button));
@@ -618,23 +692,17 @@ var TemplateCreatorPage = function () {
   };
 
   this.clickClear = function (type) {
-    if (type === 'template') {
-      browser.wait(EC.elementToBeClickable(createClearTemplateButton));
-      createClearTemplateButton.click();
-    } else {
-      browser.wait(EC.elementToBeClickable(createClearElementButton));
-      createClearElementButton.click();
-    }
+    var btn = type === 'template' ? createClearTemplateButton : createClearElementButton;
+    browser.wait(EC.visibilityOf(btn));
+    browser.wait(EC.elementToBeClickable(btn));
+    btn.click();
   };
 
   this.clickCancel = function (type) {
-    if (type === 'template') {
-      browser.wait(EC.elementToBeClickable(createCancelTemplateButton));
-      createCancelTemplateButton.click();
-    } else {
-      browser.wait(EC.elementToBeClickable(createCancelElementButton));
-      createCancelElementButton.click();
-    }
+    var btn = type === 'template' ? createCancelTemplateButton : createCancelElementButton;
+    browser.wait(EC.visibilityOf(btn));
+    browser.wait(EC.elementToBeClickable(btn));
+    btn.click();
   };
 
   var getTitle = function (type) {
@@ -663,23 +731,6 @@ var TemplateCreatorPage = function () {
     return btn;
   };
 
-  this.setTitle = function (type, text) {
-    var title = getTitle(type);
-    browser.wait(EC.visibilityOf(title));
-    browser.wait(EC.elementToBeClickable(title));
-    browser.actions().doubleClick(title).perform();
-    title.sendKeys(text);
-    title.submit();
-  };
-
-  this.setDescription = function (type, text) {
-    var description = getDescription(type);
-    browser.wait(EC.visibilityOf(description));
-    browser.wait(EC.elementToBeClickable(description));
-    browser.actions().doubleClick(description).perform();
-    description.sendKeys(text);
-    description.submit();
-  };
 
   this.isTitle = function (type, text) {
     var title = getTitle(type);
@@ -953,6 +1004,80 @@ var TemplateCreatorPage = function () {
     return removeFieldButton;
   };
 
+  this.addFieldType = function (fieldType, title, description, pageType, content) {
+    var btn;
+
+    if (!fieldType.primaryField) {
+      browser.wait(EC.visibilityOf(createMore));
+      browser.wait(EC.elementToBeClickable(createMore));
+      createMore.click();
+    }
+    switch (fieldType.cedarType) {
+      case "textfield":
+        btn = createTextFieldButton;
+        break;
+      case "textarea":
+        btn = createTextAreaButton;
+        break;
+      case "radio":
+        btn = createRadioButton;
+        break;
+      case "checkbox":
+        btn = createCheckboxButton;
+        break;
+      case "date":
+        btn = createDateButton;
+        break;
+      case "email":
+        btn = createEmailButton;
+        break;
+      case "list":
+        btn = createListButton;
+        break;
+      case"numeric":
+        btn = createNumericButton;
+        break;
+      case "phone-number":
+        btn = createPhoneNumberButton;
+        break;
+      case "image":
+        btn = createImageButton;
+        break;
+      case "richtext":
+        btn = createRichTextButton;
+        break;
+    }
+
+    if (btn) {
+      browser.wait(EC.visibilityOf(btn));
+      browser.wait(EC.elementToBeClickable(btn));
+      btn.click();
+
+      // enter the name and description
+      browser.wait(EC.elementToBeClickable(createFieldTitle));
+      createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.wait(EC.elementToBeClickable(createFieldDescription));
+      createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+    }
+
+    switch (fieldType.cedarType) {
+      case "image":
+        browser.wait(EC.elementToBeClickable(createFieldContent));
+        createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        break;
+        // case "richtext":
+        //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
+        //   browser.wait(EC.elementToBeClickable(richTextContent));
+        //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
+        //   break;
+    }
+
+    // wait for field to appear
+    var root = pageType == 'template' ? 'field' : 'element';
+    var field = element(by.css('.' + root + '-root .' + fieldType.iconClass));
+    browser.wait(EC.visibilityOf(field));
+  };
+
 
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
@@ -1025,6 +1150,9 @@ var TemplateCreatorPage = function () {
         //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
         //   break;
     }
+
+    // var field = element(by.css('.field-root .' + fieldType.iconClass));
+    // browser.wait(EC.visibilityOf(field));
   };
 
   this.removeElementButton = function () {
