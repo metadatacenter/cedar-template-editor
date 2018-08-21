@@ -1302,22 +1302,14 @@ define([
       // initialization
       //
 
-// <<<<<<< HEAD
-//       $scope.setValueArray();
-//       $scope.setAttributeValueArray();
-//
-//
-//       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
-//           $scope.cleanupSpreadsheet);
-// =======
-//           var date = new Date(value);
-//           var year = date.getFullYear();
-//           var month = date.getMonth() + 1;
-//           var day = date.getDate();
-//           result = (isNaN(year) || isNaN(month) || isNaN(day));
-//         }
-//         return result;
-//       }
+      $scope.setValueArray();
+      $scope.setAttributeValueArray();
+
+
+      $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
+          $scope.cleanupSpreadsheet);
+
+
 
       $scope.getPlaceholderText = function () {
         var text = "Enter a value";
@@ -1407,7 +1399,7 @@ define([
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
         }
       };
-// >>>>>>> 656bc2e9ead370f4a5818206c817ea69f3530c99
+
 
       // Check the decimal place of the input value
       $scope.checkDecimalPlace = function () {

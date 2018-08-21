@@ -668,7 +668,6 @@ var TemplateCreatorPage = function () {
 
 
   this.clickSave = function (type) {
-    console.log('clickSave',type);
     var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
     browser.executeScript("arguments[0].scrollIntoView();", button.getWebElement());
     browser.wait(EC.elementToBeClickable(button));

@@ -36,6 +36,20 @@ exports.config = {
     //browser.driver.get('https://auth.staging.metadatacenter.org/auth/realms/CEDAR/protocol/openid-connect/auth?client_id=cedar-angular-app&redirect_uri=https%3A%2F%2Fcedar.metadatacenter.orgx%2F&response_mode=fragment&response_type=code&scope=openid');
     browser.driver.get(testConfig.baseUrl);
 
+
+    browser.getCurrentUrl().then(function(value) {
+      console.log('testConfig.baseUrl',testConfig.baseUrl);
+      console.log('browser.getCurrentUrl',value);
+    });
+    // browser.getPageSource().then(function(value) {
+    //   console.log("getPageSource");
+    //   console.log(value);
+    // });
+    // console.log('exports');
+    // console.log(exports);
+
+
+
     var disableNgAnimate = function () {
       angular
           .module('disableNgAnimate', [])
@@ -74,17 +88,7 @@ exports.config = {
       });
     });
 
-    console.log('exports');
-    console.log(exports);
 
-    browser.getCurrentUrl().then(function(value) {
-      console.log('getCurrentUrl');
-      console.log(value);
-    });
-    browser.getPageSource().then(function(value) {
-      console.log("getPageSource");
-      console.log(value);
-    });
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
@@ -96,6 +100,8 @@ exports.config = {
         });
       });
     });
+
+
 
     // wait for new page
     return browser.driver.wait(function () {

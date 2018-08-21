@@ -61,7 +61,6 @@ describe('metadata-creator', function () {
     it("should create the sample folder", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       var target1Folder = workspacePage.createFolder('Target');
-      console.log('target1Folder',target1Folder);
     });
 
     it("should create the sample template", function () {

@@ -1,71 +1,7 @@
 <div id="numeric-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <!-- header -->
   <div ng-include="'scripts/form/partials/field-header.partial.html'"></div>
-  <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-
-  <!-- unit of measure constraint -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="text" auto-focus
-        class="form-control"
-        placeholder="{{'CREATOR.enterUnitOfMeasure' | translate}}"
-        aria-label="{{'CREATOR.enterUnitOfMeasure' | translate}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.unitOfMeasure"
-        ng-disabled="isPublished()"
-        with-floating-label>
-  </div>
-
-  <!-- numeric datatype constraint -->
-  <div ng-init="setNumberTypeFromModel()" class="form-group floating-label-wrapper numeric">
-    <ui-select  style="background:white;padding:0;margin:0"
-        class="form-control select"
-        theme="bootstrap"
-        close-on-select="true"
-        ng-change="setNumberTypeFromUI($select.selected)"
-        ng-model="selectedNumberType"
-        ng-disabled="isPublished()">
-      <ui-select-match placeholder="{{'CREATOR.enterNumberType' | translate}}">{{selectedNumberType.label}}</ui-select-match>
-      <ui-select-choices repeat="type in numberTypes">
-        {{type.label}}
-      </ui-select-choices>
-    </ui-select>
-  </div>
-
-  <!-- min number value constraint -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="number" auto-focus
-        class="form-control field-min-max-definition"
-        placeholder="{{'CREATOR.enterMinValue' | translate}}"
-        aria-label="{{'CREATOR.enterMinValue' | translate}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.minValue"
-        ng-disabled="isPublished()"
-        with-floating-label>
-  </div>
-
-  <!-- max number value constraint -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="number" auto-focus
-        class="form-control field-min-max-definition"
-        placeholder="{{'CREATOR.enterMaxValue' | translate}}"
-        aria-label="{{'CREATOR.enterMaxValue' | translate}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
-        ng-disabled="isPublished()"
-        with-floating-label>
-  </div>
-
-  <!-- decimal place constraint -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="number" auto-focus
-        class="form-control"
-        placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
-        aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
-        ng-disabled="isPublished()"
-        with-floating-label>
-  </div>
-
-  <!-- options -->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 
 </div>

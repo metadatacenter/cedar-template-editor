@@ -20,8 +20,7 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       $scope.errorMessages;
-      //var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
-      var tabSet = ["values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
+      var tabSet = ["options","values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -65,7 +64,7 @@ define([
       };
 
       $scope.isRootNode = function () {
-        return dms.isRootNode($scope.parentElement,$scope.field);
+        return dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       $scope.hasVersion = function () {
@@ -172,7 +171,7 @@ define([
 
       $scope.getPropertyDescription = function () {
         var descriptions = dms.getPropertyDescriptions($scope.parentElement);
-        return  descriptions ? descriptions[$scope.fieldKey] : false;
+        return descriptions ? descriptions[$scope.fieldKey] : false;
       };
 
       $scope.hasPropertyDescription = function () {
@@ -221,17 +220,29 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
+      $scope.hasOptions = function() {
+        return $scope.isNumericField() || $scope.isTextField();
+      }
+
+      $scope.isNumericField = function () {
+        return dms.isNumericField($scope.field);
+      };
+
+      $scope.isTextField = function () {
+        return dms.isTextFieldType($scope.field);
+      };
+
       $scope.canViewTerms = function () {
         var allowed = $scope.allowsControlledTerms();
         var noVersion = !$scope.hasVersion();
         var versionAndTermsOrRoot = $scope.hasVersion() && ($scope.hasValueConstraint() || $scope.isRootNode());
-        return allowed && (noVersion ||  versionAndTermsOrRoot);
+        return allowed && (noVersion || versionAndTermsOrRoot);
       };
 
       $scope.canAddTerms = function () {
         var noVersion = !$scope.hasVersion();
         var draftAndRoot = $scope.isDraft() && $scope.isRootNode();
-        return noVersion ||  draftAndRoot;
+        return noVersion || draftAndRoot;
       };
 
       $scope.getLiterals = function () {
@@ -356,7 +367,7 @@ define([
       // Retrieve appropriate field templates
       $scope.getTemplateUrl = function () {
         return 'scripts/form/field-' + $scope.directory + '/' + dms.getInputType(
-                $scope.field) + '.html';
+            $scope.field) + '.html';
       };
 
       $scope.switchToSpreadsheet = function () {
@@ -485,7 +496,8 @@ define([
 
       // Used to update schema:name when the field label (stored in propertyLabels) changes
       $scope.$watch("fieldLabel[fieldLabelKey]", function () {
-        if (!angular.isUndefined($scope.fieldLabelKey) && !angular.isUndefined($scope.fieldLabel[$scope.fieldLabelKey])) {
+        if (!angular.isUndefined($scope.fieldLabelKey) && !angular.isUndefined(
+            $scope.fieldLabel[$scope.fieldLabelKey])) {
           if ($scope.isEditable()) {
             dms.setTitle($scope.field, $scope.fieldLabel[$scope.fieldLabelKey]);
           }
@@ -494,7 +506,8 @@ define([
 
       // Used to update schema:description when the field description (stored in propertyDescriptions) changes
       $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
-        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
+        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined(
+            $scope.fieldDescription[$scope.fieldDescriptionKey])) {
           if ($scope.isEditable()) {
             dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
           }
@@ -620,28 +633,32 @@ define([
 
       // Sets the number type based on the item stored at the model
       $scope.setNumberTypeFromModel = function () {
-        var typeId = $scope.field._valueConstraints.numberType || "xsd:decimal";
-        var getNumericLabel = function (id) {
-          for (var i = 0; i < $scope.numberTypes.length; i++) {
-            var type = $scope.numberTypes[i];
-            if (type.id == id) {
-              return type.label;
+        var schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints && schema._valueConstraints.numberType) {
+          var typeId = schema._valueConstraints.numberType || "xsd:decimal";
+          var getNumericLabel = function (id) {
+            for (var i = 0; i < $scope.numberTypes.length; i++) {
+              var type = $scope.numberTypes[i];
+              if (type.id == id) {
+                return type.label;
+              }
             }
           }
+          $scope.selectedNumberType = {
+            id   : typeId,
+            label: getNumericLabel(typeId)
+          }
         }
-        $scope.selectedNumberType = {
-          id: typeId,
-          label: getNumericLabel(typeId)
-        }
-      }
+      };
 
       // Sets the number type based on the item selected at the UI
       $scope.setNumberTypeFromUI = function (item) {
-        $scope.field._valueConstraints.numberType = item.id;
-      }
+        dms.schemaOf($scope.field)._valueConstraints.numberType = item.id;
+      };
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
+
 
         if (!$scope.model || !angular.isArray($scope.model)) {
           $scope.model = [];
@@ -674,6 +691,8 @@ define([
         if ($scope.model.length == 0) {
           $scope.model.push({'@value': null});
         }
+
+        console.log('updateModelFromUI', $scope.model);
       };
 
       // Updates the model for fields whose values have been constrained using controlled terms
@@ -777,7 +796,7 @@ define([
         return dms.isMultiAnswer(field);
       };
 
-      $scope.isCheckboxListRadio = function() {
+      $scope.isCheckboxListRadio = function () {
         return dms.isCheckboxListRadio($scope.field);
       };
 
@@ -789,9 +808,8 @@ define([
         if (!dms.isRootNode($scope.parentElement, field)) {
           dms.setMultipleChoice(field, multipleChoice);
         } else if (dms.isListType(field) || dms.isCheckboxType(field)) {
-            field._valueConstraints.multipleChoice = multipleChoice;
+          field._valueConstraints.multipleChoice = multipleChoice;
         }
-        console.log('setMultipleChoice',field);
       };
 
       // Initializes model for fields constrained using controlled terms
