@@ -48,10 +48,11 @@ describe('copy and move', function () {
 
     it('should create folder and template for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      sourceTemplate = workspacePage.createTemplate('SourceA');
-      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
       targetFolder = workspacePage.createFolder('Target');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      sourceTemplate = workspacePage.createTemplate('SourceA');
+      resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
+
     });
 
     it("should copy template to folder", function () {
