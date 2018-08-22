@@ -204,7 +204,7 @@ describe('copy and move', function () {
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    it("should copy to a readable folder", function () {
+    xit("should copy to a readable folder", function () {
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToUserFolder(testConfig.testUserName1, targetFolder);
       toastyModal.isSuccess();
