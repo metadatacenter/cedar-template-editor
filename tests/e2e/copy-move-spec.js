@@ -212,7 +212,7 @@ describe('copy and move', function () {
       workspacePage.clearSearch();
     });
 
-    it("should fail to move to a readable folder", function () {
+    xit("should fail to move to a readable folder", function () {
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, targetFolder);
       toastyModal.isSuccess();
