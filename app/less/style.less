@@ -233,7 +233,7 @@ button {
 
 #messaging, #user-menu {
   button {
-    color: #ccc;
+    color: @white;
   }
   button:hover {
     background-color: #4bafaf;
@@ -909,7 +909,7 @@ button {
 
     .resource-count {
       margin: 40px 0;
-      font-size: 1.2em;
+      font-size: 1em;
       color: #666;
     }
 
@@ -954,13 +954,11 @@ button {
 
   .populate-form-boxes {
 
-    //margin: 0 20px;
-
     .form-box {
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
     }
     .selected > .form-box {
-      box-shadow: 0 0 6px 2px #dddddd;
+      box-shadow: 0 6px 6px 0 #ccc;
     }
 
     .selected .title {
@@ -981,13 +979,13 @@ button {
     .form-box-container {
       position: relative;
       display: inline-block;
-      margin: 5px;
+      margin: 0;
       padding: 5px;
+      vertical-align: top;
     }
 
     .form-box {
       width: 160px;
-      height: 110px;
       border: 1px solid #ebebeb;
       background: #ffffff;
       margin: 5px auto;
@@ -1001,39 +999,57 @@ button {
         display: block;
         text-align: left;
 
-        div.toolbar-left {
-          position: absolute;
-          top: 15px;
-          left: 10px;
-          height: 20px;
-          padding: 0px;
-          color: @very-lt-gray;
-          font-size: 10px;
-          i.action {
-            font-size: 16px;
-            margin: 0 3px;
-            color: @very-lt-gray;
-            &:hover {
-              color: #aaa;
+        .title-container {
+          margin:0 5px 5px 5px;
+          .title-text {
+            font-size: 14px;
+            padding:0;
+            margin:0
+          }
+        }
+
+
+        .toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width:100%;
+          .right-side {
+            display: flex;
+            align-items: center;
+            width:40px;
+            justify-content:flex-end;
+            padding:5px 10px 5px 5px;
+            font-size:18px;
+            button {
+              background-color:transparent;padding-right:5px;
+              i {
+                color:#aaa
+              }
             }
           }
         }
 
-        div.toolbar-right {
-          position: absolute;
-          top: 15px;
-          right: 10px;
-          height: 20px;
-          padding: 0px;
-          white-space: nowrap;
-          color: @med-gray;
-          font-size: 10px;
-          i.action {
-            font-size: 16px;
-            margin: 0 3px;
-            color: @med-gray;
-            &:hover {
-              color: #aaa;
+        .cell.icon {
+          background: @white;
+
+          i {
+            &.field {
+              color: @field-color;
+            }
+            &.element {
+              color: @element-color;
+            }
+            &.template {
+              color: @template-color;
+            }
+            &.metadata, &.instance {
+
+              color: @metadata-color;
+            }
+            &.folder {
+              color: @folder-color;
+
             }
           }
         }
@@ -6846,6 +6862,7 @@ table.apiKey {
 .scrollable-content {
   overflow-x: hidden;
   overflow-y: auto;
+  background:transparent;
 }
 
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
@@ -8572,6 +8589,8 @@ div.resource-icon {
   }
 
 }
+
+
 
 
 

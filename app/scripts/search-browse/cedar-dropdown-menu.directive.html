@@ -1,6 +1,6 @@
 
 <ul  class="dropdown" on-toggle="toggled(open)" >
-  <li ng-if="!canNotPopulate"><a  class="open" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Open</a></li>
+  <li ng-if="!canNotPopulate"><a  class="open" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Populate</a></li>
   <li ng-if="isFolder"><a  href="#" class="open" ng-click="goTo(resource)">Open</a></li>
   <li ng-if="!isFolder"><a  href="#" class="edit" ng-click="goTo(resource)">Edit</a></li>
 
