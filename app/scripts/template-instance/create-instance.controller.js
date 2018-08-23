@@ -157,7 +157,6 @@ define([
             getDetails($scope.instance['@id']);
 
 
-
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
@@ -212,6 +211,7 @@ define([
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
         $rootScope.$broadcast('submitForm');
+        owner.enableSaveButton();
       };
 
       this.disableSaveButton();
@@ -220,9 +220,6 @@ define([
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
 
-
-      // Create instance if there are no required field errors
-      //if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
       if ($scope.instance['@id'] == undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
@@ -230,7 +227,7 @@ define([
         // Create fields that will store information used by the UI
         $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
         $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant(
-                "GENERATEDVALUE.instanceDescription");
+            "GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(
@@ -310,42 +307,42 @@ define([
     }
 
 // Initialize array for required fields left empty that fail required empty check
-    $scope.emptyRequiredFields = {};
-// Event listener waiting for emptyRequiredField $emit from field-directive.js
-    $scope.$on('emptyRequiredField', function (event, args) {
-      if (args[0] == 'add') {
-        $scope.emptyRequiredFields[args[2]] = args[1];
-      }
-      if (args[0] == 'remove') {
-        delete $scope.emptyRequiredFields[args[2]];
-      }
-    });
 
-// Initialize array for validation errors
+
+    // keep track of validation errors on metadata
     $scope.validationErrors = {};
-// Event listener waiting for validationError $emit from form-directive.js
     $scope.$on('validationError', function (event, args) {
-      if (args[0] == 'add') {
-        $scope.validationErrors[args[2]] = args[1];
+      var operation = args[0];
+      var title = args[1];
+      var id = args[2];
+      var error = args[3];
+      var key = id;
+
+      if (operation == 'add') {
+        $scope.validationErrors[error] = $scope.validationErrors[error] || {};
+        $scope.validationErrors[error][key] = {};
+        $scope.validationErrors[error][key].title = title;
       }
-      if (args[0] == 'remove') {
-        // remove all of them
-        $scope.validationErrors = {};
-        //delete $scope.validationErrors[args[2]];
+
+      if (operation == 'remove') {
+        if ($scope.validationErrors[error] && $scope.validationErrors[error][key]) {
+          delete $scope.validationErrors[error][key];
+
+          if (!$scope.hasKeys($scope.validationErrors[error])) {
+            delete $scope.validationErrors[error];
+          }
+        }
       }
     });
 
-// Initialize array for fields that are not conform to valueConstraints
-    $scope.invalidFieldValues = {};
-// Event listener waiting for emptyRequiredField $emit from field-directive.js
-    $scope.$on('invalidFieldValues', function (event, args) {
-      if (args[0] == 'add') {
-        $scope.invalidFieldValues[args[2]] = args[1];
-      }
-      if (args[0] == 'remove') {
-        delete $scope.invalidFieldValues[args[2]];
-      }
-    });
+    $scope.getValidationHeader = function (key) {
+      return $translate.instant('VALIDATION.groupHeader.' + key);
+    };
+
+    $scope.hasKeys = function (value) {
+      return Object.keys(value).length;
+    };
+
 
 // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
@@ -353,6 +350,7 @@ define([
     };
 
     $scope.enableSaveButton = function () {
+      console.log('enableSaveButton');
       $timeout(function () {
         $scope.saveButtonDisabled = false;
       }, 1000);

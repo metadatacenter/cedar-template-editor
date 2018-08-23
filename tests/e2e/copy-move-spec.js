@@ -48,7 +48,7 @@ describe('copy and move', function () {
 
     it('should create folder and template for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('Target');
+      targetFolder = workspacePage.createFolder('TargetA');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
       sourceTemplate = workspacePage.createTemplate('SourceA');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
@@ -70,7 +70,7 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser2, function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      destFolder = workspacePage.createFolder('Destination');
+      destFolder = workspacePage.createFolder('DestinationA');
       resources.push(createResource(destFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
@@ -99,7 +99,7 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       sourceTemplate = workspacePage.createTemplate('SourceB');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      targetFolder = workspacePage.createFolder('Target');
+      targetFolder = workspacePage.createFolder('TargetB');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -119,7 +119,7 @@ describe('copy and move', function () {
 
     it('should create folder and template for user ' + testConfig.testUser2, function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      destFolder = workspacePage.createFolder('Destination');
+      destFolder = workspacePage.createFolder('DestinationB');
       resources.push(createResource(destFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
@@ -147,7 +147,7 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('Target');
+      targetFolder = workspacePage.createFolder('TargetC');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -190,7 +190,7 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('Target');
+      targetFolder = workspacePage.createFolder('TargetD');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 

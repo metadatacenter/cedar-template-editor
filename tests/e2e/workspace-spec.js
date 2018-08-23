@@ -188,7 +188,7 @@ describe('workspace', function () {
 
   });
 
-  xdescribe('remove all created resources', function () {
+  describe('remove all created resources', function () {
 
     // clean up created resources
     it('should delete resource from the user workspace for user', function () {
