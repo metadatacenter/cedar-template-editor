@@ -9,80 +9,20 @@
               path="0"></form-directive>
 
           <!-- errors and edit actions -->
-          <div class="edit-actions"  ng-hide="$root.isEmpty(form)">
-            <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
-              <p translate>VALIDATION.groupHeader.requiredFields</p>
-              <ul>
-                <li ng-repeat="field in failedValidation">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(emptyRequiredFields)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.requiredFields</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in emptyRequiredFields">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldValues)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFields</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldValues">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(validationErrors)" class="alert alert-danger" role="alert">
+          <div class="edit-actions" ng-hide="$root.isEmpty(form)">
+
+            <!-- validation errors -->
+            <div ng-if="hasKeys(validationErrors)" class="alert alert-danger" role="alert">
               <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.validationErrors</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in validationErrors">{{field}}</li>
+                  translate>VALIDATION.groupHeader.validationErrors</span></p>
+              <ul class="list-unstyled">
+                <li ng-repeat="(key, value) in validationErrors">
+                  <p>{{getValidationHeader(key)}}</p>
+                  <ul class="list-unstyled" style="margin:5px 5px 5px 20px;">
+                    <li ng-repeat="field in value">{{field['title']}}</li>
+                  </ul>
+                </li>
               </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldsValueTooLong)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.valueTooLongError</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldsValueTooLong">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldsValueTooShort)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.valueTooShortError</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldsValueTooShort">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldsValueTooBig)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.valueTooLargeError</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldsValueTooBig">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldsValueTooSmall)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.valueTooSmallError</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldsValueTooSmall">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="!isEmpty(invalidFieldsIncorrectDecimalPlace)" class="alert alert-danger" role="alert">
-              <p><i class="fa fa-exclamation-triangle"></i><span
-                  translate>VALIDATION.groupHeader.incorrectDecimalPlaceError</span>
-              </p>
-              <ul>
-                <li ng-repeat="field in invalidFieldsIncorrectDecimalPlace">{{field}}</li>
-              </ul>
-            </div>
-            <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
-              <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
-            </div>
-            <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
-              <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
             </div>
 
             <div ng-if="canWrite()" class="flex-right">
@@ -100,17 +40,19 @@
           </div>
 
           <!-- document preview -->
-          <div id="document-preview"  >
-            <uib-accordion id="outputJSON" close-others="true" >
-              <div uib-accordion-group  is-open="openStatusJSONLD"  class="panel-default" >
+          <div id="document-preview">
+            <uib-accordion id="outputJSON" close-others="true">
+              <div uib-accordion-group is-open="openStatusJSONLD" class="panel-default">
                 <uib-accordion-heading>
-                  <i class="cedar-svg-rdf1"></i>  JSON-LD  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>
+                  <i class="cedar-svg-rdf1"></i> JSON-LD <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>
                 </uib-accordion-heading>
                 <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
               </div>
-              <div uib-accordion-group  is-open="openStatusRDF" class="panel-default"  >
+              <div uib-accordion-group is-open="openStatusRDF" class="panel-default">
                 <uib-accordion-heading>
-                  <i class="cedar-svg-rdf"></i>  RDF  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
+                  <i class="cedar-svg-rdf"></i> RDF <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
                 </uib-accordion-heading>
                 <div ng-if="RDF">
                   <pre id='form-json-preview-rdf'>{{RDF}}</pre>
