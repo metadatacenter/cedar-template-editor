@@ -506,8 +506,7 @@ define([
 
       // Used to update schema:description when the field description (stored in propertyDescriptions) changes
       $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
-        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined(
-            $scope.fieldDescription[$scope.fieldDescriptionKey])) {
+        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined($scope.fieldDescription) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
           if ($scope.isEditable()) {
             dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
           }
