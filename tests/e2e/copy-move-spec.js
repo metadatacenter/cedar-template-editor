@@ -46,10 +46,13 @@ describe('copy and move', function () {
     var targetFolder;
     var destFolder;
 
-    it('should create folder and template for user ' + testConfig.testUser1, function () {
+    it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
       targetFolder = workspacePage.createFolder('TargetA');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should create template for user " + testConfig.testUser1, function () {
       sourceTemplate = workspacePage.createTemplate('SourceA');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
@@ -79,7 +82,7 @@ describe('copy and move', function () {
       workspacePage.moveShareDisabled(sourceTemplate, 'template');
     });
 
-    it("should succeed to copy the readable resource", function () {
+    xit("should succeed to copy the readable resource", function () {
       workspacePage.copyResource(sourceTemplate, 'template');
       copyModal.copyToDestination(destFolder);
       toastyModal.isSuccess();
