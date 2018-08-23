@@ -326,13 +326,10 @@ define([
           };
 
           vm.toggleFilterLatest = function () {
-            switch (vm.getFilterVersion()) {
-              case CONST.publication.LATEST:
-                vm.setResourceVersion(CONST.publication.ALL);
-                break;
-              case CONST.publication.ALL:
-                vm.setResourceVersion(CONST.publication.LATEST);
-                break;
+            if (vm.getFilterVersion() == CONST.publication.LATEST) {
+              vm.setResourceVersion(CONST.publication.ALL);
+            } else {
+              vm.setResourceVersion(CONST.publication.LATEST);
             }
           };
 
