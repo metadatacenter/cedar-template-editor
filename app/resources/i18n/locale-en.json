@@ -487,6 +487,7 @@
       "valueTooShortError": "The value of the following field(s) is too short:",
       "valueTooLargeError": "The value of the following field(s) is too large:",
       "valueTooSmallError": "The value of the following field(s) is too small:",
+      "valueNotANumberError": "The value of the following field(s) is not a number:",
       "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
     }
   },

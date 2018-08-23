@@ -1014,6 +1014,7 @@ define([
           var noneTooSmall = true;
           var noneTooLarge = true;
           var noneTooDecimal = true;
+          var noneNaN = true;
 
           var minValue = dms.getMinValue($scope.field);
           var maxValue = dms.getMaxValue($scope.field);
@@ -1023,6 +1024,10 @@ define([
             var value = $scope.valueArray[i]['@value'];
             if (value) {
               value = Number(value);
+
+              if (Number.isNaN(value)) {
+                noneNaN = false;
+              }
               if (value > maxValue) {
                 noneTooLarge = false;
               }
@@ -1034,6 +1039,7 @@ define([
               }
             }
           }
+          $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
           $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
           $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
           $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'decimalPlaceError']);
