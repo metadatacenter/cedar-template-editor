@@ -4,7 +4,6 @@
 /* Definine local variables */
 @container-cedar-medium: 952px;
 
-
 @top-nav-color: rgba(21, 53, 53, 0.98); // top nav and controls bar
 @background-side: rgba(16, 43, 46, 0.84); // field and element header
 @modal-bg-color: #eaf2f2; // controlled terms modal background
@@ -24,7 +23,6 @@
 
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
-
 
 @header-template: @top-nav-color;
 @header-element: @top-nav-color;
@@ -212,10 +210,8 @@ button {
   }
 }
 
-
 #messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
   position: relative;
-
 
   button {
     background-color: transparent;
@@ -237,7 +233,7 @@ button {
 
 #messaging, #user-menu {
   button {
-    color: #ccc;
+    color: @white;
   }
   button:hover {
     background-color: #4bafaf;
@@ -900,7 +896,7 @@ button {
 
   // globe is the published icon
   i.fa-globe {
-    color:@published;
+    color: @published;
   }
 
   .center-panel {
@@ -913,7 +909,7 @@ button {
 
     .resource-count {
       margin: 40px 0;
-      font-size: 1.2em;
+      font-size: 1em;
       color: #666;
     }
 
@@ -958,13 +954,11 @@ button {
 
   .populate-form-boxes {
 
-    //margin: 0 20px;
-
     .form-box {
       box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
     }
     .selected > .form-box {
-      box-shadow: 0 0 6px 2px #dddddd;
+      box-shadow: 0 6px 6px 0 #ccc;
     }
 
     .selected .title {
@@ -985,13 +979,13 @@ button {
     .form-box-container {
       position: relative;
       display: inline-block;
-      margin: 5px;
+      margin: 0;
       padding: 5px;
+      vertical-align: top;
     }
 
     .form-box {
       width: 160px;
-      height: 110px;
       border: 1px solid #ebebeb;
       background: #ffffff;
       margin: 5px auto;
@@ -1005,40 +999,57 @@ button {
         display: block;
         text-align: left;
 
-        div.toolbar-left {
-          position: absolute;
-          top: 15px;
-          left: 10px;
-          height: 20px;
-          padding: 0px;
-          color: @very-lt-gray;
-          font-size: 10px;
-          i.action {
-            font-size: 16px;
-            margin: 0 3px;
-            color: @very-lt-gray;
-            &:hover {
-              color: #aaa;
-            }
+        .title-container {
+          margin:0 5px 5px 5px;
+          .title-text {
+            font-size: 14px;
+            padding:0;
+            margin:0
           }
         }
 
 
-        div.toolbar-right {
-          position: absolute;
-          top: 15px;
-          right: 10px;
-          height: 20px;
-          padding: 0px;
-          white-space: nowrap;
-          color: @med-gray;
-          font-size: 10px;
-          i.action {
-            font-size: 16px;
-            margin: 0 3px;
-            color: @med-gray;
-            &:hover {
-              color: #aaa;
+        .toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width:100%;
+          .right-side {
+            display: flex;
+            align-items: center;
+            width:40px;
+            justify-content:flex-end;
+            padding:5px 10px 5px 5px;
+            font-size:18px;
+            button {
+              background-color:transparent;padding-right:5px;
+              i {
+                color:#aaa
+              }
+            }
+          }
+        }
+
+        .cell.icon {
+          background: @white;
+
+          i {
+            &.field {
+              color: @field-color;
+            }
+            &.element {
+              color: @element-color;
+            }
+            &.template {
+              color: @template-color;
+            }
+            &.metadata, &.instance {
+
+              color: @metadata-color;
+            }
+            &.folder {
+              color: @folder-color;
+
             }
           }
         }
@@ -1254,12 +1265,12 @@ button {
           vertical-align: middle;
         }
         i.fa-pencil-square {
-          color:@draft;
-          font-size:20px;
+          color: @draft;
+          font-size: 20px;
         }
         i.fa-check-square {
-          color:@published;
-          font-size:20px;
+          color: @published;
+          font-size: 20px;
         }
 
         .cell.icon {
@@ -1368,7 +1379,7 @@ button {
 
     .field-value {
       i.fa-globe {
-        color:@published;
+        color: @published;
       }
     }
 
@@ -1477,11 +1488,11 @@ button {
         }
         li div.published {
           &.active i {
-            color:@published;
+            color: @published;
             opacity: 1.0;
           }
           i {
-            color:@published;
+            color: @published;
           }
         }
         li div.latest {
@@ -1493,7 +1504,6 @@ button {
             color: @latest;
           }
         }
-
 
       }
 
@@ -2825,6 +2835,22 @@ section.dashboard-elements {
         content: '*';
         color: red;
       }
+
+      input.form-control.ui-select-search {
+        padding-top: 0;
+      }
+
+      &.ui-select-container {
+        margin:0;padding:0;
+      }
+
+      .ui-select-toggle, .ui-select-match input  {
+        padding-top: 8px;
+      }
+
+      .ui-select-match span, .ui-select-placeholder {
+        font-size:14px;
+      }
     }
 
     textarea.form-control {
@@ -3545,7 +3571,6 @@ section.dashboard-elements {
       position: absolute;
       top: 10px;
       right: 10px;
-
 
       .cedar-svg-check-circle {
         color: @button-ok;
@@ -6748,7 +6773,7 @@ body .template-header .controlled-terms-modal {
   background: #f8f8f8;
   padding-bottom: 0;
   .form-control.ui-select-toggle {
-    background: red;
+    //background: red;
   }
 }
 
@@ -6837,12 +6862,13 @@ table.apiKey {
 .scrollable-content {
   overflow-x: hidden;
   overflow-y: auto;
+  background:transparent;
 }
 
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
 
   i.fa-globe {
-    color:@published;
+    color: @published;
   }
   .modal-header {
     padding: 10px 15px;
@@ -7705,12 +7731,11 @@ table.apiKey {
           padding: 15px;
           background: #eee;
           width: 100%;
-          height:100%;
+          height: 100%;
 
           &:after {
             clear: both;
           }
-
 
           .clear-save {
 
@@ -7988,10 +8013,10 @@ table.apiKey {
 
   #resource-version {
     i.fa-pencil-square {
-        color: @draft;
+      color: @draft;
     }
     i.fa-check-square {
-        color: @published;
+      color: @published;
     }
   }
 
@@ -8019,11 +8044,11 @@ table.apiKey {
 
     .instance-list {
       .instance-item {
-        color:@text-color;
+        color: @text-color;
       }
       .instance-item:hover {
-        color:@brand-primary;
-        cursor:pointer;
+        color: @brand-primary;
+        cursor: pointer;
       }
     }
 
@@ -8130,22 +8155,38 @@ table.apiKey {
   font-size: 1em;
 
   .bold {
-    font-weight:bold !important;
+    font-weight: bold !important;
   }
   .rejected {
-    color:red !important;
+    color: red !important;
   }
 
   hr {
-    margin:10px 0;padding:0;
+    margin: 10px 0;
+    padding: 0;
   }
 
-  .message-label {color:@brand-primary;}
-  .message-date {float:right;color:@brand-primary}
-  .message-subject {color:@brand-secondary;}
-  .message-body {white-space: pre;margin:5px 0;overflow-x:auto}
-  .message-box {margin:5px;padding:5px;background-color:@white;border:1px solid #ccc}
-
+  .message-label {
+    color: @brand-primary;
+  }
+  .message-date {
+    float: right;
+    color: @brand-primary
+  }
+  .message-subject {
+    color: @brand-secondary;
+  }
+  .message-body {
+    white-space: pre;
+    margin: 5px 0;
+    overflow-x: auto
+  }
+  .message-box {
+    margin: 5px;
+    padding: 5px;
+    background-color: @white;
+    border: 1px solid #ccc
+  }
 
   .navbar-back {
     padding: 10px 0;
@@ -8166,8 +8207,10 @@ table.apiKey {
     border: 1px solid #ccc;
     margin: 0 auto;
     max-width: 800px;
-    height:auto;
-    &.message-content {background-color:@lt-gray;}
+    height: auto;
+    &.message-content {
+      background-color: @lt-gray;
+    }
     @media (min-width: @screen-md-min) {
       width: 80%;
     }
@@ -8181,14 +8224,14 @@ table.apiKey {
       color: #9E9E9E;
       font-size: smaller;
       font-weight: normal;
-      flex-basis:50%;
+      flex-basis: 50%;
       padding: 10px 5px 0 0;
 
     }
     .field-value {
       overflow: auto;
       &.published {
-        color:@published;
+        color: @published;
       }
     }
     textarea.curlSample {
@@ -8546,6 +8589,8 @@ div.resource-icon {
   }
 
 }
+
+
 
 
 

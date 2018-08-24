@@ -5,18 +5,38 @@
   <!-- title and description -->
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
 
-  <!-- default value -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="text" auto-focus
-        class="form-control field-default-definition"
-        placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
-        aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
-        ng-if="isEditable()"
-        with-floating-label>
-  </div>
+  <!--&lt;!&ndash; default value &ndash;&gt;-->
+  <!--<div  class="form-group floating-label-wrapper" >-->
+    <!--<input type="text" auto-focus-->
+        <!--class="form-control field-default-definition"-->
+        <!--placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"-->
+        <!--aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"-->
+        <!--ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"-->
+        <!--ng-disabled="isPublished()"-->
+        <!--with-floating-label>-->
+  <!--</div>-->
 
+  <!--&lt;!&ndash; min string length constraint &ndash;&gt;-->
+  <!--<div  class="form-group floating-label-wrapper" >-->
+    <!--<input type="number" auto-focus-->
+        <!--class="form-control field-min-max-definition"-->
+        <!--placeholder="{{'CREATOR.enterMinLength' | translate}}"-->
+        <!--aria-label="{{'CREATOR.enterMinLength' | translate}}"-->
+        <!--ng-model="$root.schemaOf(field)._valueConstraints.minLength"-->
+        <!--ng-disabled="isPublished()"-->
+        <!--with-floating-label>-->
+  <!--</div>-->
 
+  <!--&lt;!&ndash; max string length constraint &ndash;&gt;-->
+  <!--<div  class="form-group floating-label-wrapper" >-->
+    <!--<input type="number" auto-focus-->
+        <!--class="form-control field-min-max-definition"-->
+        <!--placeholder="{{'CREATOR.enterMaxLength' | translate}}"-->
+        <!--aria-label="{{'CREATOR.enterMaxLength' | translate}}"-->
+        <!--ng-model="$root.schemaOf(field)._valueConstraints.maxLength"-->
+        <!--ng-disabled="isPublished()"-->
+        <!--with-floating-label>-->
+  <!--</div>-->
 
   <!-- options -->
   <div  class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>

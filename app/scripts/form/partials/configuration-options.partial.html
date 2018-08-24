@@ -3,6 +3,11 @@
   <div class="detail-options"  >
     <div class="element-toggles list table-style">
 
+      <div ng-if="hasOptions()" class="element-toggle table-cell-style options-tab"
+          ng-class="{active: isTabActive('options')}"
+          ng-click="setTab('options');">
+        <span>Options</span>
+      </div>
       <div ng-if="canViewTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="setTab('values');  $event.stopPropagation();">
@@ -31,6 +36,106 @@
           ng-class="{active: isTabActive('field')}"
           ng-click="setTab('field');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="options" class="options" ng-show="isTabActive('options')">
+    <div ng-if="isNumericField()">
+
+    <!-- unit of measure constraint -->
+    <div  class="form-group floating-label-wrapper" >
+      <input type="text" auto-focus
+          class="form-control"
+          placeholder="{{'CREATOR.enterUnitOfMeasure' | translate}}"
+          aria-label="{{'CREATOR.enterUnitOfMeasure' | translate}}"
+          ng-model="$root.schemaOf(field)._valueConstraints.unitOfMeasure"
+          ng-disabled="isPublished()"
+          with-floating-label>
+    </div>
+
+    <!-- numeric datatype constraint -->
+    <div ng-init="setNumberTypeFromModel()" class="form-group">
+      <ui-select
+          class="form-control"
+          theme="bootstrap"
+          close-on-select="true"
+          ng-change="setNumberTypeFromUI($select.selected)"
+          ng-model="selectedNumberType"
+          ng-disabled="isPublished()">
+        <ui-select-match placeholder="{{'CREATOR.enterNumberType' | translate}}">{{selectedNumberType.label}}</ui-select-match>
+        <ui-select-choices repeat="type in numberTypes">
+          {{type.label}}
+        </ui-select-choices>
+      </ui-select>
+    </div>
+
+    <!-- min number value constraint -->
+    <div  class="form-group floating-label-wrapper" >
+      <input type="number" auto-focus
+          class="form-control field-min-max-definition"
+          placeholder="{{'CREATOR.enterMinValue' | translate}}"
+          aria-label="{{'CREATOR.enterMinValue' | translate}}"
+          ng-model="$root.schemaOf(field)._valueConstraints.minValue"
+          ng-disabled="isPublished()"
+          with-floating-label>
+    </div>
+
+    <!-- max number value constraint -->
+    <div  class="form-group floating-label-wrapper" >
+      <input type="number" auto-focus
+          class="form-control field-min-max-definition"
+          placeholder="{{'CREATOR.enterMaxValue' | translate}}"
+          aria-label="{{'CREATOR.enterMaxValue' | translate}}"
+          ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
+          ng-disabled="isPublished()"
+          with-floating-label>
+    </div>
+
+    <!-- decimal place constraint -->
+    <div  class="form-group floating-label-wrapper" >
+      <input type="number" auto-focus
+          class="form-control"
+          placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
+          aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
+          ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
+          ng-disabled="isPublished()"
+          with-floating-label>
+    </div>
+    </div>
+    <div ng-if="isTextField()">
+
+      <!-- default value -->
+      <div  class="form-group floating-label-wrapper" >
+        <input type="text" auto-focus
+            class="form-control field-default-definition"
+            placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
+            aria-label="{{'CREATOR.enterDefaultvalue' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.defaultValue"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
+
+      <!-- min string length constraint -->
+      <div  class="form-group floating-label-wrapper" >
+        <input type="number" auto-focus
+            class="form-control field-min-max-definition"
+            placeholder="{{'CREATOR.enterMinLength' | translate}}"
+            aria-label="{{'CREATOR.enterMinLength' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.minLength"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
+
+      <!-- max string length constraint -->
+      <div  class="form-group floating-label-wrapper" >
+        <input type="number" auto-focus
+            class="form-control field-min-max-definition"
+            placeholder="{{'CREATOR.enterMaxLength' | translate}}"
+            aria-label="{{'CREATOR.enterMaxLength' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.maxLength"
+            ng-disabled="isPublished()"
+            with-floating-label>
       </div>
     </div>
   </div>

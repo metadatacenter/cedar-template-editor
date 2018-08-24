@@ -26,6 +26,7 @@ define([
       $scope.data = {
         model: null
       };
+      $scope.forms = {};
       $scope.viewState;
       $scope.index = 0;
       $scope.pageMin = 0;
@@ -77,6 +78,23 @@ define([
         var description = dms.getDescription($scope.field);
         return description && description.length > 0;
       };
+
+      // get the field min/max length
+      $scope.getMinLength = function (field) {
+        return dms.getMinLength(field || $scope.field);
+      }
+
+      $scope.hasMinLength = function () {
+        return dms.getMinLength($scope.field) && dms.getMinLength($scope.field).length > 0;
+      }
+
+      $scope.getMaxLength = function (field) {
+        return dms.getMaxLength(field || $scope.field);
+      }
+
+      $scope.hasMaxLength = function () {
+        return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
+      }
 
       $scope.getLabel = function () {
         return $scope.getPropertyLabel() || $scope.getTitle();
@@ -399,7 +417,7 @@ define([
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
-            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            var newTop = scrollTop + targetTop - (windowHeight - targetHeight) / 2;
 
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -959,157 +977,120 @@ define([
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
+
         var location = dms.getValueLocation($scope.field);
         var min = dms.getMinItems($scope.field) || 0;
         var valueConstraint = dms.getValueConstraint($scope.field);
         var id = $scope.getId();
-        //var id = $scope.getId() + '-' + $scope.index;
+        var title = $scope.getPropertyLabel();
+
+        // Validate the value of a text field
+        if (dms.isTextFieldType($scope.field)) {
+          var noneTooShort = true;
+          var noneTooLong = true;
+
+          var minLength = dms.getMinLength($scope.field);
+          var maxLength = dms.getMaxLength($scope.field);
+
+          for (let i = 0; i < $scope.valueArray.length; i++) {
+            var value = $scope.valueArray[i]['@value'];
+            if (value) {
+              var valueLength = value.length;
+
+              if (valueLength > maxLength) {
+                noneTooLong = false;
+              }
+              if (valueLength < minLength) {
+                noneTooShort = false;
+              }
+            }
+          }
+          $scope.$emit('validationError', [noneTooLong ? 'remove' : 'add', title, id, 'valueTooLongError']);
+          $scope.$emit('validationError', [noneTooShort ? 'remove' : 'add', title, id, 'valueTooShortError']);
+        }
+
+        // Validate the value of a numeric field
+        if (dms.isNumericField($scope.field)) {
+          var noneTooSmall = true;
+          var noneTooLarge = true;
+          var noneTooDecimal = true;
+          var noneNaN = true;
+
+          var minValue = dms.getMinValue($scope.field);
+          var maxValue = dms.getMaxValue($scope.field);
+          var decimalPlace = dms.getDecimalPlace($scope.field);
+
+          for (let i = 0; i < $scope.valueArray.length; i++) {
+            var value = $scope.valueArray[i]['@value'];
+            if (value) {
+              value = Number(value);
+
+              if (Number.isNaN(value)) {
+                noneNaN = false;
+              }
+              if (value > maxValue) {
+                noneTooLarge = false;
+              }
+              if (value < minValue) {
+                noneTooSmall = false;
+              }
+              if (decimalPlace && countDecimals(value) <= decimalPlace) {
+                noneTooDecimal = false;
+              }
+            }
+          }
+          $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
+          $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
+          $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
+          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'decimalPlaceError']);
+        }
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if ($scope.hasValueConstraint() && $scope.isRequired()) {
+        if ($scope.isRequired()) {
           var allRequiredFieldsAreFilledIn = true;
-
-          if (angular.isArray($scope.model)) {
-            if ($scope.model.length < min) {
+          for (let i = 0; i < $scope.valueArray.length; i++) {
+            var value = $scope.valueArray[i];
+            if (!value) {
               allRequiredFieldsAreFilledIn = false;
             } else {
-              angular.forEach($scope.model, function (valueElement) {
-
-                if (!valueElement || !valueElement[location]) {
-                  allRequiredFieldsAreFilledIn = false;
-                } else if (angular.isArray(valueElement[location])) {
-                  var hasValue = false;
-                  angular.forEach(valueElement[location], function (ve) {
-                    hasValue = hasValue || !!ve;
-                  });
-
-                  if (!hasValue) {
+              if (Array.isArray(value)) {
+                for (let j = 0; j < value.length; j++) {
+                  if (!value[j][location]) {
                     allRequiredFieldsAreFilledIn = false;
                   }
-                } else if (angular.isObject(valueElement)) {
-                  if ($rootScope.isEmpty(valueElement[location])) {
-                    allRequiredFieldsAreFilledIn = false;
-                  } else if (dms.isDateRange($scope.field)) {
-                    if (!valueElement[location].start || !valueElement[location].end) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  } else {
-                    // Require at least one checkbox is checked.
-                    var hasValue = false;
-                    angular.forEach(valueElement[location], function (value, key) {
-                      hasValue = hasValue || value;
-                    });
-
-                    if (!hasValue) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  }
-                }
-              });
-            }
-          } else {
-            // allRequiredFieldsAreFilledIn = false;
-            if (!$scope.model || !$scope.model[location]) {
-              allRequiredFieldsAreFilledIn = false;
-            } else if (angular.isArray($scope.model[location])) {
-              var hasValue = false;
-              angular.forEach($scope.model[location], function (ve) {
-                hasValue = hasValue || !!ve;
-              });
-
-              if (!hasValue) {
-                allRequiredFieldsAreFilledIn = false;
-              }
-            } else if (angular.isObject($scope.model[location])) {
-              if ($rootScope.isEmpty($scope.model[location])) {
-                allRequiredFieldsAreFilledIn = false;
-              } else if (dms.isDateRange($scope.field)) {
-                if (!$scope.model[location].start || !$scope.model[location].end) {
-                  allRequiredFieldsAreFilledIn = false;
                 }
               } else {
-                // Require at least one checkbox is checked.
-                var hasValue = false;
-                angular.forEach($scope.model[location], function (value, key) {
-                  hasValue = hasValue || value;
-                });
-
-                if (!hasValue) {
+                if (!value[location]) {
                   allRequiredFieldsAreFilledIn = false;
                 }
               }
             }
           }
-
-          if (!allRequiredFieldsAreFilledIn) {
-            // add this field instance the the emptyRequiredField array
-            $scope.$emit('emptyRequiredField',
-                ['add', $scope.getTitle(), $scope.uuid]);
-          }
-        }
-
-        // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if ($scope.hasValueConstraint() && $scope.isRequired() && allRequiredFieldsAreFilledIn) {
-          //remove from emptyRequiredField array
-          $scope.$emit('emptyRequiredField',
-              ['remove', $scope.getTitle(), $scope.uuid]);
-        }
-
-        var allFieldsAreValid = true;
-        if (angular.isArray($scope.model)) {
-          for (var i = 0; i < $scope.model.length; i++) {
-            if (!UIUtilService.isValidPattern($scope.field, i, $scope.path, $scope.uid)) {
-              $scope.model[i][location] = dms.getDomValue($scope.field, i, $scope.path, $scope.uid);
-              allFieldsAreValid = false;
-            }
-          }
-
-        } else {
-          if (!UIUtilService.isValidPattern($scope.field, 0, $scope.path, $scope.uid)) {
-            $scope.model[location] = dms.getDomValue($scope.field, 0, $scope.path, $scope.uid);
-            allFieldsAreValid = false;
-          }
+          $scope.$emit('validationError',
+              [allRequiredFieldsAreFilledIn ? 'remove' : 'add', title, id, 'emptyRequiredField']);
         }
 
         if ($scope.hasValueConstraint()) {
+          var allValueFieldsAreValid = true;
 
-          if (angular.isArray($scope.model)) {
-            angular.forEach($scope.model, function (valueElement, index) {
-              if (angular.isArray(valueElement)) {
-                angular.forEach(valueElement, function (ve, index) {
-                  if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
-                    allFieldsAreValid = false;
-                  }
-                });
-              } else {
-                if (angular.isObject(valueElement)) {
-                  if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint,
-                          index)) {
-                    allFieldsAreValid = false;
-                  }
-                }
-              }
-            });
-          } else {
-            if (angular.isArray($scope.model)) {
-              angular.forEach($scope.model, function (ve) {
+          angular.forEach($scope.valueArray, function (valueElement, index) {
+            if (angular.isArray(valueElement)) {
+              angular.forEach(valueElement, function (ve, index) {
                 if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
-                  allFieldsAreValid = false;
+                  allValueFieldsAreValid = false;
                 }
               });
             } else {
-              if (angular.isObject($scope.model)) {
-                if (!autocompleteService.isValueConformedToConstraint($scope.model, location, id, valueConstraint, 0)) {
-                  allFieldsAreValid = false;
+              if (angular.isObject(valueElement)) {
+                if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint,
+                    index)) {
+                  allValueFieldsAreValid = false;
                 }
               }
             }
-          }
+          });
+          $scope.$emit('validationError', [allValueFieldsAreValid ? 'remove' : 'add', title, id, 'invalidFieldValues']);
         }
-
-        $scope.$emit('invalidFieldValues',
-            [allFieldsAreValid ? 'remove' : 'add', $scope.getTitle(), $scope.uuid]);
-
       });
 
       // watch for a request to set this field active
@@ -1140,12 +1121,12 @@ define([
       // watch for changes in the selection for spreadsheet view to get out of spreadsheet mode
       $scope.$watch(
           function () {
-            return ( UIUtilService.activeLocator);
+            return (UIUtilService.activeLocator);
           },
           function (newValue, oldValue) {
 
             if ($scope.zeroedLocator(newValue) != $scope.zeroedLocator(oldValue) && $scope.getLocator(
-                    0) == $scope.zeroedLocator(oldValue) && $scope.isSpreadsheetView()) {
+                0) == $scope.zeroedLocator(oldValue) && $scope.isSpreadsheetView()) {
               $scope.toggleView();
             }
           }
@@ -1208,7 +1189,7 @@ define([
         language       : navigator.language,
         format         : CONST.dateFormats[navigator.language] || 'dd/MM/yyyy',
         opened         : false,
-        altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy','yyyy-MM-dd']
+        altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy', 'yyyy-MM-dd']
       };
 
       // always store the xsd:date format
@@ -1252,6 +1233,116 @@ define([
 
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
+
+
+      $scope.getPlaceholderText = function () {
+        var text = "Enter a value";
+        if (dms.isTextFieldType($scope.field)) {
+          text = getPlaceholderForTextField($scope.field);
+        } else if (dms.isNumericField($scope.field)) {
+          text = getPlaceholderForNumericField($scope.field);
+        }
+        return text;
+      }
+
+      var getPlaceholderForTextField = function (node) {
+        var text = "Enter a value";
+        text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
+        text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
+        return text;
+      }
+
+      var getPlaceholderForNumericField = function (node) {
+        var numberType = dms.getNumberType(node);
+        var text = "Enter " + getNumberLabel(numberType) + " number";
+        if (dms.hasUnitOfMeasure(node)) {
+          text += " (in " + dms.getUnitOfMeasure(node) + ")";
+        }
+        var decimalPlace = dms.getDecimalPlace(node) || 0;
+        if (decimalPlace == 0) {
+          text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
+          text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
+        } else {
+          if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
+            var decimalPlacesText = "." + "0".repeat(decimalPlace)
+            text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
+            text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
+          } else {
+            text += " with " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
+          }
+        }
+        return text;
+      }
+
+      var getNumberLabel = function (numberType) {
+        var label = "a";
+        if (numberType == "xsd:decimal") {
+          label = "a decimal"
+        } else if (numberType == "xsd:int") {
+          label = "an integer";
+        } else if (numberType == "xsd:long") {
+          label = "a long-integer";
+        } else if (numberType == "xsd:float") {
+          label = "a single-precision floating"
+        } else if (numberType == "xsd:double") {
+          label = "a double-precision floating";
+        }
+        return label;
+      }
+
+      /* start of value constraints functionality */
+
+      // Check the string length of the input value
+      $scope.checkStringLength = function () {
+        var value = $scope.valueArray[$scope.index]['@value']
+        if (value) {
+          var valueLength = value.length;
+          var minLength = dms.getMinLength($scope.field);
+          var maxLength = dms.getMaxLength($scope.field);
+          var isTooLong = (maxLength ? (valueLength > maxLength) : false);
+          var isTooShort = (minLength ? (valueLength < minLength) : false);
+          var isValid = !isTooLong && !isTooShort;
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
+        }
+      };
+
+      // Check the numeric value of the input value
+      $scope.checkNumberValue = function () {
+        var value = $scope.valueArray[$scope.index]['@value'];
+        if (value) {
+          value = Number(value);
+          var minValue = dms.getMinValue($scope.field);
+          var maxValue = dms.getMaxValue($scope.field);
+          var isTooLarge = (maxValue ? (value > maxValue) : false);
+          var isTooSmall = (minValue ? (value < minValue) : false);
+          var isValid = !isTooLarge && !isTooSmall;
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
+        }
+      };
+
+
+      // Check the decimal place of the input value
+      $scope.checkDecimalPlace = function () {
+        var value = Number($scope.valueArray[$scope.index]['@value']);
+        if (value) {
+          var decimalPlace = dms.getDecimalPlace($scope.field);
+          var isValid = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
+        } else {
+          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
+        }
+      };
+
+      var countDecimals = function (value) {
+        if (Math.floor(value) === value) return 0;
+        return value.toString().split(".")[1].length || 0;
+      }
+
+      /* end of value constraints functionality */
 
     };
 

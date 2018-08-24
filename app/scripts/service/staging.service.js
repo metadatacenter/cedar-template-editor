@@ -11,13 +11,13 @@ define([
                             "DataManipulationService",
                             "UIUtilService",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
-                            "AuthorizedBackendService",
+                            "AuthorizedBackendService", "DataTemplateService",
                             "CONST"];
 
   function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService,
                           UIUtilService,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
-                          AuthorizedBackendService, CONST) {
+                          AuthorizedBackendService, DataTemplateService, CONST) {
 
     var dms = DataManipulationService;
     var service = {
@@ -153,9 +153,9 @@ define([
             randomPropertyName);
       }
 
-      // TODO put some more specific stuff here
       if (FieldTypeService.isAttributeValueField(fieldType)) {
-        form.additionalProperties = true;
+        form.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
+        form.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
       }
 
       // Evaluate cardinality
@@ -372,9 +372,9 @@ define([
         element.properties["@context"].required.push(fieldName);
       }
 
-      // TODO put some more specific stuff here
       if (FieldTypeService.isAttributeValueField(fieldType)) {
-        element.additionalProperties = true;
+        element.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
+        element.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
       }
 
       // Evaluate cardinality

@@ -478,11 +478,17 @@
     "noDescriptionField": "",
     "noDescriptionElement": "",
     "groupHeader": {
-      "requiredFields": "The following fields are required:",
+      "emptyRequiredField": "The following fields are required:",
       "invalidFields": "Values of the following fields are invalid:",
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
-      "validationErrors": "Validation errors:"
+      "validationErrors": "Validation errors:",
+      "valueTooLongError": "The value of the following field(s) is too long:",
+      "valueTooShortError": "The value of the following field(s) is too short:",
+      "valueTooLargeError": "The value of the following field(s) is too large:",
+      "valueTooSmallError": "The value of the following field(s) is too small:",
+      "valueNotANumberError": "The value of the following field(s) is not a number:",
+      "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
     }
   },
   "PAGES": {
@@ -520,7 +526,14 @@
     "enterElementTitle": "Enter Element Name",
     "enterElementKey": "Enter Element Name",
     "enterElementDescription": "Enter Element Help Text",
-    "enterDate": "Enter Date"
+    "enterDate": "Enter Date",
+    "enterMinLength": "Enter Min String Length",
+    "enterMaxLength": "Enter Max String Length",
+    "enterUnitOfMeasure": "Enter Unit of Measure",
+    "enterMinValue": "Enter Min Value",
+    "enterMaxValue": "Enter Max Value",
+    "enterNumberType": "Enter Number Type",
+    "enterDecimalPlace": "Enter Decimal Place"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

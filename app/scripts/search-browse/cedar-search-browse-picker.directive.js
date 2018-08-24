@@ -326,13 +326,10 @@ define([
           };
 
           vm.toggleFilterLatest = function () {
-            switch (vm.getFilterVersion()) {
-              case CONST.publication.LATEST:
-                vm.setResourceVersion(CONST.publication.ALL);
-                break;
-              case CONST.publication.ALL:
-                vm.setResourceVersion(CONST.publication.LATEST);
-                break;
+            if (vm.getFilterVersion() == CONST.publication.LATEST) {
+              vm.setResourceVersion(CONST.publication.ALL);
+            } else {
+              vm.setResourceVersion(CONST.publication.LATEST);
             }
           };
 
@@ -386,11 +383,13 @@ define([
           };
 
           // adjust the position of the context menu
-          vm.toggledCedarDropdownMenu = function ($event, resource) {
+          vm.toggledCedarDropdownMenu = function ($event, resource, view) {
 
             var centerPanel = document.getElementById('workspace-view-container');
             var row = document.getElementById(vm.getId(resource, 'row'));
             var menu = document.getElementById(vm.getId(resource, 'menu'));
+            var offsetX = 200;
+            var offsetY = 30;
 
             if (centerPanel && row && menu) {
 
@@ -398,8 +397,18 @@ define([
               var centerRect = centerPanel.getBoundingClientRect();
               var rowRect = row.getBoundingClientRect();
 
-              menu.style.setProperty("left", ($event.pageX - rowRect.left - 200) + "px");
-              menu.style.setProperty("top", ($event.pageY - centerRect.top + centerScrollTop  ) + "px");
+              // position the menu at the button that opened it
+              if (view == 'list') {
+                // make an adjustment
+                menu.style.setProperty("left", (rowRect.width - offsetX - 20) + "px");
+                menu.style.setProperty("top", (rowRect.top - centerRect.top + offsetY + centerScrollTop) + "px");
+              } else {
+                // open to the left if it would be hidden on the right
+                var offsetXMod = (rowRect.right + offsetX > centerRect.right) ? rowRect.width : 0;
+                menu.style.setProperty("left", (rowRect.width - offsetXMod - 20) + "px");
+                menu.style.setProperty("top", offsetY + "px");
+              }
+
             }
           };
 
@@ -510,14 +519,12 @@ define([
 
           vm.getDerivedFrom = function () {
             if (vm.selectedResource && vm.selectedResource.derivedFrom) {
-              console.log(vm.selectedResource);
               return vm.selectedResource.derivedFrom;
             }
           };
 
           vm.getBasedOn = function () {
             if (vm.selectedResource && vm.selectedResource.isBasedOn) {
-              console.log(vm.selectedResource.isBasedOn);
               return vm.selectedResource.isBasedOn;
             }
           };
@@ -1422,8 +1429,13 @@ define([
           }
 
           function isPublished(resource) {
-            var node = resource || vm.selectedResource;
-            return node && (node[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+            var result = false;
+            if (resource) {
+              result = (resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+            } else {
+              result = (hasSelection() && (vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
+            }
+            return result;
           };
 
           function canCreateDraftStatic() {
@@ -1433,8 +1445,14 @@ define([
             vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           }
 
-          function isTemplate() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+          function isTemplate(resource) {
+            var result = false;
+            if (resource) {
+              result = (resource.nodeType == CONST.resourceType.TEMPLATE);
+            } else {
+             result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+            }
+            return result;
           }
 
           function isElement() {
