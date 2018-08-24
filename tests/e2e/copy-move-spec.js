@@ -77,7 +77,7 @@ describe('copy and move', function () {
       resources.push(createResource(destFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
-    // TODO failing
+ 
     xit("should fail to move the readable resource", function () {
       workspacePage.moveShareDisabled(sourceTemplate, 'template');
     });
