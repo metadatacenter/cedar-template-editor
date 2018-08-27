@@ -2795,7 +2795,7 @@ section.dashboard-elements {
       border-radius: 0;
       border-color: #ddd;
       box-shadow: none;
-      height: 40px;
+
       padding-bottom: 0px;
       padding-top: 16px;
       font-size: 14px;
@@ -3259,9 +3259,9 @@ section.dashboard-elements {
     font-size: 1em;
     cursor: pointer;
 
-    padding-top: 4px;
-    min-height: 30px;
-    padding-left: 10px;
+    //padding-top: 4px;
+    //min-height: 30px;
+    //padding-left: 10px;
     .edit {
       visibility: hidden;
       margin-right: 20px;
@@ -3269,11 +3269,16 @@ section.dashboard-elements {
     }
   }
 
-  @media (max-width: @screen-sm-min) {
+  //@media (max-width: @screen-sm-min) {
     .answer {
       margin-left: 20px;
       margin-right: 5px;
-    }
+
+        border: 1px solid @very-lt-gray;
+        .edit {
+          visibility: visible;
+        }
+    //}
   }
 
   .myhover:hover {

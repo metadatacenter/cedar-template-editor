@@ -80,6 +80,37 @@ define([
       };
 
       // get the field min/max length
+      $scope.getMinValue = function (field) {
+        return dms.getMinValue(field || $scope.field);
+      };
+
+
+      // get the field min/max length
+      $scope.getMaxValue = function (field) {
+        return dms.getMaxValue(field || $scope.field);
+      };
+
+      // get the field min/max length
+      $scope.getStep = function (field) {
+        var decimalPlace = dms.getDecimalPlace($scope.field);
+        if (decimalPlace) {
+          console.log('getStep', (1 / (Math.pow(10,decimalPlace))).toString());
+          return (1 / Math.pow(10,decimalPlace)).toString();
+        }
+      };
+
+
+      $scope.getDecimalPattern = function (field) {
+        var node = field || $scope.field;
+        if (dms.isNumericField(node)) {
+          if (dms.hasDecimalPlace(node)) {
+            return "^\\d+(\\.\\d{0," + dms.getDecimalPlace(node).toString() + "})?$";
+          }
+        }
+      };
+
+
+      // get the field min/max length
       $scope.getMinLength = function (field) {
         return dms.getMinLength(field || $scope.field);
       }
@@ -352,6 +383,8 @@ define([
       // set this field and index active
       $scope.setActive = function (idx, value) {
 
+        if (!$scope.isActive(idx)) {
+
         var active = (typeof value === "undefined") ? true : value;
         var index = $scope.isSpreadsheetView() ? 0 : idx;
 
@@ -399,6 +432,7 @@ define([
               $scope.isSubmit(e, index);
             });
           }
+        }
         }
       };
 
@@ -1154,7 +1188,6 @@ define([
               break loop;
             }
           }
-          f
         }
       };
 

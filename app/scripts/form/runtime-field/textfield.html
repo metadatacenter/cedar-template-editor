@@ -12,19 +12,22 @@
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
       <input type="text"
+          minLength="{{getMinLength()}}"
+          maxLength="{{getMaxLength()}}"
           name="activeTextField"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="{{isActive(index) ? getPlaceholderText() : ''}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@value']"
-          ng-change="checkStringLength()">
+          ng-model="valueElement['@value']">
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
       <input type="text"
+          minLength="{{getMinLength()}}"
+          maxLength="{{getMaxLength()}}"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           placeholder="{{isActive(index) ? 'enter URI' : ''}}"

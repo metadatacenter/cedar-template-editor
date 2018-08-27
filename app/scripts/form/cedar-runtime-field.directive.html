@@ -62,35 +62,33 @@
           <div class="section-break-inline">{{getTitle()}}</div>
         </div>
 
-        <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}"
+        <div ng-if="!isSectionBreak()" class="row" id="{{getLocator(index)}}"
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
-          <div class="row">
-            <div class="col-sm-12 col-xs-* question">
-              <div ng-click="toggleActive(index)" class="title field isInactive"
-                  ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-                {{getLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
-              </div>
+
+          <div class="col-sm-12 col-xs-* question">
+            <div class="title field isInactive"
+                ng-class="{'required':isRequired()}">
+              {{getLabel()}}<span ng-if="!isRequired()"> ( optional ) </span>
             </div>
+            <field-toolbar values="valueArray" min="pageMin"
+                max="pageMax" select="selectPage" paging="false"
+                range="pageRange" model="model" field="field" index="index"
+                remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive" expand-all="expandAll"
+                get-locator="getLocator" view-state="viewState" get-help="getHelp" has-help="hasHelp">
+            </field-toolbar>
           </div>
 
-          <div class="row">
+          <div ng-repeat="(index, valueElement) in valueArray">
+
             <div class="col-sm-12 answer" ng-click="setActive(index, true)" ng-if="!isActive(index)">
-              <div ng-include="getFieldUrl()"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div ng-include="getFieldUrl()"></div>
+                </div>
+              </div>
             </div>
 
             <div class="col-sm-12 answer" ng-if="isActive(index)">
-              <div class="flex " style="min-height:2em;padding:5px 0;">
-                <div></div> <!--title-->
-                <field-toolbar values="valueArray" min="pageMin"
-                    max="pageMax" select="selectPage" paging="isMultiple()"
-                    range="pageRange" model="model" field="field" index="index"
-                    remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive"
-                    expand-all="expandAll"
-                    get-locator="getLocator" view-state="viewState" get-help="getHelp" has-help="hasHelp">
-                </field-toolbar>
-              </div>
-
-
               <div ng-if="isPreviousStatic()" style="margin-bottom:20px;overflow-x:hidden">
 
                 <div ng-if="isImage(previous)" class="image">
@@ -109,18 +107,11 @@
                 </div>
               </div>
 
-              <div ng-repeat="(i, valueElement) in valueArray">
-
-
-                <div ng-if="i===index && !isSectionBreak()">
-
-                  <form ng-if="isActive(index)" name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
-                    <div ng-include="getFieldUrl()"></div>
-                    <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                    <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
-                  </form>
-                </div>
-              </div>
+              <form ng-if="isActive(index)" name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
+                <div ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
+              </form>
 
             </div>
           </div>

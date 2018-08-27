@@ -209,15 +209,19 @@ define([
         }
 
         service.getMinLength = function (node) {
-          return service.hasMinLength(node) && service.getValueConstraint(node).minLength;
-        }
+          if (service.hasMinLength(node)) {
+            return  service.getValueConstraint(node).minLength;
+          }
+        };
 
         service.hasMaxLength = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('maxLength');
         }
 
         service.getMaxLength = function (node) {
-          return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
+          if (service.hasMaxLength(node)) {
+            return  service.getValueConstraint(node).maxLength;
+          }
         }
 
         // min/max numeric value
