@@ -3254,32 +3254,43 @@ section.dashboard-elements {
     }
   }
 
+  .question {
+    padding-top:4px;
+  }
+
   .answer {
     border: 1px solid transparent;
     font-size: 1em;
     cursor: pointer;
 
-    //padding-top: 4px;
-    //min-height: 30px;
-    //padding-left: 10px;
     .edit {
       visibility: hidden;
       margin-right: 20px;
       color: @med-gray;
     }
-  }
 
-  //@media (max-width: @screen-sm-min) {
-    .answer {
-      margin-left: 20px;
-      margin-right: 5px;
+    input {
+      // Show the more robust requirement instructions below.
+      & ~ .requirements {
+        max-height: 0;
+        overflow:hidden;
+      }
 
-        border: 1px solid @very-lt-gray;
-        .edit {
-          visibility: visible;
+
+    }
+
+    input:invalid:focus:not(:placeholder-shown) {
+        // Show the more robust requirement instructions below.
+        & ~ .requirements {
+          max-height: 200px;
+          padding: 0 30px 20px 50px;
         }
-    //}
+
+
+    }
   }
+
+
 
   .myhover:hover {
     cursor: pointer;
@@ -3317,7 +3328,6 @@ section.dashboard-elements {
     text-align: left;
     display: table-cell;
     vertical-align: middle;
-    height: 35px;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
     border: 1px solid transparent;
@@ -3477,6 +3487,9 @@ section.dashboard-elements {
       }
 
       .answer {
+        input:focus {
+          border-color:@brand-primary;
+        }
         //padding: 5px 20px;
       }
     }
@@ -3493,11 +3506,23 @@ section.dashboard-elements {
       background: @white;
       height: 20px;
 
-      &.isActive {
-        border: 1px dashed #888;
+      -webkit-transition: all 0.30s ease-in-out;
+      -moz-transition: all 0.30s ease-in-out;
+      -ms-transition: all 0.30s ease-in-out;
+      -o-transition: all 0.30s ease-in-out;
+      outline: none;
 
-      }
+      margin: 5px 1px 3px 0px;
+      border: 1px solid #a7a7a7;
+
     }
+
+    input:focus {
+      box-shadow: 0 0 5px rgba(26, 150, 165, 0.53);
+      margin: 5px 1px 3px 0px;
+      border: 1px solid rgba(26, 150, 165, 0.53);
+    }
+
 
     select {
       border-width: 0px;
@@ -7847,7 +7872,7 @@ table.apiKey {
           padding: 5px 0;
           .name {
             padding: 8px 0 0 20px;
-            white-space: nowrap;
+            white-space : nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
           }
@@ -8455,7 +8480,6 @@ table.message {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100%;
 }
 
 .flex-left {

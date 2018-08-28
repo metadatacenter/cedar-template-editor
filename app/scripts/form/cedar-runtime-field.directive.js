@@ -81,20 +81,23 @@ define([
 
       // get the field min/max length
       $scope.getMinValue = function (field) {
-        return dms.getMinValue(field || $scope.field);
+        if (dms.hasMinValue(field || $scope.field)) {
+          return dms.getMinValue(field || $scope.field);
+        }
       };
 
 
       // get the field min/max length
       $scope.getMaxValue = function (field) {
-        return dms.getMaxValue(field || $scope.field);
+        if (dms.hasMaxValue(field || $scope.field)) {
+          return dms.getMaxValue(field || $scope.field);
+        }
       };
 
       // get the field min/max length
       $scope.getStep = function (field) {
         var decimalPlace = dms.getDecimalPlace($scope.field);
         if (decimalPlace) {
-          console.log('getStep', (1 / (Math.pow(10,decimalPlace))).toString());
           return (1 / Math.pow(10,decimalPlace)).toString();
         }
       };
@@ -474,12 +477,19 @@ define([
         $timeout($scope.setHeight, 100);
 
       };
+      $scope.isValid = function (index) {
+        var target = jQuery("#" + $scope.getLocator(index) + ' input.ng-invalid');
+        console.log('target',target.length);
+        return !target.length;
+      };
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
+
         var found = false;
 
         if ($scope.isActive(index)) {
+          if ($scope.isValid(index)) {
 
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
@@ -488,6 +498,7 @@ define([
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
+                console.log('onSubmit',index+1);
                 $scope.setActive(index + 1, true);
                 found = true;
               }
@@ -503,11 +514,13 @@ define([
             $scope.$parent.activateNextSiblingOf($scope.fieldKey, $scope.parentKey);
           }
         }
+        }
       };
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
-        if (keyEvent.type === 'keypress' && keyEvent.which === 13 && keyEvent.ctrlKey) {
+        console.log('isSubmit', keyEvent, index, keyEvent.type === 'keypress', keyEvent.which === 13, keyEvent.ctrlKey);
+        if (keyEvent.type === 'keypress' && keyEvent.which === 13 ) {
           $scope.onSubmit(index);
         }
         // Doesn't work for multi-input fields like attribute-value
@@ -838,8 +851,10 @@ define([
         if (dms.isAttributeValueType($scope.field)) {
           $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
         } else {
+
           var valueLocation = $scope.getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
+          console.log('copyField',$scope.model);
           if ((!maxItems || $scope.model.length < maxItems)) {
 
             // copy selected instance in the model and insert immediately after
@@ -1262,6 +1277,7 @@ define([
 
       $scope.setValueArray();
       $scope.setAttributeValueArray();
+      var random  = Math.random();
 
 
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
@@ -1269,14 +1285,14 @@ define([
 
 
       $scope.getPlaceholderText = function () {
-        var text = "Enter a value";
+        var text = "";
         if (dms.isTextFieldType($scope.field)) {
           text = getPlaceholderForTextField($scope.field);
         } else if (dms.isNumericField($scope.field)) {
           text = getPlaceholderForNumericField($scope.field);
         }
         return text;
-      }
+      };
 
       var getPlaceholderForTextField = function (node) {
         var text = "Enter a value";
@@ -1285,27 +1301,26 @@ define([
         return text;
       }
 
+      // give an example of an acceptable answer for a numeric field placeholder
       var getPlaceholderForNumericField = function (node) {
-        var numberType = dms.getNumberType(node);
-        var text = "Enter " + getNumberLabel(numberType) + " number";
+
+        function getRandomInt(min, max) {
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(random * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+        }
+
+        var eg = 'e.g. ' + getRandomInt(dms.getMinValue(node), dms.getMaxValue(node) || 100);
+
+        if (dms.hasDecimalPlace(node)) {
+          eg +=  "." + "9".repeat(dms.getDecimalPlace(node));
+        }
+
         if (dms.hasUnitOfMeasure(node)) {
-          text += " (in " + dms.getUnitOfMeasure(node) + ")";
+          eg += " (" + dms.getUnitOfMeasure(node) + ")";
         }
-        var decimalPlace = dms.getDecimalPlace(node) || 0;
-        if (decimalPlace == 0) {
-          text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
-          text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
-        } else {
-          if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
-            var decimalPlacesText = "." + "0".repeat(decimalPlace)
-            text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
-            text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
-          } else {
-            text += " with " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
-          }
-        }
-        return text;
-      }
+        return eg;
+      };
 
       var getNumberLabel = function (numberType) {
         var label = "a";

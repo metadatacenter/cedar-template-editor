@@ -642,7 +642,7 @@ define([
 
           vm.getResourceVersion = function (resource) {
             if (resource != null) {
-              return resource['pav:version'];
+              return resource['pav:version'] || '0.0.1';
             }
           };
 
@@ -1412,6 +1412,7 @@ define([
           }
 
           function canPublish(value) {
+            console.log('canPublish',vm.selectedResource,resourceService.canPublish(value || vm.selectedResource));
             var resource = value || vm.selectedResource;
             return resourceService.canPublish(resource);
           };
@@ -1422,6 +1423,10 @@ define([
           };
 
           function canPublishStatic() {
+            console.log('canPublishStatic',vm.selectedResource, (hasSelection() &&
+                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
+                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
+                vm.selectedResource[CONST.publication.STATUS] == CONST.publication.DRAFT));
             return (hasSelection() &&
             (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
             vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&

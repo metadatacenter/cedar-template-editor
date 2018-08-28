@@ -10,7 +10,7 @@
 
 
 <form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1) + '-' + path}}"
-    ng-class="{'validate': checkSubmission}" novalidate>
+    ng-class="{'validate': checkSubmission}" >
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At runtime, the new form-->

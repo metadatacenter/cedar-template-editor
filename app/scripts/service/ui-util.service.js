@@ -443,6 +443,7 @@ define([
       if (value) {
         service.activeLocator = service.getLocator(field, index, path, uid);
         service.activeZeroLocator = service.getLocator(field, 0, path, uid);
+        console.log('activelocator',service.activeLocator);
       } else {
         service.activeLocator = null;
         service.activeZeroLocator = null;

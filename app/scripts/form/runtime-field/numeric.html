@@ -1,28 +1,28 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
   <!-- actively editing the field --->
-  <div ng-if="isActive(index)" class="form-group  has-feedback ">
-    <input type="text"
-        name="activeNumericField"
+  <div  class="form-group  has-feedback " style="margin:5px 0"  ng-click="setActive(index,true)" id="{{getLocator(index)}}">
+    <input type="number"
+        name="{{getTitle()}}+index"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
+        aria-label="{{getDescription()}}"
         placeholder="{{getPlaceholderText()}}"
-        ng-model-options="{allowInvalid:true}"
-        aria-label="{{getHelp()}}"
+        pattern="{{getDecimalPattern()}}"
+        step="{{getStep()}}"
         min="{{getMinValue()}}"
         max="{{getMaxValue()}}"
-        step="{{getStep()}}"
-        pattern="{{getDecimalPattern()}}"
         validate-on="blur"
+        numeric-validation
+        ng-model-options="{allowInvalid:true}"
         ng-model="valueElement['@value']">
+    <!--<div class="requirements"   >-->
+      <!--{{getPlaceholderText()}}-->
+    <!--</div>-->
     </input>
-
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <div  class="input-indicator-icons"  ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
-  <!-- not editing --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-    <div aria-label="{{getDescription()}}" class="isInactive ">{{valueArray[index]['@value']}}</div>
-  </div>
+
+
 </div>
