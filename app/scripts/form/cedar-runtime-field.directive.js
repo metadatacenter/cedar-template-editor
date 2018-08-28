@@ -9,12 +9,13 @@ define([
 
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
-                               "SpreadsheetService",
+                               "SpreadsheetService", "UrlService",
                                "DataManipulationService", "UIUtilService", "autocompleteService",
                                "ValueRecommenderService", "uibDateParser", "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService, autocompleteService,
+                             $timeout, SpreadsheetService, UrlService, DataManipulationService, UIUtilService,
+                             autocompleteService,
                              ValueRecommenderService, uibDateParser, CONST) {
 
 
@@ -871,6 +872,7 @@ define([
                 var valueObject = {};
                 valueObject["@value"] = attributeValue;
                 parentModel[i][newAttributeName] = valueObject;
+
               }
             } else {
 
@@ -881,6 +883,7 @@ define([
               var valueObject = {};
               valueObject["@value"] = attributeValue;
               parentModel[newAttributeName] = valueObject;
+
             }
 
             // activate the new instance
@@ -971,9 +974,32 @@ define([
       };
 
       //
-      // watches
+      // watchers
       //
 
+      /**
+       * For templates or elements that contain attribute-value fields, the following function watches the array of
+       * attribute names and generates/removes the corresponding properties in the @context.
+       */
+      $scope.$watchCollection('parentModel[fieldKey]', function (newVal, oldVal) {
+        if (dms.isAttributeValueType($scope.field)) {
+          if (oldVal != newVal) { // check that the array actually changed to avoid regenerating context properties
+            for (var i = 0; i < oldVal.length; i++) {
+              // if the old string is not in the new array, remove it from the context.
+              if (newVal.indexOf(oldVal[i] == -1) && $scope.parentModel['@context'][oldVal[i]] != null) {
+                delete $scope.parentModel['@context'][oldVal[i]];
+              }
+            }
+            // check for strings that have been added to the array
+            for (var i = 0; i < newVal.length; i++) {
+              // if the new string is not in the old array, add it to the context.
+              if (oldVal.indexOf(newVal[i] == -1) && $scope.parentModel['@context'][newVal[i]] == null) {
+                $scope.parentModel['@context'][newVal[i]] = UrlService.schemaProperties() + "/" + DataManipulationService.generateGUID();
+              }
+            }
+          }
+        }
+      });
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
