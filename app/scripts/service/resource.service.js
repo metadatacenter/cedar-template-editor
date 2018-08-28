@@ -774,10 +774,12 @@ define([
         }
 
         function canPublish(resource) {
-          if (resource != null) {
+          if (resource) {
             var perms = resource.currentUserPermissions;
-            if (perms != null) {
-              return perms.indexOf("publish") != -1;
+            if (perms) {
+              var hasPermission = perms.indexOf("publish") != -1;
+              var isLatest = resource.isLatestVersion;
+              return hasPermission && isLatest;
             }
           }
           return false;
