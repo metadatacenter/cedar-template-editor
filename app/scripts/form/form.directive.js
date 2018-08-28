@@ -213,7 +213,10 @@ define([
               DataManipulationService.findChildren($scope.form.properties, model);
             }
 
-            paginate();
+            if (dms.getType($scope.form) != dms.cedarFieldType()) { // only if it is not a template field
+              paginate();
+            }
+
           }
         };
 
