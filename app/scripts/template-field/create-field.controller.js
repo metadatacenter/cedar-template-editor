@@ -83,7 +83,7 @@ define([
 
       if (node) {
         return resourceService.validateResource(
-            node, CONST.resourceType.ELEMENT,
+            node, CONST.resourceType.FIELD,
             function (response) {
 
               var json = angular.toJson(response);
