@@ -1075,7 +1075,7 @@ define([
           $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
           $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
           $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
-          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'decimalPlaceError']);
+          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
         }
 
         // If field is required and is empty, emit failed emptyRequiredField event
