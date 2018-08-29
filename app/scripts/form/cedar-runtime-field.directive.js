@@ -1066,7 +1066,7 @@ define([
               }
               if (dms.hasDecimalPlace($scope.field)) {
                 var decimalPlace = dms.getDecimalPlace($scope.field);
-                if (decimalPlace && countDecimals(value) <= decimalPlace) {
+                if (countDecimals(value) > decimalPlace) {
                   noneTooDecimal = false;
                 }
               }
@@ -1370,8 +1370,11 @@ define([
       $scope.checkDecimalPlace = function () {
         var value = Number($scope.valueArray[$scope.index]['@value']);
         if (value) {
-          var decimalPlace = dms.getDecimalPlace($scope.field);
-          var isValid = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+          var isValid = true;
+          if (dms.hasDecimalPlace($scope.field)) {
+            var decimalPlace = dms.getDecimalPlace($scope.field);
+            isValid = countDecimals(value) <= decimalPlace;
+          }
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
