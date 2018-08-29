@@ -1015,19 +1015,22 @@ define([
           var noneTooShort = true;
           var noneTooLong = true;
 
-          var minLength = dms.getMinLength($scope.field);
-          var maxLength = dms.getMaxLength($scope.field);
-
           for (let i = 0; i < $scope.valueArray.length; i++) {
             var value = $scope.valueArray[i]['@value'];
             if (value) {
               var valueLength = value.length;
 
-              if (valueLength > maxLength) {
-                noneTooLong = false;
+              if (dms.hasMaxLength($scope.field)) {
+                var maxLength = dms.getMaxLength($scope.field);
+                if (valueLength > maxLength) {
+                  noneTooLong = false;
+                }
               }
-              if (valueLength < minLength) {
-                noneTooShort = false;
+              if (dms.hasMinLength($scope.field)) {
+                var minLength = dms.getMinLength($scope.field);
+                if (valueLength < minLength) {
+                  noneTooShort = false;
+                }
               }
             }
           }
@@ -1327,10 +1330,14 @@ define([
         var value = $scope.valueArray[$scope.index]['@value']
         if (value) {
           var valueLength = value.length;
-          var minLength = dms.getMinLength($scope.field);
-          var maxLength = dms.getMaxLength($scope.field);
-          var isTooLong = (maxLength ? (valueLength > maxLength) : false);
-          var isTooShort = (minLength ? (valueLength < minLength) : false);
+          var isTooShort = false;
+          if (dms.hasMinLength($scope.field)) {
+            isTooShort = valueLength < dms.getMinLength($scope.field);
+          }
+          var isTooLong = false;
+          if (dms.hasMaxLength($scope.field)) {
+            isTooLong = valueLength > dms.getMaxLength($scope.field);
+          }
           var isValid = !isTooLong && !isTooShort;
           $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
         } else {
