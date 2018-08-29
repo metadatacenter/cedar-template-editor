@@ -28,8 +28,18 @@ define([
         };
 
         //
+        // constants
+        //
+
+        var cedarFieldType = 'https://schema.metadatacenter.org/core/TemplateField';
+
+        //
         // basics
         //
+
+        service.cedarFieldType = function() {
+          return cedarFieldType;
+        };
 
         service.getFieldProperties = function (field) {
           if (field) {
