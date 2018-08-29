@@ -19,6 +19,7 @@
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']"
+          ng-focus="checkStringLength()"
           ng-change="checkStringLength()">
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
