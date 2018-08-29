@@ -1339,10 +1339,14 @@ define([
         var value = $scope.valueArray[$scope.index]['@value'];
         if (value) {
           value = Number(value);
-          var minValue = dms.getMinValue($scope.field);
-          var maxValue = dms.getMaxValue($scope.field);
-          var isTooLarge = (maxValue ? (value > maxValue) : false);
-          var isTooSmall = (minValue ? (value < minValue) : false);
+          var isTooLarge = false;
+          if (dms.hasMaxValue($scope.field)) {
+            isTooLarge = value > dms.getMaxValue($scope.field);
+          }
+          var isTooSmall = false;
+          if (dms.hasMinValue($scope.field)) {
+            isTooSmall = value < dms.getMinValue($scope.field);
+          }
           var isValid = !isTooLarge && !isTooSmall;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
         } else {
