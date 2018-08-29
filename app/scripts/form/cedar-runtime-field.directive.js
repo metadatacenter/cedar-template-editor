@@ -1042,26 +1042,30 @@ define([
           var noneTooDecimal = true;
           var noneNaN = true;
 
-          var minValue = dms.getMinValue($scope.field);
-          var maxValue = dms.getMaxValue($scope.field);
-          var decimalPlace = dms.getDecimalPlace($scope.field);
-
           for (let i = 0; i < $scope.valueArray.length; i++) {
             var value = $scope.valueArray[i]['@value'];
             if (value) {
               value = Number(value);
-
               if (Number.isNaN(value)) {
                 noneNaN = false;
               }
-              if (value > maxValue) {
-                noneTooLarge = false;
+              if (dms.hasMaxValue($scope.field)) {
+                var maxValue = dms.getMaxValue($scope.field);
+                if (value > maxValue) {
+                  noneTooLarge = false;
+                }
               }
-              if (value < minValue) {
-                noneTooSmall = false;
+              if (dms.hasMinValue($scope.field)) {
+                var minValue = dms.getMinValue($scope.field);
+                if (value < minValue) {
+                  noneTooSmall = false;
+                }
               }
-              if (decimalPlace && countDecimals(value) <= decimalPlace) {
-                noneTooDecimal = false;
+              if (dms.hasDecimalPlace($scope.field)) {
+                var decimalPlace = dms.getDecimalPlace($scope.field);
+                if (decimalPlace && countDecimals(value) <= decimalPlace) {
+                  noneTooDecimal = false;
+                }
               }
             }
           }
