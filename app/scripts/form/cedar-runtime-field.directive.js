@@ -1015,19 +1015,22 @@ define([
           var noneTooShort = true;
           var noneTooLong = true;
 
-          var minLength = dms.getMinLength($scope.field);
-          var maxLength = dms.getMaxLength($scope.field);
-
           for (let i = 0; i < $scope.valueArray.length; i++) {
             var value = $scope.valueArray[i]['@value'];
             if (value) {
               var valueLength = value.length;
 
-              if (valueLength > maxLength) {
-                noneTooLong = false;
+              if (dms.hasMaxLength($scope.field)) {
+                var maxLength = dms.getMaxLength($scope.field);
+                if (valueLength > maxLength) {
+                  noneTooLong = false;
+                }
               }
-              if (valueLength < minLength) {
-                noneTooShort = false;
+              if (dms.hasMinLength($scope.field)) {
+                var minLength = dms.getMinLength($scope.field);
+                if (valueLength < minLength) {
+                  noneTooShort = false;
+                }
               }
             }
           }
@@ -1042,33 +1045,37 @@ define([
           var noneTooDecimal = true;
           var noneNaN = true;
 
-          var minValue = dms.getMinValue($scope.field);
-          var maxValue = dms.getMaxValue($scope.field);
-          var decimalPlace = dms.getDecimalPlace($scope.field);
-
           for (let i = 0; i < $scope.valueArray.length; i++) {
             var value = $scope.valueArray[i]['@value'];
             if (value) {
               value = Number(value);
-
               if (Number.isNaN(value)) {
                 noneNaN = false;
               }
-              if (value > maxValue) {
-                noneTooLarge = false;
+              if (dms.hasMaxValue($scope.field)) {
+                var maxValue = dms.getMaxValue($scope.field);
+                if (value > maxValue) {
+                  noneTooLarge = false;
+                }
               }
-              if (value < minValue) {
-                noneTooSmall = false;
+              if (dms.hasMinValue($scope.field)) {
+                var minValue = dms.getMinValue($scope.field);
+                if (value < minValue) {
+                  noneTooSmall = false;
+                }
               }
-              if (decimalPlace && countDecimals(value) <= decimalPlace) {
-                noneTooDecimal = false;
+              if (dms.hasDecimalPlace($scope.field)) {
+                var decimalPlace = dms.getDecimalPlace($scope.field);
+                if (countDecimals(value) > decimalPlace) {
+                  noneTooDecimal = false;
+                }
               }
             }
           }
           $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
           $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
           $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
-          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'decimalPlaceError']);
+          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
         }
 
         // If field is required and is empty, emit failed emptyRequiredField event
@@ -1323,10 +1330,14 @@ define([
         var value = $scope.valueArray[$scope.index]['@value']
         if (value) {
           var valueLength = value.length;
-          var minLength = dms.getMinLength($scope.field);
-          var maxLength = dms.getMaxLength($scope.field);
-          var isTooLong = (maxLength ? (valueLength > maxLength) : false);
-          var isTooShort = (minLength ? (valueLength < minLength) : false);
+          var isTooShort = false;
+          if (dms.hasMinLength($scope.field)) {
+            isTooShort = valueLength < dms.getMinLength($scope.field);
+          }
+          var isTooLong = false;
+          if (dms.hasMaxLength($scope.field)) {
+            isTooLong = valueLength > dms.getMaxLength($scope.field);
+          }
           var isValid = !isTooLong && !isTooShort;
           $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
         } else {
@@ -1339,10 +1350,14 @@ define([
         var value = $scope.valueArray[$scope.index]['@value'];
         if (value) {
           value = Number(value);
-          var minValue = dms.getMinValue($scope.field);
-          var maxValue = dms.getMaxValue($scope.field);
-          var isTooLarge = (maxValue ? (value > maxValue) : false);
-          var isTooSmall = (minValue ? (value < minValue) : false);
+          var isTooLarge = false;
+          if (dms.hasMaxValue($scope.field)) {
+            isTooLarge = value > dms.getMaxValue($scope.field);
+          }
+          var isTooSmall = false;
+          if (dms.hasMinValue($scope.field)) {
+            isTooSmall = value < dms.getMinValue($scope.field);
+          }
           var isValid = !isTooLarge && !isTooSmall;
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
         } else {
@@ -1355,8 +1370,11 @@ define([
       $scope.checkDecimalPlace = function () {
         var value = Number($scope.valueArray[$scope.index]['@value']);
         if (value) {
-          var decimalPlace = dms.getDecimalPlace($scope.field);
-          var isValid = decimalPlace ? (countDecimals(value) <= decimalPlace) : true;
+          var isValid = true;
+          if (dms.hasDecimalPlace($scope.field)) {
+            var decimalPlace = dms.getDecimalPlace($scope.field);
+            isValid = countDecimals(value) <= decimalPlace;
+          }
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
         } else {
           $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
