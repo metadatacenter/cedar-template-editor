@@ -11,13 +11,15 @@ define([
         'AuthorizedBackendService',
         'HttpBuilderService',
         'UISettingsService',
+        'UIUtilService',
         'UrlService',
+        'DataManipulationService',
         'CedarUser',
         'CONST'
       ];
 
-      function resourceService($rootScope, authorizedBackendService, httpBuilderService, uiSettingsService, urlService,
-                               CedarUser, CONST) {
+      function resourceService($rootScope, authorizedBackendService, httpBuilderService, uiSettingsService,
+                               uiUtilService, urlService, DataManipulationService, CedarUser, CONST) {
 
         var searchTerm = null;
         var service = {

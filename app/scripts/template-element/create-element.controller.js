@@ -43,14 +43,6 @@ define([
     $scope.lockReason = '';
 
 
-    // can we write to this template?  if no details, then new element
-    $scope.canWrite = function () {
-      var result =  !$scope.details || resourceService.canWrite($scope.details);
-      $scope.cannotWrite  =!result;
-      return result;
-      $scope.lockReason = 'no write permission';
-    };
-
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
       UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
@@ -99,10 +91,24 @@ define([
       }
     };
 
+    $scope.canWrite = function () {
+      if ($scope.details) {
+        // Check write permission
+        var writePermission = resourceService.canWrite($scope.details);
+
+        // Check publication status
+        var isPublished = DataManipulationService.isPublished($scope.details);
+
+        // Result
+        var canWrite = writePermission && !isPublished;
+        $scope.cannotWrite = !canWrite;
+        return canWrite;
+      }
+      return false;
+    };
+
     $scope.checkLocking = function () {
-      var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-      $scope.cannotWrite = !result;
-      return result;
+      return $scope.canWrite();
     };
 
     var getDetails = function (id) {
