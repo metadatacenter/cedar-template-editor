@@ -515,8 +515,6 @@ define([
             }
           };
 
-
-
           vm.getDerivedFrom = function () {
             if (vm.selectedResource && vm.selectedResource.derivedFrom) {
               return vm.selectedResource.derivedFrom;
@@ -603,14 +601,11 @@ define([
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
-                    vm.canNotDelete = vm.isPublished();
+                    vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
                     vm.canNotPopulate = !vm.isTemplate();
                     vm.canNotPublish = !vm.canPublish();
                     vm.canNotCreateDraft = !vm.canCreateDraft();
                     vm.getNumberOfInstances();
-
-
-
                   }
                 },
                 function (error) {
@@ -618,7 +613,6 @@ define([
                 }
             );
           };
-
 
           vm.canRead = function () {
             return resourceService.canRead(vm.getSelectedNode());
