@@ -70,11 +70,26 @@ define([
         };
 
         $scope.checkLocking = function () {
-          // to disable write if a template has existing instances as well
-          // var result = !$scope.hasInstances && ( !$scope.details || resourceService.canWrite($scope.details));
-          var result = !$scope.details || resourceService.canWrite($scope.details);
-          $scope.cannotWrite = !result;
-          return result;
+          if ($scope.details) {
+            // Check write permission
+            var writePermission = resourceService.canWrite($scope.details);
+
+            // Check publication status
+            var isPublished = DataManipulationService.isPublished($scope.details);
+
+            // Check if the resource has instances (only for templates)
+            // TODO: check all instances, not only the visible ones
+            var hasInstances = false;
+            if (UIUtilService.getVisibleMetadata() > 0) {
+              hasInstances = true;
+            }
+            // Result
+            var canWrite = writePermission && !isPublished && !hasInstances;
+            $scope.cannotWrite = !canWrite;
+            $scope.saveButtonDisabled = !canWrite;
+            return canWrite;
+          }
+          return false;
         };
 
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
@@ -92,13 +107,10 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-
-                $scope.checkLocking();
-
                 UIUtilService.setTotalMetadata(0);
                 UIUtilService.setVisibleMetadata(response.totalCount || 0);
                 UIUtilService.setInstances(response.resources);
-
+                $scope.checkLocking();
               },
               function (error) {
                 UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -584,7 +596,6 @@ define([
         $scope.hideFinder = function () {
           jQuery("#finder-modal").modal('hide');
         };
-
 
         $scope.enableSaveButton = function () {
           $timeout(function () {
