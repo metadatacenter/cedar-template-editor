@@ -527,13 +527,13 @@
     "enterElementKey": "Enter Element Name",
     "enterElementDescription": "Enter Element Help Text",
     "enterDate": "Enter Date",
-    "enterMinLength": "Enter Min String Length",
-    "enterMaxLength": "Enter Max String Length",
+    "enterMinLength": "Enter Minimum String Length",
+    "enterMaxLength": "Enter Maximum String Length",
     "enterUnitOfMeasure": "Enter Unit of Measure",
-    "enterMinValue": "Enter Min Value",
-    "enterMaxValue": "Enter Max Value",
+    "enterMinValue": "Enter Minimum Value",
+    "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
-    "enterDecimalPlace": "Enter Decimal Place"
+    "enterDecimalPlace": "Enter Decimal Places"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
