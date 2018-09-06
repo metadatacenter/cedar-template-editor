@@ -51,7 +51,10 @@ define([
 
 
     $scope.canWrite = function () {
-      if ($scope.details) {
+      if (!$scope.details) {
+        return true;
+      }
+      else {
         // Check write permission
         var writePermission = resourceService.canWrite($scope.details);
 
@@ -63,7 +66,6 @@ define([
         $scope.cannotWrite = !canWrite;
         return canWrite;
       }
-      return false;
     };
 
     // is this field locked?
@@ -75,8 +77,6 @@ define([
     $scope.$watch('cannotWrite', function () {
       UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
     });
-
-
 
     $scope.setClean = function () {
       $rootScope.$broadcast('form:clean');
