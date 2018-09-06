@@ -633,8 +633,12 @@ define([
       // Sets the number type based on the item stored at the model
       $scope.setNumberTypeFromModel = function () {
         var schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints && schema._valueConstraints.numberType) {
-          var typeId = schema._valueConstraints.numberType || "xsd:decimal";
+        if (schema._valueConstraints) {
+          var typeId = schema._valueConstraints.numberType;
+          if (!typeId) {
+            typeId = "xsd:decimal";
+            schema._valueConstraints.numberType = typeId;
+          }
           var getNumericLabel = function (id) {
             for (var i = 0; i < $scope.numberTypes.length; i++) {
               var type = $scope.numberTypes[i];
