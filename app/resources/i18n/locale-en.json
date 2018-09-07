@@ -80,7 +80,7 @@
     "Templates": "Templates",
     "MoreTemplates": "More Templates",
     "Save": "Save",
-    "Validate":"Validate",
+    "Validate": "Validate",
     "Next": "Next",
     "Previous": "Previous",
     "ElementName": "Element Name",
@@ -274,7 +274,7 @@
       "create": {
         "success": "The metadata have been created.",
         "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
-        "homeFolder":"Couldn't save to current location. Saved to your workspace."
+        "homeFolder": "Couldn't save to current location. Saved to your workspace."
       },
       "update": {
         "success": "The metadata have been saved.",
@@ -375,6 +375,18 @@
     }
   },
   "DASHBOARD": {
+    "menu": {
+      "open": "Open",
+      "populate": "Populate",
+      "draft": "Create version...",
+      "publish": "Publish version...",
+      "delete": "Delete",
+      "share": "Share...",
+      "copy": "Copy to...",
+      "move": "Move to...",
+      "rename": "Rename...",
+      "submit": "Submit..."
+    },
     "delete": {
       "confirm": {
         "folder": "Are you sure you want to remove the selected folder?",
@@ -394,7 +406,7 @@
       "title": "Rename",
       "label": "Enter a name"
     },
-    "publish" : {
+    "publish": {
       "title": "Publish",
       "version": "Version"
     },
@@ -430,10 +442,13 @@
       "sharedWithMe": "Shared with Me",
       "all": "All"
     },
-    "version": {"title": "Version",
+    "version": {
+      "titlePublish": "Publish Version",
+      "titleDraft": "Create Version",
       "instructions": "Publishing allows you to add a version number to a resource. ",
-      "morePublish":  "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
-      "moreDraft":  "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. "}
+      "morePublish": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
+      "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. "
+    }
   },
   "ELEMENTEDITOR": {
     "clear": {
@@ -454,7 +469,7 @@
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     },
-    "hasMetadataWarning":"The template has metadata and should not be modified.",
+    "hasMetadataWarning": "The template has metadata and should not be modified.",
     "isLockedWarning": "Modifications cannot be saved without write permission."
   },
   "TERMINOLOGY": {
