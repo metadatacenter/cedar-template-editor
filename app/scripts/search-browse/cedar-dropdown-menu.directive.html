@@ -11,7 +11,7 @@
 
   <li ng-if="!canNotPublish || !canNotCreateDraft" role="separator" class="divider"></li>
   <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')">Publish</a></li>
-  <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="publishModal(draftCallback, 'Create Draft')">Create Draft</a></li>
+  <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="publishModal(draftCallback, 'Draft')">Create Draft</a></li>
 
   <li ng-if="!canNotSubmit" role="separator" class="divider"></li>
   <li ng-if="!canNotSubmit"><a ng-cloak class="submit"   href="#"  ng-click="submit(resource)">Submit </a></li>

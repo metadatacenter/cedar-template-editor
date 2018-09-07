@@ -429,7 +429,11 @@
       "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
       "all": "All"
-    }
+    },
+    "version": {"title": "Version",
+      "instructions": "Publishing allows you to add a version number to a resource. ",
+      "morePublish":  "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
+      "moreDraft":  "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. "}
   },
   "ELEMENTEDITOR": {
     "clear": {

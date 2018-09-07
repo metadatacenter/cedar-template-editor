@@ -6977,6 +6977,16 @@ table.apiKey {
       max-height: 300px;
       overflow-y: auto;
       border-top: 1px solid #ccc;
+
+      .more-info {
+        cursor: pointer;
+        color: @brand-primary;
+        &:hover,
+        &:focus {
+          color: @brand-primary-hover;
+        }
+      }
+
       .box-row {
         padding: 5px;
 
@@ -7116,6 +7126,7 @@ table.apiKey {
     margin: 0;
   }
   .publish {
+    margin:20px 0;
     display: flex;
     justify-content: center;
     align-items: center;
