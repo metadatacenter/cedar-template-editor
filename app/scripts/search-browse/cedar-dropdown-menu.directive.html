@@ -1,23 +1,23 @@
 
 <ul  class="dropdown" on-toggle="toggled(open)" >
-  <li ng-if="!canNotPopulate"><a  class="open" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Populate</a></li>
-  <li><a  href="#" class="open" ng-click="goTo(resource)">Open</a></li>
+  <li ng-if="!canNotPopulate"><a  class="open" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')" translate>DASHBOARD.menu.populate</a></li>
+  <li><a  href="#" class="open" ng-click="goTo(resource)" translate>DASHBOARD.menu.open</a></li>
 
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="share(resource)">Share...</a></li>
-  <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="copy(resource)">Copy to...</a></li>
-  <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)">Move to...</a></li>
-  <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)">Rename...</a></li>
+  <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="share(resource)" translate>DASHBOARD.menu.share</a></li>
+  <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="copy(resource)" translate>DASHBOARD.menu.copy</a></li>
+  <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)" translate>DASHBOARD.menu.move</a></li>
+  <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)" translate>DASHBOARD.menu.rename</a></li>
 
   <li ng-if="!canNotPublish || !canNotCreateDraft" role="separator" class="divider"></li>
-  <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')">Publish</a></li>
-  <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="publishModal(draftCallback, 'Draft')">Create Draft</a></li>
+  <li ng-if="!canNotPublish"><a class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
+  <li ng-if="!canNotCreateDraft"><a class="createDraft"   href="#" ng-click="publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>
 
   <li ng-if="!canNotSubmit" role="separator" class="divider"></li>
-  <li ng-if="!canNotSubmit"><a ng-cloak class="submit"   href="#"  ng-click="submit(resource)">Submit </a></li>
+  <li ng-if="!canNotSubmit"><a ng-cloak class="submit"   href="#"  ng-click="submit(resource)" translate>DASHBOARD.menu.submit</a></li>
 
   <li ng-if="!canNotDelete" role="separator" class="divider"></li>
-  <li ng-if="!canNotDelete"><a class="delete"  href="#"  ng-click="delete(resource)">Delete </a></li>
+  <li ng-if="!canNotDelete"><a class="delete"  href="#"  ng-click="delete(resource)" translate>DASHBOARD.menu.delete</a></li>
 </ul>
 
 

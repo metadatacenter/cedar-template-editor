@@ -3,7 +3,10 @@
     <div class="modal-header" id="publishModalHeader">
       <button type="button" class="close" ng-click="dc.publishModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" ><span translate>{{publish.titleText}}</span> <span translate>DASHBOARD.version.title</span> <i class="fa fa-globe"></i></h4>
+      <h4 class="modal-title" >
+        <span  ng-if="publish.titleText == 'Draft'" translate>DASHBOARD.version.titleDraft</span>
+        <span ng-if="publish.titleText == 'Publish'" translate>DASHBOARD.version.titlePublish</span>
+        <i class="fa fa-globe"></i></h4>
     </div>
     <div class="modal-body">
 
