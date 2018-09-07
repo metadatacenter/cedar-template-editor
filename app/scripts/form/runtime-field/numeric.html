@@ -3,6 +3,7 @@
   <!-- actively editing the field --->
   <div  class="form-group  has-feedback " style="margin:5px 0"  ng-click="setActive(index,true)" id="{{getLocator(index)}}">
     <input type="number"
+        tabindex="0"
         name="{{getTitle()}}+index"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"

@@ -19,7 +19,6 @@ define([
         var withMax = true;
 
         ctrl.$validators.string = function(modelValue, viewValue) {
-          console.log('string validation',modelValue, attrs);
 
           if (ctrl.$isEmpty(modelValue)) {
             // consider empty models to be valid

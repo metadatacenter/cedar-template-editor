@@ -1,7 +1,9 @@
 <div ng-init="initializeValue(field)">
-  <!-- actively being edited -->
-  <div ng-if="isActive(index)" class="form-group  has-feedback ">
+
+  <div  class="form-group  has-feedback " ng-click="setActive(index)">
     <input type="email"
+        tabindex="0"
+        name="{{getTitle()}}+index"
         class="form-control select"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter email' : ''}}"
@@ -14,8 +16,5 @@
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>
 
-  <!--- not active --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index)">
-    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{getValueString(valueArray)}}</div>
-  </div>
 </div>
+

@@ -434,6 +434,7 @@ define([
             $document.bind('keyup', function (e) {
               $scope.isSubmit(e, index);
             });
+
           }
         }
         }
@@ -479,7 +480,6 @@ define([
       };
       $scope.isValid = function (index) {
         var target = jQuery("#" + $scope.getLocator(index) + ' input.ng-invalid');
-        console.log('target',target.length);
         return !target.length;
       };
 
@@ -489,7 +489,6 @@ define([
         var found = false;
 
         if ($scope.isActive(index)) {
-          if ($scope.isValid(index)) {
 
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
@@ -498,7 +497,6 @@ define([
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
-                console.log('onSubmit',index+1);
                 $scope.setActive(index + 1, true);
                 found = true;
               }
@@ -514,15 +512,23 @@ define([
             $scope.$parent.activateNextSiblingOf($scope.fieldKey, $scope.parentKey);
           }
         }
-        }
       };
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
-        console.log('isSubmit', keyEvent, index, keyEvent.type === 'keypress', keyEvent.which === 13, keyEvent.ctrlKey);
-        if (keyEvent.type === 'keypress' && keyEvent.which === 13 ) {
-          $scope.onSubmit(index);
+
+        if (keyEvent.type === 'keyup') {
+          // return key and valid field
+          if (keyEvent.which === 13 && $scope.isValid(index)) {
+            $scope.onSubmit(index);
+          } else {
+            // tab just moves regardless of validity
+            if (keyEvent.which === 9) {
+              $scope.onSubmit(index);
+            }
+          }
         }
+
         // Doesn't work for multi-input fields like attribute-value
         // if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
         //   keyEvent.preventDefault();
@@ -854,7 +860,6 @@ define([
 
           var valueLocation = $scope.getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
-          console.log('copyField',$scope.model);
           if ((!maxItems || $scope.model.length < maxItems)) {
 
             // copy selected instance in the model and insert immediately after
