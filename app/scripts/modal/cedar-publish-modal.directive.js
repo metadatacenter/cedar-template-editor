@@ -148,6 +148,7 @@ define([
               vm.callback = callback;
               vm.titleText = titleText;
               vm.modalVisible = visible;
+              vm.openMore = false;
               vm.initial = vm.getVersion(resource);
               vm.title = vm.getTitle(resource);
               vm.parts = vm.getNextVersion(resource);
