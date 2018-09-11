@@ -121,11 +121,64 @@ define([
       );
     };
 
+
+
+    var populateCreatingFieldOrElement = function () {
+      $scope.invalidFieldStates = {};
+      $scope.invalidElementStates = {};
+      $rootScope.$broadcast('saveForm');
+      //dms.updateKeys($scope.form);
+    };
+
+    var dontHaveCreatingFieldOrElement = function () {
+      return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
+    };
+
+    // *** proxied functions
+    // Return true if element.properties object only contains default values
+    $scope.isPropertiesEmpty = function () {
+      //return DataUtilService.isPropertiesEmpty($scope.field);
+      return false;
+    };
+
+    // Add newly configured field to the element object
+    $scope.addField = function (fieldType) {
+      console.log('addField', fieldType);
+
+      populateCreatingFieldOrElement();
+      if (dontHaveCreatingFieldOrElement()) {
+
+        // $scope.getField(fieldType);
+        $scope.field = StagingService.addFieldToField(fieldType);
+        dms.setId($scope.field, $routeParams.id);
+        $scope.form = $scope.field;
+
+
+        checkValidation($scope.form);
+        UIUtilService.setDirty(true);
+
+        HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+        $scope.form = $scope.field;
+        var key = dms.generateGUID();
+        $rootScope.keyOfRootElement = key;
+
+        $rootScope.rootElement = $scope.form;
+        $rootScope.jsonToSave = $scope.field;
+        dms.createDomIds($scope.field);
+        $scope.fieldSchema = dms.schemaOf($scope.field);
+
+        $scope.toggleMore();
+      }
+      $scope.showMenuPopover = false;
+    };
+
     var getField = function () {
+
       $scope.form = {};
       // Load existing field if $routeParams.id parameter is supplied
       if ($routeParams.id) {
-        // Fetch existing element and assign to $scope.element property
+        // Fetch existing field and assign to $scope.field property
         AuthorizedBackendService.doCall(
             TemplateFieldService.getTemplateField($routeParams.id),
             function (response) {
@@ -162,78 +215,27 @@ define([
             }
         );
       } else {
-        // If we're not loading an existing element then let's create a new empty $scope.element property
-        $scope.field = DataTemplateService.getContainerField();
-        checkValidation($scope.field);
-        $scope.setClean();
-
-        HeaderService.dataContainer.currentObjectScope = $scope.field;
-
-        $scope.form = $scope.field;
-        var key = dms.generateGUID();
-        $rootScope.keyOfRootElement = key;
-        $rootScope.rootElement = $scope.form;
-        $rootScope.jsonToSave = $scope.field;
-        dms.createDomIds($scope.field);
-        $scope.fieldSchema = dms.schemaOf($scope.field);
+        $scope.addField('textfield');
+        // // If we're not loading an existing field then let's create a new empty field
+        // $scope.field = DataTemplateService.getContainerField();
+        // checkValidation($scope.field);
+        // $scope.setClean();
+        //
+        // HeaderService.dataContainer.currentObjectScope = $scope.field;
+        //
+        // $scope.form = $scope.field;
+        // var key = dms.generateGUID();
+        // $rootScope.keyOfRootElement = key;
+        // $rootScope.rootElement = $scope.form;
+        // $rootScope.jsonToSave = $scope.field;
+        // dms.createDomIds($scope.field);
+        // $scope.fieldSchema = dms.schemaOf($scope.field);
 
 
       }
     };
 
-    // init
-    if ($routeParams.id) {
-      getField();
-    }
 
-    var populateCreatingFieldOrElement = function () {
-      $scope.invalidFieldStates = {};
-      $scope.invalidElementStates = {};
-      $rootScope.$broadcast('saveForm');
-      //dms.updateKeys($scope.form);
-    };
-
-    var dontHaveCreatingFieldOrElement = function () {
-      return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
-    };
-
-    // *** proxied functions
-    // Return true if element.properties object only contains default values
-    $scope.isPropertiesEmpty = function () {
-      //return DataUtilService.isPropertiesEmpty($scope.field);
-      return false;
-    };
-
-    // Add newly configured field to the element object
-    $scope.addField = function (fieldType) {
-
-      populateCreatingFieldOrElement();
-      if (dontHaveCreatingFieldOrElement()) {
-
-        // $scope.getField(fieldType);
-        $scope.field = StagingService.addFieldToField(fieldType);
-        dms.setId($scope.field, $routeParams.id);
-        $scope.form = $scope.field;
-
-
-        checkValidation($scope.form);
-        UIUtilService.setDirty(true);
-
-        HeaderService.dataContainer.currentObjectScope = $scope.field;
-
-        $scope.form = $scope.field;
-        var key = dms.generateGUID();
-        $rootScope.keyOfRootElement = key;
-
-        $rootScope.rootElement = $scope.form;
-        $rootScope.jsonToSave = $scope.field;
-        dms.createDomIds($scope.field);
-        $scope.fieldSchema = dms.schemaOf($scope.field);
-
-        $scope.toggleMore();
-      }
-      $scope.showMenuPopover = false;
-    };
 
     $scope.toggleMore = function () {
       $scope.moreIsOpen = !$scope.moreIsOpen;
@@ -497,5 +499,9 @@ define([
     $scope.$on("field:controlledTermAdded", function () {
       jQuery("#control-options-field-field").modal('hide');
     });
+
+    // init
+
+    getField();
   }
 });
