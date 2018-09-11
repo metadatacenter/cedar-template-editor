@@ -1185,7 +1185,7 @@ var WorkspacePage = function () {
           for (var i = 0; i < count; i++) {
             (function (name, type) {
               console.log('deleteAllBySearching', name, type);
-              deleteResource(name, type);
+              deleteResource(name, type );
             })
             (name, type);
           }
