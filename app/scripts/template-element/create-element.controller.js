@@ -453,6 +453,11 @@ define([
       }
     });
 
+    $scope.$watch('element["schema:identifier"]', function (identifier) {
+      if (!angular.isUndefined($scope.element) && !identifier) {
+        dms.removeIdentifier($scope.element);
+      }
+    });
 
     // This function watches for changes in the title field and autogenerates the schema title and description fields
     $scope.$watch('element["schema:name"]', function (v) {

@@ -2,25 +2,38 @@
   <div class="template-header element">
     <div class="container">
       <div class="row">
-        <div class="left-sidebar col-sm-4 col-sm-offset-1">
+        <div class="left-sidebar col-sm-3 col-sm-offset-1">
           <div id="element-name-container">
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text" class="form-control" id="element-name"
-                    placeholder="{{'GENERIC.ElementName' | translate}}"
-                    aria-label="{{'GENERIC.ElementName' | translate}}"
+                    placeholder="{{'GENERIC.Name' | translate}}"
+                    aria-label="{{'GENERIC.Name' | translate}}"
                     ng-model="elementSchema['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
         </div>
-        <div class="right-body col-sm-6">
+        <div class="left-sidebar col-sm-3">
+          <div id="element-identifier-container">
+            <form>
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control" id="element-identifier"
+                    placeholder="{{'GENERIC.Identifier' | translate}}"
+                    aria-label="{{'GENERIC.Identifier' | translate}}"
+                    ng-model="elementSchema['schema:identifier']" with-floating-label>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="right-body col-sm-4">
           <div id="element-description-container">
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-description"
-                    placeholder="{{'GENERIC.ElementDescription' | translate}}"
-                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="elementSchema['schema:description']"
+                    placeholder="{{'GENERIC.Description' | translate}}"
+                    aria-label="{{'GENERIC.Description' | translate}}"
+                    ng-model="elementSchema['schema:description']"
                     with-floating-label>
               </div>
             </form>

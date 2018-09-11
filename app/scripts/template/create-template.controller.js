@@ -483,11 +483,14 @@ define([
           }
         });
 
+        $scope.$watch('form["schema:identifier"]', function (identifier) {
+          if (!angular.isUndefined($scope.form) && !identifier) {
+            dms.removeIdentifier($scope.form);
+          }
+        });
 
         // watch for changes in the title field and generate the schema title and description fields
         $scope.$watch('form["schema:name"]', function (v) {
-
-
           if (!angular.isUndefined($scope.form)) {
             var title = dms.getTitle($scope.form);
             if (title && title.length > 0) {

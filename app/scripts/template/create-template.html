@@ -1,27 +1,47 @@
 <div class="template-container scrollable-content">
 
-
-
   <div class="template-header template" id="template-header">
     <div class="container">
       <div class="row">
-        <div class="left-sidebar col-sm-4 col-sm-offset-1">
+        <div class="left-sidebar col-sm-3 col-sm-offset-1">
           <div id="template-name-container">
-
             <form>
               <div class="form-group floating-label-wrapper">
-                <input auto-focus type="text" class="form-control" id="template-name" placeholder="Template Name"
-                    aria-label="Template Name" ng-model="form['schema:name']" with-floating-label>
+                <input auto-focus type="text"
+                    class="form-control"
+                    id="template-name"
+                    placeholder="{{'GENERIC.Name' | translate}}"
+                    aria-label="{{'GENERIC.Name' | translate}}"
+                    ng-model="form['schema:name']"
+                    with-floating-label>
               </div>
             </form>
           </div>
         </div>
-        <div class="right-body col-sm-6">
+        <div class="left-sidebar col-sm-3 ">
+          <div id="template-identifier-container">
+            <form>
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control"
+                    id="template-identifier"
+                    placeholder="{{'GENERIC.Identifier' | translate}}"
+                    aria-label="{{'GENERIC.Identifier' | translate}}"
+                    ng-model="form['schema:identifier']"
+                    with-floating-label>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="right-body col-sm-4">
           <div id="template-description-container">
             <form>
               <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control" id="template-description" placeholder="Template Description"
-                    aria-label="Template Description" ng-model="form['schema:description']" with-floating-label>
+                <input type="text" class="form-control"
+                    id="template-description"
+                    placeholder="{{'GENERIC.Description' | translate}}"
+                    aria-label="{{'GENERIC.Description' | translate}}"
+                    ng-model="form['schema:description']"
+                    with-floating-label>
               </div>
             </form>
           </div>
@@ -143,6 +163,5 @@
     </div>
     </section>
   </div>
-
 
 </div>

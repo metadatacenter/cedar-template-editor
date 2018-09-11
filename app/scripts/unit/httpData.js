@@ -381,7 +381,7 @@ var httpData = {
           "nodeListQueryType": "folder-content"
         },
         "/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb"                                                                          : {'displayName': 'foo'},
-        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=template,element,instance,folder&sort=-createdOnTS&version=all": {
+        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=template,element,instance,folder&sort=createdOnTS&version=all": {
           "request"          : {
             "limit"          : 500,
             "offset"         : 0,
@@ -518,7 +518,7 @@ var httpData = {
           ],
           "nodeListQueryType": "folder-content"
         },
-        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=element,folder&sort=-createdOnTS&version=all"                  : {
+        "/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=element,folder&sort=createdOnTS&version=all"                  : {
           "request"          : {
             "limit"          : 500,
             "offset"         : 0,

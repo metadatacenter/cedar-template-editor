@@ -34,7 +34,7 @@ define([
 
         // update terms when field changes
         scope.$watch("field", function(newValue, oldValue) {
-          if (newValue !== undefined) {
+          if (newValue !== undefined && Object.keys(newValue).length != 0) {
             var newTerms = DataManipulationService.getFieldControlledTerms(newValue);
             if (oldValue === undefined || newTerms !== scope.terms) {
               scope.getType();

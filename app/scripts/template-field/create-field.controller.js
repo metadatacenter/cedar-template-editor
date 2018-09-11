@@ -417,6 +417,12 @@ define([
       }
     });
 
+    $scope.$watch('field["schema:identifier"]', function (identifier) {
+      if (!angular.isUndefined($scope.field) && !identifier) {
+        dms.removeIdentifier($scope.field);
+      }
+    });
+
     $scope.$watch('field["schema:name"]', function (v) {
       if (!angular.isUndefined($scope.field)) {
         var title = dms.getTitle($scope.field);

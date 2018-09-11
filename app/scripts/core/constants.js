@@ -52,6 +52,7 @@ define([
       "model": {
         "NAME": "schema:name",
         "DESCRIPTION": "schema:description",
+        "IDENTIFIER": "schema:identifier",
         "ISBASEDON": "schema:isBasedOn",
         "NUMBEROFINSTANCES" :'numberOfInstances',
         "DERIVEDFROM": "derivedFrom"
