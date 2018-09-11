@@ -360,7 +360,7 @@
                   <a class="ellipsis" style="width:100px;padding-right:10px;"
                       ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
                       ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:100px;"></div>
                   <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
                   <div style="width:40px"></div>
 
@@ -383,14 +383,10 @@
                         dc.getTitle(resource)}}
                       </div>
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] |
-                      prettyDate}}
-                    </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                      prettyDate}}
-                    </div>
+                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] | prettyDate}}</div>
+                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
                     <div style="width:100px;"></div>
-                    <div class="flex" style="width:100px;justify-content:flex-end;">
+                    <div class="flex" style="width:40px;justify-content:flex-end;">
 
                       <button id="{{dc.getId(resource, 'list')}}"
                           style="background-color:transparent;padding-right:15px;"

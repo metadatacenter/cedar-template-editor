@@ -7360,12 +7360,6 @@ table.apiKey {
         height: 400px;
         max-height: 400px;
 
-        .populate-form-boxes {
-          margin: 0 10px;
-          .resource-instance {
-          }
-        }
-
         .class-actions {
           margin-top: 30px;
           font-size: 1em;
@@ -7395,13 +7389,11 @@ table.apiKey {
           .info-side {
             height: calc(~"100% - 1px");
             width: 50%;
-
             border-left: 1px solid #e0e0e0;
-            background: @white;
 
             .info {
               position: fixed;
-              right: 10px;
+              left: 0;
               width: calc(~"50% - 10px");
               background: @white;
               height: 399px;
@@ -7459,10 +7451,11 @@ table.apiKey {
           }
 
           .list-side {
-
+            height: 100%;
             padding: 0;
-            width: calc(~"50% - 8px");
-            float: left;
+            width:50%;
+            float:right;
+
 
             .category {
               padding: 10px;
