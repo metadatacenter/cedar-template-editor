@@ -1,13 +1,24 @@
-<div class="configuration-options field-header sortable-handler flex" ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
+<div class="configuration-options field-header sortable-handler flex"
+    ng-if="!isRuntime() && !isNested() && !ngDisabled && !preview">
 
   <div class="flex-left">
     <div ng-if="!isRootNode()" class="sortable-icon"><i class="fa fa-arrows"></i></div>
     <i class="{{getIconClass()}} field-icon"></i>
-    <div class="multiple-instance-cardinality" style="margin-right:10px" ng-show="!isCheckboxListRadio() && isCardinalElement()">{{getMinItems()}}
+    <div class="multiple-instance-cardinality" style="margin-right:10px"
+        ng-show="!isCheckboxListRadio() && isCardinalElement()">{{getMinItems()}}
       .. {{getMaxItems() || "N"}}
     </div>
-    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue" style="margin:0 5px"></i>
+    <i class="fa fa-asterisk required" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue"
+        style="margin:0 5px"></i>
     <i class="fa fa-pencil-square-o editable" ng-show="isEditable()" style="margin:0 5px"></i>
+    <div style="margin:0 5px">
+      <div ng-if="isPublished()">
+        <i class="action fa fa-globe"></i> {{getVersion()}}
+      </div>
+      <div ng-if="!isPublished() && getVersion() != '0.0.1'">
+        {{getVersion()}}
+      </div>
+    </div>
   </div>
 
   <div class="configuration-actions" ng-init="childType='field'">

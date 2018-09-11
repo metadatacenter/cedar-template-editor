@@ -92,7 +92,10 @@ define([
     };
 
     $scope.canWrite = function () {
-      if ($scope.details) {
+      if (!$scope.details) {
+        return true;
+      }
+      else {
         // Check write permission
         var writePermission = resourceService.canWrite($scope.details);
 
@@ -104,7 +107,6 @@ define([
         $scope.cannotWrite = !canWrite;
         return canWrite;
       }
-      return false;
     };
 
     $scope.checkLocking = function () {

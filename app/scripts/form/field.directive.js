@@ -67,8 +67,16 @@ define([
         return dms.isRootNode($scope.parentElement, $scope.field);
       };
 
+      $scope.isPublished = function () {
+        return dms.isPublished($scope.field);
+      };
+
       $scope.hasVersion = function () {
         return dms.hasVersion($scope.field);
+      };
+
+      $scope.getVersion = function () {
+        return dms.getVersion($scope.field);
       };
 
       $scope.isEditable = function () {
@@ -633,8 +641,12 @@ define([
       // Sets the number type based on the item stored at the model
       $scope.setNumberTypeFromModel = function () {
         var schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints && schema._valueConstraints.numberType) {
-          var typeId = schema._valueConstraints.numberType || "xsd:decimal";
+        if (schema._valueConstraints) {
+          var typeId = schema._valueConstraints.numberType;
+          if (!typeId) {
+            typeId = "xsd:decimal";
+            schema._valueConstraints.numberType = typeId;
+          }
           var getNumericLabel = function (id) {
             for (var i = 0; i < $scope.numberTypes.length; i++) {
               var type = $scope.numberTypes[i];

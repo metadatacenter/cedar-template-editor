@@ -780,8 +780,9 @@ define([
             var perms = resource.currentUserPermissions;
             if (perms) {
               var hasPermission = perms.indexOf("publish") != -1;
-              var isLatest = resource.isLatestVersion;
-              return hasPermission && isLatest;
+              // var isLatest = resource.isLatestVersion;
+              // return hasPermission && isLatest;
+              return hasPermission;
             }
           }
           return false;

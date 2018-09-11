@@ -1823,11 +1823,11 @@ define([
           }
 
           // open the publish modal
-          function showPublishModal(callback, title) {
+          function showPublishModal(callback, action) {
             if (vm.selectedResource && !vm.canNotWrite) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, title]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, action]);
             }
           }
 

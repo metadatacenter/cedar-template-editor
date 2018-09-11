@@ -1000,31 +1000,31 @@ button {
         text-align: left;
 
         .title-container {
-          margin:0 5px 5px 5px;
+          margin: 0 5px 5px 5px;
           .title-text {
             font-size: 14px;
-            padding:0;
-            margin:0
+            padding: 0;
+            margin: 0
           }
         }
-
 
         .toolbar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          width:100%;
+          width: 100%;
           .right-side {
             display: flex;
             align-items: center;
-            width:40px;
-            justify-content:flex-end;
-            padding:5px 10px 5px 5px;
-            font-size:18px;
+            width: 40px;
+            justify-content: flex-end;
+            padding: 5px 10px 5px 5px;
+            font-size: 18px;
             button {
-              background-color:transparent;padding-right:5px;
+              background-color: transparent;
+              padding-right: 5px;
               i {
-                color:#aaa
+                color: #aaa
               }
             }
           }
@@ -1196,7 +1196,6 @@ button {
     }
 
     .list-view {
-      //padding-bottom: 300px;
 
       .dropdown-menu {
         z-index: 100;
@@ -1217,7 +1216,6 @@ button {
       }
 
       .title {
-        text-transform: uppercase;
         padding: 10px 0 20px;
         i {
           color: @brand-primary;
@@ -1301,6 +1299,42 @@ button {
           background-color: #f8f8f8;
           .outer {
             border-left-color: @brand-primary;
+          }
+        }
+      }
+
+      .info-side {
+        .info {
+          padding: 20px;
+
+          .title {
+            padding: 20px;
+
+            .cell {
+              &.icon {
+                background: @white;
+
+                i {
+                  &.field {
+                    color: @field-color;
+                  }
+                  &.element {
+                    color: @element-color;
+                  }
+                  &.template {
+                    color: @template-color;
+                  }
+                  &.metadata, &.instance {
+
+                    color: @metadata-color;
+                  }
+                  &.folder {
+                    color: @folder-color;
+
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2841,15 +2875,16 @@ section.dashboard-elements {
       }
 
       &.ui-select-container {
-        margin:0;padding:0;
+        margin: 0;
+        padding: 0;
       }
 
-      .ui-select-toggle, .ui-select-match input  {
+      .ui-select-toggle, .ui-select-match input {
         padding-top: 8px;
       }
 
       .ui-select-match span, .ui-select-placeholder {
-        font-size:14px;
+        font-size: 14px;
       }
     }
 
@@ -4045,6 +4080,11 @@ section.dashboard-elements {
 */
 
 .field-header {
+
+  i.fa-globe {
+    color: cadetblue;
+  }
+
   .field-icon {
     margin-right: 10px;
     color: #333;
@@ -6862,7 +6902,7 @@ table.apiKey {
 .scrollable-content {
   overflow-x: hidden;
   overflow-y: auto;
-  background:transparent;
+  background: transparent;
 }
 
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
@@ -6977,12 +7017,19 @@ table.apiKey {
       max-height: 300px;
       overflow-y: auto;
       border-top: 1px solid #ccc;
-      .box-row {
-        padding: 5px;
 
-        .disabled {
-          background: @med-gray;
+      .more-info {
+        cursor: pointer;
+        color: @brand-primary;
+        &:hover,
+        &:focus {
+          color: @brand-primary-hover;
         }
+      }
+
+      .box-row {
+        padding-right: 5px;
+
         &.selected {
           background: @brand-primary;
           color: #fff;
@@ -7116,6 +7163,7 @@ table.apiKey {
     margin: 0;
   }
   .publish {
+    margin: 20px 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7317,12 +7365,6 @@ table.apiKey {
         height: 400px;
         max-height: 400px;
 
-        .populate-form-boxes {
-          margin: 0 10px;
-          .resource-instance {
-          }
-        }
-
         .class-actions {
           margin-top: 30px;
           font-size: 1em;
@@ -7338,7 +7380,6 @@ table.apiKey {
         .list-view {
 
           .title {
-            text-transform: uppercase;
             padding: 10px 0 20px;
 
             i {
@@ -7353,13 +7394,11 @@ table.apiKey {
           .info-side {
             height: calc(~"100% - 1px");
             width: 50%;
-
             border-left: 1px solid #e0e0e0;
-            background: @white;
 
             .info {
               position: fixed;
-              right: 10px;
+              left: 0;
               width: calc(~"50% - 10px");
               background: @white;
               height: 399px;
@@ -7398,14 +7437,14 @@ table.apiKey {
             }
 
             .title {
-              text-align: center;
+              text-align: left;
             }
             .description {
               text-align: left;
               padding: 1em .4em;
             }
             .table-details {
-              margin: 0 20px;
+              margin: 0;
               font-size: 1em;
               .label {
                 text-transform: uppercase;
@@ -7417,174 +7456,80 @@ table.apiKey {
           }
 
           .list-side {
-
+            height: 100%;
             padding: 0;
-            width: calc(~"50% - 8px");
-            float: left;
+            width: 50%;
+            float: right;
 
             .category {
               padding: 10px;
             }
 
             .box-row {
-
-              border: 1px solid #ebebeb;
-              background: #ffffff;
-              font-size: 14px;
-              color: @graytxt;
-              position: relative;
-              cursor: pointer;
               width: 100%;
-              white-space: nowrap;
+              border: 1px solid #ebebeb;
+              background: @white;
+
+              font-size: 14px;
+
+              color: #000;
+              cursor: pointer;
+              vertical-align: middle;
               overflow: hidden;
-              .cell {
-                display: inline-block;
-                padding: 5px;
-                overflow: hidden;
-                text-overflow: ellipsis;
+              //opacity:0.7;
 
-                &.icon {
-                  display: inline-block;
-                  margin: 0px;
-                  padding: 0px;
-                  border-radius: 50%;
-
-                  &.field {
-                    background-color: @field-color;
-                  }
-                  &.element {
-                    background-color: @element-color;
-                  }
-                  i {
-                    color: @white;
-                    display: table-cell;
-                    vertical-align: middle;
-                    text-align: center;
-                    height: 30px;
-                    width: 30px;
-                  }
-                }
+              &:hover {
+                //opacity:0.7;
+                //box-shadow: 5px 5px 5px @med-gray;
+                background-color: #f8f8f8;
 
               }
-              &.selected {
-                background: red;
-
-                .cell {
-                  &.icon {
-                    &.field {
-                      background-color: @white;
-                      i {
-                        color: @field-color;
-                      }
-                    }
-                    &.element {
-                      background-color: @white;
-                      i {
-                        color: @element-color;
-                      }
-                    }
-                  }
-                }
-
-                i.large-icon {
-                  color: #fff;
-                }
-
-                .disabled {
-                  cursor: not-allowed;
-                }
-
-                .disabled > a {
-                  pointer-events: none;
-                }
+              .outer {
+                border-left: 5px solid transparent;
+                padding: 2px;
+              }
+              .resource-icon {
+                vertical-align: middle;
+              }
+              i.fa-pencil-square {
+                color: @draft;
+                font-size: 20px;
+              }
+              i.fa-check-square {
+                color: @published;
+                font-size: 20px;
               }
 
-              .resource {
-                width: auto;
-
-              }
-              .type {
-                min-width: 35px;
-              }
-
-              .btn-circle {
-                border-radius: 50%;
-                background: #fff;
-                width: 30px;
-                height: 30px;
-                padding-top: .5em;
-              }
-              .btn-info.btn-circle {
-                background: @brand-primary;
-                color: #fff;
-                border: none;
-
-                &.template {
-                  background: @button-template;
-                }
-
-                &.element {
-                  background: @button-element;
-                }
-
-                &.field {
-                  background: @button-field;
-                }
-
-                &.metadata, &.instance {
-                  background: @button-metadata;
-                }
-
-                &.folder {
-                  background: @button-folder;
-                }
-              }
-            }
-
-            .box-row.selected {
-              background: @brand-primary;
-              color: #fff;
-
-              .cell {
-
-                i.large-icon {
-                  color: @brand-primary;
-
-                }
-              }
-
-              .btn-circle {
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-              }
-              .btn-info.btn-circle {
+              .cell.icon {
                 background: @white;
 
-                border: none;
+                i {
+                  &.field {
+                    color: @field-color;
+                  }
+                  &.element {
+                    color: @element-color;
+                  }
+                  &.template {
+                    color: @template-color;
+                  }
+                  &.metadata, &.instance {
 
-                &.template {
-                  color: @button-template;
+                    color: @metadata-color;
+                  }
+                  &.folder {
+                    color: @folder-color;
+
+                  }
                 }
-
-                &.element {
-                  color: @button-element;
-                }
-
-                &.field {
-                  color: @button-field;
-                }
-
-                &.metadata, &.instance {
-                  color: @button-metadata;
-                }
-
-                &.folder {
-                  color: @button-folder;
-                }
-
               }
+              &.selected {
 
+                background-color: #f8f8f8;
+                .outer {
+                  border-left-color: @brand-primary;
+                }
+              }
             }
           }
         }

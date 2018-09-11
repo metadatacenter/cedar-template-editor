@@ -3,19 +3,15 @@
     <div class="modal-header" id="publishModalHeader">
       <button type="button" class="close" ng-click="dc.publishModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" ><span translate>{{publish.titleText}}</span> <i class="fa fa-globe"></i></h4>
+      <h4 class="modal-title" >
+        <span  ng-if="publish.titleText == 'Draft'" translate>DASHBOARD.version.titleDraft</span>
+        <span ng-if="publish.titleText == 'Publish'" translate>DASHBOARD.version.titlePublish</span>
+        <i class="fa fa-globe"></i></h4>
     </div>
     <div class="modal-body">
 
-      <h5 translate>Set Published Version</h5>
-
-      <p>
-        Publishing allows you to add a version number to the document.
-        Published documents are not modifiable and cannot be deleted.
-      </p>
-
-      <form ng-submit="publish.updateResource();dc.publishModalVisible=false">
-        <div class="publish" >
+      <form  ng-submit="publish.updateResource();dc.publishModalVisible=false">
+        <div class="publish"  >
 
           <div class="version-part" >
             <input name="major" id="version-major" ng-model="publish.parts[0]"
@@ -47,6 +43,17 @@
 
         </div>
       </form>
+
+      <div style="padding:20px 0"><span translate>DASHBOARD.version.instructions</span>
+        <span ng-if="!publish.openMore" class="more-info" ng-click="publish.openMore = true">...read more</span>
+        <span ng-if="publish.openMore" class="more-info" ng-click="publish.openMore = false">...read less</span>
+      </div>
+
+      <div ng-if="publish.openMore">
+        <span  ng-if="publish.titleText == 'Draft'" translate>DASHBOARD.version.moreDraft</span>
+        <span ng-if="publish.titleText == 'Publish'" translate>DASHBOARD.version.morePublish</span>
+      </div>
+
     </div>
     <div class="modal-footer actions">
       <div class="clear-save">

@@ -35,12 +35,13 @@ define([
           'resourceService',
           'UIMessageService',
           'UISettingsService',
+          'DataManipulationService',
           'QueryParamUtilsService',
           'CONST'
         ];
 
         function cedarFinderController($location, $scope, $rootScope, $translate, CedarUser, resourceService,
-                                       UIMessageService, UISettingsService,
+                                       UIMessageService, UISettingsService,DataManipulationService,
                                        QueryParamUtilsService, CONST) {
 
           var vm = this;
@@ -109,6 +110,16 @@ define([
           vm.loadMore = loadMore;
           vm.searchMore = searchMore;
 
+          vm.canRead = canRead;
+          vm.canWrite = canWrite;
+          vm.canChangeOwner = canChangeOwner;
+          vm.getResourceVersion = getResourceVersion;
+          vm.isPublished = isPublished;
+          vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
+          vm.getTitle = getTitle;
+          vm.getResourceTypeClass = getResourceTypeClass;
+
+
           //*********** ENTRY POINT
 
           getPreferences();
@@ -161,6 +172,10 @@ define([
             return folderName;
           }
 
+          function buildBreadcrumbTitle(searchTerm) {
+            return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
+          }
+
           function getPathInfo(folderId) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -169,7 +184,15 @@ define([
 
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  {
+                    folderId         : folderId,
+                    resourceTypes    : resourceTypes,
+                    sort             : sortField(),
+                    limit            : limit,
+                    offset           : offset,
+                    version          : getFilterVersion(),
+                    publicationStatus: getFilterStatus()
+                  },
                   function (response) {
                     //vm.currentFolderId = folderId;
                     //vm.resources = response.resources;
@@ -193,7 +216,14 @@ define([
             var offset = vm.offset;
             resourceService.searchResources(
                 term,
-                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                {
+                  resourceTypes    : resourceTypes,
+                  sort             : sortField(),
+                  limit            : limit,
+                  offset           : offset,
+                  version          : getFilterVersion(),
+                  publicationStatus: getFilterStatus()
+                },
                 function (response) {
                   vm.searchTerm = term;
                   vm.isSearching = true;
@@ -251,7 +281,15 @@ define([
 
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  {
+                    folderId         : folderId,
+                    resourceTypes    : resourceTypes,
+                    sort             : sortField(),
+                    limit            : limit,
+                    offset           : offset,
+                    version          : getFilterVersion(),
+                    publicationStatus: getFilterStatus()
+                  },
                   function (response) {
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
@@ -408,6 +446,62 @@ define([
             );
           };
 
+          function canRead() {
+            return resourceService.canRead(vm.selectedResource);
+          };
+
+          function canWrite() {
+            return resourceService.canWrite(vm.selectedResource);
+          };
+
+          function canChangeOwner() {
+            return resourceService.canChangeOwner(vm.selectedResource);
+          };
+
+          function isPublished(resource) {
+            var r = resource || vm.selectedResource;
+            return (r[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+          };
+
+          function getResourceVersion(resource) {
+            var r = resource || vm.selectedResource;
+            return r['pav:version'];
+          };
+
+          function getTitle(node) {
+            if (node) {
+              return DataManipulationService.getTitle(node);
+            }
+          };
+
+          function getResourceTypeClass(resource) {
+            var result = '';
+            if (resource) {
+              switch (resource.nodeType) {
+                case CONST.resourceType.FOLDER:
+                  result += "folder";
+                  break;
+                case CONST.resourceType.TEMPLATE:
+                  result += "template";
+                  break;
+                case CONST.resourceType.METADATA:
+                  result += "metadata";
+                  break;
+                case CONST.resourceType.INSTANCE:
+                  result += "metadata";
+                  break;
+                case CONST.resourceType.ELEMENT:
+                  result += "element";
+                  break;
+                case CONST.resourceType.FIELD:
+                  result += "field";
+                  break;
+              }
+
+            }
+            return result;
+          }
+
           // callback to load more resources for the current folder or search
           function loadMore() {
 
@@ -427,11 +521,13 @@ define([
                 if (resourceTypes.length > 0) {
                   return resourceService.getResources(
                       {
-                        folderId     : folderId,
-                        resourceTypes: resourceTypes,
-                        sort         : sortField(),
-                        limit        : limit,
-                        offset       : offset
+                        folderId         : folderId,
+                        resourceTypes    : resourceTypes,
+                        sort             : sortField(),
+                        limit            : limit,
+                        offset           : offset,
+                        version          : getFilterVersion(),
+                        publicationStatus: getFilterStatus()
                       },
                       function (response) {
                         vm.resources = vm.resources.concat(response.resources);
@@ -471,10 +567,12 @@ define([
             if (offset < vm.totalCount) {
               return resourceService.searchResources(term,
                   {
-                    resourceTypes: resourceTypes,
-                    sort         : sortField(),
-                    limit        : limit,
-                    offset       : offset
+                    resourceTypes    : resourceTypes,
+                    sort             : sortField(),
+                    limit            : limit,
+                    offset           : offset,
+                    ersion           : getFilterVersion(),
+                    publicationStatus: getFilterStatus()
                   },
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
@@ -528,7 +626,7 @@ define([
               if (vm.resourceTypes[value]) {
 
                 // just elements adn field can be selected
-                if (value == 'element' ||value == 'field') {
+                if (value == 'element' || value == 'field') {
                   activeResourceTypes.push(value);
                 }
 
@@ -593,6 +691,14 @@ define([
           function isListView() {
             return CedarUser.isListView();
           }
+
+          function getFilterVersion() {
+            return CedarUser.getVersion();
+          };
+
+          function getFilterStatus() {
+            return CedarUser.getStatus();
+          };
 
           function toggleView() {
             UISettingsService.saveView(CedarUser.toggleView());

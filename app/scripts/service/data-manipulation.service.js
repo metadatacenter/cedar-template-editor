@@ -150,6 +150,12 @@ define([
           return service.schemaOf(node).hasOwnProperty('pav:version');
         };
 
+        service.getVersion = function (node) {
+          if (service.hasVersion(node)) {
+            return service.schemaOf(node)['pav:version'];
+          }
+        };
+
         service.titleLocation = function() {
           return CONST.model.NAME;
         };

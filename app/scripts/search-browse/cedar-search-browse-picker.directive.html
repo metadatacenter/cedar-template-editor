@@ -329,42 +329,14 @@
 
                         <div ng-if="dc.isPublished(resource)">
                           <hr style="margin:0;padding:0"/>
-                          <i class="action fa fa-globe"></i>
-                          <span ng-if="!dc.filterLatest()" ng-show="dc.getResourceVersion(resource) != '0.0.1'"> {{dc.getResourceVersion(resource)}}</span>
+                          <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
+                        </div>
+                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">  
+                          <hr style="margin:0;padding:0"/>
+                          {{dc.getResourceVersion(resource)}}
                         </div>
                       </div>
 
-                      <!--<cedar-resource-icon style="visibility:hidden"-->
-                      <!--resource-type="resource.nodeType"></cedar-resource-icon>-->
-
-                      <!--<div class="resource"><i class="fa" ng-class="dc.getResourceIconClass(resource)"></i></div>-->
-                      <!--<div class="title">{{ dc.getTitle(resource) }}</div>-->
-                      <!--<div ng-if="dc.onDashboard()" class="btn-group dropdown">-->
-                      <!--<button-->
-                      <!--id="{{dc.getId(resource, 'list')}}"-->
-                      <!--ng-click="dc.toggledCedarDropdownMenu($event, resource,'grid' )"-->
-                      <!--style="display:none"-->
-                      <!--title="More"-->
-                      <!--class="more-button"-->
-                      <!--data-toggle="dropdown"-->
-                      <!--aria-haspopup="true"-->
-                      <!--aria-expanded="true">-->
-                      <!--<i class="fa fa-ellipsis-v"></i>-->
-                      <!--</button>-->
-
-                      <!--<cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'menu')}}"-->
-                      <!--resource="resource" go-to="dc.goToResource" share="dc.showShareModal"-->
-                      <!--move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"-->
-                      <!--rename="dc.showRenameModal"-->
-                      <!--publish-modal="dc.showPublishModal" publish-callback="dc.publishResource"-->
-                      <!--draft-callback="dc.createDraftResource"-->
-                      <!--can-not-publish="dc.canNotPublish" can-not-create-draft="dc.canNotCreateDraft"-->
-                      <!--can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"-->
-                      <!--can-not-rename="dc.canNotRename"-->
-                      <!--can-not-share="dc.canNotShare" is-folder="dc.isFolder()">-->
-                      <!--</cedar-dropdown-menu>-->
-
-                      <!--</div>-->
                     </div>
                   </div>
                 </div>
@@ -388,7 +360,7 @@
                   <a class="ellipsis" style="width:100px;padding-right:10px;"
                       ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
                       ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
+                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:100px;"></div>
                   <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
                   <div style="width:40px"></div>
 
@@ -411,14 +383,9 @@
                         dc.getTitle(resource)}}
                       </div>
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] |
-                      prettyDate}}
-                    </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                      prettyDate}}
-                    </div>
-                    <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:40px;"></div>
-                    <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] | prettyDate}}</div>
+                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
+                    <div style="width:100px;"></div>
                     <div class="flex" style="width:40px;justify-content:flex-end;">
 
                       <button id="{{dc.getId(resource, 'list')}}"
@@ -471,15 +438,12 @@
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                       prettyDate }}
                     </div>
-                    <div ng-if="dc.filterLatest()" class="ellipsis" style="width:40px;">
-                      <div ng-if="dc.isPublished(resource)"><i class="action fa fa-globe"></i></div>
-                    </div>
-                    <div ng-if="!dc.filterLatest()" class="ellipsis" style="width:100px;">
+                    <div  class="ellipsis" style="width:100px;">
                       <div ng-if="!dc.isPublished(resource)"><i class="action fa fa-globe"
                           style="visibility:hidden"></i><span ng-show="dc.getResourceVersion(resource) != '0.0.1'"> {{dc.getResourceVersion(resource)}}</span>
                       </div>
-                      <div ng-if="dc.isPublished(resource)"><i class="action fa fa-globe"></i>
-                        {{dc.getResourceVersion(resource)}}
+                      <div ng-if="dc.isPublished(resource)">
+                        <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
                       </div>
                     </div>
                     <div class="flex" style="width:40px;justify-content:flex-end;">
