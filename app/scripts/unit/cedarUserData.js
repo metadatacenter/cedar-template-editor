@@ -46,10 +46,10 @@ var cedarUserData = {
       return "createdOnTS";
     },
     getVersion      : function () {
-      return 'all';
+      return '';
     },
     getStatus      : function () {
-      return 'all';
+      return '';
     },
   }
 };
