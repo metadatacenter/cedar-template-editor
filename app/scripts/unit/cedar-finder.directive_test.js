@@ -80,8 +80,8 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('img/plus.png');
       //httpData.getFile('img/close_modal.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=folder&sort=createdOnTS');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&resource_types=element,folder&sort=createdOnTS');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=folder&sort=createdOnTS&version=all');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?limit=100&offset=0&publication_status=all&resource_types=element,folder&sort=createdOnTS&version=all');
      });
 
     describe('In a template,', function () {
