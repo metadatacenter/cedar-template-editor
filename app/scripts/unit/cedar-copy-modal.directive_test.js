@@ -75,10 +75,10 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
       httpData.getUrl(UrlService.base(), 'messaging', '/summary');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80a3dbf6-a840-48e9-8542-2fd31f475861/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Fa4d9694b-74cb-4938-8c7d-59986021b35f/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
-      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F64647077-5bcb-4e1d-aee4-2dce39a73e68/contents?limit=100&offset=0&resource_types=element,field,instance,template,folder&sort=name');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80e366b2-c8fb-4de5-b899-7d46c770d2f4/contents?limit=100&offset=0&publication_status=all&resource_types=element,field,instance,template,folder&sort=name&version=all');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80a3dbf6-a840-48e9-8542-2fd31f475861/contents?limit=100&offset=0&publication_status=all&resource_types=element,field,instance,template,folder&sort=name&version=all');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Fa4d9694b-74cb-4938-8c7d-59986021b35f/contents?limit=100&offset=0&publication_status=all&resource_types=element,field,instance,template,folder&sort=name&version=all');
+      httpData.getUrl(UrlService.base(), 'resource', '/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F64647077-5bcb-4e1d-aee4-2dce39a73e68/contents?limit=100&offset=0&publication_status=all&resource_types=element,field,instance,template,folder&sort=name&version=all');
     });
 
     describe('In a template,', function () {
