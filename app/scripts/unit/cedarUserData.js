@@ -45,6 +45,12 @@ var cedarUserData = {
     getSort : function () {
       return "createdOnTS";
     },
+    getVersion      : function () {
+      return 'all';
+    },
+    getStatus      : function () {
+      return 'all';
+    },
   }
 };
 
