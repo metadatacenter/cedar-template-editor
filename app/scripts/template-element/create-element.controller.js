@@ -105,7 +105,6 @@ define([
         // Result
         var canWrite = writePermission && !isPublished;
         $scope.cannotWrite = !canWrite;
-        console.log('canwrite', canWrite);
         return canWrite;
       }
     };
