@@ -67,8 +67,16 @@ define([
         return dms.isRootNode($scope.parentElement, $scope.field);
       };
 
+      $scope.isPublished = function () {
+        return dms.isPublished($scope.field);
+      };
+
       $scope.hasVersion = function () {
         return dms.hasVersion($scope.field);
+      };
+
+      $scope.getVersion = function () {
+        return dms.getVersion($scope.field);
       };
 
       $scope.isEditable = function () {
