@@ -38,6 +38,8 @@ define([
     $scope.field;
     $scope.form = {};
     $scope.saveButtonDisabled = false;
+    $scope.fieldTitle = null;
+    $scope.fieldDescription = null;
 
     // for the field type picker
     $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
@@ -148,27 +150,31 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 
-        // $scope.getField(fieldType);
         $scope.field = StagingService.addFieldToField(fieldType);
-        dms.setId($scope.field, $routeParams.id);
+
+
+        $rootScope.keyOfRootElement = dms.generateGUID();
+        dms.setId($scope.field,  $rootScope.keyOfRootElement);
         $scope.form = $scope.field;
-
-
-        checkValidation($scope.form);
-        UIUtilService.setDirty(true);
-
-        HeaderService.dataContainer.currentObjectScope = $scope.field;
-
-        $scope.form = $scope.field;
-        var key = dms.generateGUID();
-        $rootScope.keyOfRootElement = key;
-
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
-        dms.createDomIds($scope.field);
         $scope.fieldSchema = dms.schemaOf($scope.field);
+        HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+
+        dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
+        dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
+
+        UIUtilService.setDirty(true);
+
+        dms.createDomIds($scope.field);
 
         $scope.toggleMore();
+
+        $timeout(function () {
+          checkValidation($scope.form);
+        },1000);
+
       }
       $scope.showMenuPopover = false;
     };
