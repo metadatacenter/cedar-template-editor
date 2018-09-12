@@ -401,7 +401,7 @@ define([
     //  modals
     //
 
-    // create a modal id for the controlled terms modals
+    // create a modal id for the controlled terms modal
     service.getModalId = function (id, type) {
       if (id) {
         id = id.substring(id.lastIndexOf('/') + 1);
@@ -412,7 +412,8 @@ define([
     // show the modal
     service.showModal = function (id, type) {
       service.modalType = type;
-      service.modalId = service.getModalId(id, service.modalType);
+      service.modalId = service.getModalId(id, type);
+      console.log('showModal',service.modalId);
       jQuery("#" + service.modalId).modal('show');
     };
 

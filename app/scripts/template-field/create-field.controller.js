@@ -153,14 +153,13 @@ define([
 
         $scope.field = StagingService.addFieldToField(fieldType);
 
-
-        //$rootScope.keyOfRootElement = dms.generateGUID();
-        //dms.setId($scope.field,  $rootScope.keyOfRootElement);
         $scope.form = $scope.field;
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
         $scope.fieldSchema = dms.schemaOf($scope.field);
         HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+        console.log('scope',$scope.field);
 
 
         dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
@@ -175,7 +174,9 @@ define([
 
         dms.createDomIds($scope.field);
 
-        $scope.toggleMore();
+        // $scope.toggleMore();
+
+        $rootScope.$broadcast('field:reset');
 
         $timeout(function () {
           checkValidation($scope.form);
@@ -194,19 +195,18 @@ define([
         AuthorizedBackendService.doCall(
             TemplateFieldService.getTemplateField($routeParams.id),
             function (response) {
+
               $scope.field = response.data;
 
-
-              var copiedForm = jQuery.extend(true, {}, $scope.field);
-              checkValidation(copiedForm);
-
-              HeaderService.dataContainer.currentObjectScope = $scope.field;
+              checkValidation(jQuery.extend(true, {}, $scope.field));
 
               $scope.form = $scope.field;
-              var key = dms.getId($scope.field);
-              $rootScope.keyOfRootElement = key;
+              $rootScope.keyOfRootElement = dms.getId($scope.field);
               $rootScope.rootElement = $scope.form;
               $rootScope.jsonToSave = $scope.field;
+              $scope.fieldSchema = dms.schemaOf($scope.field);
+              HeaderService.dataContainer.currentObjectScope = $scope.field;
+
               $rootScope.documentTitle = dms.getTitle($scope.form);
 
               UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
@@ -215,11 +215,18 @@ define([
               UIUtilService.setVisibleMetadata(0);
 
               dms.createDomIds($scope.field);
-              $scope.fieldSchema = dms.schemaOf($scope.field);
               $scope.setClean();
 
               // TODO details don't work yet
               getDetails($scope.field['@id']);
+
+              dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
+              dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
+              dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
+              if ($rootScope.keyOfRootElement) {
+                dms.setId($scope.field, $rootScope.keyOfRootElement);
+              }
+
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.FIELD.load.error', err);
@@ -228,22 +235,6 @@ define([
         );
       } else {
         $scope.addField('textfield');
-        // // If we're not loading an existing field then let's create a new empty field
-        // $scope.field = DataTemplateService.getContainerField();
-        // checkValidation($scope.field);
-        // $scope.setClean();
-        //
-        // HeaderService.dataContainer.currentObjectScope = $scope.field;
-        //
-        // $scope.form = $scope.field;
-        // var key = dms.generateGUID();
-        // $rootScope.keyOfRootElement = key;
-        // $rootScope.rootElement = $scope.form;
-        // $rootScope.jsonToSave = $scope.field;
-        // dms.createDomIds($scope.field);
-        // $scope.fieldSchema = dms.schemaOf($scope.field);
-
-
       }
     };
 
@@ -453,7 +444,9 @@ define([
       $scope.fieldDescription = description;
     });
 
+
     $scope.$watch('field["schema:name"]', function (name) {
+      console.log('watch schema:name', name)
       $scope.fieldTitle = dms.getTitle($scope.field);
       $rootScope.documentTitle = $scope.fieldTitle;
     });
@@ -505,14 +498,16 @@ define([
     };
 
     $scope.showModal = function (id) {
-      jQuery("#" + id).modal('show');
+      UIUtilService.showModal(id,'field');
     };
 
     $scope.$on("field:controlledTermAdded", function () {
-      jQuery("#control-options-field-field").modal('hide');
+      UIUtilService.hideModal('field');
+      //jQuery("#control-options-field").modal('hide');
     });
 
     // init
+
     $rootScope.keyOfRootElement = null;
     getField();
   }

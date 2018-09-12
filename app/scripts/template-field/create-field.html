@@ -47,7 +47,7 @@
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-template-field')">
+            ng-click="showModal('/0')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -67,8 +67,10 @@
         <div class="right-body col-sm-10 col-sm-offset-1">
           <div id="form-preview-section">
             <div class="form-preview collapse in">
+
               <form-directive form="form" page="page" model="instance" page-index="0"
                   ng-if="!isPropertiesEmpty()"></form-directive>
+
             </div>
           </div>
 
@@ -146,23 +148,41 @@
       <!--</cedar-finder>-->
       <!--</section>-->
 
-
-      <!-- field modal -->
-      <div class="modal fade controlled-terms-modal" id="control-options-field-field" data-backdrop="static">
-        <div class="modal-dialog">
-          <div class="modal-content" style="overflow:auto">
-            <div class="modal-header">
-              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                  aria-label="Close"><span aria-hidden="true"><img
-                  src="/img/close_modal.png" width="22"/></span></button>
-            </div>
-            <div class="modal-body">
-              <div controlled-term field="field"
-                  options='{"filterSelection":"field", "modalId":"control-options-field-field"}'></div>
+      <section>
+        <div class="modal fade controlled-terms-modal" id="control-options-0-field" data-backdrop="static">
+          <div class="modal-dialog">
+            <div class="modal-content" style="overflow:auto">
+              <div class="modal-header">
+                <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true"><img
+                    src="/img/close_modal.png" width="22"/></span></button>
+              </div>
+              <div class="modal-body">
+                <div controlled-term field="form"
+                    options='{"filterSelection":"field", "modalId":"control-options-template-field"}'></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+
+      <!--&lt;!&ndash; field modal &ndash;&gt;-->
+      <!--<div class="modal fade controlled-terms-modal" id="control-options-field-field" data-backdrop="static">-->
+        <!--<div class="modal-dialog">-->
+          <!--<div class="modal-content" style="overflow:auto">-->
+            <!--<div class="modal-header">-->
+              <!--<button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"-->
+                  <!--aria-label="Close"><span aria-hidden="true"><img-->
+                  <!--src="/img/close_modal.png" width="22"/></span></button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+              <!--<div controlled-term field="field"-->
+                  <!--options='{"filterSelection":"field", "modalId":"control-options-field-field"}'></div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
 
     </div>

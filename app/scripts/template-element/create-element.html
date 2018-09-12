@@ -40,7 +40,7 @@
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-element-field')">
+            ng-click="showModal('control-options','element')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -151,7 +151,7 @@
 
 
       <!-- field modal -->
-      <div class="modal fade controlled-terms-modal" id="control-options-element-field" data-backdrop="static">
+      <div class="modal fade controlled-terms-modal" id="control-options-element" data-backdrop="static">
         <div class="modal-dialog">
           <div class="modal-content" style="overflow:auto">
             <div class="modal-header">
@@ -161,7 +161,7 @@
             </div>
             <div class="modal-body">
               <div controlled-term field="element"
-                  options='{"filterSelection":"field", "modalId":"control-options-element-field"}'></div>
+                  options='{"filterSelection":"field", "modalId":"control-options-element"}'></div>
             </div>
           </div>
         </div>
