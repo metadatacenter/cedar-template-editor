@@ -1188,11 +1188,13 @@ define([
       // });
 
       $scope.$watch('field["schema:name"]', function (name) {
+        $scope.fieldLabel = $scope.field;
+        $scope.fieldLabelKey = 'schema:name';
         $scope.fieldLabel[$scope.fieldLabelKey] = name;
       });
 
       $scope.init = function () {
-        console.log('init isRootNode', dms.isRootNode($scope.parentElement, $scope.field));
+
 
         $scope.fieldSchema = dms.schemaOf($scope.field);
         if (dms.isRootNode($scope.parentElement, $scope.field)) {
@@ -1207,7 +1209,7 @@ define([
           $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
           $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
         }
-        console.log('fieldLabel',$scope.fieldLabel, $scope.form);
+
       };
 
       $scope.init();
