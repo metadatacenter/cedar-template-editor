@@ -1054,9 +1054,13 @@ var TemplateCreatorPage = function () {
 
       // enter the name and description
       browser.wait(EC.elementToBeClickable(createFieldTitle));
-      createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.actions().doubleClick(createFieldTitle).perform();
+      createFieldTitle.sendKeys(title);
+
       browser.wait(EC.elementToBeClickable(createFieldDescription));
-      createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+      browser.actions().doubleClick(createFieldDescription).perform();
+      createFieldDescription.sendKeys(description);
+
     }
 
     switch (fieldType.cedarType) {
@@ -1081,6 +1085,7 @@ var TemplateCreatorPage = function () {
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
+    console.log('addField',cedarType, title, description);
 
     if (isMore) {
       browser.wait(EC.visibilityOf(createMore));
@@ -1129,13 +1134,23 @@ var TemplateCreatorPage = function () {
     if (found) {
       browser.wait(EC.visibilityOf(btn));
       browser.wait(EC.elementToBeClickable(btn));
-      btn.click();
+      btn.click().then(function (value) {
+        console.log('click',value);
+      });
+
 
       // enter the name and description
       browser.wait(EC.elementToBeClickable(createFieldTitle));
-      createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.actions().doubleClick(createFieldTitle).perform();
+      createFieldTitle.sendKeys(title).then(function (value) {
+        console.log('title',title);
+      });
+
       browser.wait(EC.elementToBeClickable(createFieldDescription));
-      createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+      browser.actions().doubleClick(createFieldDescription).perform();
+      createFieldDescription.sendKeys(description).then(function (value) {
+        console.log('description',description);
+      });
     }
 
     switch (cedarType) {
@@ -1143,11 +1158,6 @@ var TemplateCreatorPage = function () {
         browser.wait(EC.elementToBeClickable(createFieldContent));
         createFieldContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
         break;
-        // case "richtext":
-        //   var richTextContent = element(by.css('div.cke_contents.cke_reset'));
-        //   browser.wait(EC.elementToBeClickable(richTextContent));
-        //   richTextContent.click().sendKeys(content).sendKeys(protractor.Key.ENTER);
-        //   break;
     }
 
     // var field = element(by.css('.field-root .' + fieldType.iconClass));

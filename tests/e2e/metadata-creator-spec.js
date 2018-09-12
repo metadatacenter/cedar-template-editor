@@ -78,11 +78,12 @@ describe('metadata-creator', function () {
 
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
-    it("metadata-creator create metadata should have a logo and control bar", function () {
+    it("metadata-creator create metadata should be on the workspace", function () {
+      console.log('created template' , template,'for',testConfig.testUser1);
       workspacePage.onWorkspace();
     });
 
-    it("should add fields to our template", function () {
+    it("should edit the resource and add fields", function () {
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.isDirty();

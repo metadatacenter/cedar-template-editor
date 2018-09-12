@@ -219,6 +219,24 @@ define([
           }
         };
 
+        service.getIdentifier = function (node) {
+          if (service.schemaOf(node)) {
+            return service.schemaOf(node)[CONST.model.IDENTIFIER];
+          }
+        };
+
+        service.setIdentifier = function (node, value) {
+          if (service.schemaOf(node)) {
+            service.schemaOf(node)[CONST.model.IDENTIFIER] = value;
+          }
+        };
+
+        service.removeIdentifier = function (node) {
+          if (service.schemaOf(node)) {
+            delete service.schemaOf(node)[CONST.model.IDENTIFIER];
+          }
+        };
+
         // min/max string length
         service.hasMinLength = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('minLength');
@@ -325,7 +343,9 @@ define([
 
         // Function that generates a basic field definition
         service.isStaticField = function (node) {
-          return FieldTypeService.isStaticField(service.getInputType(node));
+          if (node) {
+            return FieldTypeService.isStaticField(service.getInputType(node));
+          }
         };
 
         // is this a numeric field?

@@ -20,7 +20,7 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       $scope.errorMessages;
-      var tabSet = ["options","values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
+      var tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -193,19 +193,19 @@ define([
 
       $scope.hasMinLength = function () {
         return dms.hasMinLength($scope.field);
-      }
+      };
 
       $scope.getMinLength = function () {
         return dms.getMinLength($scope.field);
-      }
+      };
 
       $scope.hasMaxLength = function () {
         return dms.hasMaxLength($scope.field);
-      }
+      };
 
       $scope.getMaxLength = function () {
         return dms.getMaxLength($scope.field);
-      }
+      };
 
       $scope.hasDescription = function () {
         var description = dms.getDescription($scope.field);
@@ -228,9 +228,9 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-      $scope.hasOptions = function() {
+      $scope.hasOptions = function () {
         return $scope.isNumericField() || $scope.isTextField();
-      }
+      };
 
       $scope.isNumericField = function () {
         return dms.isNumericField($scope.field);
@@ -422,7 +422,7 @@ define([
       // controlled terms modal
       //
 
-      $scope.modalType;
+
       // create an id for the controlled terms modal
       $scope.getModalId = function (type) {
         return UIUtilService.getModalId(dms.getId($scope.field), type);
@@ -438,7 +438,7 @@ define([
         if (type) {
           // TODO don't pass the search string through rootScope
           $rootScope.finalTitle = $scope.getLabel();
-          $scope.modalType = type;
+
           UIUtilService.showModal(dms.getId($scope.field), type);
 
           // initialize the controlled term modal
@@ -449,16 +449,12 @@ define([
       // show the controlled terms modal
       $scope.hideModal = function () {
         UIUtilService.hideModal();
-        //$rootScope.$broadcast("ctdc:init", [$scope.getTitle()]);
-
       };
 
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function () {
         $scope.hideModal();
         UIUtilService.setDirty(true);
-
-        // build the added fields map in this case
         $scope.setAddedFieldMap();
       });
 
@@ -514,7 +510,8 @@ define([
 
       // Used to update schema:description when the field description (stored in propertyDescriptions) changes
       $scope.$watch("fieldDescription[fieldDescriptionKey]", function () {
-        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined($scope.fieldDescription) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
+        if (!angular.isUndefined($scope.fieldDescriptionKey) && !angular.isUndefined(
+            $scope.fieldDescription) && !angular.isUndefined($scope.fieldDescription[$scope.fieldDescriptionKey])) {
           if ($scope.isEditable()) {
             dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
           }
@@ -1184,18 +1181,38 @@ define([
       //
       // init
       //
-      $scope.fieldSchema = dms.schemaOf($scope.field);
-      if (dms.isRootNode($scope.parentElement, $scope.field)) {
-        $scope.fieldLabelKey = 'schema:name';
-        $scope.fieldDescriptionKey = 'schema:description';
+
+      // $scope.$on("field:reset", function () {
+      //   console.log('on field:reset');
+      //   $scope.init();
+      // });
+
+      $scope.$watch('field["schema:name"]', function (name) {
         $scope.fieldLabel = $scope.field;
-        $scope.fieldDescription = $scope.field;
-      } else {
-        $scope.fieldLabelKey = $scope.fieldKey;
-        $scope.fieldDescriptionKey = $scope.fieldKey;
-        $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
-        $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
-      }
+        $scope.fieldLabelKey = 'schema:name';
+        $scope.fieldLabel[$scope.fieldLabelKey] = name;
+      });
+
+      $scope.init = function () {
+
+
+        $scope.fieldSchema = dms.schemaOf($scope.field);
+        if (dms.isRootNode($scope.parentElement, $scope.field)) {
+          $scope.fieldLabelKey = 'schema:name';
+          $scope.fieldDescriptionKey = 'schema:description';
+          $scope.fieldLabel = $scope.field;
+          $scope.fieldDescription = $scope.field;
+
+        } else {
+          $scope.fieldLabelKey = $scope.fieldKey;
+          $scope.fieldDescriptionKey = $scope.fieldKey;
+          $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
+          $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
+        }
+
+      };
+
+      $scope.init();
     };
 
 

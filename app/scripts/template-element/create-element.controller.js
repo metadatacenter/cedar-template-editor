@@ -453,6 +453,11 @@ define([
       }
     });
 
+    $scope.$watch('element["schema:identifier"]', function (identifier) {
+      if (!angular.isUndefined($scope.element) && !identifier) {
+        dms.removeIdentifier($scope.element);
+      }
+    });
 
     // This function watches for changes in the title field and autogenerates the schema title and description fields
     $scope.$watch('element["schema:name"]', function (v) {
@@ -555,7 +560,7 @@ define([
     };
 
     //
-    // finder
+    // finder modal
     //
 
     $scope.showFinderModal = function () {
@@ -564,23 +569,9 @@ define([
       $rootScope.$broadcast('finderModalVisible');
     };
 
-    $scope.hideFinder = function () {
-      jQuery("#finder-modal").modal('hide')
-    };
-
-
-    // $scope.addElementFromFinder = function () {
-    //   if ($scope.finderResource) {
-    //     $scope.addElementToTemplate($scope.finderResource);
-    //   }
-    //   $scope.hideFinder();
+    // $scope.hideFinder = function () {
+    //   jQuery("#finder-modal").modal('hide')
     // };
-    //
-    // $scope.showFinder = function () {
-    //   $scope.finderResource = null;
-    // };
-
-
 
     $scope.enableSaveButton = function () {
       $timeout(function () {
@@ -592,14 +583,17 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.showModal = function (id) {
-      console.log('showModal',id);
-      jQuery("#" + id).modal('show');
+    //
+    // controlled terms modal
+    //
+
+    $scope.showModal = function (id, type) {
+      UIUtilService.showModal(id, type);
     };
 
     //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function () {
-      jQuery("#control-options-element-field").modal('hide');
+      UIUtilService.hideModal();
     });
 
     // // update the property for a field
