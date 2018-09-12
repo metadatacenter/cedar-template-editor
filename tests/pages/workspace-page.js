@@ -701,8 +701,17 @@ var WorkspacePage = function () {
       };
 
       this.populateResource = function (name, type) {
+        console.log('populate');
 
-        this.doubleClickResource(name, type);
+        var createFirst = doSearch(name, type);
+        var populateBtn = createFirst.all(by.css('div.toolbar > div.right-side > button.ng-scope')).get(0).then(function () {
+          console.log('btn',populateBtn);
+        });
+
+        browser.wait(EC.elementToBeClickable(populateBtn));
+        populateBtn.click().then(function () {
+          console.log('click');
+        });
 
         // on metadata page
         browser.wait(EC.presenceOf(createNavbarMetadata));
@@ -715,10 +724,6 @@ var WorkspacePage = function () {
 
         // return to workspace
         metadataCreatorPage.clickBackArrow();
-        // var backArrow = element(by.css('.back-arrow-click'));
-        // browser.wait(EC.visibilityOf(backArrow));
-        // browser.wait(EC.elementToBeClickable(backArrow));
-        // backArrow.click();
 
       };
 
@@ -729,18 +734,8 @@ var WorkspacePage = function () {
 
       // edit a resource
       this.editResource = function (name, type) {
-        var createFirst = doSelect(name, type);
-
-        var moreButton = createFirst.all(by.css('button.more-button')).get(0);
-        browser.wait(EC.visibilityOf(moreButton));
-        browser.wait(EC.elementToBeClickable(moreButton));
-        moreButton.click();
-
-        // edit menu item
-        var editButton = createFirst.all(by.css('ul.dropdown-menu li a.edit')).get(0);
-        browser.wait(EC.visibilityOf(editButton));
-        browser.wait(EC.elementToBeClickable(editButton));
-        editButton.click();
+        this.doubleClickResource(name, type);
+        this.onTemplate();
       };
 
       // move a resource
@@ -787,10 +782,6 @@ var WorkspacePage = function () {
         var createFirst = doSearch(name, type);
         browser.wait(EC.elementToBeClickable(createFirst));
         browser.actions().doubleClick(createFirst).perform();
-
-        // is this the metadata editor?
-        browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
-
       };
 
 // click on the item at index in the breadcrumb

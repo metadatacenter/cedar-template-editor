@@ -40,6 +40,7 @@ define([
     $scope.saveButtonDisabled = false;
     $scope.fieldTitle = null;
     $scope.fieldDescription = null;
+    $scope.fieldIdentifier = null;
 
     // for the field type picker
     $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
@@ -145,7 +146,7 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
-      console.log('addField', fieldType);
+      console.log('addField', fieldType, $routeParams.id);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -153,8 +154,8 @@ define([
         $scope.field = StagingService.addFieldToField(fieldType);
 
 
-        $rootScope.keyOfRootElement = dms.generateGUID();
-        dms.setId($scope.field,  $rootScope.keyOfRootElement);
+        //$rootScope.keyOfRootElement = dms.generateGUID();
+        //dms.setId($scope.field,  $rootScope.keyOfRootElement);
         $scope.form = $scope.field;
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
@@ -164,6 +165,11 @@ define([
 
         dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
         dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
+        dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
+        if ($rootScope.keyOfRootElement) {
+          dms.setId($scope.field, $rootScope.keyOfRootElement);
+        }
+
 
         UIUtilService.setDirty(true);
 
@@ -330,6 +336,7 @@ define([
 
         // Check if the field is already stored into the DB
         if ($routeParams.id == undefined) {
+          console.log('new field',$routeParams.id);
           dms.stripTmps($scope.field);
           //dms.updateKeys($scope.field);
 
@@ -413,43 +420,42 @@ define([
       }
     });
 
+    // var defaultTitleAndDescription = function() {
+    //   if (dms.schemaOf($scope.field)) {
+    //     if (!dms.getTitle($scope.field)) {
+    //       dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
+    //       $scope.fieldTitle = $translate.instant("VALIDATION.noNameField");
+    //     }
+    //     if (!dms.getDescription($scope.field)) {
+    //       dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
+    //       $scope.fieldDescription = $translate.instant("VALIDATION.noNameField");
+    //     }
+    //   }
+    // }
+
     // This function watches for changes in the form and defaults the title and description fields
-    $scope.$watch('$scope.field', function (v) {
-      if (dms.schemaOf($scope.field)) {
-        if (!dms.getTitle($scope.field)) {
-          dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
-        }
-        if (!dms.getDescription($scope.field)) {
-          dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
-        }
-      }
-    });
+    // $scope.$watch('$scope.field', function (v) {
+    // });
 
     $scope.$watch('field["schema:identifier"]', function (identifier) {
-      if (!angular.isUndefined($scope.field) && !identifier) {
-        dms.removeIdentifier($scope.field);
+      if (!angular.isUndefined($scope.field)) {
+        if (!identifier) {
+          dms.removeIdentifier($scope.field);
+          $scope.fieldIdentifier = null;
+        }
+        else {
+          $scope.fieldIdentifier = identifier;
+        }
       }
     });
 
-    $scope.$watch('field["schema:name"]', function (v) {
-      if (!angular.isUndefined($scope.field)) {
-        var title = dms.getTitle($scope.field);
-        if (title && title.length > 0) {
-          var capitalizedTitle = $filter('capitalizeFirst')(title);
-          $scope.field.title = $translate.instant(
-              "GENERATEDVALUE.fieldTitle",
-              {title: capitalizedTitle}
-          );
-          $scope.field.description = $translate.instant(
-              "GENERATEDVALUE.fieldDescription",
-              {title: capitalizedTitle, version: window.cedarVersion}
-          );
-        } else {
-          $scope.field.title = "";
-          $scope.field.description = "";
-        }
-        $rootScope.documentTitle = title;
-      }
+    $scope.$watch('field["schema:description"]', function (description) {
+      $scope.fieldDescription = description;
+    });
+
+    $scope.$watch('field["schema:name"]', function (name) {
+      $scope.fieldTitle = dms.getTitle($scope.field);
+      $rootScope.documentTitle = $scope.fieldTitle;
     });
 
     $scope.toRDF = function () {
@@ -507,7 +513,7 @@ define([
     });
 
     // init
-
+    $rootScope.keyOfRootElement = null;
     getField();
   }
 });

@@ -225,6 +225,12 @@ define([
           }
         };
 
+        service.setIdentifier = function (node, value) {
+          if (service.schemaOf(node)) {
+            service.schemaOf(node)[CONST.model.IDENTIFIER] = value;
+          }
+        };
+
         service.removeIdentifier = function (node) {
           if (service.schemaOf(node)) {
             delete service.schemaOf(node)[CONST.model.IDENTIFIER];

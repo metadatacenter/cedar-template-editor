@@ -81,11 +81,10 @@ describe('metadata-creator', function () {
     it("metadata-creator create metadata should be on the workspace", function () {
       console.log('created template' , template,'for',testConfig.testUser1);
       workspacePage.onWorkspace();
-      workspacePage.editResource(template, 'template');
     });
 
-    it("should add fields to our template", function () {
-
+    it("should edit the resource and add fields", function () {
+      workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.isDirty();
       templatePage.clickSave('template');

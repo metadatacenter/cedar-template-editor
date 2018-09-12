@@ -26,12 +26,14 @@
 
       <div class="preview-edit-options ">
         <div class="save-options">
-          <div class="trash" style="margin-right: 0;"
-              ng-click="ckDelete(); $event.stopPropagation();"
+
+          <button ng-disabled="isRootNode()" class="trash" style="margin-right: 0;background:transparent"
               uib-tooltip='{{"Delete" | translate}}'
+              ng-click="ckDelete(); $event.stopPropagation();"
               tooltip-placement="top">
             <i class="fa fa-times-circle"></i>
-          </div>
+          </button>
+
         </div>
       </div>
     </div>
