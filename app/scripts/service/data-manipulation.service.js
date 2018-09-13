@@ -89,7 +89,9 @@ define([
 
         service.getType = function (node) {
           var schema = service.schemaOf(node);
-          return schema['@type'];
+          if (schema) {
+            return schema['@type']
+          }
         };
 
         service.getKeyFromId = function (node) {

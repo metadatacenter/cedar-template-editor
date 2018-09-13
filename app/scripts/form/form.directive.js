@@ -106,7 +106,8 @@ define([
 
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
-              if ($scope.form.properties[field]._ui && $scope.form.properties[field]._ui.inputType == 'page-break') {
+              if ($scope.form.properties[field] && $scope.form.properties[field]._ui &&
+                  $scope.form.properties[field]._ui.inputType == 'page-break') {
                 if (index == 0) {
                   titles.push($scope.getTitle());
                 } else {
