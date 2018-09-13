@@ -297,14 +297,17 @@ define([
                       dms.initializeValueType(value, parentModel[name]);
                     }
                     if (dms.isAttributeValueType(value)) {
-                      // remove the @context entry for this attribute-value fields
-                      // delete the context int the parent
-                      delete parentModel['@context'][name];
-                      parentModel[name] = [];
+                      // remove the @context entry for this attribute-value field
+                      // delete the context in the parent
+                      if (parentModel) {
+                        if (parentModel['@context']) {
+                          delete parentModel['@context'][name];
+                        }
+                        parentModel[name] = [];
+                      }
                     }
                     dms.defaultOptionsToModel(value, parentModel[name]);
                   }
-
                 }
               }
             }
