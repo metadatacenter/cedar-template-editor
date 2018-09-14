@@ -610,8 +610,8 @@ define([
           $scope.saveButtonDisabled = true;
         };
 
-        $scope.showModal = function () {
-          var options = {"filterSelection":"field", "id":dms.getId($scope.form), "modalId":"controlled-term-modal", "model": $scope.form};
+        $scope.showModal = function (type) {
+          var options = {"filterSelection":type, "id":dms.getId($scope.form), "modalId":"controlled-term-modal", "model": $scope.form};
           UIUtilService.showModal(options);
         };
 

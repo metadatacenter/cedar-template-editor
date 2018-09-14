@@ -534,7 +534,6 @@ define([
      */
 
     $scope.$on('ctdc:init', function (event, args) {
-      console.log('ctdc:init', args);
       vm.field = args[0].model;
       vm.options = args[0];
       vm.filterSelection = vm.options.filterSelection;
@@ -554,7 +553,6 @@ define([
         'cedar.templateEditor.controlledTerm.propertyCreated',
         function (event, args) {
           if (vm.filterSelection === 'properties') {
-            console.log('propertyCreated', args);
 
             // tell the form to update the property for this field
             var property = args[0];
@@ -562,7 +560,6 @@ define([
             var id = DataManipulationService.getId(vm.field);
             var description = args[2];
 
-            console.log('broadcast property:propertyAdded', id)
             $rootScope.$broadcast('property:propertyAdded', [property, id, label, description]);
           }
         }
@@ -768,7 +765,6 @@ define([
       // TODO broadcast the action so dialog is closed and ontology picker is reset
 
       var id = DataManipulationService.getId(vm.field);
-      console.log('broadcast field:controlledTermAdded', id);
       $rootScope.$broadcast('field:controlledTermAdded', ['', id, '', '']);
 
     }

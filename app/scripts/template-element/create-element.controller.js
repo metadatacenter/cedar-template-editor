@@ -587,8 +587,8 @@ define([
     // controlled terms modal
     //
 
-    $scope.showModal = function () {
-      var options = {"filterSelection":'field', "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element)};
+    $scope.showModal = function (type) {
+      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element)};
       UIUtilService.showModal(options);
     };
 

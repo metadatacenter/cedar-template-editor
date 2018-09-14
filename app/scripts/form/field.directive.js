@@ -1141,7 +1141,6 @@ define([
 
       // show the controlled terms modal
       $scope.showModal = function (type) {
-        console.log('showModal',type);
         var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), "q": $scope.getLabel()};
         UIUtilService.showModal(options);
       };
@@ -1165,7 +1164,6 @@ define([
       // update the property for a field with controlled terms modal selection
       $scope.$on("property:propertyAdded", function (event, args) {
         if ($scope.getId() == args[1]) {
-          console.log('property:propertyAdded', args[1], $scope.parentElement);
           UIUtilService.hideModal();
           var id = args[1];
           var propertyId = args[0];

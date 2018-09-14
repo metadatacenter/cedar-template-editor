@@ -403,16 +403,11 @@ define([
 
     // create a modal id for the controlled terms modal
     service.getModalId = function (id, type) {
-      // if (id) {
-      //   id = id.substring(id.lastIndexOf('/') + 1);
-      // }
-      // return "control-options-" + id + "-" + type;
       return 'controlled-term-modal';
     };
 
     // show the modal
     service.showModal = function (options) {
-      console.log('showModal',options);
       service.modalType = options.type;
       service.modalId = options.modalId;
       service.modalOptions = options;
