@@ -40,7 +40,7 @@
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options','element')">
+            ng-click="showModal()">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -150,22 +150,22 @@
       </section>
 
 
-      <!-- field modal -->
-      <div class="modal fade controlled-terms-modal" id="control-options-element" data-backdrop="static">
-        <div class="modal-dialog">
-          <div class="modal-content" style="overflow:auto">
-            <div class="modal-header">
-              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                  aria-label="Close"><span aria-hidden="true"><img
-                  src="/img/close_modal.png" width="22"/></span></button>
-            </div>
-            <div class="modal-body">
-              <div controlled-term field="element"
-                  options='{"filterSelection":"field", "modalId":"control-options-element"}'></div>
+      <section>
+        <div class="modal fade controlled-terms-modal" id="controlled-term-modal" data-backdrop="static">
+          <div class="modal-dialog">
+            <div class="modal-content" style="overflow:auto">
+              <div class="modal-header">
+                <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true"><img
+                    src="/img/close_modal.png" width="22"/></span></button>
+              </div>
+              <div class="modal-body">
+                <div controlled-term></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
 
     </div>

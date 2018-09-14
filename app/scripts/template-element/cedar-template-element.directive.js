@@ -422,14 +422,10 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
-        if (type) {
-          $rootScope.finalTitle = scope.getTitle();
-          scope.modalType = type;
-          UIUtilService.showModal(dms.getId(scope.element), type);
-
-          // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [scope.getTitle()]);
-        }
+          // $rootScope.finalTitle = scope.getTitle();
+          // scope.modalType = type;
+          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":$scope.getId(), "q": $scope.getLabel()};
+          UIUtilService.showModal(options);
       };
 
       // show the controlled terms modal

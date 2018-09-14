@@ -8,11 +8,11 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
-                            "SpreadsheetService",
+                            "SpreadsheetService", "CONST",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                             "StringUtilsService", "UIUtilService"];
 
-  function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService,
+  function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
 
@@ -229,7 +229,7 @@ define([
       };
 
       $scope.hasOptions = function () {
-        return $scope.isNumericField() || $scope.isTextField();
+        return !FieldTypeService.isStaticField(dms.getInputType($scope.field));
       };
 
       $scope.isNumericField = function () {
@@ -379,7 +379,6 @@ define([
       };
 
       $scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheetField')
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
@@ -433,30 +432,7 @@ define([
       };
 
 
-      // show the controlled terms modal
-      $scope.showModal = function (type) {
-        if (type) {
-          // TODO don't pass the search string through rootScope
-          $rootScope.finalTitle = $scope.getLabel();
 
-          UIUtilService.showModal(dms.getId($scope.field), type);
-
-          // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [$scope.getLabel()]);
-        }
-      };
-
-      // show the controlled terms modal
-      $scope.hideModal = function () {
-        UIUtilService.hideModal();
-      };
-
-      // controlled terms modal has an outcome
-      $scope.$on("field:controlledTermAdded", function () {
-        $scope.hideModal();
-        UIUtilService.setDirty(true);
-        $scope.setAddedFieldMap();
-      });
 
 
       //
@@ -699,8 +675,6 @@ define([
         if ($scope.model.length == 0) {
           $scope.model.push({'@value': null});
         }
-
-        console.log('updateModelFromUI', $scope.model);
       };
 
       // Updates the model for fields whose values have been constrained using controlled terms
@@ -1160,21 +1134,47 @@ define([
         dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
       };
 
+
+
+
+
+
+      // show the controlled terms modal
+      $scope.showModal = function (type) {
+        console.log('showModal',type);
+        var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), "q": $scope.getLabel()};
+        UIUtilService.showModal(options);
+      };
+
+      // show the controlled terms modal
+      $scope.hideModal = function () {
+        UIUtilService.hideModal();
+      };
+
+      // controlled terms modal has an outcome
+      $scope.$on("field:controlledTermAdded", function (event, args) {
+        if ($scope.getId() == args[1]) {
+          UIUtilService.hideModal(args);
+          UIUtilService.setDirty(true);
+          $scope.setAddedFieldMap();
+        }
+      });
+
+
+
       // update the property for a field with controlled terms modal selection
       $scope.$on("property:propertyAdded", function (event, args) {
-
-        var id = args[1];
-        if ($scope.getId() == id) {
-
-          $scope.hideModal();
-
+        if ($scope.getId() == args[1]) {
+          console.log('property:propertyAdded', args[1], $scope.parentElement);
+          UIUtilService.hideModal();
+          var id = args[1];
           var propertyId = args[0];
           var propertyLabel = args[2];
           var propertyDescription = args[3];
-
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
         }
       });
+
 
       /* end of controlled terms functionality */
 
@@ -1182,24 +1182,24 @@ define([
       // init
       //
 
-      // $scope.$on("field:reset", function () {
-      //   console.log('on field:reset');
-      //   $scope.init();
-      // });
-
-      $scope.$watch('field["schema:name"]', function (name) {
+      $scope.$watch('fieldSchema["schema:name"]', function (name) {
         $scope.fieldLabel = $scope.field;
         $scope.fieldLabelKey = 'schema:name';
         $scope.fieldLabel[$scope.fieldLabelKey] = name;
       });
 
-      $scope.init = function () {
+      $scope.$watch('fieldSchema["skos:prefLabel"]', function (prefLabel) {
+        if (prefLabel == '') {
+          dms.removePreferredLabel($scope.field) ;
+        }
+      });
 
+      $scope.init = function () {
 
         $scope.fieldSchema = dms.schemaOf($scope.field);
         if (dms.isRootNode($scope.parentElement, $scope.field)) {
-          $scope.fieldLabelKey = 'schema:name';
-          $scope.fieldDescriptionKey = 'schema:description';
+          $scope.fieldLabelKey = CONST.model.NAME;
+          $scope.fieldDescriptionKey = CONST.model.DESCRIPTION;
           $scope.fieldLabel = $scope.field;
           $scope.fieldDescription = $scope.field;
 

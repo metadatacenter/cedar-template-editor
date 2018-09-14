@@ -399,8 +399,7 @@ define([
           } else {
             if (UIUtilService.hasTotalMetadata()) {
               UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
-            }
-            if (UIUtilService.isLocked()) {
+            } else if (UIUtilService.isLocked()) {
               UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
             }
           }

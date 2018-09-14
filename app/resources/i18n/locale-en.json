@@ -557,7 +557,8 @@
     "enterMinValue": "Enter Minimum Value",
     "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
-    "enterDecimalPlace": "Enter Decimal Places"
+    "enterDecimalPlace": "Enter Decimal Places",
+    "enterPrefLabel": "Enter Preferred Label"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
