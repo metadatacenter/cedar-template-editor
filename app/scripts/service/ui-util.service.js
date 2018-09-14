@@ -403,18 +403,16 @@ define([
 
     // create a modal id for the controlled terms modal
     service.getModalId = function (id, type) {
-      if (id) {
-        id = id.substring(id.lastIndexOf('/') + 1);
-      }
-      return "control-options-" + id + "-" + type;
+      return 'controlled-term-modal';
     };
 
     // show the modal
-    service.showModal = function (id, type) {
-      service.modalType = type;
-      service.modalId = service.getModalId(id, type);
-      console.log('showModal',service.modalId);
+    service.showModal = function (options) {
+      service.modalType = options.type;
+      service.modalId = options.modalId;
+      service.modalOptions = options;
       jQuery("#" + service.modalId).modal('show');
+      $rootScope.$broadcast("ctdc:init", [options]);
     };
 
     // hide the modal

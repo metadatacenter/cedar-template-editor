@@ -3,7 +3,7 @@
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'properties'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.q"
         search-mode="ctdc.filterSelection"
         add-callback="ctdc.addProperty"
         reset-callback="ctdc.startOver"
@@ -34,7 +34,7 @@
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.q"
         search-mode="ctdc.filterSelection"
         add-callback="ctdc.addClass"
         reset-callback="ctdc.startOver"
@@ -70,7 +70,7 @@
   <div class="value-filter" ng-if="ctdc.filterSelection == 'values'">
 
     <controlled-term-search
-        field-name="$root.finalTitle"
+        field-name="ctdc.q"
         search-mode="ctdc.filterSelection"
         add-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
@@ -231,6 +231,8 @@
 
     </div>
   </div>
+
   <div style="height: 400px"></div>
+
 </div>
 

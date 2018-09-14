@@ -587,13 +587,16 @@ define([
     // controlled terms modal
     //
 
-    $scope.showModal = function (id, type) {
-      UIUtilService.showModal(id, type);
+    $scope.showModal = function (type) {
+      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element)};
+      UIUtilService.showModal(options);
     };
 
     //TODO this event resets modal state and closes modal
-    $scope.$on("field:controlledTermAdded", function () {
-      UIUtilService.hideModal();
+    $scope.$on("field:controlledTermAdded", function (event,args) {
+      if (args[1] == dms.getId($scope.element)) {
+        UIUtilService.hideModal();
+      }
     });
 
     // // update the property for a field

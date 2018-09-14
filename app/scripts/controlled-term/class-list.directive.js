@@ -43,8 +43,12 @@ define([
         });
 
         // new class added
-        scope.$on("field:controlledTermAdded", function () {
-          scope.getType();
+        scope.$on("field:controlledTermAdded", function (event,args) {
+          if (args[1] == DataManipulationService.getId(scope.field)) {
+            console.log('field:controlledTermAdded');
+            scope.getType();
+          }
+
         });
 
         var setResponse = function (item, ontologyName, className) {

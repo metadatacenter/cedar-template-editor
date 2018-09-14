@@ -107,7 +107,7 @@ define([
               id,
               {sort: sort, limit: limit, offset: offset},
               function (response) {
-                UIUtilService.setTotalMetadata(0);
+                UIUtilService.setTotalMetadata(response.resources.length);
                 UIUtilService.setVisibleMetadata(response.totalCount || 0);
                 UIUtilService.setInstances(response.resources);
                 $scope.checkLocking();
@@ -610,16 +610,25 @@ define([
           $scope.saveButtonDisabled = true;
         };
 
-        $scope.showModal = function (id) {
-          jQuery("#" + id).modal('show');
-          //UIUtilService.showModal(id,'template');
+        $scope.showModal = function (type) {
+          var options = {"filterSelection":type, "id":dms.getId($scope.form), "modalId":"controlled-term-modal", "model": $scope.form};
+          UIUtilService.showModal(options);
         };
 
         //TODO this event resets modal state and closes modal
-        $scope.$on("field:controlledTermAdded", function () {
-          //UIUtilService.hideModal();
-          jQuery("#control-options-template-field").modal('hide');
+        $scope.$on("field:controlledTermAdded", function (event,args) {
+          if (dms.getId($scope.form) == args[1]) {
+            console.log('field:controlledTermAdded found');
+            UIUtilService.hideModal(args);
+            UIUtilService.setDirty(true);
+            // $scope.setAddedFieldMap();
+          }
+
         });
+
+
+
+
 
 
       }

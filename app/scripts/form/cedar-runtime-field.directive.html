@@ -27,7 +27,7 @@
             <div class="leader"></div>
 
             <div ng-click="toggleActive(index)" class="title isInactive">
-              {{getPropertyLabel()}}
+              {{getLabel()}}
             </div>
 
           </div>
@@ -58,7 +58,7 @@
       <div ng-if="isTabView() && valueArray.length > 0">
 
         <div ng-if="isSectionBreak()" class="row">
-          <div class="section-break-inline">{{getTitle()}}</div>
+          <div class="section-break-inline">{{getLabel()}}</div>
         </div>
 
         <div ng-if="!isSectionBreak()" class="row" id="{{getLocator(index)}}"

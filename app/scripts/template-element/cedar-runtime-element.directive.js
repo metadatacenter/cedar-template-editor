@@ -337,6 +337,11 @@ define([
         }
       };
 
+      scope.getLabel = function() {
+        console.log('getLabel');
+        return dms.getPreferredLabel(scope.element) || scope.getPropertyLabel() || scope.getTitle();
+      };
+
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
         if (scope.isMultiple()) {
