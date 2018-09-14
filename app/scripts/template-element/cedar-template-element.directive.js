@@ -33,6 +33,9 @@ define([
 
     function linker(scope, element, attrs) {
 
+      var tabSet = ["options",  "cardinality"];
+      scope.activeTab;
+
 
       var dms = DataManipulationService;
 
@@ -325,8 +328,15 @@ define([
             ["remove", scope.getTitle(), scope.getId()]);
       };
 
-      // is the cardinality details table open?
-      scope.showCardinality = false;
+      scope.isTabActive = function (item) {
+        return scope.activeTab === item;
+      };
+
+      scope.setTab = function (item) {
+        if (tabSet.indexOf(item) > -1) {
+          scope.activeTab = item;
+        }
+      };
 
       scope.isCardinal = function () {
         return dms.isCardinalElement(scope.element);
@@ -424,7 +434,7 @@ define([
       scope.showModal = function (type) {
           // $rootScope.finalTitle = scope.getTitle();
           // scope.modalType = type;
-          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":$scope.getId(), "q": $scope.getLabel()};
+          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle()};
           UIUtilService.showModal(options);
       };
 
