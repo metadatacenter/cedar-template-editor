@@ -38,6 +38,9 @@ define([
     $scope.field;
     $scope.form = {};
     $scope.saveButtonDisabled = false;
+    $scope.fieldTitle = null;
+    $scope.fieldDescription = null;
+    $scope.fieldIdentifier = null;
 
     // for the field type picker
     $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
@@ -121,70 +124,7 @@ define([
       );
     };
 
-    var getField = function () {
-      $scope.form = {};
-      // Load existing field if $routeParams.id parameter is supplied
-      if ($routeParams.id) {
-        // Fetch existing element and assign to $scope.element property
-        AuthorizedBackendService.doCall(
-            TemplateFieldService.getTemplateField($routeParams.id),
-            function (response) {
-              $scope.field = response.data;
 
-
-              var copiedForm = jQuery.extend(true, {}, $scope.field);
-              checkValidation(copiedForm);
-
-              HeaderService.dataContainer.currentObjectScope = $scope.field;
-
-              $scope.form = $scope.field;
-              var key = dms.getId($scope.field);
-              $rootScope.keyOfRootElement = key;
-              $rootScope.rootElement = $scope.form;
-              $rootScope.jsonToSave = $scope.field;
-              $rootScope.documentTitle = dms.getTitle($scope.form);
-
-              UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
-              UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
-              UIUtilService.setTotalMetadata(0);
-              UIUtilService.setVisibleMetadata(0);
-
-              dms.createDomIds($scope.field);
-              $scope.fieldSchema = dms.schemaOf($scope.field);
-              $scope.setClean();
-
-              // TODO details don't work yet
-              getDetails($scope.field['@id']);
-            },
-            function (err) {
-              UIMessageService.showBackendError('SERVER.FIELD.load.error', err);
-              $rootScope.goToHome();
-            }
-        );
-      } else {
-        // If we're not loading an existing element then let's create a new empty $scope.element property
-        $scope.field = DataTemplateService.getContainerField();
-        checkValidation($scope.field);
-        $scope.setClean();
-
-        HeaderService.dataContainer.currentObjectScope = $scope.field;
-
-        $scope.form = $scope.field;
-        var key = dms.generateGUID();
-        $rootScope.keyOfRootElement = key;
-        $rootScope.rootElement = $scope.form;
-        $rootScope.jsonToSave = $scope.field;
-        dms.createDomIds($scope.field);
-        $scope.fieldSchema = dms.schemaOf($scope.field);
-
-
-      }
-    };
-
-    // init
-    if ($routeParams.id) {
-      getField();
-    }
 
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
@@ -206,34 +146,99 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
+      console.log('addField', fieldType, $routeParams.id);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 
-        // $scope.getField(fieldType);
         $scope.field = StagingService.addFieldToField(fieldType);
-        dms.setId($scope.field, $routeParams.id);
-        $scope.form = $scope.field;
-
-
-        checkValidation($scope.form);
-        UIUtilService.setDirty(true);
-
-        HeaderService.dataContainer.currentObjectScope = $scope.field;
 
         $scope.form = $scope.field;
-        var key = dms.generateGUID();
-        $rootScope.keyOfRootElement = key;
-
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
-        dms.createDomIds($scope.field);
         $scope.fieldSchema = dms.schemaOf($scope.field);
+        HeaderService.dataContainer.currentObjectScope = $scope.field;
 
-        $scope.toggleMore();
+        console.log('scope',$scope.field);
+
+
+        dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
+        dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
+        dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
+        if ($rootScope.keyOfRootElement) {
+          dms.setId($scope.field, $rootScope.keyOfRootElement);
+        }
+
+
+        UIUtilService.setDirty(true);
+
+        dms.createDomIds($scope.field);
+
+        // $scope.toggleMore();
+
+        $rootScope.$broadcast('field:reset');
+
+        $timeout(function () {
+          checkValidation($scope.form);
+        },1000);
+
       }
       $scope.showMenuPopover = false;
     };
+
+    var getField = function () {
+
+      $scope.form = {};
+      // Load existing field if $routeParams.id parameter is supplied
+      if ($routeParams.id) {
+        // Fetch existing field and assign to $scope.field property
+        AuthorizedBackendService.doCall(
+            TemplateFieldService.getTemplateField($routeParams.id),
+            function (response) {
+
+              $scope.field = response.data;
+
+              checkValidation(jQuery.extend(true, {}, $scope.field));
+
+              $scope.form = $scope.field;
+              $rootScope.keyOfRootElement = dms.getId($scope.field);
+              $rootScope.rootElement = $scope.form;
+              $rootScope.jsonToSave = $scope.field;
+              $scope.fieldSchema = dms.schemaOf($scope.field);
+              HeaderService.dataContainer.currentObjectScope = $scope.field;
+
+              $rootScope.documentTitle = dms.getTitle($scope.form);
+
+              UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
+              UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
+              UIUtilService.setTotalMetadata(0);
+              UIUtilService.setVisibleMetadata(0);
+
+              dms.createDomIds($scope.field);
+              $scope.setClean();
+
+              // TODO details don't work yet
+              getDetails($scope.field['@id']);
+
+              dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
+              dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
+              dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
+              if ($rootScope.keyOfRootElement) {
+                dms.setId($scope.field, $rootScope.keyOfRootElement);
+              }
+
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.FIELD.load.error', err);
+              $rootScope.goToHome();
+            }
+        );
+      } else {
+        $scope.addField('textfield');
+      }
+    };
+
+
 
     $scope.toggleMore = function () {
       $scope.moreIsOpen = !$scope.moreIsOpen;
@@ -322,6 +327,7 @@ define([
 
         // Check if the field is already stored into the DB
         if ($routeParams.id == undefined) {
+          console.log('new field',$routeParams.id);
           dms.stripTmps($scope.field);
           //dms.updateKeys($scope.field);
 
@@ -405,37 +411,44 @@ define([
       }
     });
 
+    // var defaultTitleAndDescription = function() {
+    //   if (dms.schemaOf($scope.field)) {
+    //     if (!dms.getTitle($scope.field)) {
+    //       dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
+    //       $scope.fieldTitle = $translate.instant("VALIDATION.noNameField");
+    //     }
+    //     if (!dms.getDescription($scope.field)) {
+    //       dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
+    //       $scope.fieldDescription = $translate.instant("VALIDATION.noNameField");
+    //     }
+    //   }
+    // }
+
     // This function watches for changes in the form and defaults the title and description fields
-    $scope.$watch('$scope.field', function (v) {
-      if (dms.schemaOf($scope.field)) {
-        if (!dms.getTitle($scope.field)) {
-          dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
+    // $scope.$watch('$scope.field', function (v) {
+    // });
+
+    $scope.$watch('field["schema:identifier"]', function (identifier) {
+      if (!angular.isUndefined($scope.field)) {
+        if (!identifier) {
+          dms.removeIdentifier($scope.field);
+          $scope.fieldIdentifier = null;
         }
-        if (!dms.getDescription($scope.field)) {
-          dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
+        else {
+          $scope.fieldIdentifier = identifier;
         }
       }
     });
 
-    $scope.$watch('field["schema:name"]', function (v) {
-      if (!angular.isUndefined($scope.field)) {
-        var title = dms.getTitle($scope.field);
-        if (title && title.length > 0) {
-          var capitalizedTitle = $filter('capitalizeFirst')(title);
-          $scope.field.title = $translate.instant(
-              "GENERATEDVALUE.fieldTitle",
-              {title: capitalizedTitle}
-          );
-          $scope.field.description = $translate.instant(
-              "GENERATEDVALUE.fieldDescription",
-              {title: capitalizedTitle, version: window.cedarVersion}
-          );
-        } else {
-          $scope.field.title = "";
-          $scope.field.description = "";
-        }
-        $rootScope.documentTitle = title;
-      }
+    $scope.$watch('field["schema:description"]', function (description) {
+      $scope.fieldDescription = description;
+    });
+
+
+    $scope.$watch('field["schema:name"]', function (name) {
+      console.log('watch schema:name', name)
+      $scope.fieldTitle = dms.getTitle($scope.field);
+      $rootScope.documentTitle = $scope.fieldTitle;
     });
 
     $scope.toRDF = function () {
@@ -484,12 +497,26 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.showModal = function (id) {
-      jQuery("#" + id).modal('show');
+    $scope.showModal = function (type) {
+      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.form, "id":dms.getId($scope.form), "q": dms.getTitle($scope.form)};
+      UIUtilService.showModal(options);
     };
 
-    $scope.$on("field:controlledTermAdded", function () {
-      jQuery("#control-options-field-field").modal('hide');
+    $scope.$on("field:controlledTermAdded", function (event,args) {
+      if (dms.getId($scope.form) == args[1]) {
+        console.log('field:controlledTermAdded', args[1]);
+        UIUtilService.hideModal();
+        // var id = args[1];
+        // var propertyId = args[0];
+        // var propertyLabel = args[2];
+        // var propertyDescription = args[3];
+        // dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
+      }
     });
+
+    // init
+
+    $rootScope.keyOfRootElement = null;
+    getField();
   }
 });

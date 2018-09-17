@@ -11,7 +11,7 @@
               <button type="button" class="expand">
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
               </button>
-              {{getPropertyLabel()}}
+              {{getLabel()}}
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
 
-              {{getPropertyLabel()}}
+              {{getLabel()}}
             </div>
 
           </div>
@@ -70,7 +70,7 @@
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
-            {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}} of {{valueArray.length}})</span>
+            {{getLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}} of {{valueArray.length}})</span>
           </div>
 
         </div>
@@ -133,7 +133,7 @@
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(i),'fa-caret-right':!isExpanded(i)}"></i>
               </button>
 
-              {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
+              {{getLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
 
           <field-toolbar paging="false" field="element" model="valueArray" index="i" view-state="viewState"

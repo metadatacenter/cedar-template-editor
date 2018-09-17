@@ -2,32 +2,45 @@
   <div class="template-header element">
     <div class="container">
       <div class="row">
-        <div class="left-sidebar col-sm-4 col-sm-offset-1">
+        <div class="left-sidebar col-sm-3 col-sm-offset-1">
           <div id="element-name-container">
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text" class="form-control" id="element-name"
-                    placeholder="{{'GENERIC.ElementName' | translate}}"
-                    aria-label="{{'GENERIC.ElementName' | translate}}"
+                    placeholder="{{'GENERIC.Name' | translate}}"
+                    aria-label="{{'GENERIC.Name' | translate}}"
                     ng-model="elementSchema['schema:name']" with-floating-label>
               </div>
             </form>
           </div>
         </div>
-        <div class="right-body col-sm-6">
+        <div class="left-sidebar col-sm-3">
+          <div id="element-identifier-container">
+            <form>
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control" id="element-identifier"
+                    placeholder="{{'GENERIC.Identifier' | translate}}"
+                    aria-label="{{'GENERIC.Identifier' | translate}}"
+                    ng-model="elementSchema['schema:identifier']" with-floating-label>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="right-body col-sm-4">
           <div id="element-description-container">
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-description"
-                    placeholder="{{'GENERIC.ElementDescription' | translate}}"
-                    aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="elementSchema['schema:description']"
+                    placeholder="{{'GENERIC.Description' | translate}}"
+                    aria-label="{{'GENERIC.Description' | translate}}"
+                    ng-model="elementSchema['schema:description']"
                     with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-element-field')">
+            ng-click="showModal('field')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -137,22 +150,22 @@
       </section>
 
 
-      <!-- field modal -->
-      <div class="modal fade controlled-terms-modal" id="control-options-element-field" data-backdrop="static">
-        <div class="modal-dialog">
-          <div class="modal-content" style="overflow:auto">
-            <div class="modal-header">
-              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                  aria-label="Close"><span aria-hidden="true"><img
-                  src="/img/close_modal.png" width="22"/></span></button>
-            </div>
-            <div class="modal-body">
-              <div controlled-term field="element"
-                  options='{"filterSelection":"field", "modalId":"control-options-element-field"}'></div>
+      <section>
+        <div class="modal fade controlled-terms-modal" id="controlled-term-modal" data-backdrop="static">
+          <div class="modal-dialog">
+            <div class="modal-content" style="overflow:auto">
+              <div class="modal-header">
+                <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                    aria-label="Close"><span aria-hidden="true"><img
+                    src="/img/close_modal.png" width="22"/></span></button>
+              </div>
+              <div class="modal-body">
+                <div controlled-term></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
 
     </div>

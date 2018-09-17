@@ -34,7 +34,7 @@ define([
 
         // update terms when field changes
         scope.$watch("field", function(newValue, oldValue) {
-          if (newValue !== undefined) {
+          if (newValue !== undefined && Object.keys(newValue).length != 0) {
             var newTerms = DataManipulationService.getFieldControlledTerms(newValue);
             if (oldValue === undefined || newTerms !== scope.terms) {
               scope.getType();
@@ -43,8 +43,12 @@ define([
         });
 
         // new class added
-        scope.$on("field:controlledTermAdded", function () {
-          scope.getType();
+        scope.$on("field:controlledTermAdded", function (event,args) {
+          if (args[1] == DataManipulationService.getId(scope.field)) {
+            console.log('field:controlledTermAdded');
+            scope.getType();
+          }
+
         });
 
         var setResponse = function (item, ontologyName, className) {

@@ -18,7 +18,7 @@
       <div class="flex">
         <i uib-tooltip-placement="left" tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
-            ng-click="showModal('property')"
+            ng-click="showModal('properties')"
             class="cedar-svg-controll-term"></i>
 
         <div ng-if="hasPropertyId()" class="class-dropdown " uib-dropdown
@@ -53,11 +53,10 @@
   <div class="flex field-title" ng-repeat="x in getCount() track by $index">
     <div ng-valid="false" class="form-group floating-label-wrapper">
 
-
       <input type="text"
           class="form-control"
-          placeholder="{{getLabel()}}"
-          aria-label="{{getDescription()}}"
+          placeholder="{{fieldLabel[fieldLabelKey]}}"
+          aria-label="{{'CREATOR.enterFieldKey' | translate}}"
           ng-disabled="true"
           with-floating-label/>
 
@@ -70,7 +69,7 @@
         <i uib-tooltip-placement="left"
             tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId()}}"
-            ng-click="showModal('property')"
+            ng-click="showModal('properties')"
             class="cedar-svg-controll-term"></i>
       </div>
     </div>

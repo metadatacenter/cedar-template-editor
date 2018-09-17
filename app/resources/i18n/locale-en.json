@@ -83,9 +83,14 @@
     "Validate": "Validate",
     "Next": "Next",
     "Previous": "Previous",
+    "Name": "Name",
+    "Identifier": "Identifier",
+    "Description": "Description",
     "ElementName": "Element Name",
+    "ElementIdentifier": "Element Identifier",
     "ElementDescription": "Element Description",
     "FieldName": "Field Name",
+    "FieldIdentifier": "Field Identifier",
     "FieldDescription": "Field Description",
     "SaveElement": "Save Element",
     "SaveField": "Save Field",
@@ -552,7 +557,8 @@
     "enterMinValue": "Enter Minimum Value",
     "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
-    "enterDecimalPlace": "Enter Decimal Places"
+    "enterDecimalPlace": "Enter Decimal Places",
+    "enterPrefLabel": "Enter Preferred Label"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

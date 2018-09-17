@@ -89,15 +89,30 @@
     <div ng-if="isEditState()">
       <div class="detail-options">
         <div class="element-toggles list table-style">
-          <div class="element-toggle cardinality-tab table-cell-style" ng-class="{active: showCardinality}"
-              ng-click="showCardinality = !showCardinality">
+          <div class="element-toggle table-cell-style options-tab"
+              ng-class="{active: isTabActive('options')}"
+              ng-click="setTab('options');">
+            <span>Options</span>
+          </div>
+          <div class="element-toggle cardinality-tab table-cell-style" ng-class="{active: isTabActive('cardinality')}"
+              ng-click="setTab('cardinality');">
             <span>Multiple</span>
           </div>
         </div>
       </div>
 
-      <!-- Cardinality tab  -->
-      <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="showCardinality">
+      <div id="options" class="options" ng-show="isTabActive('options')">
+        <div class="form-group floating-label-wrapper">
+          <input type="text"
+              class="form-control"
+              placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
+              aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
+              ng-model="$root.schemaOf(element)['skos:prefLabel']"
+              with-floating-label>
+        </div>
+      </div>
+      <div id="cardinality-options" class="cardinality-options cardinality-selectors"
+          ng-show="isTabActive('cardinality')">
 
         <div class="type-toggle date">
           <div class="d-option clear-value" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
@@ -116,24 +131,8 @@
         </div>
 
       </div>
-      <div class="clearfix"></div>
-    </div>
 
-    <!-- property modal -->
-    <div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content" style="overflow:auto">
-          <div class="modal-header">
-            <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-                aria-label="Close"><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-          </div>
-          <div class="modal-body">
-            <div controlled-term field="element"
-                options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
-          </div>
-        </div>
-      </div>
+      <div class="clearfix"></div>
     </div>
   </div>
 </div>

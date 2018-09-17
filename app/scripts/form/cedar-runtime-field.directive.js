@@ -97,8 +97,12 @@ define([
         return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
       }
 
+      $scope.getPreferredLabel = function (field) {
+        return dms.getPreferredLabel(field || $scope.field);
+      };
+
       $scope.getLabel = function () {
-        return $scope.getPropertyLabel() || $scope.getTitle();
+        return $scope.getPreferredLabel() || $scope.getPropertyLabel() || $scope.getTitle();
       };
 
       $scope.getHelp = function () {

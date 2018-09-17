@@ -453,6 +453,11 @@ define([
       }
     });
 
+    $scope.$watch('element["schema:identifier"]', function (identifier) {
+      if (!angular.isUndefined($scope.element) && !identifier) {
+        dms.removeIdentifier($scope.element);
+      }
+    });
 
     // This function watches for changes in the title field and autogenerates the schema title and description fields
     $scope.$watch('element["schema:name"]', function (v) {
@@ -555,7 +560,7 @@ define([
     };
 
     //
-    // finder
+    // finder modal
     //
 
     $scope.showFinderModal = function () {
@@ -564,23 +569,9 @@ define([
       $rootScope.$broadcast('finderModalVisible');
     };
 
-    $scope.hideFinder = function () {
-      jQuery("#finder-modal").modal('hide')
-    };
-
-
-    // $scope.addElementFromFinder = function () {
-    //   if ($scope.finderResource) {
-    //     $scope.addElementToTemplate($scope.finderResource);
-    //   }
-    //   $scope.hideFinder();
+    // $scope.hideFinder = function () {
+    //   jQuery("#finder-modal").modal('hide')
     // };
-    //
-    // $scope.showFinder = function () {
-    //   $scope.finderResource = null;
-    // };
-
-
 
     $scope.enableSaveButton = function () {
       $timeout(function () {
@@ -592,14 +583,20 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.showModal = function (id) {
-      console.log('showModal',id);
-      jQuery("#" + id).modal('show');
+    //
+    // controlled terms modal
+    //
+
+    $scope.showModal = function (type) {
+      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element)};
+      UIUtilService.showModal(options);
     };
 
     //TODO this event resets modal state and closes modal
-    $scope.$on("field:controlledTermAdded", function () {
-      jQuery("#control-options-element-field").modal('hide');
+    $scope.$on("field:controlledTermAdded", function (event,args) {
+      if (args[1] == dms.getId($scope.element)) {
+        UIUtilService.hideModal();
+      }
     });
 
     // // update the property for a field

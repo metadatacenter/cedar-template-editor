@@ -77,6 +77,7 @@ define([
     vm.modalId = vm.options && vm.options.modalId || "";
 
 
+
     vm.setInitialFieldConstraints();
 
     jQuery('body').on('click', '.detail-view-tab a', function (e) {
@@ -89,12 +90,12 @@ define([
      */
 
     function addProperty(property, label, definition) {
-      console.log('addProperty',property, label, definition);
+      console.log('addProperty', property, label, definition);
       if (vm.filterSelection === 'properties') {
         var id = DataManipulationService.getId(vm.field);
 
         // tell the form to update the property for this field
-        console.log('broadcast property:propertyAdded');
+        console.log('broadcast property:propertyAdded', id);
         $rootScope.$broadcast('property:propertyAdded', [property, id, label, definition]);
       }
     };
@@ -183,8 +184,9 @@ define([
       //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
 
 
-      // TODO broadcast the action for now because parent scope is not working
-      $rootScope.$broadcast('field:controlledTermAdded');
+      var id = DataManipulationService.getId(vm.field);
+      console.log('broadcast field:controlledTermAdded', id);
+      $rootScope.$broadcast('field:controlledTermAdded', ['', id, '', '']);
 
     }
 
@@ -531,12 +533,14 @@ define([
      * Watch functions.
      */
 
-    $scope.$on(
-        'ctdc:init',
-        function (event, args) {
-          vm.setInitialFieldConstraints();
-        }
-    );
+    $scope.$on('ctdc:init', function (event, args) {
+      vm.field = args[0].model;
+      vm.options = args[0];
+      vm.filterSelection = vm.options.filterSelection;
+      vm.q = vm.options.q;
+      vm.modalId = vm.options.modalId;
+      vm.setInitialFieldConstraints();
+    });
 
     $scope.$on(
         'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSaved',
@@ -549,7 +553,6 @@ define([
         'cedar.templateEditor.controlledTerm.propertyCreated',
         function (event, args) {
           if (vm.filterSelection === 'properties') {
-            console.log('propertyCreated',args);
 
             // tell the form to update the property for this field
             var property = args[0];
@@ -557,7 +560,6 @@ define([
             var id = DataManipulationService.getId(vm.field);
             var description = args[2];
 
-            console.log('broadcast property:propertyAdded after prpopertyCreated')
             $rootScope.$broadcast('property:propertyAdded', [property, id, label, description]);
           }
         }
@@ -749,7 +751,7 @@ define([
 
     function assignValueConstraintToField() {
       $rootScope.schemaOf(vm.field)._valueConstraints =
-          angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
+          angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint);
 
       delete vm.stageValueConstraintAction;
       vm.stagedOntologyValueConstraints = [];
@@ -759,8 +761,11 @@ define([
       vm.stagedBranchesValueConstraints = [];
       vm.startOver();
 
+
       // TODO broadcast the action so dialog is closed and ontology picker is reset
-      $rootScope.$broadcast('field:controlledTermAdded');
+
+      var id = DataManipulationService.getId(vm.field);
+      $rootScope.$broadcast('field:controlledTermAdded', ['', id, '', '']);
 
     }
 

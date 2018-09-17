@@ -14,8 +14,8 @@ define([
 
     var directive = {
       bindToController: {
-        field: '=',
-        options: '='
+        // field: '=',
+        // options: '='
       },
       controller: 'controlledTermDirectiveController',
       controllerAs: 'ctdc',

@@ -22,16 +22,18 @@
   </div>
 
   <div class="configuration-actions" ng-init="childType='field'">
-    <div class="preview-container flex-right" style="width:100px">
+    <div class="preview-container flex-right" style="width:100px;height:40px">
 
       <div class="preview-edit-options ">
-        <div class="save-options">
-          <div class="trash" style="margin-right: 0;"
-              ng-click="ckDelete(); $event.stopPropagation();"
+        <div class="save-options" ng-hide="isRootNode()">
+
+          <button  class="trash" style="margin-right: 0;background:transparent"
               uib-tooltip='{{"Delete" | translate}}'
+              ng-click="ckDelete(); $event.stopPropagation();"
               tooltip-placement="top">
             <i class="fa fa-times-circle"></i>
-          </div>
+          </button>
+
         </div>
       </div>
     </div>

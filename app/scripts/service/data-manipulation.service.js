@@ -89,7 +89,9 @@ define([
 
         service.getType = function (node) {
           var schema = service.schemaOf(node);
-          return schema['@type'];
+          if (schema) {
+            return schema['@type']
+          }
         };
 
         service.getKeyFromId = function (node) {
@@ -156,6 +158,33 @@ define([
           }
         };
 
+        // node title and description
+        service.getPreferredLabel = function (node) {
+          if (service.schemaOf(node)) {
+            return service.schemaOf(node)[CONST.model.PREFLABEL];
+          }
+        };
+
+        service.hasPreferredLabel = function (node) {
+          return service.schemaOf(node).hasOwnProperty(CONST.model.PREFLABEL) && service.schemaOf(node)[CONST.model.PREFLABEL].length > 0;
+        };
+
+        service.setPreferredLabel = function (node, value) {
+          var schema = service.schemaOf(node);
+          if (schema) {
+            service.schemaOf(node)[CONST.model.PREFLABEL] = value;
+          }
+        };
+
+        service.removePreferredLabel = function (node) {
+          console.log('removePreferredLabel');
+          var schema = service.schemaOf(node);
+          if (schema) {
+            delete schema[CONST.model.PREFLABEL];
+            console.log('removePreferredLabel', node);
+          }
+        };
+
         service.titleLocation = function() {
           return CONST.model.NAME;
         };
@@ -216,6 +245,24 @@ define([
           if (schema) {
             service.schemaOf(node)[CONST.model.DESCRIPTION] = value;
             //service.schemaOf(node)._ui.description = value;
+          }
+        };
+
+        service.getIdentifier = function (node) {
+          if (service.schemaOf(node)) {
+            return service.schemaOf(node)[CONST.model.IDENTIFIER];
+          }
+        };
+
+        service.setIdentifier = function (node, value) {
+          if (service.schemaOf(node)) {
+            service.schemaOf(node)[CONST.model.IDENTIFIER] = value;
+          }
+        };
+
+        service.removeIdentifier = function (node) {
+          if (service.schemaOf(node)) {
+            delete service.schemaOf(node)[CONST.model.IDENTIFIER];
           }
         };
 
@@ -325,7 +372,9 @@ define([
 
         // Function that generates a basic field definition
         service.isStaticField = function (node) {
-          return FieldTypeService.isStaticField(service.getInputType(node));
+          if (node) {
+            return FieldTypeService.isStaticField(service.getInputType(node));
+          }
         };
 
         // is this a numeric field?
@@ -522,11 +571,14 @@ define([
               'oslc:modifiedBy'     : field['oslc:modifiedBy'],
               'schema:schemaVersion': field['schema:schemaVersion'],
               'schema:name'         : field[CONST.model.NAME],
-              'schema:description'  : field[CONST.model.DESCRIPTION]
+              'schema:description'  : field[CONST.model.DESCRIPTION],
             };
             if (hasVersion) {
               field.items['pav:version'] = field['pav:version'];
               field.items['bibo:status'] = field['bibo:status'];
+            }
+            if (field[CONST.model.PREFLABEL]) {
+              field.items[CONST.model.PREFLABEL] = field[CONST.model.PREFLABEL];
             }
 
             field.type = 'array';
@@ -549,6 +601,7 @@ define([
             delete field['schema:schemaVersion'];
             delete field[CONST.model.NAME];
             delete field[CONST.model.DESCRIPTION];
+            delete field[CONST.model.PREFLABEL];
             delete field['pav:version'];
             delete field['bibo:status'];
 
@@ -585,6 +638,9 @@ define([
             if (hasVersion) {
               field['pav:version'] = field.items['pav:version'];
               field['bibo:status'] = field.items['bibo:status'];
+            }
+            if (field.items[CONST.model.PREFLABEL]) {
+              field[CONST.model.PREFLABEL] = field.items[CONST.model.PREFLABEL];
             }
 
             delete field.items;

@@ -106,7 +106,8 @@ define([
 
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
-              if ($scope.form.properties[field]._ui && $scope.form.properties[field]._ui.inputType == 'page-break') {
+              if ($scope.form.properties[field] && $scope.form.properties[field]._ui &&
+                  $scope.form.properties[field]._ui.inputType == 'page-break') {
                 if (index == 0) {
                   titles.push($scope.getTitle());
                 } else {
@@ -297,14 +298,17 @@ define([
                       dms.initializeValueType(value, parentModel[name]);
                     }
                     if (dms.isAttributeValueType(value)) {
-                      // remove the @context entry for this attribute-value fields
-                      // delete the context int the parent
-                      delete parentModel['@context'][name];
-                      parentModel[name] = [];
+                      // remove the @context entry for this attribute-value field
+                      // delete the context in the parent
+                      if (parentModel) {
+                        if (parentModel['@context']) {
+                          delete parentModel['@context'][name];
+                        }
+                        parentModel[name] = [];
+                      }
                     }
                     dms.defaultOptionsToModel(value, parentModel[name]);
                   }
-
                 }
               }
             }
@@ -399,8 +403,7 @@ define([
           } else {
             if (UIUtilService.hasTotalMetadata()) {
               UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
-            }
-            if (UIUtilService.isLocked()) {
+            } else if (UIUtilService.isLocked()) {
               UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
             }
           }

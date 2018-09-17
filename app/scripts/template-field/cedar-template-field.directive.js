@@ -392,7 +392,7 @@ define([
       // controlled terms modal
       //
 
-      scope.modalType;
+
 
       // create an id for the controlled terms modal
       scope.getModalId = function (type) {
@@ -401,20 +401,15 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
-        console.log('showModal', type);
         if (type) {
-          $rootScope.finalTitle = scope.getTitle();
-          scope.modalType = type;
-          UIUtilService.showModal(dms.getId(scope.field), type);
-
-          // initialize the controlled term modal
-          $rootScope.$broadcast("ctdc:init", [scope.getTitle()]);
+          // $rootScope.finalTitle = scope.getTitle();
+          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":$scope.getId(), "q": $scope.getLabel()};
+          UIUtilService.showModal(options);
         }
       };
 
       // show the controlled terms modal
       scope.hideModal = function () {
-        console.log('hideModal', scope.modalType);
         UIUtilService.hideModal();
       };
 
