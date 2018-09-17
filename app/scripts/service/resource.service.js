@@ -28,6 +28,7 @@ define([
           deleteResource           : deleteResource,
           getFacets                : getFacets,
           getResourceReport        : getResourceReport,
+          getTemplateReport        : getTemplateReport,
           getResourceDetail        : getResourceDetail,
           getResourceDetailFromId  : getResourceDetailFromId,
           getResources             : getResources,
@@ -294,6 +295,17 @@ define([
           );
         }
 
+        function getTemplateReport(id, successCallback, errorCallback) {
+          var url = urlService.getTemplate(id) + '/report';
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
         function getResourceReport(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
@@ -477,8 +489,8 @@ define([
         // private function
         function addCommonParameters(params, options) {
           var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function (obj) {
-                return obj.resourceType
-              });
+            return obj.resourceType
+          });
           params['resource_types'] = resourceTypes.join(',');
           if (angular.isArray(options.sort)) {
             params['sort'] = options.sort.join(',');
