@@ -1136,7 +1136,11 @@ define([
 
 
 
-
+      // show the controlled terms modal
+      $scope.showModalReadOnly = function (type, termType, term) {
+        var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), termType: term, "permission": "read"};
+        UIUtilService.showModal(options);
+      };
 
 
       // show the controlled terms modal

@@ -231,6 +231,7 @@
                     <th>Identifier</th>
                     <th width="100px">No. Values</th>
                     <th>&nbsp;</th>
+                    <th>&nbsp;</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -244,6 +245,11 @@
                       16)}}
                     </td>
                     <td>1</td>
+                    <td>
+                      <div class="class-explore" ng-click="showModalReadOnly('values','class',class); $event.stopPropagation();">
+                        <i class="fa fa-eye"></i>
+                      </div>
+                    </td>
                     <td>
                       <div class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
@@ -260,6 +266,11 @@
                     </td>
                     <td>{{valueSet.numTerms}}</td>
                     <td>
+                      <div class="class-explore" ng-click="showModalReadOnly('values','valueSet',valueSet); $event.stopPropagation();">
+                        <i class="fa fa-eye"></i>
+                      </div>
+                    </td>
+                    <td>
                       <div class="class-delete"
                           ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
@@ -272,6 +283,11 @@
                     <td>-</td>
                     <td>{{ontology.acronym}}</td>
                     <td>{{ontology.numTerms}}</td>
+                    <td>
+                      <div class="class-explore" ng-click="showModalReadOnly('values','ontology',ontology); $event.stopPropagation();">
+                        <i class="fa fa-eye"></i>
+                      </div>
+                    </td>
                     <td>
                       <div class="class-delete"
                           ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
@@ -288,6 +304,11 @@
                       16)}}
                     </td>
                     <td>-</td>
+                    <td>
+                      <div class="class-explore" ng-click="showModalBranchReadOnly('values','branch',branch); $event.stopPropagation();">
+                        <i class="fa fa-eye"></i>
+                      </div>
+                    </td>
                     <td>
                       <div class="class-delete" ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
