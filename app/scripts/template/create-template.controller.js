@@ -78,11 +78,8 @@ define([
             var isPublished = DataManipulationService.isPublished($scope.details);
 
             // Check if the resource has instances (only for templates)
-            // TODO: check all instances, not only the visible ones
-            var hasInstances = false;
-            if (UIUtilService.getVisibleMetadata() > 0) {
-              hasInstances = true;
-            }
+            var hasInstances =  (UIUtilService.getTotalMetadata() > 0);
+
             // Result
             var canWrite = writePermission && !isPublished && !hasInstances;
             $scope.cannotWrite = !canWrite;
@@ -97,36 +94,20 @@ define([
           UIUtilService.setLocked($scope.cannotWrite);
         });
 
-        var doSearchTemplateInstances = function (id) {
-          var limit = 1;
-          var offset = 0;
-          var sort = 'name';
+        var getReport = function (id) {
 
-          // TODO this should use the /report call to get the invisible instances as well as the visible
-          resourceService.hasMetadata(
+          resourceService.getTemplateReport(
               id,
-              {sort: sort, limit: limit, offset: offset},
-              function (response) {
-                UIUtilService.setTotalMetadata(response.resources.length);
-                UIUtilService.setVisibleMetadata(response.totalCount || 0);
-                UIUtilService.setInstances(response.resources);
-                $scope.checkLocking();
-              },
-              function (error) {
-                UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-              }
-          );
-        };
-
-        var getDetails = function (id) {
-          resourceService.getResourceDetailFromId(
-              id, CONST.resourceType.TEMPLATE,
               function (response) {
                 $scope.details = response;
-                doSearchTemplateInstances(id);
+                UIUtilService.setTotalMetadata(response.numberOfInstances);
+                UIUtilService.setVisibleMetadata(0);
+                UIUtilService.setInstances(null);
+                $scope.checkLocking();
+
               },
               function (error) {
-                UIMessageService.showBackendError('SERVER.' + 'TEMPLATE' + '.load.error', error);
+                UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
               }
           );
         };
@@ -164,7 +145,7 @@ define([
                           //$scope.getType();
                           $rootScope.$broadcast('form:clean');
                           $rootScope.$broadcast("form:validation", {state: true});
-                          getDetails($scope.form["@id"]);
+                          getReport($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller
                           //   $rootScope.goToHome();
