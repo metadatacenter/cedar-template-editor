@@ -15,13 +15,13 @@ define([
           bindToController: {
             fieldName            : '=',
             searchTerm           : '=',
-            searchMode           : '=', // Search modes: properties, field, values
+            searchMode           : '=',
             selectedClass        : '=',
             currentOntology      : '=',
             advanced             : '=',
             selectedOntologies   : '=',
-            resetCallback        : '=?',
-            addCallback          : '=?',
+            resetCallback        : '=',
+            addCallback          : '=',
             isLoadingClassDetails: '=',
             isCreatingMappings   : '=',
             isCreatingVs         : '=',
@@ -61,10 +61,7 @@ define([
           vm.ontologySearchRegexp = null;
           vm.resultsFound = null;
           vm.searchFinished = null;
-          // vm.searchScope = vm.searchFor;
-          // vm.searchOptionsVisible = false;
           vm.selectedResultId = null;
-          // vm.selectedOntologies = [];
           vm.showSearchPreloader = false;
           vm.showEmptyQueryMsg = false;
 
@@ -391,7 +388,7 @@ define([
 
 
           function handleClose(close) {
-            console.log('handleClose')
+            console.log('handleClose', close)
             if (close) {
               if (vm.isSearchingClasses()) {
                 if (typeof vm.addCallback === "function") {

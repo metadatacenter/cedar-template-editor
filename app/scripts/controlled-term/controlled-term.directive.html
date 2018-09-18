@@ -1,12 +1,13 @@
 <div class="controlled-terms controlled-term-options">
 
-  <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'properties'">
+  <div class="form-group floating-label-wrapper field-filter clearfix"
+      ng-if="ctdc.filterSelection == 'properties' || ctdc.filterSelection == 'field'">
 
     <controlled-term-search
         field-name="ctdc.q"
         search-term="ctdc.options.term"
         search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addProperty"
+        add-callback="ctdc.addCallback"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         advanced="ctdc.options.advanced"
@@ -21,55 +22,38 @@
 
     <div class="class-actions" ng-if="ctdc.hasPermission('write');">
       <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
+
         <div class="action-msg">
-          <span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
+          <span>Click OK to select <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
         </div>
-        <div >
-          <button type="button" class="std-button btn btn-add-term"
-              ng-click="ctdc.addProperty(ctdc.selectedClass.id, ctdc.selectedClass.prefLabel,ctdc.selectedClass.definition); ctdc.startOver()">OK
-          </button>
+
+        <div ng-if="ctdc.filterSelection == 'properties'">
+          <!--<div class="action-msg">-->
+            <!--<span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>-->
+          <!--</div>-->
+          <div>
+            <button type="button" class="std-button btn btn-add-term"
+                ng-click="ctdc.addProperty(ctdc.selectedClass.id, ctdc.selectedClass.prefLabel,ctdc.selectedClass.definition); ctdc.startOver()">
+              OK
+            </button>
+          </div>
         </div>
+
+        <div ng-if="ctdc.filterSelection == 'field'">
+          <!--<div class="action-msg">-->
+            <!--<span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>-->
+          <!--</div>-->
+          <div>
+            <button type="button" class="std-button btn btn-add-term"
+                ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
-
-
-    <controlled-term-search
-        field-name="ctdc.q"
-        search-term="ctdc.options.term"
-        search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addClass"
-        reset-callback="ctdc.startOver"
-        current-ontology="ctdc.currentOntology"
-        advanced="ctdc.options.advanced"
-        selected-class="ctdc.selectedClass"
-        is-loading-class-details="ctdc.isLoadingClassDetails"
-        is-creating-mappings="false"
-        is-creating-vs="false"
-        tree-visible="ctdc.treeVisible"
-        modal-id="ctdc.modalId"
-        search-scope="ctdc.searchScope">
-    </controlled-term-search>
-
-    <div class="class-actions" ng-if="ctdc.hasPermission('write');">
-      <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
-        <div class="action-msg">
-          <span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
-        </div>
-        <div>
-          <button type="button" class="std-button btn btn-add-term"
-              ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
-          </button>
-          <!--<button type="button" class="std-button btn btn-add-term"-->
-          <!--ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()" data-dismiss="modal">-->
-          <!--Cancel-->
-          <!--</button>-->
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="value-filter" ng-if="ctdc.filterSelection == 'values'">
 
@@ -77,7 +61,7 @@
         field-name="ctdc.q"
         search-term="ctdc.options.term"
         search-mode="ctdc.filterSelection"
-        add-callback="ctdc.addValueConstraint"
+        add-callback="ctdc.addCallback"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         advanced="ctdc.options.advanced"
@@ -96,8 +80,9 @@
       <div class="loader2"></div>
     </div>
 
-    <div ng-if="(ctdc.selectedClass || ctdc.currentOntology) && !ctdc.isLoadingClassDetails && !ctdc.isLoadingOntologyDetails">
-      <div class="class-actions" >
+    <div
+        ng-if="(ctdc.selectedClass || ctdc.currentOntology) && !ctdc.isLoadingClassDetails && !ctdc.isLoadingOntologyDetails">
+      <div class="class-actions">
         <div class="element-toggles">
           <!--Add Term-->
           <div ng-if="ctdc.selectedClass.type == 'OntologyClass' || ctdc.selectedClass.type == 'Value'"
@@ -186,7 +171,9 @@
             </tr>
             <tr>
               <th>No. terms</th>
-              <td ng-if="ctdc.stagedOntologyValueConstraints[0].metricsAvailable">{{ctdc.stagedOntologyValueConstraints[0].numTerms | number}}</td>
+              <td ng-if="ctdc.stagedOntologyValueConstraints[0].metricsAvailable">
+                {{ctdc.stagedOntologyValueConstraints[0].numTerms | number}}
+              </td>
               <td ng-if="!ctdc.stagedOntologyValueConstraints[0].metricsAvailable">n/a</td>
             </tr>
           </table>
@@ -221,7 +208,7 @@
       <div class="class-actions" ng-if="ctdc.hasPermission('write');">
         <div class="class-action" ng-if="ctdc.stagedOntologyClassValueConstraints.length > 0
         || ctdc.stagedOntologyValueConstraints.length > 0 || ctdc.stagedValueSetValueConstraints.length > 0">
-          <div class="action-msg" >
+          <div class="action-msg">
             <span ng-if="ctdc.stageValueConstraintAction == 'add_class'">Click to add the selected term</span>
             <span
                 ng-if="ctdc.stageValueConstraintAction == 'add_ontology' && (ctdc.selectedClass.type == 'OntologyClass' || !ctdc.selectedClass)">Click to add all the terms from the selected ontology</span>
@@ -229,7 +216,7 @@
                 ng-if="ctdc.stageValueConstraintAction == 'add_entire_value_set'">Click to add all the terms from the selected value set</span>
             <span ng-if="ctdc.stageValueConstraintAction == 'add_children'">Click to add all the descendants of the selected term</span>
           </div>
-          <button  type="button" class="std-button btn btn-add-term"
+          <button type="button" class="std-button btn btn-add-term"
               ng-click="ctdc.addValueConstraint(ctdc.stageValueConstraintAction)">Add
           </button>
         </div>
