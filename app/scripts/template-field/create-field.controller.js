@@ -497,20 +497,19 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.showModal = function (type) {
-      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.form, "id":dms.getId($scope.form), "q": dms.getTitle($scope.form)};
+    //
+    // controlled terms modal
+    //
+
+    $scope.showModal = function (type, searchScope) {
+      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":dms.getId($scope.form), "q": dms.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
       UIUtilService.showModal(options);
     };
 
     $scope.$on("field:controlledTermAdded", function (event,args) {
       if (dms.getId($scope.form) == args[1]) {
-        console.log('field:controlledTermAdded', args[1]);
         UIUtilService.hideModal();
-        // var id = args[1];
-        // var propertyId = args[0];
-        // var propertyLabel = args[2];
-        // var propertyDescription = args[3];
-        // dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
+        UIUtilService.setDirty(true);
       }
     });
 

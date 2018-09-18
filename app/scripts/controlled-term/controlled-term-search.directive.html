@@ -59,28 +59,33 @@
     <!-- Search Field -->
     <div class="field-search">
       <div class="input-group field-search-input-group">
-        <input id="field-search-input" type="text" class="form-control field-search-form-control"
-            placeholder="Search in BioPortal" aria-label="Search field"
-            ng-model="tsc.searchQuery" ng-focus="tsc.showEmptyQueryMsg = false"
+        <input id="field-search-input"
+            type="text"
+            class="form-control field-search-form-control"
+            placeholder="Search in BioPortal"
+            aria-label="Search field"
+            ng-model="tsc.searchQuery"
+            ng-focus="tsc.showEmptyQueryMsg = false"
             with-floating-label=""
             ng-model-options="{debounce: 700}"
             ng-submit="tsc.search($event)"
             ng-click="tsc.onTextClick($event)"
             autocomplete="off"/>
         <span class="input-group-addon" ng-click="tsc.changeSearchOptionsVisibility()">
-          <i ng-class="{'fa fa-cog': !tsc.searchOptionsVisible, 'fa fa-cog selected': tsc.searchOptionsVisible}"></i>
+          <i ng-class="{'fa fa-cog': !tsc.advanced, 'fa fa-cog selected': tsc.advanced}"></i>
         </span>
         <span class="input-group-addon" ng-click="tsc.search()"><i class="fa fa-search"></i></span>
       </div>
     </div>
     <!-- Search Options -->
-    <div ng-show="tsc.searchOptionsVisible" class="advanced-search">
+    <div ng-show="tsc.advanced" class="advanced-search">
       <p class="advanced-search-header">Advanced Search Options</p>
 
       <div class="advanced-search-options">
         <b>I want to...</b>
 
         <div class="search-options">
+          tsc.searchScope {{tsc.searchScope}} {{tsc.searchFor}}
           <div class="radio radio-primary radio-controlled-terms-search">
             <div ng-if="tsc.isFieldPropertiesMode()" class="radio-option">
               <input id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"

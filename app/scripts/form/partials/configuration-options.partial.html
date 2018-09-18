@@ -32,11 +32,11 @@
           ng-click="setTab('hidden');  $event.stopPropagation();">
         <span>Hidden</span>
       </div>
-      <div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"
-          ng-class="{active: isTabActive('field')}"
-          ng-click="setTab('field');  $event.stopPropagation();">
-        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>
-      </div>
+      <!--<div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
+        <!--ng-class="{active: isTabActive('field')}"-->
+        <!--ng-click="setTab('field');  $event.stopPropagation();">-->
+      <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>-->
+    <!--</div>-->
     </div>
   </div>
 
@@ -200,18 +200,18 @@
     </div>
   </div>
 
-  <!-- Field tab -->
-  <div ng-show="isTabActive('field')">
-    <class-list field="field" view-type="viewType"></class-list>
-    <div class="center search" >
-      <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-      in the modal and used to perform a BioPortal initial search automatically -->
-      <button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"
-          ng-click="getInstanceType();showModal('field')" translate>
-        GENERIC.Search
-      </button>
-    </div>
-  </div>
+  <!--&lt;!&ndash; Field tab &ndash;&gt;-->
+  <!--<div ng-show="isTabActive('field')">-->
+    <!--<class-list field="field" view-type="viewType"></class-list>-->
+    <!--<div class="center search" >-->
+      <!--&lt;!&ndash; The field.finalTitle variable is used to store the final title assigned to the field, which will be shown-->
+      <!--in the modal and used to perform a BioPortal initial search automatically &ndash;&gt;-->
+      <!--<button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"-->
+          <!--ng-click="getInstanceType();showModal('field' 'classes')" translate>-->
+        <!--GENERIC.Search-->
+      <!--</button>-->
+    <!--</div>-->
+  <!--</div>-->
 
   <!-- Value tab -->
   <div id="value-options" class="cardinality-options" ng-show="isTabActive('values')">
@@ -246,7 +246,7 @@
                     </td>
                     <td>1</td>
                     <td>
-                      <div class="class-explore" ng-click="showModalReadOnly('values','class',class); $event.stopPropagation();">
+                      <div class="class-explore" ng-click="showModalReadOnly('values','classes','class',class); $event.stopPropagation();">
                         <i class="fa fa-eye"></i>
                       </div>
                     </td>
@@ -266,7 +266,7 @@
                     </td>
                     <td>{{valueSet.numTerms}}</td>
                     <td>
-                      <div class="class-explore" ng-click="showModalReadOnly('values','valueSet',valueSet); $event.stopPropagation();">
+                      <div class="class-explore" ng-click="showModalReadOnly('values','value-sets','valueSet',valueSet); $event.stopPropagation();">
                         <i class="fa fa-eye"></i>
                       </div>
                     </td>
@@ -284,7 +284,7 @@
                     <td>{{ontology.acronym}}</td>
                     <td>{{ontology.numTerms}}</td>
                     <td>
-                      <div class="class-explore" ng-click="showModalReadOnly('values','ontology',ontology); $event.stopPropagation();">
+                      <div class="class-explore" ng-click="showModalReadOnly('values','ontologies','ontology',ontology); $event.stopPropagation();">
                         <i class="fa fa-eye"></i>
                       </div>
                     </td>
@@ -305,7 +305,7 @@
                     </td>
                     <td>-</td>
                     <td>
-                      <div class="class-explore" ng-click="showModalBranchReadOnly('values','branch',branch); $event.stopPropagation();">
+                      <div class="class-explore" ng-click="showModalReadOnly('values','classes','branch',branch); $event.stopPropagation();">
                         <i class="fa fa-eye"></i>
                       </div>
                     </td>
@@ -323,7 +323,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button ng-if="canAddTerms()" type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values')">Search
+            <button ng-if="canAddTerms()" type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values', 'classes')">Search
             </button>
           </div>
         </div>
