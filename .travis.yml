@@ -15,7 +15,7 @@ branches:
   only:
   - develop
   - master
-  - feature/issue-796
+  - feature/issue-774
 notifications:
   slack:
     on_success: always

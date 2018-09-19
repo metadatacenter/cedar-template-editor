@@ -14,17 +14,20 @@ define([
         var directive = {
           bindToController: {
             fieldName            : '=',
-            searchMode           : '=', // Search modes: properties, field, values
+            searchTerm           : '=',
+            searchMode           : '=',
             selectedClass        : '=',
             currentOntology      : '=',
-            resetCallback        : '=?',
-            addCallback          : '=?',
+            advanced             : '=',
+            selectedOntologies   : '=',
+            resetCallback        : '=',
+            addCallback          : '=',
             isLoadingClassDetails: '=',
             isCreatingMappings   : '=',
             isCreatingVs         : '=',
             treeVisible          : '=',
             modalId              : '=',
-            searchFor            : '@'
+            searchScope          : '='
           },
           controller      : controlledTermSearchDirectiveController,
           controllerAs    : 'tsc',
@@ -58,10 +61,7 @@ define([
           vm.ontologySearchRegexp = null;
           vm.resultsFound = null;
           vm.searchFinished = null;
-          vm.searchScope = vm.searchFor;
-          vm.searchOptionsVisible = false;
           vm.selectedResultId = null;
-          vm.selectedOntologies = [];
           vm.showSearchPreloader = false;
           vm.showEmptyQueryMsg = false;
 
@@ -117,6 +117,7 @@ define([
            */
 
           function search(event) {
+            var select = null;
             reset(true, true, true, true, true);
             if (isEmptySearchQuery() == false) {
               vm.showEmptyQueryMsg = false;
@@ -173,12 +174,17 @@ define([
                     }
                     // Ignore results for which the ontology or value set collection was not found in the cache
                     if (source) {
+                      var j = tArry.length;
                       tArry.push({
-                        resultId : i,
+                        resultId : j,
                         prefLabel: response.collection[i].prefLabel,
                         details  : response.collection[i],
                         source   : source
                       });
+
+                      if (select==null && vm.searchTerm && vm.searchTerm.uri &&  response.collection[i].id == vm.searchTerm.uri) {
+                        select = tArry.length-1;
+                      }
                     }
                   }
                   vm.searchResults = tArry;
@@ -188,7 +194,8 @@ define([
                 }
                 // Hide 'Searching...' message
                 vm.showSearchPreloader = false;
-                endSearch();
+                endSearch(select);
+
               });
             }
             else {
@@ -204,8 +211,11 @@ define([
             vm.action = 'search';
           }
 
-          function endSearch() {
+          function endSearch(select) {
             vm.searchFinished = true;
+            if (select != null) {
+              vm.selectResult(vm.searchResults[select], select, false);
+            }
           }
 
           function getLabels(arr) {
@@ -262,7 +272,7 @@ define([
 
           function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
             if (!keepSearchScope) {
-              vm.searchScope = vm.searchFor;
+              // vm.searchScope = vm.searchFor;
               vm.searchOptionsVisible = false;
             }
             if (!keepCreationMode) {
@@ -392,7 +402,7 @@ define([
               }
               if (vm.isSearchingProperties()) {
                 if (typeof vm.addCallback === "function") {
-                  vm.addCallback(vm.selectedClass.id, vm.selectedClass.prefLabel,vm.selectedClass.definition);
+                  vm.addCallback(vm.selectedClass.id, vm.selectedClass.prefLabel, vm.selectedClass.definition);
                 }
                 if (typeof vm.resetCallback === "function") {
                   vm.resetCallback();
@@ -473,6 +483,7 @@ define([
           }
 
           /* Used in ontology tree directive. */
+
           /* This function is passed as a callback down through class tree and child tree directives */
           function checkIfSelected(subtree) {
             if (!subtree) {
@@ -491,7 +502,7 @@ define([
           }
 
           function changeSearchOptionsVisibility() {
-            vm.searchOptionsVisible = !vm.searchOptionsVisible;
+            vm.advanced = !vm.advanced;
           }
 
           function changeTreeVisibility() {
@@ -653,10 +664,9 @@ define([
           }
 
           function addPropertyUri() {
-            console.log('addPropertyUri');
             // tell parent to update the property for this field
-            console.log('addPropertyUri',vm.property, vm.propertyLabel, vm.propertyDescription)
-            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
+            $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated",
+                [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
         }
       }

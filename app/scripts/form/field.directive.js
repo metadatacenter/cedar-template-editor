@@ -1136,12 +1136,18 @@ define([
 
 
 
-
+      // show the controlled terms modal
+      $scope.showModalReadOnly = function (type, searchScope, termType, term) {
+        var q = term.prefLabel || term.name;
+        var source = term.acronym || term.source;
+        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), 'q': q, 'source': source,'termType': termType, 'term': term, "advanced": true, "permission": ["read"]};
+        UIUtilService.showModal(options);
+      };
 
 
       // show the controlled terms modal
-      $scope.showModal = function (type) {
-        var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), "q": $scope.getLabel()};
+      $scope.showModal = function (type, searchScope) {
+        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), "q": $scope.getLabel(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
         UIUtilService.showModal(options);
       };
 

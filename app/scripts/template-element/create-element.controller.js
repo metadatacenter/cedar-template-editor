@@ -587,32 +587,17 @@ define([
     // controlled terms modal
     //
 
-    $scope.showModal = function (type) {
-      var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element)};
+    $scope.showModal = function (type, searchScope) {
+      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
       UIUtilService.showModal(options);
     };
 
-    //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function (event,args) {
       if (args[1] == dms.getId($scope.element)) {
         UIUtilService.hideModal();
+        UIUtilService.setDirty(true);
       }
     });
 
-    // // update the property for a field
-    // $scope.$on("property:propertyAdded", function (event, args) {
-    //
-    //   var propertyId = args[0];
-    //   var propertyLabel = args[2];
-    //   var id = args[1];
-    //   var propertyDescription = args[3];
-    //
-    //   dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.element);
-    //
-    //
-    // });
-
-
   }
-
 });
