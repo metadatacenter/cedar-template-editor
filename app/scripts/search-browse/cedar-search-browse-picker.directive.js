@@ -373,6 +373,7 @@ define([
             if (node) {
               var id = DataManipulationService.getId(node);
               return id.substr(id.lastIndexOf('/') + 1) + label;
+              //return id + label;
             }
           };
 
