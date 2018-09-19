@@ -803,7 +803,7 @@ define([
         function canSubmit(resource) {
           if (resource != null) {
             if (resource.nodeType === CONST.resourceType.INSTANCE) {
-              return resource[CONST.model.ISBASEDON] === "https://repo.metadatacenter.orgx/templates/81e3c19a-7237-4c4d-af78-dfe3eada047a";
+              return resource[CONST.model.ISBASEDON] === "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933";
             }
           }
           return false;
