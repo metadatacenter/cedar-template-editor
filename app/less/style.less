@@ -1003,6 +1003,7 @@ button {
           margin: 0 5px 5px 5px;
           .title-text {
             font-size: 14px;
+            white-space: nowrap;
             padding: 0;
             margin: 0
           }
@@ -1197,49 +1198,12 @@ button {
 
     .list-view {
 
-      .dropdown-menu {
-        z-index: 100;
-        width: 200px;
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: auto;
-        text-align: left;
+      .box-row-mod {
 
-        li:first-of-type a {
-          border-top: none;
-        }
-
-        li a {
-          white-space: inherit;
-        }
-      }
-
-      .title {
-        padding: 10px 0 20px;
-        i {
-          color: @brand-primary;
-        }
-      }
-
-      tbody {
-        margin: 10px 0;
-      }
-
-      .box-title {
-        width: 100%;
-        font-size: 16px;
-        color: @med-gray;
-        border-left: 5px solid transparent;
-        padding: 0 6px;
-        background-color: @white;
-        border: 1px solid #ccc;
-      }
-
-      .box-row {
         width: 100%;
         border: 1px solid #ebebeb;
         background: @white;
+
 
         font-size: 14px;
 
@@ -1302,6 +1266,48 @@ button {
           }
         }
       }
+
+
+      .dropdown-menu {
+        z-index: 100;
+        width: 200px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: auto;
+        text-align: left;
+
+        li:first-of-type a {
+          border-top: none;
+        }
+
+        li a {
+          white-space: inherit;
+        }
+      }
+
+      .title {
+        padding: 10px 0 20px;
+        i {
+          color: @brand-primary;
+        }
+      }
+
+      tbody {
+        margin: 10px 0;
+      }
+
+      .box-title {
+        width: 100%;
+        font-size: 16px;
+        color: @med-gray;
+        border-left: 5px solid transparent;
+        padding: 0 6px;
+        background-color: @white;
+        border: 1px solid #ccc;
+      }
+
+
 
       .info-side {
         .info {
@@ -8407,6 +8413,10 @@ table.message {
 
 .invalid {
   color: red;
+}
+
+.invisible {
+  visibility:hidden
 }
 
 .required {
