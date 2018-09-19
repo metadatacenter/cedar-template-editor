@@ -133,7 +133,6 @@ define([
 
 
     function addCallback(p1, p2, p3) {
-      console.log('addCallback', vm.filterSelection)
       if (vm.filterSelection == 'field') {
         vm.addClass(p1, p2, p3);
       }
@@ -146,7 +145,6 @@ define([
     }
 
     function addClass(selection, ontology) {
-      console.log('addClass',selection,ontology);
       // has this selection been added yet?
       var alreadyAdded = false;
       for (var i = 0, len = vm.addedFieldItems.length; i < len; i += 1) {
@@ -206,7 +204,6 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
-      console.log('addValueConstraint',action);
       if (!action || action == 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
@@ -551,7 +548,6 @@ define([
      */
 
     $scope.$on('ctdc:init', function (event, args) {
-      console.log('init')
       vm.field = args[0].model;
       vm.options = args[0];
       vm.filterSelection = vm.options.filterSelection;
@@ -561,6 +557,9 @@ define([
       vm.advanced = vm.options.advanced;
       vm.selectedOntologies = [];
       vm.searchScope = vm.options.searchScope;
+      vm.treeVisible = false;
+      var scrollTop = jQuery('#' + vm.modalId + ' .modal-body').scrollTop();
+      jQuery('#' + vm.modalId + ' .modal-body').animate({scrollTop: 0}, 'fast');
 
 
       if (vm.options.term && vm.options.source) {

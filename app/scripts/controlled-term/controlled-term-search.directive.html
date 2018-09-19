@@ -1,18 +1,29 @@
+
+<span ng-show="tsc.searchTerm">Use BioPortal to explore <span class="highlighted">{{tsc.fieldName}}</span></span>
+
 <!-- Field types -->
-<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or <button
-    type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
-</button> <span ng-if="tsc.fieldName.trim().length > 0">to set the type of the field value for <span class="highlighted">'{{tsc.fieldName}}'</span>. Note: field values must be URIs.</span>
+<span ng-show="tsc.isFieldTypesMode() && !tsc.searchTerm">
+  <span ng-show="tsc.isSearching() && !tsc.isCreatingMappings && !tsc.isCreatingVs">
+  Find a term in BioPortal or
+  <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button>
+  <span ng-if="tsc.fieldName.trim().length > 0">to set the type of the field value for
+    <span class="highlighted">'{{tsc.fieldName}}'</span>
+    . Note: field values must be URIs.
+  </span>
+</span>
+
 </span>
 
 <!-- Field values -->
-<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs"
+<span ng-show="tsc.isFieldValuesMode() && !tsc.searchTerm">
+<span ng-show="tsc.isSearching()  && !tsc.isCreatingMappings && !tsc.isCreatingVs"
     class="creation-container">Find terms in BioPortal or <button type="button" class="btn btn-create-term"
     ng-click="tsc.switchToCreate('classes')">Create New Terms
 </button> to constrain the values of the <span ng-if="tsc.fieldName.trim().length > 0" class="highlighted">'{{tsc.fieldName}}'</span> field</span>
+</span>
 
 <!-- Property types -->
-<div ng-if="tsc.isFieldPropertiesMode()">
-
+<div ng-if="tsc.isFieldPropertiesMode() && !tsc.searchTerm">
   <!-- searching header only -->
   <div ng-if="tsc.isSearching()">
     <span ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
@@ -107,8 +118,8 @@
             </div>
           </div>
         </div>
-        
-        <div  ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties() || tsc.isSearchingValueSets()">
+
+        <div ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties() || tsc.isSearchingValueSets()">
           <b>Narrow your search to specific ontologies</b>
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
@@ -186,7 +197,8 @@
 
         <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingProperties()">
           <tbody>
-          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId, false)"   ng-dblclick="tsc.selectResult(result, result.resultId, true)"
+          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId, false)"
+              ng-dblclick="tsc.selectResult(result, result.resultId, true)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
             <td>{{result.prefLabel}}</td>
             <td>{{result.details.definition || '-'}}</td>
@@ -213,7 +225,8 @@
           <tbody>
 
           <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)" ng-dblclick="tsc.selectResult(result, result.resultId, true)"
+          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
+              ng-dblclick="tsc.selectResult(result, result.resultId, true)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="15%">{{result.prefLabel}}</td>
             <td width="15%">{{result.prefLabel}}</td>
@@ -269,7 +282,8 @@
           <tbody>
           <!-- ctdc.addProperty(ctdc.selectedClass.id, ctdc.selectedClass.prefLabel, ctdc.selectedClass.definition); ctdc.startOver()-->
           <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)" ng-dblclick="tsc.selectResult(result, result.resultId, true)"
+          <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
+              ng-dblclick="tsc.selectResult(result, result.resultId, true)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="15%">{{result.prefLabel}}</td>
             <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}
@@ -303,7 +317,7 @@
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
         <tr>
-          <th width="15%" ng-if="tsc.isSearchingClasses()">Term  (value sets)</th>
+          <th width="15%" ng-if="tsc.isSearchingClasses()">Term (value sets)</th>
           <th width="15%" ng-if="tsc.isSearchingValueSets()">Value Set</th>
           <th width="32%" ng-if="tsc.isSearchingClasses()">Definition</th>
           <th width="32%" ng-if="tsc.isSearchingValueSets()">Description</th>
@@ -391,7 +405,8 @@
     <div class="terminology-tree-container">
       <!-- Ontology tree header -->
       <div class="tree-header" ng-if="tsc.isCurrentOntology()">
-        <h4 ng-if="(tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass) && !tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} classes:</h4>
+        <h4 ng-if="(tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass) && !tsc.isFieldPropertiesMode()">
+          {{tsc.currentOntology.info.id}} classes:</h4>
         <h4 ng-if="tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} properties:</h4>
         <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set:
           {{tsc.currentOntology.vs.prefLabel}}</h4>
@@ -430,30 +445,9 @@
     <div class="selection-details-container" ng-if="tsc.isCurrentOntology()">
       <uib-tabset>
         <uib-tab ng-if="!tsc.isFieldPropertiesMode()" index="0" heading="Term Details">
-            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
-              details
-            </div>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <tbody ng-show="tsc.classDetails">
-                <tr>
-                  <th>Name</th>
-                  <td>{{tsc.classDetails.prefLabel}}</td>
-                </tr>
-                <tr>
-                  <th>Id</th>
-                  <td>{{tsc.classDetails['@id']}}</td>
-                </tr>
-                <tr ng-if="tsc.classDetails.definitions[0]">
-                  <th>Definition</th>
-                  <td>{{tsc.classDetails.definitions[0]}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-        </uib-tab>
-        <uib-tab ng-if="tsc.isFieldPropertiesMode()" index="0" heading="Property Details">
-          <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view details</div>
+          <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
+            details
+          </div>
           <div class="table-responsive">
             <table class="table table-striped">
               <tbody ng-show="tsc.classDetails">
@@ -473,38 +467,64 @@
             </table>
           </div>
         </uib-tab>
-        <uib-tab ng-if="tsc.isTypeClass(tsc.selectedClass.type) || tsc.isTypeProperty(tsc.selectedClass.type) || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
+        <uib-tab ng-if="tsc.isFieldPropertiesMode()" index="0" heading="Property Details">
+          <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
+            details
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody ng-show="tsc.classDetails">
+              <tr>
+                <th>Name</th>
+                <td>{{tsc.classDetails.prefLabel}}</td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>{{tsc.classDetails['@id']}}</td>
+              </tr>
+              <tr ng-if="tsc.classDetails.definitions[0]">
+                <th>Definition</th>
+                <td>{{tsc.classDetails.definitions[0]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </uib-tab>
+        <uib-tab
+            ng-if="tsc.isTypeClass(tsc.selectedClass.type) || tsc.isTypeProperty(tsc.selectedClass.type) || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
             index="1" heading="Ontology Details">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <tbody>
-                <tr>
-                  <th>Name</th>
-                  <td>{{tsc.currentOntology.info.name}}</td>
-                </tr>
-                <tr>
-                  <th>Acronym</th>
-                  <td>{{tsc.currentOntology.info.id}}</td>
-                </tr>
-                <tr>
-                  <th>Id</th>
-                  <td>
-                    <a ng-href="{{tsc.currentOntology.info['@id']}}"
-                        target="_blank">{{tsc.currentOntology.info['@id']}}</a>
-                  </td>
-                </tr>
-                <tr ng-if="tsc.currentOntology.info.details.description">
-                  <th>Description</th>
-                  <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
-                </tr>
-                <tr>
-                  <th>No. Terms</th>
-                  <td ng-if="tsc.currentOntology.info.details.metricsAvailable">{{tsc.currentOntology.info.details.numberOfClasses | number}}</td>
-                  <td ng-if="!tsc.currentOntology.info.details.metricsAvailable">n/a</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th>Name</th>
+                <td>{{tsc.currentOntology.info.name}}</td>
+              </tr>
+              <tr>
+                <th>Acronym</th>
+                <td>{{tsc.currentOntology.info.id}}</td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>
+                  <a ng-href="{{tsc.currentOntology.info['@id']}}"
+                      target="_blank">{{tsc.currentOntology.info['@id']}}</a>
+                </td>
+              </tr>
+              <tr ng-if="tsc.currentOntology.info.details.description">
+                <th>Description</th>
+                <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
+              </tr>
+              <tr>
+                <th>No. Terms</th>
+                <td ng-if="tsc.currentOntology.info.details.metricsAvailable">
+                  {{tsc.currentOntology.info.details.numberOfClasses | number}}
+                </td>
+                <td ng-if="!tsc.currentOntology.info.details.metricsAvailable">n/a</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </uib-tab>
         <uib-tab ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" index="1"
             heading="Value Set Details">
@@ -544,7 +564,7 @@
 
   <div class="clearfix"></div>
 
-  </div>
+</div>
 </div>
 
 <!-- Field types - Create term -->

@@ -117,7 +117,6 @@ define([
            */
 
           function search(event) {
-            console.log('search');
             var select = null;
             reset(true, true, true, true, true);
             if (isEmptySearchQuery() == false) {
@@ -160,12 +159,10 @@ define([
                   selectedOntologiesIds.push(ontology.id);
                 });
                 sources = selectedOntologiesIds.join(",");
-                console.log('sources', sources, vm.selectedOntologies)
               }
               bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
                   searchValueSets, searchProperties).then(function (response) {
                 if (response.collection && response.collection.length > 0) {
-                  console.log('search response', vm.searchTerm, response);
                   var tArry = [], i;
                   for (var i = 0; i < response.collection.length; i += 1) {
                     var source = null;
@@ -177,14 +174,16 @@ define([
                     }
                     // Ignore results for which the ontology or value set collection was not found in the cache
                     if (source) {
+                      var j = tArry.length;
                       tArry.push({
-                        resultId : i,
+                        resultId : j,
                         prefLabel: response.collection[i].prefLabel,
                         details  : response.collection[i],
                         source   : source
                       });
-                      if (vm.searchTerm &&  tArry[i].details.id == vm.searchTerm.uri) {
-                        select = i;
+
+                      if (select==null && vm.searchTerm && vm.searchTerm.uri &&  response.collection[i].id == vm.searchTerm.uri) {
+                        select = tArry.length-1;
                       }
                     }
                   }
@@ -381,14 +380,12 @@ define([
           }
 
           function searchOntologies(searchQuery) {
-            console.log('searchOntologies')
             loadOntologies(searchQuery);
             return vm.ontologiesFound;
           }
 
 
           function handleClose(close) {
-            console.log('handleClose', close)
             if (close) {
               if (vm.isSearchingClasses()) {
                 if (typeof vm.addCallback === "function") {
@@ -424,7 +421,6 @@ define([
 
           // select this thingy, then optionally close(clear) the dialog
           function selectResult(selection, resultId, close) {
-            console.log('selectResult', selection, resultId, close);
             // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
             vm.selectedClass = {};
             vm.currentOntology = {};
@@ -465,7 +461,6 @@ define([
           }
 
           function selectOntology(selection) {
-            console.log('selectOntology')
             vm.currentOntology = selection;
             vm.isLoadingOntologyDetails = true;
             vm.selectedClass = null;
@@ -507,7 +502,6 @@ define([
           }
 
           function changeSearchOptionsVisibility() {
-            console.log('chnageSearchOptionsVisibility', vm.advanced);
             vm.advanced = !vm.advanced;
           }
 
@@ -516,14 +510,12 @@ define([
           }
 
           function switchToCreate(mode) {
-            console.log('reset');
             reset(false, false, false, false, true);
             vm.action = 'create';
             vm.searchScope = mode;
           }
 
           function switchToSearch(mode) {
-            console.log('reset');
             reset(false, false, false, false, true);
             vm.action = 'search';
             vm.searchScope = mode;
@@ -541,7 +533,6 @@ define([
 
           /* This function is passed as a callback down through class tree and child tree directives */
           function getClassDetails(subtree) {
-            console.log('getClassDetails')
             var acronym = controlledTermService.getAcronym(subtree);
             var classId = subtree['@id'];
 
@@ -674,7 +665,6 @@ define([
 
           function addPropertyUri() {
             // tell parent to update the property for this field
-            console.log('addPropertyUri', vm.property, vm.propertyLabel, vm.propertyDescription)
             $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated",
                 [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
