@@ -264,7 +264,13 @@
                       </div>
 
                       <div class="title-container">
-                      <div class="title-text">{{ dc.getTitle(resource) }}</div>
+                      <div class="title-text ellipsis"  uib-tooltip='{{dc.getTitle(resource)}}'
+                          tooltip-append-to-body="true"
+                          tooltip-trigger="mouseenter"
+                          tooltip-animation="true"
+                          tooltip-placement="bottom"
+                          data-toggle="tooltip"
+                          tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
                       </div>
 
                     </div>
@@ -325,23 +331,31 @@
                       </div>
 
                       <div class="title-container">
-                        <div class="title-text">{{ dc.getTitle(resource) }}</div>
+                        <div class="title-text ellipsis"  uib-tooltip='{{dc.getTitle(resource)}}'
+                            tooltip-append-to-body="true"
+                            tooltip-trigger="mouseenter"
+                            tooltip-animation="false"
+                            tooltip-placement="bottom"
+                            data-toggle="tooltip"
+                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
+                      </div>
 
+
+                      <hr style="margin:0;padding:0"/>
+                      <div style="min-height:2em;padding:2px 4px">
                         <div ng-if="dc.isPublished(resource)">
-                          <hr style="margin:0;padding:0"/>
                           <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
                         </div>
-                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">  
-                          <hr style="margin:0;padding:0"/>
+                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">
                           {{dc.getResourceVersion(resource)}}
                         </div>
                       </div>
+                    </div>
 
                     </div>
                   </div>
                 </div>
 
-              </div>
 
               <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
                   style="height:auto;position:relative">
@@ -362,15 +376,14 @@
                       ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
                   <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:100px;"></div>
                   <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
-                  <div style="width:40px"></div>
+                  <div style="width:80px"></div>
 
                 </div>
 
                 <!-- show the folders first -->
-                <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row "
+                <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row-mod"  ng-class="{ selected: dc.isResourceSelected(resource) }"
                     id="{{dc.getId(resource, 'row')}}"
                     dropdownId="{{getId(resource, 'list')}}"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
@@ -379,14 +392,24 @@
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis">
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
-                      <div class="ellipsis" style="width:100%;justify-content: space-between">{{
-                        dc.getTitle(resource)}}
-                      </div>
+
+
+                        <div class="title-text ellipsis" style="width:100%" uib-tooltip='{{dc.getTitle(resource)}}'
+                            tooltip-append-to-body="true"
+                            tooltip-trigger="mouseenter"
+                            tooltip-animation="false"
+                            tooltip-placement="bottom"
+                            data-toggle="tooltip"
+                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
+
+
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] | prettyDate}}</div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] | prettyDate}}</div>
                     <div style="width:100px;"></div>
-                    <div class="flex" style="width:40px;justify-content:flex-end;">
+                    <div class="flex" style="width:80px;justify-content:flex-end;">
+
+
 
                       <button id="{{dc.getId(resource, 'list')}}"
                           style="background-color:transparent;padding-right:15px;"
@@ -419,10 +442,9 @@
                   </div>
                 </div>
 
-                <div ng-if="!dc.isFolder(resource)" class="box-row "
+                <div ng-if="!dc.isFolder(resource)" class="box-row-mod" ng-class="{ selected: dc.isResourceSelected(resource) }"
                     id="{{dc.getId(resource, 'row')}}"
                     dropdownId="{{getId(resource, 'list')}}"
-                    ng-class="{ selected: dc.isResourceSelected(resource) }"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
                     ng-repeat="(index, resource) in dc.resources">
@@ -430,7 +452,16 @@
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis" style="justify-content:space-between">
                       <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
-                      <div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>
+                      <!--<div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>-->
+
+                        <div class="title-text ellipsis" style="width:100%" uib-tooltip='{{dc.getTitle(resource)}}'
+                            tooltip-append-to-body="true"
+                            tooltip-trigger="mouseenter"
+                            tooltip-animation="false"
+                            tooltip-placement="bottom"
+                            data-toggle="tooltip"
+                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
+
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:createdOn'] |
                       prettyDate }}
@@ -446,11 +477,15 @@
                         <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
                       </div>
                     </div>
-                    <div class="flex" style="width:40px;justify-content:flex-end;">
+                    <div class="flex" style="width:80px;justify-content:flex-end;">
+
+                      <button  ng-class="{'invisible': !dc.isTemplate(resource)}"  ng-click="dc.goToResource(resource, 'populate')">
+                        <i class="fa fa-tag" style="background-color:transparent;color:#aaa;font-size:18px"></i></button>
+
                       <button id="{{dc.getId(resource, 'list')}}" title="More" class="more-button"
                           ng-click="dc.toggledCedarDropdownMenu($event, resource,'list')"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                          style="background-color:transparent;padding-right:15px;">
+                          style="background-color:transparent;padding:0 15px 0 5px;">
                         <i class="action fa fa-ellipsis-v" style="color:#aaa;font-size:18px"></i>
                       </button>
 
@@ -474,7 +509,7 @@
                   </div>
                 </div>
                 <!-- here is the end of the list view- hidden initially -->
-              </div>
+
 
               <div class="row resource-count" >
                 <div class="col-xs-12  center">
@@ -486,9 +521,6 @@
 
 
             </div>
-
-            <!--<div style="height:20px"></div>-->
-
 
           </div>
         </div>
