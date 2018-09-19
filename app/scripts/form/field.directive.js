@@ -1186,12 +1186,6 @@ define([
       // init
       //
 
-      $scope.$watch('fieldSchema["schema:name"]', function (name) {
-        $scope.fieldLabel = $scope.field;
-        $scope.fieldLabelKey = 'schema:name';
-        $scope.fieldLabel[$scope.fieldLabelKey] = name;
-      });
-
       $scope.$watch('fieldSchema["skos:prefLabel"]', function (prefLabel) {
         if (prefLabel == '') {
           dms.removePreferredLabel($scope.field) ;
