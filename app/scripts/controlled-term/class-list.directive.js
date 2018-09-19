@@ -45,7 +45,6 @@ define([
         // new class added
         scope.$on("field:controlledTermAdded", function (event,args) {
           if (args[1] == DataManipulationService.getId(scope.field)) {
-            console.log('field:controlledTermAdded');
             scope.getType();
           }
 

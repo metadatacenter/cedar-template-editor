@@ -39,11 +39,11 @@ define(['angular'], function (angular) {
         }
       };
       // Set isValueRecommendationEnabled using the templateId
-      service.hasInstances(templateId).then(function (results) {
-        hasInstances = results;
-        //if (results == true)
-        //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
-      });
+      // service.hasInstances(templateId).then(function (results) {
+      //   hasInstances = results;
+      //   //if (results == true)
+      //   //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
+      // });
 
       // Clear valueRecommendationResults and populatedFields
       service.valueRecommendationResults = [];
@@ -142,16 +142,18 @@ define(['angular'], function (angular) {
     }
     
     service.hasInstances = function (templateId) {
-      return AuthorizedBackendService.doCall(
-          HttpBuilderService.get(UrlService.hasInstances(templateId)),
-          function (response) {
-            return response.data;
-          },
-          function (err) {
-            //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
-            console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
-          }
-      );
+      // TODO for the moment take out this call
+      return false;
+      // return AuthorizedBackendService.doCall(
+      //     HttpBuilderService.get(UrlService.hasInstances(templateId)),
+      //     function (response) {
+      //       return response.data;
+      //     },
+      //     function (err) {
+      //       //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+      //       console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
+      //     }
+      // );
     };
 
     // Invoke the Value Recommender service

@@ -400,12 +400,10 @@ define([
       };
 
       // show the controlled terms modal
-      scope.showModal = function (type) {
-        if (type) {
-          // $rootScope.finalTitle = scope.getTitle();
-          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": $scope.element, "id":$scope.getId(), "q": $scope.getLabel()};
-          UIUtilService.showModal(options);
-        }
+      scope.showModal = function (type, searchScope) {
+        console.log('showModal field',type,searchScope);
+        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+        UIUtilService.showModal(options);
       };
 
       // show the controlled terms modal
