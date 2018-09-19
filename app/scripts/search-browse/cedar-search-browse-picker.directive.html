@@ -264,7 +264,13 @@
                       </div>
 
                       <div class="title-container">
-                      <div class="title-text">{{ dc.getTitle(resource) }}</div>
+                      <div class="title-text ellipsis"  uib-tooltip='{{dc.getTitle(resource)}}'
+                          tooltip-append-to-body="true"
+                          tooltip-trigger="mouseenter"
+                          tooltip-animation="true"
+                          tooltip-placement="bottom"
+                          data-toggle="tooltip"
+                          tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
                       </div>
 
                     </div>
@@ -325,17 +331,26 @@
                       </div>
 
                       <div class="title-container">
-                        <div class="title-text">{{ dc.getTitle(resource) }}</div>
+                        <div class="title-text ellipsis"  uib-tooltip='{{dc.getTitle(resource)}}'
+                            tooltip-append-to-body="true"
+                            tooltip-trigger="mouseenter"
+                            tooltip-animation="false"
+                            tooltip-placement="bottom"
+                            data-toggle="tooltip"
+                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}</div>
+                      </div>
 
+
+                      <hr style="margin:0;padding:0"/>
+                      <div style="min-height:2em;padding:2px 4px">
                         <div ng-if="dc.isPublished(resource)">
-                          <hr style="margin:0;padding:0"/>
                           <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
                         </div>
-                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">  
-                          <hr style="margin:0;padding:0"/>
+                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">
                           {{dc.getResourceVersion(resource)}}
                         </div>
                       </div>
+                    </div>
 
                     </div>
                   </div>

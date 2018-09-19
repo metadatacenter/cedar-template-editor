@@ -371,8 +371,15 @@ define([
 
           vm.getId = function (node, label) {
             if (node) {
-              return DataManipulationService.getId(node) + label;
+              var id = DataManipulationService.getId(node);
+              return id.substr(id.lastIndexOf('/') + 1) + label;
             }
+          };
+
+          vm.isOverflow = function(node, label) {
+            var id = '#' + vm.getId(node,label) + ' .title-text';
+            var elm = jQuery(id);
+            return (elm[0].scrollWidth >  elm.innerWidth());
           };
 
           vm.hideModal = function (visible) {
