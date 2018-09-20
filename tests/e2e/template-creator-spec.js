@@ -51,7 +51,7 @@ describe('template-creator', function () {
     var cleanJson;
     var dirtyJson;
 
-    workspacePage.editResource(templateOrElement, 'template');
+    workspacePage.doubleClickResource(templateOrElement, 'template');
     templatePage.showJson();
     templatePage.jsonPreview().getText().then(function (value) {
 
@@ -72,7 +72,7 @@ describe('template-creator', function () {
   });
 
   it("should check valid and dirty", function () {
-    workspacePage.editResource(templateOrElement, 'template');
+    workspacePage.doubleClickResource(templateOrElement, 'template');
     templatePage.isValid();
     templatePage.isClean();
     templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description','template');
@@ -98,7 +98,7 @@ describe('template-creator', function () {
         });
 
         it("should have editable title and description", function () {
-          workspacePage.editResource(templateOrElement, pageType);
+          workspacePage.doubleClickResource(templateOrElement, pageType);
           templatePage.isTitle(pageType, templateOrElement);
           templatePage.isDescription(pageType, sampleDescription);
           templatePage.isValid();
@@ -236,7 +236,7 @@ describe('template-creator', function () {
 
         // TODO the empty json needs to be updated from staging before we turn this on
         xit("should have valid json for empty " + pageType + " document ", function () {
-          workspacePage.editResource(templateOrElement, pageType);
+          workspacePage.doubleClickResource(templateOrElement, pageType);
           templatePage.showJson();
 
           templatePage.jsonPreview().getText().then(function (value) {
