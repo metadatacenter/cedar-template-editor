@@ -113,7 +113,7 @@ define([
           vm.hash = $location.hash();
           vm.resources = [];
           vm.selectedResource = null;
-          vm.canNotSubmit = false;
+          vm.canNotSubmit = true;
           vm.canNotWrite = false;
           vm.canNotShare = false;
           vm.canNotPopulate = false;
@@ -468,9 +468,7 @@ define([
 
               vm.editingDescription = false;
               vm.selectedResource = resource;
-              UIUtilService.setVisibleMetadata(0);
-              UIUtilService.setTotalMetadata(0);
-
+              vm.setPermissions();
 
               $timeout(function () {
                 if (infoShowing()) {
@@ -559,6 +557,21 @@ define([
             return (infoShowing() ? 'Hide' : 'Show') + ' details';
           };
 
+          vm.setPermissions = function() {
+            vm.canNotWrite = !vm.canWrite();
+            vm.canNotSubmit = !vm.canSubmit();
+            vm.canNotShare = !vm.canShare();
+            vm.canNotPublish = !vm.canPublish();
+            vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
+            vm.canNotRename =  vm.canNotWrite;
+            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotCreateDraft = !vm.canCreateDraft();
+            vm.getNumberOfInstances();
+            vm.getResourcePublicationStatus();
+            // UIUtilService.setVisibleMetadata(0);
+            // UIUtilService.setTotalMetadata(0);
+          };
+
           vm.getResourceReport = function (resource) {
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
@@ -572,17 +585,7 @@ define([
                 function (response) {
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
-                    vm.canNotWrite = !vm.canWrite();
-                    vm.canNotSubmit = !vm.canSubmit();
-                    vm.canNotShare = !vm.canShare();
-                    vm.canNotPublish = !vm.canPublish();
-                    vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
-                    vm.canNotRename =  vm.canNotWrite;
-                    vm.canNotPopulate = !vm.isTemplate();
-                    vm.canNotCreateDraft = !vm.canCreateDraft();
-                    vm.getNumberOfInstances();
-                    vm.getResourcePublicationStatus();
-
+                    vm.setPermissions();
                   }
 
                   vm.doSearchTemplateInstances(id);
@@ -607,13 +610,6 @@ define([
                 function (response) {
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
-                    vm.canNotWrite = !vm.canWrite();
-                    vm.canNotShare = !vm.canShare();
-                    vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
-                    vm.canNotPopulate = !vm.isTemplate();
-                    vm.canNotPublish = !vm.canPublish();
-                    vm.canNotCreateDraft = !vm.canCreateDraft();
-                    vm.getNumberOfInstances();
                   }
                 },
                 function (error) {
@@ -1612,20 +1608,22 @@ define([
            * Watch functions.
            */
 
+
+
           $scope.$on('$routeUpdate', function () {
             vm.params = $location.search();
             init();
           });
 
           $scope.selectResourceById = function (id) {
+
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {
                 if (id === vm.resources[i]['@id']) {
                   var resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
                   vm.selectedResource = resource;
-
-
+                  vm.setPermissions();
                   vm.getResourceDetails(resource);
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);
