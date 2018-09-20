@@ -146,7 +146,10 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
-      console.log('addField', fieldType, $routeParams.id);
+
+      var title = dms.getTitle($scope.field);
+      var description = dms.getDescription($scope.field);
+      var identifier = dms.getIdentifier($scope.field);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -159,16 +162,13 @@ define([
         $scope.fieldSchema = dms.schemaOf($scope.field);
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
-        console.log('scope',$scope.field);
+        dms.setTitle($scope.field, title || $translate.instant("VALIDATION.noNameField"));
+        dms.setDescription($scope.field, description || $translate.instant("VALIDATION.noDescriptionField"));
+        dms.setIdentifier($scope.field, identifier || '');
 
-
-        dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
-        dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
-        dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
         if ($rootScope.keyOfRootElement) {
           dms.setId($scope.field, $rootScope.keyOfRootElement);
         }
-
 
         UIUtilService.setDirty(true);
 
@@ -220,9 +220,6 @@ define([
               // TODO details don't work yet
               getDetails($scope.field['@id']);
 
-              dms.setTitle($scope.field, $scope.fieldTitle || $translate.instant("VALIDATION.noNameField"));
-              dms.setDescription($scope.field, $scope.fieldDescription || $translate.instant("VALIDATION.noDescriptionField"));
-              dms.setIdentifier($scope.field, $scope.fieldIdentifier || '');
               if ($rootScope.keyOfRootElement) {
                 dms.setId($scope.field, $rootScope.keyOfRootElement);
               }
@@ -327,7 +324,6 @@ define([
 
         // Check if the field is already stored into the DB
         if ($routeParams.id == undefined) {
-          console.log('new field',$routeParams.id);
           dms.stripTmps($scope.field);
           //dms.updateKeys($scope.field);
 
@@ -366,7 +362,6 @@ define([
           if (copiedForm) {
             // strip the temps from the copied form only, and save the copy
             dms.stripTmps(copiedForm);
-
 
             AuthorizedBackendService.doCall(
                 TemplateFieldService.updateTemplateField(id, copiedForm),
@@ -411,22 +406,7 @@ define([
       }
     });
 
-    // var defaultTitleAndDescription = function() {
-    //   if (dms.schemaOf($scope.field)) {
-    //     if (!dms.getTitle($scope.field)) {
-    //       dms.setTitle($scope.field, $translate.instant("VALIDATION.noNameField"));
-    //       $scope.fieldTitle = $translate.instant("VALIDATION.noNameField");
-    //     }
-    //     if (!dms.getDescription($scope.field)) {
-    //       dms.setDescription($scope.field, $translate.instant("VALIDATION.noDescriptionField"));
-    //       $scope.fieldDescription = $translate.instant("VALIDATION.noNameField");
-    //     }
-    //   }
-    // }
 
-    // This function watches for changes in the form and defaults the title and description fields
-    // $scope.$watch('$scope.field', function (v) {
-    // });
 
     $scope.$watch('field["schema:identifier"]', function (identifier) {
       if (!angular.isUndefined($scope.field)) {
@@ -444,12 +424,6 @@ define([
       $scope.fieldDescription = description;
     });
 
-
-    $scope.$watch('field["schema:name"]', function (name) {
-      console.log('watch schema:name', name)
-      $scope.fieldTitle = dms.getTitle($scope.field);
-      $rootScope.documentTitle = $scope.fieldTitle;
-    });
 
     $scope.toRDF = function () {
       var jsonld = require('jsonld');
