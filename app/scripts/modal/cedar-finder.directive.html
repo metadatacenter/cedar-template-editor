@@ -207,19 +207,19 @@
                     <td>{{ finder.selectedResource.ownedByUserName }}</td>
                   </tr>
                   <tr>
-                    <td class="label">Modified</td>
-                    <td>
-                      <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>
-                      by
-                      <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>
-                    </td>
-                  </tr>
-                  <tr>
                     <td class="label">Created</td>
                     <td>
                       <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>
                       by
                       <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="label">Modified</td>
+                    <td>
+                      <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>
+                      by
+                      <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>
                     </td>
                   </tr>
                   <tr>
@@ -230,6 +230,13 @@
                           class="fa fa-check"></i>write </span>
                       <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis"><i
                           class="fa fa-check"></i>owner</span></td>
+                  </tr>
+                  <tr ng-if="finder.isPublished(finder.selectedResource) || (!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1')">
+                    <td class="label">Version</td>
+                    <td>
+                      <div style="white-space:nowrap" ng-if="finder.isPublished(finder.selectedResource)"><i class="action fa fa-globe"></i> {{finder.getResourceVersion(finder.selectedResource)}}</div>
+                      <div ng-if="!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1'" >{{finder.getResourceVersion(finder.selectedResource)}}</div>
+                    </td>
                   </tr>
                   <tr>
                     <td colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>
