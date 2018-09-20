@@ -79,12 +79,11 @@ describe('metadata-creator', function () {
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
     it("metadata-creator create metadata should be on the workspace", function () {
-      console.log('created template' , template,'for',testConfig.testUser1);
       workspacePage.onWorkspace();
     });
 
     it("should edit the resource and add fields", function () {
-      workspacePage.editResource(template, 'template');
+      workspacePage.doubleClickResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.isDirty();
       templatePage.clickSave('template');
@@ -108,29 +107,49 @@ describe('metadata-creator', function () {
       workspacePage.onWorkspace();
     });
 
-    it("should add a field to the element", function () {
-      workspacePage.editResource(element, 'element');
+    it("should edit the element", function () {
+      workspacePage.doubleClickResource(element, 'element');
+      workspacePage.onElement();
+    });
+
+    it("should add a field to the element ", function () {
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.addField('textfield', false, 'one', 'one');
-      templatePage.isDirty();
+    });
+
+    it("should save the element ", function () {
+      workspacePage.onElement();
       templatePage.clickSave('element');
       toastyModal.isSuccess();
-
-      workspacePage.onElement();
-      templatePage.isClean();
       templatePage.clickBackArrow();
       workspacePage.onWorkspace();
     });
 
-    it("should add the element to the template ", function () {
-      workspacePage.editResource(template, 'template');
-      workspacePage.onTemplate();
-      // templatePage.openFinder();
-      // finderModal.addFirstElement(element);
-      templatePage.clickSave('template');
-      toastyModal.isSuccess();
-      templatePage.clickBackArrow();
-      workspacePage.onWorkspace();
+    xdescribe('open finder', function () {
+
+      it("should add the element to the template ", function () {
+        workspacePage.doubleClickResource(template, 'template');
+        workspacePage.onTemplate();
+      });
+
+      it("should open finder ", function () {
+        templatePage.openFinder();
+        finderModal.onFinder();
+      });
+
+      xit("should cancel finder  ", function () {
+        var cancel = element(by.css('div.modal-footer.actions div.clear-save button.canc'));
+        browser.wait(EC.elementToBeClickable(cancel));
+        cancel.click();
+      });
+
+      it("should add first element  ", function () {
+        finderModal.addFirstElement(element);
+        templatePage.clickSave('template');
+        toastyModal.isSuccess();
+        templatePage.clickBackArrow();
+        workspacePage.onWorkspace();
+      });
     });
 
     it("should populate the sample template", function () {
@@ -140,7 +159,7 @@ describe('metadata-creator', function () {
     });
 
     it("should open metadata with open menu", function () {
-      workspacePage.editResource(template, 'metadata');
+      workspacePage.doubleClickResource(template, 'metadata');
       workspacePage.onMetadata();
       metadataPage.clickBackArrow();
       workspacePage.onWorkspace();
@@ -174,7 +193,7 @@ describe('metadata-creator', function () {
       var template = workspacePage.createTemplate('Static');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
-      workspacePage.editResource(template, 'template');
+      workspacePage.doubleClickResource(template, 'template');
       templatePage.addField('image', true, 'image', 'image',
           "https://farm8.static.flickr.com/7178/14027473486_63ec060a17_z.jpg");
       templatePage.addField('textfield', false, 'one', 'one');
@@ -191,7 +210,7 @@ describe('metadata-creator', function () {
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
       workspacePage.onWorkspace();
 
-      workspacePage.editResource(template, 'metadata');
+      workspacePage.doubleClickResource(template, 'metadata');
       workspacePage.onMetadata();
 
       expect(templatePage.createQuestion().isPresent()).toBe(true);
@@ -221,14 +240,14 @@ describe('metadata-creator', function () {
     });
   });
 
-  describe('create spreadsheets', function () {
+  xdescribe('create spreadsheets', function () {
 
-    xit("should view a template as spreadsheet", function () {
+    it("should view a template as spreadsheet", function () {
       var template = workspacePage.createTemplate('Source');
       workspacePage.onWorkspace();
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
-      workspacePage.editResource(template, 'template');
+      workspacePage.doubleClickResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.setMultiple();
 
@@ -240,7 +259,7 @@ describe('metadata-creator', function () {
       workspacePage.populateResource(template, 'template');
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
 
-      workspacePage.editResource(template, 'metadata');
+      workspacePage.doubleClickResource(template, 'metadata');
       metadataPage.switchToSpreadsheet();
 
       metadataPage.clickBackArrow();

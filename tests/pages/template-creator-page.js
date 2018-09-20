@@ -1085,7 +1085,6 @@ var TemplateCreatorPage = function () {
   this.addField = function (cedarType, isMore, title, description, content) {
     var btn;
     var found = true;
-    console.log('addField',cedarType, title, description);
 
     if (isMore) {
       browser.wait(EC.visibilityOf(createMore));
@@ -1134,23 +1133,17 @@ var TemplateCreatorPage = function () {
     if (found) {
       browser.wait(EC.visibilityOf(btn));
       browser.wait(EC.elementToBeClickable(btn));
-      btn.click().then(function (value) {
-        console.log('click',value);
-      });
+      btn.click();
 
 
       // enter the name and description
       browser.wait(EC.elementToBeClickable(createFieldTitle));
       browser.actions().doubleClick(createFieldTitle).perform();
-      createFieldTitle.sendKeys(title).then(function (value) {
-        console.log('title',title);
-      });
+      createFieldTitle.sendKeys(title);
 
       browser.wait(EC.elementToBeClickable(createFieldDescription));
       browser.actions().doubleClick(createFieldDescription).perform();
-      createFieldDescription.sendKeys(description).then(function (value) {
-        console.log('description',description);
-      });
+      createFieldDescription.sendKeys(description);
     }
 
     switch (cedarType) {
