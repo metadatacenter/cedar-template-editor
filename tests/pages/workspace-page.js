@@ -701,17 +701,18 @@ var WorkspacePage = function () {
       };
 
       this.populateResource = function (name, type) {
-        console.log('populate');
 
         var createFirst = doSearch(name, type);
-        var populateBtn = createFirst.all(by.css('div.toolbar > div.right-side > button.ng-scope')).get(0).then(function () {
-          console.log('btn',populateBtn);
-        });
+        var moreButton = createFirst.all(by.css('button.more-button')).get(0);
+        browser.wait(EC.visibilityOf(moreButton));
+        browser.wait(EC.elementToBeClickable(moreButton));
+        moreButton.click();
 
-        browser.wait(EC.elementToBeClickable(populateBtn));
-        populateBtn.click().then(function () {
-          console.log('click');
-        });
+        // edit menu item
+        var populateButton = createFirst.all(by.css('ul.dropdown-menu li a')).get(0);
+        browser.wait(EC.visibilityOf(populateButton));
+        browser.wait(EC.elementToBeClickable(populateButton));
+        populateButton.click();
 
         // on metadata page
         browser.wait(EC.presenceOf(createNavbarMetadata));

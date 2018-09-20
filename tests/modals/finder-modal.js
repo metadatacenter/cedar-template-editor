@@ -13,11 +13,8 @@ var FinderModal = function () {
   var createSearchInput =  createFinder.element(by.id('finder-search-input'));
   var createDoSearch =  createFinder.element(by.css('.do-search'));
   var createClearSearch =  createFinder.element(by.css('.clear-search'));
-  var createFirstElementGridView = element.all(by.css('#finder-modal  .grid-view  .form-box-container  .form-box')).first();
+  var createFirstElement = createFinder.all(by.css('[ng-dblclick="finder.openResource(resource)"]')).first();
   var searchField = element(by.css('#finder-modal .modal-header input.form-control.search-input'));
-  var createFirstElementListView = element.all(by.css('#finder-modal .list-side .box-row')).first();
-  var createFirstSelectedElementGridView = createFinder.element(by.css('.form-box-container.selected .form-box'));
-  var createFirstSelectedElementListView = createFinder.element(by.css('.list-side .box-row.selected'));
   var createOpenButton = createActions.element(by.css('.clear-save .btn-save'));
   var createCancelButton = createActions.element(by.css('.clear-save .btn-clear'));
   var createGridViewButton = createFinder.element(by.css('.toolbar .tool.grid-view'));
@@ -36,6 +33,9 @@ var FinderModal = function () {
     return createFinder.isDisplayed();
   };
 
+  this.onFinder = function () {
+    browser.wait(EC.presenceOf(createFinder));
+  };
 
   this.createFinder = function() {
     return createFinder;
@@ -54,21 +54,21 @@ var FinderModal = function () {
     return createClearSearch;
   };
 
-  this.createFirstElementGridView = function() {
-    return createFirstElementGridView;
-  };
-
-  this.createFirstElementListView = function() {
-    return createFirstElementListView;
-  };
-
-  this.createFirstSelectedElementGridView = function() {
-    return createFirstSelectedElementGridView;
-  };
-
-  this.createFirstSelectedElementListView = function() {
-    return createFirstSelectedElementListView;
-  };
+  // this.createFirstElementGridView = function() {
+  //   return createFirstElementGridView;
+  // };
+  //
+  // this.createFirstElementListView = function() {
+  //   return createFirstElementListView;
+  // };
+  //
+  // this.createFirstSelectedElementGridView = function() {
+  //   return createFirstSelectedElementGridView;
+  // };
+  //
+  // this.createFirstSelectedElementListView = function() {
+  //   return createFirstSelectedElementListView;
+  // };
 
   this.cssSearchInput = function() {
     return cssSearchInput;
@@ -123,10 +123,15 @@ var FinderModal = function () {
   // look for the first toast to be a success
   this.addFirstElement = function (name) {
 
-    searchField.sendKeys(name + protractor.Key.ENTER);
-    browser.wait(EC.visibilityOf(createFirstElementGridView));
-    browser.wait(EC.elementToBeClickable(createFirstElementGridView));
-    browser.actions().doubleClick(createFirstElementGridView).perform();
+    searchField.sendKeys(name);
+
+    var doSearch = element(by.css('a.do-search'));
+    browser.wait(EC.elementToBeClickable(doSearch));
+    doSearch.click();
+
+    browser.wait(EC.visibilityOf(createFirstElement));
+    browser.wait(EC.elementToBeClickable(createFirstElement));
+    browser.actions().doubleClick(createFirstElement).perform();
 
   };
 
