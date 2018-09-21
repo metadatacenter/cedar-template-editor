@@ -122,23 +122,16 @@ define([
 
           //*********** ENTRY POINT
 
-          getPreferences();
+
           init();
 
-
-          function getPreferences() {
-            var uip = CedarUser.getUIPreferences();
-            vm.resourceTypes = {
-              element : uip.resourceTypeFilters.element,
-              field   : uip.resourceTypeFilters.field,
-              instance: uip.resourceTypeFilters.instance,
-              template: uip.resourceTypeFilters.template
-            };
-
-
-          }
-
           function init() {
+            vm.resourceTypes = {
+              element : true,
+              field   : true,
+              instance: false,
+              template: false
+            };
             vm.isSearching = false;
             vm.searchTerm = null;
             if (vm.params.search) {
@@ -621,19 +614,7 @@ define([
            */
 
           function activeResourceTypes() {
-            var activeResourceTypes = [];
-            angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
-              if (vm.resourceTypes[value]) {
-
-                // just elements adn field can be selected
-                if (value == 'element' || value == 'field') {
-                  activeResourceTypes.push(value);
-                }
-
-              }
-            });
-            // always want to show folders
-            activeResourceTypes.push('folder');
+            var activeResourceTypes = ['element','field','folder'];
             return activeResourceTypes;
           }
 
