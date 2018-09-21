@@ -612,6 +612,7 @@ define([
                 function (response) {
                   if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
+                    vm.setPermissions();
                   }
                 },
                 function (error) {

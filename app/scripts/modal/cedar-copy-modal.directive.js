@@ -243,8 +243,10 @@ define([
                 activeResourceTypes.push(value);
               }
             });
-            // always want to show folders
+            // always want to show folders, elements and field
             activeResourceTypes.push('folder');
+            activeResourceTypes.push('element');
+            activeResourceTypes.push('field');
             return activeResourceTypes;
           }
 
