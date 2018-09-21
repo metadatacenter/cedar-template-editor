@@ -1,57 +1,54 @@
-<div id="toolbar">
+<div id="toolbar" >
   <ul>
-  <li ng-repeat="fieldType in primaryFieldTypes">
-    <a ng-click="addField(fieldType.cedarType);setDirty()"
-        id='button-add-field-{{fieldType.cedarType}}'
-        uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-        tooltip-placement="left"
-        ><i class="{{fieldType.iconClass}}"></i></a>
-  </li>
-  <li>
-    <div  uib-dropdown keyboard-nav dropdown-append-to="appendToEl">
-      <a uib-dropdown-toggle class="more" id='button-add-more'
-          uib-tooltip='{{"GENERIC.More" | translate}}'
-          tooltip-placement="left"
-          ><i class="fa fa-ellipsis-h"></i></a>
+    <li ng-repeat="fieldType in primaryFieldTypes">
+      <a ng-click="addField(fieldType.cedarType);setDirty()"
+          id='button-add-field-{{fieldType.cedarType}}'
+          uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+          tooltip-placement="left"><i class="{{fieldType.iconClass}}"></i></a>
+    </li>
+    <li>
+      <div class="btn-group" uib-dropdown keyboard-nav dropdown-append-to-body>
+        <a role="button" class="more dropdown-toggle" uib-dropdown-toggle id='button-add-more'
+            uib-tooltip='{{"GENERIC.More" | translate}}'
+            tooltip-placement="left"><i class="fa fa-ellipsis-h"></i></a>
 
-      <div class=" dropdown-menu  other-elements" uib-dropdown-menu role="menu"
-          aria-labelledby="button-add-more">
-        <div class="row">
-          <ul class="col-xs-6 list-unstyled pull-left">
-            <li role="menuitem" class="item"
-                ng-repeat="fieldType in otherFieldTypes"
-                ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
-              <a  id='button-add-field-{{fieldType.cedarType}}'
-                  ng-click="addField(fieldType.cedarType);setDirty()"
-                  uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-                  tooltip-placement="left"
-                  ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
-            </li>
-          </ul>
-          <ul class="row list-unstyled pull-right" ng-if="!isField">
-            <li role="menuitem" class="item"
-                ng-repeat="fieldType in otherFieldTypes"
-                ng-if="$index > otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
+        <div class="other-elements dropdown-menu dropdown-menu-right dropup" uib-dropdown-menu  role="menu"
+            aria-labelledby="button-add-more">
+          <div class="row">
+            <div class="col-sm-6 pull-left">
+              <div role="menuitem" class="item"
+                  ng-repeat="fieldType in otherFieldTypes"
+                  ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
+                <div id='button-add-field-{{fieldType.cedarType}}'
+                    ng-click="addField(fieldType.cedarType);setDirty()"
+                    ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></div>
+              </div>
+            </div>
 
-              <a  id='button-add-field-{{fieldType.cedarType}}'
-                  ng-click="addField(fieldType.cedarType);toggleMore();;setDirty()"
-                  uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-                  tooltip-placement="left"
-                  ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
-            </li>
-          </ul>
+            <div class="col-sm-6 pull-right">
+              <div role="menuitem" class="item"
+                  ng-repeat="fieldType in otherFieldTypes"
+                  ng-if="$index > otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
+
+                <div id='button-add-field-{{fieldType.cedarType}}'
+                    ng-click="addField(fieldType.cedarType);toggleMore();;setDirty()"
+                    ><i class="{{fieldType.iconClass}}"></i>
+                  <span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </div>
-    </div>
-  </li>
-  <li ng-if="!isField" class="divider">
-  </li>
-  <li ng-if="!isField">
-    <a  ng-click="showFinderModal('finder-modal')"
-        id='button-search-element'
-        uib-tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
-        tooltip-placement="left"
-        ><i class="fa fa-search "></i></a>
-  </li>
+    </li>
+    <li ng-if="!isField" class="divider"></li>
+    <li ng-if="!isField">
+      <a ng-click="showFinderModal('finder-modal')"
+          id='button-search-element'
+          uib-tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
+          tooltip-placement="left"
+      ><i class="fa fa-search "></i></a>
+    </li>
   </ul>
 </div>
