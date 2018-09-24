@@ -1139,6 +1139,9 @@ define([
       // show the controlled terms modal
       $scope.showModalReadOnly = function (type, searchScope, termType, term) {
         var q = term.prefLabel || term.name;
+        if (searchScope == 'value-sets') {
+          q = term.uri.substr(term.uri.lastIndexOf('/') + 1);
+        }
         var source = term.acronym || term.source;
         var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), 'q': q, 'source': source,'termType': termType, 'term': term, "advanced": true, "permission": ["read"]};
         UIUtilService.showModal(options);
