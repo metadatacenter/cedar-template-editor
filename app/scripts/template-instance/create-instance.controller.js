@@ -21,6 +21,7 @@ define([
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
+      console.log('getTemplate');
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate($routeParams.templateId),
           function (response) {
@@ -38,8 +39,8 @@ define([
 
           },
           function (err) {
-            // var message = (err.data.errorKey == 'noReadAccessToResource') ? $translate.instant(
-            //     'REST_ERROR.noReadAccessToResource') : $translate.instant('SERVER.TEMPLATE.load.error');
+            console.log('err',err);
+            var message = (err.data.errorKey == 'noReadAccessToResource') ? 'Whoa!' : $translate.instant('SERVER.TEMPLATE.load.error');
 
             UIMessageService.acknowledgedExecution(
                 function () {
@@ -48,7 +49,7 @@ define([
                   });
                 },
                 'GENERIC.Warning',
-                $translate.instant(err.data.message),
+                message,
                 'GENERIC.Ok');
           });
 
@@ -146,6 +147,7 @@ define([
 // Get/read instance with given id from $routeParams
 // Also read the template for it
     $scope.getInstance = function () {
+      console.log('getInstance')
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
@@ -169,8 +171,19 @@ define([
                   UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
-                function (templateErr) {
-                  UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
+                function (err) {
+                  // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
+                  var message = (err.data.errorKey == 'noReadAccessToResource') ?  $translate.instant('SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
+                  UIMessageService.acknowledgedExecution(
+                      function () {
+                        $timeout(function () {
+                          $rootScope.goToHome();
+                        });
+                      },
+                      'GENERIC.Warning',
+                      message,
+                      'GENERIC.Ok');
+
                 }
             );
           },
