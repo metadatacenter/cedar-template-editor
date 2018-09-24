@@ -464,7 +464,7 @@ define([
           };
 
           vm.selectResource = function (resource) {
-            if (vm.getId(resource) != vm.getId(vm.selectedResource)) {
+            if (!Object.is(resource, vm.selectedResource)) {
 
               vm.editingDescription = false;
               vm.selectedResource = resource;
@@ -583,10 +583,14 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
+                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
                     vm.selectedResource = response;
-                    vm.setPermissions();
+                  } else  {
+                    for (var prop in response) {
+                      vm.selectedResource[prop] = response[prop];
+                    }
                   }
+                  vm.setPermissions();
 
                   if (vm.isTemplate(resource)) {
                     vm.doSearchTemplateInstances(id);
@@ -610,10 +614,15 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
+                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
                     vm.selectedResource = response;
-                    vm.setPermissions();
+                  } else  {
+                    for (var prop in response) {
+                      vm.selectedResource[prop] = response[prop];
+                    }
                   }
+                  vm.setPermissions();
+
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1315,6 +1324,7 @@ define([
           }
 
           function getSelectedNode() {
+
             var result = null;
             if (vm.selectedResource == null && (vm.isSharedMode() || vm.isSearchMode())) {
               // nothing selected in share or search mode
@@ -1325,6 +1335,7 @@ define([
                 result = vm.selectedResource;
               }
             }
+            // console.log('getSelectedNode',result);
             return result;
           }
 
