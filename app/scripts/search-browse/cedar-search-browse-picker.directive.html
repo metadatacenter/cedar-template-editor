@@ -560,7 +560,7 @@
         </div>
 
         <div class="half-padding-top" id="resource-version" ng-show="dc.isVersionTab()">
-          <div class="info " ng-if="dc.selectedResource && (dc.isFolder() || dc.isMeta())">
+          <div class="info " ng-if="dc.selectedResource && !dc.selectedResource.versions">
             <div ng-class="{'selected-version':dc.isSelected(dc.selectedResource)}" style="padding:5px;border: 1px solid #ccc">
               <div class="flex">
                 <div class="ellipsis clickable" ng-click="dc.goToResource(dc.selectedResource)">{{dc.getTitle(dc.selectedResource)}}</div>

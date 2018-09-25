@@ -284,7 +284,8 @@
         "error": "There was an error while saving the template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!",
+        "error-template": "Please get read access to the template that was used to generate this instance."
       },
       "load-for-instance": {
         "error": "Although the the metadata were loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
