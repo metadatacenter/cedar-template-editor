@@ -560,23 +560,23 @@
         </div>
 
         <div class="half-padding-top" id="resource-version" ng-show="dc.isVersionTab()">
-          <div class="info " ng-if="dc.selectedResource && !dc.selectedResource.versions">
-            <div ng-class="{'selected-version':dc.isSelected(dc.selectedResource)}" style="padding:5px;border: 1px solid #ccc">
+          <div class="info " ng-if="dc.hasSelected() && !dc.getSelectedVersions()">
+            <div ng-class="{'selected-version':dc.isSelected(dc.getSelected())}" style="padding:5px;border: 1px solid #ccc">
               <div class="flex">
-                <div class="ellipsis clickable" ng-click="dc.goToResource(dc.selectedResource)">{{dc.getTitle(dc.selectedResource)}}</div>
+                <div class="ellipsis clickable" ng-click="dc.goToResource(dc.getSelected())">{{dc.getTitle(dc.getSelected())}}</div>
               </div>
               <div class="flex flex-wrap">
                 <div class="field-label">Created</div>
-                <div>{{ dc.selectedResource['pav:createdOn'] | prettyDate }}</div>
+                <div>{{ dc.getSelected()['pav:createdOn'] | prettyDate }}</div>
               </div>
               <div class="flex flex-wrap">
                 <div class="field-label" translate>Modified</div>
-                <div>{{ dc.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</div>
+                <div>{{ dc.getSelected()['pav:lastUpdatedOn'] | prettyDate }}</div>
               </div>
             </div>
           </div>
-          <div class="info " ng-if="dc.selectedResource && dc.selectedResource.versions"
-              ng-repeat="(index, resource) in dc.selectedResource.versions">
+          <div class="info " ng-if="dc.hasSelected() && dc.getSelectedVersions()"
+              ng-repeat="(index, resource) in dc.getSelected().versions">
             <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
               <div class="flex">
                 <i ng-if="dc.isPublished(resource)" class="padding-right action fa"
@@ -710,7 +710,7 @@
                   <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
                     <fieldset>
                 <textarea style="width:100%;resize:both" id="edit-description" type="text"
-                    ng-model="dc.selectedResource[dc.descriptionLocation()]"
+                    ng-model="dc.getSelected()[dc.descriptionLocation()]"
                     ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
                       <button type="submit" style=" display:none">Add</button>
                     </fieldset>
@@ -718,7 +718,7 @@
 
                 </div>
                 <div ng-if="!dc.editingDescription" class="title">
-                  {{ dc.getDescription(dc.selectedResource) }}
+                  {{ dc.getDescription(dc.getSelected()) }}
                 </div>
               </div>
 
