@@ -113,7 +113,6 @@ define([
           vm.params = $location.search();
           vm.hash = $location.hash();
           vm.resources = [];
-          vm.selectedResource = null;
           vm.canNotSubmit = true;
           vm.canNotWrite = false;
           vm.canNotShare = false;
@@ -124,8 +123,9 @@ define([
           vm.canNotRename = false;
           vm.currentFolder = null;
 
-          vm.hasSelection = hasSelection;
-          vm.getSelection = getSelection;
+          vm.hasSelected = hasSelected;
+          vm.getSelected = getSelected;
+          vm.getSelectedVersions = getSelectedVersions;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
@@ -421,12 +421,12 @@ define([
           };
 
           vm.toggleDescriptionEditing = function () {
-            if (vm.getSelection()) {
+            if (vm.getSelected()) {
               vm.editingDescription = !vm.editingDescription;
 
               if (vm.editingDescription) {
-                vm.editingDescriptionSelection = vm.getSelection();
-                vm.editingDescriptionInitialValue = vm.selectedResource[CONST.model.DESCRIPTION];
+                vm.editingDescriptionSelection = vm.getSelected();
+                vm.editingDescriptionInitialValue = getSelected()[CONST.model.DESCRIPTION];
 
                 $timeout(function () {
                   var jqDescriptionField = $('#edit-description');
@@ -464,10 +464,10 @@ define([
           };
 
           vm.selectResource = function (resource) {
-            if (!Object.is(resource, vm.selectedResource)) {
+            if (!Object.is(resource, getSelected())) {
 
               vm.editingDescription = false;
-              vm.selectedResource = resource;
+              setSelected(resource);
               vm.setPermissions();
 
               $timeout(function () {
@@ -488,7 +488,7 @@ define([
           vm.showInfoPanel = function () {
             if (vm.isSharedMode()) {
               resetSelected();
-            } else if (!vm.selectedResource) {
+            } else if (!hasSelected()) {
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
@@ -502,34 +502,34 @@ define([
           };
 
           vm.isResourceSelected = function (resource) {
-            if (resource == null || vm.selectedResource == null) {
+            if (resource == null || !hasSelected()) {
               return false;
             } else {
-              return vm.selectedResource['@id'] == resource['@id'];
+              return getSelected()['@id'] == resource['@id'];
             }
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && resourceService.canSubmit(vm.selectedResource);
+            return hasSelected() && resourceService.canSubmit(getSelected());
           };
 
           vm.getNumberOfInstances = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
-              var value = vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+            if (hasSelected() && getSelected()[CONST.model.NUMBEROFINSTANCES]) {
+              var value = getSelected()[CONST.model.NUMBEROFINSTANCES];
               UIUtilService.setTotalMetadata(value);
               return value;
             }
           };
 
           vm.getDerivedFrom = function () {
-            if (vm.selectedResource && vm.selectedResource.derivedFrom) {
-              return vm.selectedResource.derivedFrom;
+            if (hasSelected() && getSelected().derivedFrom) {
+              return getSelected().derivedFrom;
             }
           };
 
           vm.getBasedOn = function () {
-            if (vm.selectedResource && vm.selectedResource.isBasedOn) {
-              return vm.selectedResource.isBasedOn;
+            if (getSelected() && getSelected().isBasedOn) {
+              return getSelected().isBasedOn;
             }
           };
 
@@ -573,8 +573,8 @@ define([
           };
 
           vm.getResourceReport = function (resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
+            if (!resource && vm.hasSelected()) {
+              resource = vm.getSelected();
             }
             var id = resource['@id'];
             vm.canNotPopulate = !vm.isTemplate();
@@ -583,11 +583,11 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
-                    vm.selectedResource = response;
+                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                    setSelected(response);
                   } else  {
                     for (var prop in response) {
-                      vm.selectedResource[prop] = response[prop];
+                      getSelected()[prop] = response[prop];
                     }
                   }
                   vm.setPermissions();
@@ -604,8 +604,8 @@ define([
 
 
           vm.getResourceDetails = function (resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
+            if (!resource && vm.hasSelected()) {
+              resource = vm.getSelected();
             }
             var id = resource['@id'];
             vm.canNotPopulate = !vm.isTemplate();
@@ -614,11 +614,11 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
-                    vm.selectedResource = response;
+                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                    setSelected(response);
                   } else  {
                     for (var prop in response) {
-                      vm.selectedResource[prop] = response[prop];
+                      getSelected()[prop] = response[prop];
                     }
                   }
                   vm.setPermissions();
@@ -667,7 +667,7 @@ define([
           };
 
           vm.getResourcePublicationStatus = function (value) {
-            var resource = value || vm.getSelection();
+            var resource = value || vm.getSelected();
             if (resource != null) {
               return resource[CONST.publication.STATUS];
             }
@@ -737,7 +737,7 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": getSelected().name},
                           'GENERIC.Updated');
                     },
                     function (response) {
@@ -899,7 +899,7 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
-              vm.selectedResource = null;
+              //resetSelected()
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
               getFolderContentsById(currentFolderId, vm.hash);
@@ -1005,7 +1005,7 @@ define([
 
           function copyToWorkspace(resource) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
 
@@ -1026,7 +1026,7 @@ define([
 
           function copyResource(resource) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
             var folderId = vm.currentFolderId;
@@ -1052,7 +1052,7 @@ define([
           // set publication status as published
           function publishResource(resource, version) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newVersion = version || vm.getResourceVersion(resource);
             resourceService.publishResource(
@@ -1073,7 +1073,7 @@ define([
           // set publication status as draft
           function createDraftResource(resource, version) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var folderId = vm.currentFolderId;
             if (!folderId) {
@@ -1099,7 +1099,7 @@ define([
           }
 
           function launchInstance(value) {
-            var resource = value || getSelection();
+            var resource = value || getSelected();
             if (resource) {
               var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
@@ -1124,7 +1124,7 @@ define([
 
           function goToResource(value, action) {
 
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             if (resource) {
               if (resource.nodeType === 'folder') {
                 if (action !== 'populate') {
@@ -1142,7 +1142,7 @@ define([
 
           function editResource(value, canNotWrite) {
 
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             if (resource) {
               var id = resource['@id'];
               if (typeof vm.pickResourceCallback === 'function') {
@@ -1187,7 +1187,7 @@ define([
               vm.resources.splice(index, 1);
             }
             // remove current selection
-            vm.selectedResource = null;
+            resetSelected();
 
             //reset total count
             vm.totalCount--;
@@ -1195,8 +1195,8 @@ define([
 
 
           function deleteResource(resource) {
-            if (!resource && hasSelection()) {
-              resource = getSelection();
+            if (!resource && hasSelected()) {
+              resource = getSelected();
             }
             if (vm.canWrite(resource)) {
 
@@ -1326,21 +1326,20 @@ define([
           function getSelectedNode() {
 
             var result = null;
-            if (vm.selectedResource == null && (vm.isSharedMode() || vm.isSearchMode())) {
+            if (!hasSelected() && (vm.isSharedMode() || vm.isSearchMode())) {
               // nothing selected in share or search mode
             } else {
-              if (vm.selectedResource == null) {
+              if (!hasSelected()) {
                 result = vm.currentFolder;
               } else {
-                result = vm.selectedResource;
+                result = getSelected();
               }
             }
-            // console.log('getSelectedNode',result);
             return result;
           }
 
           function isSelected(node) {
-            if (hasSelection() && node) {
+            if (hasSelected() && node) {
               return (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
             }
           }
@@ -1416,20 +1415,20 @@ define([
           }
 
           function canPublish(value) {
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             return resourceService.canPublish(resource);
           };
 
           function canCreateDraft(value) {
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             return resourceService.canCreateDraft(resource);
           };
 
           function canPublishStatic() {
-            return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource[CONST.publication.STATUS] == CONST.publication.DRAFT);
+            return (hasSelected() &&
+                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
           }
 
           function isPublished(resource) {
@@ -1437,16 +1436,16 @@ define([
             if (resource) {
               result = (resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
             } else {
-              result = (hasSelection() && (vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
+              result = (hasSelected() && (getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
             }
             return result;
           };
 
           function canCreateDraftStatic() {
-            return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+            return (hasSelected() &&
+                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
           }
 
           function isTemplate(resource) {
@@ -1454,13 +1453,13 @@ define([
             if (resource) {
               result = (resource.nodeType == CONST.resourceType.TEMPLATE);
             } else {
-              result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.TEMPLATE));
             }
             return result;
           }
 
           function isElement() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.ELEMENT));
+            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.ELEMENT));
           }
 
           function isFolder(resource) {
@@ -1468,13 +1467,13 @@ define([
             if (resource) {
               result = (resource.nodeType == CONST.resourceType.FOLDER);
             } else {
-              result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.FOLDER))
+              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.FOLDER))
             }
             return result;
           }
 
           function isMeta() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.INSTANCE));
           }
 
           function goToHomeFolder(resourceId) {
@@ -1628,7 +1627,7 @@ define([
                 if (id === vm.resources[i]['@id']) {
                   var resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
-                  vm.selectedResource = resource;
+                  setSelected(resource);
                   vm.setPermissions();
                   vm.getResourceDetails(resource);
                   if (typeof vm.selectResourceCallback === 'function') {
@@ -1674,15 +1673,23 @@ define([
           }
 
           function resetSelected() {
-            vm.selectedResource = null;
+            UISettingsService.resetSelected();
           }
 
-          function getSelection() {
-            return vm.selectedResource;
+          function getSelected() {
+            return UISettingsService.getSelected();
           }
 
-          function hasSelection() {
-            return vm.selectedResource != null;
+          function getSelectedVersions() {
+            return UISettingsService.getSelected().versions;
+          }
+
+          function setSelected(value) {
+            UISettingsService.setSelected(value);
+          }
+
+          function hasSelected() {
+            return UISettingsService.hasSelected();
           }
 
 
@@ -1813,23 +1820,23 @@ define([
 
           // open the move modal
           function showCopyModal() {
-            if (vm.selectedResource) {
+            if (hasSelected()) {
               var homeFolderId = CedarUser.getHomeFolderId();
               var folderId = vm.currentFolderId || homeFolderId;
               vm.copyModalVisible = true;
               $scope.$broadcast('copyModalVisible',
-                  [vm.copyModalVisible, vm.selectedResource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
+                  [vm.copyModalVisible, getSelected(), vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
 
           // open the move modal
           function showMoveModal() {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.moveModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, vm.selectedResource, vm.currentPath, vm.currentFolderId, homeFolderId,
+                  [vm.moveModalVisible, getSelected(), vm.currentPath, vm.currentFolderId, homeFolderId,
                    vm.resourceTypes,
                    CedarUser.getSort()]);
             }
@@ -1837,34 +1844,34 @@ define([
 
           // open the publish modal
           function showPublishModal(callback, action) {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, action]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, getSelected(), callback, action]);
             }
           }
 
           function showFlowModal() {
-            if (vm.selectedResource && !vm.canNotSubmit) {
+            if (hasSelected() && !vm.canNotSubmit) {
               vm.flowModalVisible = true;
               $scope.$broadcast('flowModalVisible',
-                  [vm.flowModalVisible, vm.selectedResource['@id'], vm.selectedResource[CONST.model.NAME]]);
+                  [vm.flowModalVisible, getSelected()['@id'], getSelected()[CONST.model.NAME]]);
             }
           }
 
           // open the share modal
           function showShareModal() {
-            if (vm.selectedResource && !vm.canNotShare) {
+            if (hasSelected() && !vm.canNotShare) {
               vm.shareModalVisible = true;
-              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, vm.selectedResource]);
+              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, getSelected()]);
             }
           }
 
           // open the rename modal
           function showRenameModal() {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.renameModalVisible = true;
-              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, vm.selectedResource]);
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, getSelected()]);
             }
           }
 
