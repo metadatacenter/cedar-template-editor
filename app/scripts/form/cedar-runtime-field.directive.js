@@ -1289,6 +1289,14 @@ define([
         return text;
       }
 
+      $scope.hasUnitOfMeasure = function(node) {
+        return dms.hasUnitOfMeasure(node);
+      };
+
+      $scope.getUnitOfMeasure = function(node) {
+        return dms.getUnitOfMeasure(node);
+      };
+
       var getPlaceholderForNumericField = function (node) {
         var numberType = dms.getNumberType(node);
         var text = "Enter " + getNumberLabel(numberType) + " number";
