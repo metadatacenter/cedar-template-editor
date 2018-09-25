@@ -1,36 +1,43 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
   <!-- actively editing the field --->
-  <div ng-if="isActive(index)" class="form-group  has-feedback ">
-    <input type="text"
-        name="activeNumericField"
-        class="form-control isActive select"
-        ng-class="{'required': isRequired()}"
-        placeholder="{{getPlaceholderText()}}"
-        ng-model-options="{allowInvalid:true}"
-        aria-label="{{getHelp()}}"
-        validate-on="blur"
-        ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
-        ng-model="valueElement['@value']"
-        ng-focus="checkNumberValue();checkDecimalPlace()"
-        ng-change="checkNumberValue();checkDecimalPlace()">
-    </input>
+  <div ng-if="isActive(index)" class="flex">
+    <div class="form-group  has-feedback " style="width:100%">
 
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+      <input type="text"
+          name="activeNumericField"
+          class="form-control isActive select"
+          ng-class="{'required': isRequired()}"
+          placeholder="{{getPlaceholderText()}}"
+          ng-model-options="{allowInvalid:true}"
+          aria-label="{{getHelp()}}"
+          validate-on="blur"
+          ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
+          ng-model="valueElement['@value']"
+          ng-focus="checkNumberValue();checkDecimalPlace()"
+          ng-change="checkNumberValue();checkDecimalPlace()">
+      </input>
+
+      <div ng-if="isActive(index)" class="input-indicator-icons"
+          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
+    <div style="max-width:30%;min-width:100px;margin:0 10px; white-space:nowrap" class="ellipsis" ng-if="hasUnitOfMeasure(field)">{{getUnitOfMeasure(field)}}</div>
   </div>
 
   <!-- not editing --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value ellipsis" style="width:100%;white-space: nowrap;"
+      ng-click="setActive(index,true)">
 
     <!-- expanded view -->
     <!--<div ng-if="isListView()"-->
-        <!--aria-label="{{getDescription()}}"-->
-        <!--class="isInactive ">{{valueArray[index]['@value']}} &nbsp;-->
+    <!--aria-label="{{getDescription()}}"-->
+    <!--class="isInactive ">{{valueArray[index]['@value']}} &nbsp;-->
     <!--</div>-->
 
     <!-- paged view -->
-    <div aria-label="{{getHelp()}}" class="isInactive "> {{getValueString(valueArray)}}</div>
-
+    <div aria-label="{{getHelp()}}" class="isInactive ellipsis "> {{getValueString(valueArray)}}
+      <span style="margin:0 10px; "  ng-if="hasUnitOfMeasure(field)">{{getUnitOfMeasure(field)}}</span></div>
   </div>
+
+</div>
 </div>
