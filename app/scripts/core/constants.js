@@ -7,6 +7,11 @@ define([
 ], function (angular) {
   angular.module('cedar.templateEditor.core.constants', [])
       .constant('CONST', {
+        "eventId": {
+          "form": {
+            "VALIDATION" : "form:validation"
+          }
+        },
         "pageId"       : {
           "TEMPLATE" : "TEMPLATE",
           "ELEMENT"  : "ELEMENT",

@@ -7,10 +7,10 @@ define([
       .service('UIUtilService', UIUtilService);
 
   UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService", "DataUtilService",
-                           "ClientSideValidationService", "$translate"];
+                           "ClientSideValidationService", "$translate","CONST"];
 
   function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService, DataUtilService,
-                         ClientSideValidationService, $translate) {
+                         ClientSideValidationService, $translate,CONST) {
 
     var service = {
       serviceId             : "UIUtilService",
@@ -44,13 +44,14 @@ define([
     //
 
 
-    $rootScope.$on("form:validation", function (event, options) {
-      service.documentState.valid = options.state;
+    $rootScope.$on(CONST.eventId.form.VALIDATION, function (event, options) {
+      service.setValidation(options.state == 'true');
     });
 
     service.setValidation = function (value) {
       service.documentState.valid = value;
     };
+
     service.isValid = function () {
       return service.documentState.valid;
     };
@@ -525,42 +526,42 @@ define([
     };
 
 
+    // //
+    // // validation
+    // //
     //
-    // validation
+    // // report validation status, errors and warnings
+    // service.logValidation = function (status, report) {
     //
-
-    // report validation status, errors and warnings
-    service.logValidation = function (status, report) {
-
-      // tell the user about the status
-      service.setValidation(status);
-
-      // try to parse the report
-      if (report) {
-        var r;
-
-        try {
-          r = JSON.parse(report);
-        } catch (e) {
-          console.log(e); // error in the above string!
-        }
-
-
-        if (r) {
-          if (r.warnings) {
-            for (var i = 0; i < r.warnings.length; i++) {
-              console.log(
-                  'Validation Warning: ' + r.warnings[i].message + ' at location ' + r.warnings[i].location);
-            }
-          }
-          if (r.errors) {
-            for (var i = 0; i < r.errors.length; i++) {
-              console.log('Validation Error: ' + r.errors[i].message + ' at location ' + r.errors[i].location);
-            }
-          }
-        }
-      }
-    };
+    //   // tell the user about the status
+    //   service.setValidation(status);
+    //
+    //   // try to parse the report
+    //   if (report) {
+    //     var r;
+    //
+    //     try {
+    //       r = JSON.parse(report);
+    //     } catch (e) {
+    //       console.log(e); // error in the above string!
+    //     }
+    //
+    //
+    //     if (r) {
+    //       if (r.warnings) {
+    //         for (var i = 0; i < r.warnings.length; i++) {
+    //           console.log(
+    //               'Validation Warning: ' + r.warnings[i].message + ' at location ' + r.warnings[i].location);
+    //         }
+    //       }
+    //       if (r.errors) {
+    //         for (var i = 0; i < r.errors.length; i++) {
+    //           console.log('Validation Error: ' + r.errors[i].message + ' at location ' + r.errors[i].location);
+    //         }
+    //       }
+    //     }
+    //   }
+    // };
 
 
     return service;
