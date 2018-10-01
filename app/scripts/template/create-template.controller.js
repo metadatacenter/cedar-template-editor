@@ -10,7 +10,7 @@ define([
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
                                           "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
-                                          "DataManipulationService",
+                                          "DataManipulationService","ValidationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST",  "CedarUser"];
@@ -18,7 +18,7 @@ define([
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
-                                        UIUtilService, DataManipulationService, controlledTermDataService,
+                                        UIUtilService, DataManipulationService, ValidationService,controlledTermDataService,
                                         StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST,  CedarUser) {
@@ -46,28 +46,6 @@ define([
 
         $scope.isTemplate = true;
 
-        // validate the resource
-        var checkValidation = function (node) {
-          if (node) {
-            return resourceService.validateResource(
-                node, CONST.resourceType.TEMPLATE,
-                function (response) {
-
-                  var json = angular.toJson(response);
-                  var status = response.validates == "true";
-                  UIUtilService.logValidation(status, json);
-
-                  $timeout(function () {
-                    $rootScope.$broadcast("form:validation", {state: status});
-                  });
-
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                }
-            );
-          }
-        };
 
         $scope.checkLocking = function () {
           if ($scope.details) {
@@ -144,7 +122,7 @@ define([
                           DataManipulationService.createDomIds($scope.form);
                           //$scope.getType();
                           $rootScope.$broadcast('form:clean');
-                          $rootScope.$broadcast("form:validation", {state: true});
+                          $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
                           getReport($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller
@@ -218,6 +196,7 @@ define([
               UIUtilService.scrollToDomId(domId);
               $scope.toggleMore();
               UIUtilService.setDirty(true);
+              ValidationService.checkValidation($scope.form);
 
             });
           }
@@ -244,6 +223,7 @@ define([
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
+              ValidationService.checkValidation($scope.form);
 
             });
             $rootScope.$broadcast("form:update", element);
@@ -262,6 +242,7 @@ define([
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
+              ValidationService.checkValidation($scope.form);
 
             });
             $rootScope.$broadcast("form:update", node);
@@ -330,7 +311,7 @@ define([
 
 
           var doSave = function(response) {
-            UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+            ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
             // confirm message
             var title = dms.getTitle(response.data);
@@ -346,7 +327,7 @@ define([
           };
 
           var doUpdate = function(response) {
-            UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+            ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
             UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                 {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');

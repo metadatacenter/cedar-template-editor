@@ -101,10 +101,10 @@
                 class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
             <div uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
                 class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
-            <div uib-tooltip="{{hc.validInvalidTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
-                class="fa "
-                ng-class="{'fa-exclamation-triangle': !hc.isValid(), 'fa-check': hc.isValid()}"></i></div>
-          </div>
+            <div   uib-tooltip="{{hc.validTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom">
+              <i  class="fa " ng-class="hc.validIcon()"></i></div>
+            </div>
+
 
         </div>
       </div>

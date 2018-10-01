@@ -8,14 +8,14 @@ define([
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                     "FieldTypeService", "TemplateElementService", "resourceService", "UIMessageService",
+                                     "FieldTypeService", "TemplateElementService", "resourceService", "ValidationService","UIMessageService",
                                      "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, resourceService, UIMessageService, DataManipulationService,
+                                   TemplateElementService, resourceService, ValidationService,UIMessageService, DataManipulationService,
                                    DataUtilService,UIUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser) {
 
@@ -63,32 +63,6 @@ define([
     $scope.setClean = function() {
       $rootScope.$broadcast('form:clean');
       UIUtilService.setDirty(false);
-    };
-
-
-
-    // validate the resource
-    var checkValidation = function (node) {
-
-      if (node) {
-        return resourceService.validateResource(
-            node, CONST.resourceType.ELEMENT,
-            function (response) {
-
-              var json = angular.toJson(response);
-              var status = response.validates == "true";
-              UIUtilService.logValidation(status, json);
-
-              $timeout(function () {
-                $rootScope.$broadcast("form:validation", { state: status });
-              });
-
-            },
-            function (error) {
-              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-            }
-        );
-      }
     };
 
     $scope.canWrite = function () {
@@ -141,8 +115,7 @@ define([
               UIUtilService.setTotalMetadata(0);
               UIUtilService.setVisibleMetadata(0);
 
-              var copiedForm = jQuery.extend(true, {}, $scope.element);
-              checkValidation(copiedForm);
+
 
               HeaderService.dataContainer.currentObjectScope = $scope.element;
 
@@ -157,14 +130,17 @@ define([
 
               $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
 
-              $rootScope.jsonToSave = $scope.element;
+
               $rootScope.documentTitle = dms.getTitle($scope.form);
 
               dms.createDomIds($scope.element);
 
               $scope.elementSchema = dms.schemaOf($scope.element);
 
+              $rootScope.jsonToSave = $scope.element;
+              ValidationService.checkValidation();
               $scope.setClean();
+
 
               getDetails(key);
 
@@ -235,6 +211,7 @@ define([
         $scope.toggleMore();
         $timeout(function () {
           UIUtilService.setDirty(true);
+          ValidationService.checkValidation($scope.element);
         });
       }
       $scope.showMenuPopover = false;
@@ -257,6 +234,8 @@ define([
 
           // now we are sure that the element was successfully added, scroll to it and hide its nested contents
           UIUtilService.scrollToDomId(domId);
+          UIUtilService.setDirty(true);
+          ValidationService.checkValidation($scope.element);
 
         });
         $rootScope.$broadcast("form:update", element);
@@ -274,6 +253,8 @@ define([
 
           // now we are sure that the element was successfully added, scroll to it and hide its nested contents
           UIUtilService.scrollToDomId(domId);
+          UIUtilService.setDirty(true);
+          ValidationService.checkValidation($scope.element);
 
         });
         $rootScope.$broadcast("form:update", node);
@@ -330,7 +311,7 @@ define([
     $scope.doSaveElement = function () {
 
       var doSave = function(response) {
-        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
         // confirm message
         var title = dms.getTitle(response.data);
@@ -346,7 +327,7 @@ define([
       };
 
       var doUpdate = function(response) {
-        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
         UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
             'GENERIC.Updated');

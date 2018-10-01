@@ -39,19 +39,26 @@ define([
     vm.isDirty = function() {
       return UIUtilService.isDirty();
     };
-    vm.isValid =  function() {
-      return UIUtilService.isValid();
-    };
+
+    vm.documentState =  UIUtilService.documentState;
+
     vm.isLocked =  function() {
       return UIUtilService.isLocked();
     };
 
-    vm.dirtyCleanTip = function() {
-      return $translate.instant((UIUtilService.isDirty() ? "Save required": "No save required"));
+    vm.documentState = UIUtilService.documentState;
+    vm.valid = UIUtilService.isValid;
+
+    vm.validTip = function() {
+      return $translate.instant('Document is ' + (UIUtilService.isValid() ? "valid": "invalid"));
     };
 
-    vm.validInvalidTip = function() {
-      return $translate.instant('Document is ' + (UIUtilService.isValid() ? "valid": "invalid"));
+    vm.validIcon = function() {
+      return UIUtilService.isValid() ? 'fa-check' : 'fa-exclamation-triangle';
+    };
+
+    vm.dirtyCleanTip = function() {
+      return $translate.instant((UIUtilService.isDirty() ? "Save required": "No save required"));
     };
 
     vm.lockUnlockTip = function() {
