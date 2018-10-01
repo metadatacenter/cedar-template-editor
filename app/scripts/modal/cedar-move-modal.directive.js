@@ -74,20 +74,19 @@ define([
 
 
           function canWrite() {
-            return hasPermission('write');
-          };
+            return hasPermission('canWrite');
+          }
 
           function hasPermission(permission, resource) {
             var node = resource;
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
-
-                return perms.indexOf(permission) != -1;
+                return perms[permission];
               }
             }
             return false;
-          };
+          }
 
           function openHome() {
             vm.offset = 0;

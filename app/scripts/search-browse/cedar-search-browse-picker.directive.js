@@ -150,10 +150,8 @@ define([
           //
           // publication
           //
-          vm.canPublish = canPublish;
-          vm.canPublishStatic = canPublishStatic;
-          vm.canCreateDraft = canCreateDraft;
-          vm.canCreateDraftStatic = canCreateDraftStatic;
+          //vm.canPublishStatic = canPublishStatic;
+          //vm.canCreateDraftStatic = canCreateDraftStatic;
 
 
           vm.isGridView = isGridView;
@@ -562,9 +560,9 @@ define([
             vm.canNotSubmit = !vm.canSubmit();
             vm.canNotShare = !vm.canShare();
             vm.canNotPublish = !vm.canPublish();
-            vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
-            vm.canNotRename = vm.canNotWrite;
-            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotDelete = !vm.canDelete();
+            vm.canNotRename = !vm.canRename();
+            vm.canNotPopulate = !vm.canPopulate();
             vm.canNotCreateDraft = !vm.canCreateDraft();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
@@ -577,9 +575,9 @@ define([
               resource = vm.getSelected();
             }
             var id = resource['@id'];
-            vm.canNotPopulate = !vm.isTemplate();
-            vm.canNotPublish = !vm.canPublishStatic();
-            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
+            //vm.canNotPopulate = !vm.isTemplate();
+            //vm.canNotPublish = !vm.canPublishStatic();
+            //vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceReport(
                 resource,
                 function (response) {
@@ -590,7 +588,7 @@ define([
                       getSelected()[prop] = response[prop];
                     }
                   }
-                  vm.setPermissions();
+                  //vm.setPermissions();
 
                   if (vm.isTemplate(resource)) {
                     vm.doSearchTemplateInstances(id);
@@ -608,9 +606,9 @@ define([
               resource = vm.getSelected();
             }
             var id = resource['@id'];
-            vm.canNotPopulate = !vm.isTemplate();
-            vm.canNotPublish = !vm.canPublishStatic();
-            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
+            //vm.canNotPopulate = !vm.isTemplate();
+            //vm.canNotPublish = !vm.canPublishStatic();
+            //vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
@@ -621,7 +619,7 @@ define([
                       getSelected()[prop] = response[prop];
                     }
                   }
-                  vm.setPermissions();
+                  //vm.setPermissions();
 
                 },
                 function (error) {
@@ -638,12 +636,32 @@ define([
             return resourceService.canWrite(vm.getSelectedNode());
           };
 
+          vm.canRename = function () {
+            return resourceService.canWrite(vm.getSelectedNode());
+          };
+
+          vm.canDelete = function () {
+            return resourceService.canDelete(vm.getSelectedNode());
+          };
+
           vm.canChangeOwner = function () {
             return resourceService.canChangeOwner(vm.getSelectedNode());
           };
 
           vm.canShare = function () {
             return resourceService.canShare(vm.getSelectedNode());
+          };
+
+          vm.canPopulate = function () {
+            return resourceService.canPopulate(vm.getSelectedNode());
+          };
+
+          vm.canPublish = function () {
+            return resourceService.canPublish(vm.getSelectedNode());
+          };
+
+          vm.canCreateDraft = function () {
+            return resourceService.canCreateDraft(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -879,6 +897,8 @@ define([
 
           function init() {
             vm.isSearching = false;
+            console.log("INIT");
+            console.log(vm.params);
             if (vm.params.sharing) {
               if (vm.params.sharing == 'shared-with-me') {
                 vm.isSearching = true;
@@ -1414,22 +1434,12 @@ define([
             return false;
           }
 
-          function canPublish(value) {
-            var resource = value || getSelected();
-            return resourceService.canPublish(resource);
-          };
-
-          function canCreateDraft(value) {
-            var resource = value || getSelected();
-            return resourceService.canCreateDraft(resource);
-          };
-
-          function canPublishStatic() {
+/*          function canPublishStatic() {
             return (hasSelected() &&
                 (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
                     getSelected().nodeType == CONST.resourceType.ELEMENT) &&
                 getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
-          }
+          }*/
 
           function isPublished(resource) {
             var result = false;
@@ -1441,12 +1451,12 @@ define([
             return result;
           };
 
-          function canCreateDraftStatic() {
+/*          function canCreateDraftStatic() {
             return (hasSelected() &&
                 (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
                     getSelected().nodeType == CONST.resourceType.ELEMENT) &&
                 getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
-          }
+          }*/
 
           function isTemplate(resource) {
             var result = false;

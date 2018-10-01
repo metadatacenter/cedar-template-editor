@@ -51,15 +51,18 @@ define([
           updateGroupMembers       : updateGroupMembers,
           canRead                  : canRead,
           canWrite                 : canWrite,
+          canDelete                : canDelete,
           canChangeOwner           : canChangeOwner,
           canShare                 : canShare,
           canPublish               : canPublish,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
+          canPopulate              : canPopulate,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
           renameNode               : renameNode,
-          validateResource         : validateResource
+          validateResource         : validateResource,
+          canDo                    : canDo
         };
         return service;
 
@@ -747,76 +750,50 @@ define([
 
         /* permissions */
 
-        function canRead(resource) {
+        function canDo(resource, permission) {
           if (resource != null) {
             var perms = resource.currentUserPermissions;
             if (perms != null) {
-              return perms.indexOf("read") != -1;
+              return perms[permission];
             }
           }
           return false;
+        }
+
+        function canRead(resource) {
+          return this.canDo(resource, 'canRead');
         }
 
         function canWrite(resource) {
-          if (resource != null) {
-            var perms = resource.currentUserPermissions;
-            if (perms != null) {
-              return perms.indexOf("write") != -1;
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canWrite');
+        }
+
+        function canDelete(resource) {
+          return this.canDo(resource, 'canDelete');
         }
 
         function canChangeOwner(resource) {
-          if (resource != null) {
-            var perms = resource.currentUserPermissions;
-            if (perms != null) {
-              return perms.indexOf("changeowner") != -1;
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canChangeOwner');
         }
 
         function canShare(resource) {
-          if (resource != null) {
-            var perms = resource.currentUserPermissions;
-            if (perms != null) {
-              return perms.indexOf("changepermissions") != -1;
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canShare');
         }
 
         function canPublish(resource) {
-          if (resource) {
-            var perms = resource.currentUserPermissions;
-            if (perms) {
-              var hasPermission = perms.indexOf("publish") != -1;
-              // var isLatest = resource.isLatestVersion;
-              // return hasPermission && isLatest;
-              return hasPermission;
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canPublish');
         }
 
         function canSubmit(resource) {
-          if (resource != null) {
-            if (resource.nodeType === CONST.resourceType.INSTANCE) {
-              return resource[CONST.model.ISBASEDON] === "https://repo.metadatacenter.org/templates/ea716306-5263-4f7a-9155-b7958f566933";
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canSubmit');
         }
 
         function canCreateDraft(resource) {
-          if (resource != null) {
-            var perms = resource.currentUserPermissions;
-            if (perms != null) {
-              return perms.indexOf("createdraft") != -1;
-            }
-          }
-          return false;
+          return this.canDo(resource, 'canCreateDraft');
+        }
+
+        function canPopulate(resource) {
+          return this.canDo(resource, 'canPopulate');
         }
 
         function renameNode(id, name, description) {
