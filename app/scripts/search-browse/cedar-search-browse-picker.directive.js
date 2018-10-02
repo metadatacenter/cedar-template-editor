@@ -780,39 +780,40 @@ define([
           // callback to load more resources for the current folder
           vm.loadMore = function () {
 
-            if (vm.isSearching) {
-              vm.searchMore();
-            } else {
+            if (activeResourceTypes().length > 0) {
 
-              var limit = UISettingsService.getRequestLimit();
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
+              if (vm.isSearching) {
+                vm.searchMore();
+              } else {
 
-              // are there more?
-              if ((vm.offset + limit) < vm.totalCount && (vm.offset + limit) > vm.lastOffset) {
-                if (resourceTypes.length > 0) {
-
-                  vm.lastOffset = (vm.offset + limit);
+                // are there more?
+                if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+                  vm.lastOffset += vm.requestLimit;
+                  var offset = vm.offset;
                   return resourceService.getResources(
                       {
-                        folderId     : folderId,
-                        resourceTypes: resourceTypes,
+                        folderId     : vm.currentFolderId,
+                        resourceTypes: activeResourceTypes(),
                         sort         : sortField(),
-                        limit        : limit,
-                        offset       : vm.lastOffset
+                        limit        : vm.requestLimit,
+                        offset       : offset
                       },
                       function (response) {
-                        vm.resources = vm.resources.concat(response.resources);
-                        vm.offset = vm.lastOffset;
 
+                        for (let i= 0 ;i< response.resources.length; i++) {
+                          vm.resources[i + offset] = response.resources[i];
+                        }
+                        vm.offset = offset + vm.requestLimit;
+                        vm.totalCount = response.totalCount;
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                       }
                   );
-                } else {
-                  vm.resources = [];
+                  // } else {
+                  //   vm.resources = [];
                 }
+
               }
             }
           };
@@ -830,37 +831,26 @@ define([
           // callback to load more resources for the current folder
           vm.searchMore = function () {
 
-            var limit = UISettingsService.getRequestLimit();
-            var resourceTypes = activeResourceTypes();
+            if (activeResourceTypes().length > 0 ) {
 
-            // Temporary fix to load more results if the totalCount can't be computed by the backend
-            if (vm.totalCount == -1) {
-              // Search for more results
-              vm.totalCount = Number.MAX_VALUE;
-            }
-            else if (vm.totalCount == 0) {
-              // No more results available. Stop searching
-              vm.totalCount = -2;
-            }
-
-            // are there more?
-            if ((vm.offset + limit) < vm.totalCount && (vm.offset + limit) > vm.lastOffset) {
-              if (resourceTypes.length > 0) {
-
-                vm.lastOffset = (vm.offset + limit);
-
-
+              // are there more?
+              if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+                vm.lastOffset += vm.requestLimit;
+                var offset = vm.offset;
                 return resourceService.searchResources(vm.searchTerm,
                     {
-                      resourceTypes: resourceTypes,
+                      resourceTypes: activeResourceTypes(),
                       sort         : sortField(),
-                      limit        : limit,
+                      limit        : vm.requestLimit,
                       offset       : offset
                     },
                     function (response) {
-                      vm.resources = vm.resources.concat(response.resources);
+
+                      for (let i= 0 ;i< response.resources.length; i++) {
+                        vm.resources[i + offset] = response.resources[i];
+                      }
                       vm.totalCount = response.totalCount;
-                      vm.offset = vm.lastOffset;
+                      vm.offset = offset + vm.requestLimit;
                     },
                     function (error) {
                       UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -868,7 +858,6 @@ define([
                 );
               }
             }
-            ;
           };
 
 
@@ -897,8 +886,6 @@ define([
 
           function init() {
             vm.isSearching = false;
-            console.log("INIT");
-            console.log(vm.params);
             if (vm.params.sharing) {
               if (vm.params.sharing == 'shared-with-me') {
                 vm.isSearching = true;
@@ -966,46 +953,52 @@ define([
             return (vm.nodeListQueryType === 'folder-content');
           }
 
+          // wrap with timeout of 1 second for elasticSearch to index anything new
           function doSearch(term) {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
-            vm.offset = 0;
-            var offset = vm.offset;
-            resourceService.searchResources(
-                term,
-                {
-                  resourceTypes    : resourceTypes,
-                  sort             : sortField(),
-                  limit            : limit,
-                  offset           : offset,
-                  version          : vm.getFilterVersion(),
-                  publicationStatus: vm.getFilterStatus()
-                },
-                function (response) {
-                  vm.searchTerm = term;
-                  vm.isSearching = true;
-                  vm.resources = response.resources;
-                  vm.totalCount = response.totalCount;
-                  vm.nodeListQueryType = response.nodeListQueryType;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
-                  UIProgressService.complete();
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                }
-            );
+            $timeout(function () {
+              vm.offset = 0;
+              vm.lastOffset = vm.requestLimit;
+              vm.totalCount = -1;
+
+              resourceService.searchResources(
+                  term,
+                  {
+                    resourceTypes    : activeResourceTypes(),
+                    sort             : sortField(),
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
+                    version          : vm.getFilterVersion(),
+                    publicationStatus: vm.getFilterStatus()
+                  },
+                  function (response) {
+                    vm.offset = vm.requestLimit;
+                    vm.searchTerm = term;
+                    vm.isSearching = true;
+                    vm.resources = response.resources;
+                    vm.totalCount = response.totalCount;
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                    UIProgressService.complete();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
+            },1000);
           }
 
           function doSharedWithMe() {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
+
             vm.offset = 0;
-            var offset = vm.offset;
+            vm.lastOffset = vm.requestLimit;
+            vm.totalCount = -1;
+            let offset = vm.offset;
+
             resourceService.sharedWithMeResources(
                 {
-                  resourceTypes    : resourceTypes,
+                  resourceTypes    : activeResourceTypes(),
                   sort             : sortField(),
-                  limit            : limit,
+                  limit            : vm.requestLimit,
                   offset           : offset,
                   version          : vm.getFilterVersion(),
                   publicationStatus: vm.getFilterStatus()
@@ -1016,13 +1009,13 @@ define([
                   vm.totalCount = response.totalCount;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+                  vm.offset = offset + vm.requestLimit;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
           }
-
           function copyToWorkspace(resource) {
             if (!resource) {
               resource = getSelected();
@@ -1270,20 +1263,19 @@ define([
 
           function getFolderContentsById(folderId, resourceId) {
 
-            var resourceTypes = activeResourceTypes();
-            vm.offset = 0;
-            var offset = vm.offset;
-            // var limit = vm.limit;
-            var limit = UISettingsService.getRequestLimit();
+            if (activeResourceTypes().length > 0) {
 
-            if (resourceTypes.length > 0) {
+              vm.offset = 0;
+              vm.lastOffset = vm.requestLimit;
+              vm.totalCount = -1;
+
               return resourceService.getResources(
                   {
                     folderId         : folderId,
-                    resourceTypes    : resourceTypes,
+                    resourceTypes    : activeResourceTypes(),
                     sort             : sortField(),
-                    limit            : limit,
-                    offset           : offset,
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
                     version          : vm.getFilterVersion(),
                     publicationStatus: vm.getFilterStatus()
                   },
@@ -1293,22 +1285,14 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
+                    vm.offset = vm.requestLimit;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                     $scope.selectResourceById(resourceId);
+
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-
-                    // UIMessageService.acknowledgedExecution(
-                    //     function () {
-                    //       $timeout(function () {
-                    //         $rootScope.goToHome();
-                    //       });
-                    //     },
-                    //     'GENERIC.Warning',
-                    //     $translate.instant(error.data.message),
-                    //     'GENERIC.Ok');
                   }
               );
             } else {
