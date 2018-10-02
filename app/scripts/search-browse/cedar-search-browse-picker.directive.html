@@ -143,7 +143,7 @@
               </p>
 
               <p ng-if="!dc.isSearching">
-                <span class="folder-path" ng-repeat="folder in dc.pathInfo">
+                <span class="folder-path" ng-repeat="folder in dc.pathInfo track by $index">
                   <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(folder))}}</a> /
                 </span>
                 <a class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(dc.currentPath))}}</a>
@@ -220,7 +220,7 @@
               <div class="grid-view" ng-if="dc.isGridView()">
 
                 <!-- show the folders first -->
-                <div ng-if="dc.isFolder(resource)" class="form-box-container" ng-class="{ selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources">
+                <div ng-if="dc.isFolder(resource)" class="form-box-container" ng-class="{ selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources track by $index">
 
                   <div id="{{dc.getId(resource, 'row')}}"
                       dropdownId="{{getId(resource, 'list')}}"
@@ -281,7 +281,7 @@
 
                 <!-- then the other resources -->
                 <div ng-if="!dc.isFolder(resource)"
-                    class="form-box-container" ng-class="{ selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources">
+                    class="form-box-container" ng-class="{ selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources track by $index">
 
                   <div id="{{dc.getId(resource, 'row')}}"
                       dropdownId="{{getId(resource, 'list')}}"
@@ -386,7 +386,7 @@
                     dropdownId="{{getId(resource, 'list')}}"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
-                    ng-repeat="(index, resource) in dc.resources">
+                    ng-repeat="(index, resource) in dc.resources track by $index">
 
 
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
@@ -447,7 +447,7 @@
                     dropdownId="{{getId(resource, 'list')}}"
                     ng-click="dc.selectResource(resource)"
                     ng-dblclick="dc.goToResource(resource)"
-                    ng-repeat="(index, resource) in dc.resources">
+                    ng-repeat="(index, resource) in dc.resources track by $index">
 
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis" style="justify-content:space-between">
@@ -576,7 +576,7 @@
             </div>
           </div>
           <div class="info " ng-if="dc.hasSelected() && dc.getSelectedVersions()"
-              ng-repeat="(index, resource) in dc.getSelected().versions">
+              ng-repeat="(index, resource) in dc.getSelected().versions track by $index">
             <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
               <div class="flex">
                 <i ng-if="dc.isPublished(resource)" class="padding-right action fa"
@@ -697,7 +697,7 @@
 
               <div ng-if="dc.getVisibleMetadata()" cedar-infinite-scroll load-more="" class="scrollable-content"
                   style="margin-top:10px;overflow-y:scroll;border:1px solid #ccc;height:100px">
-                <div ng-repeat="(index, resource) in dc.getInstances()" class="instance-item" style="padding:2px;"
+                <div ng-repeat="(index, resource) in dc.getInstances() track by $index" class="instance-item" style="padding:2px;"
                     ng-click="dc.goToResource(resource,'open')">
                   {{resource['schema:name']}}
                 </div>
