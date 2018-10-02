@@ -367,6 +367,18 @@ define([
             }
           };
 
+          vm.hasIdentifier = function (node) {
+            if (node) {
+              return node.hasOwnProperty(CONST.model.IDENTIFIER) && node[CONST.model.IDENTIFIER];
+            }
+          };
+
+          vm.getIdentifier = function (node) {
+            if (node) {
+              return node[CONST.model.IDENTIFIER];
+            }
+          };
+
           vm.getId = function (node, label) {
             if (node) {
               var id = DataManipulationService.getId(node);

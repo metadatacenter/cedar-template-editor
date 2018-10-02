@@ -565,6 +565,10 @@
               <div class="flex">
                 <div class="ellipsis clickable" ng-click="dc.goToResource(dc.getSelected())">{{dc.getTitle(dc.getSelected())}}</div>
               </div>
+              <div ng-if="dc.hasIdentifier(dc.getSelectedNode())" class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Identifier</div>
+                <div class="created-date">{{ dc.getIdentifier(dc.getSelectedNode()) }}</div>
+              </div>
               <div class="flex flex-wrap">
                 <div class="field-label">Created</div>
                 <div>{{ dc.getSelected()['pav:createdOn'] | prettyDate }}</div>
@@ -586,7 +590,10 @@
                 </div>
                 <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
               </div>
-
+              <div ng-if="dc.hasIdentifier(resource)" class="flex flex-wrap padding-top">
+                <div class="field-label ng-cloak" translate>Identifier</div>
+                <div class="created-date">{{ dc.getIdentifier(resource) }}</div>
+              </div>
               <div class="flex flex-wrap">
                 <div class="field-label">Created</div>
                 <div>{{ resource['pav:createdOn'] | prettyDate }}</div>
@@ -618,6 +625,11 @@
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Owner</div>
               <div class="owner-name"> {{ dc.getSelectedNode().ownedByUserName }}</div>
+            </div>
+
+            <div ng-if="dc.hasIdentifier(dc.getSelectedNode())" class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Identifier</div>
+              <div class="created-date">{{ dc.getIdentifier(dc.getSelectedNode()) }}</div>
             </div>
 
             <div class="flex flex-wrap padding-top">
