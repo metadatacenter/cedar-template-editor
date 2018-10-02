@@ -461,8 +461,9 @@ define([
             }
           };
 
-          vm.selectResource = function (resource) {
-            if (!Object.is(resource, getSelected())) {
+          vm.selectResource = function (resource, force) {
+
+            if (force || !Object.is(resource, getSelected())) {
 
               vm.editingDescription = false;
               setSelected(resource);
@@ -532,6 +533,7 @@ define([
           };
 
           vm.doSearchTemplateInstances = function (id) {
+
             var limit = 100;
             var offset = 0;
             var sort = 'name';
@@ -566,18 +568,14 @@ define([
             vm.canNotCreateDraft = !vm.canCreateDraft();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
-            // UIUtilService.setVisibleMetadata(0);
-            // UIUtilService.setTotalMetadata(0);
           };
 
           vm.getResourceReport = function (resource) {
+
             if (!resource && vm.hasSelected()) {
               resource = vm.getSelected();
             }
             var id = resource['@id'];
-            //vm.canNotPopulate = !vm.isTemplate();
-            //vm.canNotPublish = !vm.canPublishStatic();
-            //vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceReport(
                 resource,
                 function (response) {
@@ -588,7 +586,7 @@ define([
                       getSelected()[prop] = response[prop];
                     }
                   }
-                  //vm.setPermissions();
+                  UIUtilService.setTotalMetadata(response.numberOfInstances);
 
                   if (vm.isTemplate(resource)) {
                     vm.doSearchTemplateInstances(id);
@@ -606,9 +604,6 @@ define([
               resource = vm.getSelected();
             }
             var id = resource['@id'];
-            //vm.canNotPopulate = !vm.isTemplate();
-            //vm.canNotPublish = !vm.canPublishStatic();
-            //vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
@@ -619,7 +614,6 @@ define([
                       getSelected()[prop] = response[prop];
                     }
                   }
-                  //vm.setPermissions();
 
                 },
                 function (error) {
@@ -906,7 +900,7 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
-              //resetSelected()
+              resetSelected();
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
               getFolderContentsById(currentFolderId, vm.hash);
@@ -1288,7 +1282,9 @@ define([
                     vm.offset = vm.requestLimit;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
-                    $scope.selectResourceById(resourceId);
+                    if (resourceId) {
+                      $scope.selectResourceById(resourceId);
+                    }
 
                   },
                   function (error) {
@@ -1480,6 +1476,7 @@ define([
               $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
               vm.params.folderId = folderId;
+              resetSelected();
               init();
             }
           }
@@ -1623,7 +1620,12 @@ define([
                   vm.cancelDescriptionEditing();
                   setSelected(resource);
                   vm.setPermissions();
-                  vm.getResourceDetails(resource);
+                  if (infoShowing()) {
+                    vm.getResourceReport(resource);
+                  } else {
+                    vm.getResourceDetails(resource);
+                  }
+
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);
                   }
