@@ -10,11 +10,11 @@ define([
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
                             "SpreadsheetService", "CONST",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
-                            "StringUtilsService", "UIUtilService"];
+                            "StringUtilsService", "UIUtilService", "ValidationService"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService,
-                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
+                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService, ValidationService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -294,6 +294,7 @@ define([
 
           } else {
             dms.removeChild($scope.parentElement, $scope.field, $scope.fieldKey);
+            ValidationService.checkValidation();
             $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
           }
         }

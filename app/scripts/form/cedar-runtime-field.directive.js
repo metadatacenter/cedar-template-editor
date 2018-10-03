@@ -1241,16 +1241,19 @@ define([
       $scope.setDateValue = function (index) {
         if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
           var date = new Date($scope.valueArray[index]['@value']);
-          date.setMinutes(date.getTimezoneOffset());
-          $scope.date.dt = date;
+          var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+          $scope.date.dt = utcDate;
+
         } else {
           $scope.date.dt = null;
         }
+
       };
 
       $scope.dateFormat = function (value) {
         if (value) {
           var date = new Date(value);
+          date.setMinutes(date.getTimezoneOffset());
           return date.toLocaleDateString(navigator.language);
         }
       };
@@ -1288,6 +1291,14 @@ define([
         text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
         return text;
       }
+
+      $scope.hasUnitOfMeasure = function(node) {
+        return dms.hasUnitOfMeasure(node);
+      };
+
+      $scope.getUnitOfMeasure = function(node) {
+        return dms.getUnitOfMeasure(node);
+      };
 
       var getPlaceholderForNumericField = function (node) {
         var numberType = dms.getNumberType(node);

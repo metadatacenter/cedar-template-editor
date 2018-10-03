@@ -28,6 +28,7 @@ define([
       });
 
       $scope.parseDate = function (value) {
+        console.log('parseDate',value);
         var result = false;
         if (value && value.length > 0) {
 

@@ -39,8 +39,9 @@ define([
 
           },
           function (err) {
-            console.log('err',err);
-            var message = (err.data.errorKey == 'noReadAccessToResource') ? 'Whoa!' : $translate.instant('SERVER.TEMPLATE.load.error');
+            console.log('err', err);
+            var message = (err.data.errorKey == 'noReadAccessToResource') ? 'Whoa!' : $translate.instant(
+                'SERVER.TEMPLATE.load.error');
 
             UIMessageService.acknowledgedExecution(
                 function () {
@@ -58,29 +59,6 @@ define([
     $scope.details;
     $scope.cannotWrite;
 
-// $scope.isShowOutput = function () {
-//   return UIUtilService.isShowOutput();
-// };
-//
-// $scope.toggleShowOutput = function() {
-//   return UIUtilService.toggleShowOutput();
-// };
-//
-// $scope.scrollToAnchor = function(hash) {
-//   UIUtilService.scrollToAnchor(hash);
-// };
-//
-// $scope.getShowOutputTab = function () {
-//   return UIUtilService.getShowOutputTab();
-// };
-//
-// $scope.setShowOutputTab = function (index) {
-//   return UIUtilService.setShowOutputTab(index);
-// };
-//
-// $scope.toggleShowOutputTab = function (index) {
-//   return UIUtilService.toggleShowOutputTab(index);
-// };
 
 // create a copy of the form with the _tmp fields stripped out
     $scope.cleanForm = function () {
@@ -102,7 +80,7 @@ define([
       return result;
     };
 
-// This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
       UIUtilService.setLocked($scope.cannotWrite);
     });
@@ -120,39 +98,16 @@ define([
       );
     };
 
-// validate the resource
-    var checkValidation = function (node) {
 
-      if (node) {
-        return resourceService.validateResource(
-            node, CONST.resourceType.INSTANCE,
-            function (response) {
-
-              var json = angular.toJson(response);
-              var status = response.validates == "true";
-              UIUtilService.logValidation(status, json);
-
-              $timeout(function () {
-                $rootScope.$broadcast("form:validation", {state: status});
-              });
-
-            },
-            function (error) {
-              UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
-            }
-        );
-      }
-    };
-
-// Get/read instance with given id from $routeParams
-// Also read the template for it
+    // Get/read instance with given id from $routeParams
+    // Also read the template for it
     $scope.getInstance = function () {
       console.log('getInstance')
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
-            checkValidation($scope.instance);
+            ValidationService.checkValidation($scope.instance, CONST.resourceType.INSTANCE);
             UIUtilService.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
@@ -173,7 +128,8 @@ define([
                 },
                 function (err) {
                   // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
-                  var message = (err.data.errorKey == 'noReadAccessToResource') ?  $translate.instant('SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
+                  var message = (err.data.errorKey == 'noReadAccessToResource') ? $translate.instant(
+                      'SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
                   UIMessageService.acknowledgedExecution(
                       function () {
                         $timeout(function () {
@@ -199,12 +155,12 @@ define([
     $scope.saveInstance = function () {
 
       var doSave = function (response) {
-        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
 
         //$rootScope.$broadcast("form:clean");
         UIUtilService.setDirty(false);
-        $rootScope.$broadcast("form:validation", {state: true});
+        $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
 
         $timeout(function () {
           var newId = response.data['@id'];
@@ -220,7 +176,7 @@ define([
       };
 
       var doUpdate = function (response) {
-        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
         $rootScope.$broadcast('submitForm');

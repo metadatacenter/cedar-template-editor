@@ -18,6 +18,7 @@ define([
     var resourceTypeFilters = null;
     var orderDropdown = null;
     var workspaceView = null;
+    var selectedResource = null;
 
     var service = {
       serviceId: "UISettingsService"
@@ -30,22 +31,22 @@ define([
       resourceTypeFilters = config.resourceTypeFilters;
       orderDropdown = config.orderDropdown;
       workspaceView = config.workspaceView;
+    };
 
-      //TODO MJD
-      /*
-       console.log("MJD:")
-       console.log("UISettingsService initialized");
-       console.log("Use UISettingsService.getSettingsMenuItems() to get the list of menu items:");
-       console.log(this.getSettingsMenuItems());
-       console.log("Use UISettingsService.getListViewHeaders() to get the list of menu items:");
-       console.log(this.getListViewHeaders());
-       console.log("Use UISettingsService.getPopulateAForm() to get the list of menu items:");
-       console.log(this.getPopulateAForm());
-       console.log("Use UISettingsService.getResourceTypeFilters() to get the list of menu items:");
-       console.log(this.getResourceTypeFilters());
-       console.log("Use UISettingsService.getOrderOptions() to get the list of menu items:");
-       console.log(this.getOrderOptions());
-       */
+    service.getSelected = function () {
+      return selectedResource;
+    };
+
+    service.setSelected = function (value) {
+      selectedResource = value;
+    };
+
+    service.resetSelected = function () {
+      selectedResource = null;
+    };
+
+    service.hasSelected = function () {
+      return selectedResource != null;
     };
 
     service.getSettingsMenuItems = function () {

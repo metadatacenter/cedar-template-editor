@@ -8,14 +8,14 @@ define([
 
   CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                    "$filter", "HeaderService", "StagingService", "DataTemplateService",
-                                   "FieldTypeService", "TemplateFieldService", "resourceService", "UIMessageService",
+                                   "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
                                    "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                  HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                 TemplateFieldService, resourceService, UIMessageService, DataManipulationService,
+                                 TemplateFieldService, resourceService, ValidationService,UIMessageService, DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
                                  CONST,CedarUser) {
 
@@ -86,31 +86,6 @@ define([
       //UIUtilService.setDirty(false);
     };
 
-
-    // validate the resource
-    var checkValidation = function (node) {
-
-      if (node) {
-        return resourceService.validateResource(
-            node, CONST.resourceType.FIELD,
-            function (response) {
-
-              var json = angular.toJson(response);
-              var status = response.validates == "true";
-              UIUtilService.logValidation(status, json);
-
-              $timeout(function () {
-                $rootScope.$broadcast("form:validation", {state: status});
-              });
-
-            },
-            function (error) {
-              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-            }
-        );
-      }
-    };
-
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(
           id, CONST.resourceType.FIELD,
@@ -123,8 +98,6 @@ define([
           }
       );
     };
-
-
 
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
@@ -159,6 +132,7 @@ define([
         $scope.form = $scope.field;
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
+
         $scope.fieldSchema = dms.schemaOf($scope.field);
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
@@ -171,16 +145,10 @@ define([
         }
 
         UIUtilService.setDirty(true);
+        ValidationService.checkValidation();
 
         dms.createDomIds($scope.field);
-
-        // $scope.toggleMore();
-
         $rootScope.$broadcast('field:reset');
-
-        $timeout(function () {
-          checkValidation($scope.form);
-        },1000);
 
       }
       $scope.showMenuPopover = false;
@@ -198,15 +166,15 @@ define([
 
               $scope.field = response.data;
 
-              checkValidation(jQuery.extend(true, {}, $scope.field));
+
 
               $scope.form = $scope.field;
               $rootScope.keyOfRootElement = dms.getId($scope.field);
               $rootScope.rootElement = $scope.form;
               $rootScope.jsonToSave = $scope.field;
+
               $scope.fieldSchema = dms.schemaOf($scope.field);
               HeaderService.dataContainer.currentObjectScope = $scope.field;
-
               $rootScope.documentTitle = dms.getTitle($scope.form);
 
               UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
@@ -216,6 +184,7 @@ define([
 
               dms.createDomIds($scope.field);
               $scope.setClean();
+              ValidationService.checkValidation();
 
               // TODO details don't work yet
               getDetails($scope.field['@id']);
@@ -292,7 +261,7 @@ define([
     $scope.doSaveField = function () {
 
       var doSave = function(response) {
-        UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+        ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
         // confirm message
         var title = dms.getTitle(response.data);
@@ -367,7 +336,7 @@ define([
                 TemplateFieldService.updateTemplateField(id, copiedForm),
                 function (response) {
 
-                  UIUtilService.logValidation(response.headers("CEDAR-Validation-Status"));
+                  ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
                   UIMessageService.flashSuccess('SERVER.FIELD.update.success', {"title": response.data.title},
                       'GENERIC.Updated');
 

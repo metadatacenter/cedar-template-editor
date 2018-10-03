@@ -113,7 +113,6 @@ define([
           vm.params = $location.search();
           vm.hash = $location.hash();
           vm.resources = [];
-          vm.selectedResource = null;
           vm.canNotSubmit = true;
           vm.canNotWrite = false;
           vm.canNotShare = false;
@@ -124,8 +123,9 @@ define([
           vm.canNotRename = false;
           vm.currentFolder = null;
 
-          vm.hasSelection = hasSelection;
-          vm.getSelection = getSelection;
+          vm.hasSelected = hasSelected;
+          vm.getSelected = getSelected;
+          vm.getSelectedVersions = getSelectedVersions;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
@@ -150,10 +150,8 @@ define([
           //
           // publication
           //
-          vm.canPublish = canPublish;
-          vm.canPublishStatic = canPublishStatic;
-          vm.canCreateDraft = canCreateDraft;
-          vm.canCreateDraftStatic = canCreateDraftStatic;
+          //vm.canPublishStatic = canPublishStatic;
+          //vm.canCreateDraftStatic = canCreateDraftStatic;
 
 
           vm.isGridView = isGridView;
@@ -369,6 +367,18 @@ define([
             }
           };
 
+          vm.hasIdentifier = function (node) {
+            if (node) {
+              return node.hasOwnProperty(CONST.model.IDENTIFIER) && node[CONST.model.IDENTIFIER];
+            }
+          };
+
+          vm.getIdentifier = function (node) {
+            if (node) {
+              return node[CONST.model.IDENTIFIER];
+            }
+          };
+
           vm.getId = function (node, label) {
             if (node) {
               var id = DataManipulationService.getId(node);
@@ -421,12 +431,12 @@ define([
           };
 
           vm.toggleDescriptionEditing = function () {
-            if (vm.getSelection()) {
+            if (vm.getSelected()) {
               vm.editingDescription = !vm.editingDescription;
 
               if (vm.editingDescription) {
-                vm.editingDescriptionSelection = vm.getSelection();
-                vm.editingDescriptionInitialValue = vm.selectedResource[CONST.model.DESCRIPTION];
+                vm.editingDescriptionSelection = vm.getSelected();
+                vm.editingDescriptionInitialValue = getSelected()[CONST.model.DESCRIPTION];
 
                 $timeout(function () {
                   var jqDescriptionField = $('#edit-description');
@@ -463,11 +473,12 @@ define([
             }
           };
 
-          vm.selectResource = function (resource) {
-            if (!Object.is(resource, vm.selectedResource)) {
+          vm.selectResource = function (resource, force) {
+
+            if (force || !Object.is(resource, getSelected())) {
 
               vm.editingDescription = false;
-              vm.selectedResource = resource;
+              setSelected(resource);
               vm.setPermissions();
 
               $timeout(function () {
@@ -488,7 +499,7 @@ define([
           vm.showInfoPanel = function () {
             if (vm.isSharedMode()) {
               resetSelected();
-            } else if (!vm.selectedResource) {
+            } else if (!hasSelected()) {
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
@@ -502,38 +513,39 @@ define([
           };
 
           vm.isResourceSelected = function (resource) {
-            if (resource == null || vm.selectedResource == null) {
+            if (resource == null || !hasSelected()) {
               return false;
             } else {
-              return vm.selectedResource['@id'] == resource['@id'];
+              return getSelected()['@id'] == resource['@id'];
             }
           };
 
           vm.canSubmit = function () {
-            return vm.selectedResource && resourceService.canSubmit(vm.selectedResource);
+            return hasSelected() && resourceService.canSubmit(getSelected());
           };
 
           vm.getNumberOfInstances = function () {
-            if (vm.selectedResource && vm.selectedResource[CONST.model.NUMBEROFINSTANCES]) {
-              var value = vm.selectedResource[CONST.model.NUMBEROFINSTANCES];
+            if (hasSelected() && getSelected()[CONST.model.NUMBEROFINSTANCES]) {
+              var value = getSelected()[CONST.model.NUMBEROFINSTANCES];
               UIUtilService.setTotalMetadata(value);
               return value;
             }
           };
 
           vm.getDerivedFrom = function () {
-            if (vm.selectedResource && vm.selectedResource.derivedFrom) {
-              return vm.selectedResource.derivedFrom;
+            if (hasSelected() && getSelected().derivedFrom) {
+              return getSelected().derivedFrom;
             }
           };
 
           vm.getBasedOn = function () {
-            if (vm.selectedResource && vm.selectedResource.isBasedOn) {
-              return vm.selectedResource.isBasedOn;
+            if (getSelected() && getSelected().isBasedOn) {
+              return getSelected().isBasedOn;
             }
           };
 
           vm.doSearchTemplateInstances = function (id) {
+
             var limit = 100;
             var offset = 0;
             var sort = 'name';
@@ -562,35 +574,31 @@ define([
             vm.canNotSubmit = !vm.canSubmit();
             vm.canNotShare = !vm.canShare();
             vm.canNotPublish = !vm.canPublish();
-            vm.canNotDelete = vm.isPublished() || vm.canNotWrite;
-            vm.canNotRename = vm.canNotWrite;
-            vm.canNotPopulate = !vm.isTemplate();
+            vm.canNotDelete = !vm.canDelete();
+            vm.canNotRename = !vm.canRename();
+            vm.canNotPopulate = !vm.canPopulate();
             vm.canNotCreateDraft = !vm.canCreateDraft();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
-            // UIUtilService.setVisibleMetadata(0);
-            // UIUtilService.setTotalMetadata(0);
           };
 
           vm.getResourceReport = function (resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
+
+            if (!resource && vm.hasSelected()) {
+              resource = vm.getSelected();
             }
             var id = resource['@id'];
-            vm.canNotPopulate = !vm.isTemplate();
-            vm.canNotPublish = !vm.canPublishStatic();
-            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceReport(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
-                    vm.selectedResource = response;
+                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                    setSelected(response);
                   } else  {
                     for (var prop in response) {
-                      vm.selectedResource[prop] = response[prop];
+                      getSelected()[prop] = response[prop];
                     }
                   }
-                  vm.setPermissions();
+                  UIUtilService.setTotalMetadata(response.numberOfInstances);
 
                   if (vm.isTemplate(resource)) {
                     vm.doSearchTemplateInstances(id);
@@ -604,24 +612,20 @@ define([
 
 
           vm.getResourceDetails = function (resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
+            if (!resource && vm.hasSelected()) {
+              resource = vm.getSelected();
             }
             var id = resource['@id'];
-            vm.canNotPopulate = !vm.isTemplate();
-            vm.canNotPublish = !vm.canPublishStatic();
-            vm.canNotCreateDraft = !vm.canCreateDraftStatic();
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  if (vm.selectedResource == null || (vm.selectedResource['@id'] != response['@id'])) {
-                    vm.selectedResource = response;
+                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                    setSelected(response);
                   } else  {
                     for (var prop in response) {
-                      vm.selectedResource[prop] = response[prop];
+                      getSelected()[prop] = response[prop];
                     }
                   }
-                  vm.setPermissions();
 
                 },
                 function (error) {
@@ -638,12 +642,32 @@ define([
             return resourceService.canWrite(vm.getSelectedNode());
           };
 
+          vm.canRename = function () {
+            return resourceService.canWrite(vm.getSelectedNode());
+          };
+
+          vm.canDelete = function () {
+            return resourceService.canDelete(vm.getSelectedNode());
+          };
+
           vm.canChangeOwner = function () {
             return resourceService.canChangeOwner(vm.getSelectedNode());
           };
 
           vm.canShare = function () {
             return resourceService.canShare(vm.getSelectedNode());
+          };
+
+          vm.canPopulate = function () {
+            return resourceService.canPopulate(vm.getSelectedNode());
+          };
+
+          vm.canPublish = function () {
+            return resourceService.canPublish(vm.getSelectedNode());
+          };
+
+          vm.canCreateDraft = function () {
+            return resourceService.canCreateDraft(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -667,7 +691,7 @@ define([
           };
 
           vm.getResourcePublicationStatus = function (value) {
-            var resource = value || vm.getSelection();
+            var resource = value || vm.getSelected();
             if (resource != null) {
               return resource[CONST.publication.STATUS];
             }
@@ -737,7 +761,7 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": getSelected().name},
                           'GENERIC.Updated');
                     },
                     function (response) {
@@ -762,39 +786,40 @@ define([
           // callback to load more resources for the current folder
           vm.loadMore = function () {
 
-            if (vm.isSearching) {
-              vm.searchMore();
-            } else {
+            if (activeResourceTypes().length > 0) {
 
-              var limit = UISettingsService.getRequestLimit();
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
+              if (vm.isSearching) {
+                vm.searchMore();
+              } else {
 
-              // are there more?
-              if ((vm.offset + limit) < vm.totalCount && (vm.offset + limit) > vm.lastOffset) {
-                if (resourceTypes.length > 0) {
-
-                  vm.lastOffset = (vm.offset + limit);
+                // are there more?
+                if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+                  vm.lastOffset += vm.requestLimit;
+                  var offset = vm.offset;
                   return resourceService.getResources(
                       {
-                        folderId     : folderId,
-                        resourceTypes: resourceTypes,
+                        folderId     : vm.currentFolderId,
+                        resourceTypes: activeResourceTypes(),
                         sort         : sortField(),
-                        limit        : limit,
-                        offset       : vm.lastOffset
+                        limit        : vm.requestLimit,
+                        offset       : offset
                       },
                       function (response) {
-                        vm.resources = vm.resources.concat(response.resources);
-                        vm.offset = vm.lastOffset;
 
+                        for (let i= 0 ;i< response.resources.length; i++) {
+                          vm.resources[i + offset] = response.resources[i];
+                        }
+                        vm.offset = offset + vm.requestLimit;
+                        vm.totalCount = response.totalCount;
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
                       }
                   );
-                } else {
-                  vm.resources = [];
+                  // } else {
+                  //   vm.resources = [];
                 }
+
               }
             }
           };
@@ -812,37 +837,26 @@ define([
           // callback to load more resources for the current folder
           vm.searchMore = function () {
 
-            var limit = UISettingsService.getRequestLimit();
-            var resourceTypes = activeResourceTypes();
+            if (activeResourceTypes().length > 0 ) {
 
-            // Temporary fix to load more results if the totalCount can't be computed by the backend
-            if (vm.totalCount == -1) {
-              // Search for more results
-              vm.totalCount = Number.MAX_VALUE;
-            }
-            else if (vm.totalCount == 0) {
-              // No more results available. Stop searching
-              vm.totalCount = -2;
-            }
-
-            // are there more?
-            if ((vm.offset + limit) < vm.totalCount && (vm.offset + limit) > vm.lastOffset) {
-              if (resourceTypes.length > 0) {
-
-                vm.lastOffset = (vm.offset + limit);
-
-
+              // are there more?
+              if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+                vm.lastOffset += vm.requestLimit;
+                var offset = vm.offset;
                 return resourceService.searchResources(vm.searchTerm,
                     {
-                      resourceTypes: resourceTypes,
+                      resourceTypes: activeResourceTypes(),
                       sort         : sortField(),
-                      limit        : limit,
+                      limit        : vm.requestLimit,
                       offset       : offset
                     },
                     function (response) {
-                      vm.resources = vm.resources.concat(response.resources);
+
+                      for (let i= 0 ;i< response.resources.length; i++) {
+                        vm.resources[i + offset] = response.resources[i];
+                      }
                       vm.totalCount = response.totalCount;
-                      vm.offset = vm.lastOffset;
+                      vm.offset = offset + vm.requestLimit;
                     },
                     function (error) {
                       UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -850,7 +864,6 @@ define([
                 );
               }
             }
-            ;
           };
 
 
@@ -899,7 +912,7 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
-              vm.selectedResource = null;
+              resetSelected();
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
               getFolderContentsById(currentFolderId, vm.hash);
@@ -946,46 +959,52 @@ define([
             return (vm.nodeListQueryType === 'folder-content');
           }
 
+          // wrap with timeout of 1 second for elasticSearch to index anything new
           function doSearch(term) {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
-            vm.offset = 0;
-            var offset = vm.offset;
-            resourceService.searchResources(
-                term,
-                {
-                  resourceTypes    : resourceTypes,
-                  sort             : sortField(),
-                  limit            : limit,
-                  offset           : offset,
-                  version          : vm.getFilterVersion(),
-                  publicationStatus: vm.getFilterStatus()
-                },
-                function (response) {
-                  vm.searchTerm = term;
-                  vm.isSearching = true;
-                  vm.resources = response.resources;
-                  vm.totalCount = response.totalCount;
-                  vm.nodeListQueryType = response.nodeListQueryType;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
-                  UIProgressService.complete();
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                }
-            );
+            $timeout(function () {
+              vm.offset = 0;
+              vm.lastOffset = vm.requestLimit;
+              vm.totalCount = -1;
+
+              resourceService.searchResources(
+                  term,
+                  {
+                    resourceTypes    : activeResourceTypes(),
+                    sort             : sortField(),
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
+                    version          : vm.getFilterVersion(),
+                    publicationStatus: vm.getFilterStatus()
+                  },
+                  function (response) {
+                    vm.offset = vm.requestLimit;
+                    vm.searchTerm = term;
+                    vm.isSearching = true;
+                    vm.resources = response.resources;
+                    vm.totalCount = response.totalCount;
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                    UIProgressService.complete();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
+            },1000);
           }
 
           function doSharedWithMe() {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
+
             vm.offset = 0;
-            var offset = vm.offset;
+            vm.lastOffset = vm.requestLimit;
+            vm.totalCount = -1;
+            let offset = vm.offset;
+
             resourceService.sharedWithMeResources(
                 {
-                  resourceTypes    : resourceTypes,
+                  resourceTypes    : activeResourceTypes(),
                   sort             : sortField(),
-                  limit            : limit,
+                  limit            : vm.requestLimit,
                   offset           : offset,
                   version          : vm.getFilterVersion(),
                   publicationStatus: vm.getFilterStatus()
@@ -996,16 +1015,16 @@ define([
                   vm.totalCount = response.totalCount;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+                  vm.offset = offset + vm.requestLimit;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
           }
-
           function copyToWorkspace(resource) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
 
@@ -1026,7 +1045,7 @@ define([
 
           function copyResource(resource) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
             var folderId = vm.currentFolderId;
@@ -1052,7 +1071,7 @@ define([
           // set publication status as published
           function publishResource(resource, version) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var newVersion = version || vm.getResourceVersion(resource);
             resourceService.publishResource(
@@ -1073,7 +1092,7 @@ define([
           // set publication status as draft
           function createDraftResource(resource, version) {
             if (!resource) {
-              resource = getSelection();
+              resource = getSelected();
             }
             var folderId = vm.currentFolderId;
             if (!folderId) {
@@ -1099,7 +1118,7 @@ define([
           }
 
           function launchInstance(value) {
-            var resource = value || getSelection();
+            var resource = value || getSelected();
             if (resource) {
               var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
@@ -1124,7 +1143,7 @@ define([
 
           function goToResource(value, action) {
 
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             if (resource) {
               if (resource.nodeType === 'folder') {
                 if (action !== 'populate') {
@@ -1142,7 +1161,7 @@ define([
 
           function editResource(value, canNotWrite) {
 
-            var resource = value || vm.selectedResource;
+            var resource = value || getSelected();
             if (resource) {
               var id = resource['@id'];
               if (typeof vm.pickResourceCallback === 'function') {
@@ -1187,7 +1206,7 @@ define([
               vm.resources.splice(index, 1);
             }
             // remove current selection
-            vm.selectedResource = null;
+            resetSelected();
 
             //reset total count
             vm.totalCount--;
@@ -1195,8 +1214,8 @@ define([
 
 
           function deleteResource(resource) {
-            if (!resource && hasSelection()) {
-              resource = getSelection();
+            if (!resource && hasSelected()) {
+              resource = getSelected();
             }
             if (vm.canWrite(resource)) {
 
@@ -1250,20 +1269,19 @@ define([
 
           function getFolderContentsById(folderId, resourceId) {
 
-            var resourceTypes = activeResourceTypes();
-            vm.offset = 0;
-            var offset = vm.offset;
-            // var limit = vm.limit;
-            var limit = UISettingsService.getRequestLimit();
+            if (activeResourceTypes().length > 0) {
 
-            if (resourceTypes.length > 0) {
+              vm.offset = 0;
+              vm.lastOffset = vm.requestLimit;
+              vm.totalCount = -1;
+
               return resourceService.getResources(
                   {
                     folderId         : folderId,
-                    resourceTypes    : resourceTypes,
+                    resourceTypes    : activeResourceTypes(),
                     sort             : sortField(),
-                    limit            : limit,
-                    offset           : offset,
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
                     version          : vm.getFilterVersion(),
                     publicationStatus: vm.getFilterStatus()
                   },
@@ -1273,22 +1291,16 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
+                    vm.offset = vm.requestLimit;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
-                    $scope.selectResourceById(resourceId);
+                    if (resourceId) {
+                      $scope.selectResourceById(resourceId);
+                    }
+
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-
-                    // UIMessageService.acknowledgedExecution(
-                    //     function () {
-                    //       $timeout(function () {
-                    //         $rootScope.goToHome();
-                    //       });
-                    //     },
-                    //     'GENERIC.Warning',
-                    //     $translate.instant(error.data.message),
-                    //     'GENERIC.Ok');
                   }
               );
             } else {
@@ -1326,21 +1338,20 @@ define([
           function getSelectedNode() {
 
             var result = null;
-            if (vm.selectedResource == null && (vm.isSharedMode() || vm.isSearchMode())) {
+            if (!hasSelected() && (vm.isSharedMode() || vm.isSearchMode())) {
               // nothing selected in share or search mode
             } else {
-              if (vm.selectedResource == null) {
+              if (!hasSelected()) {
                 result = vm.currentFolder;
               } else {
-                result = vm.selectedResource;
+                result = getSelected();
               }
             }
-            // console.log('getSelectedNode',result);
             return result;
           }
 
           function isSelected(node) {
-            if (hasSelection() && node) {
+            if (hasSelected() && node) {
               return (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
             }
           }
@@ -1415,52 +1426,42 @@ define([
             return false;
           }
 
-          function canPublish(value) {
-            var resource = value || vm.selectedResource;
-            return resourceService.canPublish(resource);
-          };
-
-          function canCreateDraft(value) {
-            var resource = value || vm.selectedResource;
-            return resourceService.canCreateDraft(resource);
-          };
-
-          function canPublishStatic() {
-            return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource[CONST.publication.STATUS] == CONST.publication.DRAFT);
-          }
+/*          function canPublishStatic() {
+            return (hasSelected() &&
+                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
+          }*/
 
           function isPublished(resource) {
             var result = false;
             if (resource) {
               result = (resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
             } else {
-              result = (hasSelection() && (vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
+              result = (hasSelected() && (getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
             }
             return result;
           };
 
-          function canCreateDraftStatic() {
-            return (hasSelection() &&
-                (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE ||
-                    vm.selectedResource.nodeType == CONST.resourceType.ELEMENT) &&
-                vm.selectedResource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
-          }
+/*          function canCreateDraftStatic() {
+            return (hasSelected() &&
+                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+          }*/
 
           function isTemplate(resource) {
             var result = false;
             if (resource) {
               result = (resource.nodeType == CONST.resourceType.TEMPLATE);
             } else {
-              result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.TEMPLATE));
             }
             return result;
           }
 
           function isElement() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.ELEMENT));
+            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.ELEMENT));
           }
 
           function isFolder(resource) {
@@ -1468,13 +1469,13 @@ define([
             if (resource) {
               result = (resource.nodeType == CONST.resourceType.FOLDER);
             } else {
-              result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.FOLDER))
+              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.FOLDER))
             }
             return result;
           }
 
           function isMeta() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.INSTANCE));
           }
 
           function goToHomeFolder(resourceId) {
@@ -1487,6 +1488,7 @@ define([
               $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
               vm.params.folderId = folderId;
+              resetSelected();
               init();
             }
           }
@@ -1628,9 +1630,14 @@ define([
                 if (id === vm.resources[i]['@id']) {
                   var resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
-                  vm.selectedResource = resource;
+                  setSelected(resource);
                   vm.setPermissions();
-                  vm.getResourceDetails(resource);
+                  if (infoShowing()) {
+                    vm.getResourceReport(resource);
+                  } else {
+                    vm.getResourceDetails(resource);
+                  }
+
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);
                   }
@@ -1674,15 +1681,23 @@ define([
           }
 
           function resetSelected() {
-            vm.selectedResource = null;
+            UISettingsService.resetSelected();
           }
 
-          function getSelection() {
-            return vm.selectedResource;
+          function getSelected() {
+            return UISettingsService.getSelected();
           }
 
-          function hasSelection() {
-            return vm.selectedResource != null;
+          function getSelectedVersions() {
+            return UISettingsService.getSelected().versions;
+          }
+
+          function setSelected(value) {
+            UISettingsService.setSelected(value);
+          }
+
+          function hasSelected() {
+            return UISettingsService.hasSelected();
           }
 
 
@@ -1813,23 +1828,23 @@ define([
 
           // open the move modal
           function showCopyModal() {
-            if (vm.selectedResource) {
+            if (hasSelected()) {
               var homeFolderId = CedarUser.getHomeFolderId();
               var folderId = vm.currentFolderId || homeFolderId;
               vm.copyModalVisible = true;
               $scope.$broadcast('copyModalVisible',
-                  [vm.copyModalVisible, vm.selectedResource, vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
+                  [vm.copyModalVisible, getSelected(), vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
                    CedarUser.getSort()]);
             }
           }
 
           // open the move modal
           function showMoveModal() {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.moveModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, vm.selectedResource, vm.currentPath, vm.currentFolderId, homeFolderId,
+                  [vm.moveModalVisible, getSelected(), vm.currentPath, vm.currentFolderId, homeFolderId,
                    vm.resourceTypes,
                    CedarUser.getSort()]);
             }
@@ -1837,34 +1852,34 @@ define([
 
           // open the publish modal
           function showPublishModal(callback, action) {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, vm.selectedResource, callback, action]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, getSelected(), callback, action]);
             }
           }
 
           function showFlowModal() {
-            if (vm.selectedResource && !vm.canNotSubmit) {
+            if (hasSelected() && !vm.canNotSubmit) {
               vm.flowModalVisible = true;
               $scope.$broadcast('flowModalVisible',
-                  [vm.flowModalVisible, vm.selectedResource['@id'], vm.selectedResource[CONST.model.NAME]]);
+                  [vm.flowModalVisible, getSelected()['@id'], getSelected()[CONST.model.NAME]]);
             }
           }
 
           // open the share modal
           function showShareModal() {
-            if (vm.selectedResource && !vm.canNotShare) {
+            if (hasSelected() && !vm.canNotShare) {
               vm.shareModalVisible = true;
-              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, vm.selectedResource]);
+              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, getSelected()]);
             }
           }
 
           // open the rename modal
           function showRenameModal() {
-            if (vm.selectedResource && !vm.canNotWrite) {
+            if (hasSelected() && !vm.canNotWrite) {
               vm.renameModalVisible = true;
-              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, vm.selectedResource]);
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, getSelected()]);
             }
           }
 
