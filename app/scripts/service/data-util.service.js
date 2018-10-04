@@ -11,7 +11,7 @@ define([
 
   function DataUtilService($rootScope) {
 
-    var specialKeyPattern = /(^@)|(^_)|(^schema:)|(^pav:)|(^oslc:)/i;
+    var specialKeyPattern = /(^@)|(^_)|(^schema:)|(^pav:)|(^rdfs:)|(^oslc:)/i;
     var elementType = "https://schema.metadatacenter.org/core/TemplateElement";
 
     var service = {

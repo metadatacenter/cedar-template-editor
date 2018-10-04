@@ -21,7 +21,6 @@ define([
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
-      console.log('getTemplate');
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate($routeParams.templateId),
           function (response) {
@@ -86,28 +85,29 @@ define([
     });
 
     var getDetails = function (id) {
-      resourceService.getResourceDetailFromId(
-          id, CONST.resourceType.INSTANCE,
-          function (response) {
-            $scope.details = response;
-            $scope.canWrite();
-          },
-          function (error) {
-            UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
-          }
-      );
+      if (id) {
+        resourceService.getResourceDetailFromId(
+            id, CONST.resourceType.INSTANCE,
+            function (response) {
+              $scope.details = response;
+              $scope.canWrite();
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
+            }
+        );
+      }
     };
 
 
     // Get/read instance with given id from $routeParams
     // Also read the template for it
     $scope.getInstance = function () {
-      console.log('getInstance')
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
-            ValidationService.checkValidation($scope.instance, CONST.resourceType.INSTANCE);
+            ValidationService.checkValidation();
             UIUtilService.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
@@ -319,7 +319,6 @@ define([
     };
 
     $scope.enableSaveButton = function () {
-      console.log('enableSaveButton');
       $timeout(function () {
         $scope.saveButtonDisabled = false;
       }, 1000);

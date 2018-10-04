@@ -243,7 +243,6 @@ define([
     };
 
     $scope.addStandAloneFieldToElement = function (node) {
-      console.log('addStandAloneFieldToElement',node, $scope.element);
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         dms.createDomIds(node);
