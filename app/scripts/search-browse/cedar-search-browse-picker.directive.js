@@ -570,7 +570,6 @@ define([
           };
 
           vm.setPermissions = function () {
-            console.log('setPermissions');
             vm.canNotWrite = !vm.canWrite();
             vm.canNotSubmit = !vm.canSubmit();
             vm.canNotShare = !vm.canShare();

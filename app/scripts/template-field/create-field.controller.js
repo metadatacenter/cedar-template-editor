@@ -138,7 +138,9 @@ define([
 
         dms.setTitle($scope.field, title || $translate.instant("VALIDATION.noNameField"));
         dms.setDescription($scope.field, description || $translate.instant("VALIDATION.noDescriptionField"));
-        dms.setIdentifier($scope.field, identifier || '');
+        if (identifier) {
+          dms.setIdentifier($scope.field, identifier );
+        }
 
         if ($rootScope.keyOfRootElement) {
           dms.setId($scope.field, $rootScope.keyOfRootElement);

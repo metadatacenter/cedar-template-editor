@@ -122,7 +122,8 @@ define([
                           DataManipulationService.createDomIds($scope.form);
                           //$scope.getType();
                           $rootScope.$broadcast('form:clean');
-                          $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
+                          //$rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
+                          ValidationService.checkValidation();
                           getReport($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller

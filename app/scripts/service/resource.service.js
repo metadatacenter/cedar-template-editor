@@ -248,16 +248,16 @@ define([
               url = urlService.folders() + '/' + encodeURIComponent(id);
               break;
             case CONST.resourceType.FIELD:
-              url = urlService.getTemplateField(id) + '/details';
+              url = urlService.getTemplateField(id) + '/report';
               break;
             case CONST.resourceType.ELEMENT:
-              url = urlService.getTemplateElement(id) + '/details';
+              url = urlService.getTemplateElement(id) + '/report';
               break;
             case CONST.resourceType.TEMPLATE:
-              url = urlService.getTemplate(id) + '/details';
+              url = urlService.getTemplate(id) + '/report';
               break;
             case CONST.resourceType.INSTANCE:
-              url = urlService.getTemplateInstance(id) + '/details';
+              url = urlService.getTemplateInstance(id) + '/report';
               break;
           }
           authorizedBackendService.doCall(
