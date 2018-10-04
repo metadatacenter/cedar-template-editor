@@ -482,11 +482,11 @@ define([
               vm.setPermissions();
 
               $timeout(function () {
-                if (infoShowing()) {
+                //if (infoShowing()) {
                   vm.getResourceReport(resource);
-                } else {
-                  vm.getResourceDetails(resource);
-                }
+                // } else {
+                //   vm.getResourceDetails(resource);
+                // }
 
                 if (typeof vm.selectResourceCallback === 'function') {
                   vm.selectResourceCallback(resource);
@@ -570,6 +570,7 @@ define([
           };
 
           vm.setPermissions = function () {
+            console.log('setPermissions');
             vm.canNotWrite = !vm.canWrite();
             vm.canNotSubmit = !vm.canSubmit();
             vm.canNotShare = !vm.canShare();
@@ -591,13 +592,17 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
+
                   if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
                     setSelected(response);
+
                   } else  {
                     for (var prop in response) {
                       getSelected()[prop] = response[prop];
+
                     }
                   }
+                  vm.setPermissions();
                   UIUtilService.setTotalMetadata(response.numberOfInstances);
 
                   if (vm.isTemplate(resource)) {
@@ -1624,6 +1629,7 @@ define([
           });
 
           $scope.selectResourceById = function (id) {
+            console.log('selectResourceById');
 
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {
@@ -1632,11 +1638,11 @@ define([
                   vm.cancelDescriptionEditing();
                   setSelected(resource);
                   vm.setPermissions();
-                  if (infoShowing()) {
+                  //if (infoShowing()) {
                     vm.getResourceReport(resource);
-                  } else {
-                    vm.getResourceDetails(resource);
-                  }
+                  // } else {
+                  //   vm.getResourceDetails(resource);
+                  // }
 
                   if (typeof vm.selectResourceCallback === 'function') {
                     vm.selectResourceCallback(resource);
