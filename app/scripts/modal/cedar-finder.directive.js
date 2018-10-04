@@ -424,7 +424,7 @@ define([
               resource = vm.getSelection();
             }
             var id = resource['@id'];
-            resourceService.getResourceDetail(
+            resourceService.getResourceReport(
                 resource,
                 function (response) {
                   vm.selectedResource = response;
