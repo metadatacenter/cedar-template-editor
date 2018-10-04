@@ -69,7 +69,7 @@
         </div>
 
         <!--If element-->
-        <div ng-if="isElement(item)" class=" element-group full">
+        <div ng-if="isElement(item)" class=" element-group full" style="padding-top:2px;">
           <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
               parent-key="'form'"
@@ -119,7 +119,7 @@
         <!-- if element  -->
          <div
              ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
-           <div class="element-group full">
+           <div class="element-group full" >
              <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"

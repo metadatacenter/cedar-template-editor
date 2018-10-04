@@ -1,7 +1,7 @@
-<div class="item-root field-root">
+<div class="item-root field-root" style="padding-top:5px;">
 
   <!-- field content  -->
-  <div class="elementTotalContent visible" style="position:relative">
+  <div class="elementTotalContent visible" style="position:relative  ">
 
     <div class="fields text-fields">
 
@@ -31,10 +31,10 @@
             </div>
 
           </div>
-          <div class="col-sm-9 answer " ng-click="toggleActive(index)" ng-if="!isActive(index)">
+          <div class="col-sm-9 answer full " ng-click="toggleActive(index)" ng-if="!isActive(index)">
             <div class="originalContent" ng-include="getFieldUrl()"></div>
           </div>
-          <div class="col-sm-9 answer" ng-if="isActive(index)">
+          <div class="col-sm-9 answer full" ng-if="isActive(index)">
             <div class="flex">
               <div></div> <!--title-->
 
@@ -65,22 +65,20 @@
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
 
 
-          <div class="col-sm-3 col-xs-* question">
+          <div class="col-sm-12 question full">
             <div ng-click="toggleActive(index)" class="title field isInactive"
                 ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
               {{getLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
             </div>
           </div>
 
-          <div class="col-sm-9 answer" ng-click="setActive(index, true)" ng-if="!isActive(index)">
-            <div class="row">
-              <div class="col-sm-12">
+          <div class="col-sm-12 answer full" ng-click="setActive(index, true)" ng-if="!isActive(index)">
+
                 <div ng-include="getFieldUrl()"></div>
-              </div>
-            </div>
+
           </div>
 
-          <div class="col-sm-9 answer" ng-if="isActive(index)">
+          <div class="col-sm-12 answer full" ng-if="isActive(index)">
             <div class="flex " style="min-height:2em;padding:5px 0;">
               <div></div> <!--title-->
               <field-toolbar  values="valueArray" min="pageMin"
@@ -140,7 +138,7 @@
             </div>
           </div>
           <div class="col-sm-9 col-xs-* " ng-click="setActive(index, true)">
-            <div class="answer">
+            <div class="answer full">
               <div class="originalContent" ng-include="getFieldUrl()"></div>
             </div>
           </div>
@@ -154,7 +152,7 @@
               {{getLabel()}} <span ng-if="isMultipleCardinality()" class="count">({{index+1}})</span>
             </div>
           </div>
-          <div class="col-sm-9 answer">
+          <div class="col-sm-9 answer full">
             <div class="flex " style="min-height:2em;padding:5px 0;">
               <div></div> <!--title-->
               <field-toolbar  model="model" field="field"

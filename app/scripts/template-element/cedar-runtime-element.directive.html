@@ -60,22 +60,24 @@
     <!-- a paged list of elements -->
     <div ng-if="isTabView() && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
 
-      <div class="flex" style="cursor:pointer"
+      <div class="flex" style="margin-top:2px;cursor:pointer;align-items:flex-start"
           ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
-        <div ng-click="toggleExpanded(index)" style="width:100%">
+        <div ng-click="toggleExpanded(index)"  class="flex" style="width:100%;align-items:flex-start;justify-content:flex-start">
+
+          <button type="button" class="expand" style="position:relative;left:-5px">
+            <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
+          </button>
 
 
-          <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
-            <button type="button" class="expand">
-              <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
-            </button>
+          <div class="element title" ng-class="{'isInactive' : isInactive(index)}" style="margin-left:10px;">
             {{getLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}} of {{valueArray.length}})</span>
           </div>
 
         </div>
 
-        <field-toolbar ng-click="toggleExpanded(index)"
+        <field-toolbar
+            ng-click="toggleExpanded(index)"
             ng-if="isExpanded(index)" values="valueArray" index="index" paging="isMultiple()"
             min="pageMin" max="pageMax" range="pageRange"
             field="element" model="valueArray" index="index" view-state="viewState"

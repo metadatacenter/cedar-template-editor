@@ -1,7 +1,7 @@
 <div>
-  <ul uib-pagination class="paging" style="margin:2px 0;font-size:12px;overflow-y:white-space: nowrap;" last-text=">>"
+  <ul style="background:#eee;padding:2px;margin:2px;min-width:150px;display: inline-block;" uib-pagination class="paging"  style="margin:0"   last-text=">>"
       first-text="<<" next-text=">" previous-text="<" rotate="false" force-ellipses="true"
       ng-change="select(pagingIndex-1)" max-size="range" total-items="values.length" ng-model='pagingIndex'
-      items-per-page='1' boundary-links="true">
+      items-per-page='1' boundary-links="true" direction-links="false">
   </ul>
 </div>

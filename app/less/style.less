@@ -1209,7 +1209,6 @@ button {
         border: 1px solid #ebebeb;
         background: @white;
 
-
         font-size: 14px;
 
         color: #000;
@@ -1240,11 +1239,9 @@ button {
           font-size: 20px;
         }
 
-
         .toolbar ul.dropdown-menu li a {
           transition: none;
         }
-
 
         .cell.icon {
           background: @white;
@@ -1277,7 +1274,6 @@ button {
           }
         }
       }
-
 
       .dropdown-menu {
         z-index: 100;
@@ -1317,8 +1313,6 @@ button {
         background-color: @white;
         border: 1px solid #ccc;
       }
-
-
 
       .info-side {
         .info {
@@ -3253,22 +3247,6 @@ section.dashboard-elements {
     }
   }
 
-  .paging {
-    max-height: 17px;
-    overflow: visible;
-
-    li {
-      a {
-        padding: 3px 6px;
-        background-color: #e8e8e8;
-        font-size: 12px;
-      }
-      &.active a {
-        background-color: @brand-primary;
-      }
-    }
-  }
-
   .active-container {
 
     border-left: 1px solid @lt-gray;
@@ -3289,9 +3267,7 @@ section.dashboard-elements {
     button, .paging {
       background-color: transparent;
     }
-    .cedar-pager {
-      padding-right: 20px;
-    }
+
   }
 
   .row:hover {
@@ -3306,8 +3282,23 @@ section.dashboard-elements {
     }
   }
 
+  .question {
+    &.full {
+      width: 100%;
+      position: relative;
+      min-height: 1px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
+
   .answer {
-    border: 1px solid transparent;
+    width: calc(~"100% - 35px");
+    &.full {
+      margin-left: 20px;
+      margin-right: 5px;
+    }
+    border: 1px solid #CCC;
     font-size: 1em;
     cursor: pointer;
 
@@ -3337,7 +3328,7 @@ section.dashboard-elements {
     padding: 5px 0;
   }
 
-  .row.isActive, .row:hover {
+  .row.isActive, .row:hover, row.isInActive {
     cursor: pointer;
     .tools {
       visibility: visible !important;
@@ -3364,7 +3355,6 @@ section.dashboard-elements {
     text-align: left;
     display: table-cell;
     vertical-align: middle;
-    height: 35px;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
     border: 1px solid transparent;
@@ -4029,19 +4019,22 @@ section.dashboard-elements {
   }
 }
 
-.pagination-container {
-  width: 100%;
-  text-align: center;
-
-  .pagination {
-    margin: 30px 0;
+.cedar-pager {
+  ul.pagination {
+    font-size: 10px;
+    width: 100%;
+    list-style-type: none;
+    margin: auto;
 
     li {
+      display: inline-block;
+
+      a {
+        padding: 6px;
+      }
 
       &.active a {
-        background-color: transparent;
-        border: none;
-        color: @brand-primary;
+        background-color: @brand-primary;
         .activ-grotesk-bold;
       }
 
@@ -4075,17 +4068,6 @@ section.dashboard-elements {
         }
       }
 
-      a {
-        color: #666;
-        border: none;
-        background-color: transparent;
-        border-radius: 0;
-        padding: 6px 24px;
-
-        &:hover {
-          color: @brand-primary-hover;
-        }
-      }
     }
   }
 }
@@ -8427,7 +8409,7 @@ table.message {
 }
 
 .invisible {
-  visibility:hidden
+  visibility: hidden
 }
 
 .required {
@@ -8555,6 +8537,8 @@ div.resource-icon {
   }
 
 }
+
+
 
 
 
