@@ -1488,6 +1488,7 @@ define([
 
 
           function goToFolder(folderId) {
+            vm.currentFolderId = folderId;
             if (vm.onDashboard()) {
               $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
