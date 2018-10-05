@@ -25,8 +25,9 @@ define([
         function resize() {
           var scrollableHeight = element.prop('scrollHeight');
           var hiddenContentHeight = scrollableHeight - visibleHeight;
+          var isHidden = (element[0].offsetParent === null);
 
-          if (hiddenContentHeight - element.scrollTop() <= threshold) {
+          if (!isHidden && (hiddenContentHeight - element.scrollTop() <= threshold)) {
             // Scroll is at the bottom. Loading more rows
             scope.$apply(attr.loadMore);
           }
