@@ -43,6 +43,7 @@ define([
       scope.viewState;
       scope.index = 0;
 
+
       // pager's min, max, and range
       scope.pageMin = 0;
       scope.pageMax = 0;
@@ -632,6 +633,9 @@ define([
       //
 
       scope.setValueArray();
+      scope.expandAll();
+      console.log('path',scope.path + '', typeof (scope.path + ''));
+      scope.nest = (scope.path + '').split('-').length;
 
       scope.pageMinMax();
 

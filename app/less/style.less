@@ -31,6 +31,18 @@
 @header-folder: @top-nav-color;
 @header-dashboard: @white;
 
+@bar0: @lt-gray;
+@bar1: darken(@bar0,5%);
+@bar2: darken(@bar1,5%);
+@bar3: darken(@bar2,5%);
+@bar4: darken(@bar3,5%);
+@bar5: darken(@bar4,5%);
+@bar6: darken(@bar5,5%);
+@bar7: darken(@bar6,5%);
+@bar8: darken(@bar7,5%);
+@bar9: darken(@bar8,5%);
+
+
 //@draft: #DAA520;
 //@published: #000000;
 //@latest: #8B0000;
@@ -3179,89 +3191,71 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    margin-left: 0;
-    padding: 0;
-    position: relative;
   }
 
-  .treeview {
 
-    li.tv {
-      margin: 0;
-      padding: 0 0 0 12px;
-      position: relative;
-      border-left: 1px solid @med-gray;
-    }
+  .element-bar {
+    margin:0 5px;
+    min-width:12px;
+    min-height:100%;
+    color: @lt-gray;
+    z-index:10;
 
-    li.tv::before, li.tv::after {
-      content: '';
-      position: absolute;
-      left: 0;
+    .bar {
+      margin-top:10px;
+      min-width:100%;
+      min-height: calc(~"100% - 10px");
+      &:hover {
+        cursor:pointer;
+        background-color: @brand-primary;
+      }
     }
-
-    /* horizontal line on inner list items */
-    li.tv::before {
-      top: 15px;
-      width: 10px;
-      height: 0;
-      border-top: 1px solid @med-gray;
+    .bar0 {
+      background-color: @bar0;
     }
-
-    li.last.tv {
-      border-left-width: 0px;
+    .bar1 {
+      background-color: @bar1;
     }
-    /* horizontal line on inner list items */
-    li.tv.element::before {
-      width: 10px;
+    .bar2 {
+      background-color: @bar2;
     }
-
-    /* horizontal line on inner list items */
-    li.tv.last.element::before {
-      border-top-width: 0px;
+    .bar3 {
+      background-color: @bar3;
     }
-
-    /* vertical line on list items */
-    li.tv.last::after {
-      height: 100%;
-      width: 0px;
-      top: -20px;
-      border-left: 1px solid @med-gray;
+    .bar4 {
+      background-color: @bar4;
     }
-
-    // horizontal line for single items
-    li.tv.first.last::after {
-      top: 0;
-      height: 15px;
-      border-left: 1px solid @med-gray;
+    .bar5 {
+      background-color: @bar5;
     }
-
-    li.tv.last.element::before {
-      border-left: 1px solid @med-gray;
+    .bar6 {
+      background-color: @bar6;
     }
-
-    li.tv.element::after, li.tv.last.element::after, ul li.last.element::after {
-      top: 0;
-      height: 16px;
+    .bar7 {
+      background-color: @bar7;
     }
-
-    li.tv.last.element::before {
-      border-left: 1px solid @med-gray;
-      height: 16px;
-      top: 0;
-      border-bottom: 1px solid @med-gray;
-      width: 10px;
+    .bar8 {
+      background-color: @bar8;
+    }
+    .bar9 {
+      background-color: @bar9;
     }
   }
 
   .paging {
-    max-height: 17px;
-    overflow: visible;
+    width: 100%;
+    list-style-type: none;
+    margin: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
+    min-width:120px;
+
 
     li {
       a {
-        padding: 3px 6px;
+        padding: 3px;
         background-color: #e8e8e8;
-        font-size: 12px;
+        font-size:10px;
       }
       &.active a {
         background-color: @brand-primary;
@@ -3294,13 +3288,13 @@ section.dashboard-elements {
     }
   }
 
-  .row:hover {
+  .row-field:hover {
     .toolbar {
       visibility: visible;
     }
   }
 
-  .row.isActive {
+  .row-field.isActive {
     .toolbar {
       visibility: visible;
     }
@@ -3323,8 +3317,8 @@ section.dashboard-elements {
 
   @media (max-width: @screen-sm-min) {
     .answer {
-      margin-left: 20px;
-      margin-right: 5px;
+      //margin-left: 20px;
+      //margin-right: 5px;
     }
   }
 
@@ -3337,7 +3331,7 @@ section.dashboard-elements {
     padding: 5px 0;
   }
 
-  .row.isActive, .row:hover {
+  .row-field.isActive, .row-field:hover {
     cursor: pointer;
     .tools {
       visibility: visible !important;
@@ -3377,7 +3371,6 @@ section.dashboard-elements {
     &.element {
       color: #71977F;
       position: relative;
-      left: -5px;
     }
     &.form {
       font-size: 1.2em;
@@ -3386,7 +3379,6 @@ section.dashboard-elements {
   }
 
   button {
-    vertical-align: middle;
     background-color: transparent;
     color: @dark-gray;
 
@@ -3451,7 +3443,6 @@ section.dashboard-elements {
   .element-group {
 
     width: 100%;
-    //border: 1px solid red;
     padding: 0px;
     margin-bottom: 0px;
     background-color: transparent;
@@ -3469,14 +3460,16 @@ section.dashboard-elements {
 
   .element-root {
 
+
+
     .left-tick {
-      background-color: #aaa;
-      position: relative;
-      bottom: 50%;
-      height: 1px;
-      width: 15px;
-      top: 14px;
-      left: -16px;
+      //background-color: #aaa;
+      //position: relative;
+      //bottom: 50%;
+      //height: 1px;
+      //width: 15px;
+      //top: 14px;
+      //left: -16px;
     }
 
     .element {
@@ -3514,7 +3507,7 @@ section.dashboard-elements {
       font-size: 1em;
     }
 
-    .row.isActive:before {
+    .row-field.isActive:before {
       //display: inline-block;
       height: 100%;
       //vertical-align: middle;
@@ -3562,7 +3555,7 @@ section.dashboard-elements {
 
   .form-group, .input-group {
 
-    margin-right: 0px;
+    margin-right: 10px;
     margin-bottom: 0px;
 
     &.radio-item,
