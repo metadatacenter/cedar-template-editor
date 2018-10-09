@@ -258,6 +258,7 @@ define([
 
       // toggle visibility at this index and activate if visible
       scope.toggleExpanded = function (idx) {
+        console.log('toggleExpanded',idx)
         scope.expanded[idx] = !scope.expanded[idx];
         scope.setActive(idx, scope.expanded[idx]);
       };
@@ -339,7 +340,6 @@ define([
       };
 
       scope.getLabel = function() {
-        console.log('getLabel');
         return dms.getPreferredLabel(scope.element) || scope.getPropertyLabel() || scope.getTitle();
       };
 
@@ -470,10 +470,6 @@ define([
           // remove it from the order array
           var idx = dms.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
           dms.schemaOf(scope.element)._ui.order.splice(idx, 1);
-
-          // remove it from the property Labels?
-          // console.log('delete property labels?');
-          // console.log(dms.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
 
 
           if (UIUtilService.isElement(schema)) {
@@ -634,7 +630,6 @@ define([
 
       scope.setValueArray();
       scope.expandAll();
-      console.log('path',scope.path + '', typeof (scope.path + ''));
       scope.nest = (scope.path + '').split('-').length;
 
       scope.pageMinMax();

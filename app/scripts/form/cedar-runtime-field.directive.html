@@ -5,73 +5,61 @@
 
     <div class="fields text-fields">
 
-      <!-- show the spreadsheet -->
-      <div ng-if="isSpreadsheetView()">
-
-        <div class="row-field" ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"
-            id="{{getLocator(0)}}">
-          <div>
-
-            <div ng-click="toggleActive(index)" class="title isInactive">
-              {{getLabel()}}
-            </div>
-
-          </div>
-        </div>
-        <div class="row " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
-          <div class="answer "  ng-click="toggleActive(index)" ng-if="!isActive(index)">
-            <div class="originalContent" ng-include="getFieldUrl()"></div>
-          </div>
-          <div class="answer"  ng-if="isActive(index)">
-            <div class="flex">
-              <div></div> <!--title-->
-
-              <field-toolbar  model="model" field="field" index="index" paging="!isSpreadsheetView()"
-                  remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
-                  expand-all="expandAll" get-locator="getLocator" view-state="viewState" get-help="getHelp"  has-help="hasHelp"></field-toolbar>
-            </div>
-
-            <div class="spreadsheetViewDetector"></div>
-            <div class="spreadsheetViewContainer"></div>
-            <div id="spreadsheetViewLogs"></div>
-            <div id="hooksList"></div>
-            <div id="htDatepickerHolder"></div>
-
-          </div>
-        </div>
+      <div ng-if="isSectionBreak()">
+        <div class="section-break-inline">{{getLabel()}}</div>
       </div>
 
-      <!-- show a paged list of fields  -->
-      <div ng-if="isTabView() && valueArray.length > 0">
-
-        <div ng-if="isSectionBreak()" class="row">
-          <div class="section-break-inline">{{getLabel()}}</div>
+      <div ng-if="!isSectionBreak()" id="{{getLocator(index)}}" class="row-field"
+          ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
+        <div class="question">
+          <div ng-click="toggleActive(index)" class="title field isInactive"
+              ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
+            {{getLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
+          </div>
         </div>
 
-        <div  ng-if="!isSectionBreak()"  id="{{getLocator(index)}}" class="row-field" ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
-          <div class="question" >
-            <div ng-click="toggleActive(index)" class="title field isInactive"
-                ng-class="{'isInactive':!isActive(index), 'required':isRequired()}">
-              {{getLabel()}}<span ng-if="isRequired()" style="color:red">*</span>
+
+        <!-- show the spreadsheet -->
+        <div ng-if="isSpreadsheetView()">
+          <div class="row-field " ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
+            <div class="answer " ng-click="toggleActive(index)" ng-if="!isActive(index)">
+              <div class="originalContent" ng-include="getFieldUrl()"></div>
+            </div>
+            <div class="answer" ng-if="isActive(index)">
+              <div class="flex">
+                <div></div> <!--title-->
+
+                <field-toolbar model="model" field="field" index="index" paging="!isSpreadsheetView()"
+                    remove="removeInput" add="addRow" copy="copyField" is-active="isActive" set-active="setActive"
+                    expand-all="expandAll" get-locator="getLocator" view-state="viewState" get-help="getHelp"
+                    has-help="hasHelp"></field-toolbar>
+              </div>
+
+              <div class="spreadsheetViewDetector"></div>
+              <div class="spreadsheetViewContainer"></div>
+              <div id="spreadsheetViewLogs"></div>
+              <div id="hooksList"></div>
+              <div id="htDatepickerHolder"></div>
+
             </div>
           </div>
+        </div>
 
-          <div class="answer" ng-click="setActive(index, true)" ng-if="!isActive(index)">
-            <div class="row">
-              <div class="col-sm-12">
-                <div ng-include="getFieldUrl()"></div>
-              </div>
-            </div>
+        <!-- show a paged list of fields  -->
+        <div ng-if="isTabView() && valueArray.length > 0">
+
+          <div ng-if="!isActive(index)" class="answer" ng-click="setActive(index, true)">
+            <div ng-include="getFieldUrl()"></div>
           </div>
 
           <div class="answer" ng-if="isActive(index)">
             <div class="flex " style="min-height:2em;padding:5px 0;">
               <div></div> <!--title-->
-              <field-toolbar  values="valueArray" min="pageMin"
+              <field-toolbar values="valueArray" min="pageMin"
                   max="pageMax" select="selectPage" paging="isMultiple()"
                   range="pageRange" model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" copy="copyField" set-active="setActive" expand-all="expandAll"
-                  get-locator="getLocator" view-state="viewState" get-help="getHelp"  has-help="hasHelp">
+                  get-locator="getLocator" view-state="viewState" get-help="getHelp" has-help="hasHelp">
               </field-toolbar>
             </div>
 
@@ -97,9 +85,9 @@
             <div ng-repeat="(i, valueElement) in valueArray">
 
 
-              <div ng-if="i===index && !isSectionBreak()">
+              <div ng-if="i===index">
 
-                <form ng-if="isActive(index)" name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
+                <form name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
                   <div ng-include="getFieldUrl()"></div>
                   <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                   <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>
@@ -109,14 +97,14 @@
 
           </div>
         </div>
+
+
+        <!-- all error messages for this field  -->
+        <div class="errors" ng-if="errorMessages">
+          <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+        </div>
+
       </div>
-
-
-      <!-- all error messages for this field  -->
-      <div class="errors" ng-if="errorMessages">
-        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
-      </div>
-
     </div>
   </div>
 </div>
