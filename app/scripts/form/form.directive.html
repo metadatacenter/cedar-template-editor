@@ -17,15 +17,8 @@
   <div class=" page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
     <div class="flex" style="min-height:2em;padding:5px 0;">
-      <div >
-        <div ng-click="toggleExpanded()">
-          <span class="title form text-nowrap">
-              <button type="button" class="expand form-title">
-                <i class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
-              </button>
-            {{pageTitle()}}</span>
-        </div>
-      </div>
+          <div class="title form text-nowrap">
+            {{pageTitle()}}</div>
 
 
         <field-toolbar field="form"
@@ -35,9 +28,13 @@
         </field-toolbar>
 
     </div>
+    <div class="flex" style="justify-content:flex-start;align-items:stretch">
 
+      <div class="element-bar">
+        <div class='bar bar0' ></div>
+      </div>
 
-    <ul class="treeview tv">
+      <ul class="treeview tv" style="padding-left:0;list-style-type: none;">
 
       <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
@@ -88,7 +85,7 @@
 
       </li>
     </ul>
-
+    </div>
     <p ng-if="form.requiredFields" class="required-text">Required</p>
   </div>
 

@@ -1191,7 +1191,6 @@ define([
               break loop;
             }
           }
-          f
         }
       };
 
