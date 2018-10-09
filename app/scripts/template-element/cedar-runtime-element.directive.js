@@ -339,9 +339,15 @@ define([
         }
       };
 
-      scope.getLabel = function() {
-        return dms.getPreferredLabel(scope.element) || scope.getPropertyLabel() || scope.getTitle();
+      scope.getPreferredLabel = function () {
+        console.log('getPreferredLabel', dms.getPreferredLabel(scope.element));
+        return dms.getPreferredLabel(scope.element);
       };
+
+      scope.getLabel = function() {
+        return scope.getPreferredLabel() || scope.getPropertyLabel() || scope.getTitle();
+      };
+
 
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {

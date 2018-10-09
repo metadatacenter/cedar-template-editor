@@ -219,6 +219,14 @@ define([
         return dms.getProperty(scope.parentElement, scope.element);
       };
 
+      scope.getPreferredLabel = function () {
+        return dms.getPreferredLabel(scope.element);
+      };
+
+      scope.getLabel = function() {
+        return scope.getPreferredLabel() || scope.getPropertyLabel() || scope.getTitle();
+      };
+
       var setLabels = function () {
         if (scope.parentElement) {
           scope.labels = dms.getPropertyLabels(scope.parentElement);
