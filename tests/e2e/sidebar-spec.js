@@ -56,6 +56,8 @@ describe('workspace-sidebar', function () {
       it('should transfer ownership to another ', function () {
         workspacePage.shareResource(template, 'template');
         shareModal.shareWithUser(testConfig.testUserName2, 'owner');
+        workspacePage.clearSearch();
+        workspacePage.selectResource(template, 'template');
         workspacePage.isInfoPanelTitle(template);
         workspacePage.isInfoPanelPath('/Users/' + testConfig.testUserName1);
         expect(workspacePage.getOwner()).toBe(testConfig.testUserName2);
