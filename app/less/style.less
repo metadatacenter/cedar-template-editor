@@ -2869,6 +2869,10 @@ section.dashboard-elements {
       &.empty ~ .floating-label {
         top: 10px;
         color: @brand-primary;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        width: calc(~"100% - 50px");
+        overflow:hidden;
 
       }
 
@@ -2884,6 +2888,10 @@ section.dashboard-elements {
         color: @brand-primary;
         &:after {
           color: @brand-primary;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          width: calc(~"100% - 50px");
+          overflow:hidden;
         }
       }
 
