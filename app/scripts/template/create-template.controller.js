@@ -49,20 +49,9 @@ define([
 
         $scope.checkLocking = function () {
           if ($scope.details) {
-            // Check write permission
-            var writePermission = resourceService.canWrite($scope.details);
-
-            // Check publication status
-            var isPublished = DataManipulationService.isPublished($scope.details);
-
-            // Check if the resource has instances (only for templates)
-            var hasInstances =  (UIUtilService.getTotalMetadata() > 0);
-
-            // Result
-            var canWrite = writePermission && !isPublished && !hasInstances;
-            $scope.cannotWrite = !canWrite;
-            $scope.saveButtonDisabled = !canWrite;
-            return canWrite;
+            $scope.cannotWrite = !canWrite; !resourceService.canWrite($scope.details) || dms.isPublished($scope.details)
+            $scope.saveButtonDisabled = $scope.cannotWrite;
+            return !$scope.cannotWrite;
           }
           return false;
         };
