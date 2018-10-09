@@ -49,7 +49,7 @@ define([
 
         $scope.checkLocking = function () {
           if ($scope.details) {
-            $scope.cannotWrite = !canWrite; !resourceService.canWrite($scope.details) || dms.isPublished($scope.details)
+            $scope.cannotWrite = !resourceService.canWrite($scope.details) || dms.isPublished($scope.details)
             $scope.saveButtonDisabled = $scope.cannotWrite;
             return !$scope.cannotWrite;
           }
