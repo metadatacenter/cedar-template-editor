@@ -79,6 +79,10 @@ define([
         return dms.getVersion($scope.field);
       };
 
+      $scope.getIdentifier = function () {
+        return dms.getIdentifier($scope.field);
+      };
+
       $scope.isEditable = function () {
         return !dms.hasVersion($scope.field) || dms.isDraft($scope.field);
       };

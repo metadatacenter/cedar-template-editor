@@ -712,7 +712,7 @@ define([
           }
 
           function hasElementsOrFields() {
-            return getElements().length > 0;
+            return getElementsAndFields().length > 0;
           }
 
           function getElementsAndFields() {
