@@ -56,6 +56,18 @@ define([
         return !dms.getId(scope.element) || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
       };
 
+      scope.getIdentifier = function () {
+        return dms.getIdentifier(scope.element);
+      };
+
+      scope.isPublished = function () {
+        return dms.isPublished(scope.element);
+      };
+
+      scope.getVersion = function () {
+        return dms.getVersion(scope.element);
+      };
+
       scope.getTitle = function () {
         return dms.getTitle(scope.element);
       };
