@@ -19,6 +19,7 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
+      $scope.termsModalVisible = false;
       $scope.errorMessages;
       var tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
@@ -1194,6 +1195,14 @@ define([
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
         }
       });
+
+
+      // open the terms modal
+      $scope.showTermsModal = function() {
+        console.log('showTermsModal');
+        $scope.termsModalVisible = true;
+        $rootScope.$broadcast('termsModalVisible', [$scope.termsModalVisible, $scope.field]);
+      };
 
 
       /* end of controlled terms functionality */

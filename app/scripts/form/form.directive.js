@@ -50,6 +50,7 @@ define([
         $scope.metaToRDFError = null;
 
 
+
         $scope.isRuntime = function () {
           return UIUtilService.isRuntime();
         };
@@ -634,11 +635,23 @@ define([
           }
         };
 
+
+        $scope.showTermsModal = function () {
+          // open and activate the modal
+          $scope.termsModalVisible = true;
+          $rootScope.$broadcast('termsModalVisible');
+        };
+
+        $scope.hideTerms = function () {
+          jQuery("#terms-modal").modal('hide');
+        };
+
         //
         // init
         //
 
         $scope.uid = 'form';
+        $scope.termsModalVisible = false;
 
 
       }

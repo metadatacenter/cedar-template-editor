@@ -55,6 +55,7 @@
     }
   },
   "GENERIC": {
+    "Apply": "Apply",
     "Created": "Created",
     "Updated": "Saved",
     "AreYouSure": "Are you sure?",
@@ -400,6 +401,9 @@
     }
   },
   "DASHBOARD": {
+    "terms": {
+      "header": "Values"
+    },
     "menu": {
       "open": "Open",
       "populate": "Populate",

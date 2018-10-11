@@ -11,6 +11,7 @@ define([
   'cedar/template-editor/modal/cedar-rename-modal.directive',
   'cedar/template-editor/modal/cedar-new-folder-modal.directive',
   'cedar/template-editor/modal/cedar-finder.directive',
+  'cedar/template-editor/modal/cedar-terms-modal.directive',
   'cedar/template-editor/modal/cedar-test-modal.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.modal', [
@@ -22,6 +23,7 @@ define([
     'cedar.templateEditor.modal.cedarRenameModal',
     'cedar.templateEditor.modal.cedarNewFolderModal',
     'cedar.templateEditor.modal.cedarFinder',
+    'cedar.templateEditor.modal.cedarTermsModal',
     'cedar.templateEditor.modal.cedarTestModal'
   ]);
 });

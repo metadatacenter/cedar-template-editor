@@ -64,6 +64,7 @@ define([
     };
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
+      console.log('processAutocompleteClassResults', id);
 
       var i, j, found;
       // we do a complicated method to find the changed results to reduce flicker :-/
@@ -156,6 +157,7 @@ define([
 
     // returns an array of promises
     service.updateFieldAutocomplete = function (field, term) {
+      console.log('updateFieldAutoComplte');
 
       var query = term || '*';
       var results = [];
@@ -163,6 +165,7 @@ define([
       var id = DataManipulationService.getId(field);
       var promises = [];
       service.initResults(id, query);
+      console.log(id, query);
 
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {
@@ -228,20 +231,24 @@ define([
       }
 
       if (vcst.branches && vcst.branches.length > 0) {
+        console.log('has branch')
         angular.forEach(vcst.branches, function (branch) {
           if (query == '*') {
             service.removeAutocompleteResultsForSource(id, query, branch.uri);
           }
+          console.log('create promise')
           var promise = controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
               branch.maxDepth).then(
               function (childResponse) {
                 service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
               }
           );
+          console.log('push promise');
           promises.push(promise);
         });
       }
 
+      console.log(promises);
       return promises;
     };
 
