@@ -2,29 +2,31 @@
   <div class="modal-content" ng-if="terms.modalVisible">
 
     <div class="modal-header row" id="termsModalHeader">
-
       <div class="col-sm-11" ><h4><span translate>DASHBOARD.terms.header</span></h4></div>
-
       <div class="col-sm-1 pull-right">
         <button class="close" type="button" ng-click="terms.hideModal()" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
       </div>
-
     </div>
 
     <div class="modal-body"  >
-      <div class="floatleft">
-        <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list" style="list-style-type: none;padding-left:0">
-          <li ng-repeat="item in terms.list" class="item">
+        <div class="flex flex-left term-row">
+          <div class="index header invisible">0</div>
+          <div class="title header" >Label</div>
+          <div class="source header">Source</div>
+          <div class="tools header invisible"></div>
+        </div>
+        <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
+          <li ng-repeat="item in terms.list" class="item" >
             <div class="flex flex-left term-row">
               <div class="index">{{$index + 1}}</div>
               <div class="title ellipsis">{{item.text}}</div>
+              <div class="source ellipsis">{{item.source}}</div>
               <div class="tools flex flex-right">
 
-                <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown " ng-click="$event.stopPropagation();"
-                    is-open="status.isopen">
+                <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown " ng-click="terms.toggle($event)">
 
-                  <button  style="background:transparent;padding:0" ng-click="terms.toggle($index)"
+                  <button  style="background:transparent;padding:0"
                       type="button" class="menu"
                       uib-dropdown-toggle aria-haspopup="true"
                       aria-expanded="true" class="trigger-button">
@@ -45,7 +47,7 @@
                         <li>
                           <input ng-model="terms.changeTo" name="moveTo" min="1" type="number" ng-click="$event.stopPropagation()"></li>
                         <li class="clear-save">
-                          <button type="button"   ng-click="terms.applyChange(terms.changeTo-1, $index);$event.stopPropagation()" aria-label="Apply" class="btn btn-save confirm" translate>GENERIC.Apply</button>
+                          <button type="button"   ng-click="terms.applyChange(terms.changeTo-1, $index);$event.stopPropagation()" aria-label="Apply" class="btn btn-save confirm apply" translate>GENERIC.Apply</button>
                         </li>
                       </ul>
                     </div>
@@ -54,20 +56,9 @@
                 <div class="delete-row" ng-click="terms.delete($index)"><i class="fa fa-times-circle"></i></div>
               </div>
             </div>
-            <hr style="margin-top: 10px;margin-bottom: 10px;border: 0;border-top: 1px solid #eeeeee;"/>
+            <hr />
           </li>
         </ul>
-      </div>
-
-
-      <!--<div class="floatleft" style="margin-left: 20px;">-->
-        <!--<ul class="list logList">-->
-          <!--<li ng-repeat="entry in terms.sortingLog track by $index" class="logItem">-->
-            <!--{{entry}}-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
-
     </div>
 
     <!-- footer closes the dialog -->
@@ -83,6 +74,12 @@
       <div class="clear-save">
         <button type="button" ng-click="terms.hideModal()"
             class="btn btn-clear" translate> GENERIC.Cancel
+        </button>
+      </div>
+
+      <div class="clear-save">
+        <button type="button" ng-click="terms.openTerms(vm.resource)"
+            class="btn btn-clear" translate> GENERIC.Reset
         </button>
       </div>
     </div>

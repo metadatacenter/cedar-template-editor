@@ -37,36 +37,22 @@ define([
           '$translate',
           '$uibModal',
           'CedarUser',
-          'resourceService',
-          'UIMessageService',
-          'UISettingsService',
-          'AuthorizedBackendService',
-          'CONST',
-          "DataManipulationService", "UIUtilService", "autocompleteService"
+          "DataManipulationService",
+          "autocompleteService"
         ];
 
         function cedarTermsModalController($timeout, $scope, $rootScope, $translate, $uibModal, CedarUser,
-                                           resourceService, UIMessageService, UISettingsService,
-                                           AuthorizedBackendService, CONST, DataManipulationService, UIUtilService,
-                                           autocompleteService) {
-
-
-          $scope.status = {
-            isopen: false
-          };
+                                           DataManipulationService, autocompleteService) {
 
 
           var vm = this;
           var dms = DataManipulationService;
-
           vm.showPosition = false;
           vm.changeTo;
           vm.resource;
           vm.model;
           vm.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
           vm.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-
-
           vm.tmpList = [];
           vm.deletedList = [];
           vm.list = vm.tmpList;
@@ -102,26 +88,11 @@ define([
             }
           };
 
-
-          // does this field have a value constraint?
-          vm.hasValueConstraint = function () {
-            return dms.hasValueConstraint($scope.resource);
-          };
-
-          // is this field required?
-          vm.isRequired = function () {
-            return dms.isRequired($scope.resource);
-          };
-
           vm.getId = function () {
-            return dms.getId($scope.resource);
+            return dms.getId(vm.resource);
           };
 
-          //
-          //  dropdown menu
-          //
-
-          vm.log = function(action) {
+          vm.log = function (action) {
             var logEntry = vm.tmpList.map(function (i) {
               return i.value;
             }).join(', ');
@@ -129,38 +100,33 @@ define([
           };
 
 
-          vm.toggleDropdown = function (event) {
-            console.log('toggleDropdown', event);
-          };
-
           vm.applyChange = function (changeTo, index) {
-            var deleted = vm.list.splice(index, 1);
+            let deleted = vm.list.splice(index, 1);
             vm.list.splice(changeTo, 0, deleted[0]);
-            vm.log('Apply');
-
             vm.showPosition = false;
-            $scope.status.isopen = false;
+            vm.changeTo = null;
+            vm.log('Apply');
           };
 
-          vm.toggle = function (index) {
-            console.log('toggle', index);
-            //$scope.status.isopen = value;
-            vm.showPosition = false;
+          vm.toggle = function (event) {
+            event.preventDefault();
+            event.stopPropagation();
           };
 
           vm.delete = function (index) {
-            var deleted = vm.list.splice(index, 1);
+            let deleted = vm.list.splice(index, 1);
             vm.deletedList.push(deleted[0]);
             vm.log('Delete');
           };
 
-          // update schema title and description if necessary
-          $scope.$watch("status.isopen", function (newField, oldField) {
-            console.log('status.isopen', newField, oldField)
-          }, true);
-
           // initialize the share dialog
           vm.openTerms = function (resource) {
+
+            var getShortId = function (uri) {
+              var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
+              return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+            };
+
             vm.schema = dms.schemaOf(vm.resource);
             vm.term = '*';
             vm.id = dms.getId(vm.resource);
@@ -170,13 +136,15 @@ define([
             $q.all(promises).then(values => {
               vm.tmpList = [];
               vm.deletedList = [];
-              for (var i = 1; i <= foundResults.length; i++){
+              for (let i = 1; i <= foundResults.length; i++) {
                 vm.tmpList.push({
-                  text: foundResults[i-1]['label'],
-                  value: i
+                  text  : foundResults[i - 1]['label'],
+                  value : i,
+                  source: getShortId(foundResults[i - 1]['sourceUri'])
                 });
               }
               vm.list = vm.tmpList;
+              vm.log('Reset');
             });
           };
 

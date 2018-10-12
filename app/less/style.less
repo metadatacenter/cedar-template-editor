@@ -7191,20 +7191,26 @@ table.apiKey {
 
 #terms-modal {
   .modal-dialog {
-    max-width: 400px;
-    width: 400px;
+    max-width: 600px;
+    width: 600px;
     min-height: 600px;
     .modal-content {
-      max-width: 400px;
+      max-width: 600px;
       min-height: 600px;
-      width: 400px;
+      width: 600px;
       margin: 0 auto;
 
       .modal-body {
         height:600px;
         max-height: 600px;
       }
+      ul.list {
+        list-style-type: none;padding-left:0
+      }
       .term-row {
+        .header {
+          text-transform: uppercase;font-weight:bold;font-size:smaller;
+        }
         .index {
           padding: 5px;
           border: 1px solid @white;
@@ -7212,22 +7218,28 @@ table.apiKey {
             border: 1px dotted #ddd;
           }
         }
+        .source {
+          padding: 5px;
+          width:120px;
+        }
         .title {
           padding: 5px;
           width: 100%;
         }
         .tools {
           visibility:hidden;
-          width: auto;
+          width: 80px;
           cursor: pointer;
           color: #9E9E9E;
           font-size: 20px;
           padding: 5px;
           .delete-row {
             padding: 2px 5px;
+            button {box-shadow: unset;}
           }
           .move-up-down {
             padding: 2px 5px;
+            button {box-shadow: unset;}
           }
         }
       }
@@ -7237,7 +7249,7 @@ table.apiKey {
           visibility:visible !important;
         }
       }
-      hr {margin-top: 0;margin-bottom: 0;border-width: 0;border-top: 1px solid #eeeeee;}
+      hr {margin-top: 10px;margin-bottom: 10px;border: 0;border-top: 1px solid #eeeeee;}
       .dropdown-menu {
         padding: 5px;
         width: auto;
@@ -7249,6 +7261,55 @@ table.apiKey {
           padding: 5px;
           }
         }
+      }
+      .clear-save {
+
+        .btn {
+          text-transform: uppercase;
+          padding: 5px 15px;
+          border: none;
+          .link-transition;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
+            &:focus {
+              color: @brand-primary-hover;
+            }
+          }
+
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
+            font-size: 16px;
+
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
+            }
+          }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
+            }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
+            }
+          }
+        }
+
       }
     }
   }

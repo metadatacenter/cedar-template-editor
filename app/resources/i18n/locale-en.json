@@ -112,6 +112,7 @@
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
+    "Reset": "Reset",
     "Copied": "Copied",
     "Moved": "Moved",
     "More": "More",
@@ -402,7 +403,7 @@
   },
   "DASHBOARD": {
     "terms": {
-      "header": "Values"
+      "header": "Modify Values"
     },
     "menu": {
       "open": "Open",
