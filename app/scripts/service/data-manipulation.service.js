@@ -37,7 +37,7 @@ define([
         // basics
         //
 
-        service.cedarFieldType = function() {
+        service.cedarFieldType = function () {
           return cedarFieldType;
         };
 
@@ -166,7 +166,8 @@ define([
         };
 
         service.hasPreferredLabel = function (node) {
-          return service.schemaOf(node).hasOwnProperty(CONST.model.PREFLABEL) && service.schemaOf(node)[CONST.model.PREFLABEL].length > 0;
+          return service.schemaOf(node).hasOwnProperty(CONST.model.PREFLABEL) && service.schemaOf(
+              node)[CONST.model.PREFLABEL].length > 0;
         };
 
         service.setPreferredLabel = function (node, value) {
@@ -185,7 +186,7 @@ define([
           }
         };
 
-        service.titleLocation = function() {
+        service.titleLocation = function () {
           return CONST.model.NAME;
         };
 
@@ -197,7 +198,8 @@ define([
         };
 
         service.hasTitle = function (node) {
-          return service.schemaOf(node).hasOwnProperty(CONST.model.NAME) && service.schemaOf(node)[CONST.model.NAME].length > 0;
+          return service.schemaOf(node).hasOwnProperty(CONST.model.NAME) && service.schemaOf(
+              node)[CONST.model.NAME].length > 0;
         };
 
         service.setTitle = function (node, value) {
@@ -225,7 +227,7 @@ define([
           }
         };
 
-        service.descriptionLocation = function() {
+        service.descriptionLocation = function () {
           return CONST.model.DESCRIPTION;
         };
 
@@ -237,7 +239,7 @@ define([
 
         service.hasDescription = function (node) {
           return service.schemaOf(node).hasOwnProperty(CONST.model.DESCRIPTION) && service.schemaOf(
-                  node)[CONST.model.DESCRIPTION].length > 0;
+              node)[CONST.model.DESCRIPTION].length > 0;
         };
 
         service.setDescription = function (node, value) {
@@ -692,6 +694,22 @@ define([
           }
         };
 
+        service.setSortOrder = function (node, value) {
+          if (node) {
+            if (value) {
+              service.schemaOf(node)._valueConstraints.sortOrder = value;
+            } else {
+              delete service.schemaOf(node)._valueConstraints.sortOrder;
+            }
+          }
+        };
+
+        service.getSortOrder = function (node) {
+          if (node) {
+            return service.schemaOf(node)._valueConstraints.sortOrder;
+          }
+        };
+
 
         // update the key values to reflect the property or name
         // this does not look at nested fields and elements, just top level
@@ -704,13 +722,13 @@ define([
         };
 
         service.updateKey = function (key, node, parent) {
-          if (!service.isRootNode(parent,node) && !service.hasVersion(node)) {
-              var title = service.getTitle(node);
-              var labels = service.getPropertyLabels(parent);
-              var label = labels && labels[key];
-              var descriptions = service.getPropertyDescriptions(parent);
-              var description = descriptions && descriptions[key];
-              service.relabel(parent, key, title, label, description);
+          if (!service.isRootNode(parent, node) && !service.hasVersion(node)) {
+            var title = service.getTitle(node);
+            var labels = service.getPropertyLabels(parent);
+            var label = labels && labels[key];
+            var descriptions = service.getPropertyDescriptions(parent);
+            var description = descriptions && descriptions[key];
+            service.relabel(parent, key, title, label, description);
           }
         };
 
@@ -927,7 +945,7 @@ define([
                 result.push(key);
               }
             } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(
-                    field)) {
+                field)) {
               result.push(key);
             }
           });
@@ -1006,8 +1024,6 @@ define([
             return service.schemaOf(node)['_ui']['propertyDescriptions'];
           }
         };
-
-
 
 
         //
@@ -1258,7 +1274,7 @@ define([
                 if (model.hasOwnProperty(fieldValue)) {
                   // If undefined value or empty string
                   if ((angular.isUndefined(
-                          model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
                     model[fieldValue] = defaultValue;
                   }
                 }

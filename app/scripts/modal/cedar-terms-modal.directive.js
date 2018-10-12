@@ -119,6 +119,21 @@ define([
             vm.log('Delete');
           };
 
+          vm.doSave = function () {
+            vm.log('Save');
+            var saveEntry = vm.tmpList.map(function (i) {
+              return i.id;
+            }).join(', ');
+            console.log(saveEntry);
+            dms.setSortOrder(vm.resource, saveEntry);
+          };
+
+          vm.reset = function () {
+            vm.sortOrder = null;
+            dms.setSortOrder(vm.resource);
+            vm.openTerms(vm.resource);
+          };
+
           // initialize the share dialog
           vm.openTerms = function (resource) {
 
@@ -127,6 +142,7 @@ define([
               return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
             };
 
+            vm.sortOrder = dms.getSortOrder(vm.resource);
             vm.schema = dms.schemaOf(vm.resource);
             vm.term = '*';
             vm.id = dms.getId(vm.resource);
@@ -138,11 +154,23 @@ define([
               vm.deletedList = [];
               for (let i = 1; i <= foundResults.length; i++) {
                 vm.tmpList.push({
+                  id  : foundResults[i - 1]['@id'],
                   text  : foundResults[i - 1]['label'],
-                  value : i,
-                  source: getShortId(foundResults[i - 1]['sourceUri'])
+                  source: getShortId(foundResults[i - 1]['sourceUri']),
+                  value : i
                 });
               }
+
+              if (vm.sortOrder) {
+                let sortArray = vm.sortOrder.split(', ');
+                let sortList = [];
+                for (let i = 0; i < sortArray.length; i++) {
+                  let index = vm.tmpList.findIndex(item => item.id === sortArray[i]);
+                  sortList.push(vm.tmpList[index]);
+                }
+                vm.tmpList = sortList;
+              }
+
               vm.list = vm.tmpList;
               vm.log('Reset');
             });
