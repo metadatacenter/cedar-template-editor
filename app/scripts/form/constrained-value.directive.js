@@ -16,10 +16,28 @@ define([
 
       $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
+      $scope.sortOrder = DataManipulationService.getSortOrder($scope.field);
+
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return DataManipulationService.hasValueConstraint($scope.field);
+      };
+
+      $scope.order = function (arr) {
+        var result = arr;
+        if (arr)  {
+          if ($scope.sortOrder) {
+            let sortArray = $scope.sortOrder.split(', ');
+            let sortList = [];
+            for (let i = 0; i < sortArray.length; i++) {
+              let index = arr.findIndex(item => item['@id'] === sortArray[i]);
+              sortList.push(arr[index]);
+            }
+            result = sortList;
+          }
+        }
+        return result;
       };
 
       // is this field required?

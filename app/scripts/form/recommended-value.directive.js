@@ -15,6 +15,7 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
+      $scope.sortOrder = DataManipulationService.getSortOrder($scope.field);
 
       $scope.updatePopulatedFields = function(field, value) {
         ValueRecommenderService.updatePopulatedFields(field, value);
@@ -40,6 +41,22 @@ define([
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return DataManipulationService.hasValueConstraint($scope.field);
+      };
+
+      $scope.order = function (arr) {
+        var result = arr;
+        if (arr)  {
+          if ($scope.sortOrder) {
+            let sortArray = $scope.sortOrder.split(', ');
+            let sortList = [];
+            for (let i = 0; i < sortArray.length; i++) {
+              let index = arr.findIndex(item => item['@id'] === sortArray[i]);
+              sortList.push(arr[index]);
+            }
+            result = sortList;
+          }
+        }
+        return result;
       };
 
       $scope.getId = function () {
