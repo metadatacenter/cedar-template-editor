@@ -1,6 +1,6 @@
 <!-- tabs -->
 <div>
-  <div class="detail-options"  >
+  <div class="detail-options">
     <div class="element-toggles list table-style">
 
       <div ng-if="hasOptions()" class="element-toggle table-cell-style options-tab"
@@ -18,7 +18,8 @@
           ng-click="setTab('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
-      <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
+      <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab"
+          ng-class="{active: isTabActive('required')}"
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
@@ -33,81 +34,82 @@
         <span>Hidden</span>
       </div>
       <!--<div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
-        <!--ng-class="{active: isTabActive('field')}"-->
-        <!--ng-click="setTab('field');  $event.stopPropagation();">-->
+      <!--ng-class="{active: isTabActive('field')}"-->
+      <!--ng-click="setTab('field');  $event.stopPropagation();">-->
       <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>-->
-    <!--</div>-->
+      <!--</div>-->
     </div>
   </div>
 
   <div id="options" class="options" ng-show="isTabActive('options')">
     <div ng-if="isNumericField()">
 
-    <!-- unit of measure constraint -->
-    <div  class="form-group floating-label-wrapper" >
-      <input type="text" auto-focus
-          class="form-control"
-          placeholder="{{'CREATOR.enterUnitOfMeasure' | translate}}"
-          aria-label="{{'CREATOR.enterUnitOfMeasure' | translate}}"
-          ng-model="$root.schemaOf(field)._valueConstraints.unitOfMeasure"
-          ng-disabled="isPublished()"
-          with-floating-label>
-    </div>
+      <!-- unit of measure constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="text" auto-focus
+            class="form-control"
+            placeholder="{{'CREATOR.enterUnitOfMeasure' | translate}}"
+            aria-label="{{'CREATOR.enterUnitOfMeasure' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.unitOfMeasure"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
 
-    <!-- numeric datatype constraint -->
-    <div ng-init="setNumberTypeFromModel()" class="form-group">
-      <ui-select
-          class="form-control"
-          theme="bootstrap"
-          close-on-select="true"
-          ng-change="setNumberTypeFromUI($select.selected)"
-          ng-model="selectedNumberType"
-          ng-disabled="isPublished()">
-        <ui-select-match placeholder="{{'CREATOR.enterNumberType' | translate}}">{{selectedNumberType.label}}</ui-select-match>
-        <ui-select-choices repeat="type in numberTypes">
-          {{type.label}}
-        </ui-select-choices>
-      </ui-select>
-    </div>
+      <!-- numeric datatype constraint -->
+      <div ng-init="setNumberTypeFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setNumberTypeFromUI($select.selected)"
+            ng-model="selectedNumberType"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.enterNumberType' | translate}}">{{selectedNumberType.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in numberTypes">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
 
-    <!-- min number value constraint -->
-    <div  class="form-group floating-label-wrapper" >
-      <input type="number" auto-focus
-          class="form-control field-min-max-definition"
-          placeholder="{{'CREATOR.enterMinValue' | translate}}"
-          aria-label="{{'CREATOR.enterMinValue' | translate}}"
-          ng-model="$root.schemaOf(field)._valueConstraints.minValue"
-          ng-disabled="isPublished()"
-          with-floating-label>
-    </div>
+      <!-- min number value constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+            class="form-control field-min-max-definition"
+            placeholder="{{'CREATOR.enterMinValue' | translate}}"
+            aria-label="{{'CREATOR.enterMinValue' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.minValue"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
 
-    <!-- max number value constraint -->
-    <div  class="form-group floating-label-wrapper" >
-      <input type="number" auto-focus
-          class="form-control field-min-max-definition"
-          placeholder="{{'CREATOR.enterMaxValue' | translate}}"
-          aria-label="{{'CREATOR.enterMaxValue' | translate}}"
-          ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
-          ng-disabled="isPublished()"
-          with-floating-label>
-    </div>
+      <!-- max number value constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+            class="form-control field-min-max-definition"
+            placeholder="{{'CREATOR.enterMaxValue' | translate}}"
+            aria-label="{{'CREATOR.enterMaxValue' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
 
-    <!-- decimal place constraint -->
-    <div  class="form-group floating-label-wrapper" >
-      <input type="number" auto-focus
-          class="form-control"
-          placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
-          aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
-          ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
-          ng-disabled="isPublished()"
-          with-floating-label>
-    </div>
+      <!-- decimal place constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+            class="form-control"
+            placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
+            aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
+            ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
+            ng-disabled="isPublished()"
+            with-floating-label>
+      </div>
     </div>
 
     <div ng-if="isTextField()">
 
       <!-- default value -->
-      <div  class="form-group floating-label-wrapper" >
+      <div class="form-group floating-label-wrapper">
         <input type="text" auto-focus
             class="form-control field-default-definition"
             placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"
@@ -118,7 +120,7 @@
       </div>
 
       <!-- min string length constraint -->
-      <div  class="form-group floating-label-wrapper" >
+      <div class="form-group floating-label-wrapper">
         <input type="number" auto-focus
             class="form-control field-min-max-definition"
             placeholder="{{'CREATOR.enterMinLength' | translate}}"
@@ -129,7 +131,7 @@
       </div>
 
       <!-- max string length constraint -->
-      <div  class="form-group floating-label-wrapper" >
+      <div class="form-group floating-label-wrapper">
         <input type="number" auto-focus
             class="form-control field-min-max-definition"
             placeholder="{{'CREATOR.enterMaxLength' | translate}}"
@@ -174,7 +176,8 @@
   </div>
 
   <!-- Cardinality tab  -->
-  <div id="cardinality-options"  class="cardinality-options " ng-model="field.minItems" ng-show="isTabActive('cardinality')" >
+  <div id="cardinality-options" class="cardinality-options " ng-model="field.minItems"
+      ng-show="isTabActive('cardinality')">
 
     <div class="type-toggle date">
       <div class="d-option" ng-class="{active: !hasMin()}" ng-click="setDirty();clearMinMax();">
@@ -187,26 +190,15 @@
 
 
     <div class="cardinality-selectors" ng-if="field.minItems > -1">
-      <cardinality-selector required="isRequired()"  type="'min'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
-      <cardinality-selector required="isRequired()"  type="'max'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()" type="'min'" min-items="field.minItems"
+          max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector required="isRequired()" type="'max'" min-items="field.minItems"
+          max-items="field.maxItems"></cardinality-selector>
     </div>
   </div>
 
-  <!--&lt;!&ndash; Field tab &ndash;&gt;-->
-  <!--<div ng-show="isTabActive('field')">-->
-    <!--<class-list field="field" view-type="viewType"></class-list>-->
-    <!--<div class="center search" >-->
-      <!--&lt;!&ndash; The field.finalTitle variable is used to store the final title assigned to the field, which will be shown-->
-      <!--in the modal and used to perform a BioPortal initial search automatically &ndash;&gt;-->
-      <!--<button ng-disabled="getInstanceType()" type="button" class="std-button btn search-ontologies-button"-->
-          <!--ng-click="getInstanceType();showModal('field' 'classes')" translate>-->
-        <!--GENERIC.Search-->
-      <!--</button>-->
-    <!--</div>-->
-  <!--</div>-->
-
   <!-- Value tab -->
-  <div id="value-options" class="cardinality-options" ng-show="isTabActive('values')">
+  <div id="value-options" class="value-options" ng-show="isTabActive('values')">
     <div class="form-group ">
       <div class="controlled-terms controlled-term-options">
         <div class="class-container">
@@ -223,7 +215,6 @@
                     <th>Identifier</th>
                     <th width="100px">No. Values</th>
                     <th>&nbsp;</th>
-                    <th>&nbsp;</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -237,11 +228,6 @@
                       16)}}
                     </td>
                     <td>1</td>
-                    <td>
-                      <div class="class-explore" ng-click="showTermsModal()">
-                        <i class="fa fa-eye"></i>
-                      </div>
-                    </td>
                     <td>
                       <div class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
@@ -258,11 +244,6 @@
                     </td>
                     <td>{{valueSet.numTerms}}</td>
                     <td>
-                      <div class="class-explore" ng-click="showTermsModal()">
-                        <i class="fa fa-eye"></i>
-                      </div>
-                    </td>
-                    <td>
                       <div ng-if="canAddTerms()" class="class-delete"
                           ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
@@ -275,11 +256,6 @@
                     <td>-</td>
                     <td>{{ontology.acronym}}</td>
                     <td>{{ontology.numTerms}}</td>
-                    <td>
-                      <div class="class-explore" ng-click="showTermsModal()">
-                        <i class="fa fa-eye"></i>
-                      </div>
-                    </td>
                     <td>
                       <div class="class-delete"
                           ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
@@ -297,11 +273,6 @@
                     </td>
                     <td>-</td>
                     <td>
-                      <div class="class-explore" ng-click="showTermsModal()">
-                        <i class="fa fa-eye"></i>
-                      </div>
-                    </td>
-                    <td>
                       <div class="class-delete" ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
                       </div>
@@ -312,11 +283,9 @@
               </div>
             </div>
           </div>
-          <div class="center search">
-            <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-          in the modal -->
-            <button ng-if="canAddTerms()" type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values', 'classes')">Search
-            </button>
+          <div class="flex center ">
+            <button ng-if="hasValueConstraint()" type="button" class="btn btn-clear edit" ng-click="showTermsModal()">Arrange</button>
+            <button ng-if="canAddTerms()" type="button" class="btn btn-clear add" ng-click="showModal('values', 'classes')">Add values</button>
           </div>
         </div>
       </div>
@@ -324,7 +293,7 @@
   </div>
 
   <!-- Hidden tab  -->
-  <div id="hidden"  ng-show="isTabActive('hidden')">
+  <div id="hidden" ng-show="isTabActive('hidden')">
     <div class="type-toggle date">
       <div class="single-date d-option"
           ng-click="setDirty();setHidden(false); $event.stopPropagation();"
