@@ -73,54 +73,14 @@
           <div class="populate-form-boxes">
             <div class="grid-view">
 
-              <!--&lt;!&ndash; show the folders first &ndash;&gt;-->
-              <!--<div ng-show="!finder.isSearching" class="group">-->
-                <!--<div ng-if="finder.isFolder(resource)"-->
-                    <!--class="form-box-container folder"-->
-                    <!--ng-class="{ selected: finder.isResourceSelected(resource) }"-->
-                    <!--ng-repeat="(index, resource) in finder.resources">-->
-
-
-                  <!--<div ng-click="finder.selectResource(resource)"-->
-                      <!--ng-dblclick="finder.openResource(resource)"-->
-                      <!--class="form-box  ">-->
-                    <!--<div class="box-content text-center folder">-->
-                      <!--<div class="folderIconContainer">-->
-                        <!--<i style="font-size:20px" class="fa" ng-class="finder.getResourceIconClass(resource)"></i>-->
-                      <!--</div>-->
-                      <!--<div class="folderTitle">{{ resource['schema:name'] }}</div>-->
-
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-
-              <!--&lt;!&ndash; then the elements &ndash;&gt;-->
-              <!--<div class="group">-->
-                <!--<div ng-if="!finder.isFolder(resource)"-->
-                    <!--class="form-box-container"-->
-                    <!--ng-class="{ selected: finder.isResourceSelected(resource) }"-->
-                    <!--ng-repeat="(index, resource) in finder.resources">-->
-
-                  <!--<div-->
-                      <!--ng-click="finder.selectResource(resource)"-->
-                      <!--ng-dblclick="finder.openResource(resource)"-->
-                      <!--class="form-box">-->
-
-                    <!--<div class="box-content text-center " ng-class="finder.getResourceTypeClass(resource)">-->
-
-                      <!--<div class="title-icon"><i class="fa"-->
-                          <!--ng-class="finder.getResourceIconClass(resource)"></i>-->
-
-                      <!--</div>-->
-                      <!--<div class="title">-->
-                        <!--{{ resource['schema:name'] }}-->
-                      <!--</div>-->
-
-                    <!--</div>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
+              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()"   >
+                  <div class="row no-file">
+                    <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+                  </div>
+                  <div class="row no-message">
+                    <div class="col-sm-12 center" translate>Nothing found</div>
+                  </div>
+              </div>
 
               <!-- show the folders first -->
               <div ng-if="finder.isFolder(resource)" class="form-box-container" ng-class="{ selected: finder.isResourceSelected(resource) }" ng-repeat="(index, resource) in finder.resources">
@@ -251,6 +211,15 @@
             </div>
 
             <div class="list-side">
+
+              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()"   >
+                <div class="row no-file">
+                  <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+                </div>
+                <div class="row no-message">
+                  <div class="col-sm-12 center" translate>Nothing found</div>
+                </div>
+              </div>
 
               <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
                   ng-class="{ selected: finder.isResourceSelected(resource) }"

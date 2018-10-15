@@ -79,6 +79,10 @@ define([
         return dms.getVersion($scope.field);
       };
 
+      $scope.getIdentifier = function () {
+        return dms.getIdentifier($scope.field);
+      };
+
       $scope.isEditable = function () {
         return !dms.hasVersion($scope.field) || dms.isDraft($scope.field);
       };
@@ -228,16 +232,16 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-      $scope.hasOptions = function () {
-        return !FieldTypeService.isStaticField(dms.getInputType($scope.field));
-      };
-
       $scope.isNumericField = function () {
         return dms.isNumericField($scope.field);
       };
 
       $scope.isTextField = function () {
         return dms.isTextFieldType($scope.field);
+      };
+      
+      $scope.hasOptions = function () {
+        return $scope.isNumericField() || $scope.isTextField();
       };
 
       $scope.canViewTerms = function () {
@@ -1113,8 +1117,16 @@ define([
         return (labels && labels[$scope.fieldKey]) ? labels[$scope.fieldKey] : '';
       };
 
+      // $scope.getLabel = function () {
+      //   return $scope.getPropertyLabel() || $scope.getTitle();
+      // };
+
+      $scope.getPreferredLabel = function (field) {
+        return dms.getPreferredLabel(field || $scope.field);
+      };
+
       $scope.getLabel = function () {
-        return $scope.getPropertyLabel() || $scope.getTitle();
+        return $scope.getPreferredLabel() || $scope.getPropertyLabel() || $scope.getTitle();
       };
 
       $scope.getPropertyDescription = function () {

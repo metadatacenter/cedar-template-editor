@@ -483,7 +483,7 @@ define([
 
               $timeout(function () {
                 //if (infoShowing()) {
-                  vm.getResourceReport(resource);
+                vm.getResourceReport(resource);
                 // } else {
                 //   vm.getResourceDetails(resource);
                 // }
@@ -595,7 +595,7 @@ define([
                   if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
                     setSelected(response);
 
-                  } else  {
+                  } else {
                     for (var prop in response) {
                       getSelected()[prop] = response[prop];
 
@@ -625,7 +625,7 @@ define([
                 function (response) {
                   if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
                     setSelected(response);
-                  } else  {
+                  } else {
                     for (var prop in response) {
                       getSelected()[prop] = response[prop];
                     }
@@ -810,7 +810,7 @@ define([
                       },
                       function (response) {
 
-                        for (let i= 0 ;i< response.resources.length; i++) {
+                        for (let i = 0; i < response.resources.length; i++) {
                           vm.resources[i + offset] = response.resources[i];
                         }
                         vm.offset = offset + vm.requestLimit;
@@ -841,7 +841,7 @@ define([
           // callback to load more resources for the current folder
           vm.searchMore = function () {
 
-            if (activeResourceTypes().length > 0 ) {
+            if (activeResourceTypes().length > 0) {
 
               // are there more?
               if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
@@ -856,7 +856,7 @@ define([
                     },
                     function (response) {
 
-                      for (let i= 0 ;i< response.resources.length; i++) {
+                      for (let i = 0; i < response.resources.length; i++) {
                         vm.resources[i + offset] = response.resources[i];
                       }
                       vm.totalCount = response.totalCount;
@@ -994,7 +994,7 @@ define([
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                   }
               );
-            },1000);
+            }, 1000);
           }
 
           function doSharedWithMe() {
@@ -1026,6 +1026,7 @@ define([
                 }
             );
           }
+
           function copyToWorkspace(resource) {
             if (!resource) {
               resource = getSelected();
@@ -1157,13 +1158,13 @@ define([
                 if (resource.nodeType === 'template' && action === 'populate') {
                   launchInstance(resource);
                 } else {
-                  editResource(resource, vm.canNotWrite);
+                  editResource(resource);
                 }
               }
             }
           }
 
-          function editResource(value, canNotWrite) {
+          function editResource(value) {
 
             var resource = value || getSelected();
             if (resource) {
@@ -1218,33 +1219,30 @@ define([
 
 
           function deleteResource(resource) {
-            if (!resource && hasSelected()) {
-              resource = getSelected();
-            }
-            if (vm.canWrite(resource)) {
+              var r = resource || getSelectedNode();
+              if (resourceService.canDelete(r)) {
+                UIMessageService.confirmedExecution(
+                    function () {
+                      resourceService.deleteResource(
+                          r,
+                          function (response) {
 
-              UIMessageService.confirmedExecution(
-                  function () {
-                    resourceService.deleteResource(
-                        resource,
-                        function (response) {
-
-                          UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
-                              {"title": resource.nodeType},
-                              'GENERIC.Deleted');
-                          removeResource(resource);
-                        },
-                        function (error) {
-                          UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
-                              error);
-                        }
-                    );
-                  },
-                  'GENERIC.AreYouSure',
-                  'DASHBOARD.delete.confirm.' + resource.nodeType,
-                  'GENERIC.YesDeleteIt'
-              );
-            }
+                            UIMessageService.flashSuccess('SERVER.' + r.nodeType.toUpperCase() + '.delete.success',
+                                {"title": r.nodeType},
+                                'GENERIC.Deleted');
+                            removeResource(response);
+                          },
+                          function (error) {
+                            UIMessageService.showBackendError('SERVER.' + r.nodeType.toUpperCase() + '.delete.error',
+                                error);
+                          }
+                      );
+                    },
+                    'GENERIC.AreYouSure',
+                    'DASHBOARD.delete.confirm.' + r.nodeType,
+                    'GENERIC.YesDeleteIt'
+                );
+              }
           }
 
           function getFacets() {
@@ -1430,12 +1428,12 @@ define([
             return false;
           }
 
-/*          function canPublishStatic() {
-            return (hasSelected() &&
-                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
-                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
-                getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
-          }*/
+          /*          function canPublishStatic() {
+                      return (hasSelected() &&
+                          (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                              getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                          getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
+                    }*/
 
           function isPublished(resource) {
             var result = false;
@@ -1447,12 +1445,12 @@ define([
             return result;
           };
 
-/*          function canCreateDraftStatic() {
-            return (hasSelected() &&
-                (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
-                    getSelected().nodeType == CONST.resourceType.ELEMENT) &&
-                getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
-          }*/
+          /*          function canCreateDraftStatic() {
+                      return (hasSelected() &&
+                          (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
+                              getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                          getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+                    }*/
 
           function isTemplate(resource) {
             var result = false;
@@ -1639,7 +1637,7 @@ define([
                   setSelected(resource);
                   vm.setPermissions();
                   //if (infoShowing()) {
-                    vm.getResourceReport(resource);
+                  vm.getResourceReport(resource);
                   // } else {
                   //   vm.getResourceDetails(resource);
                   // }
@@ -1833,24 +1831,25 @@ define([
 
 
           // open the move modal
-          function showCopyModal() {
-            if (hasSelected()) {
+          function showCopyModal(resource) {
+            let r = resource || getSelected();
+            if (r && !vm.isFolder(r)) {
               var homeFolderId = CedarUser.getHomeFolderId();
               var folderId = vm.currentFolderId || homeFolderId;
               vm.copyModalVisible = true;
               $scope.$broadcast('copyModalVisible',
-                  [vm.copyModalVisible, getSelected(), vm.currentPath, folderId, homeFolderId, vm.resourceTypes,
-                   CedarUser.getSort()]);
+                  [vm.copyModalVisible, r, vm.currentPath, folderId, homeFolderId, vm.resourceTypes, CedarUser.getSort()]);
             }
           }
 
           // open the move modal
           function showMoveModal() {
-            if (hasSelected() && !vm.canNotWrite) {
+            let r = getSelected();
+            if (r && resourceService.canWrite(r)) {
               vm.moveModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
-                  [vm.moveModalVisible, getSelected(), vm.currentPath, vm.currentFolderId, homeFolderId,
+                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId,
                    vm.resourceTypes,
                    CedarUser.getSort()]);
             }
@@ -1858,34 +1857,38 @@ define([
 
           // open the publish modal
           function showPublishModal(callback, action) {
-            if (hasSelected() && !vm.canNotWrite) {
+            let r = getSelected();
+            if (r && resourceService.canWrite(r)) {
               vm.publishModalVisible = true;
               var homeFolderId = CedarUser.getHomeFolderId();
-              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, getSelected(), callback, action]);
+              $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, action]);
             }
           }
 
           function showFlowModal() {
-            if (hasSelected() && !vm.canNotSubmit) {
+            let r = getSelected();
+            if (r && resourceService.canSubmit(r)) {
               vm.flowModalVisible = true;
               $scope.$broadcast('flowModalVisible',
-                  [vm.flowModalVisible, getSelected()['@id'], getSelected()[CONST.model.NAME]]);
+                  [vm.flowModalVisible, r['@id'], r[CONST.model.NAME]]);
             }
           }
 
           // open the share modal
           function showShareModal() {
-            if (hasSelected() && !vm.canNotShare) {
+            let r = getSelected();
+            if (r && resourceService.canShare(r)) {
               vm.shareModalVisible = true;
-              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, getSelected()]);
+              $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
             }
           }
 
           // open the rename modal
           function showRenameModal() {
-            if (hasSelected() && !vm.canNotWrite) {
+            let r = getSelected();
+            if (r && resourceService.canWrite(r)) {
               vm.renameModalVisible = true;
-              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, getSelected()]);
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
             }
           }
 

@@ -1,4 +1,4 @@
-<div class="flex-right"  >
+<div class="flex-right flex-start">
 
   <cedar-pager class="cedar-pager"
       ng-if="paging"
@@ -54,7 +54,7 @@
   </button>
 
 
-  <button ng-if="hasHelp()" type="button" class="question" tooltip-append-to-body="true"
+  <button ng-if="hasHelp()" type="button" class="help" tooltip-append-to-body="true"
       ng-click="$event.stopPropagation()"
       uib-tooltip="{{getHelp()}}"
       tooltip-enable="hasHelp()" >

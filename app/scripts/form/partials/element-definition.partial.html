@@ -33,6 +33,16 @@
     </div>
   </div>
 
+  <!-- question text -->
+  <div  class="form-group floating-label-wrapper" >
+    <input type="text"
+        class="form-control"
+        placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
+        aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
+        ng-model="$root.schemaOf(element)['skos:prefLabel']"
+        with-floating-label>
+  </div>
+
   <!-- help text -->
   <div class="form-group floating-label-wrapper">
     <input type="text"
@@ -52,8 +62,8 @@
     <div class="form-group floating-label-wrapper" style="margin-bottom:0;width:100%;">
       <input type="text"
           class="form-control"
-          placeholder="{{elementLabel[key]}}"
-          aria-label="{{getHelp()}}"
+          placeholder="{{getLabel()}}"
+          aria-label="{{getLabel()}}"
           ng-disabled="true"
           with-floating-label/>
       <div class="input-indicator-icons ng-valid ng-scope"

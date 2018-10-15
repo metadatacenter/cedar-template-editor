@@ -73,11 +73,11 @@ describe('template-creator', function () {
 
   it("should check valid and dirty", function () {
     workspacePage.doubleClickResource(templateOrElement, 'template');
-    templatePage.isValid();
+    //templatePage.isValid();
     templatePage.isClean();
     templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description','template');
 
-    templatePage.isValid();
+    //templatePage.isValid();
     templatePage.isDirty();
     templatePage.clickBackArrow();
     sweetAlertModal.confirm();
@@ -101,7 +101,7 @@ describe('template-creator', function () {
           workspacePage.doubleClickResource(templateOrElement, pageType);
           templatePage.isTitle(pageType, templateOrElement);
           templatePage.isDescription(pageType, sampleDescription);
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.clickBackArrow();
           workspacePage.onWorkspace();
         });
@@ -109,7 +109,7 @@ describe('template-creator', function () {
         it("should have cancel button present and active", function () {
           workspacePage.createPage(pageType);
           templatePage.addFieldType(templatePage.fieldTypes[0], 'title', 'description', pageType);
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.isDirty();
           templatePage.clickCancel(pageType);
           sweetAlertModal.confirm();
@@ -129,7 +129,7 @@ describe('template-creator', function () {
           workspacePage.createPage(pageType);
           browser.wait(EC.visibilityOf(templatePage.topNavigation()));
           expect(templatePage.hasClass(templatePage.topNavigation(), pageType)).toBe(true);
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.isClean();
           templatePage.clickBackArrow();
           workspacePage.onWorkspace();
@@ -181,7 +181,7 @@ describe('template-creator', function () {
                 browser.wait(EC.stalenessOf(field));
 
                 templatePage.isDirty();
-                templatePage.isValid();
+                //templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
@@ -224,7 +224,7 @@ describe('template-creator', function () {
                 expect(lastField.element(by.model('fieldLabel[fieldLabelKey]')).isPresent()).toBe(false);
 
                 templatePage.isDirty();
-                templatePage.isValid();
+                //templatePage.isValid();
                 templatePage.clickBackArrow();
                 sweetAlertModal.confirm();
                 workspacePage.onWorkspace();
@@ -250,7 +250,7 @@ describe('template-creator', function () {
           });
 
           templatePage.hideJson();
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.clickBackArrow();
           workspacePage.onWorkspace();
         });
@@ -278,7 +278,7 @@ describe('template-creator', function () {
 
           templatePage.hideJson();
           templatePage.isDirty();
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();
@@ -308,7 +308,7 @@ describe('template-creator', function () {
           });
 
           templatePage.hideJson();
-          templatePage.isValid();
+          //templatePage.isValid();
           templatePage.clickBackArrow();
           sweetAlertModal.confirm();
           workspacePage.onWorkspace();

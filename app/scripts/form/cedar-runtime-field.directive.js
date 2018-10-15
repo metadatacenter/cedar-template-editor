@@ -97,8 +97,8 @@ define([
         return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
       }
 
-      $scope.getPreferredLabel = function (field) {
-        return dms.getPreferredLabel(field || $scope.field);
+      $scope.getPreferredLabel = function () {
+        return dms.getPreferredLabel($scope.field);
       };
 
       $scope.getLabel = function () {
@@ -1191,7 +1191,6 @@ define([
               break loop;
             }
           }
-          f
         }
       };
 

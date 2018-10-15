@@ -41,15 +41,6 @@
   </div>
 
   <div id="options" class="options" ng-show="isTabActive('options')">
-    <div  class="form-group floating-label-wrapper" >
-      <input type="text"
-          class="form-control"
-          placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
-          aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
-          ng-model="$root.schemaOf(field)['skos:prefLabel']"
-          with-floating-label>
-    </div>
-
     <div ng-if="isNumericField()">
 
     <!-- unit of measure constraint -->
@@ -112,6 +103,7 @@
           with-floating-label>
     </div>
     </div>
+
     <div ng-if="isTextField()">
 
       <!-- default value -->
@@ -271,7 +263,7 @@
                       </div>
                     </td>
                     <td>
-                      <div class="class-delete"
+                      <div ng-if="canAddTerms()" class="class-delete"
                           ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
                       </div>
