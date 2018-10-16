@@ -53,38 +53,40 @@ define([
           vm.model;
           vm.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
           vm.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-          vm.tmpList = [];
-          vm.deletedList = [];
-          vm.list = vm.tmpList;
+
+          vm.mods = [];
+          vm.list = [];
           vm.sortingLog = [];
           vm.sortableOptions = {
             activate  : function () {
             },
-            beforeStop: function () {
+            beforeStop: function (e, ui) {
             },
-            change    : function () {
+            change    : function (e, ui) {
             },
-            create    : function () {
+            create    : function (e, ui) {
             },
-            deactivate: function () {
+            deactivate: function (e, ui) {
             },
-            out       : function () {
+            out       : function (e, ui) {
             },
-            over      : function () {
+            over      : function (e, ui) {
             },
-            receive   : function () {
+            receive   : function (e, ui) {
             },
-            remove    : function () {
+            remove    : function (e, ui) {
             },
-            sort      : function () {
+            sort      : function (e, ui) {
             },
-            start     : function () {
+            start     : function (e, ui) {
             },
             update    : function (e, ui) {
-              vm.log('Update');
+              vm.updateId = ui.item[0].id;
             },
             stop      : function (e, ui) {
-              vm.log('Stop');
+              var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
+              vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
+              ;
             }
           };
 
@@ -92,20 +94,17 @@ define([
             return dms.getId(vm.resource);
           };
 
-          vm.log = function (action) {
-            var logEntry = vm.tmpList.map(function (i) {
-              return i.value;
-            }).join(', ');
-            vm.sortingLog.push(action + ': ' + logEntry);
+          vm.log = function (action, list) {
+            let entry = action + ': ' + JSON.stringify(list || vm.list);
+            vm.sortingLog.push(entry);
           };
 
-
           vm.applyChange = function (changeTo, index) {
-            let deleted = vm.list.splice(index, 1);
-            vm.list.splice(changeTo, 0, deleted[0]);
+            let entry = vm.list.splice(index, 1);
+            vm.list.splice(changeTo, 0, entry[0]);
+            vm.mods.push({'id': entry[0].id, 'to': changeTo, 'action': 'move'});
             vm.showPosition = false;
             vm.changeTo = null;
-            vm.log('Apply');
           };
 
           vm.toggle = function (event) {
@@ -114,22 +113,15 @@ define([
           };
 
           vm.delete = function (index) {
-            let deleted = vm.list.splice(index, 1);
-            vm.deletedList.push(deleted[0]);
-            vm.log('Delete');
+            let entry = vm.list.splice(index, 1);
+            vm.mods.push({'id': entry[0].id, 'action': 'delete'});
           };
 
           vm.doSave = function () {
-            vm.log('Save');
-            var saveEntry = vm.tmpList.map(function (i) {
-              return i.id;
-            }).join(', ');
-            console.log(saveEntry);
-            dms.setSortOrder(vm.resource, saveEntry);
+            dms.setSortOrder(vm.resource, vm.mods);
           };
 
           vm.reset = function () {
-            vm.sortOrder = null;
             dms.setSortOrder(vm.resource);
             vm.openTerms(vm.resource);
           };
@@ -142,43 +134,81 @@ define([
               return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
             };
 
-            vm.sortOrder = dms.getSortOrder(vm.resource);
+
             vm.schema = dms.schemaOf(vm.resource);
             vm.term = '*';
             vm.id = dms.getId(vm.resource);
+
             var foundResults = autocompleteService.initResults(vm.id, vm.term);
             var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term);
-
+            vm.fullList = [];
             $q.all(promises).then(values => {
-              vm.tmpList = [];
-              vm.deletedList = [];
               for (let i = 1; i <= foundResults.length; i++) {
-                vm.tmpList.push({
-                  id  : foundResults[i - 1]['@id'],
+                vm.fullList.push({
+                  id    : foundResults[i - 1]['@id'],
                   text  : foundResults[i - 1]['label'],
                   source: getShortId(foundResults[i - 1]['sourceUri']),
                   value : i
                 });
               }
 
-              if (vm.sortOrder) {
-                let sortArray = vm.sortOrder.split(', ');
-                let sortList = [];
-                for (let i = 0; i < sortArray.length; i++) {
-                  let index = vm.tmpList.findIndex(item => item.id === sortArray[i]);
-                  sortList.push(vm.tmpList[index]);
+              // apply mods
+              vm.mods = dms.getMods(vm.resource);
+              for (let i = 0; i < vm.mods.length; i++) {
+                let mod = vm.mods[i];
+                if (mod.action == 'delete') {
+                  // do the delete
+                  let index = vm.fullList.findIndex(item => item.id === mod.id);
+                  let entry = vm.fullList.splice(index, 1);
+                } else {
+                  // do the move
+                  let id = mod.id;
+                  let to = mod.to;
+                  let from = vm.fullList.findIndex(item => item.id === mod.id);
+                  if (from != -1 && to != -1) {
+                    let entry = vm.fullList.splice(from, 1);
+                    vm.fullList.splice(to, 0, entry[0]);
+                  }
                 }
-                vm.tmpList = sortList;
               }
-
-              vm.list = vm.tmpList;
-              vm.log('Reset');
+              vm.list = vm.fullList;
             });
           };
 
           // on modal close, scroll to the top the cheap way
           vm.hideModal = function () {
             vm.modalVisible = false;
+          };
+
+          // callback to load more resources for the current folder
+          vm.loadMore = function () {
+            console.log('loadMore');
+
+            // are there more?
+            if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+              vm.lastOffset += vm.requestLimit;
+              var offset = vm.offset;
+              return resourceService.getResources(
+                  {
+                    folderId     : vm.currentFolderId,
+                    resourceTypes: activeResourceTypes(),
+                    sort         : sortField(),
+                    limit        : vm.requestLimit,
+                    offset       : offset
+                  },
+                  function (response) {
+
+                    for (let i = 0; i < response.resources.length; i++) {
+                      vm.resources[i + offset] = response.resources[i];
+                    }
+                    vm.offset = offset + vm.requestLimit;
+                    vm.totalCount = response.totalCount;
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  }
+              );
+            }
           };
 
           $rootScope.$on('termsModalVisible', function (event, params) {

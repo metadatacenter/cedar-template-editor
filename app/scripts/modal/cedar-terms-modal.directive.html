@@ -9,7 +9,8 @@
       </div>
     </div>
 
-    <div class="modal-body"  >
+
+    <div class="modal-body"  cedar-infinite-scroll load-more="terms.loadMore()" class="scrollable-content" style="padding-top:0;overflow-y:scroll">
         <div class="flex flex-left term-row">
           <div class="index header invisible">0</div>
           <div class="title header" >Label</div>
@@ -17,8 +18,8 @@
           <div class="tools header invisible"></div>
         </div>
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list" class="item" >
-            <div class="flex flex-left term-row">
+          <li ng-repeat="item in terms.list track by $index" class="item" id="{{item.id}}">
+            <div class="flex flex-left term-row" >
               <div class="index">{{$index + 1}}</div>
               <div class="title ellipsis">{{item.text}}</div>
               <div class="source ellipsis">{{item.source}}</div>

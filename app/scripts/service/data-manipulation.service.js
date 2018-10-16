@@ -694,22 +694,26 @@ define([
           }
         };
 
-        service.setSortOrder = function (node, value) {
+        service.setSortOrder = function (node,  mods) {
           if (node) {
-            if (value) {
-              service.schemaOf(node)._valueConstraints.sortOrder = value;
+            var constraint = service.schemaOf(node)._valueConstraints;
+            if (mods) {
+              constraint.sortOrder = {mods:mods};
             } else {
-              delete service.schemaOf(node)._valueConstraints.sortOrder;
+              delete constraint.sortOrder;
             }
           }
         };
 
-        service.getSortOrder = function (node) {
+        service.getMods = function (node) {
+          var result = [];
           if (node) {
-            return service.schemaOf(node)._valueConstraints.sortOrder;
+            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('sortOrder')) {
+              result= service.schemaOf(node)._valueConstraints.sortOrder.mods;
+            }
           }
+          return result;
         };
-
 
         // update the key values to reflect the property or name
         // this does not look at nested fields and elements, just top level
