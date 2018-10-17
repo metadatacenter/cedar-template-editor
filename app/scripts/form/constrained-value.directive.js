@@ -7,37 +7,55 @@ define([
       .directive('constrainedValue', constrainedValue);
 
 
-  constrainedValue.$inject = [ "DataManipulationService", "UIUtilService","autocompleteService"];
+  constrainedValue.$inject = ["DataManipulationService", "UIUtilService", "autocompleteService", '$q'];
 
-  function constrainedValue( DataManipulationService, UIUtilService, autocompleteService) {
+  function constrainedValue(DataManipulationService, UIUtilService, autocompleteService, $q) {
 
 
     var linker = function ($scope, $element, attrs) {
 
+      var dms = DataManipulationService;
       $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-      $scope.sortOrder = DataManipulationService.getSortOrder($scope.field);
+      $scope.mods = dms.getMods($scope.field);
 
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
-        return DataManipulationService.hasValueConstraint($scope.field);
+        return dms.hasValueConstraint($scope.field);
+      };
+
+      $scope.applyMods= function(list) {
+
+        var dup = list.slice();
+        for (let i = 0; i < $scope.mods.length; i++) {
+          let mod = $scope.mods[i];
+
+          if (mod.action == 'delete') {
+            // do the delete
+            let index = dup.findIndex(item => item['@id'] === mod.id);
+            if (index != -1) {
+              let entry = dup.splice(index, 1);
+            }
+          } else {
+            // do the move
+            let id = mod.id;
+            let to = mod.to;
+            let from = dup.findIndex(item => item['@id'] === mod.id);
+            if (from != -1 && to != -1) {
+              let entry = dup.splice(from, 1);
+              dup.splice(to, 0, entry[0]);
+            }
+          }
+        }
+        return dup;
       };
 
       $scope.order = function (arr) {
-        var result = arr;
-        if (arr)  {
-          if ($scope.sortOrder) {
-            let sortArray = $scope.sortOrder.split(', ');
-            let sortList = [];
-            for (let i = 0; i < sortArray.length; i++) {
-              let index = arr.findIndex(item => item['@id'] === sortArray[i]);
-              sortList.push(arr[index]);
-            }
-            result = sortList;
-          }
+        if (arr) {
+          var dup = $scope.applyMods(arr);
+          return dup;
         }
-        return result;
       };
 
       // is this field required?
@@ -77,6 +95,7 @@ define([
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function (modelValue, index) {
+        console.log('updateModelFromUIControlledField',modelValue, index)
         if (modelValue[index] && modelValue[index].termInfo) {
           var termId = modelValue[index].termInfo['@id'];
           var termLabel = modelValue[index].termInfo.label;

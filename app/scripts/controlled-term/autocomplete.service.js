@@ -140,6 +140,15 @@ define([
       }
     };
 
+    service.clearResults = function (id, term) {
+      console.log('clearResults',id,term);
+      service.autocompleteResultsCache[id] = [];
+      service.autocompleteResultsCache[id][term] = {
+        'results': []
+      };
+      return service.autocompleteResultsCache[id][term].results;
+    };
+
     service.initResults = function (id, term) {
       // initialize the results array
       if (angular.isUndefined(service.autocompleteResultsCache[id])) {

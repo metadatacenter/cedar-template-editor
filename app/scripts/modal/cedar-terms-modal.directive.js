@@ -145,12 +145,12 @@ define([
                 return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
               }
             };
-
-
+            
             vm.schema = dms.schemaOf(vm.resource);
             vm.term = '*';
             vm.id = dms.getId(vm.resource);
 
+            autocompleteService.clearResults(vm.id, '*');
             var foundResults = autocompleteService.initResults(vm.id, vm.term);
             var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term);
             vm.fullList = [];
