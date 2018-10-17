@@ -306,6 +306,7 @@ define([
     };
 
     service.createValue = function (vsId) {
+      console.log('createValue');
       return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId) + '/values';
     };
 
@@ -348,6 +349,7 @@ define([
     };
 
     service.getValueById = function (acronym, valueId) {
+      console.log('getValueById');
       return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
     };
 
@@ -366,6 +368,7 @@ define([
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {
+      console.log('getValuesInValueSet', vsCollection, vsId);
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId)
           + "/values";
     };
@@ -425,6 +428,7 @@ define([
     };
 
     service.autocompleteOntology = function (query, acronym) {
+      console.log('autocompleteOntology');
       var url = this.controlledTerm();
       if (query == '*') {
         url += "/ontologies/" + acronym + "/classes?page=1&page_size=500";
@@ -436,6 +440,7 @@ define([
     };
 
     service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth) {
+      console.log('autocompleteOntologySubtree');
       var url = this.controlledTerm();
       if (query == '*') {
         url += '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id)

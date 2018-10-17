@@ -1917,6 +1917,16 @@ define([
           service.initializeSchema(node);
         };
 
+        // get the ontologyCLass in valueConstraints
+        service.getFieldAddedClassByUri = function (uri, node) {
+          var valueConstraints = service.schemaOf(node)._valueConstraints;
+          for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
+            if (valueConstraints.classes[i].uri == uri) {
+              return valueConstraints.classes[i];
+            }
+          }
+        };
+
         // delete the ontologyCLass in valueConstraints
         service.deleteFieldAddedClass = function (ontologyClass, node) {
 

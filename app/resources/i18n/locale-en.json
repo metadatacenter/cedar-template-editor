@@ -403,7 +403,7 @@
   },
   "DASHBOARD": {
     "terms": {
-      "header": "Modify Values"
+      "header": "Arrange Values"
     },
     "menu": {
       "open": "Open",

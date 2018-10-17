@@ -457,10 +457,10 @@ define([
       );
     }
 
-    function getValuesInValueSet(vsCollection, vsId) {
+    function getValuesInValueSet(vsCollection, vsId, page, size) {
       init();
       return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getValuesInValueSet(vsCollection, vsId),
+          ControlledTermHttpService.getValuesInValueSet(vsCollection, vsId, page, size),
           function (response) {
             return response.data.collection;
           },
@@ -591,12 +591,12 @@ define([
       );
     }
 
-    function autocompleteValueSetClasses(query, vsCollection, vsId) {
+    function autocompleteValueSetClasses(query, vsCollection, vsId, page, size) {
       init();
       var acronym = vsCollection.substr(vsCollection.lastIndexOf('/') + 1);
       // use descendants
       return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getValuesInValueSet(acronym, vsId),
+          ControlledTermHttpService.getValuesInValueSet(acronym, vsId, page, size),
           function (response) {
             return response.data;
           },

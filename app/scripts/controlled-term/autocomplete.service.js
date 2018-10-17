@@ -64,6 +64,7 @@ define([
     };
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
+      console.log('processAutocompleteClassResults',response);
 
 
       var i, j, found;

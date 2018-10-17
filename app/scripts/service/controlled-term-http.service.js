@@ -102,8 +102,8 @@ define([
       return HttpBuilderService.get(UrlService.getPropertyTree(acronym, propertyId));
     };
 
-    service.getValuesInValueSet = function (vsCollection, vsId) {
-      return HttpBuilderService.get(UrlService.getValuesInValueSet(vsCollection, vsId));
+    service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
+      return HttpBuilderService.get(UrlService.getValuesInValueSet(vsCollection, vsId, page, size));
     };
 
     service.searchClasses = function (query, sources, size) {

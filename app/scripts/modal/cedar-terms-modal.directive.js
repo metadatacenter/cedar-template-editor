@@ -85,8 +85,9 @@ define([
             },
             stop      : function (e, ui) {
               var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
-              vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
-              ;
+              if (stopIndex != -1) {
+                vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
+              }
             }
           };
 
@@ -102,7 +103,9 @@ define([
           vm.applyChange = function (changeTo, index) {
             let entry = vm.list.splice(index, 1);
             vm.list.splice(changeTo, 0, entry[0]);
-            vm.mods.push({'id': entry[0].id, 'to': changeTo, 'action': 'move'});
+            if (changeTo != -1) {
+              vm.mods.push({'id': entry[0].id, 'to': changeTo, 'action': 'move'});
+            }
             vm.showPosition = false;
             vm.changeTo = null;
           };
@@ -129,9 +132,18 @@ define([
           // initialize the share dialog
           vm.openTerms = function (resource) {
 
-            var getShortId = function (uri) {
-              var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
-              return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+            var getShortId = function (uri, id) {
+              if (uri == 'template') {
+                // look for the source in the template classes
+                var addedClass = dms.getFieldAddedClassByUri(id, vm.resource);
+                if (addedClass) {
+                  return addedClass.source;
+                }
+              } else {
+                // pull off the last fragment
+                var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
+                return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+              }
             };
 
 
@@ -144,10 +156,11 @@ define([
             vm.fullList = [];
             $q.all(promises).then(values => {
               for (let i = 1; i <= foundResults.length; i++) {
+
                 vm.fullList.push({
                   id    : foundResults[i - 1]['@id'],
                   text  : foundResults[i - 1]['label'],
-                  source: getShortId(foundResults[i - 1]['sourceUri']),
+                  source: getShortId(foundResults[i - 1]['sourceUri'], foundResults[i - 1]['@id']),
                   value : i
                 });
               }
@@ -185,30 +198,30 @@ define([
             console.log('loadMore');
 
             // are there more?
-            if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
-              vm.lastOffset += vm.requestLimit;
-              var offset = vm.offset;
-              return resourceService.getResources(
-                  {
-                    folderId     : vm.currentFolderId,
-                    resourceTypes: activeResourceTypes(),
-                    sort         : sortField(),
-                    limit        : vm.requestLimit,
-                    offset       : offset
-                  },
-                  function (response) {
-
-                    for (let i = 0; i < response.resources.length; i++) {
-                      vm.resources[i + offset] = response.resources[i];
-                    }
-                    vm.offset = offset + vm.requestLimit;
-                    vm.totalCount = response.totalCount;
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                  }
-              );
-            }
+            // if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
+            //   vm.lastOffset += vm.requestLimit;
+            //   var offset = vm.offset;
+            //   return resourceService.getResources(
+            //       {
+            //         folderId     : vm.currentFolderId,
+            //         resourceTypes: activeResourceTypes(),
+            //         sort         : sortField(),
+            //         limit        : vm.requestLimit,
+            //         offset       : offset
+            //       },
+            //       function (response) {
+            //
+            //         for (let i = 0; i < response.resources.length; i++) {
+            //           vm.resources[i + offset] = response.resources[i];
+            //         }
+            //         vm.offset = offset + vm.requestLimit;
+            //         vm.totalCount = response.totalCount;
+            //       },
+            //       function (error) {
+            //         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            //       }
+            //   );
+            // }
           };
 
           $rootScope.$on('termsModalVisible', function (event, params) {
