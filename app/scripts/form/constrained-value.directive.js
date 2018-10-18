@@ -26,25 +26,17 @@ define([
       };
 
       $scope.applyMods= function(list) {
-
+        // apply mods to a duplicate of the list
         var dup = list.slice();
         for (let i = 0; i < $scope.mods.length; i++) {
           let mod = $scope.mods[i];
-
-          if (mod.action == 'delete') {
-            // do the delete
-            let index = dup.findIndex(item => item['@id'] === mod.id);
-            if (index != -1) {
-              let entry = dup.splice(index, 1);
-            }
-          } else {
-            // do the move
-            let id = mod.id;
-            let to = mod.to;
-            let from = dup.findIndex(item => item['@id'] === mod.id);
-            if (from != -1 && to != -1) {
-              let entry = dup.splice(from, 1);
-              dup.splice(to, 0, entry[0]);
+          let from = dup.findIndex(item => item['@id'] === mod.id);
+          if (from != -1) {
+            // delete it at from
+            let entry = dup.splice(from, 1);
+            if (mod.to != -1 && mod.action == 'move') {
+              // insert it at to
+              dup.splice(mod.to, 0, entry[0]);
             }
           }
         }
@@ -60,11 +52,11 @@ define([
 
       // is this field required?
       $scope.isRequired = function () {
-        return DataManipulationService.isRequired($scope.field);
+        return dms.isRequired($scope.field);
       };
 
       $scope.getId = function () {
-        return DataManipulationService.getId($scope.field);
+        return dms.getId($scope.field);
       };
 
       if ($scope.hasValueConstraint() && $scope.isRequired()) {
@@ -73,7 +65,7 @@ define([
 
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
-        return DataManipulationService.isMultipleCardinality($scope.field);
+        return dms.isMultipleCardinality($scope.field);
       };
 
       // Used just for text fields whose values have been constrained using controlled terms
@@ -84,11 +76,11 @@ define([
         };
 
         $scope.isNested = function () {
-          return (DataManipulationService.isNested($scope.field));
+          return (dms.isNested($scope.field));
         };
 
         $scope.addOption = function () {
-          return (DataManipulationService.addOption($scope.field));
+          return (dms.addOption($scope.field));
         };
 
       }, true);

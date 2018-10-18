@@ -14,8 +14,35 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
+      var dms = DataManipulationService;
       $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
-      $scope.sortOrder = DataManipulationService.getSortOrder($scope.field);
+      $scope.mods = dms.getMods($scope.field);
+
+
+      $scope.applyMods= function(list) {
+        // apply mods to a duplicate of the list
+        var dup = list.slice();
+        for (let i = 0; i < $scope.mods.length; i++) {
+          let mod = $scope.mods[i];
+          let from = dup.findIndex(item => item['@id'] === mod.id);
+          if (from != -1) {
+            // delete it at from
+            let entry = dup.splice(from, 1);
+            if (mod.to != -1 && mod.action == 'move') {
+              // insert it at to
+              dup.splice(mod.to, 0, entry[0]);
+            }
+          }
+        }
+        return dup;
+      };
+
+      $scope.order = function (arr) {
+        if (arr) {
+          var dup = $scope.applyMods(arr);
+          return dup;
+        }
+      };
 
       $scope.updatePopulatedFields = function(field, value) {
         ValueRecommenderService.updatePopulatedFields(field, value);
@@ -41,22 +68,6 @@ define([
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return DataManipulationService.hasValueConstraint($scope.field);
-      };
-
-      $scope.order = function (arr) {
-        var result = arr;
-        if (arr)  {
-          if ($scope.sortOrder) {
-            let sortArray = $scope.sortOrder.split(', ');
-            let sortList = [];
-            for (let i = 0; i < sortArray.length; i++) {
-              let index = arr.findIndex(item => item['@id'] === sortArray[i]);
-              sortList.push(arr[index]);
-            }
-            result = sortList;
-          }
-        }
-        return result;
       };
 
       $scope.getId = function () {
@@ -173,7 +184,7 @@ define([
             'valueInfo': {'value': model[fieldValue]}
           };
         }
-      }
+      };
 
       $scope.isControlledValue = function(model) {
         var isControlled = false;

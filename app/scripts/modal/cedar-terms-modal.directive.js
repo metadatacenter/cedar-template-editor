@@ -87,6 +87,7 @@ define([
               var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
               if (stopIndex != -1) {
                 vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
+                console.log('mods',vm.mods);
               }
             }
           };
@@ -108,11 +109,16 @@ define([
             }
             vm.showPosition = false;
             vm.changeTo = null;
+            console.log('mods',vm.mods);
           };
 
           vm.toggle = function (event) {
             event.preventDefault();
             event.stopPropagation();
+          };
+
+          vm.encode = function(uri) {
+            return encodeURI(uri).replace(/\W/gi, '')
           };
 
           vm.delete = function (index) {
@@ -126,29 +132,52 @@ define([
 
           vm.reset = function () {
             dms.setSortOrder(vm.resource);
+            vm.list = [];
             vm.openTerms(vm.resource);
           };
 
-          // initialize the share dialog
-          vm.openTerms = function (resource) {
-
-            var getShortId = function (uri, id) {
-              if (uri == 'template') {
-                // look for the source in the template classes
-                var addedClass = dms.getFieldAddedClassByUri(id, vm.resource);
-                if (addedClass) {
-                  return addedClass.source;
-                }
-              } else {
-                // pull off the last fragment
-                var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
-                return lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+          vm.isOverflow = function (id, label) {
+              var elm = jQuery("#" + vm.encode(id) + ' .' + label  + '.ellipsis');
+              if (elm[0]) {
+                return (elm[0].scrollWidth > elm.innerWidth());
               }
+          };
+
+          // initialize the share dialog
+          vm.openTerms = function (resource, mods) {
+
+            var getShortId = function (uri, id, type) {
+              // e.g. sourceURI,  https://cadsr.nci.nih.gov/metadata/CADSR-VS/VD2015675v15
+              var arr = uri.split('/');
+              return arr[arr.length - 1];
             };
-            
+
+            var applyMods = function(list, mods) {
+              console.log('applyMods', mods)
+              // apply mods to a duplicate of the list
+              var dup = list.slice();
+
+              for (let i = 0; i < mods.length; i++) {
+                let mod = mods[i];
+                let from = dup.findIndex(item => item['id'] === mod.id);
+                if (from != -1) {
+                  // delete it at from
+                  let entry = dup.splice(from, 1);
+                  if (mod.to != -1 && mod.action == 'move') {
+                    // insert it at to
+                    dup.splice(mod.to, 0, entry[0]);
+                  }
+                }
+              }
+              return dup;
+            };
+
+
             vm.schema = dms.schemaOf(vm.resource);
             vm.term = '*';
             vm.id = dms.getId(vm.resource);
+
+
 
             autocompleteService.clearResults(vm.id, '*');
             var foundResults = autocompleteService.initResults(vm.id, vm.term);
@@ -156,35 +185,18 @@ define([
             vm.fullList = [];
             $q.all(promises).then(values => {
               for (let i = 1; i <= foundResults.length; i++) {
-
+                var found = foundResults[i - 1];
                 vm.fullList.push({
-                  id    : foundResults[i - 1]['@id'],
-                  text  : foundResults[i - 1]['label'],
-                  source: getShortId(foundResults[i - 1]['sourceUri'], foundResults[i - 1]['@id']),
+                  id    : found['@id'],
+                  text  : found['label'],
+                  source: getShortId(found['sourceUri'], found['@id'], found['type']),
                   value : i
                 });
               }
 
               // apply mods
-              vm.mods = dms.getMods(vm.resource);
-              for (let i = 0; i < vm.mods.length; i++) {
-                let mod = vm.mods[i];
-                if (mod.action == 'delete') {
-                  // do the delete
-                  let index = vm.fullList.findIndex(item => item.id === mod.id);
-                  let entry = vm.fullList.splice(index, 1);
-                } else {
-                  // do the move
-                  let id = mod.id;
-                  let to = mod.to;
-                  let from = vm.fullList.findIndex(item => item.id === mod.id);
-                  if (from != -1 && to != -1) {
-                    let entry = vm.fullList.splice(from, 1);
-                    vm.fullList.splice(to, 0, entry[0]);
-                  }
-                }
-              }
-              vm.list = vm.fullList;
+              vm.list = applyMods(vm.fullList, mods);
+              console.log(vm.list)
             });
           };
 
@@ -230,7 +242,9 @@ define([
             if (visible && r) {
               vm.modalVisible = visible;
               vm.resource = r;
-              vm.openTerms(vm.resource);
+              vm.mods = dms.getMods(vm.resource);
+              console.log('mods',vm.mods);
+              vm.openTerms(vm.resource, vm.mods);
             }
           });
         }

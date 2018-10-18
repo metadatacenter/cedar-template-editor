@@ -17,12 +17,35 @@
           <div class="source header">Source</div>
           <div class="tools header invisible"></div>
         </div>
+
+      <!--Show preloader only if the tree and class details preloader is not shown-->
+      <div ng-if="!terms.list || terms.list.length == 0">
+        <div class="loader2"></div>
+      </div>
+
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list track by $index" class="item" id="{{item.id}}">
+          <li ng-repeat="item in terms.list track by $index" class="item" id="{{terms.encode(item.id)}}">
             <div class="flex flex-left term-row" >
               <div class="index">{{$index + 1}}</div>
-              <div class="title ellipsis">{{item.text}}</div>
-              <div class="source ellipsis">{{item.source}}</div>
+
+              <div class="title ellipsis" uib-tooltip='{{item.text}}'
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="mouseenter"
+                  tooltip-animation="true"
+                  tooltip-placement="bottom"
+                  data-toggle="tooltip"
+                  tooltip-enable="terms.isOverflow(item.id,'title')">{{item.text}}</div>
+
+              <div class="source ellipsis" uib-tooltip='{{item.source}}'
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="mouseenter"
+                  tooltip-animation="true"
+                  tooltip-placement="bottom"
+                  data-toggle="tooltip"
+                  tooltip-enable="terms.isOverflow(item.id,'source')">{{item.source}}</div>
+
+
+
               <div class="tools flex flex-right">
 
                 <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown " ng-click="terms.toggle($event)">
