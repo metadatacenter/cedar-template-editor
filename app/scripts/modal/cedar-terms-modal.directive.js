@@ -87,7 +87,6 @@ define([
               var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
               if (stopIndex != -1) {
                 vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
-                console.log('mods',vm.mods);
               }
             }
           };
@@ -109,7 +108,6 @@ define([
             }
             vm.showPosition = false;
             vm.changeTo = null;
-            console.log('mods',vm.mods);
           };
 
           vm.toggle = function (event) {
@@ -153,19 +151,20 @@ define([
             };
 
             var applyMods = function(list, mods) {
-              console.log('applyMods', mods)
               // apply mods to a duplicate of the list
               var dup = list.slice();
 
-              for (let i = 0; i < mods.length; i++) {
-                let mod = mods[i];
-                let from = dup.findIndex(item => item['id'] === mod.id);
-                if (from != -1) {
-                  // delete it at from
-                  let entry = dup.splice(from, 1);
-                  if (mod.to != -1 && mod.action == 'move') {
-                    // insert it at to
-                    dup.splice(mod.to, 0, entry[0]);
+              if (mods) {
+                for (let i = 0; i < mods.length; i++) {
+                  let mod = mods[i];
+                  let from = dup.findIndex(item => item['id'] === mod.id);
+                  if (from != -1) {
+                    // delete it at from
+                    let entry = dup.splice(from, 1);
+                    if (mod.to != -1 && mod.action == 'move') {
+                      // insert it at to
+                      dup.splice(mod.to, 0, entry[0]);
+                    }
                   }
                 }
               }
@@ -196,7 +195,6 @@ define([
 
               // apply mods
               vm.list = applyMods(vm.fullList, mods);
-              console.log(vm.list)
             });
           };
 
@@ -243,7 +241,6 @@ define([
               vm.modalVisible = visible;
               vm.resource = r;
               vm.mods = dms.getMods(vm.resource);
-              console.log('mods',vm.mods);
               vm.openTerms(vm.resource, vm.mods);
             }
           });

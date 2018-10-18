@@ -24,8 +24,8 @@
       </div>
 
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list track by $index" class="item" id="{{terms.encode(item.id)}}">
-            <div class="flex flex-left term-row" >
+          <li ng-repeat="item in terms.list track by $index" class="item"  id="{{item.id}}" >
+            <div class="flex flex-left term-row" id="{{terms.encode(item.id)}}">
               <div class="index">{{$index + 1}}</div>
 
               <div class="title ellipsis" uib-tooltip='{{item.text}}'

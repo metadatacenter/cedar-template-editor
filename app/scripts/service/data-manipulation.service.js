@@ -695,6 +695,7 @@ define([
         };
 
         service.setSortOrder = function (node,  mods) {
+          console.log('setSortOrder',mods);
           if (node) {
             var constraint = service.schemaOf(node)._valueConstraints;
             if (mods) {
@@ -706,12 +707,15 @@ define([
         };
 
         service.getMods = function (node) {
+          console.log('getMods',node);
           var result = [];
           if (node) {
             if (service.schemaOf(node)._valueConstraints.hasOwnProperty('sortOrder')) {
+
               result= service.schemaOf(node)._valueConstraints.sortOrder.mods;
             }
           }
+          console.log('getMods',result);
           return result;
         };
 
