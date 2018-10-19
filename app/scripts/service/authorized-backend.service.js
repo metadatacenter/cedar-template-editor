@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.authorizedBackendService', [])
       .service('AuthorizedBackendService', AuthorizedBackendService);
 
-  AuthorizedBackendService.$inject = ["$http", "$timeout", "UIMessageService", "UserService"];
+  AuthorizedBackendService.$inject = ["$http", "$timeout", "UIMessageService", "UserService", "$window"];
 
-  function AuthorizedBackendService($http, $timeout, UIMessageService, UserService) {
+  function AuthorizedBackendService($http, $timeout, UIMessageService, UserService, $window) {
 
     var service = {
       serviceId: "AuthorizedBackendService"
@@ -19,6 +19,7 @@ define([
       var config = {
         "headers": {
           "Authorization": token == null ? "" : "Bearer " + token,
+          "CEDAR-Client-Session-Id": $window.cedarClientSessionId,
           "CEDAR-Debug"  : true
         }
       };
