@@ -8,7 +8,8 @@ function UserProfileHandler() {
 
   this.getHeaders = function () {
     return {
-      'Authorization': 'Bearer ' + this.userHandler.getToken()
+      'Authorization': 'Bearer ' + this.userHandler.getToken(),
+      "CEDAR-Client-Session-Id": window.cedarClientSessionId,
     };
   };
 
