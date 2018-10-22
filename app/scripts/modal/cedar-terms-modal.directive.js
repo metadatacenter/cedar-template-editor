@@ -47,16 +47,19 @@ define([
 
           var vm = this;
           var dms = DataManipulationService;
-          vm.showPosition = false;
-          vm.changeTo;
-          vm.resource;
-          vm.model;
-          vm.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
-          vm.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-
+          vm.modalVisible = false;
+          vm.resource = null;
+          vm.schema = null;
+          vm.id = null;
           vm.mods = [];
           vm.list = [];
           vm.sortingLog = [];
+          vm.showPosition = false;
+          vm.changeTo = null;
+          vm.isloading = false;
+          vm.showPosition = false;
+          vm.term = '*';
+
           vm.sortableOptions = {
             activate  : function () {
             },
@@ -86,13 +89,15 @@ define([
             stop      : function (e, ui) {
               var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
               if (stopIndex != -1) {
-                vm.mods.push({'id': vm.updateId, 'to': stopIndex, 'action': 'move'});
+                vm.mods.push({
+                  id       : vm.updateId,
+                  to       : stopIndex,
+                  action   : 'move',
+                  type     : vm.list[stopIndex].type,
+                  sourceUri: vm.list[stopIndex].sourceUri
+                });
               }
             }
-          };
-
-          vm.getId = function () {
-            return dms.getId(vm.resource);
           };
 
           vm.log = function (action, list) {
@@ -104,7 +109,13 @@ define([
             let entry = vm.list.splice(index, 1);
             vm.list.splice(changeTo, 0, entry[0]);
             if (changeTo != -1) {
-              vm.mods.push({'id': entry[0].id, 'to': changeTo, 'action': 'move'});
+              vm.mods.push({
+                id       : entry[0].id,
+                to       : changeTo,
+                action   : 'move',
+                type     : vm.list[changeTo].type,
+                sourceUri: vm.list[changeTo].sourceUri
+              });
             }
             vm.showPosition = false;
             vm.changeTo = null;
@@ -115,13 +126,21 @@ define([
             event.stopPropagation();
           };
 
-          vm.encode = function(uri) {
+          vm.encode = function (uri) {
             return encodeURI(uri).replace(/\W/gi, '')
           };
 
+          // delete the entry at this index
           vm.delete = function (index) {
             let entry = vm.list.splice(index, 1);
             vm.mods.push({'id': entry[0].id, 'action': 'delete'});
+            // remove any moves as well
+            for (let i = 0; i < vm.mods.length; i++) {
+              if (vm.mods[i].id == entry[0].id && vm.mods[i]['action'] == 'move') {
+                vm.mods.splice(i, 1);
+                i--;
+              }
+            }
           };
 
           vm.doSave = function () {
@@ -129,72 +148,85 @@ define([
           };
 
           vm.reset = function () {
-            dms.setSortOrder(vm.resource);
+            vm.mods = [];
             vm.list = [];
-            vm.openTerms(vm.resource);
+            vm.openTerms(vm.schema, vm.mods);
           };
 
           vm.isOverflow = function (id, label) {
-              var elm = jQuery("#" + vm.encode(id) + ' .' + label  + '.ellipsis');
-              if (elm[0]) {
-                return (elm[0].scrollWidth > elm.innerWidth());
+            var elm = jQuery("#" + vm.encode(id) + ' .' + label + '.ellipsis');
+            if (elm[0]) {
+              return (elm[0].scrollWidth > elm.innerWidth());
+            }
+          };
+
+          vm.getAcronym = function (sourceUri, id, type, found) {
+            // e.g. sourceURI,  https://cadsr.nci.nih.gov/metadata/CADSR-VS/VD2015675v15
+            let arr = sourceUri.split('/');
+            if (sourceUri == 'template') {
+              arr = id.split('/');
+              return arr[arr.length - 2];
+            }
+            else {
+              if ((type == 'Ontology Class' && arr[arr.length - 2] == 'ontologies') || (type == 'Value Set Class' && arr[arr.length - 2] == 'CADSR-VS')) {
+                return arr[arr.length - 1];
               }
+                else {
+                return arr[arr.length - 2];
+              }
+            }
+          };
+
+          vm.applyMods = function (list, mods) {
+            // apply mods to a duplicate of the list
+
+            var dup = list.slice();
+
+            if (mods) {
+              for (let i = 0; i < mods.length; i++) {
+                let mod = mods[i];
+                let from = dup.findIndex(item => item['id'] === mod.id);
+                if (from != -1) {
+                  // delete it at from
+                  let entry = dup.splice(from, 1);
+                  if (mod.to != -1 && mod.action == 'move') {
+                    // insert it at to
+                    dup.splice(mod.to, 0, entry[0]);
+                  }
+                }
+              }
+            }
+            return dup;
           };
 
           // initialize the share dialog
           vm.openTerms = function (resource, mods) {
+            vm.isloading = true;
 
-            var getShortId = function (uri, id, type) {
-              // e.g. sourceURI,  https://cadsr.nci.nih.gov/metadata/CADSR-VS/VD2015675v15
-              var arr = uri.split('/');
-              return arr[arr.length - 1];
-            };
-
-            var applyMods = function(list, mods) {
-              // apply mods to a duplicate of the list
-              var dup = list.slice();
-
-              if (mods) {
-                for (let i = 0; i < mods.length; i++) {
-                  let mod = mods[i];
-                  let from = dup.findIndex(item => item['id'] === mod.id);
-                  if (from != -1) {
-                    // delete it at from
-                    let entry = dup.splice(from, 1);
-                    if (mod.to != -1 && mod.action == 'move') {
-                      // insert it at to
-                      dup.splice(mod.to, 0, entry[0]);
-                    }
-                  }
-                }
-              }
-              return dup;
-            };
-
-
-            vm.schema = dms.schemaOf(vm.resource);
-            vm.term = '*';
-            vm.id = dms.getId(vm.resource);
-
-
-
-            autocompleteService.clearResults(vm.id, '*');
+            autocompleteService.clearResults(vm.id, vm.term);
             var foundResults = autocompleteService.initResults(vm.id, vm.term);
-            var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term);
+            var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term, false);
             vm.fullList = [];
             $q.all(promises).then(values => {
+
               for (let i = 1; i <= foundResults.length; i++) {
                 var found = foundResults[i - 1];
+
                 vm.fullList.push({
-                  id    : found['@id'],
-                  text  : found['label'],
-                  source: getShortId(found['sourceUri'], found['@id'], found['type']),
-                  value : i
+                  id       : found['@id'],
+                  text     : found['label'],
+                  notation : found['notation'],
+                  sourceUri: found['sourceUri'],
+                  source   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                  type     : found['type']
                 });
               }
 
-              // apply mods
-              vm.list = applyMods(vm.fullList, mods);
+              // sort and apply mods
+              vm.sortList(vm.fullList);
+              vm.list = vm.applyMods(vm.fullList, mods);
+
+              vm.isloading = false;
             });
           };
 
@@ -203,35 +235,84 @@ define([
             vm.modalVisible = false;
           };
 
+          vm.sortList = function (list) {
+            list.sort(function (a, b) {
+              if (a.text && b.text) {
+                var labelA = a.text.toLowerCase();
+                var labelB = b.text.toLowerCase();
+                if (labelA < labelB)
+                  return -1;
+                if (labelA > labelB)
+                  return 1;
+              }
+              return 0;
+            });
+          };
+
+          // merge list2  list1
+          vm.mergeSort = function (arr1, arr2) {
+            vm.sortList(arr1);
+            vm.sortList(arr2);
+
+            let merged = [];
+            let index1 = 0;
+            let index2 = 0;
+            let current = 0;
+
+            while (current < (arr1.length + arr2.length)) {
+
+              let isArr1Depleted = index1 >= arr1.length;
+              let isArr2Depleted = index2 >= arr2.length;
+
+              if (!isArr1Depleted && (isArr2Depleted || (arr1[index1].text.toLowerCase() < arr2[index2].text.toLowerCase()))) {
+                merged[current] = arr1[index1];
+                index1++;
+              } else {
+                merged[current] = arr2[index2];
+                index2++;
+              }
+
+              current++;
+            }
+
+            return merged;
+          };
+
           // callback to load more resources for the current folder
           vm.loadMore = function () {
-            console.log('loadMore');
 
-            // are there more?
-            // if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
-            //   vm.lastOffset += vm.requestLimit;
-            //   var offset = vm.offset;
-            //   return resourceService.getResources(
-            //       {
-            //         folderId     : vm.currentFolderId,
-            //         resourceTypes: activeResourceTypes(),
-            //         sort         : sortField(),
-            //         limit        : vm.requestLimit,
-            //         offset       : offset
-            //       },
-            //       function (response) {
-            //
-            //         for (let i = 0; i < response.resources.length; i++) {
-            //           vm.resources[i + offset] = response.resources[i];
-            //         }
-            //         vm.offset = offset + vm.requestLimit;
-            //         vm.totalCount = response.totalCount;
-            //       },
-            //       function (error) {
-            //         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-            //       }
-            //   );
-            // }
+            // are we currently loading?
+            if (!vm.isloading) {
+              vm.isloading = true;
+
+              var foundResults = autocompleteService.initResults(vm.id, vm.term);
+              var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term, true);
+              vm.fullList = [];
+              if (promises.length > 0) {
+
+                $q.all(promises).then(values => {
+
+                  for (let i = 1; i <= foundResults.length; i++) {
+                    var found = foundResults[i - 1];
+
+                    vm.fullList.push({
+                      id       : found['@id'],
+                      text     : found['label'],
+                      notation : found['notation'],
+                      sourceUri: found['sourceUri'],
+                      source   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                      type     : found['type']
+                    });
+                  }
+
+                  // merge, sort and apply mods
+                  var arr = vm.mergeSort(vm.fullList, vm.list);
+                  vm.list = vm.applyMods(arr, vm.mods);
+                  vm.isloading = false;
+                });
+
+              }
+            }
           };
 
           $rootScope.$on('termsModalVisible', function (event, params) {
@@ -240,8 +321,21 @@ define([
             if (visible && r) {
               vm.modalVisible = visible;
               vm.resource = r;
+              vm.id = dms.getId(vm.resource);
+              vm.schema = dms.schemaOf(vm.resource);
               vm.mods = dms.getMods(vm.resource);
               vm.openTerms(vm.resource, vm.mods);
+            } else {
+              vm.modalVisible = false;
+              vm.resource = null;
+              vm.schema = null;
+              vm.id = null;
+              vm.mods = [];
+              vm.list = [];
+              vm.sortingLog = [];
+              vm.showPosition = false;
+              vm.changeTo = null;
+              vm.isloading = false;
             }
           });
         }

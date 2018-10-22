@@ -178,11 +178,9 @@ define([
         };
 
         service.removePreferredLabel = function (node) {
-          console.log('removePreferredLabel');
           var schema = service.schemaOf(node);
           if (schema) {
             delete schema[CONST.model.PREFLABEL];
-            console.log('removePreferredLabel', node);
           }
         };
 
@@ -694,28 +692,27 @@ define([
           }
         };
 
+        service.getSortOrder = function (node) {
+          return service.schemaOf(node)._valueConstraints.sortOrder;
+        };
+
+        service.clearSortOrder = function (node) {
+          delete service.schemaOf(node)._valueConstraints.sortOrder;
+        };
+
         service.setSortOrder = function (node,  mods) {
-          console.log('setSortOrder',mods);
-          if (node) {
-            var constraint = service.schemaOf(node)._valueConstraints;
-            if (mods) {
-              constraint.sortOrder = {mods:mods};
-            } else {
-              delete constraint.sortOrder;
-            }
+          if (node && mods) {
+              service.schemaOf(node)._valueConstraints.sortOrder = {mods:mods};
           }
         };
 
         service.getMods = function (node) {
-          console.log('getMods',node);
           var result = [];
           if (node) {
             if (service.schemaOf(node)._valueConstraints.hasOwnProperty('sortOrder')) {
-
               result= service.schemaOf(node)._valueConstraints.sortOrder.mods;
             }
           }
-          console.log('getMods',result);
           return result;
         };
 
@@ -1645,7 +1642,6 @@ define([
 
         // rename the key of a child in the form
         service.renameChildKey = function (parent, child, newKey) {
-          console.log('renameChildKey', newKey);
 
           if (!child) {
             return;

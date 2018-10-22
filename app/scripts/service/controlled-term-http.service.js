@@ -86,6 +86,10 @@ define([
       return HttpBuilderService.get(UrlService.getPropertyChildren(acronym, propertyId));
     };
 
+    service.getValueTermById = function (acronym, valueSetId, valueId) {
+      return HttpBuilderService.get(UrlService.getValueTermById(acronym, valueSetId, valueId));
+    };
+
     service.getValueById = function (acronym, valueId) {
       return HttpBuilderService.get(UrlService.getValueById(acronym, valueId));
     };
@@ -130,12 +134,12 @@ define([
       return HttpBuilderService.get(UrlService.searchValueSets(query, sources, size));
     };
 
-    service.autocompleteOntology = function (query, acronym) {
-      return HttpBuilderService.get(UrlService.autocompleteOntology(query, acronym));
+    service.autocompleteOntology = function (query, acronym, page, size) {
+      return HttpBuilderService.get(UrlService.autocompleteOntology(query, acronym, page, size));
     };
 
-    service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth) {
-      return HttpBuilderService.get(UrlService.autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth));
+    service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth, page, size) {
+      return HttpBuilderService.get(UrlService.autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth, page, size));
     };
 
     return service;

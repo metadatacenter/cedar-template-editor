@@ -47,6 +47,7 @@ define([
       getPropertyTree                : getPropertyTree,
       getValuesInValueSet            : getValuesInValueSet,
       getValueById                   : getValueById,
+      getValueTermById               : getValueTermById,
       getAcronym                     : getAcronym,
       init                           : init,
       searchClasses                  : searchClasses,
@@ -418,6 +419,19 @@ define([
       );
     }
 
+    function getValueTermById(acronym, valueSetId, valueId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueTermById(acronym, valueSetId, valueId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getClassParents(acronym, classId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -565,10 +579,10 @@ define([
       );
     }
 
-    function autocompleteOntology(query, acronym) {
+    function autocompleteOntology(query, acronym, page, size) {
       init();
       return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.autocompleteOntology(query, acronym),
+          ControlledTermHttpService.autocompleteOntology(query, acronym, page, size),
           function (response) {
             return response.data;
           },
@@ -578,10 +592,10 @@ define([
       );
     }
 
-    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
+    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth, page, size) {
       init();
       return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth),
+          ControlledTermHttpService.autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth, page, size),
           function (response) {
             return response.data;
           },
