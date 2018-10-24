@@ -332,18 +332,18 @@ define([
     };
 
     service.getClassChildren = function (acronym, classId, page, size) {
+      console.log('getClassChildreen',acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
           + "/children?" + paging(page,size,1,1000,'page','pageSize');
     };
 
     service.getClassDescendants = function (acronym, classId, page, size) {
+      console.log('getClassDescendants',acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
           + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
-    service.getClassById = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
-    };
+
 
     service.getPropertyChildren = function (acronym, propertyId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId)

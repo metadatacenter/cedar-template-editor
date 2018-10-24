@@ -108,8 +108,11 @@
 
     <div ng-if="isTextField()">
 
+      <constrained-default ng-if="isConstrained()" class="form-group  has-feedback" model="field._valueConstraints.defaultValue" index="index"
+          field="field"></constrained-default>
+
       <!-- default value -->
-      <div class="form-group floating-label-wrapper">
+      <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
         <input type="text" auto-focus
             class="form-control field-default-definition"
             placeholder="{{'CREATOR.enterDefaultvalue' | translate}}"

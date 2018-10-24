@@ -56,6 +56,11 @@ define([
         return $scope.isSelectable();
       };
 
+      // has value constraints?
+      $scope.isConstrained = function () {
+        return dms.hasValueConstraint($scope.field);
+      };
+
       $scope.isDraft = function () {
         return dms.isDraft($scope.field);
       };

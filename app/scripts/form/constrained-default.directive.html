@@ -1,0 +1,21 @@
+<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['rdfs:label'])}">
+  <ui-select
+      ng-change="updateModelFromUIControlledField(modelValue.defaultValue)"
+      ng-model="modelValue.defaultValue"
+      theme="bootstrap"
+      close-on-select="true"
+      aria-label="getDescription(field)">
+    <ui-select-match allow-clear="true" placeholder="">{{$select.selected.label}}</ui-select-match>
+    <ui-select-choices
+        ui-disable-choice="option.label == 'No Results...'"
+        refresh="updateFieldAutocomplete(field,$select.search)"
+        refresh-delay="200"
+        repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: {label: $select.search} | limitTo:500">
+      <div>
+        <span class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+        <span ng-bind-html="option.label | highlight: $select.search"></span>&nbsp;
+      </div>
+    </ui-select-choices>
+  </ui-select>
+</div>
+

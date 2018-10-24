@@ -93,8 +93,12 @@ define([
                   id       : vm.updateId,
                   to       : stopIndex,
                   action   : 'move',
-                  type     : vm.list[stopIndex].type,
-                  sourceUri: vm.list[stopIndex].sourceUri
+                  type     : vm.list[stopIndex]['type'],
+                  text     : vm.list[stopIndex]['text'],
+                  notation : vm.list[stopIndex]['notation'],
+                  sourceUri: vm.list[stopIndex]['sourceUri'],
+                  source   : vm.list[stopIndex]['source'],
+
                 });
               }
             }
@@ -113,8 +117,12 @@ define([
                 id       : entry[0].id,
                 to       : changeTo,
                 action   : 'move',
-                type     : vm.list[changeTo].type,
-                sourceUri: vm.list[changeTo].sourceUri
+                type     : vm.list[changeTo]['type'],
+                sourceUri: vm.list[changeTo]['sourceUri'],
+                text     : vm.list[changeTo]['text'],
+                notation : vm.list[changeTo]['notation'],
+                source   : vm.list[changeTo]['source'],
+
               });
             }
             vm.showPosition = false;
@@ -263,8 +271,11 @@ define([
 
               let isArr1Depleted = index1 >= arr1.length;
               let isArr2Depleted = index2 >= arr2.length;
+              let airr1text = arr1[index1] && arr1[index1].text ? arr1[index1].text.toLowerCase() : '';
+              let airr2text = arr2[index2] && arr2[index2].text ? arr2[index2].text.toLowerCase() : '';
 
-              if (!isArr1Depleted && (isArr2Depleted || (arr1[index1].text.toLowerCase() < arr2[index2].text.toLowerCase()))) {
+
+              if (!isArr1Depleted && (isArr2Depleted || (airr1text < airr2text))) {
                 merged[current] = arr1[index1];
                 index1++;
               } else {
