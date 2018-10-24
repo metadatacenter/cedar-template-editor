@@ -24,25 +24,25 @@
       </div>
 
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list track by $index" class="item"  id="{{item.id}}" >
-            <div class="flex flex-left term-row" id="{{terms.encode(item.id)}}">
+          <li ng-repeat="item in terms.list track by $index" class="item"  id="{{item['@id']}}" >
+            <div class="flex flex-left term-row" id="{{terms.encode(item['@id'])}}">
               <div class="index">{{$index + 1}}</div>
 
-              <div class="title ellipsis" uib-tooltip='{{item.text}}'
+              <div class="title ellipsis" uib-tooltip='{{item.label}}'
                   tooltip-append-to-body="true"
                   tooltip-trigger="mouseenter"
                   tooltip-animation="true"
                   tooltip-placement="bottom"
                   data-toggle="tooltip"
-                  tooltip-enable="terms.isOverflow(item.id,'title')">{{item.text}}</div>
+                  tooltip-enable="terms.isOverflow(item.id,'title')">{{item.label}}</div>
 
-              <div class="source ellipsis" uib-tooltip='{{item.source}}'
+              <div class="source ellipsis" uib-tooltip='{{item.acronym}}'
                   tooltip-append-to-body="true"
                   tooltip-trigger="mouseenter"
                   tooltip-animation="true"
                   tooltip-placement="bottom"
                   data-toggle="tooltip"
-                  tooltip-enable="terms.isOverflow(item.id,'source')">{{item.source}}</div>
+                  tooltip-enable="terms.isOverflow(item['@id'],'acronym')">{{item.acronym}}</div>
 
 
 

@@ -2863,6 +2863,20 @@ section.dashboard-elements {
       transition: border-color 0.3s linear;
       background: @white;
 
+      &.ui-select-toggle {
+        padding: 8px;
+        border:1px solid #ddd;
+        text-transform: none;
+        a.btn {
+          margin-top: -6px;
+          right:0;
+          text-transform: none;
+
+        }
+      }
+
+
+
       &.empty ~ .floating-label {
         top: 10px;
         color: @brand-primary;
@@ -2905,7 +2919,7 @@ section.dashboard-elements {
       }
 
       input.form-control.ui-select-search {
-        padding-top: 0;
+        padding: 6px 12px;
       }
 
       &.ui-select-container {
@@ -6581,8 +6595,6 @@ body .template-header .controlled-terms-modal {
 }
 
 .input-type-container .configuration-options .ui-select-container {
-  background:red;
-  color:red !important;
 }
 
 .input-type-container .configuration-actions .toggle-options .save-options .remove {

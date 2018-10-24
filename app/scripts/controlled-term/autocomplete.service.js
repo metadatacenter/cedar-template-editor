@@ -334,13 +334,13 @@ define([
         angular.forEach(vcst.sortOrder.mods, function (mod) {
           if (mod.action == 'move') {
 
-            if (!service.hasTerm(id, query, mod.sourceUri, mod.id)) {
+            if (!service.hasTerm(id, query, mod.sourceUri, mod['@id'])) {
               if (mod.type == "Value Set Class") {
                 var uriArr = mod.sourceUri.split('/');
                 let vsCollection = uriArr[uriArr.length - 2];
 
                 var promise =
-                    controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, mod.id).then(
+                    controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, mod['@id']).then(
                         function (childResponse) {
                           service.processAutocompleteClassResults(id, query, 'Value Set Class', mod.sourceUri,
                               childResponse);
@@ -348,7 +348,7 @@ define([
               } else if (mod.type == "Ontology Class") {
                 var uriArr = mod.sourceUri.split('/');
                 let acronym = uriArr[uriArr.length - 1];
-                let classId = mod.id;
+                let classId = mod['@id'];
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
                   service.processAutocompleteClassResults(id, query, 'Ontology Class', mod.sourceUri, response);

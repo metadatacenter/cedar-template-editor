@@ -30,7 +30,7 @@ define([
         var dup = list.slice();
         for (let i = 0; i < $scope.mods.length; i++) {
           let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod.id);
+          let from = dup.findIndex(item => item['@id'] === mod['@id']);
           if (from != -1) {
             // delete it at from
             let entry = dup.splice(from, 1);

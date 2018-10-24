@@ -2170,7 +2170,7 @@ define([
 
         service.hasUserDefinedDefaultValue = function (field) {
           var schema = service.schemaOf(field);
-          if (schema._valueConstraints && schema._valueConstraints.defaultValue && schema._valueConstraints.defaultValue.length > 0) {
+          if (schema._valueConstraints && schema._valueConstraints.defaultValue ) {
             return true;
           }
           else {

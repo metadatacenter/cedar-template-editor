@@ -30,7 +30,7 @@ define([
         var dup = list.slice();
         for (let i = 0; i < $scope.mods.length; i++) {
           let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod.id);
+          let from = dup.findIndex(item => item['@id'] === mod['@id']);
           if (from != -1) {
             // delete it at from
             let entry = dup.splice(from, 1);
@@ -87,7 +87,8 @@ define([
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function (modelValue, index) {
-        console.log('updateModelFromUIControlledField',modelValue, index)
+        index == index || 0;
+        console.log('updateModelFromUIControlledField',modelValue, index);
         if (modelValue[index] && modelValue[index].termInfo) {
           var termId = modelValue[index].termInfo['@id'];
           var termLabel = modelValue[index].termInfo.label;
@@ -131,6 +132,20 @@ define([
         }
       };
 
+      $scope.initValue = function() {
+        console.log('initValue');
+        if (dms.hasUserDefinedDefaultValue($scope.field)) {
+          var value = dms.getUserDefinedDefaultValue($scope.field);
+
+          if (!$scope.model.hasOwnProperty('@id')) {
+            $scope.modelValue[$scope.index].termInfo = {
+              '@id': value['@id'],
+              label: value['label']
+            }
+          }
+        }
+      };
+
       $scope.updateUIFromModelControlledField = function () {
         if (angular.isArray($scope.model)) {
           $scope.modelValue = [];
@@ -152,8 +167,12 @@ define([
         }
       };
 
+
+
       // Initializes model for fields constrained using controlled terms
       $scope.updateUIFromModelControlledField();
+      $scope.initValue();
+
     };
 
     return {

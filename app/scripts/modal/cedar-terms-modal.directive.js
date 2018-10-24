@@ -87,17 +87,17 @@ define([
               vm.updateId = ui.item[0].id;
             },
             stop      : function (e, ui) {
-              var stopIndex = vm.list.findIndex(item => item.id === vm.updateId);
+              var stopIndex = vm.list.findIndex(item => item['@id'] === vm.updateId);
               if (stopIndex != -1) {
                 vm.mods.push({
-                  id       : vm.updateId,
+                  '@id'       : vm.updateId,
                   to       : stopIndex,
                   action   : 'move',
                   type     : vm.list[stopIndex]['type'],
-                  text     : vm.list[stopIndex]['text'],
+                  label     : vm.list[stopIndex]['label'],
                   notation : vm.list[stopIndex]['notation'],
                   sourceUri: vm.list[stopIndex]['sourceUri'],
-                  source   : vm.list[stopIndex]['source'],
+                  acronym   : vm.list[stopIndex]['acronym'],
 
                 });
               }
@@ -114,14 +114,14 @@ define([
             vm.list.splice(changeTo, 0, entry[0]);
             if (changeTo != -1) {
               vm.mods.push({
-                id       : entry[0].id,
+                '@id'       : entry[0]['@id'],
                 to       : changeTo,
                 action   : 'move',
                 type     : vm.list[changeTo]['type'],
                 sourceUri: vm.list[changeTo]['sourceUri'],
-                text     : vm.list[changeTo]['text'],
+                label     : vm.list[changeTo]['label'],
                 notation : vm.list[changeTo]['notation'],
-                source   : vm.list[changeTo]['source'],
+                acronym   : vm.list[changeTo]['acronym'],
 
               });
             }
@@ -141,10 +141,10 @@ define([
           // delete the entry at this index
           vm.delete = function (index) {
             let entry = vm.list.splice(index, 1);
-            vm.mods.push({'id': entry[0].id, 'action': 'delete'});
+            vm.mods.push({'@id': entry[0]['@id'], 'action': 'delete'});
             // remove any moves as well
             for (let i = 0; i < vm.mods.length; i++) {
-              if (vm.mods[i].id == entry[0].id && vm.mods[i]['action'] == 'move') {
+              if (vm.mods[i]['@id'] == entry[0]['@id'] && vm.mods[i]['action'] == 'move') {
                 vm.mods.splice(i, 1);
                 i--;
               }
@@ -193,7 +193,7 @@ define([
             if (mods) {
               for (let i = 0; i < mods.length; i++) {
                 let mod = mods[i];
-                let from = dup.findIndex(item => item['id'] === mod.id);
+                let from = dup.findIndex(item => item['@id'] === mod['@id']);
                 if (from != -1) {
                   // delete it at from
                   let entry = dup.splice(from, 1);
@@ -221,11 +221,11 @@ define([
                 var found = foundResults[i - 1];
 
                 vm.fullList.push({
-                  id       : found['@id'],
-                  text     : found['label'],
+                  '@id'       : found['@id'],
+                  label     : found['label'],
                   notation : found['notation'],
                   sourceUri: found['sourceUri'],
-                  source   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                  acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
                   type     : found['type']
                 });
               }
@@ -233,6 +233,7 @@ define([
               // sort and apply mods
               vm.sortList(vm.fullList);
               vm.list = vm.applyMods(vm.fullList, mods);
+              console.log(vm.list);
 
               vm.isloading = false;
             });
@@ -307,11 +308,11 @@ define([
                     var found = foundResults[i - 1];
 
                     vm.fullList.push({
-                      id       : found['@id'],
-                      text     : found['label'],
+                      '@id'       : found['@id'],
+                      label     : found['label'],
                       notation : found['notation'],
                       sourceUri: found['sourceUri'],
-                      source   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                      acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
                       type     : found['type']
                     });
                   }
