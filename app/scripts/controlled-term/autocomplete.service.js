@@ -335,7 +335,6 @@ define([
 
       // only load the sorted move mods the first time, not on subsequent pages
       if (vcst.sortOrder && vcst.sortOrder.mods && vcst.sortOrder.mods.length > 0 && !next) {
-        console.log('autocomplete sortOrder')
 
         angular.forEach(vcst.sortOrder.mods, function (mod) {
           if (mod.action == 'move') {
