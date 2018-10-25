@@ -1,7 +1,7 @@
 <div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['rdfs:label'])}">
   <ui-select
-      ng-change="updateModelFromUIControlledField(modelValue, index)"
-      ng-model="modelValue[index].termInfo"
+      ng-change="onchange()"
+      ng-model="model[index]"
       theme="bootstrap"
       placeholder="enter default value"
       close-on-select="true"
@@ -9,9 +9,9 @@
     <ui-select-match allow-clear="true" placeholder="">{{$select.selected.label}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
-        refresh="updateFieldAutocomplete(field,$select.search, index)"
+        refresh="updateFieldAutocomplete(field,$select.search, false, index)"
         refresh-delay="200"
-        repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: {label: $select.search} | limitTo:500">
+        repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: { 'rdfs:label': $select.search} | limitTo:500">
       <div>
         <span class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.label | highlight: $select.search"></span>&nbsp;

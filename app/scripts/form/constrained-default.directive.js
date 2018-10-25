@@ -19,12 +19,12 @@ define([
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
       $scope.mods = dms.getMods($scope.field);
 
-
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return dms.hasValueConstraint($scope.field);
       };
 
+      // apply user mods to the drop down list
       $scope.applyMods = function (list) {
         // apply mods to a duplicate of the list
         var dup = list.slice();
@@ -43,6 +43,7 @@ define([
         return dup;
       };
 
+      // order the drop down values
       $scope.order = function (arr) {
         if (arr) {
           var dup = $scope.applyMods(arr);
@@ -50,111 +51,30 @@ define([
         }
       };
 
-      // is this field required?
-      $scope.isRequired = function () {
-        return dms.isRequired($scope.field);
-      };
-
+      // get resource id
       $scope.getId = function () {
         return dms.getId($scope.field);
       };
 
-      // is the field multiple cardinality?
-      $scope.isMultipleCardinality = function () {
-        return dms.isMultipleCardinality($scope.field);
-      };
-
-      // Used just for text fields whose values have been constrained using controlled terms
-      $scope.$watch("model", function () {
-
-        $scope.isEditState = function () {
-          return (UIUtilService.isEditState($scope.field));
-        };
-
-        $scope.isNested = function () {
-          return (dms.isNested($scope.field));
-        };
-
-        $scope.addOption = function () {
-          return (dms.addOption($scope.field));
-        };
-
-      }, true);
-
-      // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledField = function (modelValue) {
-        console.log('updateModelFromUIControlledField', modelValue, $scope.model);
-        if (modelValue && modelValue.termInfo) {
-          var termId = modelValue.termInfo['@id'];
-          var termLabel = modelValue.termInfo.label;
-          var termNotation;
-          // If 'notation' is there, use it. The 'notation' attribute is used in the CADSR-VS ontology to represent the
-          // value that needs to be stored, which is different from the value that is shown on the UI.
-          if (modelValue.termInfo.notation) {
-            termNotation = modelValue.termInfo.notation;
-          }
+      $scope.model.defaultValue = $scope.model.defaultValue || {};
 
 
-          $scope.model['@id'] = termId;
-          $scope.model['rdfs:label'] = termLabel;
-          if (termNotation) {
-            $scope.model['skos:notation'] = termNotation;
-          }
+  };
 
+  return {
+    templateUrl: 'scripts/form/constrained-default.directive.html',
+    restrict   : 'EA',
+    scope      : {
+      field: '=',
+      model: '='
+    },
+    controller : function ($scope, $element) {
+    },
+    replace    : true,
+    link       : linker
+  };
 
-        }
-        // Value is undefined
-        else {
-
-          delete $scope.model['@id'];
-          delete $scope.model['rdfs:label'];
-          delete $scope.model['skos:notation'];
-
-        }
-      };
-
-      $scope.updateUIFromModelControlledField = function () {
-        console.log('updateUIFromModelControlledField');
-        // "defaultValue": {
-        //   "@id": "http://purl.bioontology.org/ontology/LNC/LP256429-4",
-        //       "rdfs:label": "Duffy group &#x7C; Red Blood Cells"
-        // }
-
-        if (dms.hasValueConstraint($scope.field)) {
-
-          if (!dms.getValueConstraint($scope.field).hasOwnProperty('defaultValue')) {
-            dms.getValueConstraint($scope.field)['defaultValue'] = {
-                "@id": "http://purl.bioontology.org/ontology/LNC/LP256429-4",
-                "rdfs:label": "Duffy group &#x7C; Red Blood Cells"
-            };
-          }
-
-          $scope.modelValue = dms.getValueConstraint($scope.field);
-
-          console.log('updateUIFromModelControlledField', $scope.modelValue);
-        }
-
-      };
-
-      // Initializes model for fields constrained using controlled terms
-      $scope.updateUIFromModelControlledField();
-    };
-
-    return {
-      templateUrl: 'scripts/form/constrained-default.directive.html',
-      restrict   : 'EA',
-      scope      : {
-        field: '=',
-        model: '='
-
-      },
-      controller : function ($scope, $element) {
-      },
-      replace    : true,
-      link       : linker
-    };
-
-  }
+}
 
 })
 ;

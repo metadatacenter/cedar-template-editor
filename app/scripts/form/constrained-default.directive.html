@@ -1,7 +1,6 @@
-<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['rdfs:label'])}">
+<div class="has-constraint">
   <ui-select
-      ng-change="updateModelFromUIControlledField(modelValue.defaultValue)"
-      ng-model="modelValue.defaultValue"
+      ng-model="model.defaultValue"
       theme="bootstrap"
       close-on-select="true"
       aria-label="getDescription(field)">

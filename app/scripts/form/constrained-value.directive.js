@@ -25,7 +25,7 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-      $scope.applyMods= function(list) {
+      $scope.applyMods = function (list) {
         // apply mods to a duplicate of the list
         var dup = list.slice();
         for (let i = 0; i < $scope.mods.length; i++) {
@@ -86,91 +86,68 @@ define([
       }, true);
 
       // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledField = function (modelValue, index) {
-        index == index || 0;
-        console.log('updateModelFromUIControlledField',modelValue, index);
-        if (modelValue[index] && modelValue[index].termInfo) {
-          var termId = modelValue[index].termInfo['@id'];
-          var termLabel = modelValue[index].termInfo.label;
-          var termNotation;
-          // If 'notation' is there, use it. The 'notation' attribute is used in the CADSR-VS ontology to represent the
-          // value that needs to be stored, which is different from the value that is shown on the UI.
-          if (modelValue[index].termInfo.notation) {
-            termNotation = modelValue[index].termInfo.notation;
-          }
-          // Array
-          if (angular.isArray($scope.model)) {
-            $scope.model[index]['@id'] = termId;
-            $scope.model[index]['rdfs:label'] = termLabel;
-            if (termNotation) {
-              $scope.model[index]['skos:notation'] = termNotation;
-            }
-          }
-          // Single object
-          else {
-            $scope.model['@id'] = termId;
-            $scope.model['rdfs:label'] = termLabel;
-            if (termNotation) {
-              $scope.model['skos:notation'] = termNotation;
-            }
-          }
-        }
-        // Value is undefined
-        else {
-          // Array
-          if (angular.isArray($scope.model)) {
-            delete $scope.model[index]['@id'];
-            delete $scope.model[index]['rdfs:label'];
-            delete $scope.model[index]['skos:notation'];
-          }
-          // Single object
-          else {
-            delete $scope.model['@id'];
-            delete $scope.model['rdfs:label'];
-            delete $scope.model['skos:notation'];
-          }
-        }
-      };
+      // $scope.updateModelFromUIControlledField = function (modelValue, index) {
+      //   console.log('updateModelFromUIControlledField', modelValue, index);
+      //   if (modelValue[index] && modelValue[index].termInfo) {
+      //     var termId = modelValue[index].termInfo['@id'];
+      //     var termLabel = modelValue[index].termInfo.label;
+      //     var termNotation;
+      //     // If 'notation' is there, use it. The 'notation' attribute is used in the CADSR-VS ontology to represent the
+      //     // value that needs to be stored, which is different from the value that is shown on the UI.
+      //     if (modelValue[index].termInfo.notation) {
+      //       termNotation = modelValue[index].termInfo.notation;
+      //     }
+      //     // Array
+      //     if (angular.isArray($scope.model)) {
+      //       $scope.model[index]['@id'] = termId;
+      //       $scope.model[index]['rdfs:label'] = termLabel;
+      //       if (termNotation) {
+      //         $scope.model[index]['skos:notation'] = termNotation;
+      //       }
+      //     }
+      //     // Single object
+      //     else {
+      //       $scope.model['@id'] = termId;
+      //       $scope.model['rdfs:label'] = termLabel;
+      //       if (termNotation) {
+      //         $scope.model['skos:notation'] = termNotation;
+      //       }
+      //     }
+      //   }
+      //   // Value is undefined
+      //   else {
+      //     // Array
+      //     if (angular.isArray($scope.model)) {
+      //       delete $scope.model[index]['@id'];
+      //       delete $scope.model[index]['rdfs:label'];
+      //       delete $scope.model[index]['skos:notation'];
+      //     }
+      //     // Single object
+      //     else {
+      //       delete $scope.model['@id'];
+      //       delete $scope.model['rdfs:label'];
+      //       delete $scope.model['skos:notation'];
+      //     }
+      //   }
+      // };
 
-      $scope.initValue = function() {
-        console.log('initValue');
+      $scope.initValue = function () {
         if (dms.hasUserDefinedDefaultValue($scope.field)) {
-          var value = dms.getUserDefinedDefaultValue($scope.field);
-
-          if (!$scope.model.hasOwnProperty('@id')) {
-            $scope.modelValue[$scope.index].termInfo = {
-              '@id': value['@id'],
-              label: value['label']
-            }
+          if (!$scope.model[$scope.index].hasOwnProperty('@id')) {
+            $scope.model[$scope.index] = dms.getUserDefinedDefaultValue($scope.field);
+            $scope.model[$scope.index]['rdfs:label'] = $scope.model[$scope.index]['label'];
           }
         }
       };
 
-      $scope.updateUIFromModelControlledField = function () {
-        if (angular.isArray($scope.model)) {
-          $scope.modelValue = [];
-          angular.forEach($scope.model, function (m, i) {
-            $scope.modelValue[i] = {};
-            $scope.modelValue[i]['termInfo'] = {
-              '@id': m['termInfo'],
-              label: m['rdfs:label']
-            };
-          });
-        }
-        else {
-          $scope.modelValue = [];
-          $scope.modelValue[0] = {};
-          $scope.modelValue[0]['termInfo'] = {
-            '@id': $scope.model['termInfo'],
-            label: $scope.model['rdfs:label']
-          };
-        }
+      $scope.onchange = function () {
+        // console.log($scope.model);
+        // if ($scope.model[$scope.index].hasOwnProperty('@id')) {
+        //   $scope.model[$scope.index]['rdfs:label'] = $scope.model[$scope.index]['label'];
+        // }
       };
 
 
-
-      // Initializes model for fields constrained using controlled terms
-      $scope.updateUIFromModelControlledField();
       $scope.initValue();
 
     };
@@ -179,24 +156,13 @@ define([
       templateUrl: 'scripts/form/constrained-value.directive.html',
       restrict   : 'EA',
       scope      : {
-        field  : '=',
-        model  : '=',
-        index  : '=',
+        field: '=',
+        model: '=',
+        index: '='
+
 
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
-          //Initializing Bootstrap Popover fn for each item loaded
-          setTimeout(function () {
-            if ($element.find('#field-value-tooltip').length > 0) {
-              $element.find('#field-value-tooltip').popover();
-            } else if ($element.find('[data-toggle="popover"]').length > 0) {
-              $element.find('[data-toggle="popover"]').popover();
-            }
-          }, 1000);
-        };
-        addPopover($scope);
-
       },
       replace    : true,
       link       : linker

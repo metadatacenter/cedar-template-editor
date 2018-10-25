@@ -52,6 +52,10 @@ define([
         return !$scope.isNested();
       };
 
+      $scope.getValueConstraint = function () {
+        return dms.getValueConstraint($scope.field);
+      };
+
       $scope.isSortable = function () {
         return $scope.isSelectable();
       };

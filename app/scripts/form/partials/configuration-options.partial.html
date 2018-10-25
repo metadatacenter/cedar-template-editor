@@ -108,8 +108,7 @@
 
     <div ng-if="isTextField()">
 
-      <constrained-default ng-if="isConstrained()" class="form-group  has-feedback" model="field._valueConstraints.defaultValue" index="index"
-          field="field"></constrained-default>
+      <constrained-default ng-if="isConstrained()" class="form-group  has-feedback" field="field" model="getValueConstraint()"></constrained-default>
 
       <!-- default value -->
       <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">

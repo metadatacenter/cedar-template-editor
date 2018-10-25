@@ -125,6 +125,7 @@ define([
             '@idRelated': response.collection[i]['relatedMatch'],
             'notation'  : response.collection[i]['notation'],
             'label'     : response.collection[i].prefLabel,
+            'rdfs:label'     : response.collection[i].prefLabel,
             'type'      : field_type,
             'sourceUri' : source_uri
           };
@@ -136,6 +137,7 @@ define([
           '@idRelated': response['relatedMatch'],
           'notation'  : response['notation'],
           'label'     : response.prefLabel,
+          'rdfs:label'     : response.prefLabel,
           'type'      : field_type,
           'sourceUri' : source_uri
         };
@@ -221,7 +223,7 @@ define([
     };
 
     // returns an array of promises
-    service.updateFieldAutocomplete = function (field, term, next) {
+    service.updateFieldAutocomplete = function (field, term, next, index) {
 
       var query = term || '*';
       var results = [];
@@ -240,8 +242,10 @@ define([
                 {
                   '@id'      : klass.uri,
                   'label'    : klass.label,
+                  'rdfs:label': klass.label,
                   'type'     : 'Ontology Class',
-                  'sourceUri': 'template'
+                  'sourceUri': 'template',
+
                 }
             );
           } else {
@@ -250,6 +254,7 @@ define([
                   {
                     '@id'      : klass.uri,
                     'label'    : klass.label,
+                    'rdfs:label': klass.label,
                     'type'     : 'Ontology Class',
                     'sourceUri': 'template'
                   }
@@ -330,6 +335,7 @@ define([
 
       // only load the sorted move mods the first time, not on subsequent pages
       if (vcst.sortOrder && vcst.sortOrder.mods && vcst.sortOrder.mods.length > 0 && !next) {
+        console.log('autocomplete sortOrder')
 
         angular.forEach(vcst.sortOrder.mods, function (mod) {
           if (mod.action == 'move') {
