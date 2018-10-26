@@ -530,9 +530,10 @@ define([
         return dms.getValueLocation($scope.field);
       };
 
-      // has recommendations?
+      // TODO for now turn off recommendations
       $scope.isRecommended = function () {
-        return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
+        return false;
+        //return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
 
       // has value constraints?

@@ -1198,16 +1198,15 @@ define([
           }
 
           function removeResource(resource) {
-
             // remove resource from list
-            var index;
+            var index = -1;
             for (var i = 0, len = vm.resources.length; i < len; i++) {
               if (vm.resources[i]['@id'] === resource['@id']) {
                 index = i;
                 break;
               }
             }
-            if (i > -1) {
+            if (index > -1) {
               vm.resources.splice(index, 1);
             }
             // remove current selection
@@ -1230,7 +1229,7 @@ define([
                             UIMessageService.flashSuccess('SERVER.' + r.nodeType.toUpperCase() + '.delete.success',
                                 {"title": r.nodeType},
                                 'GENERIC.Deleted');
-                            removeResource(response);
+                            removeResource(r);
                           },
                           function (error) {
                             UIMessageService.showBackendError('SERVER.' + r.nodeType.toUpperCase() + '.delete.error',
@@ -1627,7 +1626,6 @@ define([
           });
 
           $scope.selectResourceById = function (id) {
-            console.log('selectResourceById');
 
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {

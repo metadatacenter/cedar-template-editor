@@ -256,17 +256,6 @@ define([
 
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
-          //Initializing Bootstrap Popover fn for each item loaded
-          setTimeout(function () {
-            if ($element.find('#field-value-tooltip').length > 0) {
-              $element.find('#field-value-tooltip').popover();
-            } else if ($element.find('[data-toggle="popover"]').length > 0) {
-              $element.find('[data-toggle="popover"]').popover();
-            }
-          }, 1000);
-        };
-        addPopover($scope);
       },
       replace    : true,
       link       : linker

@@ -20,7 +20,6 @@ define([
       // initialize with the default value
       let initValue = function () {
         if (dms.hasUserDefinedDefaultValue($scope.field)) {
-          console.log('model[index]', $scope.model,$scope.index);
           if (!$scope.model[$scope.index].hasOwnProperty('@id')) {
             $scope.model[$scope.index] = dms.getUserDefinedDefaultValue($scope.field);
             $scope.model[$scope.index]['rdfs:label'] = $scope.model[$scope.index]['label'];
