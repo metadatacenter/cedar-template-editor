@@ -327,6 +327,7 @@ define([
     };
 
     service.getAllValuesInValueSetByValue = function (valueId, vsCollection, page, size) {
+      console.log('getAllValuesInValueSetByValue');
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId)
           + "/all-values?" + paging(page,size,1,50,'page','page_size');
     };

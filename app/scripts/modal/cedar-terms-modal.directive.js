@@ -87,10 +87,10 @@ define([
               vm.updateId = ui.item[0].id;
             },
             stop      : function (e, ui) {
-              var stopIndex = vm.list.findIndex(item => item['@id'] === vm.updateId);
+              var stopIndex = vm.list.findIndex(item => item['id'] === vm.updateId);
               if (stopIndex != -1) {
                 vm.mods.push({
-                  '@id'       : vm.updateId,
+                  'id'       : vm.updateId,
                   to       : stopIndex,
                   action   : 'move',
                   type     : vm.list[stopIndex]['type'],
@@ -98,6 +98,7 @@ define([
                   notation : vm.list[stopIndex]['notation'],
                   sourceUri: vm.list[stopIndex]['sourceUri'],
                   acronym   : vm.list[stopIndex]['acronym'],
+                  '@id'     : vm.list[stopIndex]['@id'],
 
                 });
               }
@@ -226,14 +227,15 @@ define([
                   notation : found['notation'],
                   sourceUri: found['sourceUri'],
                   acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                  type     : found['type']
+                  type     : found['type'],
+                  id       : found['id'],
+                  vsCollection: found['vsCollection']
                 });
               }
 
               // sort and apply mods
               vm.sortList(vm.fullList);
               vm.list = vm.applyMods(vm.fullList, mods);
-              console.log(vm.list);
 
               vm.isloading = false;
             });
@@ -313,7 +315,9 @@ define([
                       notation : found['notation'],
                       sourceUri: found['sourceUri'],
                       acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                      type     : found['type']
+                      type     : found['type'],
+                      id       : found['id'],
+                      vsCollection: found['vsCollection']
                     });
                   }
 

@@ -80,16 +80,23 @@ define([
       var cache = service.autocompleteResultsCache[field_id][query];
       cache.paging = cache.paging || {};
       cache.paging[field_type] = cache.paging[field_type] || {};
-      cache.paging[field_type][source_uri] = cache.paging[field_type][source_uri] || {};
-
-      cache.paging[field_type][source_uri] = {
-        page     : response.page || 0,
-        pageCount: response.pageCount || 1,
-        pageSize : response.pageSize || 1,
-        prevPage : response.prevPage || 0,
-        nextPage : response.nextPage || 0,
+      cache.paging[field_type][source_uri] = cache.paging[field_type][source_uri] || {
+        page     : 0,
+        pageCount: 1,
+        pageSize : 1,
+        prevPage : 0,
+        nextPage : 0
       };
 
+      if (response.hasOwnProperty('page')) {
+        cache.paging[field_type][source_uri] = {
+          page     : response.page,
+          pageCount: response.pageCount,
+          pageSize : response.pageSize,
+          prevPage : response.prevPage,
+          nextPage : response.nextPage
+        };
+      }
     };
 
 
@@ -121,25 +128,29 @@ define([
       if (angular.isDefined(response.collection)) {
         for (i = 0; i < response.collection.length; i++) {
           result = {
-            '@id'       : response.collection[i]['@id'],
-            '@idRelated': response.collection[i]['relatedMatch'],
-            'notation'  : response.collection[i]['notation'],
-            'label'     : response.collection[i].prefLabel,
-            'rdfs:label'     : response.collection[i].prefLabel,
-            'type'      : field_type,
-            'sourceUri' : source_uri
+            'id'          : response.collection[i]['id'],
+            '@id'         : response.collection[i]['@id'],
+            '@idRelated'  : response.collection[i]['relatedMatch'],
+            'notation'    : response.collection[i]['notation'],
+            'label'       : response.collection[i].prefLabel,
+            'rdfs:label'  : response.collection[i].prefLabel,
+            'type'        : field_type,
+            'sourceUri'   : source_uri,
+            'vsCollection': response.collection[i]['vsCollection'],
           };
           collection.push(result);
         }
       } else {
         result = {
-          '@id'       : response['@id'],
-          '@idRelated': response['relatedMatch'],
-          'notation'  : response['notation'],
-          'label'     : response.prefLabel,
-          'rdfs:label'     : response.prefLabel,
-          'type'      : field_type,
-          'sourceUri' : source_uri
+          'id'          : response['id'],
+          '@id'         : response['@id'],
+          '@idRelated'  : response['relatedMatch'],
+          'notation'    : response['notation'],
+          'label'       : response.prefLabel,
+          'rdfs:label'  : response.prefLabel,
+          'type'        : field_type,
+          'sourceUri'   : source_uri,
+          'vsCollection': response['vsCollection'],
         };
         collection.push(result);
       }
@@ -240,11 +251,11 @@ define([
           if (query == '*') {
             service.autocompleteResultsCache[id][query].results.push(
                 {
-                  '@id'      : klass.uri,
-                  'label'    : klass.label,
+                  '@id'       : klass.uri,
+                  'label'     : klass.label,
                   'rdfs:label': klass.label,
-                  'type'     : 'Ontology Class',
-                  'sourceUri': 'template',
+                  'type'      : 'Ontology Class',
+                  'sourceUri' : 'template',
 
                 }
             );
@@ -252,11 +263,11 @@ define([
             if (klass && klass.label && klass.label.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
               service.autocompleteResultsCache[id][query].results.push(
                   {
-                    '@id'      : klass.uri,
-                    'label'    : klass.label,
+                    '@id'       : klass.uri,
+                    'label'     : klass.label,
                     'rdfs:label': klass.label,
-                    'type'     : 'Ontology Class',
-                    'sourceUri': 'template'
+                    'type'      : 'Ontology Class',
+                    'sourceUri' : 'template'
                   }
               );
             }
@@ -333,35 +344,43 @@ define([
         });
       }
 
+
       // only load the sorted move mods the first time, not on subsequent pages
       if (vcst.sortOrder && vcst.sortOrder.mods && vcst.sortOrder.mods.length > 0 && !next) {
+
 
         angular.forEach(vcst.sortOrder.mods, function (mod) {
           if (mod.action == 'move') {
 
             if (!service.hasTerm(id, query, mod.sourceUri, mod['@id'])) {
+
               if (mod.type == "Value Set Class") {
                 var uriArr = mod.sourceUri.split('/');
                 let vsCollection = uriArr[uriArr.length - 2];
+                let classId = mod['@id'];
+
 
                 var promise =
-                    controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, mod['@id']).then(
+                    controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, classId).then(
                         function (childResponse) {
                           service.processAutocompleteClassResults(id, query, 'Value Set Class', mod.sourceUri,
                               childResponse);
                         });
-              } else if (mod.type == "Ontology Class") {
+              }
+              if (mod.type == "Ontology Class") {
                 var uriArr = mod.sourceUri.split('/');
                 let acronym = uriArr[uriArr.length - 1];
                 let classId = mod['@id'];
+
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
                   service.processAutocompleteClassResults(id, query, 'Ontology Class', mod.sourceUri, response);
                 });
               }
-              promises.push(promise);
             }
+            promises.push(promise);
           }
+
         });
       }
 
