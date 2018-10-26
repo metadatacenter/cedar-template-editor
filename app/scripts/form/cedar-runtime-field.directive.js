@@ -810,7 +810,6 @@ define([
           $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
         }
         if (dms.isTextFieldType($scope.field) && dms.hasValueConstraint($scope.field)) {
-          console.log('copyField', $scope.valueArray);
           var obj = {};
           obj['@id'] = $scope.valueArray[$scope.index]['@id'];
           obj['label'] = $scope.valueArray[$scope.index]['label'];
@@ -824,7 +823,6 @@ define([
             var value = dms.getUserDefinedDefaultValue($scope.field);
             var index = $scope.index+1 ;
             if (!$scope.model.hasOwnProperty('@id')) {
-              console.log('initValue', index, value);
               $scope.valueArray[index] = {
                 '@id'  : value['@id'],
                 'label': value['label'],
@@ -847,7 +845,6 @@ define([
             var obj = {};
             obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
             $scope.model.splice($scope.index + 1, 0, obj);
-            console.log('copy', valueLocation, $scope.model);
 
             // activate the new instance
             $timeout($scope.setActive($scope.index + 1, true), 100);
@@ -1228,20 +1225,6 @@ define([
 
       $scope.isHidden = function () {
         return dms.isHidden($scope.field);
-      };
-
-      $scope.initValue = function () {
-        // if (dms.hasDefault($scope.field)) {
-        //   var location = dms.getValueLocation($scope.field);
-        //   var value = dms.getDefault($scope.field);
-        //   if (angular.isArray($scope.model)) {
-        //     angular.forEach($scope.model, function (model) {
-        //       model[location] = model[location] || value;
-        //     });
-        //   } else {
-        //     $scope.model[location] = $scope.model[location] || value;
-        //   }
-        // }
       };
 
       $scope.hasModel = function () {

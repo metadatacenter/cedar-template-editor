@@ -128,28 +128,31 @@ define([
       if (angular.isDefined(response.collection)) {
         for (i = 0; i < response.collection.length; i++) {
           result = {
-            'id'          : response.collection[i]['id'],
             '@id'         : response.collection[i]['@id'],
-            '@idRelated'  : response.collection[i]['relatedMatch'],
             'notation'    : response.collection[i]['notation'],
             'label'       : response.collection[i].prefLabel,
-            'rdfs:label'  : response.collection[i].prefLabel,
             'type'        : field_type,
             'sourceUri'   : source_uri,
+
+            '@idRelated'  : response.collection[i]['relatedMatch'],
+            'rdfs:label'  : response.collection[i].prefLabel,
+            'id'          : response.collection[i]['id'],
             'vsCollection': response.collection[i]['vsCollection'],
           };
           collection.push(result);
         }
       } else {
         result = {
-          'id'          : response['id'],
+
           '@id'         : response['@id'],
-          '@idRelated'  : response['relatedMatch'],
           'notation'    : response['notation'],
           'label'       : response.prefLabel,
-          'rdfs:label'  : response.prefLabel,
           'type'        : field_type,
           'sourceUri'   : source_uri,
+
+          '@idRelated'  : response['relatedMatch'],
+          'rdfs:label'  : response.prefLabel,
+          'id'          : response['id'],
           'vsCollection': response['vsCollection'],
         };
         collection.push(result);
@@ -161,24 +164,19 @@ define([
       for (j = service.autocompleteResultsCache[id][query].results.length - 1; j >= 0; j--) {
         if (service.autocompleteResultsCache[id][query].results[j].sourceUri != source_uri) {
           // we only care about the ones from this source
-
           continue;
         }
         found = false;
 
-
         for (i = 0; i < collection.length; i++) {
-
           if (collection[i]['@id'] == service.autocompleteResultsCache[id][query].results[j]['@id']) {
             // this option still in the result set -- mark it
             collection[i].found = true;
             found = true;
-
           }
         }
 
         if (!found) {
-
           // need to remove this option
           //service.autocompleteResultsCache[id][query].results.splice(j, 1);
         }
@@ -188,7 +186,6 @@ define([
 
       for (i = 0; i < collection.length; i++) {
         if (!collection[i].found) {
-
           service.autocompleteResultsCache[id][query].results.push(collection[i]);
         }
       }
@@ -353,12 +350,11 @@ define([
           if (mod.action == 'move') {
 
             if (!service.hasTerm(id, query, mod.sourceUri, mod['@id'])) {
+              let uriArr = mod.sourceUri.split('/');
+              let classId = mod['@id'];
 
               if (mod.type == "Value Set Class") {
-                var uriArr = mod.sourceUri.split('/');
                 let vsCollection = uriArr[uriArr.length - 2];
-                let classId = mod['@id'];
-
 
                 var promise =
                     controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, classId).then(
@@ -368,10 +364,7 @@ define([
                         });
               }
               if (mod.type == "Ontology Class") {
-                var uriArr = mod.sourceUri.split('/');
                 let acronym = uriArr[uriArr.length - 1];
-                let classId = mod['@id'];
-
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
                   service.processAutocompleteClassResults(id, query, 'Ontology Class', mod.sourceUri, response);
