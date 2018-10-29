@@ -58,6 +58,19 @@ define([
 
       $scope.model.defaultValue = $scope.model.defaultValue || {};
 
+      // TODO get rid of the extra values in some other way
+      $scope.onChange = function (m) {
+        if (m) {
+          delete m['@idRelated'];
+          delete m['id'];
+          delete m['label'];
+          delete m['notation'];
+          delete m['sourceUri'];
+          delete m['type'];
+          delete m['vsCollection'];
+        }
+      };
+
 
   };
 

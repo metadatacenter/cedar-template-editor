@@ -22,7 +22,13 @@ define([
         if (dms.hasUserDefinedDefaultValue($scope.field)) {
           if (!$scope.model[$scope.index].hasOwnProperty('@id')) {
             $scope.model[$scope.index] = dms.getUserDefinedDefaultValue($scope.field);
-            $scope.model[$scope.index]['rdfs:label'] = $scope.model[$scope.index]['label'];
+            delete $scope.model[$scope.index]['@idRelated'];
+            delete $scope.model[$scope.index]['id'];
+            delete $scope.model[$scope.index]['label'];
+            delete $scope.model[$scope.index]['notation'];
+            delete $scope.model[$scope.index]['sourceUri'];
+            delete $scope.model[$scope.index]['type'];
+            delete $scope.model[$scope.index]['vsCollection'];
           }
         }
       };
@@ -56,6 +62,7 @@ define([
 
       // TODO get rid of the extra values in some other way
       $scope.onChange = function (m) {
+        if (m) {
         delete m['@idRelated'];
         delete m['id'];
         delete m['label'];
@@ -63,6 +70,7 @@ define([
         delete m['sourceUri'];
         delete m['type'];
         delete m['vsCollection'];
+        }
       };
 
       // get the resource identifier

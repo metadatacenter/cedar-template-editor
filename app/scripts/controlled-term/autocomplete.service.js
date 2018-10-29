@@ -128,11 +128,11 @@ define([
       if (angular.isDefined(response.collection)) {
         for (i = 0; i < response.collection.length; i++) {
           result = {
-            '@id'         : response.collection[i]['@id'],
-            'notation'    : response.collection[i]['notation'],
-            'label'       : response.collection[i].prefLabel,
-            'type'        : field_type,
-            'sourceUri'   : source_uri,
+            '@id'      : response.collection[i]['@id'],
+            'notation' : response.collection[i]['notation'],
+            'label'    : response.collection[i].prefLabel,
+            'type'     : field_type,
+            'sourceUri': source_uri,
 
             '@idRelated'  : response.collection[i]['relatedMatch'],
             'rdfs:label'  : response.collection[i].prefLabel,
@@ -144,11 +144,11 @@ define([
       } else {
         result = {
 
-          '@id'         : response['@id'],
-          'notation'    : response['notation'],
-          'label'       : response.prefLabel,
-          'type'        : field_type,
-          'sourceUri'   : source_uri,
+          '@id'      : response['@id'],
+          'notation' : response['notation'],
+          'label'    : response.prefLabel,
+          'type'     : field_type,
+          'sourceUri': source_uri,
 
           '@idRelated'  : response['relatedMatch'],
           'rdfs:label'  : response.prefLabel,
@@ -504,32 +504,15 @@ define([
         var values = Object.values(service.autocompleteResultsCache[id]);
         angular.forEach(values, function (obj) {
           angular.forEach(obj.results, function (val) {
-            result = result || (val.label == term);
+            if (val.label == term) {
+              result = val;
+            }
           });
         });
       }
-      service.updateFieldAutocomplete(schema, term);
+      service.updateFieldAutocomplete(schema, term, false);
       return result;
     };
-
-    // // is this term in the the cache?
-    // service.getTermDetails = function (id, term) {
-    //   var result = null;
-    //
-    //   if (term && id && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
-    //     var values = Object.values(service.autocompleteResultsCache[id]);
-    //     angular.forEach(values, function (obj) {
-    //       angular.forEach(obj.results, function (val) {
-    //         if (val.label == term) {
-    //           result = val;
-    //         }
-    //       });
-    //     });
-    //   }
-    //
-    //   service.updateFieldAutocomplete(schema, term);
-    //   return result;
-    // };
 
     return service;
   }

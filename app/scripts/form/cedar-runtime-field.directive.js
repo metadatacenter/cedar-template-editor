@@ -807,30 +807,31 @@ define([
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
+        console.log('copyField');
         if (dms.isAttributeValueType($scope.field)) {
           $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
         }
         if (dms.isTextFieldType($scope.field) && dms.hasValueConstraint($scope.field)) {
           var obj = {};
           obj['@id'] = $scope.valueArray[$scope.index]['@id'];
-          obj['label'] = $scope.valueArray[$scope.index]['label'];
+          // obj['label'] = $scope.valueArray[$scope.index]['label'];
           obj['rdfs:label'] = $scope.valueArray[$scope.index]['rdfs:label'];
           $scope.model.splice($scope.index + 1, 0, obj);
 
 
 
-          // init default value
-          if (dms.hasUserDefinedDefaultValue($scope.field)) {
-            var value = dms.getUserDefinedDefaultValue($scope.field);
-            var index = $scope.index+1 ;
-            if (!$scope.model.hasOwnProperty('@id')) {
-              $scope.valueArray[index] = {
-                '@id'  : value['@id'],
-                'label': value['label'],
-                'rdfs:label': value['label']
-              }
-            }
-          }
+          // // init default value
+          // if (dms.hasUserDefinedDefaultValue($scope.field)) {
+          //   var value = dms.getUserDefinedDefaultValue($scope.field);
+          //   var index = $scope.index+1 ;
+          //   if (!$scope.model.hasOwnProperty('@id')) {
+          //     $scope.valueArray[index] = {
+          //       '@id'  : value['@id'],
+          //       'label': value['label'],
+          //       'rdfs:label': value['rdfs:label']
+          //     }
+          //   }
+          // }
 
 
           // activate the new instance
