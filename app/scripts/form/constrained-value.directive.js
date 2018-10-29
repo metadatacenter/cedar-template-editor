@@ -54,6 +54,17 @@ define([
         }
       };
 
+      // TODO get rid of the extra values in some other way
+      $scope.onChange = function (m) {
+        delete m['@idRelated'];
+        delete m['id'];
+        delete m['label'];
+        delete m['notation'];
+        delete m['sourceUri'];
+        delete m['type'];
+        delete m['vsCollection'];
+      };
+
       // get the resource identifier
       $scope.getId = function () {
         return dms.getId($scope.field);
