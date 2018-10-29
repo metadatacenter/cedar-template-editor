@@ -1302,7 +1302,7 @@ define([
           function getFolderContentsById(folderId, resourceId) {
 
             if (activeResourceTypes().length > 0) {
-              
+
               vm.totalCount = -1;
               vm.nextOffset = null;
               vm.loading = true;

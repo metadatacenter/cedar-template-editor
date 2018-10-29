@@ -1332,7 +1332,7 @@ define([
             text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
             text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
           } else {
-            text += " with " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
+            text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
           }
         }
         return text;
