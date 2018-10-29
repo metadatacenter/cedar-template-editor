@@ -16,7 +16,7 @@
         ui-disable-choice="option.value == getNoResultsMsg()"
         refresh="updateModelWhenRefresh($select, modelValueRecommendation, index); updatePopulatedFields(field, $select.search); updateFieldAutocomplete(field, $select.search)"
         refresh-delay="200"
-        repeat="option in valueRecommendationResults[getId()] | propsFilter: {value: $select.search} | limitTo:100">
+        repeat="option in order(valueRecommendationResults[getId()]) | propsFilter: {value: $select.search} | limitTo:100">
       <div>
         <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;

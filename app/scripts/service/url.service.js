@@ -19,6 +19,11 @@ define([
     var groupService = null;
     var submissionService = null;
     var messagingService = null;
+    var paging = function(page,size, defaultPage, defaultSize, pageString, sizeString) {
+      var p = page > 0 ? page : defaultPage;
+      var s = size > 0 ? size : defaultSize;
+      return  pageString + '=' + p + '&' + sizeString + '=' + s;
+    };
 
     var service = {
       serviceId: "UrlService"
@@ -34,6 +39,8 @@ define([
       submissionService = config.submissionRestAPI;
       messagingService = config.messagingRestAPI;
     };
+
+
 
     service.base = function () {
       return resourceService;
@@ -319,24 +326,25 @@ define([
           + "/tree";
     };
 
-    service.getAllValuesInValueSetByValue = function (valueId, vsCollection) {
+    service.getAllValuesInValueSetByValue = function (valueId, vsCollection, page, size) {
+      console.log('getAllValuesInValueSetByValue');
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId)
-          + "/all-values?page=1&pageSize=1000";
+          + "/all-values?" + paging(page,size,1,50,'page','page_size');
     };
 
-    service.getClassChildren = function (acronym, classId) {
+    service.getClassChildren = function (acronym, classId, page, size) {
+      console.log('getClassChildreen',acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
-          + "/children?page=1&pageSize=1000";
+          + "/children?" + paging(page,size,1,1000,'page','pageSize');
     };
 
-    service.getClassDescendants = function (acronym, classId) {
+    service.getClassDescendants = function (acronym, classId, page, size) {
+      console.log('getClassDescendants',acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
-          + "/descendants?page=1&pageSize=1000";
+          + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
-    service.getClassById = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
-    };
+
 
     service.getPropertyChildren = function (acronym, propertyId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId)
@@ -347,8 +355,12 @@ define([
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId);
     };
 
-    service.getValueById = function (acronym, valueId) {
-      return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
+    service.getValueTermById = function (acronym, valueSetId, valueId) {
+      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + encodeURIComponent(valueId);
+    };
+
+    service.getValueById = function (acronym,  valueId) {
+      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + encodeURIComponent(valueId);
     };
 
     service.getClassParents = function (acronym, classId) {
@@ -365,85 +377,86 @@ define([
           propertyId) + '/tree';
     };
 
-    service.getValuesInValueSet = function (vsCollection, vsId) {
+    service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId)
-          + "/values";
+          + "/values?"  + paging(page,size,1,50,'page','pageSize');
     };
 
-    service.searchClasses = function (query, sources, size) {
+    service.searchClasses = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
-          + "&scope=classes" + "&page=1&page_size=" + size;
+          + "&scope=classes&" +  paging(page,size,1,1000,'page','page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.searchProperties = function (query, sources, size) {
+    service.searchProperties = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/property_search?q=" + encodeURIComponent(query)
-          + "&page=1&page_size=" + size;
+          + "&" + paging(page,size,1, 50,'page','pageSize');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.searchClassesAndValues = function (query, sources, size) {
+    service.searchClassesAndValues = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
-          + "&scope=classes,values" + "&page=1&page_size=" + size;
+          + "&scope=classes,values&" + paging(page,size,1, 50,'page','page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.searchClassesValueSetsAndValues = function (query, sources, size) {
+    service.searchClassesValueSetsAndValues = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=all" + "&page=1&page_size=" + size;
+          "&scope=all&"  + paging(page, size, 1, 50,'page','page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.searchValueSetsAndValues = function (query, sources, size) {
+    service.searchValueSetsAndValues = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=value_sets,values" + "&page=1&page_size=" + size;
+          "&scope=value_sets,values&" + paging(page, size, 1, 50,'page','page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.searchValueSets = function (query, sources, size) {
+    service.searchValueSets = function (query, sources, size, page) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=value_sets" + "&page=1&page_size=" + size
+          "&scope=value_sets&" +  paging(page, size, 1, 50,'page','page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
       return url;
     };
 
-    service.autocompleteOntology = function (query, acronym) {
+    service.autocompleteOntology = function (query, acronym, page, size) {
       var url = this.controlledTerm();
       if (query == '*') {
-        url += "/ontologies/" + acronym + "/classes?page=1&page_size=500";
+        url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 1, 500,'page','page_size');
       } else {
         url += "/search?q=" + encodeURIComponent(query) +
-            "&scope=classes&sources=" + acronym + "&suggest=true&page=1&page_size=500";
+            "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
       }
       return url;
     };
 
-    service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth) {
+    service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth, page, size) {
       var url = this.controlledTerm();
+
       if (query == '*') {
         url += '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id)
-            + '/descendants?page=1&page_size=500';
+            + '/descendants?' + paging(page, size, 1, 500,'page','page_size');
       } else {
         url += '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
             '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
-            "&suggest=true&page=1&page_size=500";
+            "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
       }
       return url;
     };

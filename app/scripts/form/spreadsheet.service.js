@@ -118,9 +118,8 @@ define([
           var col = parseInt(col);
           var id = id;
           var term = term;
-
           addMoreRows($scope,row);
-          var model = getModel($scope,id, row, col);
+
 
           // is the term in the cache?
           if (autocompleteService.autocompleteResultsCache[id] && autocompleteService.autocompleteResultsCache[id][term]) {
@@ -128,21 +127,24 @@ define([
             var found = false;
             for (var i = 0; i < cachedResults.length; i++) {
               if (cachedResults[i].label == term) {
+                var model = getModel($scope,id, row, col);
                 model['@id'] = cachedResults[i]['@id'];
                 model['rdfs:label'] = cachedResults[i]['label'];
                 found = true;
                 break;
               }
             }
-          }
+          } else {
 
-          else {
+
 
             // go get the term
             var foundResults = autocompleteService.initResults(id, term);
-            var promises = autocompleteService.updateFieldAutocomplete(schema, term);
+            var promises = autocompleteService.updateFieldAutocomplete(schema, term, false);
 
             $q.all(promises).then(values => {
+
+              var model = getModel($scope,id, row, col);
 
               if ((foundResults.length == 0) || (foundResults.length == 1 && foundResults[0].label == noResults)) {
                 clearTerm(model,row,col,term);
@@ -157,7 +159,7 @@ define([
                   if (foundResults[i].label == term) {
 
                     model['@id'] = foundResults[i]['@id'];
-                    model['rdfs:label'] = foundResults[i]['label'];
+                    model['rdfs:label'] = foundResults[i]['rdfs:label'];
                     found = true;
 
                     // update all the model entries with the same term
@@ -167,7 +169,7 @@ define([
                         if (sds.tableData[r][c] == term) {
                           var m = getModel($scope, id, r, c);
                           m['@id'] = foundResults[i]['@id'];
-                          m['rdfs:label'] = foundResults[i]['label'];
+                          m['rdfs:label'] = foundResults[i]['rdfs:label'];
                         }
                       }
                     }
@@ -302,6 +304,36 @@ define([
         // build a description of the cell data
         var getDescriptor = function (context, node, $scope, customValidator) {
 
+
+          let mods = DataManipulationService.getMods($scope.field);
+
+          // apply the user's sorted ordering
+          let applyMods = function (list) {
+            // apply mods to a duplicate of the list
+            var dup = list.slice();
+            for (let i = 0; i < mods.length; i++) {
+              let mod = mods[i];
+              let from = dup.findIndex(item => item['@id'] === mod['@id']);
+              if (from != -1) {
+                // delete it at from
+                let entry = dup.splice(from, 1);
+                if (mod.to != -1 && mod.action == 'move') {
+                  // insert it at to
+                  dup.splice(mod.to, 0, entry[0]);
+                }
+              }
+            }
+            return dup;
+          };
+
+          // order the results based on user preferences
+          let order = function (arr) {
+            if (arr) {
+              var dup = applyMods(arr);
+              return dup;
+            }
+          };
+
           var literals;
           var inputType;
           var id;
@@ -369,12 +401,12 @@ define([
 
                   var query = query || '*';
                   var results = autocompleteService.initResults(desc.nodeId, query);
-                  autocompleteService.updateFieldAutocomplete(desc.schema, query);
+                  autocompleteService.updateFieldAutocomplete(desc.schema, query, false);
 
                   $scope.$watchCollection(function () {
                     return results;
                   }, function () {
-                    process(results.map(function (a) {
+                    process(order(results).map(function (a) {
                       return a.label;
                     }));
                   });

@@ -32,16 +32,15 @@
 @header-dashboard: @white;
 
 @bar0: @lt-gray;
-@bar1: darken(@bar0,5%);
-@bar2: darken(@bar1,5%);
-@bar3: darken(@bar2,5%);
-@bar4: darken(@bar3,5%);
-@bar5: darken(@bar4,5%);
-@bar6: darken(@bar5,5%);
-@bar7: darken(@bar6,5%);
-@bar8: darken(@bar7,5%);
-@bar9: darken(@bar8,5%);
-
+@bar1: darken(@bar0, 5%);
+@bar2: darken(@bar1, 5%);
+@bar3: darken(@bar2, 5%);
+@bar4: darken(@bar3, 5%);
+@bar5: darken(@bar4, 5%);
+@bar6: darken(@bar5, 5%);
+@bar7: darken(@bar6, 5%);
+@bar8: darken(@bar7, 5%);
+@bar9: darken(@bar8, 5%);
 
 //@draft: #DAA520;
 //@published: #000000;
@@ -178,6 +177,10 @@ i {
 
 .container {
   position: relative;
+
+  @media (min-width: @screen-lg-min) {
+    width: 970px;
+  }
 }
 
 .smaller-width {
@@ -1221,7 +1224,6 @@ button {
         border: 1px solid #ebebeb;
         background: @white;
 
-
         font-size: 14px;
 
         color: #000;
@@ -1252,11 +1254,9 @@ button {
           font-size: 20px;
         }
 
-
         .toolbar ul.dropdown-menu li a {
           transition: none;
         }
-
 
         .cell.icon {
           background: @white;
@@ -1289,7 +1289,6 @@ button {
           }
         }
       }
-
 
       .dropdown-menu {
         z-index: 100;
@@ -1329,8 +1328,6 @@ button {
         background-color: @white;
         border: 1px solid #ccc;
       }
-
-
 
       .info-side {
         .info {
@@ -2866,13 +2863,27 @@ section.dashboard-elements {
       transition: border-color 0.3s linear;
       background: @white;
 
+      &.ui-select-toggle {
+        padding: 8px;
+        border:1px solid #ddd;
+        text-transform: none;
+        a.btn {
+          margin-top: -6px;
+          right:0;
+          text-transform: none;
+
+        }
+      }
+
+
+
       &.empty ~ .floating-label {
         top: 10px;
         color: @brand-primary;
-        text-overflow:ellipsis;
+        text-overflow: ellipsis;
         white-space: nowrap;
         width: calc(~"100% - 50px");
-        overflow:hidden;
+        overflow: hidden;
 
       }
 
@@ -2888,10 +2899,10 @@ section.dashboard-elements {
         color: @brand-primary;
         &:after {
           color: @brand-primary;
-          text-overflow:ellipsis;
+          text-overflow: ellipsis;
           white-space: nowrap;
           width: calc(~"100% - 50px");
-          overflow:hidden;
+          overflow: hidden;
         }
       }
 
@@ -2908,7 +2919,7 @@ section.dashboard-elements {
       }
 
       input.form-control.ui-select-search {
-        padding-top: 0;
+        padding: 6px 12px;
       }
 
       &.ui-select-container {
@@ -3202,20 +3213,19 @@ section.dashboard-elements {
     width:100%;
   }
 
-
   .element-bar {
-    margin:0 5px;
-    min-width:12px;
-    min-height:100%;
+    margin: 0 5px;
+    min-width: 12px;
+    min-height: 100%;
     color: @lt-gray;
-    z-index:10;
+    z-index: 10;
 
     .bar {
-      margin-top:10px;
-      min-width:100%;
+      margin-top: 10px;
+      min-width: 100%;
       min-height: calc(~"100% - 10px");
       &:hover {
-        cursor:pointer;
+        cursor: pointer;
         background-color: @brand-primary;
       }
     }
@@ -3252,7 +3262,7 @@ section.dashboard-elements {
   }
 
   .paging {
-    float:right;
+    float: right;
     width: 100%;
     list-style-type: none;
     margin: auto;
@@ -3260,7 +3270,7 @@ section.dashboard-elements {
       a {
         padding: 5px;
         background-color: #e8e8e8;
-        font-size:10px;
+        font-size: 10px;
       }
       &.active a {
         background-color: @brand-primary;
@@ -3465,8 +3475,6 @@ section.dashboard-elements {
 
   .element-root {
 
-
-
     .left-tick {
       //background-color: #aaa;
       //position: relative;
@@ -3496,15 +3504,14 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
-
     .answer {
-      margin:5px 15px;
-      border:1px solid #ccc;
+      margin: 5px 15px;
+      border: 1px solid #ccc;
     }
 
     .question {
-      margin:5px;
-      height:auto;
+      margin: 5px;
+      height: auto;
     }
 
     .title {
@@ -4137,6 +4144,41 @@ section.dashboard-elements {
 
   .configuration-options {
     padding-top: 20px;
+
+    .btn {
+      text-transform: uppercase;
+      padding: 5px 20px;
+      border: none;
+      .link-transition;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+
+      &.btn-clear {
+        color: @brand-primary;
+        background-color: transparent;
+        .activ-grotesk-bold;
+
+        &:hover,
+        &:focus {
+          color: @brand-primary-hover;
+        }
+      }
+
+      &.btn-save {
+        color: @white;
+        background-color: @brand-primary;
+        font-size: 16px;
+
+        &:hover,
+        &:focus {
+          background-color: @brand-primary-hover;
+        }
+      }
+    }
+
 
     .toggle-options {
       padding-bottom: 10px;
@@ -6552,6 +6594,9 @@ body .template-header .controlled-terms-modal {
 .input-type-container .configuration-options .toggle-options {
 }
 
+.input-type-container .configuration-options .ui-select-container {
+}
+
 .input-type-container .configuration-actions .toggle-options .save-options .remove {
   margin-right: 0;
 }
@@ -6903,7 +6948,7 @@ table.apiKey {
   background: transparent;
 }
 
-#rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal {
+#rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #finder-modal, #terms-modal {
 
   i.fa-globe {
     color: @published;
@@ -7018,7 +7063,7 @@ table.apiKey {
 
       .no-file {
         font-size: 50px;
-        margin-top:140px;
+        margin-top: 140px;
         color: @very-lt-gray;
       }
       .no-message {
@@ -7199,6 +7244,150 @@ table.apiKey {
       }
     }
   }
+}
+
+#terms-modal {
+  .modal-dialog {
+    max-width: 600px;
+    width: 600px;
+    min-height: 600px;
+    .modal-content {
+      max-width: 600px;
+      min-height: 600px;
+      width: 600px;
+      margin: 0 auto;
+
+      .modal-body {
+        height: 600px;
+        max-height: 600px;
+      }
+      ul.list {
+        list-style-type: none;
+        padding-left: 0
+      }
+      .term-row {
+        .header {
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: smaller;
+        }
+        .index {
+          padding: 5px;
+          border: 1px solid @white;
+          &:hover {
+            border: 1px dotted #ddd;
+          }
+        }
+        .source, .set {
+          font-size:smaller;
+          padding: 5px;
+          width: 180px;
+        }
+        .title {
+          padding: 5px;
+          width: 100%;
+        }
+        .tools {
+          visibility: hidden;
+          width: 80px;
+          cursor: pointer;
+          color: @gray-dark;
+          font-size: 20px;
+          padding: 5px;
+          .delete-row {
+            padding: 2px 5px;
+            button {
+              box-shadow: unset;
+            }
+          }
+          .move-up-down {
+            padding: 2px 5px;
+            button {
+              box-shadow: unset;
+            }
+          }
+        }
+      }
+      .term-row:hover {
+        cursor: pointer;
+        .tools {
+          visibility: visible !important;
+        }
+      }
+      hr {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border: 0;
+        border-top: 1px solid #eeeeee;
+      }
+      .dropdown-menu {
+        padding: 5px;
+        width: auto;
+        height: auto;
+        background: black;
+        color:@white;
+        ul {
+          padding-left: 0;
+          li {
+            padding: 5px;
+            input {
+              color:black;
+            }
+          }
+        }
+      }
+      .clear-save {
+
+        .btn {
+          text-transform: uppercase;
+          padding: 5px 15px;
+          border: none;
+          .link-transition;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
+            &:focus {
+              color: @brand-primary-hover;
+            }
+          }
+
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
+            font-size: 16px;
+
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
+            }
+          }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
+            }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
+            }
+          }
+        }
+
+      }
+    }
+  }
+
 }
 
 #finder-modal {
@@ -8381,6 +8570,22 @@ table.message {
   }
 }
 
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  &.start {
+    justify-content: flex-start;
+  }
+  &.end {
+    justify-content: flex-end;
+  }
+  &.center {
+    justify-content: center;
+  }
+}
+
 .flex-start {
   justify-content: flex-start;
 }
@@ -8419,7 +8624,7 @@ table.message {
 }
 
 .invisible {
-  visibility:hidden
+  visibility: hidden
 }
 
 .required {

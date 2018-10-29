@@ -1,0 +1,114 @@
+<div class="modal-dialog">
+  <div class="modal-content" ng-if="terms.modalVisible">
+
+    <div class="modal-header row" id="termsModalHeader">
+      <div class="col-sm-11" ><h4><span translate>DASHBOARD.terms.header</span></h4></div>
+      <div class="col-sm-1 pull-right">
+        <button class="close" type="button" ng-click="terms.hideModal()" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+    </div>
+
+
+    <div class="modal-body"  cedar-infinite-scroll load-more="terms.loadMore()" class="scrollable-content" style="padding-top:0;overflow-y:scroll">
+        <div class="flex flex-left term-row">
+          <div class="index header invisible">0</div>
+          <div class="title header" >Label</div>
+          <div class="source header">Source</div>
+          <div class="tools header invisible"></div>
+        </div>
+
+      <!--Show preloader only if the tree and class details preloader is not shown-->
+      <div ng-if="!terms.list || terms.list.length == 0">
+        <div class="loader2"></div>
+      </div>
+
+        <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
+          <li ng-repeat="item in terms.list track by $index" class="item"  atid="{{item['@id']}}" id="{{item['id']}}">
+            <div class="flex flex-left term-row" atid="{{terms.encode(item['@id'])}}" id="{{terms.encode(item['id'])}}">
+              <div class="index">{{$index + 1}}</div>
+
+              <div class="title ellipsis" uib-tooltip='{{item.label}}'
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="mouseenter"
+                  tooltip-animation="true"
+                  tooltip-placement="bottom"
+                  data-toggle="tooltip"
+                  tooltip-enable="terms.isOverflow(item.id,'title')">{{item.label}}</div>
+
+              <div class="source ellipsis" uib-tooltip='{{item.acronym}}'
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="mouseenter"
+                  tooltip-animation="true"
+                  tooltip-placement="bottom"
+                  data-toggle="tooltip"
+                  tooltip-enable="terms.isOverflow(item['@id'],'acronym')">{{item.acronym}}</div>
+
+
+
+              <div class="tools flex flex-right">
+
+                <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown " ng-click="terms.toggle($event)">
+
+                  <button  style="background:transparent;padding:0"
+                      type="button" class="menu"
+                      uib-dropdown-toggle aria-haspopup="true"
+                      aria-expanded="true" class="trigger-button">
+                    <i class="fa fa-sort"></i>
+                  </button>
+                  <div  class="dropdown-menu dropdown-menu-right dropup" >
+                    <div ng-if="!terms.showPosition">
+                      <ul style="list-style-type: none;">
+                        <li ng-click="terms.changeTo = 1;terms.showPosition=true; $event.stopPropagation();">Move to top</li>
+                        <li>
+                          <span ng-click="terms.showPosition = !terms.showPosition; $event.stopPropagation();">Move to...</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div ng-if="terms.showPosition">
+                      <ul style="list-style-type: none;">
+                        <li>Change position</li>
+                        <li>
+                          <input ng-model="terms.changeTo" name="moveTo" min="1" type="number" ng-click="$event.stopPropagation()"></li>
+                        <li class="clear-save">
+                          <button type="button"   ng-click="terms.applyChange(terms.changeTo-1, $index);$event.stopPropagation()" aria-label="Apply" class="btn btn-save confirm apply" translate>GENERIC.Apply</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="delete-row" ng-click="terms.delete($index)"><i class="fa fa-times-circle"></i></div>
+              </div>
+            </div>
+            <hr />
+          </li>
+        </ul>
+    </div>
+
+    <!-- footer closes the dialog -->
+    <div class="modal-footer actions">
+
+      <div class="clear-save">
+        <button type="button" ng-disabled="terms.incomplete()" ng-click="terms.doSave()"
+            data-dismiss="modal" aria-label="Done"
+            class="btn btn-save confirm" translate>GENERIC.Save
+        </button>
+      </div>
+
+      <div class="clear-save">
+        <button type="button" ng-click="terms.reset(vm.resource)"
+            class="btn btn-clear" translate> GENERIC.Reset
+        </button>
+      </div>
+
+      <div class="clear-save">
+        <button type="button" ng-click="terms.hideModal()"
+            class="btn btn-clear" translate> GENERIC.Cancel
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

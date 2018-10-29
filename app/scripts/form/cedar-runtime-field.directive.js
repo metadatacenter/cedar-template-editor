@@ -530,9 +530,10 @@ define([
         return dms.getValueLocation($scope.field);
       };
 
-      // has recommendations?
+      // TODO for now turn off recommendations
       $scope.isRecommended = function () {
-        return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
+        return false;
+        //return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
 
       // has value constraints?
@@ -806,12 +807,41 @@ define([
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
+        console.log('copyField');
         if (dms.isAttributeValueType($scope.field)) {
           $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
+        }
+        if (dms.isTextFieldType($scope.field) && dms.hasValueConstraint($scope.field)) {
+          var obj = {};
+          obj['@id'] = $scope.valueArray[$scope.index]['@id'];
+          // obj['label'] = $scope.valueArray[$scope.index]['label'];
+          obj['rdfs:label'] = $scope.valueArray[$scope.index]['rdfs:label'];
+          $scope.model.splice($scope.index + 1, 0, obj);
+
+
+
+          // // init default value
+          // if (dms.hasUserDefinedDefaultValue($scope.field)) {
+          //   var value = dms.getUserDefinedDefaultValue($scope.field);
+          //   var index = $scope.index+1 ;
+          //   if (!$scope.model.hasOwnProperty('@id')) {
+          //     $scope.valueArray[index] = {
+          //       '@id'  : value['@id'],
+          //       'label': value['label'],
+          //       'rdfs:label': value['rdfs:label']
+          //     }
+          //   }
+          // }
+
+
+          // activate the new instance
+          $timeout($scope.setActive($scope.index + 1, true), 100);
         } else {
           var valueLocation = $scope.getValueLocation();
           var maxItems = dms.getMaxItems($scope.field);
           if ((!maxItems || $scope.model.length < maxItems)) {
+
+
 
             // copy selected instance in the model and insert immediately after
             var obj = {};
@@ -820,6 +850,7 @@ define([
 
             // activate the new instance
             $timeout($scope.setActive($scope.index + 1, true), 100);
+
           }
         }
       };
@@ -1198,20 +1229,6 @@ define([
         return dms.isHidden($scope.field);
       };
 
-      $scope.initValue = function () {
-        if (dms.hasDefault($scope.field)) {
-          var location = dms.getValueLocation($scope.field);
-          var value = dms.getDefault($scope.field);
-          if (angular.isArray($scope.model)) {
-            angular.forEach($scope.model, function (model) {
-              model[location] = model[location] || value;
-            });
-          } else {
-            $scope.model[location] = $scope.model[location] || value;
-          }
-        }
-      };
-
       $scope.hasModel = function () {
         return $scope.model && $scope.model.length > 0;
       };
@@ -1240,7 +1257,8 @@ define([
       $scope.setDateValue = function (index) {
         if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
           var date = new Date($scope.valueArray[index]['@value']);
-          var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+          var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
+              date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
           $scope.date.dt = utcDate;
 
         } else {
@@ -1291,11 +1309,11 @@ define([
         return text;
       }
 
-      $scope.hasUnitOfMeasure = function(node) {
+      $scope.hasUnitOfMeasure = function (node) {
         return dms.hasUnitOfMeasure(node);
       };
 
-      $scope.getUnitOfMeasure = function(node) {
+      $scope.getUnitOfMeasure = function (node) {
         return dms.getUnitOfMeasure(node);
       };
 
