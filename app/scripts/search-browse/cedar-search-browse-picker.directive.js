@@ -58,7 +58,7 @@ define([
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
-          vm.lastOffset = -1;
+          vm.nextOffset = null;
           vm.requestLimit = UISettingsService.getRequestLimit();
 
           vm.totalCount = null;
@@ -473,6 +473,20 @@ define([
             }
           };
 
+          function getNextOffset(next) {
+            var result = null;
+            if (next) {
+              var result = [];
+              next.split("&").forEach(function(part) {
+                var item = part.split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+              });
+              result = parseInt(result['offset']);
+            }
+            return result;
+          };
+
+
           vm.selectResource = function (resource, force) {
 
             if (force || !Object.is(resource, getSelected())) {
@@ -797,31 +811,34 @@ define([
               } else {
 
                 // are there more?
-                if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
-                  vm.lastOffset += vm.requestLimit;
-                  var offset = vm.offset;
+                if (vm.nextOffset && !vm.loading && vm.nextOffset < vm.totalCount) {
+
+                  vm.offset = vm.nextOffset;
+                  vm.loading = true;
                   return resourceService.getResources(
                       {
                         folderId     : vm.currentFolderId,
                         resourceTypes: activeResourceTypes(),
                         sort         : sortField(),
                         limit        : vm.requestLimit,
-                        offset       : offset
+                        offset       : vm.offset
                       },
                       function (response) {
 
                         for (let i = 0; i < response.resources.length; i++) {
-                          vm.resources[i + offset] = response.resources[i];
+                          vm.resources[i + vm.offset] = response.resources[i];
                         }
-                        vm.offset = offset + vm.requestLimit;
+
+                        vm.nextOffset = getNextOffset(response.paging.next);
                         vm.totalCount = response.totalCount;
+                        vm.loading = false;
+
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        vm.loading = false;
                       }
                   );
-                  // } else {
-                  //   vm.resources = [];
                 }
 
               }
@@ -844,26 +861,30 @@ define([
             if (activeResourceTypes().length > 0) {
 
               // are there more?
-              if (!vm.totalCount || (vm.lastOffset < vm.totalCount)) {
-                vm.lastOffset += vm.requestLimit;
-                var offset = vm.offset;
+              if (vm.nextOffset && !vm.loading) {
+
+                vm.offset = vm.nextOffset;
+                vm.loading = true;
                 return resourceService.searchResources(vm.searchTerm,
                     {
                       resourceTypes: activeResourceTypes(),
                       sort         : sortField(),
                       limit        : vm.requestLimit,
-                      offset       : offset
+                      offset       : vm.offset
                     },
                     function (response) {
 
+
                       for (let i = 0; i < response.resources.length; i++) {
-                        vm.resources[i + offset] = response.resources[i];
+                        vm.resources[i + vm.offset] = response.resources[i];
                       }
                       vm.totalCount = response.totalCount;
-                      vm.offset = offset + vm.requestLimit;
+                      vm.nextOffset = getNextOffset(response.paging.next);
+                      vm.loading = false;
                     },
                     function (error) {
                       UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                      vm.loading = false;
                     }
                 );
               }
@@ -967,8 +988,9 @@ define([
           function doSearch(term) {
             $timeout(function () {
               vm.offset = 0;
-              vm.lastOffset = vm.requestLimit;
+              vm.nextOffset = null;
               vm.totalCount = -1;
+              vm.loading = true;
 
               resourceService.searchResources(
                   term,
@@ -981,17 +1003,21 @@ define([
                     publicationStatus: vm.getFilterStatus()
                   },
                   function (response) {
-                    vm.offset = vm.requestLimit;
+
                     vm.searchTerm = term;
                     vm.isSearching = true;
                     vm.resources = response.resources;
+                    vm.nextOffset = getNextOffset(response.paging.next);
                     vm.totalCount = response.totalCount;
+                    vm.loading = false;
+
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
                     UIProgressService.complete();
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                    vm.loading = false;
                   }
               );
             }, 1000);
@@ -1000,7 +1026,7 @@ define([
           function doSharedWithMe() {
 
             vm.offset = 0;
-            vm.lastOffset = vm.requestLimit;
+            vm.nextOffset = null;
             vm.totalCount = -1;
             let offset = vm.offset;
 
@@ -1009,17 +1035,20 @@ define([
                   resourceTypes    : activeResourceTypes(),
                   sort             : sortField(),
                   limit            : vm.requestLimit,
-                  offset           : offset,
+                  offset           : vm.offset,
                   version          : vm.getFilterVersion(),
                   publicationStatus: vm.getFilterStatus()
                 },
                 function (response) {
                   vm.isSearching = true;
                   vm.resources = response.resources;
-                  vm.totalCount = response.totalCount;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
-                  vm.offset = offset + vm.requestLimit;
+
+                  vm.nextOffset = getNextOffset(response.paging.next);
+                  vm.totalCount = response.totalCount;
+                  vm.loading = false;
+
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -1198,16 +1227,15 @@ define([
           }
 
           function removeResource(resource) {
-
             // remove resource from list
-            var index;
+            var index = -1;
             for (var i = 0, len = vm.resources.length; i < len; i++) {
               if (vm.resources[i]['@id'] === resource['@id']) {
                 index = i;
                 break;
               }
             }
-            if (i > -1) {
+            if (index > -1) {
               vm.resources.splice(index, 1);
             }
             // remove current selection
@@ -1230,7 +1258,7 @@ define([
                             UIMessageService.flashSuccess('SERVER.' + r.nodeType.toUpperCase() + '.delete.success',
                                 {"title": r.nodeType},
                                 'GENERIC.Deleted');
-                            removeResource(response);
+                            removeResource(r);
                           },
                           function (error) {
                             UIMessageService.showBackendError('SERVER.' + r.nodeType.toUpperCase() + '.delete.error',
@@ -1269,13 +1297,17 @@ define([
           }
 
 
+
+
           function getFolderContentsById(folderId, resourceId) {
 
             if (activeResourceTypes().length > 0) {
 
-              vm.offset = 0;
-              vm.lastOffset = vm.requestLimit;
               vm.totalCount = -1;
+              vm.nextOffset = null;
+              vm.loading = true;
+              vm.offset = 0;
+              vm.loading = true;
 
               return resourceService.getResources(
                   {
@@ -1292,8 +1324,9 @@ define([
                     vm.resources = response.resources;
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
+                    vm.nextOffset = getNextOffset(response.paging.next);
                     vm.totalCount = response.totalCount;
-                    vm.offset = vm.requestLimit;
+                    vm.loading = false;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                     if (resourceId) {
@@ -1303,6 +1336,7 @@ define([
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                    vm.loading = false;
                   }
               );
             } else {
@@ -1627,7 +1661,6 @@ define([
           });
 
           $scope.selectResourceById = function (id) {
-            console.log('selectResourceById');
 
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {

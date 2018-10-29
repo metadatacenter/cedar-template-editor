@@ -451,12 +451,17 @@ define([
       };
 
       // show the controlled terms modal
-      scope.showModal = function (type) {
+      scope.showModal = function (type, searchScope) {
           // $rootScope.finalTitle = scope.getTitle();
           // scope.modalType = type;
-          var options = {"filterSelection":type, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle()};
+          var options = {"filterSelection":type, "searchScope": searchScope,"modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false,"permission": ["read","write"]};
           UIUtilService.showModal(options);
       };
+
+      // $scope.showModal = function (type, searchScope) {
+      //   var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.element, "id":scope.getId(),  "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+      //   UIUtilService.showModal(options);
+      // };
 
       // show the controlled terms modal
       scope.hideModal = function () {
