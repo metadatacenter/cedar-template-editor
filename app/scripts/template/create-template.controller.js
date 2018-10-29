@@ -542,6 +542,9 @@ define([
         // finder
         //
 
+
+
+
         $scope.showFinderModal = function () {
           // open and activate the modal
           $scope.finderModalVisible = true;

@@ -19,6 +19,7 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
+      $scope.termsModalVisible = false;
       $scope.errorMessages;
       var tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
       $scope.activeTab;
@@ -51,8 +52,17 @@ define([
         return !$scope.isNested();
       };
 
+      $scope.getValueConstraint = function () {
+        return dms.getValueConstraint($scope.field);
+      };
+
       $scope.isSortable = function () {
         return $scope.isSelectable();
+      };
+
+      // has value constraints?
+      $scope.isConstrained = function () {
+        return dms.hasValueConstraint($scope.field);
       };
 
       $scope.isDraft = function () {
@@ -1194,6 +1204,13 @@ define([
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
         }
       });
+
+
+      // open the terms modal
+      $scope.showTermsModal = function() {
+        $scope.termsModalVisible = true;
+        $rootScope.$broadcast('termsModalVisible', [$scope.termsModalVisible, $scope.field]);
+      };
 
 
       /* end of controlled terms functionality */

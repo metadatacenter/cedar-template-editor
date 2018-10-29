@@ -89,26 +89,10 @@
     <div ng-if="isEditState()">
       <div class="detail-options">
         <div class="element-toggles list table-style">
-          <div class="element-toggle table-cell-style options-tab"
-              ng-class="{active: isTabActive('options')}"
-              ng-click="setTab('options');">
-            <span>Options</span>
-          </div>
           <div class="element-toggle cardinality-tab table-cell-style" ng-class="{active: isTabActive('cardinality')}"
               ng-click="setTab('cardinality');">
             <span>Multiple</span>
           </div>
-        </div>
-      </div>
-
-      <div id="options" class="options" ng-show="isTabActive('options')">
-        <div class="form-group floating-label-wrapper">
-          <input type="text"
-              class="form-control"
-              placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
-              aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
-              ng-model="$root.schemaOf(element)['skos:prefLabel']"
-              with-floating-label>
         </div>
       </div>
       <div id="cardinality-options" class="cardinality-options cardinality-selectors"
@@ -131,7 +115,6 @@
         </div>
 
       </div>
-
       <div class="clearfix"></div>
     </div>
   </div>

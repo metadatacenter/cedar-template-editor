@@ -55,6 +55,7 @@
     }
   },
   "GENERIC": {
+    "Apply": "Apply",
     "Created": "Created",
     "Updated": "Saved",
     "AreYouSure": "Are you sure?",
@@ -111,6 +112,7 @@
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
+    "Reset": "Reset",
     "Copied": "Copied",
     "Moved": "Moved",
     "More": "More",
@@ -400,6 +402,9 @@
     }
   },
   "DASHBOARD": {
+    "terms": {
+      "header": "Arrange Values"
+    },
     "menu": {
       "open": "Open",
       "populate": "Populate",
