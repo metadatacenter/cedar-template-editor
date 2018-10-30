@@ -20,15 +20,10 @@ define([
       // initialize with the default value
       let initValue = function () {
         if (dms.hasUserDefinedDefaultValue($scope.field)) {
-          if (!$scope.model[$scope.index].hasOwnProperty('@id')) {
-            $scope.model[$scope.index] = dms.getUserDefinedDefaultValue($scope.field);
-            delete $scope.model[$scope.index]['@idRelated'];
-            delete $scope.model[$scope.index]['id'];
-            delete $scope.model[$scope.index]['label'];
-            delete $scope.model[$scope.index]['notation'];
-            delete $scope.model[$scope.index]['sourceUri'];
-            delete $scope.model[$scope.index]['type'];
-            delete $scope.model[$scope.index]['vsCollection'];
+          var id = $scope.modelValue[$scope.index]['termInfo']['@id'];
+          if (!id || id.length == 0) {
+            $scope.modelValue[$scope.index]['termInfo'] = dms.getUserDefinedDefaultValue($scope.field);
+            $scope.updateModelFromUIControlledField($scope.modelValue, $scope.index);
           }
         }
       };
@@ -60,28 +55,79 @@ define([
         }
       };
 
-      // TODO get rid of the extra values in some other way
-      $scope.onChange = function (m) {
-        if (m) {
-        delete m['@idRelated'];
-        delete m['id'];
-        delete m['label'];
-        delete m['notation'];
-        delete m['sourceUri'];
-        delete m['type'];
-        delete m['vsCollection'];
-        }
-      };
-
       // get the resource identifier
       $scope.getId = function () {
         return dms.getId($scope.field);
       };
+      
+      // Updates the model for fields whose values have been constrained using controlled terms
+      $scope.updateModelFromUIControlledField = function (modelValue, index) {
+        if (modelValue[index] && modelValue[index].termInfo) {
+          var termId = modelValue[index].termInfo['@id'];
+          var termLabel = modelValue[index].termInfo['rdfs:label'];
+          var termNotation;
+          // If 'notation' is there, use it. The 'notation' attribute is used in the CADSR-VS ontology to represent the
+          // value that needs to be stored, which is different from the value that is shown on the UI.
+          if (modelValue[index].termInfo.notation) {
+            termNotation = modelValue[index].termInfo.notation;
+          }
+          // Array
+          if (angular.isArray($scope.model)) {
+            $scope.model[index]['@id'] = termId;
+            $scope.model[index]['rdfs:label'] = termLabel;
+            if (termNotation) {
+              $scope.model[index]['skos:notation'] = termNotation;
+            }
+          }
+          // Single object
+          else {
+            $scope.model['@id'] = termId;
+            $scope.model['rdfs:label'] = termLabel;
+            if (termNotation) {
+              $scope.model['skos:notation'] = termNotation;
+            }
+          }
+        }
+        // Value is undefined
+        else {
+          // Array
+          if (angular.isArray($scope.model)) {
+            delete $scope.model[index]['@id'];
+            delete $scope.model[index]['rdfs:label'];
+            delete $scope.model[index]['skos:notation'];
+          }
+          // Single object
+          else {
+            delete $scope.model['@id'];
+            delete $scope.model['rdfs:label'];
+            delete $scope.model['skos:notation'];
+          }
+        }
+      };
 
-      //
-      // init
-      //
+      $scope.updateUIFromModelControlledField = function () {
+        if (angular.isArray($scope.model)) {
+          $scope.modelValue = [];
+          angular.forEach($scope.model, function (m, i) {
+            $scope.modelValue[i] = {};
+            $scope.modelValue[i]['termInfo'] = {
+              '@id'       : m['@id'],
+              'rdfs:label': m['rdfs:label']
+            };
+          });
+        }
+        else {
+          $scope.modelValue = [];
+          $scope.modelValue[0] = {};
+          $scope.modelValue[0]['termInfo'] = {
+            '@id'       : $scope.model['@id'],
+            'rdfs:label': $scope.model['rdfs:label']
+          };
+        }
+      };
 
+      // Initializes model for fields constrained using controlled terms
+      $scope.updateUIFromModelControlledField();
       initValue();
 
     };
@@ -92,7 +138,7 @@ define([
       scope      : {
         field: '=',
         model: '=',
-        index: '='
+        index: '=',
       },
       controller : function ($scope, $element) {
       },
