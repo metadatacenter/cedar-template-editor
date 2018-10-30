@@ -143,7 +143,6 @@ define([
         }
       } else {
         result = {
-
           '@id'      : response['@id'],
           'notation' : response['notation'],
           'label'    : response.prefLabel,
@@ -158,34 +157,16 @@ define([
         collection.push(result);
       }
 
-
-      var i, j, found;
-      // we do a complicated method to find the changed results to reduce flicker :-/
-      for (j = service.autocompleteResultsCache[id][query].results.length - 1; j >= 0; j--) {
-        if (service.autocompleteResultsCache[id][query].results[j].sourceUri != source_uri) {
-          // we only care about the ones from this source
-          continue;
-        }
-        found = false;
-
-        for (i = 0; i < collection.length; i++) {
-          if (collection[i]['@id'] == service.autocompleteResultsCache[id][query].results[j]['@id']) {
-            // this option still in the result set -- mark it
-            collection[i].found = true;
-            found = true;
-          }
-        }
-
-        if (!found) {
-          // need to remove this option
-          //service.autocompleteResultsCache[id][query].results.splice(j, 1);
-        }
+      // mark the ones we already have to prevent flicker
+      for (var i = 0; i < collection.length; i++) {
+        let index = service.autocompleteResultsCache[id][query].results.findIndex(item => (item['sourceUri'] == source_uri &&  item['@id'] == collection[i]['@id']));
+        collection[i].found = (index > -1);
       }
 
-      service.setAutocompleteResultsPaging(id, query, field_type, source_uri, response);
-
+      // merge the results not previously found
       for (i = 0; i < collection.length; i++) {
         if (!collection[i].found) {
+          delete collection[i].found;
           service.autocompleteResultsCache[id][query].results.push(collection[i]);
         }
       }
@@ -202,8 +183,13 @@ define([
             break;
           }
         }
-        service.sortAutocompleteResults(id, query);
       }
+
+      // save the paging
+      service.setAutocompleteResultsPaging(id, query, field_type, source_uri, response);
+
+      // finally sort the list
+      service.sortAutocompleteResults(id, query);
     };
 
     service.clearResults = function (id, term) {

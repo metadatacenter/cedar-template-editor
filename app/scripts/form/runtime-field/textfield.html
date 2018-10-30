@@ -39,8 +39,11 @@
 
 
     <!-- Field with values have been constrained using controlled terms -->
-    <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="valueArray" index="index"
+    <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
         field="field"></constrained-value>
+
+
+
 
     <!-- Field with value recommendation functionality -->
     <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"
