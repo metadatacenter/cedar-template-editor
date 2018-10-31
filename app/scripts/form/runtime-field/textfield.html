@@ -24,12 +24,12 @@
           maxLength="{{getMaxLength()}}">
 
       <div style="color:maroon" role="alert">
-        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMaxLength' | translate : { max : getMaxLength() } }}</div>
-        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength']" >{{ 'VALIDATION.invalidMinLength' | translate : { min : getMinLength() } }}</div>
-        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['stringlength']" >{{ 'VALIDATION.invalidLength' | translate : { min: getMinLength(), max : getMaxLength() } }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength'] && !forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMinLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
+        <div ng-if="!forms['fieldEditForm' + index]['textField']['$error']['minlength'] && forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMaxLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength'] && forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidStringLength' | translate : { min : getMinLength(), max : getMaxLength()} }}</div>
       </div>
-
-      <!--{{forms['fieldEditForm' + index]['textField']['$error']}}  {{getMaxLength()}}-->
+      <!--{{forms['fieldEditForm' + index]['textField']['$error']}}-->
 
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
@@ -45,10 +45,9 @@
           ng-model="valueElement['@id']">
 
       <div style="color:maroon" role="alert">
-        <div ng-if="forms['fieldEditForm' + index]['URLField']['$error']['email']" translate>VALIDATION.invalidURL</div>
+        <div ng-if="forms['fieldEditForm' + index]['URLField']['$error']['url']" translate>VALIDATION.invalidURL</div>
       </div>
-
-      {{forms['fieldEditForm' + index]['URLField']['$error']}}
+      <!--{{forms['fieldEditForm' + index]['URLField']['$error']}}-->
 
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>

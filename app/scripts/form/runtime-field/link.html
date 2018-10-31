@@ -21,13 +21,14 @@
           name="urlField"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="http://example.com"
+          placeholder="{{ 'PLACEHOLDER.url' | translate }}"
           aria-label="{{getHelp()}}"
           ng-required="isRequired()"
           ng-model-options="{ allowInvalid: true }"
           ng-model="valueElement['@id']">
 
       <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['urlField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
         <div ng-if="forms['fieldEditForm' + index]['urlField']['$error']['url']" translate>VALIDATION.invalidURL</div>
       </div>
 

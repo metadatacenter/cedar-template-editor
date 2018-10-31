@@ -39,6 +39,8 @@ define([
       var dms = DataManipulationService;
       $scope.CONST = CONST;
 
+      $scope.numeric = {'value':null};
+
       $scope.multipleDemo = {};
       $scope.multipleDemo.colors = ['Red', 'Green'];
       $scope.multipleDemo.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra',
@@ -114,10 +116,9 @@ define([
         return dms.getDecimalPlace(field || $scope.field);
       };
 
-      $scope.getStep = function(field) {
+      $scope.getStep = function (field) {
         let places = dms.getDecimalPlace(field || $scope.field);
-        console.log('0.' + '0'.repeat(places-1) + '1')
-        return '0.' + '0'.repeat(places-1) + '1';
+        return '0.' + '0'.repeat(places - 1) + '1';
       };
 
       $scope.getPreferredLabel = function () {
@@ -617,6 +618,7 @@ define([
       // initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
       // It also initializes optionsUI
       $scope.initializeValue = function () {
+        console.log('initializeValue');
         if (!$scope.hasBeenInitialized) {
           // If we are creating a new instance, the model is still completely empty. If there are any default values,
           // we set them. It's important to do this only if the model is empty to avoid overriding values of existing
@@ -775,7 +777,11 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
+        console.log('initializeValue');
 
+        if (dms.isNumericField($scope.field) && $scope.valueArray[$scope.index]['@value']) {
+          $scope.numeric = {'value': Number.parseFloat($scope.valueArray[$scope.index]['@value'])};
+        }
 
         if (dms.isDateType($scope.field)) {
           var date = new Date($scope.valueArray[$scope.index]['@value']);
@@ -840,7 +846,6 @@ define([
           // obj['label'] = $scope.valueArray[$scope.index]['label'];
           obj['rdfs:label'] = $scope.valueArray[$scope.index]['rdfs:label'];
           $scope.model.splice($scope.index + 1, 0, obj);
-
 
 
           // // init default value
@@ -1069,72 +1074,72 @@ define([
         var title = $scope.getPropertyLabel();
 
         // Validate the value of a text field
-        if (dms.isTextFieldType($scope.field)) {
-          var noneTooShort = true;
-          var noneTooLong = true;
-
-          for (let i = 0; i < $scope.valueArray.length; i++) {
-            var value = $scope.valueArray[i]['@value'];
-            if (value) {
-              var valueLength = value.length;
-
-              if (dms.hasMaxLength($scope.field)) {
-                var maxLength = dms.getMaxLength($scope.field);
-                if (valueLength > maxLength) {
-                  noneTooLong = false;
-                }
-              }
-              if (dms.hasMinLength($scope.field)) {
-                var minLength = dms.getMinLength($scope.field);
-                if (valueLength < minLength) {
-                  noneTooShort = false;
-                }
-              }
-            }
-          }
-          $scope.$emit('validationError', [noneTooLong ? 'remove' : 'add', title, id, 'valueTooLongError']);
-          $scope.$emit('validationError', [noneTooShort ? 'remove' : 'add', title, id, 'valueTooShortError']);
-        }
+        // if (dms.isTextFieldType($scope.field)) {
+        //   var noneTooShort = true;
+        //   var noneTooLong = true;
+        //
+        //   for (let i = 0; i < $scope.valueArray.length; i++) {
+        //     var value = $scope.valueArray[i]['@value'];
+        //     if (value) {
+        //       var valueLength = value.length;
+        //
+        //       if (dms.hasMaxLength($scope.field)) {
+        //         var maxLength = dms.getMaxLength($scope.field);
+        //         if (valueLength > maxLength) {
+        //           noneTooLong = false;
+        //         }
+        //       }
+        //       if (dms.hasMinLength($scope.field)) {
+        //         var minLength = dms.getMinLength($scope.field);
+        //         if (valueLength < minLength) {
+        //           noneTooShort = false;
+        //         }
+        //       }
+        //     }
+        //   }
+        //   $scope.$emit('validationError', [noneTooLong ? 'remove' : 'add', title, id, 'valueTooLongError']);
+        //   $scope.$emit('validationError', [noneTooShort ? 'remove' : 'add', title, id, 'valueTooShortError']);
+        // }
 
         // Validate the value of a numeric field
-        if (dms.isNumericField($scope.field)) {
-          var noneTooSmall = true;
-          var noneTooLarge = true;
-          var noneTooDecimal = true;
-          var noneNaN = true;
-
-          for (let i = 0; i < $scope.valueArray.length; i++) {
-            var value = $scope.valueArray[i]['@value'];
-            if (value) {
-              value = Number(value);
-              if (Number.isNaN(value)) {
-                noneNaN = false;
-              }
-              if (dms.hasMaxValue($scope.field)) {
-                var maxValue = dms.getMaxValue($scope.field);
-                if (value > maxValue) {
-                  noneTooLarge = false;
-                }
-              }
-              if (dms.hasMinValue($scope.field)) {
-                var minValue = dms.getMinValue($scope.field);
-                if (value < minValue) {
-                  noneTooSmall = false;
-                }
-              }
-              if (dms.hasDecimalPlace($scope.field)) {
-                var decimalPlace = dms.getDecimalPlace($scope.field);
-                if (countDecimals(value) > decimalPlace) {
-                  noneTooDecimal = false;
-                }
-              }
-            }
-          }
-          $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
-          $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
-          $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
-          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
-        }
+        // if (dms.isNumericField($scope.field)) {
+        //   var noneTooSmall = true;
+        //   var noneTooLarge = true;
+        //   var noneTooDecimal = true;
+        //   var noneNaN = true;
+        //
+        //   for (let i = 0; i < $scope.valueArray.length; i++) {
+        //     var value = $scope.valueArray[i]['@value'];
+        //     if (value) {
+        //       value = Number(value);
+        //       if (Number.isNaN(value)) {
+        //         noneNaN = false;
+        //       }
+        //       if (dms.hasMaxValue($scope.field)) {
+        //         var maxValue = dms.getMaxValue($scope.field);
+        //         if (value > maxValue) {
+        //           noneTooLarge = false;
+        //         }
+        //       }
+        //       if (dms.hasMinValue($scope.field)) {
+        //         var minValue = dms.getMinValue($scope.field);
+        //         if (value < minValue) {
+        //           noneTooSmall = false;
+        //         }
+        //       }
+        //       if (dms.hasDecimalPlace($scope.field)) {
+        //         var decimalPlace = dms.getDecimalPlace($scope.field);
+        //         if (countDecimals(value) > decimalPlace) {
+        //           noneTooDecimal = false;
+        //         }
+        //       }
+        //     }
+        //   }
+        //   $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
+        //   $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
+        //   $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
+        //   $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
+        // }
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($scope.isRequired()) {
@@ -1323,7 +1328,7 @@ define([
           text = getPlaceholderForNumericField($scope.field);
         }
         return text;
-      }
+      };
 
       var getPlaceholderForTextField = function (node) {
         var text = "Enter a value";
@@ -1337,7 +1342,7 @@ define([
       };
 
       $scope.getUnitOfMeasure = function (node) {
-        return dms.getUnitOfMeasure(node);
+        return dms.getUnitOfMeasure(node) || '';
       };
 
       var getPlaceholderForNumericField = function (node) {
@@ -1394,9 +1399,9 @@ define([
             isTooLong = valueLength > dms.getMaxLength($scope.field);
           }
           var isValid = !isTooLong && !isTooShort;
-          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringLength', isValid);
+          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
         } else {
-          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringLength', true);
+          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
         }
       };
 
@@ -1420,30 +1425,28 @@ define([
         }
       };
 
-
-      // Check the decimal place of the input value
-      $scope.checkDecimalPlace = function () {
-        var value = Number($scope.valueArray[$scope.index]['@value']);
-        if (value) {
-          var isValid = true;
-          if (dms.hasDecimalPlace($scope.field)) {
-            var decimalPlace = dms.getDecimalPlace($scope.field);
-            isValid = countDecimals(value) <= decimalPlace;
-          }
-          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', true);
-        }
+      $scope.onChangeNumber = function () {
+        $scope.valueArray[$scope.index]['@value'] = $scope.numeric.value + '';
+        $scope.validateDecimals($scope.valueArray[$scope.index]['@value']);
       };
 
-      var countDecimals = function (value) {
-        if (Math.floor(value) === value) return 0;
-        return value.toString().split(".")[1].length || 0;
-      }
+      // Check the decimal place of the input value
+      $scope.validateDecimals = function (value) {
+        let countDecimals = function (value) {
+          if (Math.floor(value) === value) return 0;
+          return value.toString().split(".")[1].length || 0;
+        };
+        let valid =  value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace($scope.field));
+        $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
+      };
+
+
 
       /* end of value constraints functionality */
 
     };
+
+
 
     return {
       templateUrl: 'scripts/form/cedar-runtime-field.directive.html',

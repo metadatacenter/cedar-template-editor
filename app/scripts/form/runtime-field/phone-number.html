@@ -9,13 +9,12 @@
         ng-class="{'required': isRequired()}"
         placeholder="123-456-7890"
         ng-model-options="{ allowInvalid: true }"
-        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
         aria-label="{{getHelp()}}"
-        validate-on="blur"
-        ng-model="valueElement['@value']">
+        ng-model="valueElement['@value']"
+        ng-required="isRequired()">
 
     <div style="color:maroon" role="alert">
-      <div ng-if="forms['fieldEditForm' + index]['phoneNumberField']['$error']['pattern']" translate>VALIDATION.invalidPhoneNumber</div>
+      <div ng-if="forms['fieldEditForm' + index]['phoneNumberField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
     </div>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

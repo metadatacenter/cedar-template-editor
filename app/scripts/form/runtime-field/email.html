@@ -3,18 +3,19 @@
   <div ng-if="isActive(index)" class="form-group  has-feedback ">
     <input type="email"
         name="emailField"
-        ng-keyup="onKeyUp($event)"
-        class="form-control select"
-        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter email' : ''}}"
-        aria-label="{{getHelp()}}"
+        class="form-control select isActive"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{ 'PLACEHOLDER.email' | translate }}"
+        aria-label="{{getLabel()}}"
         ng-model="valueElement['@value']"
         ng-model-options="{allowInvalid:true}"
-        validate-on="blur">
+        ng-required="isRequired()">
 
     <div style="color:maroon" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['emailField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
       <div ng-if="forms['fieldEditForm' + index]['emailField']['$error']['email']" translate>VALIDATION.invalidEmail</div>
     </div>
+
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
