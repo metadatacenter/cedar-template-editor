@@ -17,14 +17,20 @@
   <!-- TODO fix the link validation with a javascript library -->
   <div ng-if="isActive(index)">
     <div  class="form-group has-success has-feedback">
-      <input type="text"
+      <input type="url"
+          name="urlField"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter URI' : ''}}"
+          placeholder="http://example.com"
           aria-label="{{getHelp()}}"
           ng-required="isRequired()"
+          ng-model-options="{ allowInvalid: true }"
           ng-model="valueElement['@id']">
-          <!--ng-pattern="urlRegex">-->
+
+      <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['urlField']['$error']['url']" translate>VALIDATION.invalidURL</div>
+      </div>
+
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
   </div>

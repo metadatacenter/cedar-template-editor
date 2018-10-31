@@ -45,6 +45,11 @@ define([
                                              'Turquoise'];
 
 
+      $scope.$watch('forms.fieldEditForm.$dirty', function (value) {
+        console.log('forms.fieldEditForm.$dirty', value)
+      });
+
+
       //
       // model access
       //
@@ -83,19 +88,37 @@ define([
       // get the field min/max length
       $scope.getMinLength = function (field) {
         return dms.getMinLength(field || $scope.field);
-      }
+      };
 
       $scope.hasMinLength = function () {
         return dms.getMinLength($scope.field) && dms.getMinLength($scope.field).length > 0;
-      }
+      };
 
       $scope.getMaxLength = function (field) {
         return dms.getMaxLength(field || $scope.field);
-      }
+      };
 
       $scope.hasMaxLength = function () {
         return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
-      }
+      };
+
+      $scope.getMinValue = function (field) {
+        return dms.getMinValue(field || $scope.field);
+      };
+
+      $scope.getMaxValue = function (field) {
+        return dms.getMaxValue(field || $scope.field);
+      };
+
+      $scope.getDecimalPlace = function (field) {
+        return dms.getDecimalPlace(field || $scope.field);
+      };
+
+      $scope.getStep = function(field) {
+        let places = dms.getDecimalPlace(field || $scope.field);
+        console.log('0.' + '0'.repeat(places-1) + '1')
+        return '0.' + '0'.repeat(places-1) + '1';
+      };
 
       $scope.getPreferredLabel = function () {
         return dms.getPreferredLabel($scope.field);
@@ -1371,9 +1394,9 @@ define([
             isTooLong = valueLength > dms.getMaxLength($scope.field);
           }
           var isValid = !isTooLong && !isTooShort;
-          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
+          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringLength', isValid);
         } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
+          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringLength', true);
         }
       };
 
@@ -1391,9 +1414,9 @@ define([
             isTooSmall = value < dms.getMinValue($scope.field);
           }
           var isValid = !isTooLarge && !isTooSmall;
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
+          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
         } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
+          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
         }
       };
 
@@ -1407,9 +1430,9 @@ define([
             var decimalPlace = dms.getDecimalPlace($scope.field);
             isValid = countDecimals(value) <= decimalPlace;
           }
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
+          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', isValid);
         } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
+          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', true);
         }
       };
 

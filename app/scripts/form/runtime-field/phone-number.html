@@ -2,17 +2,21 @@
 
   <!-- actively editing the field -->
   <div ng-if="isActive(index)" class="form-group  has-feedback">
-    <input type="text"
+    <input type="tel"
+        name="phoneNumberField"
         ng-click="setActive(index, true)"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter phone number' : ''}}"
+        placeholder="123-456-7890"
+        ng-model-options="{ allowInvalid: true }"
+        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
         aria-label="{{getHelp()}}"
-        ng-model-options="{allowInvalid:true}"
         validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
         ng-model="valueElement['@value']">
-    </input>
+
+    <div style="color:maroon" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['phoneNumberField']['$error']['pattern']" translate>VALIDATION.invalidPhoneNumber</div>
+    </div>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>

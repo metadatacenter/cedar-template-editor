@@ -1,27 +1,48 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
   <!-- actively editing the field --->
-  <div ng-if="isActive(index)" class="flex">
-    <div class="form-group  has-feedback " style="width:100%">
+  <div ng-if="isActive(index)">
+    <div style="margin:0 10px; white-space:nowrap" class="ellipsis" ng-if="hasUnitOfMeasure(field)">
+      {{getUnitOfMeasure(field)}}
+    </div>
+    <div class="form-group  has-feedback">
 
-      <input type="text"
-          name="activeNumericField"
+
+      <input type="number"
+          name="numericField"
+          min="{{getMinValue()}}"
+          max="{{getMaxValue()}}"
+          step="{{getStep()}}"
           class="form-control isActive select"
           ng-class="{'required': isRequired()}"
-          placeholder="{{getPlaceholderText()}}"
+          placeholder="{{getMinValue() || '0' + '.' + '0'.repeat(getDecimalPlace()-1) + '1'}}"
           ng-model-options="{allowInvalid:true}"
           aria-label="{{getHelp()}}"
           validate-on="blur"
-          ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
+
           ng-model="valueElement['@value']"
-          ng-focus="checkNumberValue();checkDecimalPlace()"
-          ng-change="checkNumberValue();checkDecimalPlace()">
+          ng-focus="checkDecimalPlace()"
+          ng-change="checkDecimalPlace()">
       </input>
 
-      <div ng-if="isActive(index)" class="input-indicator-icons"
+      <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['min']">{{ 'VALIDATION.invalidMinValue' |
+          translate : { min: getMinValue() } }}
+        </div>
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['max']">{{ 'VALIDATION.invalidMaxValue' |
+          translate : { max: getMaxValue() } }}
+        </div>
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['decimal']">{{
+          'VALIDATION.invalidDecimalPlace' | translate : { decimal: getDecimalPlace() } }}
+        </div>
+      </div>
+
+      <div class="input-indicator-icons"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+
     </div>
-    <div style="max-width:30%;min-width:100px;margin:0 10px; white-space:nowrap" class="ellipsis" ng-if="hasUnitOfMeasure(field)">{{getUnitOfMeasure(field)}}</div>
+
   </div>
 
   <!-- not editing --->
@@ -36,7 +57,7 @@
 
     <!-- paged view -->
     <div aria-label="{{getHelp()}}" class="isInactive ellipsis "> {{getValueString(valueArray)}}
-      <span style="margin:0 10px; "  ng-if="hasUnitOfMeasure(field)">{{getUnitOfMeasure(field)}}</span></div>
+      <span ng-if="hasUnitOfMeasure(field)">{{getUnitOfMeasure(field)}}</span></div>
   </div>
 
 </div>

@@ -87,7 +87,7 @@
 
               <div ng-if="i===index">
 
-                <form name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
+                <form novalidate name="forms.fieldEditForm{{index}}" ng-submit="onSubmit(index)">
                   <div ng-include="getFieldUrl()"></div>
                   <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                   <label class="submit-info" translate>GENERIC.OrCtrlEnter</label>

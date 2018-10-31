@@ -2,16 +2,22 @@
   <!-- actively being edited -->
   <div ng-if="isActive(index)" class="form-group  has-feedback ">
     <input type="email"
+        name="emailField"
+        ng-keyup="onKeyUp($event)"
         class="form-control select"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter email' : ''}}"
         aria-label="{{getHelp()}}"
         ng-model="valueElement['@value']"
         ng-model-options="{allowInvalid:true}"
-        validate-on="blur"
-        ng-pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"/>
+        validate-on="blur">
+
+    <div style="color:maroon" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['emailField']['$error']['email']" translate>VALIDATION.invalidEmail</div>
+    </div>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
   </div>
 
   <!--- not active --->

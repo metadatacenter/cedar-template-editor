@@ -12,38 +12,50 @@
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
       <input type="text"
-          name="activeTextField"
-          class="form-control select"
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? getPlaceholderText() : ''}}"
+          name="textField"
+          class="form-control select isActive"
+          ng-class="{'required': isRequired()}"
+          placeholder="{{'5'.repeat(getMinLength())}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']"
-          ng-focus="checkStringLength()"
-          ng-change="checkStringLength()">
-      </input>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-    <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
-      <input type="text"
-          class="form-control select"
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter URI' : ''}}"
-          aria-label="{{getHelp()}}"
-          ng-required="isRequired()"
-          ng-model="valueElement['@id']"
-          ng-pattern="urlRegex">
-      </input>
+          ng-model-options="{allowInvalid:true}"
+          minLength="{{getMinLength()}}"
+          maxLength="{{getMaxLength()}}">
+
+      <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMaxLength' | translate : { max : getMaxLength() } }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength']" >{{ 'VALIDATION.invalidMinLength' | translate : { min : getMinLength() } }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['stringlength']" >{{ 'VALIDATION.invalidLength' | translate : { min: getMinLength(), max : getMaxLength() } }}</div>
+      </div>
+
+      <!--{{forms['fieldEditForm' + index]['textField']['$error']}}  {{getMaxLength()}}-->
+
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
+    <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
+      <input type="url"
+          name="URLField"
+          class="form-control select isActive"
+          ng-class="{'required': isRequired()}"
+          placeholder="http://example.com"
+          aria-label="{{getHelp()}}"
+          ng-required="isRequired()"
+          ng-model="valueElement['@id']">
+
+      <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['URLField']['$error']['email']" translate>VALIDATION.invalidURL</div>
+      </div>
+
+      {{forms['fieldEditForm' + index]['URLField']['$error']}}
+
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
 
     <!-- Field with values have been constrained using controlled terms -->
     <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
         field="field"></constrained-value>
-
-
-
 
     <!-- Field with value recommendation functionality -->
     <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"

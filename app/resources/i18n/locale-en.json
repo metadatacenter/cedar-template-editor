@@ -538,7 +538,17 @@
       "valueTooSmallError": "The value of the following field(s) is too small:",
       "valueNotANumberError": "The value of the following field(s) is not a number:",
       "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
-    }
+    },
+    "invalidEmail": "Please include an @ in your email, e.g. bob@company",
+    "invalidPhoneNumber": "Please enter a valid phone number, e.g. 123-456-7890",
+    "invalidURL": "Please enter a valid URL, e.g. http://example.com",
+    "invalidMinLength": "Please enter at least {{min}} characters",
+    "invalidMaxLength": "Please enter no more than {{max}} characters",
+    "invalidLength": "Please enter a string at least {{min}} and no more than {{max}} characters",
+    "invalidNumberValue":"Number must be between {{min}} and {{max}}",
+    "invalidDecimalPlace": "Number must be no more than {{decimal}} decimal places",
+    "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
+    "invalidMaxValue": "Please enter a value less than or equal to {{max}}"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
