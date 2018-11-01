@@ -1194,7 +1194,7 @@ define([
         };
 
         service.generateInstanceTypeForNumericField = function (node) {
-          return service.getNumberType(node);
+          return service.getNumberType(service.schemaOf(node));
         };
 
         // returns the properties of a template, element, or field schema
