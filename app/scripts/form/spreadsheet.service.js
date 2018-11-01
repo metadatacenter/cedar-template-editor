@@ -224,12 +224,12 @@ define([
                 sds.tableDataSource[row][col]['@value'] = value;
               } else if (cedarType === 'date') {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField();
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField($element);
               } else if (cedarType === 'numeric') {
                 if (sds.tableData[row][col]) {
                   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
                 }
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField();
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField($element);
               } else if (cedarType === 'link') {
                 if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
                   sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];

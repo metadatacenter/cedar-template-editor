@@ -25,7 +25,7 @@ define([
       $scope.midnight = $translate.instant('GENERIC.midnight');
       $scope.uuid = DataManipulationService.generateTempGUID();
       $scope.data = {
-        model: null
+        info: []
       };
       $scope.forms = {};
       $scope.viewState;
@@ -38,14 +38,6 @@ define([
 
       var dms = DataManipulationService;
       $scope.CONST = CONST;
-
-      $scope.numeric = {'value': null};
-
-      $scope.multipleDemo = {};
-      $scope.multipleDemo.colors = ['Red', 'Green'];
-      $scope.multipleDemo.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra',
-                                             'Turquoise'];
-
 
 
       //
@@ -234,7 +226,7 @@ define([
           var location = dms.getValueLabelLocation($scope.field, valueElement);
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              if (valueElement[i][location]) {
+              if (valueElement[i][location] && valueElement[i][location] != 'null') {
                 result += valueElement[i][location] + ', ';
               }
             }
@@ -341,8 +333,8 @@ define([
 
       $scope.cleanupSpreadsheet = function () {
         $scope.deleteExtraRows();
-        //$scope.expanded[0] = false;
         SpreadsheetService.destroySpreadsheet($scope);
+        $scope.setValueArray();
       };
 
       $scope.isTabView = function () {
@@ -569,6 +561,8 @@ define([
       // an array of values for multi-instance fields
       $scope.setValueArray = function () {
         $scope.valueArray = [];
+        $scope.data.info = [];
+
         if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
         } else if (dms.isAttributeValueType($scope.field)) {
@@ -585,6 +579,19 @@ define([
           $scope.valueArray = [];
           $scope.valueArray.push($scope.model);
         }
+
+        switch (dms.getInputType($scope.field)) {
+          case "numeric":
+            for (let i = 0; i < $scope.valueArray.length; i++) {
+              let value;
+              if ($scope.valueArray[i]) {
+                value = Number.parseFloat($scope.valueArray[i]['@value']);
+              }
+              $scope.data.info[i] = {'value': value};
+            }
+            break;
+        }
+
       };
 
       // an array of attribute names for attribute-value types
@@ -652,84 +659,80 @@ define([
         var inputType = $scope.getInputType();
         var attributeName;
 
-        if (dms.isDateType($scope.field)) {
-          var str = $scope.toXSDDate(newValue);
-          if ($scope.model.length > 0) {
-            $scope.model[$scope.index]['@value'] = str;
-          } else {
-            $scope.model['@value'] = str;
-          }
-        }
+        switch (inputType) {
+          case "numeric":
+            $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value + '';
+            $scope.validateDecimals($scope.valueArray[$scope.index]['@value']);
+            break;
+          case "date":
+            var str = $scope.toXSDDate(newValue);
+            if ($scope.model.length > 0) {
+              $scope.model[$scope.index]['@value'] = str;
+            } else {
+              $scope.model['@value'] = str;
+            }
+            break;
+          case 'attribute-value':
+            var parentModel = $scope.parentModel || $scope.$parent.model;
+            var parentInstance = $scope.parentInstance;
+            var parent = parentModel[parentInstance] || parentModel;
 
-        if (dms.isAttributeValueType($scope.field)) {
-          var parentModel = $scope.parentModel || $scope.$parent.model;
-          var parentInstance = $scope.parentInstance;
-          var parent = parentModel[parentInstance] || parentModel;
+            if ($scope.model.length > 0) {
 
-          if ($scope.model.length > 0) {
+              if (isAttributeName) {
 
-            if (isAttributeName) {
+                // attribute name, first make it unique in the parent
 
-              // attribute name, first make it unique in the parent
+                attributeName = $scope.getNewAttributeName(newValue, parent);
+                if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
-              attributeName = $scope.getNewAttributeName(newValue, parent);
-              if (!$scope.isDuplicateAttribute(attributeName, parent)) {
+                  $scope.valueArray[$scope.index]['@value'] = attributeName;
 
-                $scope.valueArray[$scope.index]['@value'] = attributeName;
+                  if (Array.isArray(parentModel)) {
+                    for (var i = 0; i < parentModel.length; i++) {
 
-                if (Array.isArray(parentModel)) {
-                  for (var i = 0; i < parentModel.length; i++) {
+                      // update all the instances
+                      parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
 
-                    // update all the instances
-                    parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
+                      // update attribute name in the parent
 
-                    // update attribute name in the parent
+                      parentModel[i][attributeName] = {'@value': null};
+                      if (oldValue && parentModel[i][oldValue]) {
+                        parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
+                        delete parentModel[i][oldValue];
+                      }
 
-                    parentModel[i][attributeName] = {'@value': null};
-                    if (oldValue && parentModel[i][oldValue]) {
-                      parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
-                      delete parentModel[i][oldValue];
+                    }
+                  } else {
+
+                    // update attribute name in the attribute-value field and in the parent
+                    parentModel[$scope.fieldKey][$scope.index] = attributeName;
+                    parentModel[attributeName] = {'@value': null};
+                    if (oldValue && parentModel[oldValue]) {
+                      delete parentModel[oldValue];
                     }
 
+                    //update attribute name in attribute-value field
+                    //$scope.model[$scope.index]['@value'] = attributeName;
+
+
                   }
+                }
+              } else {
+
+                // attribute value, update value in parent model
+                var attributeName = $scope.valueArray[$scope.index]['@value'];
+
+                if (attributeName && parent[attributeName]) {
+                  parent[attributeName]['@value'] = newValue;
                 } else {
-
-                  // update attribute name in the attribute-value field and in the parent
-                  parentModel[$scope.fieldKey][$scope.index] = attributeName;
-                  parentModel[attributeName] = {'@value': null};
-                  if (oldValue && parentModel[oldValue]) {
-                    delete parentModel[oldValue];
-                  }
-
-                  //update attribute name in attribute-value field
-                  //$scope.model[$scope.index]['@value'] = attributeName;
-
-
+                  console.log('Error: cannot update attribute value', attributeName, parent);
                 }
               }
-            } else {
-
-              // attribute value, update value in parent model
-              var attributeName = $scope.valueArray[$scope.index]['@value'];
-
-              if (attributeName && parent[attributeName]) {
-                parent[attributeName]['@value'] = newValue;
-              } else {
-                console.log('Error: cannot update attribute value', attributeName, parent);
-              }
             }
-
-          } else {
-            // not handling scope.model as object
-          }
-
-        }
-
-        if ($scope.isMultiAnswer()) {
-          // Reset model
-          $scope.model = dms.initializeModel($scope.field, $scope.model, true);
-
-          if (inputType == 'checkbox') {
+            break;
+          case 'checkbox':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             // Insert the value at the right position in the model. optionsUI is an object, not an array,
             // so the right order in the model is not ensured.
             // The following lines ensure that each option is inserted into the right place
@@ -746,11 +749,11 @@ define([
             if ($scope.model.length == 0) {
               dms.initializeValue($scope.field, $scope.model);
             }
-          }
-          else if (inputType == 'radio') {
+          case 'radio':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             $scope.model[fieldValue] = $scope.optionsUI.radioOption;
-          }
-          else if (inputType == 'list') {
+          case 'list':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
@@ -765,40 +768,45 @@ define([
             dms.removeEmptyStrings($scope.field, $scope.model);
             // If the model is empty, set default value
             dms.initializeValue($scope.field, $scope.model);
-          }
+            break;
         }
       };
 
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-
-        if (dms.isNumericField($scope.field) && $scope.valueArray[$scope.index]['@value']) {
-          $scope.numeric = {'value': Number.parseFloat($scope.valueArray[$scope.index]['@value'])};
-        }
-
-        if (dms.isDateType($scope.field)) {
-          var date = new Date($scope.valueArray[$scope.index]['@value']);
-          $scope.date.dt = date;
-        }
-
-        if ($scope.isMultiAnswer()) {
-          $scope.optionsUI = {};
-          var valueLocation = $scope.getValueLocation();
-
-          if (dms.isCheckboxType($scope.field)) {
+        let inputType = $scope.getInputType();
+        switch (inputType) {
+          case "numeric":
+            for (let i = 0; i < $scope.valueArray.length; i++) {
+              let value;
+              if ($scope.valueArray[i]) {
+                value = Number.parseFloat($scope.valueArray[i]['@value']);
+              }
+              $scope.data.info[i] = {'value': value};
+            }
+            break;
+          case "date":
+            $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+            break;
+          case "checkbox":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             for (var i = 0; i < $scope.model.length; i++) {
               var value = $scope.model[i][valueLocation];
               $scope.optionsUI[value] = value;
             }
-          }
-          else if (dms.isRadioType($scope.field)) {
-            // For this field type only one selected option is possible
+            break;
+          case "radio":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             if ($scope.model) {
               $scope.optionsUI.radioOption = $scope.model[valueLocation];
             }
-          }
-          else if (dms.isListType($scope.field)) {
+            break;
+          case "list":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
@@ -806,7 +814,6 @@ define([
                 if (v) {
                   $scope.optionsUI.listMultiSelect.push({"label": $scope.model[i][valueLocation]});
                 }
-
               }
             } else {
               // For this field type only one selected option is possible
@@ -814,9 +821,8 @@ define([
                 $scope.optionsUI.listSingleSelect = {"label": $scope.model[valueLocation]};
               }
             }
-          }
+            break;
         }
-
       };
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
@@ -828,51 +834,100 @@ define([
         }
       };
 
-      // add more instances to a multiple cardinality field if possible by copying the selected instance
-      $scope.copyField = function () {
 
-        if (dms.isAttributeValueType($scope.field)) {
-          $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
+      var copyAttributeValueField = function (parentModel, parentInstance) {
+
+        var parentModel = $scope.parentModel || $scope.$parent.model;
+        var parentInstance = $scope.parentInstance;
+        var parent = parentModel[parentInstance] || parentModel;
+
+
+        // there is no attribute name defined, so give it a default name
+        if (!$scope.valueArray[$scope.index]['@value']) {
+          $scope.updateModelFromUI($scope.fieldKey, '', true);
         }
-        if (dms.isTextFieldType($scope.field) && dms.hasValueConstraint($scope.field)) {
-          var obj = {};
-          obj['@id'] = $scope.valueArray[$scope.index]['@id'];
-          // obj['label'] = $scope.valueArray[$scope.index]['label'];
-          obj['rdfs:label'] = $scope.valueArray[$scope.index]['rdfs:label'];
-          $scope.model.splice($scope.index + 1, 0, obj);
+
+        // create a unique attribute name for the copy
+        var attributeValue = $scope.attributeValueArray[$scope.index]['@value'];
+        var oldAttributeName = $scope.valueArray[$scope.index]['@value'];
+        var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parent);
+
+        if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
 
 
-          // // init default value
-          // if (dms.hasUserDefinedDefaultValue($scope.field)) {
-          //   var value = dms.getUserDefinedDefaultValue($scope.field);
-          //   var index = $scope.index+1 ;
-          //   if (!$scope.model.hasOwnProperty('@id')) {
-          //     $scope.valueArray[index] = {
-          //       '@id'  : value['@id'],
-          //       'label': value['label'],
-          //       'rdfs:label': value['rdfs:label']
-          //     }
-          //   }
-          // }
+          if (Array.isArray(parentModel)) {
+            for (var i = 0; i < parentModel.length; i++) {
 
+              // create the obj in the attribute-value field
+              parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
+
+              // create the new field at the parent level
+              var valueObject = {};
+              valueObject["@value"] = attributeValue;
+              parentModel[i][newAttributeName] = valueObject;
+
+            }
+          } else {
+
+            // create the obj in the attribute-value field
+            parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
+
+            // create the new field at the parent level
+            var valueObject = {};
+            valueObject["@value"] = attributeValue;
+            parentModel[newAttributeName] = valueObject;
+
+          }
 
           // activate the new instance
-          $timeout($scope.setActive($scope.index + 1, true), 100);
-        } else {
-          var valueLocation = $scope.getValueLocation();
-          var maxItems = dms.getMaxItems($scope.field);
-          if ((!maxItems || $scope.model.length < maxItems)) {
+          $timeout(function () {
+            $scope.setValueArray();
+            $scope.setAttributeValueArray();
+            $scope.setActive($scope.index + 1, true);
+          }, 100);
 
 
+        }
+      };
 
-            // copy selected instance in the model and insert immediately after
-            var obj = {};
-            obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
-            $scope.model.splice($scope.index + 1, 0, obj);
+      // add more instances to a multiple cardinality field if possible by copying the selected instance
+      $scope.copyField = function () {
+        let inputType = $scope.getInputType();
+        let valueLocation = $scope.getValueLocation();
+        let maxItems = dms.getMaxItems($scope.field);
 
-            // activate the new instance
-            $timeout($scope.setActive($scope.index + 1, true), 100);
 
+        if ((!maxItems || $scope.model.length < maxItems)) {
+          switch (inputType) {
+            case "attribute-value":
+              copyAttributeValueField($scope.parentModel, $scope.parentInstance);
+              break;
+            case 'textfield':
+              if (dms.hasValueConstraint($scope.field)) {
+                let obj = {
+                  '@id'       : $scope.valueArray[$scope.index]['@id'],
+                  'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
+                };
+                $scope.model.splice($scope.index + 1, 0, obj);
+
+              } else {
+                let obj = {};
+                obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
+                $scope.model.splice($scope.index + 1, 0, obj);
+              }
+              $timeout($scope.setActive($scope.index + 1, true), 100);
+              break;
+            case 'numeric':
+              let numberObj = {'@value': $scope.valueArray[$scope.index]['@value']};
+              $scope.model.splice($scope.index + 1, 0, numberObj);
+              $scope.data.info.splice($scope.index + 1, 0, {'value': $scope.data.info[$scope.index].value});
+              $timeout($scope.setActive($scope.index + 1, true), 100);
+              break;
+            default :
+              let obj = {};
+              obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
+              $scope.model.splice($scope.index + 1, 0, obj);
+              $timeout($scope.setActive($scope.index + 1, true), 100);
           }
         }
       };
@@ -896,63 +951,6 @@ define([
         }
       };
 
-      $scope.copyAttributeValueField = function (parentModel, parentInstance) {
-
-        var parentModel = $scope.parentModel || $scope.$parent.model;
-        var parentInstance = $scope.parentInstance;
-        var parent = parentModel[parentInstance] || parentModel;
-
-
-        var maxItems = dms.getMaxItems($scope.field);
-        if ((!maxItems || $scope.model.length < maxItems)) {
-
-          // there is no attribute name defined, so give it a default name
-          if (!$scope.valueArray[$scope.index]['@value']) {
-            $scope.updateModelFromUI($scope.fieldKey, '', true);
-          }
-
-          // create a unique attribute name for the copy
-          var attributeValue = $scope.attributeValueArray[$scope.index]['@value'];
-          var oldAttributeName = $scope.valueArray[$scope.index]['@value'];
-          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parent);
-
-          if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
-
-
-            if (Array.isArray(parentModel)) {
-              for (var i = 0; i < parentModel.length; i++) {
-
-                // create the obj in the attribute-value field
-                parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
-
-                // create the new field at the parent level
-                var valueObject = {};
-                valueObject["@value"] = attributeValue;
-                parentModel[i][newAttributeName] = valueObject;
-
-              }
-            } else {
-
-              // create the obj in the attribute-value field
-              parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
-
-              // create the new field at the parent level
-              var valueObject = {};
-              valueObject["@value"] = attributeValue;
-              parentModel[newAttributeName] = valueObject;
-
-            }
-
-            // activate the new instance
-            $timeout(function () {
-              $scope.setValueArray();
-              $scope.setAttributeValueArray();
-              $scope.setActive($scope.index + 1, true);
-            }, 100);
-
-          }
-        }
-      };
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
@@ -1419,10 +1417,6 @@ define([
         }
       };
 
-      $scope.onChangeNumber = function () {
-        $scope.valueArray[$scope.index]['@value'] = $scope.numeric.value + '';
-        $scope.validateDecimals($scope.valueArray[$scope.index]['@value']);
-      };
 
       // Check the decimal place of the input value
       $scope.validateDecimals = function (value) {

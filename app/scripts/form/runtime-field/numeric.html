@@ -18,9 +18,8 @@
           placeholder="{{getMinValue() || '0' + '.' + '0'.repeat(getDecimalPlace()-1) + '1'}}"
           ng-model-options="{allowInvalid:true}"
           aria-label="{{getHelp()}}"
-          ng-model="numeric.value"
-          ng-focus="onChangeNumber()"
-          ng-change="onChangeNumber()">
+          ng-model="data.info[index].value"
+          ng-change="updateModelFromUI()">
       </input>
 
       <div class="validation" role="alert">
