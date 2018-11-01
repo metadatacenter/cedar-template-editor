@@ -23,8 +23,7 @@
           ng-change="onChangeNumber()">
       </input>
 
-      {{forms['fieldEditForm' + index]['numericField']['$error']}}
-      <div style="color:maroon" role="alert">
+      <div class="validation" role="alert">
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['required']">{{ 'VALIDATION.required' |
           translate }}
         </div>

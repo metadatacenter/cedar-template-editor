@@ -17,6 +17,17 @@ define([
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
       $scope.mods = dms.getMods($scope.field);
 
+      $scope.isRequiredError = function () {
+        var isEmpty = function(obj) {
+          for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+              return false;
+          }
+          return true;
+        };
+        return dms.isRequired($scope.field) && isEmpty($scope.modelValue[$scope.index].termInfo);
+      };
+
       // initialize with the default value
       let initValue = function () {
         if (dms.hasUserDefinedDefaultValue($scope.field)) {

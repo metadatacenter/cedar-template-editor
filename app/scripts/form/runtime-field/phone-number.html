@@ -13,7 +13,7 @@
         ng-model="valueElement['@value']"
         ng-required="isRequired()">
 
-    <div style="color:maroon" role="alert">
+    <div class="validation" role="alert">
       <div ng-if="forms['fieldEditForm' + index]['phoneNumberField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
     </div>
 

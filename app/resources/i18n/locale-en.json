@@ -514,6 +514,7 @@
   "PLACEHOLDER": {
     "email": "bob@company.com",
     "url": "http://company.com",
+    "date": "10/10/2010",
     "phoneNumber": "123-456-7890"
   },
   "VALIDATION": {
@@ -545,6 +546,8 @@
       "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
     },
     "required": "Please enter a value",
+    "requiredDate": "Please enter a date, e.g. 10/10/2010",
+    "requiredSelect": "Please select a value from the list",
     "invalidEmail": "Please include an @ in your email, e.g. bob@company",
     "invalidPhoneNumber": "Please enter a valid phone number, e.g. 123-456-7890",
     "invalidURL": "Please enter a valid URL, e.g. http://example.com",
@@ -554,7 +557,8 @@
     "invalidNumberValue": "Value must be between {{min}} and {{max}}",
     "invalidDecimalPlace": "Value must have no more than {{decimal}} decimal places",
     "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
-    "invalidMaxValue": "Please enter a value less than or equal to {{max}}"
+    "invalidMaxValue": "Please enter a value less than or equal to {{max}}",
+    "invalidDate": "Please enter a valid date, e.g. 10/10/2010"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {

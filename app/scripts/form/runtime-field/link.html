@@ -27,7 +27,7 @@
           ng-model-options="{ allowInvalid: true }"
           ng-model="valueElement['@id']">
 
-      <div style="color:maroon" role="alert">
+      <div class="validation" role="alert">
         <div ng-if="forms['fieldEditForm' + index]['urlField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
         <div ng-if="forms['fieldEditForm' + index]['urlField']['$error']['url']" translate>VALIDATION.invalidURL</div>
       </div>

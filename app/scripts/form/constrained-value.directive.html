@@ -18,5 +18,10 @@
       </div>
     </ui-select-choices>
   </ui-select>
+
+
+  <div class="validation" role="alert">
+    <div ng-if="isRequiredError()">{{ 'VALIDATION.requiredSelect' | translate }}</div>
+  </div>
 </div>
 

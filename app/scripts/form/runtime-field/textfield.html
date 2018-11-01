@@ -23,7 +23,7 @@
           minLength="{{getMinLength()}}"
           maxLength="{{getMaxLength()}}">
 
-      <div style="color:maroon" role="alert">
+      <div class="validation" role="alert">
         <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
         <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength'] && !forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMinLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
         <div ng-if="!forms['fieldEditForm' + index]['textField']['$error']['minlength'] && forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMaxLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
