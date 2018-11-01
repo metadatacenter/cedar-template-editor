@@ -39,17 +39,13 @@ define([
       var dms = DataManipulationService;
       $scope.CONST = CONST;
 
-      $scope.numeric = {'value':null};
+      $scope.numeric = {'value': null};
 
       $scope.multipleDemo = {};
       $scope.multipleDemo.colors = ['Red', 'Green'];
       $scope.multipleDemo.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra',
                                              'Turquoise'];
 
-
-      $scope.$watch('forms.fieldEditForm.$dirty', function (value) {
-        console.log('forms.fieldEditForm.$dirty', value)
-      });
 
 
       //
@@ -618,7 +614,6 @@ define([
       // initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
       // It also initializes optionsUI
       $scope.initializeValue = function () {
-        console.log('initializeValue');
         if (!$scope.hasBeenInitialized) {
           // If we are creating a new instance, the model is still completely empty. If there are any default values,
           // we set them. It's important to do this only if the model is empty to avoid overriding values of existing
@@ -777,7 +772,6 @@ define([
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-        console.log('initializeValue');
 
         if (dms.isNumericField($scope.field) && $scope.valueArray[$scope.index]['@value']) {
           $scope.numeric = {'value': Number.parseFloat($scope.valueArray[$scope.index]['@value'])};
@@ -836,7 +830,7 @@ define([
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
-        console.log('copyField');
+
         if (dms.isAttributeValueType($scope.field)) {
           $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
         }
@@ -1433,19 +1427,22 @@ define([
       // Check the decimal place of the input value
       $scope.validateDecimals = function (value) {
         let countDecimals = function (value) {
-          if (Math.floor(value) === value) return 0;
-          return value.toString().split(".")[1].length || 0;
+          let result = 0;
+          let arr = value.toString().split(".");
+          if (arr.length > 1) {
+            result = arr[1].length;
+          }
+          return result;
         };
-        let valid =  value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace($scope.field));
+        let valid = value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace(
+            $scope.field));
         $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
       };
-
 
 
       /* end of value constraints functionality */
 
     };
-
 
 
     return {
