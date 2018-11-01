@@ -21,9 +21,10 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
+      var dms = DataManipulationService;
       $scope.directory = 'runtime';
       $scope.midnight = $translate.instant('GENERIC.midnight');
-      $scope.uuid = DataManipulationService.generateTempGUID();
+      $scope.uuid = dms.generateTempGUID();
       $scope.data = {
         info: []
       };
@@ -34,9 +35,6 @@ define([
       $scope.pageMax = 0;
       $scope.pageRange = 6;
       $scope.valueArray;
-      $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
-
-      var dms = DataManipulationService;
       $scope.CONST = CONST;
 
 
@@ -129,7 +127,6 @@ define([
         return dms.getContent(field || $scope.field);
       };
 
-
       // get the field id
       $scope.getId = function () {
         return dms.getId($scope.field);
@@ -154,12 +151,10 @@ define([
         return dms.isCardinalElement($scope.field);
       };
 
-
       $scope.isMultiple = function () {
         // We consider that checkboxes and multi-choice lists are not 'multiple'
         return (dms.isCardinalElement($scope.field) && !dms.isMultipleChoiceField($scope.field));
       };
-
 
       // what is the dom id for this field?
       $scope.getLocator = function (index) {
@@ -212,6 +207,14 @@ define([
         return $scope.isStatic($scope.previous);
       };
 
+      $scope.hasUnitOfMeasure = function (node) {
+        return dms.hasUnitOfMeasure(node);
+      };
+
+      $scope.getUnitOfMeasure = function (node) {
+        return dms.getUnitOfMeasure(node) || '';
+      };
+
       // string together field values
       $scope.getValueString = function (valueElement, attributeValueElement) {
         var result = '';
@@ -221,7 +224,6 @@ define([
               result += valueElement[i]['@value'] + (attributeValueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
             }
           }
-
         } else {
           var location = dms.getValueLabelLocation($scope.field, valueElement);
           if (valueElement) {
@@ -261,21 +263,6 @@ define([
           return $scope.getValueString($scope.valueArray);
         }
       };
-
-
-      // // strip midnight off the date time string
-      // $scope.formatDateTime = function (value) {
-      //
-      //   var result = value;
-      //   if (value) {
-      //
-      //     var index = value.indexOf($scope.midnight);
-      //     if (index != -1) {
-      //       result = value.substring(0, index);
-      //     }
-      //   }
-      //   return result;
-      // };
 
       // can this be expanded
       $scope.isExpandable = function () {
@@ -329,7 +316,6 @@ define([
           $scope.deleteExtraRows();
         })
       };
-
 
       $scope.cleanupSpreadsheet = function () {
         $scope.deleteExtraRows();
@@ -455,7 +441,6 @@ define([
         };
 
         $timeout($scope.setHeight, 100);
-
       };
 
       // submit this edit
@@ -597,11 +582,9 @@ define([
       // an array of attribute names for attribute-value types
       $scope.setAttributeValueArray = function () {
 
-
         var parentModel = $scope.parentModel || $scope.$parent.model;
         var parentInstance = $scope.parentInstance;
         var parent = parentModel[parentInstance] || parentModel;
-
 
         if (dms.isAttributeValueType($scope.field)) {
           $scope.attributeValueArray = [];
@@ -652,6 +635,21 @@ define([
 
       $scope.multiple = {};
 
+      // Check the decimal place of the input value
+      var validateDecimals = function (value) {
+        let countDecimals = function (value) {
+          let result = 0;
+          let arr = value.toString().split(".");
+          if (arr.length > 1) {
+            result = arr[1].length;
+          }
+          return result;
+        };
+        let valid = value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace(
+            $scope.field));
+        $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
+      };
+
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
 
@@ -662,7 +660,7 @@ define([
         switch (inputType) {
           case "numeric":
             $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value + '';
-            $scope.validateDecimals($scope.valueArray[$scope.index]['@value']);
+            validateDecimals($scope.valueArray[$scope.index]['@value']);
             break;
           case "date":
             var str = $scope.toXSDDate(newValue);
@@ -826,14 +824,13 @@ define([
       };
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
-      $scope.checkForEmpty = function () {
-        var location = $scope.getValueLocation();
-        var obj = $scope.valueArray[$scope.index];
-        if (!obj[location] || obj[location].length === 0) {
-          delete obj[location];
-        }
-      };
-
+      // $scope.checkForEmpty = function () {
+      //   var location = $scope.getValueLocation();
+      //   var obj = $scope.valueArray[$scope.index];
+      //   if (!obj[location] || obj[location].length === 0) {
+      //     delete obj[location];
+      //   }
+      // };
 
       var copyAttributeValueField = function (parentModel, parentInstance) {
 
@@ -896,7 +893,6 @@ define([
         let valueLocation = $scope.getValueLocation();
         let maxItems = dms.getMaxItems($scope.field);
 
-
         if ((!maxItems || $scope.model.length < maxItems)) {
           switch (inputType) {
             case "attribute-value":
@@ -950,7 +946,6 @@ define([
           return oldName;
         }
       };
-
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
@@ -1049,7 +1044,7 @@ define([
             for (var i = 0; i < newVal.length; i++) {
               // if the new string is not in the old array, add it to the context.
               if (oldVal.indexOf(newVal[i] == -1) && $scope.parentModel['@context'][newVal[i]] == null) {
-                $scope.parentModel['@context'][newVal[i]] = UrlService.schemaProperties() + "/" + DataManipulationService.generateGUID();
+                $scope.parentModel['@context'][newVal[i]] = UrlService.schemaProperties() + "/" + dms.generateGUID();
               }
             }
           }
@@ -1064,74 +1059,6 @@ define([
         var valueConstraint = dms.getValueConstraint($scope.field);
         var id = $scope.getId();
         var title = $scope.getPropertyLabel();
-
-        // Validate the value of a text field
-        // if (dms.isTextFieldType($scope.field)) {
-        //   var noneTooShort = true;
-        //   var noneTooLong = true;
-        //
-        //   for (let i = 0; i < $scope.valueArray.length; i++) {
-        //     var value = $scope.valueArray[i]['@value'];
-        //     if (value) {
-        //       var valueLength = value.length;
-        //
-        //       if (dms.hasMaxLength($scope.field)) {
-        //         var maxLength = dms.getMaxLength($scope.field);
-        //         if (valueLength > maxLength) {
-        //           noneTooLong = false;
-        //         }
-        //       }
-        //       if (dms.hasMinLength($scope.field)) {
-        //         var minLength = dms.getMinLength($scope.field);
-        //         if (valueLength < minLength) {
-        //           noneTooShort = false;
-        //         }
-        //       }
-        //     }
-        //   }
-        //   $scope.$emit('validationError', [noneTooLong ? 'remove' : 'add', title, id, 'valueTooLongError']);
-        //   $scope.$emit('validationError', [noneTooShort ? 'remove' : 'add', title, id, 'valueTooShortError']);
-        // }
-
-        // Validate the value of a numeric field
-        // if (dms.isNumericField($scope.field)) {
-        //   var noneTooSmall = true;
-        //   var noneTooLarge = true;
-        //   var noneTooDecimal = true;
-        //   var noneNaN = true;
-        //
-        //   for (let i = 0; i < $scope.valueArray.length; i++) {
-        //     var value = $scope.valueArray[i]['@value'];
-        //     if (value) {
-        //       value = Number(value);
-        //       if (Number.isNaN(value)) {
-        //         noneNaN = false;
-        //       }
-        //       if (dms.hasMaxValue($scope.field)) {
-        //         var maxValue = dms.getMaxValue($scope.field);
-        //         if (value > maxValue) {
-        //           noneTooLarge = false;
-        //         }
-        //       }
-        //       if (dms.hasMinValue($scope.field)) {
-        //         var minValue = dms.getMinValue($scope.field);
-        //         if (value < minValue) {
-        //           noneTooSmall = false;
-        //         }
-        //       }
-        //       if (dms.hasDecimalPlace($scope.field)) {
-        //         var decimalPlace = dms.getDecimalPlace($scope.field);
-        //         if (countDecimals(value) > decimalPlace) {
-        //           noneTooDecimal = false;
-        //         }
-        //       }
-        //     }
-        //   }
-        //   $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
-        //   $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
-        //   $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
-        //   $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
-        // }
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($scope.isRequired()) {
@@ -1300,141 +1227,115 @@ define([
         return date == null;
       };
 
+      // $scope.getPlaceholderText = function () {
+      //   var text = "Enter a value";
+      //   if (dms.isTextFieldType($scope.field)) {
+      //     text = getPlaceholderForTextField($scope.field);
+      //   } else if (dms.isNumericField($scope.field)) {
+      //     text = getPlaceholderForNumericField($scope.field);
+      //   }
+      //   return text;
+      // };
+
+      // var getPlaceholderForTextField = function (node) {
+      //   var text = "Enter a value";
+      //   text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
+      //   text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
+      //   return text;
+      // }
+
+
+
+      // var getPlaceholderForNumericField = function (node) {
+      //   var numberType = dms.getNumberType(node);
+      //   var text = "Enter " + getNumberLabel(numberType) + " number";
+      //   if (dms.hasUnitOfMeasure(node)) {
+      //     text += " (in " + dms.getUnitOfMeasure(node) + ")";
+      //   }
+      //   var decimalPlace = dms.getDecimalPlace(node) || 0;
+      //   if (decimalPlace == 0) {
+      //     text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
+      //     text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
+      //   } else {
+      //     if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
+      //       var decimalPlacesText = "." + "0".repeat(decimalPlace)
+      //       text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
+      //       text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
+      //     } else {
+      //       text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
+      //     }
+      //   }
+      //   return text;
+      // }
+
+      // var getNumberLabel = function (numberType) {
+      //   var label = "a";
+      //   if (numberType == "xsd:decimal") {
+      //     label = "a decimal"
+      //   } else if (numberType == "xsd:int") {
+      //     label = "an integer";
+      //   } else if (numberType == "xsd:long") {
+      //     label = "a long-integer";
+      //   } else if (numberType == "xsd:float") {
+      //     label = "a single-precision floating"
+      //   } else if (numberType == "xsd:double") {
+      //     label = "a double-precision floating";
+      //   }
+      //   return label;
+      // }
+
+      // Check the string length of the input value
+      // $scope.checkStringLength = function () {
+      //   var value = $scope.valueArray[$scope.index]['@value']
+      //   if (value) {
+      //     var valueLength = value.length;
+      //     var isTooShort = false;
+      //     if (dms.hasMinLength($scope.field)) {
+      //       isTooShort = valueLength < dms.getMinLength($scope.field);
+      //     }
+      //     var isTooLong = false;
+      //     if (dms.hasMaxLength($scope.field)) {
+      //       isTooLong = valueLength > dms.getMaxLength($scope.field);
+      //     }
+      //     var isValid = !isTooLong && !isTooShort;
+      //     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
+      //   } else {
+      //     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
+      //   }
+      // };
+
+      // Check the numeric value of the input value
+      // $scope.checkNumberValue = function () {
+      //   var value = $scope.valueArray[$scope.index]['@value'];
+      //   if (value) {
+      //     value = Number(value);
+      //     var isTooLarge = false;
+      //     if (dms.hasMaxValue($scope.field)) {
+      //       isTooLarge = value > dms.getMaxValue($scope.field);
+      //     }
+      //     var isTooSmall = false;
+      //     if (dms.hasMinValue($scope.field)) {
+      //       isTooSmall = value < dms.getMinValue($scope.field);
+      //     }
+      //     var isValid = !isTooLarge && !isTooSmall;
+      //     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
+      //   } else {
+      //     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
+      //   }
+      // };
+
+
+
+
       //
       // initialization
       //
 
       $scope.setValueArray();
       $scope.setAttributeValueArray();
-
-
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
 
-
-      $scope.getPlaceholderText = function () {
-        var text = "Enter a value";
-        if (dms.isTextFieldType($scope.field)) {
-          text = getPlaceholderForTextField($scope.field);
-        } else if (dms.isNumericField($scope.field)) {
-          text = getPlaceholderForNumericField($scope.field);
-        }
-        return text;
-      };
-
-      var getPlaceholderForTextField = function (node) {
-        var text = "Enter a value";
-        text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
-        text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
-        return text;
-      }
-
-      $scope.hasUnitOfMeasure = function (node) {
-        return dms.hasUnitOfMeasure(node);
-      };
-
-      $scope.getUnitOfMeasure = function (node) {
-        return dms.getUnitOfMeasure(node) || '';
-      };
-
-      var getPlaceholderForNumericField = function (node) {
-        var numberType = dms.getNumberType(node);
-        var text = "Enter " + getNumberLabel(numberType) + " number";
-        if (dms.hasUnitOfMeasure(node)) {
-          text += " (in " + dms.getUnitOfMeasure(node) + ")";
-        }
-        var decimalPlace = dms.getDecimalPlace(node) || 0;
-        if (decimalPlace == 0) {
-          text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
-          text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
-        } else {
-          if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
-            var decimalPlacesText = "." + "0".repeat(decimalPlace)
-            text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
-            text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
-          } else {
-            text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
-          }
-        }
-        return text;
-      }
-
-      var getNumberLabel = function (numberType) {
-        var label = "a";
-        if (numberType == "xsd:decimal") {
-          label = "a decimal"
-        } else if (numberType == "xsd:int") {
-          label = "an integer";
-        } else if (numberType == "xsd:long") {
-          label = "a long-integer";
-        } else if (numberType == "xsd:float") {
-          label = "a single-precision floating"
-        } else if (numberType == "xsd:double") {
-          label = "a double-precision floating";
-        }
-        return label;
-      }
-
-      /* start of value constraints functionality */
-
-      // Check the string length of the input value
-      $scope.checkStringLength = function () {
-        var value = $scope.valueArray[$scope.index]['@value']
-        if (value) {
-          var valueLength = value.length;
-          var isTooShort = false;
-          if (dms.hasMinLength($scope.field)) {
-            isTooShort = valueLength < dms.getMinLength($scope.field);
-          }
-          var isTooLong = false;
-          if (dms.hasMaxLength($scope.field)) {
-            isTooLong = valueLength > dms.getMaxLength($scope.field);
-          }
-          var isValid = !isTooLong && !isTooShort;
-          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
-        }
-      };
-
-      // Check the numeric value of the input value
-      $scope.checkNumberValue = function () {
-        var value = $scope.valueArray[$scope.index]['@value'];
-        if (value) {
-          value = Number(value);
-          var isTooLarge = false;
-          if (dms.hasMaxValue($scope.field)) {
-            isTooLarge = value > dms.getMaxValue($scope.field);
-          }
-          var isTooSmall = false;
-          if (dms.hasMinValue($scope.field)) {
-            isTooSmall = value < dms.getMinValue($scope.field);
-          }
-          var isValid = !isTooLarge && !isTooSmall;
-          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
-        }
-      };
-
-
-      // Check the decimal place of the input value
-      $scope.validateDecimals = function (value) {
-        let countDecimals = function (value) {
-          let result = 0;
-          let arr = value.toString().split(".");
-          if (arr.length > 1) {
-            result = arr[1].length;
-          }
-          return result;
-        };
-        let valid = value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace(
-            $scope.field));
-        $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
-      };
-
-
-      /* end of value constraints functionality */
 
     };
 
