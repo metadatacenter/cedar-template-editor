@@ -2862,6 +2862,9 @@ section.dashboard-elements {
       color: @black;
       transition: border-color 0.3s linear;
       background: @white;
+      &.ui-select-search {
+        padding-top: 0;
+      }
 
       &.ui-select-toggle {
         padding: 8px;
@@ -6383,6 +6386,9 @@ p.instructions {
   border-width: 0;
   &.open {
     border: 1px solid @very-lt-gray;
+  }
+  .ui-select-placeholder {
+    color:@primary-text;
   }
   .ui-select-match {
     background-color: transparent;
