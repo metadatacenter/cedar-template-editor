@@ -17,7 +17,7 @@ define([
       var dms = DataManipulationService;
       $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-      $scope.mods = dms.getMods($scope.field);
+      $scope.actions = dms.getActions($scope.field);
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
@@ -25,18 +25,18 @@ define([
       };
 
       // apply user mods to the drop down list
-      $scope.applyMods = function (list) {
+      $scope.applyActions = function (list) {
         // apply mods to a duplicate of the list
         var dup = list.slice();
-        for (let i = 0; i < $scope.mods.length; i++) {
-          let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod['@id']);
+        for (let i = 0; i < $scope.actions.length; i++) {
+          let action = $scope.actions[i];
+          let from = dup.findIndex(item => item['@id'] === action['@id']);
           if (from != -1) {
             // delete it at from
             let entry = dup.splice(from, 1);
-            if (mod.to != -1 && mod.action == 'move') {
+            if (action.to != -1 && action.action == 'move') {
               // insert it at to
-              dup.splice(mod.to, 0, entry[0]);
+              dup.splice(action.to, 0, entry[0]);
             }
           }
         }
@@ -46,7 +46,7 @@ define([
       // order the drop down values
       $scope.order = function (arr) {
         if (arr) {
-          var dup = $scope.applyMods(arr);
+          var dup = $scope.applyActions(arr);
           return dup;
         }
       };
@@ -54,12 +54,6 @@ define([
       // get resource id
       $scope.getId = function () {
         return dms.getId($scope.field);
-      };
-
-      $scope.model.defaultValue = $scope.model.defaultValue || {};
-
-      // TODO get rid of the extra values in some other way
-      $scope.onChange = function (m) {
       };
 
 

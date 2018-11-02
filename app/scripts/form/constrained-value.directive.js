@@ -15,7 +15,7 @@ define([
       var dms = DataManipulationService;
       $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-      $scope.mods = dms.getMods($scope.field);
+      $scope.actions = dms.getActions($scope.field);
 
       $scope.isRequiredError = function () {
         var isEmpty = function(obj) {
@@ -40,18 +40,19 @@ define([
       };
 
       // apply the user's sorted ordering
-      let applyMods = function (list) {
+      let applyActions = function (list) {
+        console.log('applyActions',list,$scope.actions);
         // apply mods to a duplicate of the list
         var dup = list.slice();
-        for (let i = 0; i < $scope.mods.length; i++) {
-          let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod['@id']);
+        for (let i = 0; i < $scope.actions.length; i++) {
+          let action = $scope.actions[i];
+          let from = dup.findIndex(item => item['@id'] === action['termUri']);
           if (from != -1) {
             // delete it at from
             let entry = dup.splice(from, 1);
-            if (mod.to != -1 && mod.action == 'move') {
+            if (action.to != -1 && action.action == 'move') {
               // insert it at to
-              dup.splice(mod.to, 0, entry[0]);
+              dup.splice(action.to, 0, entry[0]);
             }
           }
         }
@@ -61,7 +62,7 @@ define([
       // order the results based on user preferences
       $scope.order = function (arr) {
         if (arr) {
-          var dup = applyMods(arr);
+          var dup = applyActions(arr);
           return dup;
         }
       };

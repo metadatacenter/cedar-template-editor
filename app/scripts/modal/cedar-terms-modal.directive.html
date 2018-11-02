@@ -24,8 +24,8 @@
       </div>
 
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list track by $index" class="item"  atid="{{item['@id']}}" id="{{item['id']}}">
-            <div class="flex flex-left term-row" atid="{{terms.encode(item['@id'])}}" id="{{terms.encode(item['id'])}}">
+          <li ng-repeat="item in terms.list track by $index" class="item"  term-uri="{{item['termUri']}}" id="{{item['id']}}">
+            <div class="flex flex-left term-row" term-uri="{{item['termUri']}}" id="{{item['id']}}">
 
               <div class="index" >{{$index + 1}}</div>
 
@@ -55,20 +55,7 @@
 
               <div class="tools flex flex-right" >
 
-                <!--<div class="btn-group" uib-dropdown is-open="status.isopen">-->
-                  <!--<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">-->
-                    <!--Button dropdown <span class="caret"></span>-->
-                  <!--</button>-->
-                  <!--<ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">-->
-                    <!--<li role="menuitem"><a href="#">Action</a></li>-->
-                    <!--<li role="menuitem"><a href="#">Another action</a></li>-->
-                    <!--<li role="menuitem"><a href="#">Something else here</a></li>-->
-                    <!--<li class="divider"></li>-->
-                    <!--<li role="menuitem"><a href="#">Separated link</a></li>-->
-                  <!--</ul>-->
-                <!--</div>-->
-
-                <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown "  is-open="terms.status.isopen{{$index}}" ng-click="terms.toggle($event)">
+                <div uib-dropdown auto-close="outsideClick" append-to-body="true" class="btn-group move-up-down class-dropdown "  is-open="terms.status.isopen{{$index}}" ng-click="terms.toggle($event)">
 
                   <button  style="background:transparent;padding:0"
                       type="button" class="menu" auto-close="disabled"

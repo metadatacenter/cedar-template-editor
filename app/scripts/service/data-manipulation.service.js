@@ -692,25 +692,25 @@ define([
           }
         };
 
-        service.getSortOrder = function (node) {
-          return service.schemaOf(node)._valueConstraints.sortOrder;
+        service.getActions = function (node) {
+          return service.schemaOf(node)._valueConstraints.actions;
         };
 
-        service.clearSortOrder = function (node) {
-          delete service.schemaOf(node)._valueConstraints.sortOrder;
+        service.clearActions = function (node) {
+          delete service.schemaOf(node)._valueConstraints.actions;
         };
 
-        service.setSortOrder = function (node,  mods) {
-          if (node && mods) {
-              service.schemaOf(node)._valueConstraints.sortOrder = {mods:mods};
+        service.setActions = function (node,  actions) {
+          if (node && actions) {
+              service.schemaOf(node)._valueConstraints.actions = actions;
           }
         };
 
-        service.getMods = function (node) {
+        service.getActions = function (node) {
           var result = [];
           if (node) {
-            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('sortOrder')) {
-              result= service.schemaOf(node)._valueConstraints.sortOrder.mods;
+            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('actions')) {
+              result= service.schemaOf(node)._valueConstraints.actions;
             }
           }
           return result;

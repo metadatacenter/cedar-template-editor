@@ -838,30 +838,31 @@ define([
         }
       };
 
-      // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
-      $scope.setDefaultValueIfEmpty = function (m) {
-        if (UIUtilService.isRuntime()) {
-          if (!$rootScope.isArray(m)) {
-            if (!m) {
-              m = {};
-            }
-            if (m.hasOwnProperty('@value')) {
-              // If empty string
-              if ((m['@value'] != null) && (m['@value'].length == 0)) {
-                m['@value'] = null;
-              }
-            }
-            else {
-              m['@value'] = null;
-            }
-          }
-          else {
-            for (var i = 0; i < m.length; i++) {
-              $scope.setDefaultValueIfEmpty(m[i]);
-            }
-          }
-        }
-      };
+      // // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
+      // $scope.setDefaultValueIfEmpty = function (m) {
+      //   console.log('setDefaultValueIfEmpty',UIUtilService.isRuntime())
+      //   if (UIUtilService.isRuntime()) {
+      //     if (!$rootScope.isArray(m)) {
+      //       if (!m) {
+      //         m = {};
+      //       }
+      //       if (m.hasOwnProperty('@value')) {
+      //         // If empty string
+      //         if ((m['@value'] != null) && (m['@value'].length == 0)) {
+      //           m['@value'] = null;
+      //         }
+      //       }
+      //       else {
+      //         m['@value'] = null;
+      //       }
+      //     }
+      //     else {
+      //       for (var i = 0; i < m.length; i++) {
+      //         $scope.setDefaultValueIfEmpty(m[i]);
+      //       }
+      //     }
+      //   }
+      // };
 
       $scope.initializeValueRecommendationField = function () {
         var fieldValue = dms.getValueLocation($scope.field);
