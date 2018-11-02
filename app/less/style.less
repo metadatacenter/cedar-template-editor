@@ -7277,7 +7277,6 @@ table.apiKey {
         .header {
           text-transform: uppercase;
           font-weight: bold;
-          font-size: smaller;
         }
         .index {
           padding: 5px;
@@ -7286,8 +7285,7 @@ table.apiKey {
             border: 1px dotted #ddd;
           }
         }
-        .source, .set {
-          font-size: smaller;
+        .source, .value, .set {
           padding: 5px;
           width: 180px;
         }
@@ -7297,7 +7295,7 @@ table.apiKey {
         }
         .tools {
           visibility: hidden;
-          width: 80px;
+          width: 100px;
           cursor: pointer;
           color: @gray-dark;
           font-size: 20px;
@@ -7314,6 +7312,12 @@ table.apiKey {
               box-shadow: unset;
             }
           }
+        }
+      }
+      .term-row {
+        cursor: pointer;
+        .tools {
+          visibility: visible !important;
         }
       }
       .term-row:hover {
@@ -7345,12 +7349,21 @@ table.apiKey {
         }
       }
       .clear-save {
+        button.close,button.close:hover {
+          color:@white;
+          opacity:100;
+          background:transparent;
+        }
 
         .btn {
           text-transform: uppercase;
           padding: 5px 15px;
           border: none;
           .link-transition;
+
+          &.close, &.close:hover {
+            color:@white;
+          }
 
           &:focus {
             outline: none;

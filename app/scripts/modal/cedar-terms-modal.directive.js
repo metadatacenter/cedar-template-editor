@@ -59,6 +59,7 @@ define([
           vm.isloading = false;
           vm.showPosition = false;
           vm.term = '*';
+          vm.status = {isopen: false};
 
           vm.sortableOptions = {
             activate  : function () {
@@ -128,11 +129,17 @@ define([
             }
             vm.showPosition = false;
             vm.changeTo = null;
+            vm.close(index);
           };
 
           vm.toggle = function (event) {
             event.preventDefault();
             event.stopPropagation();
+          };
+
+          vm.close = function(index) {
+            console.log('close',index, vm.status);
+            vm.status['isopen'+index] = false;
           };
 
           vm.encode = function (uri) {
