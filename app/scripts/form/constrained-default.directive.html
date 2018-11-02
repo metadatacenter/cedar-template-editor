@@ -5,7 +5,7 @@
       theme="bootstrap"
       close-on-select="true"
       aria-label="getDescription(field)">
-    <ui-select-match allow-clear="true" placeholder="">{{$select.selected['rdfs:label']}}</ui-select-match>
+    <ui-select-match allow-clear="true" placeholder="{{ 'CREATOR.enterDefaultvalue' | translate }}">{{$select.selected['rdfs:label']}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
         refresh="updateFieldAutocomplete(field,$select.search)"
