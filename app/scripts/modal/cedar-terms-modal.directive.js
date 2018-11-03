@@ -332,6 +332,7 @@ define([
           };
 
           $rootScope.$on('termsModalVisible', function (event, params) {
+            console.log('on termsModalVisible');
             var visible = params[0];
             var r = params[1];
             if (visible && r) {

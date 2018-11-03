@@ -1,27 +1,39 @@
 <div ng-init="initializeValue(field); initializeValueType(field)">
 
   <div ng-if="isActive(index)" class="form-group input-group has-success has-feedback">
-
-
-      <input 
-          type="text"
-          class="form-control select dateField "
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          uib-datepicker-popup="{{date.format}}"
-          ng-model="date.dt"
-          ng-change="updateModelFromUI(date.dt, '{{valueArray[index]['@value']}}',false); "
-          is-open="date.opened"
-          ng-required="true" close-text="Close"
-          alt-input-formats="date.altInputFormats"/>
-      <div class="input-indicator-icons"
-           style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-     <span class="input-group-btn">
+    <input
+        name="dateField"
+        type="string"
+        placeholder="{{ 'PLACEHOLDER.date' | translate }}"
+        class="form-control select dateField "
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        uib-datepicker-popup="{{date.format}}"
+        ng-model="date.dt"
+        ng-change="updateModelFromUI(date.dt, '{{valueArray[index]['@value']}}',false); "
+        is-open="date.opened"
+        ng-required="isRequired()"
+        close-text="Close"
+        alt-input-formats="date.altInputFormats"/>
+    <div class="input-indicator-icons"
+        style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <span class="input-group-btn">
             <button type="button"
                 class="btn btn-default"
                 ng-click="setDateValue(); date.opened = true">
               <i class="glyphicon glyphicon-calendar"></i>
             </button>
           </span>
+
+  </div>
+  <div ng-if="isActive(index)">
+    <div class="validation" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['dateField']['$error']['required']">{{ 'VALIDATION.requiredDate' |
+        translate }}
+      </div>
+      <div ng-if="forms['fieldEditForm' + index]['dateField']['$error']['date']">{{ 'VALIDATION.invalidDate' |
+        translate }}
+      </div>
+    </div>
   </div>
 
   <!--- not active --->

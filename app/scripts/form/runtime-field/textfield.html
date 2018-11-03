@@ -12,26 +12,43 @@
     <!-- Regular field -->
     <div ng-if="isRegular() && getValueLocation() === '@value'" class="form-group has-success has-feedback">
       <input type="text"
-          name="activeTextField"
-          class="form-control select"
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? getPlaceholderText() : ''}}"
+          name="textField"
+          class="form-control select isActive"
+          ng-class="{'required': isRequired()}"
+          placeholder="{{'5'.repeat(getMinLength())}}"
           aria-label="{{getDescription()}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']"
-          ng-focus="checkStringLength()"
-          ng-change="checkStringLength()">
+          ng-model-options="{allowInvalid:true}"
+          minLength="{{getMinLength()}}"
+          maxLength="{{getMaxLength()}}">
+
+      <div class="validation" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['required']" >{{ 'VALIDATION.required' | translate }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength'] && !forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMinLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
+        <div ng-if="!forms['fieldEditForm' + index]['textField']['$error']['minlength'] && forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidMaxLength' | translate : { min : getMinLength(), max : getMaxLength() } }}</div>
+        <div ng-if="forms['fieldEditForm' + index]['textField']['$error']['minlength'] && forms['fieldEditForm' + index]['textField']['$error']['maxlength']" >{{ 'VALIDATION.invalidStringLength' | translate : { min : getMinLength(), max : getMaxLength()} }}</div>
+      </div>
+      <!--{{forms['fieldEditForm' + index]['textField']['$error']}}-->
+
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
+
     <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
-      <input type="text"
-          class="form-control select"
-          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter URI' : ''}}"
+      <input type="url"
+          name="URLField"
+          class="form-control select isActive"
+          ng-class="{'required': isRequired()}"
+          placeholder="http://example.com"
           aria-label="{{getHelp()}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@id']"
-          ng-pattern="urlRegex">
+          ng-model="valueElement['@id']">
+
+      <div style="color:maroon" role="alert">
+        <div ng-if="forms['fieldEditForm' + index]['URLField']['$error']['url']" translate>VALIDATION.invalidURL</div>
+      </div>
+      <!--{{forms['fieldEditForm' + index]['URLField']['$error']}}-->
+
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 

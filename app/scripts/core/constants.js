@@ -52,7 +52,7 @@ define([
           "DRAFT"    : "bibo:draft",
           "PUBLISHED": "bibo:published",
           "ALL"      : "all",
-          "LATEST"   : "latest"
+          "LATEST"   : "latest-by-status"
         },
         "model"        : {
           "NAME"             : "schema:name",
