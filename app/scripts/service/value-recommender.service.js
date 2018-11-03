@@ -11,7 +11,7 @@ define(['angular'], function (angular) {
                                    UIMessageService, AuthorizedBackendService, HttpBuilderService, autocompleteService) {
 
     var http_default_config = {};
-    var hasInstances;
+    var canGenerateRecommendations;
 
 
     var templateId;
@@ -39,20 +39,27 @@ define(['angular'], function (angular) {
         }
       };
       // Set isValueRecommendationEnabled using the templateId
-      // service.hasInstances(templateId).then(function (results) {
-      //   hasInstances = results;
-      //   //if (results == true)
-      //   //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
-      // });
+      service.canGenerateRecommendations(templateId).then(function (results) {
+        if (results['canGenerateRecommendations']) {
+          canGenerateRecommendations = results['canGenerateRecommendations'];
+        }
+        else {
+          canGenerateRecommendations = false;
+        }
+      });
 
       // Clear valueRecommendationResults and populatedFields
       service.valueRecommendationResults = [];
       service.populatedFields = [];
-
     };
 
     service.getIsValueRecommendationEnabled = function (field) {
-      return (DataManipulationService.schemaOf(field)._ui.valueRecommendationEnabled && hasInstances);
+      if (DataManipulationService.schemaOf(field)._ui.valueRecommendationEnabled && canGenerateRecommendations) {
+        return true;
+      }
+      else {
+        return false;
+      }
     };
 
     service.getValueRecommendationResults = function (fieldId) {
@@ -76,8 +83,8 @@ define(['angular'], function (angular) {
       if (fieldId) {
         if (value) {
           service.populatedFields[fieldId] = {
-            "path" : field._path,
-            "value": value
+            "fieldPath" : field._path,
+            "fieldValueLabel": value
           }
         }
         else {
@@ -109,29 +116,33 @@ define(['angular'], function (angular) {
         var targetFieldPath = field._path;
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
-
               var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][query]['results'];
-
+              console.log('** controlledTerms', controlledTerms);
+              console.log('** recommendation');
+              console.log(recommendation);
               if (recommendation.recommendedValues) {
                 if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
                   recommendation.recommendedValues.push({
-                    'value': $translate.instant('VALUERECOMMENDER.noResults'),
+                    'valueLabel': $translate.instant('VALUERECOMMENDER.noResults'),
                     'score': undefined
                   })
                 }
-                var recommendedLabels = [];
-                for (var i = 0; i < recommendation.recommendedValues.length; i++) {
-                  recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+                else {
+                  var recommendedLabels = [];
+                  for (var i = 0; i < recommendation.recommendedValues.length; i++) {
+                    recommendedLabels.push(recommendation.recommendedValues[i].valueLabel.toLowerCase());
+                  }
+                  console.log('** recommendedLabels ', recommendedLabels);
                 }
               }
 
               // Add the list of controlled terms to the recommendation results (if any)
               for (var i = 0; i < controlledTerms.length; i++) {
-                // Check if the ontology term has been already recommended or not
+                // Check if the ontology term is part of the recommendations
                 if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
                   recommendation.recommendedValues.push({
-                    'value'   : controlledTerms[i].label,
-                    'valueUri': controlledTerms[i]['@id'],
+                    'valueLabel'   : controlledTerms[i].label,
+                    'valueType': controlledTerms[i]['@id'],
                     'score'   : undefined
                   });
                 }
@@ -140,20 +151,22 @@ define(['angular'], function (angular) {
             });
       }
     }
-    
-    service.hasInstances = function (templateId) {
-      // TODO for the moment take out this call
-      return false;
-      // return AuthorizedBackendService.doCall(
-      //     HttpBuilderService.get(UrlService.hasInstances(templateId)),
-      //     function (response) {
-      //       return response.data;
-      //     },
-      //     function (err) {
-      //       //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
-      //       console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
-      //     }
-      // );
+
+    service.canGenerateRecommendations = function (templateId) {
+      var input = {};
+      if (templateId != null) {
+        input['templateId'] = templateId;
+      }
+      return AuthorizedBackendService.doCall(
+          HttpBuilderService.post(UrlService.canGenerateRecommendations(), angular.toJson(input)),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+            console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
+          }
+      );
     };
 
     // Invoke the Value Recommender service
@@ -164,7 +177,7 @@ define(['angular'], function (angular) {
         inputData['populatedFields'] = populatedFields;
       }
       inputData['templateId'] = templateId;
-      inputData['targetField'] = {'path': targetFieldPath};
+      inputData['targetField'] = {'fieldPath': targetFieldPath};
 
       return AuthorizedBackendService.doCall(
           HttpBuilderService.post(UrlService.getValueRecommendation(), angular.toJson(inputData)),

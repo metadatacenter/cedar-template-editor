@@ -1,9 +1,9 @@
 <div ng-init="initializeValueRecommendationField()"
     class="has-constraint "
-    ng-class="{'has-selected': modelValueRecommendation[index].valueInfo.value}">
+    ng-class="{'has-selected': modelValueRecommendation[index].valueInfo.valueLabel}">
   <ui-select
       ng-model="modelValueRecommendation[index].valueInfo"
-      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.value)"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.valueLabel)"
       ng-click="updateValueRecommendationResults(field, $select.search || '*'); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
       reset-search-input="false"
@@ -24,4 +24,5 @@
       </div>
     </ui-select-choices>
   </ui-select>
+  {{valueRecommendationResults}}
 </div>

@@ -14,43 +14,15 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
-      var dms = DataManipulationService;
+      $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
       $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
-      $scope.mods = dms.getMods($scope.field);
-
-
-      $scope.applyMods= function(list) {
-        // apply mods to a duplicate of the list
-        var dup = list.slice();
-        for (let i = 0; i < $scope.mods.length; i++) {
-          let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod.id);
-          if (from != -1) {
-            // delete it at from
-            let entry = dup.splice(from, 1);
-            if (mod.to != -1 && mod.action == 'move') {
-              // insert it at to
-              dup.splice(mod.to, 0, entry[0]);
-            }
-          }
-        }
-        return dup;
-      };
-
-      $scope.order = function (arr) {
-        if (arr) {
-          var dup = $scope.applyMods(arr);
-          return dup;
-        }
-      };
 
       $scope.updatePopulatedFields = function(field, value) {
         ValueRecommenderService.updatePopulatedFields(field, value);
       };
 
-      $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
-
       $scope.updateValueRecommendationResults = function(node, query) {
+        console.log('updating value recommendation results (node, query)', node, query);
         ValueRecommenderService.updateValueRecommendationResults(node, query);
       };
 
@@ -149,7 +121,6 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        console.log('Initializing value recommendation field')
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
@@ -163,8 +134,6 @@ define([
         else {
           $scope.modelValueRecommendation.push($scope.getModelVR($scope.model, fieldValue));
         }
-        console.log('modelValueRecommendation')
-        console.log($scope.modelValueRecommendation)
       };
 
       // Generates modelValueRecommendation from a given model
@@ -173,15 +142,15 @@ define([
         if ($scope.isControlledValue(model)) {
           return {
             'valueInfo': {
-              'value'   : model['rdfs:label'],
-              'valueUri': model[fieldValue]
+              'valueLabel'   : model['rdfs:label'],
+              'valueType': model[fieldValue]
             }
           };
         }
         // if plain text value
         else {
           return {
-            'valueInfo': {'value': model[fieldValue]}
+            'valueInfo': {'valueLabel': model[fieldValue]}
           };
         }
       };
@@ -206,13 +175,12 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr, index) {
-        console.log('Updating model when refresh')
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
             // If the user entered a new value
-            console.log(index)
-            console.log(modelvr)
+            // console.log(index)
+            // console.log(modelvr)
             if (select.search != modelvr[index].valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {

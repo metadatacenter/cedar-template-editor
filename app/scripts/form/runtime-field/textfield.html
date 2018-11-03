@@ -21,7 +21,6 @@
           ng-model="valueElement['@value']"
           ng-focus="checkStringLength()"
           ng-change="checkStringLength()">
-      </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <div ng-if="isRegular() && getValueLocation() === '@id'" class="form-group has-success has-feedback">
@@ -33,17 +32,12 @@
           ng-required="isRequired()"
           ng-model="valueElement['@id']"
           ng-pattern="urlRegex">
-      </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-
 
     <!-- Field with values have been constrained using controlled terms -->
     <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
         field="field"></constrained-value>
-
-
-
 
     <!-- Field with value recommendation functionality -->
     <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"

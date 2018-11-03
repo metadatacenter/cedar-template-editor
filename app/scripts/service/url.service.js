@@ -132,8 +132,8 @@ define([
       return this.valueRecommender() + '/recommend';
     };
 
-    service.hasInstances = function (templateId) {
-      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
+    service.canGenerateRecommendations = function () {
+      return this.valueRecommender() + '/can-generate-recommendations';
     };
 
     service.resourceBase = function () {
