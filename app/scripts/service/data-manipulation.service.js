@@ -692,9 +692,11 @@ define([
           }
         };
 
-        service.getActions = function (node) {
-          return service.schemaOf(node)._valueConstraints.actions;
-        };
+
+
+        //
+        // value constraint actions
+        //
 
         service.clearActions = function (node) {
           delete service.schemaOf(node)._valueConstraints.actions;
@@ -715,6 +717,28 @@ define([
           }
           return result;
         };
+
+        // apply user actions to the list
+       service.applyActions = function (list, actions) {
+
+          // apply mods to a duplicate of the list
+          var dup = list.slice();
+          for (let i = 0; i < actions.length; i++) {
+            let action = actions[i];
+            let from = dup.findIndex(item => item['@id'] === action['termUri']);
+            if (from != -1) {
+              // delete it at from
+              let entry = dup.splice(from, 1);
+              if (action.to != -1 && action.action == 'move') {
+                // insert it at to
+                dup.splice(action.to, 0, entry[0]);
+              }
+            }
+          }
+          return dup;
+        };
+
+
 
         // update the key values to reflect the property or name
         // this does not look at nested fields and elements, just top level
@@ -2181,6 +2205,33 @@ define([
         service.getUserDefinedDefaultValue = function (field) {
           if (service.hasUserDefinedDefaultValue(field)) {
             return service.schemaOf(field)._valueConstraints.defaultValue;
+          }
+          else {
+            return null;
+          }
+        };
+
+        service.getDefaultTermId = function (field) {
+          if (service.hasUserDefinedDefaultValue(field)) {
+            return service.schemaOf(field)._valueConstraints.defaultValue['termUri'];
+          }
+          else {
+            return null;
+          }
+        };
+
+        service.getDefaultLabel = function (field) {
+          if (service.hasUserDefinedDefaultValue(field)) {
+            return service.schemaOf(field)._valueConstraints.defaultValue['rdfs:label'];
+          }
+          else {
+            return null;
+          }
+        };
+
+        service.getDefaultNotation = function (field) {
+          if (service.hasUserDefinedDefaultValue(field)) {
+            return service.schemaOf(field)._valueConstraints.defaultValue['skos:notation'];
           }
           else {
             return null;

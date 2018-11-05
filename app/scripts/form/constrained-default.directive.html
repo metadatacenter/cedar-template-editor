@@ -1,6 +1,7 @@
 <div class="has-constraint">
   <ui-select
-      ng-model="model.defaultValue"
+      ng-change="onChange()"
+      ng-model="data.termInfo"
       theme="bootstrap"
       close-on-select="true"
       aria-label="getDescription(field)">

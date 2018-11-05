@@ -120,8 +120,6 @@ define([
 
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
-      console.log('response',response);
-
 
       // results could be a list or not, put all results into an array
       var collection = [];
@@ -130,31 +128,21 @@ define([
         for (i = 0; i < response.collection.length; i++) {
           result = {
             '@id'      : response.collection[i]['@id'],
-            'notation' : response.collection[i]['notation'],
+            'notation' : response.collection[i].notation,
             'label'    : response.collection[i].prefLabel,
             'type'     : response.collection[i].type,
             'sourceUri': source_uri,
-
-
-            '@idRelated'  : response.collection[i]['relatedMatch'],
-            'rdfs:label'  : response.collection[i].prefLabel,
-            'id'          : response.collection[i]['id'],
-            'vsCollection': response.collection[i]['vsCollection'],
           };
           collection.push(result);
         }
       } else {
         result = {
           '@id'      : response['@id'],
-          'notation' : response['notation'],
+          'notation' : response.notation,
           'label'    : response.prefLabel,
           'type'     : response.type,
           'sourceUri': source_uri,
 
-          '@idRelated'  : response['relatedMatch'],
-          'rdfs:label'  : response.prefLabel,
-          'id'          : response['id'],
-          'vsCollection': response['vsCollection'],
         };
         collection.push(result);
       }
@@ -339,7 +327,7 @@ define([
 
             if (!service.hasTerm(id, query, action.sourceUri, action['@id'])) {
               let uriArr = action.sourceUri.split('/');
-              let classId = action['@id'];
+              let classId = action['termUri'];
 
               if (action.type == "Value") {
                 let vsCollection = uriArr[uriArr.length - 2];
