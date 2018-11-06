@@ -10,13 +10,13 @@ define([
 
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
-                           'FieldTypeService', 'DataUtilService', 'SubmissionService',
+                           'schemaService','FieldTypeService', 'DataUtilService', 'SubmissionService',
                            'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
                            "ValidationService", "UIUtilService"];
 
 
-  function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
+  function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, schemaService,
+                         FieldTypeService,DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
                          HttpBuilderService, ValidationService, UIUtilService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
@@ -247,7 +247,7 @@ define([
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist
-                if (!dms.isCardinalElement(value)) {
+                if (!schemaService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -275,9 +275,9 @@ define([
                   // Assign empty field instance model to $scope.model only if it does not exist
                   if (parentModel[name] == undefined) {
                     // Not multiple instance
-                    if (!dms.isCardinalElement(value)) {
+                    if (!schemaService.isCardinalElement(value)) {
                       // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                      if (dms.isMultipleChoiceField(value)) {
+                      if (schemaService.isMultipleChoiceField(value)) {
                         parentModel[name] = [];
                       }
                       // All other fields, including the radio field and the list field with single option
@@ -295,10 +295,10 @@ define([
                     // Set default values and types for fields
                     dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
-                    if (dms.isTextFieldType(value) || dms.isDateType(value) || dms.isNumericField(value)) {
+                    if (schemaService.isTextFieldType(value) || schemaService.isDateType(value) || schemaService.isNumericField(value)) {
                       dms.initializeValueType(value, parentModel[name]);
                     }
-                    if (dms.isAttributeValueType(value)) {
+                    if (schemaService.isAttributeValueType(value)) {
                       // remove the @context entry for this attribute-value field
                       // delete the context in the parent
                       if (parentModel) {
@@ -499,12 +499,12 @@ define([
         $scope.isSectionBreak = function (item) {
           var properties = dms.propertiesOf($scope.form);
           var node = properties[item];
-          return dms.isSectionBreak(node);
+          return schemaService.isSectionBreak(node);
         };
 
         $scope.isHidden = function (item) {
           var node = $scope.form.properties[item];
-          return DataManipulationService.isHidden(node);
+          return schemaService.isHidden(node);
         };
 
         $scope.getPreviousItem = function (index) {

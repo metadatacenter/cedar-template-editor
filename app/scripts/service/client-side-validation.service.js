@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.clientSideValidationService', [])
     .service('ClientSideValidationService', ClientSideValidationService);
 
-  ClientSideValidationService.$inject = ['$translate','DataManipulationService'];
+  ClientSideValidationService.$inject = ['$translate','DataManipulationService','schemaService'];
 
-  function ClientSideValidationService($translate, DataManipulationService) {
+  function ClientSideValidationService($translate, DataManipulationService,schemaService) {
 
     var service = {
       serviceId: "ClientSideValidationService"
@@ -20,10 +20,10 @@ define([
       var unmetConditions      = [],
       extraConditionInputs = ['checkbox', 'radio', 'list'];
 
-      var schema = DataManipulationService.schemaOf(field);
-      var title = DataManipulationService.getTitle(field);
-      var inputType = DataManipulationService.getInputType(field);
-      var literals = DataManipulationService.getLiterals(field); // field._valueConstraints.literals
+      var schema = schemaService.schemaOf(field);
+      var title = schemaService.getTitle(field);
+      var inputType = schemaService.getInputType(field);
+      var literals = schemaService.getLiterals(field); // field._valueConstraints.literals
 
 
       // Field title is already required, if it's empty create error message
@@ -51,8 +51,8 @@ define([
 
     service.checkFieldCardinalityOptions = function (field) {
       var unmetConditions = [];
-      var minItems = DataManipulationService.getMinItems(field);
-      var maxItems = DataManipulationService.getMaxItems(field);
+      var minItems = schemaService.getMinItems(field);
+      var maxItems = schemaService.getMaxItems(field);
 
       if (minItems && maxItems &&
           parseInt(minItems) > parseInt(maxItems)) {
