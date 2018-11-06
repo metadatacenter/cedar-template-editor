@@ -219,7 +219,6 @@ define([
       return node.items;
     };
 
-
     // resolve min or max as necessary and cardinalize or uncardinalize field
     service.setMinMax = function (field) {
       if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
@@ -380,8 +379,6 @@ define([
     };
 
 
-
-
     //
     // versioning
     //
@@ -411,7 +408,6 @@ define([
     //
     // inputType
     //
-
 
     service.getInputType = function (node) {
       return node && service.schemaOf(node)._ui.inputType;
