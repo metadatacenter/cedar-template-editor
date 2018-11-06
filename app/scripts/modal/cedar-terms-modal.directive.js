@@ -8,14 +8,14 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarTermsModal', cedarTermsModalDirective);
 
-      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService', '$q'];
+      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', '$q'];
 
       /**
        *
        * share and group modal
        *
        */
-      function cedarTermsModalDirective(CedarUser, DataManipulationService, $q) {
+      function cedarTermsModalDirective(CedarUser, DataManipulationService,schemaService, $q) {
 
         var directive = {
           bindToController: {
@@ -51,7 +51,7 @@ define([
           vm.resource = null;
           vm.schema = null;
           vm.id = null;
-          vm.mods = [];
+          vm.actions = [];
           vm.list = [];
           vm.sortingLog = [];
           vm.showPosition = false;
@@ -59,6 +59,7 @@ define([
           vm.isloading = false;
           vm.showPosition = false;
           vm.term = '*';
+          vm.status = {isopen: false};
 
           vm.sortableOptions = {
             activate  : function () {
@@ -84,22 +85,17 @@ define([
             start     : function (e, ui) {
             },
             update    : function (e, ui) {
-              vm.updateId = ui.item[0].id;
+              vm.termUri = ui.item[0].getAttribute('term-uri');
             },
             stop      : function (e, ui) {
-              var stopIndex = vm.list.findIndex(item => item['id'] === vm.updateId);
+              var stopIndex = vm.list.findIndex(item => item['termUri'] === vm.termUri);
               if (stopIndex != -1) {
-                vm.mods.push({
-                  'id'       : vm.updateId,
+                vm.actions.push({
                   to       : stopIndex,
                   action   : 'move',
+                  termUri  : vm.list[stopIndex]['termUri'],
                   type     : vm.list[stopIndex]['type'],
-                  label     : vm.list[stopIndex]['label'],
-                  notation : vm.list[stopIndex]['notation'],
-                  sourceUri: vm.list[stopIndex]['sourceUri'],
-                  acronym   : vm.list[stopIndex]['acronym'],
-                  '@id'     : vm.list[stopIndex]['@id'],
-
+                  sourceUri: vm.list[stopIndex]['sourceUri']
                 });
               }
             }
@@ -114,25 +110,27 @@ define([
             let entry = vm.list.splice(index, 1);
             vm.list.splice(changeTo, 0, entry[0]);
             if (changeTo != -1) {
-              vm.mods.push({
-                '@id'       : entry[0]['@id'],
+              vm.actions.push({
                 to       : changeTo,
                 action   : 'move',
+                termUri  : vm.list[changeTo]['termUri'],
                 type     : vm.list[changeTo]['type'],
-                sourceUri: vm.list[changeTo]['sourceUri'],
-                label     : vm.list[changeTo]['label'],
-                notation : vm.list[changeTo]['notation'],
-                acronym   : vm.list[changeTo]['acronym'],
+                sourceUri: vm.list[changeTo]['sourceUri']
 
               });
             }
             vm.showPosition = false;
             vm.changeTo = null;
+            vm.close(index);
           };
 
           vm.toggle = function (event) {
             event.preventDefault();
             event.stopPropagation();
+          };
+
+          vm.close = function(index) {
+            vm.status['isopen'+index] = false;
           };
 
           vm.encode = function (uri) {
@@ -142,24 +140,24 @@ define([
           // delete the entry at this index
           vm.delete = function (index) {
             let entry = vm.list.splice(index, 1);
-            vm.mods.push({'@id': entry[0]['@id'], 'action': 'delete'});
+            vm.actions.push({'termUri': entry[0]['termUri'], 'action': 'delete'});
             // remove any moves as well
-            for (let i = 0; i < vm.mods.length; i++) {
-              if (vm.mods[i]['@id'] == entry[0]['@id'] && vm.mods[i]['action'] == 'move') {
-                vm.mods.splice(i, 1);
+            for (let i = 0; i < vm.actions.length; i++) {
+              if (vm.actions[i]['termUri'] == entry[0]['termUri'] && vm.actions[i]['action'] == 'move') {
+                vm.actions.splice(i, 1);
                 i--;
               }
             }
           };
 
           vm.doSave = function () {
-            dms.setSortOrder(vm.resource, vm.mods);
+            schemaService.setActions(vm.resource, vm.actions);
           };
 
           vm.reset = function () {
-            vm.mods = [];
+            vm.actions = [];
             vm.list = [];
-            vm.openTerms(vm.schema, vm.mods);
+            vm.openTerms(vm.schema, vm.actions);
           };
 
           vm.isOverflow = function (id, label) {
@@ -177,7 +175,7 @@ define([
               return arr[arr.length - 2];
             }
             else {
-              if ((type == 'Ontology Class' && arr[arr.length - 2] == 'ontologies') || (type == 'Value Set Class' && arr[arr.length - 2] == 'CADSR-VS')) {
+              if ((type == 'OntologyClass' && arr[arr.length - 2] == 'ontologies') || (type == 'Value' && arr[arr.length - 2] == 'CADSR-VS')) {
                 return arr[arr.length - 1];
               }
                 else {
@@ -186,21 +184,21 @@ define([
             }
           };
 
-          vm.applyMods = function (list, mods) {
+          vm.applyActions = function (list, actions) {
             // apply mods to a duplicate of the list
 
             var dup = list.slice();
 
-            if (mods) {
-              for (let i = 0; i < mods.length; i++) {
-                let mod = mods[i];
-                let from = dup.findIndex(item => item['@id'] === mod['@id']);
+            if (actions) {
+              for (let i = 0; i < actions.length; i++) {
+                let action = actions[i];
+                let from = dup.findIndex(item => item['termUri'] === action['termUri']);
                 if (from != -1) {
                   // delete it at from
                   let entry = dup.splice(from, 1);
-                  if (mod.to != -1 && mod.action == 'move') {
+                  if (action.to != -1 && action.action == 'move') {
                     // insert it at to
-                    dup.splice(mod.to, 0, entry[0]);
+                    dup.splice(action.to, 0, entry[0]);
                   }
                 }
               }
@@ -209,7 +207,7 @@ define([
           };
 
           // initialize the share dialog
-          vm.openTerms = function (resource, mods) {
+          vm.openTerms = function (resource, actions) {
             vm.isloading = true;
 
             autocompleteService.clearResults(vm.id, vm.term);
@@ -222,20 +220,21 @@ define([
                 var found = foundResults[i - 1];
 
                 vm.fullList.push({
-                  '@id'       : found['@id'],
+                  termUri   : found['@id'],
                   label     : found['label'],
-                  notation : found['notation'],
-                  sourceUri: found['sourceUri'],
+                  notation  : found['notation'],
+                  sourceUri : found['sourceUri'],
                   acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                  type     : found['type'],
-                  id       : found['id'],
+                  type      : found['type'],
+                  id        : found['id'],
                   vsCollection: found['vsCollection']
                 });
               }
 
               // sort and apply mods
               vm.sortList(vm.fullList);
-              vm.list = vm.applyMods(vm.fullList, mods);
+              vm.list = vm.applyActions(vm.fullList, actions);
+              console.log('vm.list',vm.list);
 
               vm.isloading = false;
             });
@@ -323,7 +322,7 @@ define([
 
                   // merge, sort and apply mods
                   var arr = vm.mergeSort(vm.fullList, vm.list);
-                  vm.list = vm.applyMods(arr, vm.mods);
+                  vm.list = vm.applyActions(arr, vm.actions);
                   vm.isloading = false;
                 });
 
@@ -337,16 +336,16 @@ define([
             if (visible && r) {
               vm.modalVisible = visible;
               vm.resource = r;
-              vm.id = dms.getId(vm.resource);
-              vm.schema = dms.schemaOf(vm.resource);
-              vm.mods = dms.getMods(vm.resource);
-              vm.openTerms(vm.resource, vm.mods);
+              vm.id = schemaService.getId(vm.resource);
+              vm.schema = schemaService.schemaOf(vm.resource);
+              vm.actions = schemaService.getActions(vm.resource);
+              vm.openTerms(vm.resource, vm.actions);
             } else {
               vm.modalVisible = false;
               vm.resource = null;
               vm.schema = null;
               vm.id = null;
-              vm.mods = [];
+              vm.actions = [];
               vm.list = [];
               vm.sortingLog = [];
               vm.showPosition = false;

@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService', 'UIUtilService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, UIUtilService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService) {
 
         var directive = {
           bindToController: {
@@ -348,42 +348,33 @@ define([
           //
 
           vm.titleLocation = function () {
-            return DataManipulationService.titleLocation();
+            return schemaService.titleLocation();
           };
 
           vm.descriptionLocation = function () {
-            return DataManipulationService.descriptionLocation();
+            return schemaService.descriptionLocation();
           };
 
           vm.getTitle = function (node) {
-            if (node) {
-              return DataManipulationService.getTitle(node);
-            }
+            return schemaService.getTitle(node);
           };
 
           vm.getDescription = function (node) {
-            if (node) {
-              return DataManipulationService.getDescription(node);
-            }
+            return schemaService.getDescription(node);
           };
 
           vm.hasIdentifier = function (node) {
-            if (node) {
-              return node.hasOwnProperty(CONST.model.IDENTIFIER) && node[CONST.model.IDENTIFIER];
-            }
+            schemaService.hasIdentifier(node);
           };
 
           vm.getIdentifier = function (node) {
-            if (node) {
-              return node[CONST.model.IDENTIFIER];
-            }
+            schemaService.getIdentifier(node);
           };
 
           vm.getId = function (node, label) {
             if (node) {
-              var id = DataManipulationService.getId(node);
+              var id = schemaService.getId(node);
               return id.substr(id.lastIndexOf('/') + 1) + label;
-              //return id + label;
             }
           };
 

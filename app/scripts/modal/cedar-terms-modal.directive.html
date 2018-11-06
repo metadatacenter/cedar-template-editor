@@ -9,13 +9,13 @@
       </div>
     </div>
 
-
     <div class="modal-body"  cedar-infinite-scroll load-more="terms.loadMore()" class="scrollable-content" style="padding-top:0;overflow-y:scroll">
         <div class="flex flex-left term-row">
-          <div class="index header invisible">0</div>
+          <div class="index header invisible" >0</div>
           <div class="title header" >Label</div>
-          <div class="source header">Source</div>
-          <div class="tools header invisible"></div>
+          <div class="value header" >Value</div>
+          <div class="source header" >Source</div>
+          <div class="tools header invisible" ></div>
         </div>
 
       <!--Show preloader only if the tree and class details preloader is not shown-->
@@ -24,11 +24,12 @@
       </div>
 
         <ul ui-sortable="terms.sortableOptions" ng-model="terms.list" class="list"  >
-          <li ng-repeat="item in terms.list track by $index" class="item"  atid="{{item['@id']}}" id="{{item['id']}}">
-            <div class="flex flex-left term-row" atid="{{terms.encode(item['@id'])}}" id="{{terms.encode(item['id'])}}">
-              <div class="index">{{$index + 1}}</div>
+          <li ng-repeat="item in terms.list track by $index" class="item"  term-uri="{{item['termUri']}}" id="{{item['id']}}">
+            <div class="flex flex-left term-row" term-uri="{{item['termUri']}}" id="{{item['id']}}">
 
-              <div class="title ellipsis" uib-tooltip='{{item.label}}'
+              <div class="index" >{{$index + 1}}</div>
+
+              <div class="title ellipsis"  uib-tooltip='{{item.label}}'
                   tooltip-append-to-body="true"
                   tooltip-trigger="mouseenter"
                   tooltip-animation="true"
@@ -36,7 +37,15 @@
                   data-toggle="tooltip"
                   tooltip-enable="terms.isOverflow(item.id,'title')">{{item.label}}</div>
 
-              <div class="source ellipsis" uib-tooltip='{{item.acronym}}'
+              <div class="value ellipsis"  uib-tooltip="{{item.notation}}"
+                  tooltip-append-to-body="true"
+                  tooltip-trigger="mouseenter"
+                  tooltip-animation="true"
+                  tooltip-placement="bottom"
+                  data-toggle="tooltip"
+                  tooltip-enable="terms.isOverflow(item['@id'],'skos:notation')">{{item.notation}}</div>
+
+              <div class="source ellipsis"  uib-tooltip='{{item.acronym}}'
                   tooltip-append-to-body="true"
                   tooltip-trigger="mouseenter"
                   tooltip-animation="true"
@@ -44,14 +53,12 @@
                   data-toggle="tooltip"
                   tooltip-enable="terms.isOverflow(item['@id'],'acronym')">{{item.acronym}}</div>
 
+              <div class="tools flex flex-right" >
 
-
-              <div class="tools flex flex-right">
-
-                <div uib-dropdown auto-close="outsideClick" class="btn-group move-up-down class-dropdown " ng-click="terms.toggle($event)">
+                <div uib-dropdown auto-close="outsideClick" append-to-body="true" class="btn-group move-up-down class-dropdown "  is-open="terms.status.isopen{{$index}}" ng-click="terms.toggle($event)">
 
                   <button  style="background:transparent;padding:0"
-                      type="button" class="menu"
+                      type="button" class="menu" auto-close="disabled"
                       uib-dropdown-toggle aria-haspopup="true"
                       aria-expanded="true" class="trigger-button">
                     <i class="fa fa-sort"></i>
@@ -60,19 +67,21 @@
                     <div ng-if="!terms.showPosition">
                       <ul style="list-style-type: none;">
                         <li ng-click="terms.changeTo = 1;terms.showPosition=true; $event.stopPropagation();">Move to top</li>
-                        <li>
-                          <span ng-click="terms.showPosition = !terms.showPosition; $event.stopPropagation();">Move to...</span>
-                        </li>
+                        <li ng-click="terms.showPosition = !terms.showPosition; $event.stopPropagation();">Move to...</li>
                       </ul>
                     </div>
                     <div ng-if="terms.showPosition">
                       <ul style="list-style-type: none;">
-                        <li>Change position</li>
+                        <li class="flex">
+                          <div style="padding-top: 5px;">Change position</div>
+                          <div class="clear-save"><button class="close" type="button" ng-click="terms.close($index);terms.showPosition=false" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                        </li>
                         <li>
                           <input ng-model="terms.changeTo" name="moveTo" min="1" type="number" ng-click="$event.stopPropagation()"></li>
                         <li class="clear-save">
                           <button type="button"   ng-click="terms.applyChange(terms.changeTo-1, $index);$event.stopPropagation()" aria-label="Apply" class="btn btn-save confirm apply" translate>GENERIC.Apply</button>
                         </li>
+
                       </ul>
                     </div>
                   </div>
@@ -106,9 +115,7 @@
             class="btn btn-clear" translate> GENERIC.Cancel
         </button>
       </div>
-
     </div>
-
   </div>
 </div>
 

@@ -7,9 +7,9 @@ define([
 ], function (angular) {
   angular.module('cedar.templateEditor.core.constants', [])
       .constant('CONST', {
-        "eventId": {
+        "eventId"      : {
           "form": {
-            "VALIDATION" : "form:validation"
+            "VALIDATION": "form:validation"
           }
         },
         "pageId"       : {
@@ -52,16 +52,21 @@ define([
           "DRAFT"    : "bibo:draft",
           "PUBLISHED": "bibo:published",
           "ALL"      : "all",
-          "LATEST"   : "latest"
+          "LATEST"   : "latest-by-status"
         },
         "model"        : {
-          "NAME"             : "schema:name",
-          "DESCRIPTION"      : "schema:description",
-          "IDENTIFIER"       : "schema:identifier",
-          "ISBASEDON"        : "schema:isBasedOn",
-          "NUMBEROFINSTANCES": 'numberOfInstances',
-          "DERIVEDFROM"      : "derivedFrom",
-          "PREFLABEL"        : "skos:prefLabel"
+          "NAME"               : "schema:name",
+          "DESCRIPTION"        : "schema:description",
+          "IDENTIFIER"         : "schema:identifier",
+          "ISBASEDON"          : "schema:isBasedOn",
+          "NUMBEROFINSTANCES"  : 'numberOfInstances',
+          "DERIVEDFROM"        : "derivedFrom",
+          "PREFLABEL"          : "skos:prefLabel",
+          "CONSTRAINEDTERMID"  : 'termUri',
+          "CONSTRAINEDID"      : '@id',
+          "CONSTRAINEDLABEL"   : 'rdfs:label',
+          "CONSTRAINEDNOTATION": 'skos:notation',
+          "NOTATION"           : 'notation'
         },
         "dateFormats"  : {
           "ar-SA"      : "dd/MM/yy",

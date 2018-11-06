@@ -2862,20 +2862,24 @@ section.dashboard-elements {
       color: @black;
       transition: border-color 0.3s linear;
       background: @white;
+      &.ui-select-search {
+        padding-top: 0;
+      }
 
       &.ui-select-toggle {
-        padding: 8px;
-        border:1px solid #ddd;
+        padding: 10px;
+        border: 1px solid #ddd;
         text-transform: none;
         a.btn {
           margin-top: -6px;
-          right:0;
+          right: 0;
           text-transform: none;
 
         }
       }
-
-
+      &.ui-select-search {
+        padding: 10px;
+      }
 
       &.empty ~ .floating-label {
         top: 10px;
@@ -3210,7 +3214,12 @@ section.dashboard-elements {
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
-    width:100%;
+    width: 100%;
+  }
+
+  .validation {
+    color: @dark-accent;
+    padding: 10px;
   }
 
   .element-bar {
@@ -4178,7 +4187,6 @@ section.dashboard-elements {
         }
       }
     }
-
 
     .toggle-options {
       padding-bottom: 10px;
@@ -6382,6 +6390,9 @@ p.instructions {
   &.open {
     border: 1px solid @very-lt-gray;
   }
+  .ui-select-placeholder {
+    color:@primary-text;
+  }
   .ui-select-match {
     background-color: transparent;
     border-width: 0;
@@ -7269,7 +7280,6 @@ table.apiKey {
         .header {
           text-transform: uppercase;
           font-weight: bold;
-          font-size: smaller;
         }
         .index {
           padding: 5px;
@@ -7278,8 +7288,7 @@ table.apiKey {
             border: 1px dotted #ddd;
           }
         }
-        .source, .set {
-          font-size:smaller;
+        .source, .value, .set {
           padding: 5px;
           width: 180px;
         }
@@ -7289,7 +7298,7 @@ table.apiKey {
         }
         .tools {
           visibility: hidden;
-          width: 80px;
+          width: 100px;
           cursor: pointer;
           color: @gray-dark;
           font-size: 20px;
@@ -7308,6 +7317,12 @@ table.apiKey {
           }
         }
       }
+      //.term-row {
+      //  cursor: pointer;
+      //  .tools {
+      //    visibility: visible !important;
+      //  }
+      //}
       .term-row:hover {
         cursor: pointer;
         .tools {
@@ -7325,24 +7340,33 @@ table.apiKey {
         width: auto;
         height: auto;
         background: black;
-        color:@white;
+        color: @white;
         ul {
           padding-left: 0;
           li {
             padding: 5px;
             input {
-              color:black;
+              color: black;
             }
           }
         }
       }
       .clear-save {
+        button.close,button.close:hover {
+          color:@white;
+          opacity:100;
+          background:transparent;
+        }
 
         .btn {
           text-transform: uppercase;
           padding: 5px 15px;
           border: none;
           .link-transition;
+
+          &.close, &.close:hover {
+            color:@white;
+          }
 
           &:focus {
             outline: none;

@@ -10,22 +10,24 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService", "UrlService",
-                               "DataManipulationService", "UIUtilService", "autocompleteService",
+                               "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService",
                                "ValueRecommenderService", "uibDateParser", "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, UrlService, DataManipulationService, UIUtilService,
+                             $timeout, SpreadsheetService, UrlService, DataManipulationService, schemaService,
+                             UIUtilService,
                              autocompleteService,
                              ValueRecommenderService, uibDateParser, CONST) {
 
 
     var linker = function ($scope, $element, attrs) {
 
+      var dms = DataManipulationService;
       $scope.directory = 'runtime';
       $scope.midnight = $translate.instant('GENERIC.midnight');
-      $scope.uuid = DataManipulationService.generateTempGUID();
+      $scope.uuid = dms.generateTempGUID();
       $scope.data = {
-        model: null
+        info: []
       };
       $scope.forms = {};
       $scope.viewState;
@@ -34,25 +36,69 @@ define([
       $scope.pageMax = 0;
       $scope.pageRange = 6;
       $scope.valueArray;
-      $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
-
-      var dms = DataManipulationService;
       $scope.CONST = CONST;
-
-      $scope.multipleDemo = {};
-      $scope.multipleDemo.colors = ['Red', 'Green'];
-      $scope.multipleDemo.availableColors = ['Red', 'Green', 'Blue', 'Yellow', 'Magenta', 'Maroon', 'Umbra',
-                                             'Turquoise'];
 
 
       //
-      // model access
+      // field schema access
       //
 
       // get the field title
       $scope.getTitle = function (field) {
-        return dms.getTitle(field || $scope.field);
+        return schemaService.getTitle(field || $scope.field);
       };
+
+      $scope.hasDescription = function (field) {
+        return schemaService.hasDescription(field || $scope.field);
+      };
+
+      // get the field description
+      $scope.getDescription = function (field) {
+        return schemaService.getDescription(field || $scope.field);
+      };
+
+      // get the field min/max length
+      $scope.getMinLength = function (field) {
+        return schemaService.getMinLength(field || $scope.field);
+      };
+
+      $scope.hasMinLength = function () {
+        return schemaService.getMinLength($scope.field) && schemaService.getMinLength($scope.field).length > 0;
+      };
+
+      $scope.getMaxLength = function (field) {
+        return schemaService.getMaxLength(field || $scope.field);
+      };
+
+      $scope.hasMaxLength = function () {
+        return schemaService.getMaxLength($scope.field) && schemaService.getMaxLength($scope.field).length > 0;
+      };
+
+      $scope.getMinValue = function (field) {
+        if (schemaService.hasMinValue()) {
+          return schemaService.getMinValue(field || $scope.field);
+        }
+      };
+
+      $scope.getNumericPlaceholder = function (field) {
+        let decimalPlace = schemaService.getDecimalPlace();
+        let min = schemaService.getMinValue() || 0;
+        return min + schemaService.hasDecimalPlace() ?  '.' + '0'.repeat(decimalPlace-1) + '1' : '';
+      };
+
+      $scope.getMaxValue = function (field) {
+        return schemaService.getMaxValue(field || $scope.field);
+      };
+
+      $scope.getValueConstraints = function (field) {
+        return schemaService.getValueConstraints(field || $scope.field);
+      };
+
+      // is this a section break?
+      $scope.isSectionBreak = function (field) {
+        return schemaService.isSectionBreak(field || $scope.field);
+      };
+
 
       $scope.getPropertyLabel = function () {
         if ($scope.labels && $scope.fieldKey && $scope.labels[$scope.fieldKey]) {
@@ -70,35 +116,20 @@ define([
         return $scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey];
       };
 
-      // get the field description
-      $scope.getDescription = function (field) {
-        return dms.getDescription(field || $scope.field);
+
+
+
+      $scope.getDecimalPlace = function (field) {
+        return schemaService.getDecimalPlace(field || $scope.field);
       };
 
-      $scope.hasDescription = function () {
-        var description = dms.getDescription($scope.field);
-        return description && description.length > 0;
+      $scope.getStep = function (field) {
+        let places = schemaService.getDecimalPlace(field || $scope.field);
+        return '0.' + '0'.repeat(places - 1) + '1';
       };
-
-      // get the field min/max length
-      $scope.getMinLength = function (field) {
-        return dms.getMinLength(field || $scope.field);
-      }
-
-      $scope.hasMinLength = function () {
-        return dms.getMinLength($scope.field) && dms.getMinLength($scope.field).length > 0;
-      }
-
-      $scope.getMaxLength = function (field) {
-        return dms.getMaxLength(field || $scope.field);
-      }
-
-      $scope.hasMaxLength = function () {
-        return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
-      }
 
       $scope.getPreferredLabel = function () {
-        return dms.getPreferredLabel($scope.field);
+        return schemaService.getPreferredLabel($scope.field);
       };
 
       $scope.getLabel = function () {
@@ -117,15 +148,14 @@ define([
         return dms.getContent(field || $scope.field);
       };
 
-
       // get the field id
       $scope.getId = function () {
-        return dms.getId($scope.field);
+        return schemaService.getId($scope.field);
       };
 
       // get the field id
       $scope.getLiterals = function () {
-        return dms.getLiterals($scope.field);
+        return schemaService.getLiterals($scope.field);
       };
 
       $scope.cardinalityString = function () {
@@ -139,15 +169,13 @@ define([
 
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
-        return dms.isCardinalElement($scope.field);
+        return schemaService.isCardinalElement($scope.field);
       };
-
 
       $scope.isMultiple = function () {
         // We consider that checkboxes and multi-choice lists are not 'multiple'
-        return (dms.isCardinalElement($scope.field) && !dms.isMultipleChoiceField($scope.field));
+        return (schemaService.isCardinalElement($scope.field) && !schemaService.isMultipleChoiceField($scope.field));
       };
-
 
       // what is the dom id for this field?
       $scope.getLocator = function (index) {
@@ -165,7 +193,7 @@ define([
 
       // is this a youTube field?
       $scope.isYouTube = function (field) {
-        return dms.isYouTube(field || $scope.field);
+        return schemaService.isYouTube(field || $scope.field);
       };
 
       $scope.getYouTubeEmbedFrame = function (field) {
@@ -174,47 +202,51 @@ define([
 
       // is this richText?
       $scope.isRichText = function (field) {
-        return dms.isRichText(field || $scope.field);
+        return schemaService.isRichText(field || $scope.field);
       };
 
       $scope.getUnescapedContent = function (field) {
         return field._ui._content;
       };
 
-      // is this a section break?
-      $scope.isSectionBreak = function (field) {
-        return dms.isSectionBreak(field || $scope.field);
-      };
+
 
       // is this a static image?
       $scope.isImage = function (field) {
-        return dms.isImage(field || $scope.field);
+        return schemaService.isImage(field || $scope.field);
       };
 
       // is the previous field static?
       $scope.isStatic = function (field) {
-        return dms.isStaticField(field || $scope.field);
+        return schemaService.isStaticField(field || $scope.field);
       };
 
       $scope.isPreviousStatic = function () {
         return $scope.isStatic($scope.previous);
       };
 
+      $scope.hasUnitOfMeasure = function (node) {
+        return schemaService.hasUnitOfMeasure(node);
+      };
+
+      $scope.getUnitOfMeasure = function (node) {
+        return schemaService.getUnitOfMeasure(node) || '';
+      };
+
       // string together field values
       $scope.getValueString = function (valueElement, attributeValueElement) {
         var result = '';
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
               result += valueElement[i]['@value'] + (attributeValueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
             }
           }
-
         } else {
           var location = dms.getValueLabelLocation($scope.field, valueElement);
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
-              if (valueElement[i][location]) {
+              if (valueElement[i][location] && valueElement[i][location] != 'null') {
                 result += valueElement[i][location] + ', ';
               }
             }
@@ -249,21 +281,6 @@ define([
           return $scope.getValueString($scope.valueArray);
         }
       };
-
-
-      // // strip midnight off the date time string
-      // $scope.formatDateTime = function (value) {
-      //
-      //   var result = value;
-      //   if (value) {
-      //
-      //     var index = value.indexOf($scope.midnight);
-      //     if (index != -1) {
-      //       result = value.substring(0, index);
-      //     }
-      //   }
-      //   return result;
-      // };
 
       // can this be expanded
       $scope.isExpandable = function () {
@@ -300,7 +317,7 @@ define([
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
         $scope.setActive(0, true);
-        if (dms.getMaxItems($scope.field)) {
+        if (schemaService.getMaxItems($scope.field)) {
           // create all the rows if the maxItems is a fixed number
           $scope.createExtraRows();
         }
@@ -318,11 +335,10 @@ define([
         })
       };
 
-
       $scope.cleanupSpreadsheet = function () {
         $scope.deleteExtraRows();
-        //$scope.expanded[0] = false;
         SpreadsheetService.destroySpreadsheet($scope);
+        $scope.setValueArray();
       };
 
       $scope.isTabView = function () {
@@ -368,7 +384,7 @@ define([
         // set it active or inactive
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
-        if (dms.isDateType($scope.field)) {
+        if (schemaService.isDateType($scope.field)) {
           $scope.setDateValue(index);
 
           $timeout(function () {
@@ -443,7 +459,6 @@ define([
         };
 
         $timeout($scope.setHeight, 100);
-
       };
 
       // submit this edit
@@ -455,7 +470,7 @@ define([
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
           // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
-          if ($scope.isMultipleCardinality() && !dms.isMultipleChoiceField($scope.field)) {
+          if ($scope.isMultipleCardinality() && !schemaService.isMultipleChoiceField($scope.field)) {
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
@@ -502,27 +517,27 @@ define([
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
-        return dms.hasValueConstraint($scope.field);
+        return schemaService.hasValueConstraints($scope.field);
       };
 
       // is this field required?
       $scope.isRequired = function () {
-        return dms.isRequired($scope.field);
+        return schemaService.isRequired($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.isMultiAnswer = function () {
-        return dms.isMultiAnswer($scope.field);
+        return schemaService.isMultiAnswer($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.isMultipleChoice = function () {
-        return dms.isMultipleChoice($scope.field);
+        return schemaService.isMultipleChoice($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.getInputType = function () {
-        return dms.getInputType($scope.field);
+        return schemaService.getInputType($scope.field);
       };
 
       // is this a checkbox, radio or list question?
@@ -538,7 +553,7 @@ define([
 
       // has value constraints?
       $scope.isConstrained = function () {
-        return dms.hasValueConstraint($scope.field) && !$scope.isRecommended();
+        return schemaService.hasValueConstraints($scope.field) && !$scope.isRecommended();
       };
 
       // has neither recommendations or value constraints
@@ -549,9 +564,11 @@ define([
       // an array of values for multi-instance fields
       $scope.setValueArray = function () {
         $scope.valueArray = [];
+        $scope.data.info = [];
+
         if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
-        } else if (dms.isAttributeValueType($scope.field)) {
+        } else if (schemaService.isAttributeValueType($scope.field)) {
           $scope.valueArray = [];
           for (var i = 0; i < $scope.model.length; i++) {
             $scope.valueArray.push({'@value': $scope.model[i]})
@@ -565,18 +582,29 @@ define([
           $scope.valueArray = [];
           $scope.valueArray.push($scope.model);
         }
+
+        switch (schemaService.getInputType($scope.field)) {
+          case "numeric":
+            for (let i = 0; i < $scope.valueArray.length; i++) {
+              let value;
+              if ($scope.valueArray[i]) {
+                value = Number.parseFloat($scope.valueArray[i]['@value']);
+              }
+              $scope.data.info[i] = {'value': value};
+            }
+            break;
+        }
+
       };
 
       // an array of attribute names for attribute-value types
       $scope.setAttributeValueArray = function () {
 
-
         var parentModel = $scope.parentModel || $scope.$parent.model;
         var parentInstance = $scope.parentInstance;
         var parent = parentModel[parentInstance] || parentModel;
 
-
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           $scope.attributeValueArray = [];
           for (var i = 0; i < $scope.valueArray.length; i++) {
             var attributeName = $scope.valueArray[i]['@value'];
@@ -610,7 +638,7 @@ define([
 
       // uncheck radio buttons
       $scope.uncheck = function (label) {
-        if (dms.isRadioType($scope.field)) {
+        if (schemaService.isRadioType($scope.field)) {
           if ($scope.optionsUI.radioPreviousOption == label) {
             // Uncheck
             $scope.optionsUI.radioOption = null;
@@ -625,95 +653,107 @@ define([
 
       $scope.multiple = {};
 
+      // Check the decimal place of the input value
+      var validateDecimals = function (value) {
+        let countDecimals = function (value) {
+          let result = 0;
+          let arr = value.toString().split(".");
+          if (arr.length > 1) {
+            result = arr[1].length;
+          }
+          return result;
+        };
+        let valid = value && schemaService.hasDecimalPlace($scope.field) && (countDecimals(value) <= schemaService.getDecimalPlace(
+            $scope.field));
+        $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
+      };
+
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
 
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
         var attributeName;
+        console.log('updateModelFromUI',inputType,$scope.isMultipleChoice());
 
-        if (dms.isDateType($scope.field)) {
-          var str = $scope.toXSDDate(newValue);
-          if ($scope.model.length > 0) {
-            $scope.model[$scope.index]['@value'] = str;
-          } else {
-            $scope.model['@value'] = str;
-          }
-        }
+        switch (inputType) {
+          case "numeric":
+            $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value + '';
+            validateDecimals($scope.valueArray[$scope.index]['@value']);
+            break;
+          case "date":
+            var str = $scope.toXSDDate(newValue);
+            if ($scope.model.length > 0) {
+              $scope.model[$scope.index]['@value'] = str;
+            } else {
+              $scope.model['@value'] = str;
+            }
+            break;
+          case 'attribute-value':
+            var parentModel = $scope.parentModel || $scope.$parent.model;
+            var parentInstance = $scope.parentInstance;
+            var parent = parentModel[parentInstance] || parentModel;
 
-        if (dms.isAttributeValueType($scope.field)) {
-          var parentModel = $scope.parentModel || $scope.$parent.model;
-          var parentInstance = $scope.parentInstance;
-          var parent = parentModel[parentInstance] || parentModel;
+            if ($scope.model.length > 0) {
 
-          if ($scope.model.length > 0) {
+              if (isAttributeName) {
 
-            if (isAttributeName) {
+                // attribute name, first make it unique in the parent
 
-              // attribute name, first make it unique in the parent
+                attributeName = $scope.getNewAttributeName(newValue, parent);
+                if (!$scope.isDuplicateAttribute(attributeName, parent)) {
 
-              attributeName = $scope.getNewAttributeName(newValue, parent);
-              if (!$scope.isDuplicateAttribute(attributeName, parent)) {
+                  $scope.valueArray[$scope.index]['@value'] = attributeName;
 
-                $scope.valueArray[$scope.index]['@value'] = attributeName;
+                  if (Array.isArray(parentModel)) {
+                    for (var i = 0; i < parentModel.length; i++) {
 
-                if (Array.isArray(parentModel)) {
-                  for (var i = 0; i < parentModel.length; i++) {
+                      // update all the instances
+                      parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
 
-                    // update all the instances
-                    parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
+                      // update attribute name in the parent
 
-                    // update attribute name in the parent
+                      parentModel[i][attributeName] = {'@value': null};
+                      if (oldValue && parentModel[i][oldValue]) {
+                        parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
+                        delete parentModel[i][oldValue];
+                      }
 
-                    parentModel[i][attributeName] = {'@value': null};
-                    if (oldValue && parentModel[i][oldValue]) {
-                      parentModel[i][attributeName]['@value'] = parentModel[i][oldValue]['@value'];
-                      delete parentModel[i][oldValue];
+                    }
+                  } else {
+
+                    // update attribute name in the attribute-value field and in the parent
+                    parentModel[$scope.fieldKey][$scope.index] = attributeName;
+                    parentModel[attributeName] = {'@value': null};
+                    if (oldValue && parentModel[oldValue]) {
+                      delete parentModel[oldValue];
                     }
 
+                    //update attribute name in attribute-value field
+                    //$scope.model[$scope.index]['@value'] = attributeName;
+
+
                   }
+                }
+              } else {
+
+                // attribute value, update value in parent model
+                var attributeName = $scope.valueArray[$scope.index]['@value'];
+
+                if (attributeName && parent[attributeName]) {
+                  parent[attributeName]['@value'] = newValue;
                 } else {
-
-                  // update attribute name in the attribute-value field and in the parent
-                  parentModel[$scope.fieldKey][$scope.index] = attributeName;
-                  parentModel[attributeName] = {'@value': null};
-                  if (oldValue && parentModel[oldValue]) {
-                    delete parentModel[oldValue];
-                  }
-
-                  //update attribute name in attribute-value field
-                  //$scope.model[$scope.index]['@value'] = attributeName;
-
-
+                  console.log('Error: cannot update attribute value', attributeName, parent);
                 }
               }
-            } else {
-
-              // attribute value, update value in parent model
-              var attributeName = $scope.valueArray[$scope.index]['@value'];
-
-              if (attributeName && parent[attributeName]) {
-                parent[attributeName]['@value'] = newValue;
-              } else {
-                console.log('Error: cannot update attribute value', attributeName, parent);
-              }
             }
-
-          } else {
-            // not handling scope.model as object
-          }
-
-        }
-
-        if ($scope.isMultiAnswer()) {
-          // Reset model
-          $scope.model = dms.initializeModel($scope.field, $scope.model, true);
-
-          if (inputType == 'checkbox') {
+            break;
+          case 'checkbox':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             // Insert the value at the right position in the model. optionsUI is an object, not an array,
             // so the right order in the model is not ensured.
             // The following lines ensure that each option is inserted into the right place
-            var orderedOptions = dms.getLiterals($scope.field);
+            var orderedOptions = schemaService.getLiterals($scope.field);
             for (var i = 0; i < orderedOptions.length; i++) {
               var option = orderedOptions[i].label;
               if ($scope.optionsUI[option]) {
@@ -726,11 +766,13 @@ define([
             if ($scope.model.length == 0) {
               dms.initializeValue($scope.field, $scope.model);
             }
-          }
-          else if (inputType == 'radio') {
+            break;
+          case 'radio':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             $scope.model[fieldValue] = $scope.optionsUI.radioOption;
-          }
-          else if (inputType == 'list') {
+            break;
+          case 'list':
+            $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             // Multiple-choice list
             if ($scope.isMultipleChoice()) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
@@ -745,37 +787,45 @@ define([
             dms.removeEmptyStrings($scope.field, $scope.model);
             // If the model is empty, set default value
             dms.initializeValue($scope.field, $scope.model);
-          }
+            break;
         }
       };
 
 
       // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
-
-
-        if (dms.isDateType($scope.field)) {
-          var date = new Date($scope.valueArray[$scope.index]['@value']);
-          $scope.date.dt = date;
-        }
-
-        if ($scope.isMultiAnswer()) {
-          $scope.optionsUI = {};
-          var valueLocation = $scope.getValueLocation();
-
-          if (dms.isCheckboxType($scope.field)) {
+        let inputType = $scope.getInputType();
+        switch (inputType) {
+          case "numeric":
+            for (let i = 0; i < $scope.valueArray.length; i++) {
+              let value;
+              if ($scope.valueArray[i]) {
+                value = Number.parseFloat($scope.valueArray[i]['@value']);
+              }
+              $scope.data.info[i] = {'value': value};
+            }
+            break;
+          case "date":
+            $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+            break;
+          case "checkbox":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             for (var i = 0; i < $scope.model.length; i++) {
               var value = $scope.model[i][valueLocation];
               $scope.optionsUI[value] = value;
             }
-          }
-          else if (dms.isRadioType($scope.field)) {
-            // For this field type only one selected option is possible
+            break;
+          case "radio":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             if ($scope.model) {
               $scope.optionsUI.radioOption = $scope.model[valueLocation];
             }
-          }
-          else if (dms.isListType($scope.field)) {
+            break;
+          case "list":
+            $scope.optionsUI = {};
+            var valueLocation = $scope.getValueLocation();
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
@@ -783,7 +833,6 @@ define([
                 if (v) {
                   $scope.optionsUI.listMultiSelect.push({"label": $scope.model[i][valueLocation]});
                 }
-
               }
             } else {
               // For this field type only one selected option is possible
@@ -791,66 +840,111 @@ define([
                 $scope.optionsUI.listSingleSelect = {"label": $scope.model[valueLocation]};
               }
             }
-          }
+            break;
         }
-
       };
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
-      $scope.checkForEmpty = function () {
-        var location = $scope.getValueLocation();
-        var obj = $scope.valueArray[$scope.index];
-        if (!obj[location] || obj[location].length === 0) {
-          delete obj[location];
+      // $scope.checkForEmpty = function () {
+      //   var location = $scope.getValueLocation();
+      //   var obj = $scope.valueArray[$scope.index];
+      //   if (!obj[location] || obj[location].length === 0) {
+      //     delete obj[location];
+      //   }
+      // };
+
+      var copyAttributeValueField = function (parentModel, parentInstance) {
+
+        var parentModel = $scope.parentModel || $scope.$parent.model;
+        var parentInstance = $scope.parentInstance;
+        var parent = parentModel[parentInstance] || parentModel;
+
+
+        // there is no attribute name defined, so give it a default name
+        if (!$scope.valueArray[$scope.index]['@value']) {
+          $scope.updateModelFromUI($scope.fieldKey, '', true);
+        }
+
+        // create a unique attribute name for the copy
+        var attributeValue = $scope.attributeValueArray[$scope.index]['@value'];
+        var oldAttributeName = $scope.valueArray[$scope.index]['@value'];
+        var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parent);
+
+        if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
+
+
+          if (Array.isArray(parentModel)) {
+            for (var i = 0; i < parentModel.length; i++) {
+
+              // create the obj in the attribute-value field
+              parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
+
+              // create the new field at the parent level
+              var valueObject = {};
+              valueObject["@value"] = attributeValue;
+              parentModel[i][newAttributeName] = valueObject;
+
+            }
+          } else {
+
+            // create the obj in the attribute-value field
+            parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
+
+            // create the new field at the parent level
+            var valueObject = {};
+            valueObject["@value"] = attributeValue;
+            parentModel[newAttributeName] = valueObject;
+
+          }
+
+          // activate the new instance
+          $timeout(function () {
+            $scope.setValueArray();
+            $scope.setAttributeValueArray();
+            $scope.setActive($scope.index + 1, true);
+          }, 100);
+
+
         }
       };
 
       // add more instances to a multiple cardinality field if possible by copying the selected instance
       $scope.copyField = function () {
-        console.log('copyField');
-        if (dms.isAttributeValueType($scope.field)) {
-          $scope.copyAttributeValueField($scope.parentModel, $scope.parentInstance);
-        }
-        if (dms.isTextFieldType($scope.field) && dms.hasValueConstraint($scope.field)) {
-          var obj = {};
-          obj['@id'] = $scope.valueArray[$scope.index]['@id'];
-          // obj['label'] = $scope.valueArray[$scope.index]['label'];
-          obj['rdfs:label'] = $scope.valueArray[$scope.index]['rdfs:label'];
-          $scope.model.splice($scope.index + 1, 0, obj);
+        let inputType = $scope.getInputType();
+        let valueLocation = $scope.getValueLocation();
+        let maxItems = schemaService.getMaxItems($scope.field);
 
+        if ((!maxItems || $scope.model.length < maxItems)) {
+          switch (inputType) {
+            case "attribute-value":
+              copyAttributeValueField($scope.parentModel, $scope.parentInstance);
+              break;
+            case 'textfield':
+              if (schemaService.hasValueConstraints($scope.field)) {
+                let obj = {
+                  '@id'       : $scope.valueArray[$scope.index]['@id'],
+                  'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
+                };
+                $scope.model.splice($scope.index + 1, 0, obj);
 
-
-          // // init default value
-          // if (dms.hasUserDefinedDefaultValue($scope.field)) {
-          //   var value = dms.getUserDefinedDefaultValue($scope.field);
-          //   var index = $scope.index+1 ;
-          //   if (!$scope.model.hasOwnProperty('@id')) {
-          //     $scope.valueArray[index] = {
-          //       '@id'  : value['@id'],
-          //       'label': value['label'],
-          //       'rdfs:label': value['rdfs:label']
-          //     }
-          //   }
-          // }
-
-
-          // activate the new instance
-          $timeout($scope.setActive($scope.index + 1, true), 100);
-        } else {
-          var valueLocation = $scope.getValueLocation();
-          var maxItems = dms.getMaxItems($scope.field);
-          if ((!maxItems || $scope.model.length < maxItems)) {
-
-
-
-            // copy selected instance in the model and insert immediately after
-            var obj = {};
-            obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
-            $scope.model.splice($scope.index + 1, 0, obj);
-
-            // activate the new instance
-            $timeout($scope.setActive($scope.index + 1, true), 100);
-
+              } else {
+                let obj = {};
+                obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
+                $scope.model.splice($scope.index + 1, 0, obj);
+              }
+              $timeout($scope.setActive($scope.index + 1, true), 100);
+              break;
+            case 'numeric':
+              let numberObj = {'@value': $scope.valueArray[$scope.index]['@value']};
+              $scope.model.splice($scope.index + 1, 0, numberObj);
+              $scope.data.info.splice($scope.index + 1, 0, {'value': $scope.data.info[$scope.index].value});
+              $timeout($scope.setActive($scope.index + 1, true), 100);
+              break;
+            default :
+              let obj = {};
+              obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
+              $scope.model.splice($scope.index + 1, 0, obj);
+              $timeout($scope.setActive($scope.index + 1, true), 100);
           }
         }
       };
@@ -874,67 +968,9 @@ define([
         }
       };
 
-      $scope.copyAttributeValueField = function (parentModel, parentInstance) {
-
-        var parentModel = $scope.parentModel || $scope.$parent.model;
-        var parentInstance = $scope.parentInstance;
-        var parent = parentModel[parentInstance] || parentModel;
-
-
-        var maxItems = dms.getMaxItems($scope.field);
-        if ((!maxItems || $scope.model.length < maxItems)) {
-
-          // there is no attribute name defined, so give it a default name
-          if (!$scope.valueArray[$scope.index]['@value']) {
-            $scope.updateModelFromUI($scope.fieldKey, '', true);
-          }
-
-          // create a unique attribute name for the copy
-          var attributeValue = $scope.attributeValueArray[$scope.index]['@value'];
-          var oldAttributeName = $scope.valueArray[$scope.index]['@value'];
-          var newAttributeName = $scope.getNewAttributeName(oldAttributeName, parent);
-
-          if (!$scope.isDuplicateAttribute(newAttributeName, parent)) {
-
-
-            if (Array.isArray(parentModel)) {
-              for (var i = 0; i < parentModel.length; i++) {
-
-                // create the obj in the attribute-value field
-                parentModel[i][$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
-
-                // create the new field at the parent level
-                var valueObject = {};
-                valueObject["@value"] = attributeValue;
-                parentModel[i][newAttributeName] = valueObject;
-
-              }
-            } else {
-
-              // create the obj in the attribute-value field
-              parentModel[$scope.fieldKey].splice($scope.index + 1, 0, newAttributeName);
-
-              // create the new field at the parent level
-              var valueObject = {};
-              valueObject["@value"] = attributeValue;
-              parentModel[newAttributeName] = valueObject;
-
-            }
-
-            // activate the new instance
-            $timeout(function () {
-              $scope.setValueArray();
-              $scope.setAttributeValueArray();
-              $scope.setActive($scope.index + 1, true);
-            }, 100);
-
-          }
-        }
-      };
-
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
           var parent = parentModel[parentInstance] || parentModel;
@@ -962,7 +998,7 @@ define([
         } else {
           if ($scope.isMultipleCardinality()) {
             var valueLocation = $scope.getValueLocation();
-            var maxItems = dms.getMaxItems($scope.field);
+            var maxItems = schemaService.getMaxItems($scope.field);
             if ((!maxItems || $scope.model.length < maxItems)) {
               // add another instance in the model
               var obj = {};
@@ -981,11 +1017,11 @@ define([
       // remove the value of field at index
       $scope.removeInput = function (index) {
 
-        var minItems = dms.getMinItems($scope.field) || 0;
+        var minItems = schemaService.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
 
           // attribute-value pairs propagate and have unique attributes
-          if (dms.isAttributeValueType($scope.field)) {
+          if (schemaService.isAttributeValueType($scope.field)) {
             var attributeName = $scope.model[index];
             if (Array.isArray($scope.parentModel)) {
               for (var i = 0; i < $scope.parentModel.length; i++) {
@@ -1017,7 +1053,7 @@ define([
        * attribute names and generates/removes the corresponding properties in the @context.
        */
       $scope.$watchCollection('parentModel[fieldKey]', function (newVal, oldVal) {
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           if (oldVal != newVal) { // check that the array actually changed to avoid regenerating context properties
             for (var i = 0; i < oldVal.length; i++) {
               // if the old string is not in the new array, remove it from the context.
@@ -1029,7 +1065,7 @@ define([
             for (var i = 0; i < newVal.length; i++) {
               // if the new string is not in the old array, add it to the context.
               if (oldVal.indexOf(newVal[i] == -1) && $scope.parentModel['@context'][newVal[i]] == null) {
-                $scope.parentModel['@context'][newVal[i]] = UrlService.schemaProperties() + "/" + DataManipulationService.generateGUID();
+                $scope.parentModel['@context'][newVal[i]] = UrlService.schemaProperties() + "/" + dms.generateGUID();
               }
             }
           }
@@ -1040,78 +1076,10 @@ define([
       $scope.$on('submitForm', function (event) {
 
         var location = dms.getValueLocation($scope.field);
-        var min = dms.getMinItems($scope.field) || 0;
-        var valueConstraint = dms.getValueConstraint($scope.field);
+        var min = schemaService.getMinItems($scope.field) || 0;
+        var valueConstraint = schemaService.getValueConstraints($scope.field);
         var id = $scope.getId();
         var title = $scope.getPropertyLabel();
-
-        // Validate the value of a text field
-        if (dms.isTextFieldType($scope.field)) {
-          var noneTooShort = true;
-          var noneTooLong = true;
-
-          for (let i = 0; i < $scope.valueArray.length; i++) {
-            var value = $scope.valueArray[i]['@value'];
-            if (value) {
-              var valueLength = value.length;
-
-              if (dms.hasMaxLength($scope.field)) {
-                var maxLength = dms.getMaxLength($scope.field);
-                if (valueLength > maxLength) {
-                  noneTooLong = false;
-                }
-              }
-              if (dms.hasMinLength($scope.field)) {
-                var minLength = dms.getMinLength($scope.field);
-                if (valueLength < minLength) {
-                  noneTooShort = false;
-                }
-              }
-            }
-          }
-          $scope.$emit('validationError', [noneTooLong ? 'remove' : 'add', title, id, 'valueTooLongError']);
-          $scope.$emit('validationError', [noneTooShort ? 'remove' : 'add', title, id, 'valueTooShortError']);
-        }
-
-        // Validate the value of a numeric field
-        if (dms.isNumericField($scope.field)) {
-          var noneTooSmall = true;
-          var noneTooLarge = true;
-          var noneTooDecimal = true;
-          var noneNaN = true;
-
-          for (let i = 0; i < $scope.valueArray.length; i++) {
-            var value = $scope.valueArray[i]['@value'];
-            if (value) {
-              value = Number(value);
-              if (Number.isNaN(value)) {
-                noneNaN = false;
-              }
-              if (dms.hasMaxValue($scope.field)) {
-                var maxValue = dms.getMaxValue($scope.field);
-                if (value > maxValue) {
-                  noneTooLarge = false;
-                }
-              }
-              if (dms.hasMinValue($scope.field)) {
-                var minValue = dms.getMinValue($scope.field);
-                if (value < minValue) {
-                  noneTooSmall = false;
-                }
-              }
-              if (dms.hasDecimalPlace($scope.field)) {
-                var decimalPlace = dms.getDecimalPlace($scope.field);
-                if (countDecimals(value) > decimalPlace) {
-                  noneTooDecimal = false;
-                }
-              }
-            }
-          }
-          $scope.$emit('validationError', [noneNaN ? 'remove' : 'add', title, id, 'valueNotANumberError']);
-          $scope.$emit('validationError', [noneTooLarge ? 'remove' : 'add', title, id, 'valueTooLargeError']);
-          $scope.$emit('validationError', [noneTooSmall ? 'remove' : 'add', title, id, 'valueTooSmallError']);
-          $scope.$emit('validationError', [noneTooDecimal ? 'remove' : 'add', title, id, 'incorrectDecimalPlaceError']);
-        }
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($scope.isRequired()) {
@@ -1202,7 +1170,7 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       $scope.createExtraRows = function () {
-        var maxItems = dms.getMaxItems($scope.field);
+        var maxItems = schemaService.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
           $scope.addMoreInput();
         }
@@ -1211,7 +1179,7 @@ define([
       // delete extra blank rows
       $scope.deleteExtraRows = function () {
         var location = dms.getValueLocation($scope.field);
-        var min = dms.getMinItems($scope.field) || 0;
+        var min = schemaService.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
 
           loop:for (var i = $scope.model.length; i > min; i--) {
@@ -1226,7 +1194,7 @@ define([
       };
 
       $scope.isHidden = function () {
-        return dms.isHidden($scope.field);
+        return schemaService.isHidden($scope.field);
       };
 
       $scope.hasModel = function () {
@@ -1280,147 +1248,115 @@ define([
         return date == null;
       };
 
+      // $scope.getPlaceholderText = function () {
+      //   var text = "Enter a value";
+      //   if (dms.isTextFieldType($scope.field)) {
+      //     text = getPlaceholderForTextField($scope.field);
+      //   } else if (dms.isNumericField($scope.field)) {
+      //     text = getPlaceholderForNumericField($scope.field);
+      //   }
+      //   return text;
+      // };
+
+      // var getPlaceholderForTextField = function (node) {
+      //   var text = "Enter a value";
+      //   text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
+      //   text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
+      //   return text;
+      // }
+
+
+      // var getPlaceholderForNumericField = function (node) {
+      //   var numberType = dms.getNumberType(node);
+      //   var text = "Enter " + getNumberLabel(numberType) + " number";
+      //   if (dms.hasUnitOfMeasure(node)) {
+      //     text += " (in " + dms.getUnitOfMeasure(node) + ")";
+      //   }
+      //   var decimalPlace = dms.getDecimalPlace(node) || 0;
+      //   if (decimalPlace == 0) {
+      //     text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
+      //     text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
+      //   } else {
+      //     if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
+      //       var decimalPlacesText = "." + "0".repeat(decimalPlace)
+      //       text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
+      //       text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
+      //     } else {
+      //       text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
+      //     }
+      //   }
+      //   return text;
+      // }
+
+      // var getNumberLabel = function (numberType) {
+      //   var label = "a";
+      //   if (numberType == "xsd:decimal") {
+      //     label = "a decimal"
+      //   } else if (numberType == "xsd:int") {
+      //     label = "an integer";
+      //   } else if (numberType == "xsd:long") {
+      //     label = "a long-integer";
+      //   } else if (numberType == "xsd:float") {
+      //     label = "a single-precision floating"
+      //   } else if (numberType == "xsd:double") {
+      //     label = "a double-precision floating";
+      //   }
+      //   return label;
+      // }
+
+      // Check the string length of the input value
+      // $scope.checkStringLength = function () {
+      //   var value = $scope.valueArray[$scope.index]['@value']
+      //   if (value) {
+      //     var valueLength = value.length;
+      //     var isTooShort = false;
+      //     if (dms.hasMinLength($scope.field)) {
+      //       isTooShort = valueLength < dms.getMinLength($scope.field);
+      //     }
+      //     var isTooLong = false;
+      //     if (dms.hasMaxLength($scope.field)) {
+      //       isTooLong = valueLength > dms.getMaxLength($scope.field);
+      //     }
+      //     var isValid = !isTooLong && !isTooShort;
+      //     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
+      //   } else {
+      //     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
+      //   }
+      // };
+
+      // Check the numeric value of the input value
+      // $scope.checkNumberValue = function () {
+      //   var value = $scope.valueArray[$scope.index]['@value'];
+      //   if (value) {
+      //     value = Number(value);
+      //     var isTooLarge = false;
+      //     if (dms.hasMaxValue($scope.field)) {
+      //       isTooLarge = value > dms.getMaxValue($scope.field);
+      //     }
+      //     var isTooSmall = false;
+      //     if (dms.hasMinValue($scope.field)) {
+      //       isTooSmall = value < dms.getMinValue($scope.field);
+      //     }
+      //     var isValid = !isTooLarge && !isTooSmall;
+      //     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
+      //   } else {
+      //     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
+      //   }
+      // };
+
+
       //
       // initialization
       //
 
       $scope.setValueArray();
       $scope.setAttributeValueArray();
-
-
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
 
 
-      $scope.getPlaceholderText = function () {
-        var text = "Enter a value";
-        if (dms.isTextFieldType($scope.field)) {
-          text = getPlaceholderForTextField($scope.field);
-        } else if (dms.isNumericField($scope.field)) {
-          text = getPlaceholderForNumericField($scope.field);
-        }
-        return text;
-      }
-
-      var getPlaceholderForTextField = function (node) {
-        var text = "Enter a value";
-        text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
-        text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
-        return text;
-      }
-
-      $scope.hasUnitOfMeasure = function (node) {
-        return dms.hasUnitOfMeasure(node);
-      };
-
-      $scope.getUnitOfMeasure = function (node) {
-        return dms.getUnitOfMeasure(node);
-      };
-
-      var getPlaceholderForNumericField = function (node) {
-        var numberType = dms.getNumberType(node);
-        var text = "Enter " + getNumberLabel(numberType) + " number";
-        if (dms.hasUnitOfMeasure(node)) {
-          text += " (in " + dms.getUnitOfMeasure(node) + ")";
-        }
-        var decimalPlace = dms.getDecimalPlace(node) || 0;
-        if (decimalPlace == 0) {
-          text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
-          text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
-        } else {
-          if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
-            var decimalPlacesText = "." + "0".repeat(decimalPlace)
-            text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
-            text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
-          } else {
-            text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
-          }
-        }
-        return text;
-      }
-
-      var getNumberLabel = function (numberType) {
-        var label = "a";
-        if (numberType == "xsd:decimal") {
-          label = "a decimal"
-        } else if (numberType == "xsd:int") {
-          label = "an integer";
-        } else if (numberType == "xsd:long") {
-          label = "a long-integer";
-        } else if (numberType == "xsd:float") {
-          label = "a single-precision floating"
-        } else if (numberType == "xsd:double") {
-          label = "a double-precision floating";
-        }
-        return label;
-      }
-
-      /* start of value constraints functionality */
-
-      // Check the string length of the input value
-      $scope.checkStringLength = function () {
-        var value = $scope.valueArray[$scope.index]['@value']
-        if (value) {
-          var valueLength = value.length;
-          var isTooShort = false;
-          if (dms.hasMinLength($scope.field)) {
-            isTooShort = valueLength < dms.getMinLength($scope.field);
-          }
-          var isTooLong = false;
-          if (dms.hasMaxLength($scope.field)) {
-            isTooLong = valueLength > dms.getMaxLength($scope.field);
-          }
-          var isValid = !isTooLong && !isTooShort;
-          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeTextField.$setValidity('stringLength', true);
-        }
-      };
-
-      // Check the numeric value of the input value
-      $scope.checkNumberValue = function () {
-        var value = $scope.valueArray[$scope.index]['@value'];
-        if (value) {
-          value = Number(value);
-          var isTooLarge = false;
-          if (dms.hasMaxValue($scope.field)) {
-            isTooLarge = value > dms.getMaxValue($scope.field);
-          }
-          var isTooSmall = false;
-          if (dms.hasMinValue($scope.field)) {
-            isTooSmall = value < dms.getMinValue($scope.field);
-          }
-          var isValid = !isTooLarge && !isTooSmall;
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('numberValue', true);
-        }
-      };
-
-
-      // Check the decimal place of the input value
-      $scope.checkDecimalPlace = function () {
-        var value = Number($scope.valueArray[$scope.index]['@value']);
-        if (value) {
-          var isValid = true;
-          if (dms.hasDecimalPlace($scope.field)) {
-            var decimalPlace = dms.getDecimalPlace($scope.field);
-            isValid = countDecimals(value) <= decimalPlace;
-          }
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', isValid);
-        } else {
-          $scope.forms['fieldEditForm' + $scope.index].activeNumericField.$setValidity('decimalPlace', true);
-        }
-      };
-
-      var countDecimals = function (value) {
-        if (Math.floor(value) === value) return 0;
-        return value.toString().split(".")[1].length || 0;
-      }
-
-      /* end of value constraints functionality */
-
     };
+
 
     return {
       templateUrl: 'scripts/form/cedar-runtime-field.directive.html',

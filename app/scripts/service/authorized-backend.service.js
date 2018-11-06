@@ -18,9 +18,9 @@ define([
       var token = UserService.getToken();
       var config = {
         "headers": {
-          "Authorization": token == null ? "" : "Bearer " + token,
+          "Authorization"          : token == null ? "" : "Bearer " + token,
           "CEDAR-Client-Session-Id": $window.cedarClientSessionId,
-          "CEDAR-Debug"  : true
+          "CEDAR-Debug"            : true
         }
       };
       if (httpConfigObject != null) {
@@ -55,7 +55,9 @@ define([
       var suggestedAction = errorResponse.data.suggestedAction;
       console.log("suggestedAction:" + suggestedAction);
 
-      if (suggestedAction == "logout" || suggestedAction == "provideAuthorizationHeader") {
+      if (suggestedAction == "logoutImmediately") {
+        UserService.doLogout();
+      } else if (suggestedAction == "logout" || suggestedAction == "provideAuthorizationHeader") {
         this.notifyAndLogout();
         return true;
       } else if (suggestedAction == "requestRole") {

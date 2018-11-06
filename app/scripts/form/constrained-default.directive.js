@@ -7,9 +7,10 @@ define([
       .directive('constrainedDefault', constrainedDefault);
 
 
-  constrainedDefault.$inject = ["DataManipulationService", "UIUtilService", "autocompleteService", '$q'];
+  constrainedDefault.$inject = ["DataManipulationService", "UIUtilService", "schemaService", "autocompleteService",
+                                'CONST'];
 
-  function constrainedDefault(DataManipulationService, UIUtilService, autocompleteService, $q) {
+  function constrainedDefault(DataManipulationService, UIUtilService, schemaService, autocompleteService, CONST) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -17,68 +18,65 @@ define([
       var dms = DataManipulationService;
       $scope.autocompleteResultsCache = autocompleteService.autocompleteResultsCache;
       $scope.updateFieldAutocomplete = autocompleteService.updateFieldAutocomplete;
-      $scope.mods = dms.getMods($scope.field);
+      $scope.data;
 
-      // does this field have a value constraint?
-      $scope.hasValueConstraint = function () {
-        return dms.hasValueConstraint($scope.field);
-      };
-
-      // apply user mods to the drop down list
-      $scope.applyMods = function (list) {
-        // apply mods to a duplicate of the list
-        var dup = list.slice();
-        for (let i = 0; i < $scope.mods.length; i++) {
-          let mod = $scope.mods[i];
-          let from = dup.findIndex(item => item['@id'] === mod['@id']);
-          if (from != -1) {
-            // delete it at from
-            let entry = dup.splice(from, 1);
-            if (mod.to != -1 && mod.action == 'move') {
-              // insert it at to
-              dup.splice(mod.to, 0, entry[0]);
-            }
-          }
-        }
-        return dup;
-      };
 
       // order the drop down values
       $scope.order = function (arr) {
         if (arr) {
-          var dup = $scope.applyMods(arr);
+          var dup = dms.applyActions(arr, schemaService.getActions($scope.field));
           return dup;
         }
       };
 
       // get resource id
       $scope.getId = function () {
-        return dms.getId($scope.field);
+        return schemaService.getId($scope.field);
       };
 
-      $scope.model.defaultValue = $scope.model.defaultValue || {};
+      // keep model up-to-date with changes in the data
+      $scope.onChange = function () {
+        if ($scope.data.termInfo) {
 
-      // TODO get rid of the extra values in some other way
-      $scope.onChange = function (m) {
+          // if we have something put it into the model
+          schemaService.setDefaultValueConstraint($scope.field,
+              $scope.data.termInfo['@id'],
+              $scope.data.termInfo['label'],
+              $scope.data.termInfo['notation']);
+
+        } else {
+
+          // otherwise delete the default value
+          schemaService.removeDefaultValueConstraint($scope.model);
+        }
       };
 
 
-  };
+      //
+      // initialize the data model that the dropdown will use
+      //
 
-  return {
-    templateUrl: 'scripts/form/constrained-default.directive.html',
-    restrict   : 'EA',
-    scope      : {
-      field: '=',
-      model: '='
-    },
-    controller : function ($scope, $element) {
-    },
-    replace    : true,
-    link       : linker
-  };
+      $scope.data = {termInfo: null};
+      if (schemaService.hasDefaultValueConstraint($scope.field)) {
+        $scope.data.termInfo = {};
+        $scope.data.termInfo['@id'] = schemaService.getDefaultValueConstraintTermId($scope.field);
+        $scope.data.termInfo['label'] = schemaService.getDefaultValueConstraintLabel($scope.field);
+        $scope.data.termInfo['notation'] = schemaService.getDefaultValueConstraintNotation($scope.field);
+      }
+    };
 
-}
+    return {
+      templateUrl: 'scripts/form/constrained-default.directive.html',
+      restrict   : 'EA',
+      scope      : {
+        field: '=',
+        model: '='
+      },
+      controller : function ($scope, $element) {
+      },
+      replace    : true,
+      link       : linker
+    };
+  }
 
-})
-;
+});

@@ -170,22 +170,22 @@
     "clickOkToSelect": "Click OK to select {{ term }} from {{ ontology }}",
     "addSelectedTerm": "Click to add the selected term",
     "AddOntology": "Click to add all the terms from the selected ontology",
-    "AddValueSet":"Click to add all the terms from the selected value set",
-    "AddDescendants":"Click to add all the descendants of the selected term",
-    "Term":"Term",
-    "TermId":"Term Id",
+    "AddValueSet": "Click to add all the terms from the selected value set",
+    "AddDescendants": "Click to add all the descendants of the selected term",
+    "Term": "Term",
+    "TermId": "Term Id",
     "TermName": "Term Name",
-    "Branch":"Branch",
-    "Ontology":"Ontology",
-    "ValueSet":"Value Set",
-    "ValueSetId":"Value Set Id",
+    "Branch": "Branch",
+    "Ontology": "Ontology",
+    "ValueSet": "Value Set",
+    "ValueSetId": "Value Set Id",
     "ValueSetName": "Value Set Name",
     "Category": "Category",
     "NumberTerms": "Number Terms",
-    "NA":"n/a",
-    "OntologyId":"Ontology Id",
+    "NA": "n/a",
+    "OntologyId": "Ontology Id",
     "OntologyName": "Ontology Name",
-    "UILabel":"UI Label"
+    "UILabel": "UI Label"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -511,6 +511,12 @@
     "enabled": "Value Recommendation for this template has been enabled",
     "errorCallingService": "Error calling Value Recommender service"
   },
+  "PLACEHOLDER": {
+    "email": "bob@company.com",
+    "url": "http://company.com",
+    "date": "10/10/2010",
+    "phoneNumber": "123-456-7890"
+  },
   "VALIDATION": {
     "templateLoad": "The template is invalid and cannot be opened.",
     "externalValidation": "External validation",
@@ -538,7 +544,21 @@
       "valueTooSmallError": "The value of the following field(s) is too small:",
       "valueNotANumberError": "The value of the following field(s) is not a number:",
       "incorrectDecimalPlaceError": "The value of the following field(s) has an incorrect number of decimal places"
-    }
+    },
+    "required": "Please enter a value",
+    "requiredDate": "Please enter a date, e.g. 10/10/2010",
+    "requiredSelect": "Please select a value from the list",
+    "invalidEmail": "Please include an @ in your email, e.g. bob@company",
+    "invalidPhoneNumber": "Please enter a valid phone number, e.g. 123-456-7890",
+    "invalidURL": "Please enter a valid URL, e.g. http://example.com",
+    "invalidMinLength": "Please enter at least {{min}} characters",
+    "invalidMaxLength": "Please enter no more than {{max}} characters",
+    "invalidStringLength": "Please enter a string at least {{min}} and no more than {{max}} characters",
+    "invalidNumberValue": "Value must be between {{min}} and {{max}}",
+    "invalidDecimalPlace": "Value must have no more than {{decimal}} decimal places",
+    "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
+    "invalidMaxValue": "Please enter a value less than or equal to {{max}}",
+    "invalidDate": "Please enter a valid date, e.g. 10/10/2010"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
@@ -593,7 +613,7 @@
   },
   "EDITOR": {
     "TOOLBAR": {
-      "searchForMore": "Search the workspace"
+      "searchForMore": "Search for fields and elements"
     }
   },
   "BreadcrumbTitle": {

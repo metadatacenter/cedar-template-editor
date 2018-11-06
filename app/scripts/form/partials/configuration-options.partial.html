@@ -33,11 +33,6 @@
           ng-click="setTab('hidden');  $event.stopPropagation();">
         <span>Hidden</span>
       </div>
-      <!--<div ng-if="hasInstanceType()" class="element-toggle table-cell-style field-controlled-terms-tab"-->
-      <!--ng-class="{active: isTabActive('field')}"-->
-      <!--ng-click="setTab('field');  $event.stopPropagation();">-->
-      <!--<span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Instance Type</span>-->
-      <!--</div>-->
     </div>
   </div>
 
@@ -108,7 +103,7 @@
 
     <div ng-if="isTextField()">
 
-      <constrained-default ng-if="isConstrained()" class="form-group  has-feedback" field="field" model="getValueConstraint()"></constrained-default>
+      <constrained-default ng-if="isConstrained()" class="form-group  has-feedback" field="field" model="getValueConstraints()"></constrained-default>
 
       <!-- default value -->
       <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
