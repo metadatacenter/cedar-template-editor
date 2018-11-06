@@ -31,20 +31,20 @@ define([
           }
           return true;
         };
-        return dms.isRequired($scope.field) && isEmpty($scope.data.termInfo);
+        return schemaService.isRequired($scope.field) && isEmpty($scope.data.termInfo);
       };
 
       // order the results based on user preferences
       $scope.order = function (arr) {
         if (arr) {
-          var dup = dms.applyActions(arr, dms.getActions($scope.field));
+          var dup = dms.applyActions(arr, schemaService.getActions($scope.field));
           return dup;
         }
       };
 
       // get the resource identifier
       $scope.getId = function () {
-        return dms.getId($scope.field);
+        return schemaService.getId($scope.field);
       };
 
       // update model with changed data from UI

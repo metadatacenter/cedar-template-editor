@@ -24,7 +24,7 @@ define([
       // order the drop down values
       $scope.order = function (arr) {
         if (arr) {
-          var dup = dms.applyActions(arr, dms.getActions($scope.field));
+          var dup = dms.applyActions(arr, schemaService.getActions($scope.field));
           return dup;
         }
       };
@@ -56,8 +56,9 @@ define([
       // initialize the data model that the dropdown will use
       //
 
-      $scope.data = {termInfo: {}};
+      $scope.data = {termInfo: null};
       if (schemaService.hasDefaultValueConstraint($scope.field)) {
+        $scope.data.termInfo = {};
         $scope.data.termInfo['@id'] = schemaService.getDefaultValueConstraintTermId($scope.field);
         $scope.data.termInfo['rdfs:label'] = schemaService.getDefaultValueConstraintLabel($scope.field);
         $scope.data.termInfo['skos:notation'] = schemaService.getDefaultValueConstraintNotation($scope.field);

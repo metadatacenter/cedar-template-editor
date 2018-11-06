@@ -10,7 +10,7 @@ define([
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
                                           "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
-                                          "DataManipulationService","ValidationService",
+                                          "DataManipulationService","schemaService","ValidationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST",  "CedarUser"];
@@ -18,7 +18,7 @@ define([
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
-                                        UIUtilService, DataManipulationService, ValidationService,controlledTermDataService,
+                                        UIUtilService, DataManipulationService, schemaService, ValidationService,controlledTermDataService,
                                         StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST,  CedarUser) {
@@ -49,7 +49,7 @@ define([
 
         $scope.checkLocking = function () {
           if ($scope.details) {
-            $scope.cannotWrite = !resourceService.canWrite($scope.details) || dms.isPublished($scope.details)
+            $scope.cannotWrite = !resourceService.canWrite($scope.details) || schemaService.isPublished($scope.details)
             $scope.saveButtonDisabled = $scope.cannotWrite;
             return !$scope.cannotWrite;
           }
@@ -345,8 +345,8 @@ define([
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
-            DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
-            DataManipulationService.defaultSchemaTitleAndDescription($scope.form);
+            schemaService.removeUnnecessaryMaxItems($scope.form.properties);
+            schemaService.defaultSchemaTitleAndDescription($scope.form);
 
             // Saving the template for the first time
             if ($routeParams.id == undefined) {

@@ -8,14 +8,14 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarTermsModal', cedarTermsModalDirective);
 
-      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService', '$q'];
+      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', '$q'];
 
       /**
        *
        * share and group modal
        *
        */
-      function cedarTermsModalDirective(CedarUser, DataManipulationService, $q) {
+      function cedarTermsModalDirective(CedarUser, DataManipulationService,schemaService, $q) {
 
         var directive = {
           bindToController: {
@@ -151,7 +151,7 @@ define([
           };
 
           vm.doSave = function () {
-            dms.setActions(vm.resource, vm.actions);
+            schemaService.setActions(vm.resource, vm.actions);
           };
 
           vm.reset = function () {
@@ -336,9 +336,9 @@ define([
             if (visible && r) {
               vm.modalVisible = visible;
               vm.resource = r;
-              vm.id = dms.getId(vm.resource);
-              vm.schema = dms.schemaOf(vm.resource);
-              vm.actions = dms.getActions(vm.resource);
+              vm.id = schemaService.getId(vm.resource);
+              vm.schema = schemaService.schemaOf(vm.resource);
+              vm.actions = schemaService.getActions(vm.resource);
               vm.openTerms(vm.resource, vm.actions);
             } else {
               vm.modalVisible = false;

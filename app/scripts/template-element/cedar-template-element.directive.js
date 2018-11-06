@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
-  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'schemaService','DataUtilService',
                                            'SpreadsheetService', 'UIUtilService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService,
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, schemaService,DataUtilService, SpreadsheetService,
                                          UIUtilService) {
 
     var directive = {
@@ -44,41 +44,50 @@ define([
       scope.elementLabel = dms.getPropertyLabels(scope.parentElement);
       scope.elementDescription = dms.getPropertyDescriptions(scope.parentElement);
 
+
+
+      scope.isRoot = function () {
+        return !schemaService.getId(scope.element) || (schemaService.getId(scope.element) === $rootScope.keyOfRootElement);
+      };
+
+      scope.getIdentifier = function () {
+        return schemaService.getIdentifier(scope.element);
+      };
+
+      scope.isCardinal = function () {
+        return schemaService.isCardinalElement(scope.element);
+      };
+
+      scope.isPublished = function () {
+        return schemaService.isPublished(scope.element);
+      };
+
+      scope.getVersion = function () {
+        return schemaService.getVersion(scope.element);
+      };
+
+      scope.getTitle = function () {
+        return schemaService.getTitle(scope.element);
+      };
+
+      scope.hasDescription = function () {
+        return schemaService.hasDescription(scope.element);
+      };
+
+      scope.getDescription = function () {
+        return schemaService.getDescription(scope.element);
+      };
+
+      scope.getId = function () {
+        return schemaService.getId(scope.element);
+      };
+
       scope.isFirstLevel = function () {
         return (scope.$parent.directiveName === 'form');
       };
 
       scope.getKeyFromId = function () {
         return dms.getKeyFromId(scope.element);
-      };
-
-      scope.isRoot = function () {
-        return !dms.getId(scope.element) || (dms.getId(scope.element) === $rootScope.keyOfRootElement);
-      };
-
-      scope.getIdentifier = function () {
-        return dms.getIdentifier(scope.element);
-      };
-
-      scope.isPublished = function () {
-        return dms.isPublished(scope.element);
-      };
-
-      scope.getVersion = function () {
-        return dms.getVersion(scope.element);
-      };
-
-      scope.getTitle = function () {
-        return dms.getTitle(scope.element);
-      };
-
-      scope.hasDescription = function () {
-        var description = dms.getDescription(scope.element);
-        return description && description.length > 0;
-      };
-
-      scope.getDescription = function () {
-        return dms.getDescription(scope.element);
       };
 
       scope.getPropertyDescription = function () {
@@ -100,9 +109,7 @@ define([
         return scope.hasDescription() || scope.hasPropertyDescription();
       };
 
-      scope.getId = function () {
-        return dms.getId(scope.element);
-      };
+
 
       scope.getDomId = function (node) {
         return dms.getDomId(node);
@@ -232,7 +239,7 @@ define([
       };
 
       scope.getPreferredLabel = function () {
-        return dms.getPreferredLabel(scope.element);
+        return schemaService.getPreferredLabel(scope.element);
       };
 
       scope.getLabel = function() {
@@ -271,7 +278,7 @@ define([
       }
 
       if (!scope.state) {
-        if (scope.element && dms.schemaOf(scope.element)._ui && dms.getTitle(scope.element)) {
+        if (scope.element && schemaService.schemaOf(scope.element)._ui && schemaService.getTitle(scope.element)) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -328,7 +335,6 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadsheet');
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
@@ -358,9 +364,7 @@ define([
         }
       };
 
-      scope.isCardinal = function () {
-        return dms.isCardinalElement(scope.element);
-      };
+
 
       // try to deselect this element
       scope.canDeselect = function (element) {
@@ -381,7 +385,7 @@ define([
       };
 
       scope.elementIsMultiInstance = function (node) {
-        return dms.elementIsMultiInstance(node);
+        return schemaService.elementIsMultiInstance(node);
       };
 
       scope.$on('saveForm', function (event) {
@@ -431,7 +435,7 @@ define([
       };
 
       scope.isCardinalElement = function () {
-        return dms.isCardinalElement(scope.element);
+        return schemaService.isCardinalElement(scope.element);
       };
 
       scope.getIconClass = function () {
@@ -510,11 +514,11 @@ define([
       };
 
       scope.getMinItems = function () {
-        return dms.getMinItems(scope.element);
+        return schemaService.getMinItems(scope.element);
       };
 
       scope.getMaxItems = function () {
-        return dms.getMaxItems(scope.element);
+        return schemaService.getMaxItems(scope.element);
       };
 
     }

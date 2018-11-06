@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.templateField.cedarTemplateFieldDirective', [])
       .directive('cedarTemplateField', cedarTemplateFieldDirective);
 
-  cedarTemplateFieldDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+  cedarTemplateFieldDirective.$inject = ['$rootScope', 'DataManipulationService','schemaService', 'DataUtilService',
                                            'SpreadsheetService', 'UIUtilService'];
 
-  function cedarTemplateFieldDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService,
+  function cedarTemplateFieldDirective($rootScope, DataManipulationService,schemaService, DataUtilService, SpreadsheetService,
                                          UIUtilService) {
 
     var directive = {
@@ -52,19 +52,19 @@ define([
       };
 
       scope.getTitle = function () {
-        return dms.getTitle(scope.field);
+        return schemaService.getTitle(scope.field);
       };
 
       scope.hasDescription = function () {
-        return scope.field && dms.getDescription(scope.field).length > 0;
+        return schemaService.hasDescription(scope.field);
       };
 
       scope.getDescription = function () {
-        return dms.getDescription(scope.field);
+        return schemaService.getDescription(scope.field);
       };
 
       scope.getId = function () {
-        return dms.getId(scope.field);
+        return schemaService.getId(scope.field);
       };
 
       scope.getDomId = function (node) {
@@ -221,7 +221,7 @@ define([
       }
 
       if (!scope.state) {
-        if (scope.field && dms.schemaOf(scope.field)._ui && dms.getTitle(scope.field)) {
+        if (scope.field && schemaService.schemaOf(scope.field)._ui && schemaService.getTitle(scope.field)) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -308,7 +308,7 @@ define([
       scope.showCardinality = false;
 
       scope.isCardinal = function () {
-        return dms.isCardinalField(scope.field);
+        return schemaService.isCardinalField(scope.field);
       };
 
       // try to deselect this element
@@ -327,10 +327,6 @@ define([
       // try to deselect this field
       scope.canDeselect = function (field) {
         return UIUtilService.canDeselect(field, scope.renameChildKey);
-      };
-
-      scope.fieldIsMultiInstance = function (node) {
-        return dms.fieldIsMultiInstance(node);
       };
 
       scope.$on('saveForm', function (event) {
@@ -380,7 +376,7 @@ define([
       };
 
       scope.isCardinalField = function () {
-        return dms.isCardinalField(scope.field);
+        return schemaService.isCardinalField(scope.field);
       };
 
       scope.getIconClass = function () {
@@ -401,7 +397,6 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type, searchScope) {
-        console.log('showModal field',type,searchScope);
         var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
         UIUtilService.showModal(options);
       };
@@ -454,11 +449,11 @@ define([
       };
 
       scope.getMinItems = function () {
-        return dms.getMinItems(scope.field);
+        return schemaService.getMinItems(scope.field);
       };
 
       scope.getMaxItems = function () {
-        return dms.getMaxItems(scope.field);
+        return schemaService.getMaxItems(scope.field);
       };
 
     }

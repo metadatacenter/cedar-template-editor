@@ -8,9 +8,9 @@ define([
           .service('DataManipulationService', DataManipulationService);
 
       DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
-                                         '$rootScope', "$translate", "$sce", 'CONST'];
+                                         'schemaService','$rootScope', "$translate", "$sce", 'CONST'];
 
-      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope,
+      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, schemaService,$rootScope,
                                        $translate, $sce, CONST) {
 
         // Base path to generate field ids
@@ -41,15 +41,6 @@ define([
           return cedarFieldType;
         };
 
-        service.getFieldProperties = function (field) {
-          if (field) {
-            if (field.type == 'array' && field.items && field.items.properties) {
-              return field.items.properties;
-            } else {
-              return field.properties;
-            }
-          }
-        };
 
         // Returns the field schema. If the field is defined as an array, this function will return field.items, because the schema is defined at that level.
         service.getFieldSchema = function (field) {
@@ -101,19 +92,6 @@ define([
           }
         };
 
-        // is a draft if status is draft or has no status
-        service.isDraft = function (node) {
-          var schema = service.schemaOf(node);
-          var hasBiboStatus = schema.hasOwnProperty('bibo:status');
-          return hasBiboStatus && schema['bibo:status'] == 'bibo:draft';
-        };
-
-        // is published if has status and it is published
-        service.isPublished = function (node) {
-          var schema = service.schemaOf(node);
-          var hasBiboStatus = schema.hasOwnProperty('bibo:status');
-          return hasBiboStatus && schema['bibo:status'] == 'bibo:published';
-        };
 
         service.getId = function (node) {
           return service.schemaOf(node)['@id'];
@@ -128,34 +106,12 @@ define([
           return node && service.schemaOf(node)['@id'];
         };
 
-        // is this a required field or element?
-        service.isRequired = function (node) {
-
-          if (service.schemaOf(node)._valueConstraints) {
-            return service.schemaOf(node)._valueConstraints.requiredValue;
-          }
-        };
-
-        service.setRequired = function (node, value) {
-          service.schemaOf(node)._valueConstraints.requiredValue = value;
-        };
-
         service.getContent = function (node) {
           return service.schemaOf(node)._ui._content;
         };
 
         service.getSize = function (node) {
           return service.schemaOf(node)._ui._size;
-        };
-
-        service.hasVersion = function (node) {
-          return service.schemaOf(node).hasOwnProperty('pav:version');
-        };
-
-        service.getVersion = function (node) {
-          if (service.hasVersion(node)) {
-            return service.schemaOf(node)['pav:version'];
-          }
         };
 
         // node title and description
@@ -248,475 +204,12 @@ define([
           }
         };
 
-        service.getIdentifier = function (node) {
-          if (service.schemaOf(node)) {
-            return service.schemaOf(node)[CONST.model.IDENTIFIER];
-          }
-        };
-
-        service.setIdentifier = function (node, value) {
-          if (service.schemaOf(node)) {
-            service.schemaOf(node)[CONST.model.IDENTIFIER] = value;
-          }
-        };
-
-        service.removeIdentifier = function (node) {
-          if (service.schemaOf(node)) {
-            delete service.schemaOf(node)[CONST.model.IDENTIFIER];
-          }
-        };
-
-        // min/max string length
-        service.hasMinLength = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('minLength');
-        }
-
-        service.getMinLength = function (node) {
-          return service.hasMinLength(node) && service.getValueConstraint(node).minLength;
-        }
-
-        service.hasMaxLength = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('maxLength');
-        }
-
-        service.getMaxLength = function (node) {
-          return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
-        }
-
-        // min/max numeric value
-        service.hasMinValue = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('minValue');
-        }
-
-        service.getMinValue = function (node) {
-          return service.hasMinValue(node) && service.getValueConstraint(node).minValue;
-        }
-
-        service.hasMaxValue = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('maxValue')
-        }
-
-        service.getMaxValue = function (node) {
-          return service.hasMaxValue(node) && service.getValueConstraint(node).maxValue;
-        }
-
-        // decimal places
-        service.hasDecimalPlace = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('decimalPlace');
-        }
-
-        service.getDecimalPlace = function (node) {
-          return service.hasDecimalPlace(node) && service.getValueConstraint(node).decimalPlace;
-        }
-
-        // number type
-        service.hasNumberType = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('numberType');
-        }
-
-        service.getNumberType = function (node) {
-          return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
-        }
-
-        // unit of measure
-        service.hasUnitOfMeasure = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('unitOfMeasure');
-        }
-
-        service.getUnitOfMeasure = function (node) {
-          return service.hasUnitOfMeasure(node) && service.getValueConstraint(node).unitOfMeasure;
-        }
-
-        // schema title and description
-        service.setSchemaTitle = function (node, value) {
-          service.schemaOf(node).title = value;
-        };
-
-        service.setSchemaDescription = function (node, value) {
-          service.schemaOf(node).description = value;
-        };
-
-        service.defaultSchemaTitleAndDescription = function (node) {
-          if (!node.title || !node.title.length) {
-            node.title = $translate.instant("GENERIC.Untitled");
-          }
-          if (!node.description || !node.description.length) {
-            node.description = $translate.instant("GENERIC.Description");
-          }
-        };
-
-        service.setFieldSchemaTitleAndDescription = function (field, fieldTitle) {
-          service.setSchemaTitle(field,
-              $translate.instant("GENERATEDVALUE.fieldTitle", {title: fieldTitle, version: window.cedarVersion}));
-          service.setSchemaDescription(field,
-              $translate.instant("GENERATEDVALUE.fieldDescription", {title: fieldTitle, version: window.cedarVersion}));
-        };
-
-        //
-        // inputType
-        //
-
-        // what is the field inputType?
-        service.getInputType = function (node) {
-          var result = null;
-          var schema = service.schemaOf(node);
-          if (schema && schema._ui && schema._ui.inputType) {
-            result = schema._ui.inputType;
-          }
-          return result;
-        };
-
-        service.setInputType = function (node, value) {
-          service.schemaOf(node)._ui.inputType = value;
-        };
-
-        // Function that generates a basic field definition
-        service.isStaticField = function (node) {
-          if (node) {
-            return FieldTypeService.isStaticField(service.getInputType(node));
-          }
-        };
-
-        // is this a numeric field?
-        service.isNumericField = function (node) {
-          return (service.getInputType(node) == 'numeric');
-        };
-
-        // is this a date field?
-        service.isDateField = function (node) {
-          return (service.getInputType(node) == 'date');
-        };
-
-        // is this a date range?
-        service.isDateRange = function (node) {
-          return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
-        };
-
-        service.isAttributeValueType = function (node) {
-          return (service.getInputType(node) == 'attribute-value');
-        };
-
-        service.isTextFieldType = function (node) {
-          return (service.getInputType(node) == 'textfield');
-        };
-
-        service.isDateType = function (node) {
-          return (service.getInputType(node) == 'date');
-        };
-
-        service.isLinkType = function (node) {
-          return (service.getInputType(node) == 'link');
-        };
-
-        service.isCheckboxType = function (node) {
-          return (service.getInputType(node) == 'checkbox');
-        };
-
-        service.isRadioType = function (node) {
-          return (service.getInputType(node) == 'radio');
-        };
-
-        service.isListType = function (node) {
-          return (service.getInputType(node) == 'list');
-        };
-
-        service.isListMultiAnswerType = function (node) {
-          return (service.getInputType(node) == 'list') && (service.schemaOf(node)._valueConstraints.multipleChoice);
-        };
-
-        // is this a checkbox, radio or list question?
-        service.isMultiAnswer = function (node) {
-          var inputType = service.getInputType(node);
-          return service.isCheckboxListRadioType(inputType);
-        };
-
-        service.isCheckboxListRadioType = function (inputType) {
-          return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
-        };
-
-        service.isCheckboxListRadio = function (node) {
-          var inputType = service.getInputType(node);
-          return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
-        };
-
-
-        // is this a multiple choice list?
-        // service.isMultipleChoice = function (node) {
-        //   if (service.schemaOf(node)._valueConstraints) {
-        //     return service.schemaOf(node)._valueConstraints.multipleChoice;
-        //   }
-        // };
-
-        // is this a multiple choice list?
-        service.isMultipleChoice = function (node) {
-          if (service.schemaOf(node)._valueConstraints) {
-            return service.schemaOf(node)._valueConstraints.multipleChoice;
-          }
-          else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
-            return service.schemaOf(node).items._valueConstraints.multipleChoice;
-          }
-        };
-
-        // is this a checkbox, or a multiple choice list field?
-        service.isMultipleChoiceField = function (node) {
-          return ((service.getInputType(node) == 'checkbox') || (service.isMultipleChoice(node)));
-        };
-
-        // is this a radio, or a sigle-choice ?
-        service.isSingleChoiceListField = function (node) {
-          var inputType = service.getInputType(node);
-          return ((inputType == 'radio') || ((inputType == 'list') && !service.isMultipleChoice(node)));
-        };
-
-        // is this a youTube field?
-        service.isYouTube = function (node) {
-          return (service.getInputType(node) === 'youtube');
-        };
-
-        // is this richText?
-        service.isRichText = function (node) {
-          return (service.getInputType(node) === 'richtext');
-        };
-
-        // Used in richtext.html
-        service.getUnescapedContent = function (node) {
-          return $sce.trustAsHtml(service.getContent(node));
-        };
-
-        // is this an image?
-        service.isImage = function (node) {
-          return (service.getInputType(node) === 'image');
-        };
-
-        // is this a section break?
-        service.isSectionBreak = function (node) {
-          return (service.getInputType(node) === 'section-break');
-        };
-
-        // is this a page break?
-        service.isPageBreak = function (node) {
-          return (service.getInputType(node) === 'page-break');
-        };
-
-        //
-        //  cardinality
-        //
-
-        service.getMaxItems = function (node) {
-          return node.maxItems;
-        };
-
-        service.getMinItems = function (node) {
-          return node.minItems;
-        };
-
-        service.defaultMinMax = function (node) {
-          node.minItems = 1;
-          node.maxItems = 0;
-        };
-
-        service.clearMinMax = function (node) {
-          delete node.minItems;
-          delete node.maxItems;
-        };
-
-        service.isCardinalElement = function (node) {
-          return node.type == 'array';
-        };
-
-        service.elementIsMultiInstance = function (element) {
-          return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
-        };
-
-        // is the field multiple cardinality?
-        service.isMultipleCardinality = function (node) {
-          return node.items;
-        };
-
-        // resolve min or max as necessary and cardinalize or uncardinalize field
-        service.setMinMax = function (field) {
-          if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
-            delete field.minItems;
-            delete field.maxItems;
-          } else if (field.hasOwnProperty('maxItems') && field.maxItems < 0) {
-            delete field.maxItems;
-          }
-
-          if (!service.uncardinalizeField(field)) {
-            service.cardinalizeField(field);
-          }
-        };
-
-        service.cardinalizeField = function (field) {
-          var hasVersion = service.hasVersion(field);
-          if (typeof(field.minItems) != 'undefined' && !field.items) {
-
-            field.items = {
-              '$schema'             : field.$schema,
-              'type'                : field.type,
-              '@id'                 : field['@id'],
-              '@type'               : field['@type'],
-              '@context'            : field['@context'],
-              'title'               : $translate.instant("GENERATEDVALUE.fieldTitle", {title: field['schema:name']}),
-              'description'         : $translate.instant("GENERATEDVALUE.fieldDescription",
-                  {title: field['schema:name'], version: window.cedarVersion}),
-              '_ui'                 : field._ui,
-              '_valueConstraints'   : field._valueConstraints,
-              'properties'          : field.properties,
-              'required'            : field.required,
-              'additionalProperties': field.additionalProperties,
-              'pav:createdOn'       : field['pav:createdOn'],
-              'pav:createdBy'       : field['pav:createdBy'],
-              'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
-              'oslc:modifiedBy'     : field['oslc:modifiedBy'],
-              'schema:schemaVersion': field['schema:schemaVersion'],
-              'schema:name'         : field[CONST.model.NAME],
-              'schema:description'  : field[CONST.model.DESCRIPTION],
-            };
-            if (hasVersion) {
-              field.items['pav:version'] = field['pav:version'];
-              field.items['bibo:status'] = field['bibo:status'];
-            }
-            if (field[CONST.model.PREFLABEL]) {
-              field.items[CONST.model.PREFLABEL] = field[CONST.model.PREFLABEL];
-            }
-
-            field.type = 'array';
-
-            delete field.$schema;
-            delete field['@id'];
-            delete field['@type'];
-            delete field['@context'];
-            delete field.properties;
-            delete field.title;
-            delete field.description;
-            delete field._ui;
-            delete field._valueConstraints;
-            delete field.required;
-            delete field.additionalProperties;
-            delete field['pav:createdOn'];
-            delete field['pav:createdBy'];
-            delete field['pav:lastUpdatedOn'];
-            delete field['oslc:modifiedBy'];
-            delete field['schema:schemaVersion'];
-            delete field[CONST.model.NAME];
-            delete field[CONST.model.DESCRIPTION];
-            delete field[CONST.model.PREFLABEL];
-            delete field['pav:version'];
-            delete field['bibo:status'];
-
-            return true;
-          } else {
-            return false;
-          }
-        };
-
-        service.uncardinalizeField = function (field) {
-          var hasVersion = service.hasVersion(field);
-
-          if (typeof field.minItems == 'undefined' && field.items) {
-
-            field.$schema = field.items.$schema;
-            field.type = 'object';
-            field['@id'] = field.items["@id"];
-            field['@type'] = field.items["@type"];
-            field['@context'] = field.items["@context"];
-            field.title = field.items.title;
-            field.description = field.items.description;
-            field._ui = field.items._ui;
-            field._valueConstraints = field.items._valueConstraints;
-            field.properties = field.items.properties;
-            field.required = field.items.required;
-            field.additionalProperties = field.items.additionalProperties;
-            field['pav:createdOn'] = field.items['pav:createdOn'];
-            field['pav:createdBy'] = field.items['pav:createdBy'];
-            field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
-            field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
-            field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
-            field['schema:name'] = field.items['schema:name'];
-            field['schema:description'] = field.items['schema:description'];
-            if (hasVersion) {
-              field['pav:version'] = field.items['pav:version'];
-              field['bibo:status'] = field.items['bibo:status'];
-            }
-            if (field.items[CONST.model.PREFLABEL]) {
-              field[CONST.model.PREFLABEL] = field.items[CONST.model.PREFLABEL];
-            }
-
-            delete field.items;
-            delete field.maxItems;
-
-            return true;
-          } else {
-            return false;
-          }
-        };
-
-        // If Max Items is N, its value will be 0, then need to remove it from schema
-        // if Min and Max are both 1, remove them
-        service.removeUnnecessaryMaxItems = function (properties) {
-          angular.forEach(properties, function (value, key) {
-            if (!DataUtilService.isSpecialKey(key)) {
-              if ((value.minItems == 1 && value.maxItems == 1)) {
-                delete value.minItems;
-                delete value.maxItems;
-              }
-              if (value.maxItems == 0) {
-                delete value.maxItems;
-              }
-            }
-          });
-        };
-
-        // sets the multiple choice option to true or false
-        service.setMultipleChoice = function (node, newMultipleChoiceValue) {
-          if (newMultipleChoiceValue == true) { // set multipleChoice to true
-            if (node.items) {
-              node.items._valueConstraints.multipleChoice = true;
-            }
-            else {
-              node.minItems = 1;
-              node._valueConstraints.multipleChoice = true;
-              service.cardinalizeField(node);
-            }
-          }
-          else { // set multipleChoice to false
-            if (node.items) {
-              delete node.minItems;
-              node.items._valueConstraints.multipleChoice = false;
-              service.uncardinalizeField(node);
-            }
-            else {
-              node._valueConstraints.multipleChoice = false;
-            }
-          }
-        };
-
 
 
         //
         // value constraint actions
         //
 
-        service.clearActions = function (node) {
-          delete service.schemaOf(node)._valueConstraints.actions;
-        };
-
-        service.setActions = function (node,  actions) {
-          if (node && actions) {
-              service.schemaOf(node)._valueConstraints.actions = actions;
-          }
-        };
-
-        service.getActions = function (node) {
-          var result = [];
-          if (node) {
-            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('actions')) {
-              result= service.schemaOf(node)._valueConstraints.actions;
-            }
-          }
-          return result;
-        };
 
         // apply user actions to the list
        service.applyActions = function (list, actions) {
@@ -751,7 +244,7 @@ define([
         };
 
         service.updateKey = function (key, node, parent) {
-          if (!service.isRootNode(parent, node) && !service.hasVersion(node)) {
+          if (!service.isRootNode(parent, node) && !schemaService.hasVersion(node)) {
             var title = service.getTitle(node);
             var labels = service.getPropertyLabels(parent);
             var label = labels && labels[key];
@@ -962,7 +455,7 @@ define([
           service.schemaOf(node)._ui.order.forEach(function (key) {
             var field = service.schemaOf(service.propertiesOf(node)[key]);
 
-            if (service.isAttributeValueType(field)) {
+            if (schemaService.isAttributeValueType(field)) {
 
               if (Array.isArray(model)) {
                 for (var i = 0; i < model[0][key].length; i++) {
@@ -973,7 +466,7 @@ define([
               } else {
                 result.push(key);
               }
-            } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(
+            } else if (!service.isStaticField(field) && !service.isElement(field) && !schemaService.isMultipleChoiceField(
                 field)) {
               result.push(key);
             }
@@ -987,7 +480,7 @@ define([
 
 
         service.firstClassField = function (node) {
-          return service.hasVersion(node);
+          return schemaService.hasVersion(node);
         };
 
         service.isRootNode = function (parent, child) {
@@ -1128,7 +621,7 @@ define([
 
           if (!container && (inputType == "checkbox")) {
             field.minItems = 1;
-            service.cardinalizeField(field);
+            schemaService.cardinalizeField(field);
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
@@ -1153,7 +646,7 @@ define([
 
           // Set default schema title and description
           var defaultTitle = $translate.instant("GENERIC.Untitled");
-          service.setFieldSchemaTitleAndDescription(field, defaultTitle);
+          schemaService.setFieldSchemaTitleAndDescription(field, defaultTitle);
 
           return field;
 
@@ -1218,7 +711,7 @@ define([
         };
 
         service.generateInstanceTypeForNumericField = function (node) {
-          return service.getNumberType(service.schemaOf(node));
+          return schemaService.getNumberType(service.schemaOf(node));
         };
 
         // returns the properties of a template, element, or field schema
@@ -1263,7 +756,7 @@ define([
         // the initialization even if the model is defined and contains items
         service.initializeModel = function (field, model, force) {
           // Checkbox or multiple-choice list
-          if (service.isMultipleChoiceField(field)) {
+          if (schemaService.isMultipleChoiceField(field)) {
             if (!model || !$rootScope.isArray(model)) {
               model = [];
             }
@@ -1274,7 +767,7 @@ define([
             }
           }
           // Radio or single-choice list. They store only one value.
-          else if (service.isSingleChoiceListField(field)) {
+          else if (schemaService.isSingleChoiceListField(field)) {
             if (!model || $rootScope.isArray(model)) {
               model = {};
             }
@@ -1287,7 +780,7 @@ define([
         // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
         service.initializeValue = function (field, model) {
 
-          if (service.isAttributeValueType(field)) {
+          if (schemaService.isAttributeValueType(field)) {
           } else {
             var fieldValue = service.getValueLocation(field);
             if (fieldValue == "@value") {
@@ -1334,10 +827,10 @@ define([
         service.getDefaultValue = function (fieldValue, field) {
           if (fieldValue == "@value") {
             // If the template contains a user-defined default value, we use it as the default value for the field
-            if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
-              return service.getUserDefinedDefaultValue(field);
+            if (service.schemaOf(field)._ui.inputType == "textfield" && schemaService.hasDefaultValueConstraint(field)) {
+              return schemaService.getDefaultValueConstraint(field);
             }
-            if (service.isAttributeValueType(field)) {
+            if (schemaService.isAttributeValueType(field)) {
               return service.getTitle(field);
             }
             // Otherwise, we return the default value, which is 'null'
@@ -1350,11 +843,11 @@ define([
 
         // Sets the default selections for multi-answer fields
         service.defaultOptionsToModel = function (field, model) {
-          if (service.isMultiAnswer(field)) {
-            var literals = service.getLiterals(field);
+          if (schemaService.isMultiAnswer(field)) {
+            var literals = schemaService.getLiterals(field);
             var fieldValue = service.getValueLocation(field);
             // Checkbox or multi-choice  list
-            if (service.isMultipleChoiceField(field)) {
+            if (schemaService.isMultipleChoiceField(field)) {
               for (var i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   var newValue = {};
@@ -1364,7 +857,7 @@ define([
               }
             }
             // Radio or single-choice list
-            else if (service.isSingleChoiceListField(field)) {
+            else if (schemaService.isSingleChoiceListField(field)) {
               for (var i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   model[fieldValue] = literals[i].label;
@@ -1401,10 +894,10 @@ define([
         // field. We 'manually' generate those types.
         service.initializeValueType = function (field, model) {
           var fieldType;
-          if (service.isNumericField(field)) {
+          if (schemaService.isNumericField(field)) {
             fieldType = service.generateInstanceTypeForNumericField(field);
           }
-          else if (service.isDateField(field)) {
+          else if (schemaService.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();
           }
           else {
@@ -1454,7 +947,7 @@ define([
           // usually it is in  @value
           var fieldValue = "@value";
           // but these three put it @id
-          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
+          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || schemaService.isLinkType(field)) {
             fieldValue = "@id";
           }
           return fieldValue;
@@ -1465,7 +958,7 @@ define([
           // the printable value is usually in @value
           var location = "@value";
           // but a link puts it in @id
-          if (service.isLinkType(field)) {
+          if (schemaService.isLinkType(field)) {
             location = "@id";
             // and the constraint puts it rdfs:label
           } else if (service.hasValueConstraint(field)) {
@@ -1775,14 +1268,14 @@ define([
           return service.schemaOf(node)._valueConstraints;
         };
 
-        // get the value constraint literal values
-        service.getLiterals = function (node) {
-          var valueConstraints = service.schemaOf(node)._valueConstraints;
-          if (valueConstraints) {
-            return valueConstraints.literals;
-          }
-
-        };
+        // // get the value constraint literal values
+        // service.getLiterals = function (node) {
+        //   var valueConstraints = service.schemaOf(node)._valueConstraints;
+        //   if (valueConstraints) {
+        //     return valueConstraints.literals;
+        //   }
+        //
+        // };
 
         // checks if the literal has been set to 'selected by default'
         service.isSelectedByDefault = function (literal) {
@@ -1796,7 +1289,7 @@ define([
 
         // returns the position of a particular literal in the literals array
         service.indexOfLiteral = function (field, literal) {
-          var literals = service.getLiterals(field);
+          var literals = schemaService.getLiterals(field);
           for (var i = 0; i < literals.length; i++) {
             if (literals[i] == literal) {
               return i;
@@ -1847,7 +1340,7 @@ define([
 
         // get the controlled terms list for field types
         service.getFieldControlledTerms = function (node) {
-          if (service.isStaticField(node) || service.isAttributeValueType(node)) { // static or attribute value fields
+          if (service.isStaticField(node) || schemaService.isAttributeValueType(node)) { // static or attribute value fields
             return null;
           }
           else { // regular fields
@@ -2132,7 +1625,7 @@ define([
               // We can tell we've reached an element level by its '@type' property
               if (service.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
 
-                if (service.isCardinalElement(value)) {
+                if (schemaService.isCardinalElement(value)) {
                   if (!parentModel[name] || angular.isObject(parentModel[name])) {
                     parentModel[name] = [];
                   }
@@ -2152,9 +1645,9 @@ define([
                 // Assign empty field instance model to $scope.model only if it does not exist
                 if (!parentModel[name]) {
                   // Not multiple instance
-                  if (!service.isCardinalElement(value)) {
+                  if (!schemaService.isCardinalElement(value)) {
                     // Multiple choice fields (checkbox and multi-choice list) store an array of values
-                    if (service.isMultipleChoiceField(value)) {
+                    if (schemaService.isMultipleChoiceField(value)) {
                       parentModel[name] = [];
                     }
                     // All other fields, including the radio field and the list field with single option
@@ -2192,71 +1685,8 @@ define([
           });
         };
 
-        service.hasUserDefinedDefaultValue = function (field) {
-          var schema = service.schemaOf(field);
-          if (schema._valueConstraints && schema._valueConstraints.defaultValue ) {
-            return true;
-          }
-          else {
-            return false;
-          }
-        };
 
-        service.getUserDefinedDefaultValue = function (field) {
-          if (service.hasUserDefinedDefaultValue(field)) {
-            return service.schemaOf(field)._valueConstraints.defaultValue;
-          }
-          else {
-            return null;
-          }
-        };
 
-        service.getDefaultTermId = function (field) {
-          if (service.hasUserDefinedDefaultValue(field)) {
-            return service.schemaOf(field)._valueConstraints.defaultValue['termUri'];
-          }
-          else {
-            return null;
-          }
-        };
-
-        service.getDefaultLabel = function (field) {
-          if (service.hasUserDefinedDefaultValue(field)) {
-            return service.schemaOf(field)._valueConstraints.defaultValue['rdfs:label'];
-          }
-          else {
-            return null;
-          }
-        };
-
-        service.getDefaultNotation = function (field) {
-          if (service.hasUserDefinedDefaultValue(field)) {
-            return service.schemaOf(field)._valueConstraints.defaultValue['skos:notation'];
-          }
-          else {
-            return null;
-          }
-        };
-
-        // does this field allow the hidden attribute?
-        service.allowsHidden = function (node) {
-          return (service.schemaOf(node)._ui.inputType === 'textfield');
-        };
-
-        // does this field allow the hidden attribute?
-        service.allowsDefault = function (node) {
-          return (service.schemaOf(node)._ui.inputType === 'textfield');
-        };
-
-        // is this field hidden?
-        service.isHidden = function (node) {
-          return service.schemaOf(node)._ui.hidden || false;
-        };
-
-        // toggle the hidden field attribute
-        service.setHidden = function (node, value) {
-          service.schemaOf(node)._ui.hidden = value;
-        };
 
         return service;
       };

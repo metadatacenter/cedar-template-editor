@@ -9,13 +9,14 @@ define([
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "resourceService", "ValidationService","UIMessageService",
-                                     "DataManipulationService", "DataUtilService", "UIUtilService", "AuthorizedBackendService",
+                                     "DataManipulationService", "schemaService","DataUtilService", "UIUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                    HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                   TemplateElementService, resourceService, ValidationService,UIMessageService, DataManipulationService,
+                                   TemplateElementService, resourceService, ValidationService,UIMessageService,
+                                   DataManipulationService,schemaService,
                                    DataUtilService,UIUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser) {
 
@@ -74,7 +75,7 @@ define([
         var writePermission = resourceService.canWrite($scope.details);
 
         // Check publication status
-        var isPublished = DataManipulationService.isPublished($scope.details);
+        var isPublished = schemaService.isPublished($scope.details);
 
         // Result
         var canWrite = writePermission && !isPublished;
@@ -350,8 +351,8 @@ define([
       if ($scope.elementErrorMessages.length == 0) {
 
         // If maxItems is N, then remove maxItems
-        dms.removeUnnecessaryMaxItems($scope.element.properties);
-        dms.defaultSchemaTitleAndDescription($scope.element);
+        schemaService.removeUnnecessaryMaxItems($scope.element.properties);
+        schemaService.defaultSchemaTitleAndDescription($scope.element);
 
         this.disableSaveButton();
         var owner = this;

@@ -8,14 +8,14 @@ define([
       .service('StagingService', StagingService);
 
   StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService",
-                            "DataManipulationService",
+                            "DataManipulationService",'schemaService',
                             "UIUtilService",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
                             "AuthorizedBackendService", "DataTemplateService",
                             "CONST"];
 
-  function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService, DataManipulationService,
-                          UIUtilService,
+  function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService,
+                          DataManipulationService,schemaService, UIUtilService,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
                           AuthorizedBackendService, DataTemplateService, CONST) {
 
@@ -124,7 +124,7 @@ define([
       UIUtilService.setSelected(field);
 
       // is it a checkbox, list, or radio field?
-      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
+      if (schemaService.isCheckboxListRadioType(fieldType)) {
         if (fieldType == 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
@@ -160,14 +160,14 @@ define([
 
       // Evaluate cardinality
       if (!DataManipulationService.firstClassField(form, field)) {
-        DataManipulationService.cardinalizeField(field);
+        schemaService.cardinalizeField(field);
       }
 
       // Add field to the form.properties object
       form.properties[fieldName] = field;
 
       // Add field to the form.required array if it's not static
-      if (!DataManipulationService.isStaticField(field) && !DataManipulationService.isAttributeValueType(field)) {
+      if (!schemaService.isStaticField(field) && !schemaService.isAttributeValueType(field)) {
         form = DataManipulationService.addKeyToRequired(form, fieldName);
       }
 
@@ -205,7 +205,7 @@ define([
             form.properties["@context"].required.push(elName);
 
             // Evaluate cardinality
-            DataManipulationService.cardinalizeField(clonedElement);
+            schemaService.cardinalizeField(clonedElement);
 
             // Add field to the element.properties object
             form.properties[elName] = clonedElement;
@@ -264,7 +264,7 @@ define([
             if (dms.isCheckboxType(clonedElement) || dms.isListMultiAnswerType(clonedElement) ) {
               clonedElement.minItems = 1;
             }
-            DataManipulationService.cardinalizeField(clonedElement);
+            schemaService.cardinalizeField(clonedElement);
 
             // Add field to the element.properties object
             form.properties[elName] = clonedElement;
@@ -310,7 +310,7 @@ define([
       form.properties["@context"].required.push(elName);
 
       // Evaluate cardinality
-      DataManipulationService.cardinalizeField(clonedElement);
+      schemaService.cardinalizeField(clonedElement);
 
       // Add field to the element.properties object
       form.properties[elName] = clonedElement;
@@ -339,7 +339,7 @@ define([
       UIUtilService.setSelected(field);
 
       // is it a checkbox, list, or radio field?
-      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
+      if (schemaService.isCheckboxListRadioType(fieldType)) {
         if (fieldType == 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
@@ -362,7 +362,7 @@ define([
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType) && !DataManipulationService.isAttributeValueType(field)) {
+      if (!FieldTypeService.isStaticField(fieldType) && !schemaService.isAttributeValueType(field)) {
         var randomPropertyName = DataManipulationService.generateGUID();
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
@@ -378,13 +378,13 @@ define([
       }
 
       // Evaluate cardinality
-      DataManipulationService.cardinalizeField(field);
+      schemaService.cardinalizeField(field);
 
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
 
       // Add field to the element.required array it it's not static
-      if (!DataManipulationService.isStaticField(field) && !DataManipulationService.isAttributeValueType(field)) {
+      if (!DataManipulationService.isStaticField(field) && !schemaService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
 
@@ -405,7 +405,7 @@ define([
       UIUtilService.setSelected(field);
 
       //is it a checkbox, list, or radio field?
-      if (DataManipulationService.isCheckboxListRadioType(fieldType)) {
+      if (schemaService.isCheckboxListRadioType(fieldType)) {
 
         field._valueConstraints.multipleChoice = false;
         field._valueConstraints.literals = [

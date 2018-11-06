@@ -7,15 +7,16 @@ define([
       .controller('CreateFieldController', CreateFieldController);
 
   CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                   "$filter", "HeaderService", "StagingService", "DataTemplateService",
+                                   "$filter", "HeaderService", "StagingService", "DataTemplateService", "schemaService",
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
                                    "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                 HeaderService, StagingService, DataTemplateService, FieldTypeService,
-                                 TemplateFieldService, resourceService, ValidationService,UIMessageService, DataManipulationService,
+                                 HeaderService, StagingService, DataTemplateService, schemaService,FieldTypeService,
+                                 TemplateFieldService, resourceService, ValidationService,UIMessageService,
+                                 DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
                                  CONST,CedarUser) {
 
@@ -62,7 +63,7 @@ define([
         var writePermission = resourceService.canWrite($scope.details);
 
         // Check publication status
-        var isPublished = DataManipulationService.isPublished($scope.details);
+        var isPublished = schemaService.isPublished($scope.details);
 
         // Result
         var canWrite = writePermission && !isPublished;
@@ -120,9 +121,9 @@ define([
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
 
-      var title = dms.getTitle($scope.field);
-      var description = dms.getDescription($scope.field);
-      var identifier = dms.getIdentifier($scope.field);
+      var title = schemaService.getTitle($scope.field);
+      var description = schemaService.getDescription($scope.field);
+      var identifier = schemaService.getIdentifier($scope.field);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -133,17 +134,17 @@ define([
         $rootScope.rootElement = $scope.form;
         $rootScope.jsonToSave = $scope.field;
 
-        $scope.fieldSchema = dms.schemaOf($scope.field);
+        $scope.fieldSchema = schemaService.schemaOf($scope.field);
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
-        dms.setTitle($scope.field, title || $translate.instant("VALIDATION.noNameField"));
-        dms.setDescription($scope.field, description || $translate.instant("VALIDATION.noDescriptionField"));
+        schemaService.setTitle($scope.field, title || $translate.instant("VALIDATION.noNameField"));
+        schemaService.setDescription($scope.field, description || $translate.instant("VALIDATION.noDescriptionField"));
         if (identifier) {
-          dms.setIdentifier($scope.field, identifier );
+          schemaService.setIdentifier($scope.field, identifier );
         }
 
         if ($rootScope.keyOfRootElement) {
-          dms.setId($scope.field, $rootScope.keyOfRootElement);
+          schemaService.setId($scope.field, $rootScope.keyOfRootElement);
         }
 
         UIUtilService.setDirty(true);
@@ -171,13 +172,13 @@ define([
 
 
               $scope.form = $scope.field;
-              $rootScope.keyOfRootElement = dms.getId($scope.field);
+              $rootScope.keyOfRootElement = schemaService.getId($scope.field);
               $rootScope.rootElement = $scope.form;
               $rootScope.jsonToSave = $scope.field;
 
-              $scope.fieldSchema = dms.schemaOf($scope.field);
+              $scope.fieldSchema = schemaService.schemaOf($scope.field);
               HeaderService.dataContainer.currentObjectScope = $scope.field;
-              $rootScope.documentTitle = dms.getTitle($scope.form);
+              $rootScope.documentTitle = schemaService.getTitle($scope.form);
 
               UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
               UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
@@ -192,7 +193,7 @@ define([
               getDetails($scope.field['@id']);
 
               if ($rootScope.keyOfRootElement) {
-                dms.setId($scope.field, $rootScope.keyOfRootElement);
+                schemaService.setId($scope.field, $rootScope.keyOfRootElement);
               }
 
             },
@@ -233,7 +234,7 @@ define([
 
     $scope.doReset = function () {
       $scope.field = angular.copy($scope.field);
-      $scope.fieldSchema = dms.schemaOf($scope.field);
+      $scope.fieldSchema = schemaService.schemaOf($scope.field);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $rootScope.$broadcast('form:reset');
     };
@@ -266,7 +267,7 @@ define([
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
         // confirm message
-        var title = dms.getTitle(response.data);
+        var title = schemaService.getTitle(response.data);
         UIMessageService.flashSuccess('SERVER.FIELD.create.success',
             {"title": title},
             'GENERIC.Created');
@@ -287,8 +288,8 @@ define([
       if ($scope.fieldErrorMessages.length == 0) {
 
         // If maxItems is N, then remove maxItems
-        dms.removeUnnecessaryMaxItems(dms.propertiesOf($scope.field));
-        dms.defaultSchemaTitleAndDescription($scope.field);
+        schemaService.removeUnnecessaryMaxItems(dms.propertiesOf($scope.field));
+        schemaService.defaultSchemaTitleAndDescription($scope.field);
 
         this.disableSaveButton();
         var owner = this;
@@ -325,7 +326,7 @@ define([
 
         // Update field
         else {
-          var id = dms.getId($scope.field);
+          var id = schemaService.getId($scope.field);
 
           $rootScope.jsonToSave = $scope.field;
 
@@ -359,7 +360,7 @@ define([
     $scope.invalidFieldStates = {};
     $scope.invalidFieldStates = {};
     $scope.$on('invalidFieldState', function (event, args) {
-      if (args[2] != dms.getId($scope.field)) {
+      if (args[2] != schemaService.getId($scope.field)) {
         if (args[0] == 'add') {
           $scope.invalidFieldStates[args[2]] = args[1];
         }
@@ -382,7 +383,7 @@ define([
     $scope.$watch('field["schema:identifier"]', function (identifier) {
       if (!angular.isUndefined($scope.field)) {
         if (!identifier) {
-          dms.removeIdentifier($scope.field);
+          schemaService.removeIdentifier($scope.field);
           $scope.fieldIdentifier = null;
         }
         else {
@@ -447,12 +448,12 @@ define([
     //
 
     $scope.showModal = function (type, searchScope) {
-      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":dms.getId($scope.form), "q": dms.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":schemaService.getId($scope.form), "q": schemaService.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
       UIUtilService.showModal(options);
     };
 
     $scope.$on("field:controlledTermAdded", function (event,args) {
-      if (dms.getId($scope.form) == args[1]) {
+      if (schemaService.getId($scope.form) == args[1]) {
         UIUtilService.hideModal();
         UIUtilService.setDirty(true);
       }

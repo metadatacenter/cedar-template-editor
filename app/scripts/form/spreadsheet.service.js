@@ -6,11 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService',
+      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService','schemaService',
                                     'DataUtilService',
                                     'autocompleteService','UIMessageService'];
 
-      function SpreadsheetService($document, $q, $translate, DataManipulationService, DataUtilService, autocompleteService,UIMessageService) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, autocompleteService,UIMessageService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -341,7 +341,7 @@ define([
           var desc = {};
           if (node) {
             literals = dms.getLiterals(node);
-            inputType = dms.getInputType(node);
+            inputType = schemaService.getInputType(node);
             id = dms.getId(node);
           } else {
             inputType = 'attribute-value';

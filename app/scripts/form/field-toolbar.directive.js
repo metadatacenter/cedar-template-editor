@@ -7,9 +7,9 @@ define([
       .directive('fieldToolbar', fieldToolbar);
 
 
-  fieldToolbar.$inject = ['UIUtilService', 'DataManipulationService', 'DataUtilService'];
+  fieldToolbar.$inject = ['UIUtilService', 'schemaService', 'DataUtilService'];
 
-  function fieldToolbar(UIUtilService, DataManipulationService, DataUtilService) {
+  function fieldToolbar(UIUtilService,  schemaService,DataUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -48,7 +48,7 @@ define([
 
 
         scope.isField = function () {
-          return !DataUtilService.isElement(DataManipulationService.schemaOf(scope.field));
+          return !DataUtilService.isElement(schemaService.schemaOf(scope.field));
         };
 
         scope.isListView = function () {
@@ -61,13 +61,13 @@ define([
 
         scope.isMultiple = function () {
           // We consider that checkboxes and multi-choice lists are not 'multiple'
-          return (DataManipulationService.isCardinalElement(
-              scope.field) && !DataManipulationService.isMultipleChoiceField(scope.field));
+          return (schemaService.isCardinalElement(
+              scope.field) && !schemaService.isMultipleChoiceField(scope.field));
         };
 
 
         scope.isAttributeValueType = function () {
-          return DataManipulationService.isAttributeValueType(scope.field);
+          return schemaService.isAttributeValueType(scope.field);
         };
 
         scope.isSpreadsheetView = function () {
@@ -88,19 +88,19 @@ define([
 
         // get the field description
         scope.getDescription = function () {
-          return DataManipulationService.getDescription(scope.field);
+          return schemaService.getDescription(scope.field);
         };
 
         // has a field description?
         scope.hasDescription = function () {
-          return scope.field && DataManipulationService.getDescription(scope.field).length > 0;
+          return scope.field && schemaService.getDescription(scope.field).length > 0;
         };
 
         // can we add more?
         scope.canAdd = function () {
           if (scope.field) {
-            var maxItems = DataManipulationService.getMaxItems(scope.field);
-            return scope.add && DataManipulationService.isElement(
+            var maxItems = schemaService.getMaxItems(scope.field);
+            return scope.add && schemaService.isElement(
                     scope.field) && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
           }
         };
@@ -108,7 +108,7 @@ define([
         // can we add more?
         scope.canCopy = function () {
           if (scope.field) {
-            var maxItems = DataManipulationService.getMaxItems(scope.field);
+            var maxItems = schemaService.getMaxItems(scope.field);
             return scope.copy && scope.isMultiple() && (!maxItems || scope.model.length < maxItems);
           }
         };
@@ -116,7 +116,7 @@ define([
         // can we delete?
         scope.canDelete = function () {
           if (scope.field) {
-            var minItems = DataManipulationService.getMinItems(scope.field);
+            var minItems = schemaService.getMinItems(scope.field);
             return scope.remove && scope.isMultiple() && scope.model.length > minItems;
           }
         };
