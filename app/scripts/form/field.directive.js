@@ -62,6 +62,10 @@ define([
         return schemaService.getDescription($scope.field);
       };
 
+      $scope.getPreferredLabel = function () {
+        return schemaService.getPreferredLabel($scope.field);
+      };
+
       $scope.getId = function () {
         return schemaService.getId($scope.field);
       };
