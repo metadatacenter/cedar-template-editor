@@ -436,7 +436,7 @@ define([
 
     $scope.$watch('element["schema:identifier"]', function (identifier) {
       if (!angular.isUndefined($scope.element) && !identifier) {
-        dms.removeIdentifier($scope.element);
+        schemaService.removeIdentifier($scope.element);
       }
     });
 

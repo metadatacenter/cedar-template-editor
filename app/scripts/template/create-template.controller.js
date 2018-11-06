@@ -10,18 +10,19 @@ define([
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
                                           "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
-                                          "DataManipulationService","schemaService","ValidationService",
+                                          "DataManipulationService", "schemaService", "ValidationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
-                                          "FrontendUrlService", "QueryParamUtilsService", "CONST",  "CedarUser"];
+                                          "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
-                                        UIUtilService, DataManipulationService, schemaService, ValidationService,controlledTermDataService,
+                                        UIUtilService, DataManipulationService, schemaService, ValidationService,
+                                        controlledTermDataService,
                                         StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
-                                        FrontendUrlService, QueryParamUtilsService, CONST,  CedarUser) {
+                                        FrontendUrlService, QueryParamUtilsService, CONST, CedarUser) {
 
         $rootScope.showSearch = false;
 
@@ -177,7 +178,7 @@ define([
         };
 
         // Add newly configured field to the element object
-        $scope.addField = function ( fieldType) {
+        $scope.addField = function (fieldType) {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             var domId = DataManipulationService.createDomId();
@@ -300,11 +301,11 @@ define([
         $scope.doSaveTemplate = function () {
 
 
-          var doSave = function(response) {
+          var doSave = function (response) {
             ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
             // confirm message
-            var title = dms.getTitle(response.data);
+            var title = schemaService.getTitle(response.data);
             UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": title},
                 'GENERIC.Created');
 
@@ -316,11 +317,11 @@ define([
             UIUtilService.setDirty(false);
           };
 
-          var doUpdate = function(response) {
+          var doUpdate = function (response) {
             ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
 
             UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                {"title": dms.getTitle($scope.form)}, 'GENERIC.Updated');
+                {"title": schemaService.getTitle($scope.form)}, 'GENERIC.Updated');
             owner.enableSaveButton();
 
             UIUtilService.setDirty(false);
@@ -335,7 +336,7 @@ define([
 
 
           // If Template Name is blank, produce error message
-          var title = dms.getTitle($scope.form);
+          var title = schemaService.getTitle($scope.form);
           if (!title.length) {
             $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
             owner.enableSaveButton();
@@ -394,8 +395,8 @@ define([
                       doUpdate(response);
                     },
                     function (err) {
-                        UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                        owner.enableSaveButton();
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                      owner.enableSaveButton();
                     }
                 );
               }
@@ -437,22 +438,22 @@ define([
 
         $scope.$watch('form["schema:identifier"]', function (identifier) {
           if (!angular.isUndefined($scope.form) && !identifier) {
-            dms.removeIdentifier($scope.form);
+            schemaService.removeIdentifier($scope.form);
           }
         });
 
         // watch for changes in the title field and generate the schema title and description fields
         $scope.$watch('form["schema:name"]', function (v) {
           if (!angular.isUndefined($scope.form)) {
-            var title = dms.getTitle($scope.form);
+            var title = schemaService.getTitle($scope.form);
             if (title && title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
                   {title: capitalizedTitle, version: window.cedarVersion});
             } else {
-              dms.setTitle($scope.form, "");
-              dms.setDescription($scope.form, "");
+              schemaService.setTitle($scope.form, "");
+              schemaService.setDescription($scope.form, "");
             }
             $rootScope.documentTitle = title;
           }
@@ -460,12 +461,12 @@ define([
 
         // watch for changes in the form and defaults the title and description fields
         $scope.$watch('form', function (v) {
-          if (dms.schemaOf($scope.form)) {
-            if (!dms.getTitle($scope.form)) {
-              dms.setTitle($scope.form, $translate.instant("VALIDATION.noNameField"));
+          if (schemaService.schemaOf($scope.form)) {
+            if (!schemaService.getTitle($scope.form)) {
+              schemaService.setTitle($scope.form, $translate.instant("VALIDATION.noNameField"));
             }
-            if (!dms.getDescription($scope.form)) {
-              dms.setDescription($scope.form, $translate.instant("VALIDATION.noDescriptionField"));
+            if (!schemaService.getDescription($scope.form)) {
+              schemaService.setDescription($scope.form, $translate.instant("VALIDATION.noDescriptionField"));
             }
           }
           $scope.toRDF();
@@ -543,8 +544,6 @@ define([
         //
 
 
-
-
         $scope.showFinderModal = function () {
           // open and activate the modal
           $scope.finderModalVisible = true;
@@ -566,23 +565,31 @@ define([
         };
 
         $scope.showModal = function (type, searchScope) {
-          var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":dms.getId($scope.form), "q": $scope.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+          var options = {
+            "filterSelection": type,
+            "searchScope": searchScope,
+            "modalId": "controlled-term-modal",
+            "model": $scope.form,
+            "id": schemaService.getId($scope.form),
+            "q": $scope.getTitle($scope.form),
+            'source': null,
+            'termType': null,
+            'term': null,
+            "advanced": false,
+            "permission": ["read", "write"]
+          };
           UIUtilService.showModal(options);
         };
 
         //TODO this event resets modal state and closes modal
-        $scope.$on("field:controlledTermAdded", function (event,args) {
-          if (dms.getId($scope.form) == args[1]) {
+        $scope.$on("field:controlledTermAdded", function (event, args) {
+          if (schemaService.getId($scope.form) == args[1]) {
             UIUtilService.hideModal();
             UIUtilService.setDirty(true);
             // $scope.setAddedFieldMap();
           }
 
         });
-
-
-
-
 
 
       }
