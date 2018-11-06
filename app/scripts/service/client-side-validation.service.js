@@ -19,11 +19,10 @@ define([
       // Empty array to push 'error messages' into
       var unmetConditions      = [],
       extraConditionInputs = ['checkbox', 'radio', 'list'];
-
-      var schema = schemaService.schemaOf(field);
+      
       var title = schemaService.getTitle(field);
       var inputType = schemaService.getInputType(field);
-      var literals = schemaService.getLiterals(field); // field._valueConstraints.literals
+      var literals = schemaService.getLiterals(field);
 
 
       // Field title is already required, if it's empty create error message

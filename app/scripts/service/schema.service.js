@@ -493,7 +493,7 @@ define([
     };
 
     service.isListMultiAnswerType = function (node) {
-      return (service.getInputType(node) == 'list') && (service.getValueConstraints(node).multipleChoice);
+      if (node && service.hasValueConstraints(node)) return (service.getInputType(node) == 'list') && (service.getValueConstraints(node).multipleChoice);
     };
 
     // is this a checkbox, radio or list question?
@@ -513,7 +513,7 @@ define([
 
     // is this a multiple choice list?
     service.isMultipleChoice = function (node) {
-      return node && service.getValueConstraints(node).multipleChoice;
+      if (node && service.hasValueConstraints(node)) return service.getValueConstraints(node).multipleChoice;
     };
 
     // is this a checkbox, or a multiple choice list field?
@@ -555,6 +555,16 @@ define([
     // is this a page break?
     service.isPageBreak = function (node) {
       return (service.getInputType(node) === 'page-break');
+    };
+
+    // get order array
+    service.getOrder = function (node) {
+      if (node) return service.schemaOf(node)._ui.order;
+    };
+
+    // returns the properties of a template, element, or field schema
+    service.propertiesOf = function (node) {
+      if (node) return service.schemaOf(node).properties;
     };
 
 
@@ -622,12 +632,12 @@ define([
 
     // get the value constraint literal values
     service.getLiterals = function (node) {
-      return node && service.getValueConstraints(node).literals;
+      if (node && service.hasValueConstraints(node)) return service.getValueConstraints(node).literals;
     };
 
     // is this a required field or element?
     service.isRequired = function (node) {
-      return node && service.getValueConstraints(node).requiredValue;
+      if (node) return service.getValueConstraints(node).requiredValue;
     };
 
     service.setRequired = function (node, value) {

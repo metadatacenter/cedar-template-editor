@@ -31,7 +31,7 @@ define([
 
       // get resource id
       $scope.getId = function () {
-        return dms.getId($scope.field);
+        return schemaService.getId($scope.field);
       };
 
       // keep model up-to-date with changes in the data
@@ -41,8 +41,8 @@ define([
           // if we have something put it into the model
           schemaService.setDefaultValueConstraint($scope.field,
               $scope.data.termInfo['@id'],
-              $scope.data.termInfo['rdfs:label'],
-              $scope.data.termInfo['skos:notation']);
+              $scope.data.termInfo['label'],
+              $scope.data.termInfo['notation']);
 
         } else {
 
@@ -60,8 +60,8 @@ define([
       if (schemaService.hasDefaultValueConstraint($scope.field)) {
         $scope.data.termInfo = {};
         $scope.data.termInfo['@id'] = schemaService.getDefaultValueConstraintTermId($scope.field);
-        $scope.data.termInfo['rdfs:label'] = schemaService.getDefaultValueConstraintLabel($scope.field);
-        $scope.data.termInfo['skos:notation'] = schemaService.getDefaultValueConstraintNotation($scope.field);
+        $scope.data.termInfo['label'] = schemaService.getDefaultValueConstraintLabel($scope.field);
+        $scope.data.termInfo['notation'] = schemaService.getDefaultValueConstraintNotation($scope.field);
       }
     };
 
