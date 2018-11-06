@@ -126,6 +126,25 @@ define([
       }
     };
 
+    service.hasPreferredLabel = function (node) {
+      return node && service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(
+          node)['skos:prefLabel'].length > 0;
+    };
+
+    service.getPreferredLabel = function (node) {
+      if (service.hasPreferredLabel(node)) return service.schemaOf(node)['skos:prefLabel'];
+    };
+
+    service.setPreferredLabel = function (node, value) {
+      if (node) service.schemaOf(node)['skos:prefLabel'] = value;
+    };
+
+    service.removePreferredLabel = function (node) {
+      if (node) {
+        delete service.schemaOf(node)['skos:prefLabel'];
+      }
+    };
+
     // does this field allow the hidden attribute?
     service.allowsHidden = function (node) {
       return (service.schemaOf(node)._ui.inputType === 'textfield');
@@ -182,6 +201,14 @@ define([
       if (!node.description || !node.description.length) {
         node.description = $translate.instant("GENERIC.Description");
       }
+    };
+
+    service.getContent = function (node) {
+      return service.schemaOf(node)._ui._content;
+    };
+
+    service.getSize = function (node) {
+      return service.schemaOf(node)._ui._size;
     };
 
     //
@@ -645,7 +672,6 @@ define([
       }
     };
 
-    // decimal places
     service.hasDecimalPlace = function (node) {
       return node && service.hasValueConstraints(node) && service.getValueConstraints(node).hasOwnProperty('decimalPlace');
     };
@@ -654,7 +680,6 @@ define([
       return node && service.hasDecimalPlace(node) && service.getValueConstraints(node).decimalPlace;
     };
 
-    // number type
     service.hasNumberType = function (node) {
       return service.getValueConstraints(node).hasOwnProperty('numberType');
     };
@@ -663,7 +688,6 @@ define([
       return service.hasNumberType(node) && service.getValueConstraints(node).numberType;
     };
 
-    // unit of measure
     service.hasUnitOfMeasure = function (node) {
       return service.getValueConstraints(node).hasOwnProperty('unitOfMeasure');
     };
