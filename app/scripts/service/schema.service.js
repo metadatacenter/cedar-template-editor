@@ -584,6 +584,22 @@ define([
       service.schemaOf(field)._valueConstraints = constraints;
     };
 
+    service.isConstrained = function (node) {
+      var result = false;
+
+      var vcst = service.schemaOf(node)._valueConstraints;
+      if (vcst) {
+        var hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
+        var hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
+        var hasClasses = vcst.classes && vcst.classes.length > 0;
+        var hasBranches = vcst.branches && vcst.branches.length > 0;
+        result = hasOntologies || hasValueSets || hasClasses || hasBranches;
+      }
+
+      return result;
+    };
+
+
     service.hasDefaultValueConstraint = function (field) {
       return service.getValueConstraints(field) && service.getValueConstraints(field).defaultValue;
     };
@@ -637,7 +653,7 @@ define([
 
     // is this a required field or element?
     service.isRequired = function (node) {
-      if (node) return service.getValueConstraints(node).requiredValue;
+      if (node && service.getValueConstraints(node)) return service.getValueConstraints(node).requiredValue;
     };
 
     service.setRequired = function (node, value) {
