@@ -258,7 +258,6 @@ define([
 
       // toggle visibility at this index and activate if visible
       scope.toggleExpanded = function (idx) {
-        console.log('toggleExpanded',idx)
         scope.expanded[idx] = !scope.expanded[idx];
         scope.setActive(idx, scope.expanded[idx]);
       };
@@ -340,7 +339,6 @@ define([
       };
 
       scope.getPreferredLabel = function () {
-        console.log('getPreferredLabel', dms.getPreferredLabel(scope.element));
         return dms.getPreferredLabel(scope.element);
       };
 

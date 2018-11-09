@@ -35,7 +35,7 @@ define([
       };
 
       // order the results based on user preferences
-      $scope.order = function (arr) {
+      $scope.order = function (arr,) {
         if (arr) {
           var dup = dms.applyActions(arr, schemaService.getActions($scope.field));
           return dup;

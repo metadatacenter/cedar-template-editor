@@ -553,7 +553,7 @@ define([
 
       // has value constraints?
       $scope.isConstrained = function () {
-        return schemaService.hasValueConstraints($scope.field) && !$scope.isRecommended();
+        return schemaService.isConstrained($scope.field);
       };
 
       // has neither recommendations or value constraints
