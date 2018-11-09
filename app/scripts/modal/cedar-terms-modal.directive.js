@@ -8,14 +8,14 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarTermsModal', cedarTermsModalDirective);
 
-      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', '$q'];
+      cedarTermsModalDirective.$inject = ['CedarUser', 'DataManipulationService', 'schemaService', '$q'];
 
       /**
        *
        * share and group modal
        *
        */
-      function cedarTermsModalDirective(CedarUser, DataManipulationService,schemaService, $q) {
+      function cedarTermsModalDirective(CedarUser, DataManipulationService, schemaService, $q) {
 
         var directive = {
           bindToController: {
@@ -129,8 +129,8 @@ define([
             event.stopPropagation();
           };
 
-          vm.close = function(index) {
-            vm.status['isopen'+index] = false;
+          vm.close = function (index) {
+            vm.status['isopen' + index] = false;
           };
 
           vm.encode = function (uri) {
@@ -140,7 +140,13 @@ define([
           // delete the entry at this index
           vm.delete = function (index) {
             let entry = vm.list.splice(index, 1);
-            vm.actions.push({'termUri': entry[0]['termUri'], 'action': 'delete'});
+            vm.actions.push({
+                  'termUri'  : entry[0]['termUri'],
+                  'sourceUri': entry[0]['sourceUri'],
+                  'type'     : entry[0]['type'],
+                  'action'   : 'delete'
+                }
+            );
             // remove any moves as well
             for (let i = 0; i < vm.actions.length; i++) {
               if (vm.actions[i]['termUri'] == entry[0]['termUri'] && vm.actions[i]['action'] == 'move') {
@@ -178,7 +184,7 @@ define([
               if ((type == 'OntologyClass' && arr[arr.length - 2] == 'ontologies') || (type == 'Value' && arr[arr.length - 2] == 'CADSR-VS')) {
                 return arr[arr.length - 1];
               }
-                else {
+              else {
                 return arr[arr.length - 2];
               }
             }
@@ -220,13 +226,13 @@ define([
                 var found = foundResults[i - 1];
 
                 vm.fullList.push({
-                  termUri   : found['@id'],
-                  label     : found['label'],
-                  notation  : found['notation'],
-                  sourceUri : found['sourceUri'],
-                  acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                  type      : found['type'],
-                  id        : found['id'],
+                  termUri     : found['@id'],
+                  label       : found['label'],
+                  notation    : found['notation'],
+                  sourceUri   : found['sourceUri'],
+                  acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                  type        : found['type'],
+                  id          : found['id'],
                   vsCollection: found['vsCollection']
                 });
               }
@@ -234,7 +240,7 @@ define([
               // sort and apply mods
               vm.sortList(vm.fullList);
               vm.list = vm.applyActions(vm.fullList, actions);
-              console.log('vm.list',vm.list);
+              console.log('vm.list', vm.list);
 
               vm.isloading = false;
             });
@@ -310,12 +316,12 @@ define([
 
                     vm.fullList.push({
                       '@id'       : found['@id'],
-                      label     : found['label'],
-                      notation : found['notation'],
-                      sourceUri: found['sourceUri'],
-                      acronym   : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                      type     : found['type'],
-                      id       : found['id'],
+                      label       : found['label'],
+                      notation    : found['notation'],
+                      sourceUri   : found['sourceUri'],
+                      acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                      type        : found['type'],
+                      id          : found['id'],
                       vsCollection: found['vsCollection']
                     });
                   }

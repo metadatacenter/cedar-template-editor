@@ -31,7 +31,7 @@ define([
 
       // get resource id
       $scope.getId = function () {
-        return schemaService.getId($scope.field);
+        return dms.getId($scope.field);
       };
 
       // keep model up-to-date with changes in the data
