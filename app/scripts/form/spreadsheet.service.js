@@ -6,11 +6,11 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService',
+      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService','schemaService',
                                     'DataUtilService',
                                     'autocompleteService','UIMessageService'];
 
-      function SpreadsheetService($document, $q, $translate, DataManipulationService, DataUtilService, autocompleteService,UIMessageService) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, autocompleteService,UIMessageService) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -305,21 +305,21 @@ define([
         var getDescriptor = function (context, node, $scope, customValidator) {
 
 
-          let mods = DataManipulationService.getMods($scope.field);
+          let actions = DataManipulationService.getActions($scope.field);
 
           // apply the user's sorted ordering
-          let applyMods = function (list) {
+          let applyActions = function (list) {
             // apply mods to a duplicate of the list
             var dup = list.slice();
-            for (let i = 0; i < mods.length; i++) {
-              let mod = mods[i];
-              let from = dup.findIndex(item => item['@id'] === mod['@id']);
+            for (let i = 0; i < actions.length; i++) {
+              let action = actions[i];
+              let from = dup.findIndex(item => item['@id'] === action['@id']);
               if (from != -1) {
                 // delete it at from
                 let entry = dup.splice(from, 1);
-                if (mod.to != -1 && mod.action == 'move') {
+                if (action.to != -1 && action.action == 'move') {
                   // insert it at to
-                  dup.splice(mod.to, 0, entry[0]);
+                  dup.splice(action.to, 0, entry[0]);
                 }
               }
             }
@@ -329,7 +329,7 @@ define([
           // order the results based on user preferences
           let order = function (arr) {
             if (arr) {
-              var dup = applyMods(arr);
+              var dup = applyActions(arr);
               return dup;
             }
           };
@@ -341,7 +341,7 @@ define([
           var desc = {};
           if (node) {
             literals = dms.getLiterals(node);
-            inputType = dms.getInputType(node);
+            inputType = schemaService.getInputType(node);
             id = dms.getId(node);
           } else {
             inputType = 'attribute-value';

@@ -8,9 +8,9 @@ define([
           .service('DataManipulationService', DataManipulationService);
 
       DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
-                                         '$rootScope', "$translate", "$sce", 'CONST'];
+                                         'schemaService','$rootScope', "$translate", "$sce", 'CONST'];
 
-      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope,
+      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, schemaService,$rootScope,
                                        $translate, $sce, CONST) {
 
         // Base path to generate field ids
@@ -693,24 +693,24 @@ define([
         };
 
         service.getSortOrder = function (node) {
-          return service.schemaOf(node)._valueConstraints.sortOrder;
+          return service.schemaOf(node)._valueConstraints.actions;
         };
 
         service.clearSortOrder = function (node) {
-          delete service.schemaOf(node)._valueConstraints.sortOrder;
+          delete service.schemaOf(node)._valueConstraints.actions;
         };
 
-        service.setSortOrder = function (node,  mods) {
-          if (node && mods) {
-              service.schemaOf(node)._valueConstraints.sortOrder = {mods:mods};
+        service.setSortOrder = function (node,  actions) {
+          if (node && actions) {
+              service.schemaOf(node)._valueConstraints.actions = actions;
           }
         };
 
-        service.getMods = function (node) {
+        service.getActions = function (node) {
           var result = [];
           if (node) {
-            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('sortOrder')) {
-              result= service.schemaOf(node)._valueConstraints.sortOrder.mods;
+            if (service.schemaOf(node)._valueConstraints.hasOwnProperty('actions')) {
+              result= service.schemaOf(node)._valueConstraints.actions;
             }
           }
           return result;
@@ -2205,6 +2205,29 @@ define([
         // toggle the hidden field attribute
         service.setHidden = function (node, value) {
           service.schemaOf(node)._ui.hidden = value;
+        };
+
+
+        service.applyActions = function (list, actions) {
+          // apply mods to a duplicate of the list
+
+          var dup = list.slice();
+
+          if (actions) {
+            for (let i = 0; i < actions.length; i++) {
+              let action = actions[i];
+              let from = dup.findIndex(item => item['@id'] === action['termUri']);
+              if (from != -1) {
+                // delete it at from
+                let entry = dup.splice(from, 1);
+                if (action.to != -1 && action.action == 'move') {
+                  // insert it at to
+                  dup.splice(action.to, 0, entry[0]);
+                }
+              }
+            }
+          }
+          return dup;
         };
 
         return service;

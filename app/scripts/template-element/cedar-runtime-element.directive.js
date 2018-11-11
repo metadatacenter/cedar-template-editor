@@ -7,11 +7,11 @@ define([
       .directive('cedarRuntimeElement', cedarRuntimeElement);
 
   cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'UIUtilService', 'DataManipulationService',
-                                 'DataUtilService',
+                                 'DataUtilService', 'schemaService',
                                  'SpreadsheetService'];
 
   function cedarRuntimeElement($rootScope, $timeout, $window, UIUtilService, DataManipulationService, DataUtilService,
-                               SpreadsheetService) {
+                               schemaService, SpreadsheetService) {
 
     var directive = {
       restrict   : 'EA',
@@ -61,12 +61,12 @@ define([
 
       // get the element title
       scope.getTitle = function () {
-        return dms.getTitle(scope.element);
+        return schemaService.getTitle(scope.element);
       };
 
       // get the element id
       scope.getId = function () {
-        return dms.getId(scope.element);
+        return schemaService.getId(scope.element);
       };
 
       // does the element contain this property
@@ -86,7 +86,7 @@ define([
 
       // get the order array
       scope.getOrder = function () {
-        return dms.getOrder(scope.element);
+        return schemaService.getOrder(scope.element);
       };
 
       // get the property labels from the element
@@ -111,11 +111,11 @@ define([
 
 
       scope.isHidden = function (node) {
-        return DataManipulationService.isHidden(node);
+        return schemaService.isHidden(node);
       };
 
       scope.isCardinal = function () {
-        return DataManipulationService.isCardinalElement(scope.element);
+        return schemaService.isCardinalElement(scope.element);
       };
 
 
@@ -138,7 +138,7 @@ define([
       // turn on spreadsheet view
       scope.switchToSpreadsheet = function () {
         scope.setActive(0, true);
-        if (dms.getMaxItems(scope.element)) {
+        if (schemaService.getMaxItems(scope.element)) {
           // create all the rows if the maxItems is a fixed number
           scope.createExtraRows();
         }
@@ -205,7 +205,7 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       scope.createExtraRows = function () {
-        var maxItems = dms.getMaxItems(scope.element);
+        var maxItems = schemaService.getMaxItems(scope.element);
         var max = maxItems ? maxItems : 10;
         while ((scope.model.length < max)) {
           scope.addMoreInput();
@@ -221,7 +221,7 @@ define([
 
         if (angular.isArray(scope.model)) {
 
-          var min = dms.getMinItems(scope.element) || 1;
+          var min = schemaService.getMinItems(scope.element) || 1;
 
           outer: for (var i = scope.model.length; i > min; i--) {
             var valueElement = scope.model[i - 1];
@@ -282,9 +282,9 @@ define([
       // can we recursively expand this element, i.e. does it have nested elements?
       scope.isExpandable = function () {
         var result = false;
-        var props = dms.propertiesOf(scope.element);
+        var props = schemaService.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (DataUtilService.isElement(dms.schemaOf(value))) {
+          if (DataUtilService.isElement(schemaService.schemaOf(value))) {
             result = true;
           }
         });
@@ -306,10 +306,10 @@ define([
 
         // let these draw, then send out expandAll to the newly drawn elements
         $timeout(function () {
-          var props = dms.propertiesOf(scope.element);
+          var props = schemaService.propertiesOf(scope.element);
           angular.forEach(props, function (value, key) {
-            if (DataUtilService.isElement(dms.schemaOf(value))) {
-              scope.$broadcast("expandAll", [dms.getId(value)]);
+            if (DataUtilService.isElement(schemaService.schemaOf(value))) {
+              scope.$broadcast("expandAll", [schemaService.getId(value)]);
             }
           });
         });
@@ -340,8 +340,7 @@ define([
       };
 
       scope.getPreferredLabel = function () {
-        console.log('getPreferredLabel', dms.getPreferredLabel(scope.element));
-        return dms.getPreferredLabel(scope.element);
+        return schemaService.getPreferredLabel(scope.element);
       };
 
       scope.getLabel = function() {
@@ -353,7 +352,7 @@ define([
       scope.copyElement = function (index) {
         if (scope.isMultiple()) {
           var fromIndex = (typeof index === 'undefined') ? scope.index : index;
-          var maxItems = dms.getMaxItems(scope.element);
+          var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
             if (scope.model.length > 0) {
               var seed = {};
@@ -373,10 +372,10 @@ define([
       scope.addElement = function () {
         if (angular.isArray(scope.model) && scope.model.length == 0) {
           // create a new element from scratch
-          var maxItems = dms.getMaxItems(scope.element);
+          var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
             var seed = {};
-            var properties = dms.propertiesOf(scope.element);
+            var properties = schemaService.propertiesOf(scope.element);
             scope.model.push(seed);
             if (angular.isArray(scope.model)) {
               angular.forEach(scope.model, function (m) {
@@ -396,7 +395,7 @@ define([
       // remove the element at index
       scope.removeElement = function (index) {
         if (scope.isMultiple()) {
-          if (scope.model.length > dms.getMinItems(scope.element)) {
+          if (scope.model.length > schemaService.getMinItems(scope.element)) {
             scope.model.splice(index, 1);
             if (scope.model.length === 0) {
               scope.toggleExpanded(0);
@@ -406,24 +405,24 @@ define([
       };
 
       scope.isSectionBreak = function (item) {
-        var properties = dms.propertiesOf(scope.element);
+        var properties = schemaService.propertiesOf(scope.element);
         var node = properties[item];
-        return node && dms.isSectionBreak(node);
+        return node && schemaService.isSectionBreak(node);
       };
 
       scope.isStaticField = function (item) {
-        var properties = dms.propertiesOf(scope.element);
+        var properties = schemaService.propertiesOf(scope.element);
         var node = properties[item];
-        return node && dms.isStaticField(node);
+        return node && schemaService.isStaticField(node);
       };
 
       // a field is displayable if it is not static or it is a section break
       // static fields get rolled into the field below them and displayed as a header
       // section breaks get displayed as an unclickable div of text in the form
       scope.isDisplayable = function (item) {
-        var properties = dms.propertiesOf(scope.element);
+        var properties = schemaService.propertiesOf(scope.element);
         var node = properties[item];
-        return node && (dms.isSectionBreak(node) || !dms.isStaticField(node));
+        return node && (schemaService.isSectionBreak(node) || !schemaService.isStaticField(node));
       };
 
       scope.addRow = function () {
@@ -460,12 +459,12 @@ define([
       scope.removeChild = function (node) {
 
         var selectedKey;
-        var schema = dms.schemaOf(node);
-        var id = dms.getId(node);
-        var title = dms.getTitle(node);
-        var props = dms.propertiesOf(scope.element);
+        var schema = schemaService.schemaOf(node);
+        var id = schemaService.getId(node);
+        var title = schemaService.getTitle(node);
+        var props = schemaService.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (dms.getId(value) == id) {
+          if (schemaService.getId(value) == id) {
             selectedKey = key;
           }
         });
@@ -474,8 +473,8 @@ define([
           delete props[selectedKey];
 
           // remove it from the order array
-          var idx = dms.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
-          dms.schemaOf(scope.element)._ui.order.splice(idx, 1);
+          var idx = schemaService.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
+          schemaService.schemaOf(scope.element)._ui.order.splice(idx, 1);
 
 
           if (UIUtilService.isElement(schema)) {
@@ -534,8 +533,8 @@ define([
 
             scope.$apply();
 
-            var props = dms.schemaOf(scope.element).properties;
-            var order = dms.schemaOf(scope.element)._ui.order;
+            var props = schemaService.schemaOf(scope.element).properties;
+            var order = schemaService.schemaOf(scope.element)._ui.order;
             var nextKey = order[0];
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
@@ -553,13 +552,13 @@ define([
 
           scope.$apply();
 
-          var props = dms.propertiesOf(scope.element);
-          var order = dms.getOrder(scope.element);
+          var props = schemaService.propertiesOf(scope.element);
+          var order = schemaService.getOrder(scope.element);
           var nextKey = order[0];
           var next = props[nextKey];
 
           $rootScope.$broadcast("setActive",
-              [dms.getId(next), 0, scope.path + '-' + idx, nextKey, scope.fieldKey, true,
+              [schemaService.getId(next), 0, scope.path + '-' + idx, nextKey, scope.fieldKey, true,
                scope.uid + '-' + nextKey]);
 
         }, 0);
@@ -587,21 +586,21 @@ define([
 
         // is there another sibling
         if (!found) {
-          var order = dms.schemaOf(scope.element)._ui.order;
-          var props = dms.schemaOf(scope.element).properties;
+          var order = schemaService.schemaOf(scope.element)._ui.order;
+          var props = schemaService.schemaOf(scope.element).properties;
           var idx = order.indexOf(fieldKey);
 
           idx += 1;
           while (idx < order.length && !found) {
             var nextKey = order[idx];
             var next = props[nextKey];
-            found = !dms.isStaticField(next);
+            found = !schemaService.isStaticField(next);
             idx += 1;
           }
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [dms.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true,
+                [schemaService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true,
                  scope.uid + '-' + nextKey]);
           }
         }

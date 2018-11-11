@@ -121,7 +121,6 @@ define([
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
 
-
       // results could be a list or not, put all results into an array
       var collection = [];
       var result;
@@ -129,30 +128,21 @@ define([
         for (i = 0; i < response.collection.length; i++) {
           result = {
             '@id'      : response.collection[i]['@id'],
-            'notation' : response.collection[i]['notation'],
+            'notation' : response.collection[i].notation,
             'label'    : response.collection[i].prefLabel,
-            'type'     : field_type,
+            'type'     : response.collection[i].type,
             'sourceUri': source_uri,
-
-            '@idRelated'  : response.collection[i]['relatedMatch'],
-            'rdfs:label'  : response.collection[i].prefLabel,
-            'id'          : response.collection[i]['id'],
-            'vsCollection': response.collection[i]['vsCollection'],
           };
           collection.push(result);
         }
       } else {
         result = {
           '@id'      : response['@id'],
-          'notation' : response['notation'],
+          'notation' : response.notation,
           'label'    : response.prefLabel,
-          'type'     : field_type,
+          'type'     : response.type,
           'sourceUri': source_uri,
 
-          '@idRelated'  : response['relatedMatch'],
-          'rdfs:label'  : response.prefLabel,
-          'id'          : response['id'],
-          'vsCollection': response['vsCollection'],
         };
         collection.push(result);
       }
@@ -237,7 +227,7 @@ define([
                   '@id'       : klass.uri,
                   'label'     : klass.label,
                   'rdfs:label': klass.label,
-                  'type'      : 'Ontology Class',
+                  'type'      : klass.type,
                   'sourceUri' : 'template',
 
                 }
@@ -249,7 +239,7 @@ define([
                     '@id'       : klass.uri,
                     'label'     : klass.label,
                     'rdfs:label': klass.label,
-                    'type'      : 'Ontology Class',
+                    'type'      : klass.type,
                     'sourceUri' : 'template'
                   }
               );
@@ -272,14 +262,14 @@ define([
             service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
           }
 
-          let page = service.getPage(id, query, 'Value Set Class', valueSet.uri);
+          let page = service.getPage(id, query, 'Value', valueSet.uri);
           if (!next || page) {
 
-            let size = service.getSize(id, query, 'Value Set Class', valueSet.uri);
+            let size = service.getSize(id, query, 'Value', valueSet.uri);
             var promise =
                 controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
                     valueSet.uri, page, size).then(function (childResponse) {
-                  service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
+                  service.processAutocompleteClassResults(id, query, 'Value', valueSet.uri, childResponse);
                 });
             promises.push(promise);
           }
@@ -291,13 +281,13 @@ define([
           if (query == '*') {
             service.removeAutocompleteResultsForSource(id, query, ontology.uri);
           }
-          let page = service.getPage(id, query, 'Ontology Class', ontology.uri);
+          let page = service.getPage(id, query, 'OntologyClass', ontology.uri);
           if (!next || page) {
 
-            let size = service.getSize(id, query, 'Ontology Class', ontology.uri);
+            let size = service.getSize(id, query, 'OntologyClass', ontology.uri);
             var promise = controlledTermDataService.autocompleteOntology(query, ontology.acronym, page, size).then(
                 function (childResponse) {
-                  service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
+                  service.processAutocompleteClassResults(id, query, 'OntologyClass', ontology.uri, childResponse);
                 });
             promises.push(promise);
           }
@@ -318,7 +308,7 @@ define([
             var promise = controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
                 branch.maxDepth, page, size).then(
                 function (childResponse) {
-                  service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
+                  service.processAutocompleteClassResults(id, query, 'OntologyClass', branch.uri, childResponse);
                 }
             );
 
@@ -329,31 +319,31 @@ define([
 
 
       // only load the sorted move mods the first time, not on subsequent pages
-      if (vcst.sortOrder && vcst.sortOrder.mods && vcst.sortOrder.mods.length > 0 && !next) {
+      if (vcst.actions  && vcst.actions.length > 0 && !next) {
 
 
-        angular.forEach(vcst.sortOrder.mods, function (mod) {
-          if (mod.action == 'move') {
+        angular.forEach(vcst.actions, function (action) {
+          if (action.action == 'move') {
 
-            if (!service.hasTerm(id, query, mod.sourceUri, mod['@id'])) {
-              let uriArr = mod.sourceUri.split('/');
-              let classId = mod['@id'];
+            if (!service.hasTerm(id, query, action.sourceUri, action['@id'])) {
+              let uriArr = action.sourceUri.split('/');
+              let classId = action['termUri'];
 
-              if (mod.type == "Value Set Class") {
+              if (action.type == "Value") {
                 let vsCollection = uriArr[uriArr.length - 2];
 
                 var promise =
-                    controlledTermDataService.getValueTermById(vsCollection, mod.sourceUri, classId).then(
+                    controlledTermDataService.getValueTermById(vsCollection, action.sourceUri, classId).then(
                         function (childResponse) {
-                          service.processAutocompleteClassResults(id, query, 'Value Set Class', mod.sourceUri,
+                          service.processAutocompleteClassResults(id, query, 'Value', action.sourceUri,
                               childResponse);
                         });
               }
-              if (mod.type == "Ontology Class") {
+              if (action.type == "OntologyClass") {
                 let acronym = uriArr[uriArr.length - 1];
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
-                  service.processAutocompleteClassResults(id, query, 'Ontology Class', mod.sourceUri, response);
+                  service.processAutocompleteClassResults(id, query, 'OntologyClass', action.sourceUri, response);
                 });
               }
             }

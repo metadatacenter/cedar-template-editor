@@ -10,11 +10,12 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService", "UrlService",
-                               "DataManipulationService", "UIUtilService", "autocompleteService",
+                               "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService",
                                "ValueRecommenderService", "uibDateParser", "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, UrlService, DataManipulationService, UIUtilService,
+                             $timeout, SpreadsheetService, UrlService, DataManipulationService, schemaService,
+                             UIUtilService,
                              autocompleteService,
                              ValueRecommenderService, uibDateParser, CONST) {
 
@@ -39,13 +40,65 @@ define([
 
 
       //
-      // model access
+      // field schema access
       //
 
       // get the field title
       $scope.getTitle = function (field) {
-        return dms.getTitle(field || $scope.field);
+        return schemaService.getTitle(field || $scope.field);
       };
+
+      $scope.hasDescription = function (field) {
+        return schemaService.hasDescription(field || $scope.field);
+      };
+
+      // get the field description
+      $scope.getDescription = function (field) {
+        return schemaService.getDescription(field || $scope.field);
+      };
+
+      // get the field min/max length
+      $scope.getMinLength = function (field) {
+        return schemaService.getMinLength(field || $scope.field);
+      };
+
+      $scope.hasMinLength = function () {
+        return schemaService.getMinLength($scope.field) && schemaService.getMinLength($scope.field).length > 0;
+      };
+
+      $scope.getMaxLength = function (field) {
+        return schemaService.getMaxLength(field || $scope.field);
+      };
+
+      $scope.hasMaxLength = function () {
+        return schemaService.getMaxLength($scope.field) && schemaService.getMaxLength($scope.field).length > 0;
+      };
+
+      $scope.getMinValue = function (field) {
+        if (schemaService.hasMinValue()) {
+          return schemaService.getMinValue(field || $scope.field);
+        }
+      };
+
+      $scope.getNumericPlaceholder = function (field) {
+        let decimalPlace = schemaService.getDecimalPlace();
+        let min = schemaService.getMinValue() || 0;
+        return min + schemaService.hasDecimalPlace() ?  '.' + '0'.repeat(decimalPlace-1) + '1' : '';
+      };
+
+      $scope.getMaxValue = function (field) {
+        return schemaService.getMaxValue(field || $scope.field);
+      };
+
+      $scope.getValueConstraints = function (field) {
+        return schemaService.getValueConstraints(field || $scope.field);
+      };
+
+      // is this a section break?
+      $scope.isSectionBreak = function (field) {
+        return schemaService.isSectionBreak(field || $scope.field);
+      };
+
 
       $scope.getPropertyLabel = function () {
         if ($scope.labels && $scope.fieldKey && $scope.labels[$scope.fieldKey]) {
@@ -63,52 +116,20 @@ define([
         return $scope.descriptions && $scope.fieldKey && $scope.descriptions[$scope.fieldKey];
       };
 
-      // get the field description
-      $scope.getDescription = function (field) {
-        return dms.getDescription(field || $scope.field);
-      };
 
-      $scope.hasDescription = function () {
-        var description = dms.getDescription($scope.field);
-        return description && description.length > 0;
-      };
 
-      // get the field min/max length
-      $scope.getMinLength = function (field) {
-        return dms.getMinLength(field || $scope.field);
-      };
-
-      $scope.hasMinLength = function () {
-        return dms.getMinLength($scope.field) && dms.getMinLength($scope.field).length > 0;
-      };
-
-      $scope.getMaxLength = function (field) {
-        return dms.getMaxLength(field || $scope.field);
-      };
-
-      $scope.hasMaxLength = function () {
-        return dms.getMaxLength($scope.field) && dms.getMaxLength($scope.field).length > 0;
-      };
-
-      $scope.getMinValue = function (field) {
-        return dms.getMinValue(field || $scope.field);
-      };
-
-      $scope.getMaxValue = function (field) {
-        return dms.getMaxValue(field || $scope.field);
-      };
 
       $scope.getDecimalPlace = function (field) {
-        return dms.getDecimalPlace(field || $scope.field);
+        return schemaService.getDecimalPlace(field || $scope.field);
       };
 
       $scope.getStep = function (field) {
-        let places = dms.getDecimalPlace(field || $scope.field);
+        let places = schemaService.getDecimalPlace(field || $scope.field);
         return '0.' + '0'.repeat(places - 1) + '1';
       };
 
       $scope.getPreferredLabel = function () {
-        return dms.getPreferredLabel($scope.field);
+        return schemaService.getPreferredLabel($scope.field);
       };
 
       $scope.getLabel = function () {
@@ -129,12 +150,12 @@ define([
 
       // get the field id
       $scope.getId = function () {
-        return dms.getId($scope.field);
+        return schemaService.getId($scope.field);
       };
 
       // get the field id
       $scope.getLiterals = function () {
-        return dms.getLiterals($scope.field);
+        return schemaService.getLiterals($scope.field);
       };
 
       $scope.cardinalityString = function () {
@@ -148,12 +169,12 @@ define([
 
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
-        return dms.isCardinalElement($scope.field);
+        return schemaService.isCardinalElement($scope.field);
       };
 
       $scope.isMultiple = function () {
         // We consider that checkboxes and multi-choice lists are not 'multiple'
-        return (dms.isCardinalElement($scope.field) && !dms.isMultipleChoiceField($scope.field));
+        return (schemaService.isCardinalElement($scope.field) && !schemaService.isMultipleChoiceField($scope.field));
       };
 
       // what is the dom id for this field?
@@ -172,7 +193,7 @@ define([
 
       // is this a youTube field?
       $scope.isYouTube = function (field) {
-        return dms.isYouTube(field || $scope.field);
+        return schemaService.isYouTube(field || $scope.field);
       };
 
       $scope.getYouTubeEmbedFrame = function (field) {
@@ -181,26 +202,23 @@ define([
 
       // is this richText?
       $scope.isRichText = function (field) {
-        return dms.isRichText(field || $scope.field);
+        return schemaService.isRichText(field || $scope.field);
       };
 
       $scope.getUnescapedContent = function (field) {
         return field._ui._content;
       };
 
-      // is this a section break?
-      $scope.isSectionBreak = function (field) {
-        return dms.isSectionBreak(field || $scope.field);
-      };
+
 
       // is this a static image?
       $scope.isImage = function (field) {
-        return dms.isImage(field || $scope.field);
+        return schemaService.isImage(field || $scope.field);
       };
 
       // is the previous field static?
       $scope.isStatic = function (field) {
-        return dms.isStaticField(field || $scope.field);
+        return schemaService.isStaticField(field || $scope.field);
       };
 
       $scope.isPreviousStatic = function () {
@@ -208,17 +226,17 @@ define([
       };
 
       $scope.hasUnitOfMeasure = function (node) {
-        return dms.hasUnitOfMeasure(node);
+        return schemaService.hasUnitOfMeasure(node);
       };
 
       $scope.getUnitOfMeasure = function (node) {
-        return dms.getUnitOfMeasure(node) || '';
+        return schemaService.getUnitOfMeasure(node) || '';
       };
 
       // string together field values
       $scope.getValueString = function (valueElement, attributeValueElement) {
         var result = '';
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           if (valueElement) {
             for (var i = 0; i < valueElement.length; i++) {
               result += valueElement[i]['@value'] + (attributeValueElement[i]['@value'] ? '=' + attributeValueElement[i]['@value'] : '') + ', ';
@@ -299,7 +317,7 @@ define([
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
         $scope.setActive(0, true);
-        if (dms.getMaxItems($scope.field)) {
+        if (schemaService.getMaxItems($scope.field)) {
           // create all the rows if the maxItems is a fixed number
           $scope.createExtraRows();
         }
@@ -366,7 +384,7 @@ define([
         // set it active or inactive
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
-        if (dms.isDateType($scope.field)) {
+        if (schemaService.isDateType($scope.field)) {
           $scope.setDateValue(index);
 
           $timeout(function () {
@@ -452,7 +470,7 @@ define([
           UIUtilService.setActive($scope.field, index, $scope.path, false);
 
           // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
-          if ($scope.isMultipleCardinality() && !dms.isMultipleChoiceField($scope.field)) {
+          if ($scope.isMultipleCardinality() && !schemaService.isMultipleChoiceField($scope.field)) {
 
             if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
@@ -499,27 +517,27 @@ define([
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
-        return dms.hasValueConstraint($scope.field);
+        return schemaService.hasValueConstraints($scope.field);
       };
 
       // is this field required?
       $scope.isRequired = function () {
-        return dms.isRequired($scope.field);
+        return schemaService.isRequired($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.isMultiAnswer = function () {
-        return dms.isMultiAnswer($scope.field);
+        return schemaService.isMultiAnswer($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.isMultipleChoice = function () {
-        return dms.isMultipleChoice($scope.field);
+        return schemaService.isMultipleChoice($scope.field);
       };
 
       // is this a checkbox, radio or list question?
       $scope.getInputType = function () {
-        return dms.getInputType($scope.field);
+        return schemaService.getInputType($scope.field);
       };
 
       // is this a checkbox, radio or list question?
@@ -533,7 +551,7 @@ define([
 
       // has value constraints?
       $scope.isConstrained = function () {
-        return dms.hasValueConstraint($scope.field) && !$scope.isRecommended();
+        return schemaService.isConstrained($scope.field);
       };
 
       // has neither recommendations or value constraints
@@ -548,7 +566,7 @@ define([
 
         if ($scope.isMultiAnswer()) {
           $scope.valueArray.push($scope.model);
-        } else if (dms.isAttributeValueType($scope.field)) {
+        } else if (schemaService.isAttributeValueType($scope.field)) {
           $scope.valueArray = [];
           for (var i = 0; i < $scope.model.length; i++) {
             $scope.valueArray.push({'@value': $scope.model[i]})
@@ -563,7 +581,7 @@ define([
           $scope.valueArray.push($scope.model);
         }
 
-        switch (dms.getInputType($scope.field)) {
+        switch (schemaService.getInputType($scope.field)) {
           case "numeric":
             for (let i = 0; i < $scope.valueArray.length; i++) {
               let value;
@@ -584,7 +602,7 @@ define([
         var parentInstance = $scope.parentInstance;
         var parent = parentModel[parentInstance] || parentModel;
 
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           $scope.attributeValueArray = [];
           for (var i = 0; i < $scope.valueArray.length; i++) {
             var attributeName = $scope.valueArray[i]['@value'];
@@ -618,7 +636,7 @@ define([
 
       // uncheck radio buttons
       $scope.uncheck = function (label) {
-        if (dms.isRadioType($scope.field)) {
+        if (schemaService.isRadioType($scope.field)) {
           if ($scope.optionsUI.radioPreviousOption == label) {
             // Uncheck
             $scope.optionsUI.radioOption = null;
@@ -643,7 +661,7 @@ define([
           }
           return result;
         };
-        let valid = value && dms.hasDecimalPlace($scope.field) && (countDecimals(value) <= dms.getDecimalPlace(
+        let valid = value && schemaService.hasDecimalPlace($scope.field) && (countDecimals(value) <= schemaService.getDecimalPlace(
             $scope.field));
         $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
       };
@@ -654,6 +672,7 @@ define([
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
         var attributeName;
+        console.log('updateModelFromUI',inputType,$scope.isMultipleChoice());
 
         switch (inputType) {
           case "numeric":
@@ -732,7 +751,7 @@ define([
             // Insert the value at the right position in the model. optionsUI is an object, not an array,
             // so the right order in the model is not ensured.
             // The following lines ensure that each option is inserted into the right place
-            var orderedOptions = dms.getLiterals($scope.field);
+            var orderedOptions = schemaService.getLiterals($scope.field);
             for (var i = 0; i < orderedOptions.length; i++) {
               var option = orderedOptions[i].label;
               if ($scope.optionsUI[option]) {
@@ -745,9 +764,11 @@ define([
             if ($scope.model.length == 0) {
               dms.initializeValue($scope.field, $scope.model);
             }
+            break;
           case 'radio':
             $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             $scope.model[fieldValue] = $scope.optionsUI.radioOption;
+            break;
           case 'list':
             $scope.model = dms.initializeModel($scope.field, $scope.model, true);
             // Multiple-choice list
@@ -889,7 +910,7 @@ define([
       $scope.copyField = function () {
         let inputType = $scope.getInputType();
         let valueLocation = $scope.getValueLocation();
-        let maxItems = dms.getMaxItems($scope.field);
+        let maxItems = schemaService.getMaxItems($scope.field);
 
         if ((!maxItems || $scope.model.length < maxItems)) {
           switch (inputType) {
@@ -897,7 +918,7 @@ define([
               copyAttributeValueField($scope.parentModel, $scope.parentInstance);
               break;
             case 'textfield':
-              if (dms.hasValueConstraint($scope.field)) {
+              if (schemaService.hasValueConstraints($scope.field)) {
                 let obj = {
                   '@id'       : $scope.valueArray[$scope.index]['@id'],
                   'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
@@ -947,7 +968,7 @@ define([
 
       // add more instances to a multiple cardinality field if multiple and not at the max limit
       $scope.addMoreInput = function () {
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           var parentModel = $scope.parentModel || $scope.$parent.model;
           var parentInstance = $scope.parentInstance;
           var parent = parentModel[parentInstance] || parentModel;
@@ -975,7 +996,7 @@ define([
         } else {
           if ($scope.isMultipleCardinality()) {
             var valueLocation = $scope.getValueLocation();
-            var maxItems = dms.getMaxItems($scope.field);
+            var maxItems = schemaService.getMaxItems($scope.field);
             if ((!maxItems || $scope.model.length < maxItems)) {
               // add another instance in the model
               var obj = {};
@@ -994,11 +1015,11 @@ define([
       // remove the value of field at index
       $scope.removeInput = function (index) {
 
-        var minItems = dms.getMinItems($scope.field) || 0;
+        var minItems = schemaService.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
 
           // attribute-value pairs propagate and have unique attributes
-          if (dms.isAttributeValueType($scope.field)) {
+          if (schemaService.isAttributeValueType($scope.field)) {
             var attributeName = $scope.model[index];
             if (Array.isArray($scope.parentModel)) {
               for (var i = 0; i < $scope.parentModel.length; i++) {
@@ -1030,7 +1051,7 @@ define([
        * attribute names and generates/removes the corresponding properties in the @context.
        */
       $scope.$watchCollection('parentModel[fieldKey]', function (newVal, oldVal) {
-        if (dms.isAttributeValueType($scope.field)) {
+        if (schemaService.isAttributeValueType($scope.field)) {
           if (oldVal != newVal) { // check that the array actually changed to avoid regenerating context properties
             for (var i = 0; i < oldVal.length; i++) {
               // if the old string is not in the new array, remove it from the context.
@@ -1053,8 +1074,8 @@ define([
       $scope.$on('submitForm', function (event) {
 
         var location = dms.getValueLocation($scope.field);
-        var min = dms.getMinItems($scope.field) || 0;
-        var valueConstraint = dms.getValueConstraint($scope.field);
+        var min = schemaService.getMinItems($scope.field) || 0;
+        var valueConstraint = schemaService.getValueConstraints($scope.field);
         var id = $scope.getId();
         var title = $scope.getPropertyLabel();
 
@@ -1147,7 +1168,7 @@ define([
 
       // make sure there are at least 10 entries in the spreadsheet
       $scope.createExtraRows = function () {
-        var maxItems = dms.getMaxItems($scope.field);
+        var maxItems = schemaService.getMaxItems($scope.field);
         while (($scope.model.length < 10 || $scope.model.length < maxItems)) {
           $scope.addMoreInput();
         }
@@ -1156,7 +1177,7 @@ define([
       // delete extra blank rows
       $scope.deleteExtraRows = function () {
         var location = dms.getValueLocation($scope.field);
-        var min = dms.getMinItems($scope.field) || 0;
+        var min = schemaService.getMinItems($scope.field) || 0;
         if (angular.isArray($scope.model)) {
 
           loop:for (var i = $scope.model.length; i > min; i--) {
@@ -1171,7 +1192,7 @@ define([
       };
 
       $scope.isHidden = function () {
-        return dms.isHidden($scope.field);
+        return schemaService.isHidden($scope.field);
       };
 
       $scope.hasModel = function () {
@@ -1241,7 +1262,6 @@ define([
       //   text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
       //   return text;
       // }
-
 
 
       // var getPlaceholderForNumericField = function (node) {
@@ -1321,8 +1341,6 @@ define([
       //     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
       //   }
       // };
-
-
 
 
       //

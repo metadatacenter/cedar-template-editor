@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.service.uIUtilService', [])
       .service('UIUtilService', UIUtilService);
 
-  UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService", "DataUtilService",
+  UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService",'schemaService', "DataUtilService",
                            "ClientSideValidationService", "$translate","CONST"];
 
-  function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService, DataUtilService,
+  function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService, schemaService,DataUtilService,
                          ClientSideValidationService, $translate,CONST) {
 
     var service = {
@@ -230,9 +230,9 @@ define([
     // and does not contain nested elements or multi-instance fields
     service.isSpreadsheetable = function (node) {
 
-      var schema = dms.schemaOf(node);
-      var result = dms.isCardinalElement(node) && !dms.isMultipleChoice(node) && !dms.isAttributeValueType(node);
-      if (DataUtilService.isElement(schema) && dms.isCardinalElement(node)) {
+      var schema = schemaService.schemaOf(node);
+      var result = schemaService.isCardinalElement(node) && !schemaService.isMultipleChoice(node) && !schemaService.isAttributeValueType(node);
+      if (DataUtilService.isElement(schema) && schemaService.isCardinalElement(node)) {
         result = dms.getFlatSpreadsheetOrder(node).length > 0;
       }
       return result;
@@ -391,7 +391,7 @@ define([
 
     service.cardinalityString = function (node) {
       var result = '';
-      if (dms.isMultipleCardinality(node)) {
+      if (schemaService.isMultipleCardinality(node)) {
         result = '[' + dms.getMinItems(node) + '...' + (dms.getMaxItems(
                 node) || 'N') + ']';
       }
@@ -491,7 +491,7 @@ define([
         return;
       }
 
-      dms.setMinMax(node);
+      schemaService.setMinMax(node);
       service.setDefaults(node);
 
       var errorMessages = jQuery.merge(ClientSideValidationService.checkFieldConditions(node),
@@ -520,7 +520,7 @@ define([
     // default the title and options if necessary
     service.setDefaults = function (node) {
       dms.defaultTitle(node);
-      if (dms.isMultiAnswer(node)) {
+      if (schemaService.isMultiAnswer(node)) {
         dms.defaultOptions(node, $translate.instant("VALIDATION.noNameField"));
       }
     };

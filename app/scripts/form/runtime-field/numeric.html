@@ -7,20 +7,22 @@
     </div>
     <div class="form-group  has-feedback">
 
-      <input type="number"
+      <input
+          ng-change="onChange()"
+          ng-model="data.info[index].value"
+          type="number"
           name="numericField"
           min="{{getMinValue()}}"
           max="{{getMaxValue()}}"
-          step="{{getStep()}}"
           ng-required="isRequired()"
           class="form-control isActive select"
           ng-class="{'required': isRequired()}"
-          placeholder="{{getMinValue() || '0' + '.' + '0'.repeat(getDecimalPlace()-1) + '1'}}"
+      placeholder="{{getNumericPlaceholder()}}"
+
           ng-model-options="{allowInvalid:true}"
-          aria-label="{{getHelp()}}"
-          ng-model="data.info[index].value"
-          ng-change="updateModelFromUI()">
-      </input>
+          aria-label="{{getHelp()}}">
+      <!--step="{{getStep()}}"-->
+
 
       <div class="validation" role="alert">
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['required']">{{ 'VALIDATION.required' |
