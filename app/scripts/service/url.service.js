@@ -129,11 +129,11 @@ define([
     };
 
     service.getValueRecommendation = function () {
-      return this.valueRecommender() + '/recommend';
+      return this.valueRecommender() + '/command/recommend';
     };
 
     service.canGenerateRecommendations = function () {
-      return this.valueRecommender() + '/can-generate-recommendations';
+      return this.valueRecommender() + '/command/can-generate-recommendations';
     };
 
     service.resourceBase = function () {
