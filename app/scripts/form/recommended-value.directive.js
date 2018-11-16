@@ -104,17 +104,17 @@ define([
       $scope.updateModelWhenChangeSelection = function (modelvr, index) {
         if (modelvr[index] && modelvr[index].valueInfo) {
           // URI
-          if (modelvr[index].valueInfo.valueUri) {
+          if (modelvr[index].valueInfo.valueType) {
             // Array
             if ($rootScope.isArray($scope.model)) {
-              $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model[index]['rdfs:label'] = modelvr[index].valueInfo.value;
+              $scope.model[index]['@id'] = modelvr[index].valueInfo.valueType;
+              $scope.model[index]['rdfs:label'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model[index]['@value'];
             }
             // Single object
             else {
-              $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model['rdfs:label'] = modelvr[index].valueInfo.value;
+              $scope.model['@id'] = modelvr[index].valueInfo.valueType;
+              $scope.model['rdfs:label'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model['@value'];
             }
           }
@@ -122,12 +122,12 @@ define([
           else {
             // Array
             if ($rootScope.isArray($scope.model)) {
-              $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
+              $scope.model[index]['@value'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model[index]['rdfs:label'];
             }
             // Single object
             else {
-              $scope.model['@value'] = modelvr[index].valueInfo.value;
+              $scope.model['@value'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model['rdfs:label'];
             }
           }
@@ -174,15 +174,15 @@ define([
         if ($scope.isControlledValue(model)) {
           return {
             'valueInfo': {
-              'value'   : model['rdfs:label'],
-              'valueUri': model[fieldValue]
+              'valueLabel': model['rdfs:label'],
+              'valueType': model[fieldValue]
             }
           };
         }
         // if plain text value
         else {
           return {
-            'valueInfo': {'value': model[fieldValue]}
+            'valueInfo': {'valueLabel': model[fieldValue]}
           };
         }
       };
@@ -228,7 +228,7 @@ define([
               else {
                 $scope.model['@value'] = modelValue;
               }
-              modelvr[index].valueInfo.value = modelValue;
+              modelvr[index].valueInfo.valueLabel = modelValue;
             }
           }
         }

@@ -124,7 +124,7 @@ define(['angular'], function (angular) {
                 if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
                   recommendation.recommendedValues.push({
                     'valueLabel': $translate.instant('VALUERECOMMENDER.noResults'),
-                    'score': undefined
+                    'score'     : undefined
                   })
                 }
                 else {
@@ -141,9 +141,9 @@ define(['angular'], function (angular) {
                 // Check if the ontology term is part of the recommendations
                 if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
                   recommendation.recommendedValues.push({
-                    'valueLabel'   : controlledTerms[i].label,
-                    'valueType': controlledTerms[i]['@id'],
-                    'score'   : undefined
+                    'valueLabel': controlledTerms[i].label,
+                    'valueType' : controlledTerms[i]['@id'],
+                    'score'     : undefined
                   });
                 }
               }
