@@ -3,7 +3,7 @@
     ng-class="{'has-selected': modelValueRecommendation[index].valueInfo.valueLabel}">
   <ui-select
       ng-model="modelValueRecommendation[index].valueInfo"
-      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.valueLabel)"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation, index); updatePopulatedFields(field, modelValueRecommendation[index].valueInfo.valueLabel, modelValueRecommendation[index].valueInfo.valueType)"
       ng-click="updateValueRecommendationResults(field, $select.search || '*'); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
       reset-search-input="false"

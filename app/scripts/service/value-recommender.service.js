@@ -27,10 +27,8 @@ define(['angular'], function (angular) {
      * Initialize service
      */
     service.init = function (templId, templ) {
-
       templateId = templId;
       template = templ;
-
       DataManipulationService.addPathInfo(template, null);
 
       http_default_config = {
@@ -47,7 +45,6 @@ define(['angular'], function (angular) {
           canGenerateRecommendations = false;
         }
       });
-
       // Clear valueRecommendationResults and populatedFields
       service.valueRecommendationResults = [];
       service.populatedFields = [];
@@ -77,14 +74,16 @@ define(['angular'], function (angular) {
       }
     };
 
-
-    service.updatePopulatedFields = function (field, value) {
+    service.updatePopulatedFields = function (field, valueLabel, valueType) {
       var fieldId = DataManipulationService.getId(field);
       if (fieldId) {
-        if (value) {
+        if (valueLabel) {
           service.populatedFields[fieldId] = {
-            "fieldPath" : field._path,
-            "fieldValueLabel": value
+            'fieldPath' : field._path,
+            'fieldValueLabel': valueLabel
+          }
+          if (valueType) {
+            service.populatedFields[fieldId]['fieldValueType'] = valueType;
           }
         }
         else {
@@ -117,9 +116,6 @@ define(['angular'], function (angular) {
         service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
             function (recommendation) {
               var controlledTerms = autocompleteService.autocompleteResultsCache[fieldId][query]['results'];
-              console.log('** controlledTerms', controlledTerms);
-              console.log('** recommendation');
-              console.log(recommendation);
               if (recommendation.recommendedValues) {
                 if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
                   recommendation.recommendedValues.push({
@@ -132,7 +128,6 @@ define(['angular'], function (angular) {
                   for (var i = 0; i < recommendation.recommendedValues.length; i++) {
                     recommendedLabels.push(recommendation.recommendedValues[i].valueLabel.toLowerCase());
                   }
-                  console.log('** recommendedLabels ', recommendedLabels);
                 }
               }
 
@@ -171,7 +166,6 @@ define(['angular'], function (angular) {
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
-
       var inputData = {};
       if (populatedFields.length > 0) {
         inputData['populatedFields'] = populatedFields;
