@@ -55,7 +55,6 @@ define([
 
 
     service.getPage = function (field_id, query, field_type, source_uri) {
-
       try {
         return service.autocompleteResultsCache[field_id][query].paging[field_type][source_uri].nextPage;
       }

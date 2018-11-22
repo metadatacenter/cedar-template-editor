@@ -7,9 +7,9 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService"];
+  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService", "schemaService"];
 
-  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService) {
+  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService, schemaService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -129,7 +129,8 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        console.log('Initializing value recommendation field')
+        console.log('Initializing value recommendation field');
+        autocompleteService.clearResults($scope.getId($scope.field)); // clear ontology terms cache for the field
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
@@ -185,14 +186,15 @@ define([
         $scope.isFirstRefresh = value;
       };
 
-      $scope.updateModelWhenRefresh = function (select, modelvr, index) {
-        console.log('Updating model when refresh')
-        if (!$scope.isFirstRefresh) {
+      $scope.updateModelWhenRefresh = function (field, select, modelvr, index) {
+
+        console.log('Is constrained?', schemaService.isConstrained(field));
+        console.log('Updating model when refresh');
+
+        if (!$scope.isFirstRefresh && !schemaService.isConstrained(field)) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
             // If the user entered a new value
-            console.log(index)
-            console.log(modelvr)
             if (select.search != modelvr[index].valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
