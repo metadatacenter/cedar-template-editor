@@ -70,7 +70,7 @@ define([
 
       // has value constraints?
       $scope.isConstrained = function () {
-        return schemaService.hasValueConstraints($scope.field);
+        return schemaService.isConstrained($scope.field);
       };
 
       $scope.isDraft = function () {

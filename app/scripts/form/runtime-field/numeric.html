@@ -14,19 +14,19 @@
           name="numericField"
           min="{{getMinValue()}}"
           max="{{getMaxValue()}}"
+          step="{{getStep()}}"
+          ng-pattern="handlePattern"
           ng-required="isRequired()"
           class="form-control isActive select"
           ng-class="{'required': isRequired()}"
-      placeholder="{{getNumericPlaceholder()}}"
-
-          ng-model-options="{allowInvalid:true}"
+          placeholder="{{getNumericPlaceholder()}}"
           aria-label="{{getHelp()}}">
-      <!--step="{{getStep()}}"-->
-
 
       <div class="validation" role="alert">
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['required']">{{ 'VALIDATION.required' |
           translate }}
+        </div>
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['number']">{{ 'VALIDATION.invalidPattern' | translate : { type: getNumberType() } }}
         </div>
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['min']">{{ 'VALIDATION.invalidMinValue' |
           translate : { min: getMinValue() } }}
@@ -37,12 +37,16 @@
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['decimal']">{{
           'VALIDATION.invalidDecimalPlace' | translate : { decimal: getDecimalPlace() } }}
         </div>
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['pattern']">
+          <span ng-if="getDecimalPlace()">{{ 'VALIDATION.invalidDecimalPlace' | translate : { decimal: getDecimalPlace() } }}</span>
+          <span ng-if="!getDecimalPlace()">{{ 'VALIDATION.invalidPattern' | translate : { type: getNumberType() } }}</span>
+
+        </div>
       </div>
 
       <div class="input-indicator-icons"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-
   </div>
 
   <!-- not editing --->
