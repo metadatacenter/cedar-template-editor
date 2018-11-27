@@ -142,43 +142,45 @@ define([
 
       // handle the ng-pattern validation for numbers
       $scope.handlePattern = (function () {
-            let regexp;
-            let places = schemaService.getDecimalPlace($scope.field);
-            let countDecimals = function (value) {
-              let result = 0;
-              let arr = value.toString().split(".");
-              if (arr.length > 1) {
-                result = arr[1].length;
-              }
-
-              return result;
-            };
-
-            switch (schemaService.getNumberType($scope.field)) {
-              case "xsd:long":
-              case "xsd:int":
-                // integer or long int
-                regexp = /^-?[0-9][^\.]*$/;
-                break;
-              case "xsd:decimal":
-              case "xsd:float":
-              case "xsd:double":
-                // single or double precision real
-                regexp = /^-?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
-                break;
-            }
-
-            return {
-              test: function (value) {
-                if (places) {
-                  // TODO shouldn't have to count places here, regexp should handle correctly using {0,places} but it is not working
-                  return regexp.test(value) && countDecimals(value) <= places;
-                } else {
-                  return regexp.test(value);
+            if (schemaService.isNumericField($scope.field)) {
+              let regexp;
+              let places = schemaService.getDecimalPlace($scope.field);
+              let countDecimals = function (value) {
+                let result = 0;
+                let arr = value.toString().split(".");
+                if (arr.length > 1) {
+                  result = arr[1].length;
                 }
 
+                return result;
+              };
+
+              switch (schemaService.getNumberType($scope.field)) {
+                case "xsd:long":
+                case "xsd:int":
+                  // integer or long int
+                  regexp = /^-?[0-9][^\.]*$/;
+                  break;
+                case "xsd:decimal":
+                case "xsd:float":
+                case "xsd:double":
+                  // single or double precision real
+                  regexp = /^-?([0-9]+([.][0-9]*)?|[.][0-9]+)$/;
+                  break;
               }
-            };
+
+              return {
+                test: function (value) {
+                  if (places) {
+                    // TODO shouldn't have to count places here, regexp should handle correctly using {0,places} but it is not working
+                    return regexp.test(value) && countDecimals(value) <= places;
+                  } else {
+                    return regexp.test(value);
+                  }
+
+                }
+              };
+            }
           }
       )();
 
