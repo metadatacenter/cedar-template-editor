@@ -40,7 +40,9 @@
         <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['pattern']">
           <span ng-if="getDecimalPlace()">{{ 'VALIDATION.invalidDecimalPlace' | translate : { decimal: getDecimalPlace() } }}</span>
           <span ng-if="!getDecimalPlace()">{{ 'VALIDATION.invalidPattern' | translate : { type: getNumberType() } }}</span>
-
+        </div>
+        <div ng-if="forms['fieldEditForm' + index]['numericField']['$error']['valuerange']">{{
+          'VALIDATION.invalidRangeValue' | translate : { type: getNumberType() } }}
         </div>
       </div>
 

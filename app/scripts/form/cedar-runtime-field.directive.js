@@ -745,8 +745,40 @@ define([
         $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('decimal', valid);
       };
 
+// Check the value range of the input value
+      var validateValueRange = function (value) {
+        let valid = true;
+        switch (schemaService.getNumberType($scope.field)) {
+          case "xsd:long":
+            // No implementation. Reason: JS stores number value in a 64-bit floating point format
+            // and that format only supports a safe integer number up to 53 bits which is less than
+            // the required 64 bits for a long integer number. As a result, implementing a value
+            // range validation from xsd:long is unfeasible in a vanilla JS.
+            break;
+          case "xsd:int":
+            valid = (value >= -2147483648) && (value <= 2147483647);
+            break;
+          case "xsd:float":
+            valid = (value >= -3.402823e+1038) && (value <= 3.402823e+1038);
+            break;
+          case "xsd:double":
+            valid = (value >= Number.MIN_VALUE) && (value <= Number.MAX_VALUE);
+            break;
+          case "xsd:decimal":
+            // No implementation. Reason: Decimal numbers has a min/max range of infinity
+            break;
+        }
+        $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('valuerange', valid);
+        if (!valid) {
+          $scope.valueArray[$scope.index]['@value'] = 0;
+        }
+      };
+
       $scope.onChange = function () {
         $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value ? $scope.data.info[$scope.index].value + '' : null;
+        if ($scope.getInputType() == "numeric") {
+          validateValueRange($scope.valueArray[$scope.index]['@value']);
+        }
       };
 
 // set the instance @value fields based on the options selected at the UI
@@ -760,6 +792,7 @@ define([
           case "numeric":
             $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value + '';
             validateDecimals($scope.valueArray[$scope.index]['@value']);
+            validateValueRange($scope.valueArray[$scope.index]['@value']);
             break;
           case "date":
             var str = $scope.toXSDDate(newValue);

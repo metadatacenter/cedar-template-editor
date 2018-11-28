@@ -559,7 +559,8 @@
     "invalidPattern": "Value must be a valid number of type {{type}}",
     "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
     "invalidMaxValue": "Please enter a value less than or equal to {{max}}",
-    "invalidDate": "Please enter a valid date, e.g. 10/10/2010"
+    "invalidDate": "Please enter a valid date, e.g. 10/10/2010",
+    "invalidRangeValue": "Value is out of range for type {{type}}"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
