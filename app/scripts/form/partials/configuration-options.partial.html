@@ -117,7 +117,7 @@
       </div>
 
       <!-- min string length constraint -->
-      <div class="form-group floating-label-wrapper">
+      <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
         <input type="number" auto-focus
             class="form-control field-min-max-definition"
             placeholder="{{'CREATOR.enterMinLength' | translate}}"
@@ -128,7 +128,7 @@
       </div>
 
       <!-- max string length constraint -->
-      <div class="form-group floating-label-wrapper">
+      <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
         <input type="number" auto-focus
             class="form-control field-min-max-definition"
             placeholder="{{'CREATOR.enterMaxLength' | translate}}"
