@@ -364,7 +364,7 @@ define([
           };
 
           vm.hasIdentifier = function (node) {
-            schemaService.hasIdentifier(node);
+            return schemaService.getIdentifier(node);
           };
 
           vm.getIdentifier = function (node) {
