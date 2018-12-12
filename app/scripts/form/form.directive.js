@@ -576,7 +576,7 @@ define([
         };
 
         $scope.getFormTitle = function (item) {
-          return dms.getTitle($scope.form.properties[item]);
+          return dms.getPreferredLabel($scope.form.properties[item]) || dms.getTitle($scope.form.properties[item]); 
         };
 
 
