@@ -214,6 +214,7 @@ define([
 
           // initialize the share dialog
           vm.openTerms = function (resource, actions) {
+            console.log('actions',actions);
             vm.isloading = true;
 
             autocompleteService.clearResults(vm.id, vm.term);
@@ -240,8 +241,6 @@ define([
               // sort and apply mods
               vm.sortList(vm.fullList);
               vm.list = vm.applyActions(vm.fullList, actions);
-              console.log('vm.list', vm.list);
-
               vm.isloading = false;
             });
           };
@@ -314,11 +313,23 @@ define([
                   for (let i = 1; i <= foundResults.length; i++) {
                     var found = foundResults[i - 1];
 
+                    // vm.fullList.push({
+                    //   '@id'       : found['@id'],
+                    //   label       : found['label'],
+                    //   notation    : found['notation'],
+                    //   sourceUri   : found['sourceUri'],
+                    //   termUri     : found['@id'],
+                    //   acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                    //   type        : found['type'],
+                    //   id          : found['id'],
+                    //   vsCollection: found['vsCollection']
+                    // });
+
                     vm.fullList.push({
-                      '@id'       : found['@id'],
                       label       : found['label'],
                       notation    : found['notation'],
                       sourceUri   : found['sourceUri'],
+                      termUri     : found['@id'],
                       acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
                       type        : found['type'],
                       id          : found['id'],

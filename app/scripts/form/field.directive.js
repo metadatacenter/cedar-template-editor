@@ -1228,9 +1228,7 @@ define([
 
       // open the terms modal
       $scope.showTermsModal = function() {
-
         $scope.termsModalVisible = true;
-        console.log('showTermsModal',[$scope.termsModalVisible, $scope.field]);
         $rootScope.$broadcast('termsModalVisible', [$scope.termsModalVisible, $scope.field]);
       };
 
