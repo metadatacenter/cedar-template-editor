@@ -469,6 +469,14 @@ define([
       return this.resourceBase() + "/command/create-draft-resource";
     };
 
+    service.makePublic = function () {
+      return this.resourceBase() + "/command/make-resource-public";
+    };
+
+    service.makeNotPublic = function () {
+      return this.resourceBase() + "/command/make-resource-not-public";
+    };
+
     return service;
   }
 

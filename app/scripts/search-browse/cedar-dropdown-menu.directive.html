@@ -14,6 +14,9 @@
   <li><a ng-cloak class="submit" ng-class="{'link-disabled': canNotSubmit}"  href="#"  ng-click="submit(resource)" translate>DASHBOARD.menu.submit</a></li>
   <li role="separator" class="divider"></li>
   <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotDelete}" href="#"  ng-click="delete(resource)" translate>DASHBOARD.menu.delete</a></li>
+  <li role="separator" class="divider"></li>
+  <li><a ng-cloak class="makepublic" ng-class="{'link-disabled': canNotMakePublic}"  href="#" ng-click="makePublic(resource)"  translate>DASHBOARD.menu.makepublic</a></li>
+  <li><a ng-cloak class="makenotpublic" ng-class="{'link-disabled': canNotMakeNotPublic}" href="#" ng-click="makeNotPublic(resource)"  translate>DASHBOARD.menu.makenotpublic</a></li>
 </ul>
 
 

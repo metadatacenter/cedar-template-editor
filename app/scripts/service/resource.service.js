@@ -55,11 +55,15 @@ define([
           canChangeOwner           : canChangeOwner,
           canShare                 : canShare,
           canPublish               : canPublish,
+          canMakePublic            : canMakePublic,
+          canMakeNotPublic         : canMakeNotPublic,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
+          makePublic               : makePublic,
+          makeNotPublic            : makeNotPublic,
           renameNode               : renameNode,
           validateResource         : validateResource,
           canDo                    : canDo
@@ -601,6 +605,31 @@ define([
           );
         }
 
+        function makePublic(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makePublic();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function makeNotPublic(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makeNotPublic();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
 
         function getResourceShare(resource, successCallback, errorCallback) {
           var url;
@@ -782,6 +811,14 @@ define([
 
         function canPublish(resource) {
           return this.canDo(resource, 'canPublish');
+        }
+
+        function canMakePublic(resource) {
+          return this.canDo(resource, 'canMakePublic');
+        }
+
+        function canMakeNotPublic(resource) {
+          return this.canDo(resource, 'canMakeNotPublic');
         }
 
         function canSubmit(resource) {

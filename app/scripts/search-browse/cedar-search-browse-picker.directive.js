@@ -104,6 +104,8 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
+          vm.makePublic = makePublic;
+          vm.makeNotPublic = makeNotPublic;
           vm.isSelected = isSelected;
 
 
@@ -583,6 +585,8 @@ define([
             vm.canNotRename = !vm.canRename();
             vm.canNotPopulate = !vm.canPopulate();
             vm.canNotCreateDraft = !vm.canCreateDraft();
+            vm.canNotMakePublic = !vm.canMakePublic();
+            vm.canNotMakeNotPublic = !vm.canMakeNotPublic();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -677,6 +681,14 @@ define([
 
           vm.canCreateDraft = function () {
             return resourceService.canCreateDraft(vm.getSelectedNode());
+          };
+
+          vm.canMakePublic = function () {
+            return resourceService.canMakePublic(vm.getSelectedNode());
+          };
+
+          vm.canMakeNotPublic = function () {
+            return resourceService.canMakeNotPublic(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -1138,6 +1150,42 @@ define([
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.createDraftResource.error', response);
+                }
+            );
+          }
+
+          function makePublic(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makePublic(
+                resource,
+                function (response) {
+                  var title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makePublicResource.success', {"title": title},
+                      'GENERIC.MadePublic');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makePublicResource.error', response);
+                }
+            );
+          }
+
+          function makeNotPublic(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makeNotPublic(
+                resource,
+                function (response) {
+                  var title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotPublicResource.success', {"title": title},
+                      'GENERIC.MadeNotPublic');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeNotPublicResource.error', response);
                 }
             );
           }

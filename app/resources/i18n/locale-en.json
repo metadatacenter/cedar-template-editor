@@ -185,7 +185,9 @@
     "NA": "n/a",
     "OntologyId": "Ontology Id",
     "OntologyName": "Ontology Name",
-    "UILabel": "UI Label"
+    "UILabel": "UI Label",
+    "MadePublic": "Made Public",
+    "MadeNotPublic": "Made Not Public"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -340,6 +342,14 @@
       "createDraftResource": {
         "success": "The draft from resource '{{title}}' was created!",
         "error": "There was an error while creating the draft from the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makePublicResource": {
+        "success": "The resource '{{title}}' was made publicly available!",
+        "error": "There was an error while making the resource publicly available!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makeNotPublicResource": {
+        "success": "The resource '{{title}}' was made NOT publicly available!",
+        "error": "There was an error while making the resource NOT publicly available!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -415,7 +425,9 @@
       "copy": "Copy to...",
       "move": "Move to...",
       "rename": "Rename...",
-      "submit": "Submit..."
+      "submit": "Submit...",
+      "makepublic": "Make it publicly available",
+      "makenotpublic": "Make it not publicly available"
     },
     "delete": {
       "confirm": {
