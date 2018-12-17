@@ -186,8 +186,8 @@
     "OntologyId": "Ontology Id",
     "OntologyName": "Ontology Name",
     "UILabel": "UI Label",
-    "MadePublic": "Made Public",
-    "MadeNotPublic": "Made Not Public"
+    "MadeOpen": "Made Open",
+    "MadeNotOpen": "Made Not Open"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -343,13 +343,13 @@
         "success": "The draft from resource '{{title}}' was created!",
         "error": "There was an error while creating the draft from the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       },
-      "makePublicResource": {
-        "success": "The resource '{{title}}' was made publicly available!",
-        "error": "There was an error while making the resource publicly available!<br /><br />VIEW TECHNICAL DETAILS!"
+      "makeOpenArtifact": {
+        "success": "The artifact '{{title}}' was made open!",
+        "error": "There was an error while making the artifact open!<br /><br />VIEW TECHNICAL DETAILS!"
       },
-      "makeNotPublicResource": {
-        "success": "The resource '{{title}}' was made NOT publicly available!",
-        "error": "There was an error while making the resource NOT publicly available!<br /><br />VIEW TECHNICAL DETAILS!"
+      "makeNotOpenArtifact": {
+        "success": "The artifact '{{title}}' was made NOT open!",
+        "error": "There was an error while making the artifact NOT open!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -426,8 +426,8 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "makepublic": "Make it publicly available",
-      "makenotpublic": "Make it not publicly available"
+      "makeopen": "Make it open",
+      "makenotopen": "Make it not open"
     },
     "delete": {
       "confirm": {

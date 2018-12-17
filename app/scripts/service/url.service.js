@@ -469,12 +469,12 @@ define([
       return this.resourceBase() + "/command/create-draft-resource";
     };
 
-    service.makePublic = function () {
-      return this.resourceBase() + "/command/make-resource-public";
+    service.makeOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-open";
     };
 
-    service.makeNotPublic = function () {
-      return this.resourceBase() + "/command/make-resource-not-public";
+    service.makeNotOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-not-open";
     };
 
     return service;

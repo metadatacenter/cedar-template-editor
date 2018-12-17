@@ -104,8 +104,8 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
-          vm.makePublic = makePublic;
-          vm.makeNotPublic = makeNotPublic;
+          vm.makeOpen = makeOpen;
+          vm.makeNotOpen = makeNotOpen;
           vm.isSelected = isSelected;
 
 
@@ -585,8 +585,8 @@ define([
             vm.canNotRename = !vm.canRename();
             vm.canNotPopulate = !vm.canPopulate();
             vm.canNotCreateDraft = !vm.canCreateDraft();
-            vm.canNotMakePublic = !vm.canMakePublic();
-            vm.canNotMakeNotPublic = !vm.canMakeNotPublic();
+            vm.canNotMakeOpen = !vm.canMakeOpen();
+            vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -683,12 +683,12 @@ define([
             return resourceService.canCreateDraft(vm.getSelectedNode());
           };
 
-          vm.canMakePublic = function () {
-            return resourceService.canMakePublic(vm.getSelectedNode());
+          vm.canMakeOpen = function () {
+            return resourceService.canMakeOpen(vm.getSelectedNode());
           };
 
-          vm.canMakeNotPublic = function () {
-            return resourceService.canMakeNotPublic(vm.getSelectedNode());
+          vm.canMakeNotOpen = function () {
+            return resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -1154,38 +1154,38 @@ define([
             );
           }
 
-          function makePublic(resource) {
+          function makeOpen(resource) {
             if (!resource) {
               resource = getSelected();
             }
-            resourceService.makePublic(
+            resourceService.makeOpen(
                 resource,
                 function (response) {
                   var title = vm.getTitle(resource);
-                  UIMessageService.flashSuccess('SERVER.RESOURCE.makePublicResource.success', {"title": title},
-                      'GENERIC.MadePublic');
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeOpenArtifact.success', {"title": title},
+                      'GENERIC.MadeOpen');
                   vm.refreshWorkspace(resource);
                 },
                 function (response) {
-                  UIMessageService.showBackendError('SERVER.RESOURCE.makePublicResource.error', response);
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeOpenArtifact.error', response);
                 }
             );
           }
 
-          function makeNotPublic(resource) {
+          function makeNotOpen(resource) {
             if (!resource) {
               resource = getSelected();
             }
-            resourceService.makeNotPublic(
+            resourceService.makeNotOpen(
                 resource,
                 function (response) {
                   var title = vm.getTitle(resource);
-                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotPublicResource.success', {"title": title},
-                      'GENERIC.MadeNotPublic');
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotOpenArtifact.success', {"title": title},
+                      'GENERIC.MadeNotOpen');
                   vm.refreshWorkspace(resource);
                 },
                 function (response) {
-                  UIMessageService.showBackendError('SERVER.RESOURCE.makeNotPublicResource.error', response);
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeNotOpenArtifact.error', response);
                 }
             );
           }

@@ -55,15 +55,15 @@ define([
           canChangeOwner           : canChangeOwner,
           canShare                 : canShare,
           canPublish               : canPublish,
-          canMakePublic            : canMakePublic,
-          canMakeNotPublic         : canMakeNotPublic,
+          canMakeOpen              : canMakeOpen,
+          canMakeNotOpen           : canMakeNotOpen,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
-          makePublic               : makePublic,
-          makeNotPublic            : makeNotPublic,
+          makeOpen                 : makeOpen,
+          makeNotOpen              : makeNotOpen,
           renameNode               : renameNode,
           validateResource         : validateResource,
           canDo                    : canDo
@@ -605,10 +605,10 @@ define([
           );
         }
 
-        function makePublic(resource, successCallback, errorCallback) {
+        function makeOpen(resource, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          var url = urlService.makePublic();
+          var url = urlService.makeOpen();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
               function (response) {
@@ -618,10 +618,10 @@ define([
           );
         }
 
-        function makeNotPublic(resource, successCallback, errorCallback) {
+        function makeNotOpen(resource, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          var url = urlService.makeNotPublic();
+          var url = urlService.makeNotOpen();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
               function (response) {
@@ -813,12 +813,12 @@ define([
           return this.canDo(resource, 'canPublish');
         }
 
-        function canMakePublic(resource) {
-          return this.canDo(resource, 'canMakePublic');
+        function canMakeOpen(resource) {
+          return this.canDo(resource, 'canMakeOpen');
         }
 
-        function canMakeNotPublic(resource) {
-          return this.canDo(resource, 'canMakeNotPublic');
+        function canMakeNotOpen(resource) {
+          return this.canDo(resource, 'canMakeNotOpen');
         }
 
         function canSubmit(resource) {
