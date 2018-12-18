@@ -104,6 +104,8 @@ define([
           vm.copyResource = copyResource;
           vm.publishResource = publishResource;
           vm.createDraftResource = createDraftResource;
+          vm.makeOpen = makeOpen;
+          vm.makeNotOpen = makeNotOpen;
           vm.isSelected = isSelected;
 
 
@@ -583,6 +585,8 @@ define([
             vm.canNotRename = !vm.canRename();
             vm.canNotPopulate = !vm.canPopulate();
             vm.canNotCreateDraft = !vm.canCreateDraft();
+            vm.canNotMakeOpen = !vm.canMakeOpen();
+            vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -677,6 +681,14 @@ define([
 
           vm.canCreateDraft = function () {
             return resourceService.canCreateDraft(vm.getSelectedNode());
+          };
+
+          vm.canMakeOpen = function () {
+            return resourceService.canMakeOpen(vm.getSelectedNode());
+          };
+
+          vm.canMakeNotOpen = function () {
+            return resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -1138,6 +1150,42 @@ define([
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.createDraftResource.error', response);
+                }
+            );
+          }
+
+          function makeOpen(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makeOpen(
+                resource,
+                function (response) {
+                  var title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeOpenArtifact.success', {"title": title},
+                      'GENERIC.MadeOpen');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeOpenArtifact.error', response);
+                }
+            );
+          }
+
+          function makeNotOpen(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makeNotOpen(
+                resource,
+                function (response) {
+                  var title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotOpenArtifact.success', {"title": title},
+                      'GENERIC.MadeNotOpen');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeNotOpenArtifact.error', response);
                 }
             );
           }

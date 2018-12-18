@@ -469,6 +469,14 @@ define([
       return this.resourceBase() + "/command/create-draft-resource";
     };
 
+    service.makeOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-open";
+    };
+
+    service.makeNotOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-not-open";
+    };
+
     return service;
   }
 

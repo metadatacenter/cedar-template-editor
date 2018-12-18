@@ -55,11 +55,15 @@ define([
           canChangeOwner           : canChangeOwner,
           canShare                 : canShare,
           canPublish               : canPublish,
+          canMakeOpen              : canMakeOpen,
+          canMakeNotOpen           : canMakeNotOpen,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
+          makeOpen                 : makeOpen,
+          makeNotOpen              : makeNotOpen,
           renameNode               : renameNode,
           validateResource         : validateResource,
           canDo                    : canDo
@@ -601,6 +605,31 @@ define([
           );
         }
 
+        function makeOpen(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makeOpen();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function makeNotOpen(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makeNotOpen();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
 
         function getResourceShare(resource, successCallback, errorCallback) {
           var url;
@@ -782,6 +811,14 @@ define([
 
         function canPublish(resource) {
           return this.canDo(resource, 'canPublish');
+        }
+
+        function canMakeOpen(resource) {
+          return this.canDo(resource, 'canMakeOpen');
+        }
+
+        function canMakeNotOpen(resource) {
+          return this.canDo(resource, 'canMakeNotOpen');
         }
 
         function canSubmit(resource) {
