@@ -106,6 +106,7 @@ define([
           vm.createDraftResource = createDraftResource;
           vm.makeOpen = makeOpen;
           vm.makeNotOpen = makeNotOpen;
+          vm.openOpen = openOpen;
           vm.isSelected = isSelected;
 
 
@@ -176,6 +177,7 @@ define([
 
           vm.toggleResourceType = toggleResourceType;
 
+          vm.isField = isField;
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -1190,6 +1192,23 @@ define([
             );
           }
 
+          function openOpen(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            let url = null;
+            if (isElement(resource)) {
+              url = FrontendUrlService.openElement(resource['@id']);
+            } else if (isField(resource)) {
+              url = FrontendUrlService.openField(resource['@id']);
+            } else if (isTemplate(resource)) {
+              url = FrontendUrlService.openTemplate(resource['@id']);
+            } else if (isMeta(resource)) {
+              url = FrontendUrlService.openInstance(resource['@id']);
+            }
+            $window.open(url, '_blank');
+          }
+
           function launchInstance(value) {
             var resource = value || getSelected();
             if (resource) {
@@ -1537,6 +1556,10 @@ define([
 
           function isElement() {
             return (hasSelected() && (getSelected().nodeType == CONST.resourceType.ELEMENT));
+          }
+
+          function isField() {
+            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.FIELD));
           }
 
           function isFolder(resource) {

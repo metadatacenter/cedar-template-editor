@@ -11,7 +11,7 @@ define([
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService',
                                         'UserService', 'RichTextConfigService',
-                                        'provisionalClassService', 'CedarUser', 'UISettingsService',
+                                        'provisionalClassService', 'CedarUser', 'UISettingsService', 'FrontendUrlService',
                                         'TrackingService', 'MessagingService',
                                         '$httpParamSerializer', '$location'];
 
@@ -19,7 +19,7 @@ define([
   function cedarTemplateEditorCoreRun($rootScope, $window, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService,
                                       UserService, RichTextConfigService,
-                                      provisionalClassService, CedarUser, UISettingsService,
+                                      provisionalClassService, CedarUser, UISettingsService, FrontendUrlService,
                                       TrackingService, MessagingService,
                                       $httpParamSerializer, $location) {
 
@@ -54,6 +54,7 @@ define([
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
+    FrontendUrlService.init();
     provisionalClassService.init();
     DataManipulationService.init();
     UISettingsService.init();

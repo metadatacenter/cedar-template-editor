@@ -427,7 +427,8 @@
       "rename": "Rename...",
       "submit": "Submit...",
       "makeopen": "Make it open",
-      "makenotopen": "Make it not open"
+      "makenotopen": "Make it not open",
+      "openopen": "View open artifact"
     },
     "delete": {
       "confirm": {
