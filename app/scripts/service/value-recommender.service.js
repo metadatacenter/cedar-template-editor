@@ -172,6 +172,7 @@ define(['angular'], function (angular) {
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'fieldPath': targetFieldPath};
+      inputData['includeDetails'] = true;
 
       return AuthorizedBackendService.doCall(
           HttpBuilderService.post(UrlService.getValueRecommendation(), angular.toJson(inputData)),
