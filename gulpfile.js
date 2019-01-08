@@ -93,6 +93,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('schemaServerUrl', 'https://schema.' + cedarRestHost))
       .pipe(replace('submissionServerUrl', 'https://submission.' + cedarRestHost))
       .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
+      .pipe(replace('openMetadataBaseUrl', 'https://open-metadata.' + cedarRestHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });

@@ -185,7 +185,9 @@
     "NA": "n/a",
     "OntologyId": "Ontology Id",
     "OntologyName": "Ontology Name",
-    "UILabel": "UI Label"
+    "UILabel": "UI Label",
+    "MadeOpen": "Made Open",
+    "MadeNotOpen": "Made Not Open"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -340,6 +342,14 @@
       "createDraftResource": {
         "success": "The draft from resource '{{title}}' was created!",
         "error": "There was an error while creating the draft from the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makeOpenArtifact": {
+        "success": "The artifact '{{title}}' was made open!",
+        "error": "There was an error while making the artifact open!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makeNotOpenArtifact": {
+        "success": "The artifact '{{title}}' was made NOT open!",
+        "error": "There was an error while making the artifact NOT open!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -415,7 +425,10 @@
       "copy": "Copy to...",
       "move": "Move to...",
       "rename": "Rename...",
-      "submit": "Submit..."
+      "submit": "Submit...",
+      "makeopen": "Make it open",
+      "makenotopen": "Make it not open",
+      "openopen": "View open artifact"
     },
     "delete": {
       "confirm": {
