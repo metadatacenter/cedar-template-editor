@@ -30,6 +30,9 @@ define([
         publishCallback  : '=',
         draftCallback    : '=',
         submit           : '=',
+        makeOpen         : '=',
+        makeNotOpen      : '=',
+        openOpen         : '=',
         canNotPopulate   : '=',
         canNotPublish    : '=',
         canNotCreateDraft: '=',
@@ -37,6 +40,9 @@ define([
         canNotShare      : '=',
         canNotDelete     : '=',
         canNotSubmit     : '=',
+        canNotMakeOpen   : '=',
+        canNotMakeNotOpen: '=',
+        canNotOpenOpen   : '=',
         isFolder         : '=',
         toggleId         : "="
 

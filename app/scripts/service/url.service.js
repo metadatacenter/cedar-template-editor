@@ -129,11 +129,11 @@ define([
     };
 
     service.getValueRecommendation = function () {
-      return this.valueRecommender() + '/recommend';
+      return this.valueRecommender() + '/command/recommend';
     };
 
-    service.hasInstances = function (templateId) {
-      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
+    service.canGenerateRecommendations = function () {
+      return this.valueRecommender() + '/command/can-generate-recommendations';
     };
 
     service.resourceBase = function () {
@@ -467,6 +467,14 @@ define([
 
     service.createDraftResource = function () {
       return this.resourceBase() + "/command/create-draft-resource";
+    };
+
+    service.makeOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-open";
+    };
+
+    service.makeNotOpen = function () {
+      return this.resourceBase() + "/command/make-artifact-not-open";
     };
 
     return service;

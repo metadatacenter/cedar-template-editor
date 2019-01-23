@@ -7,35 +7,14 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService"];
+  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService", "schemaService"];
 
-  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService) {
+  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService, schemaService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
-      var dms = DataManipulationService;
       $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
-      // $scope.mods = dms.getMods($scope.field);
-
-
-      // $scope.applyMods= function(list) {
-      //   // apply mods to a duplicate of the list
-      //   var dup = list.slice();
-      //   for (let i = 0; i < $scope.mods.length; i++) {
-      //     let mod = $scope.mods[i];
-      //     let from = dup.findIndex(item => item['@id'] === mod.id);
-      //     if (from != -1) {
-      //       // delete it at from
-      //       let entry = dup.splice(from, 1);
-      //       if (mod.to != -1 && mod.action == 'move') {
-      //         // insert it at to
-      //         dup.splice(mod.to, 0, entry[0]);
-      //       }
-      //     }
-      //   }
-      //   return dup;
-      // };
 
       $scope.order = function (arr) {
         // if (arr) {
@@ -45,8 +24,8 @@ define([
         return arr;
       };
 
-      $scope.updatePopulatedFields = function(field, value) {
-        ValueRecommenderService.updatePopulatedFields(field, value);
+      $scope.updatePopulatedFields = function(field, valueLabel, valueType) {
+        ValueRecommenderService.updatePopulatedFields(field, valueLabel, valueType);
       };
 
       $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
@@ -104,17 +83,17 @@ define([
       $scope.updateModelWhenChangeSelection = function (modelvr, index) {
         if (modelvr[index] && modelvr[index].valueInfo) {
           // URI
-          if (modelvr[index].valueInfo.valueUri) {
+          if (modelvr[index].valueInfo.valueType) {
             // Array
             if ($rootScope.isArray($scope.model)) {
-              $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model[index]['rdfs:label'] = modelvr[index].valueInfo.value;
+              $scope.model[index]['@id'] = modelvr[index].valueInfo.valueType;
+              $scope.model[index]['rdfs:label'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model[index]['@value'];
             }
             // Single object
             else {
-              $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
-              $scope.model['rdfs:label'] = modelvr[index].valueInfo.value;
+              $scope.model['@id'] = modelvr[index].valueInfo.valueType;
+              $scope.model['rdfs:label'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model['@value'];
             }
           }
@@ -122,12 +101,12 @@ define([
           else {
             // Array
             if ($rootScope.isArray($scope.model)) {
-              $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
+              $scope.model[index]['@value'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model[index]['rdfs:label'];
             }
             // Single object
             else {
-              $scope.model['@value'] = modelvr[index].valueInfo.value;
+              $scope.model['@value'] = modelvr[index].valueInfo.valueLabel;
               delete $scope.model['rdfs:label'];
             }
           }
@@ -150,7 +129,8 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        console.log('Initializing value recommendation field')
+        console.log('Initializing value recommendation field');
+        autocompleteService.clearResults($scope.getId($scope.field)); // clear ontology terms cache for the field
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
@@ -174,15 +154,15 @@ define([
         if ($scope.isControlledValue(model)) {
           return {
             'valueInfo': {
-              'value'   : model['rdfs:label'],
-              'valueUri': model[fieldValue]
+              'valueLabel': model['rdfs:label'],
+              'valueType': model[fieldValue]
             }
           };
         }
         // if plain text value
         else {
           return {
-            'valueInfo': {'value': model[fieldValue]}
+            'valueInfo': {'valueLabel': model[fieldValue]}
           };
         }
       };
@@ -206,14 +186,15 @@ define([
         $scope.isFirstRefresh = value;
       };
 
-      $scope.updateModelWhenRefresh = function (select, modelvr, index) {
-        console.log('Updating model when refresh')
-        if (!$scope.isFirstRefresh) {
+      $scope.updateModelWhenRefresh = function (field, select, modelvr, index) {
+
+        console.log('Is constrained?', schemaService.isConstrained(field));
+        console.log('Updating model when refresh');
+
+        if (!$scope.isFirstRefresh && !schemaService.isConstrained(field)) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
             // If the user entered a new value
-            console.log(index)
-            console.log(modelvr)
             if (select.search != modelvr[index].valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
@@ -228,7 +209,7 @@ define([
               else {
                 $scope.model['@value'] = modelValue;
               }
-              modelvr[index].valueInfo.value = modelValue;
+              modelvr[index].valueInfo.valueLabel = modelValue;
             }
           }
         }

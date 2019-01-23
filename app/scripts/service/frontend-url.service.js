@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/url-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.frontendUrlService', [])
       .service('FrontendUrlService', FrontendUrlService);
 
@@ -10,11 +11,14 @@ define([
 
   function FrontendUrlService() {
 
+    var openMetadataBase = null;
+
     var service = {
       serviceId: "FrontendUrlService"
     };
 
     service.init = function () {
+      openMetadataBase = config.openMetadataBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -55,6 +59,22 @@ define([
 
     service.getMessaging = function (folderId) {
       return '/messaging?folderId=' + encodeURIComponent(folderId);
+    };
+
+    service.openField = function (id) {
+      return openMetadataBase + '/template-fields/' + encodeURIComponent(id);
+    };
+
+    service.openElement = function (id) {
+      return openMetadataBase + '/template-elements/' + encodeURIComponent(id);
+    };
+
+    service.openTemplate = function (id) {
+      return openMetadataBase + '/templates/' + encodeURIComponent(id);
+    };
+
+    service.openInstance = function (id) {
+      return openMetadataBase + '/template-instances/' + encodeURIComponent(id);
     };
 
     return service;
