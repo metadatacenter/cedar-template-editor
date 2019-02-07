@@ -190,6 +190,8 @@ define([
           vm.editingDescriptionInitialValue = null;
 
           vm.isSharedMode = isSharedMode;
+          vm.isSharedWithMeMode = isSharedWithMeMode;
+          vm.isSharedWithEverybodyMode = isSharedWithEverybodyMode;
           vm.isSearchMode = isSearchMode;
           vm.isHomeMode = isHomeMode;
           vm.nodeListQueryType = null;
@@ -932,6 +934,15 @@ define([
                 // TODO: DO WE NEED THIS??
                 getFacets();
                 doSharedWithMe();
+              } else if (vm.params.sharing == 'shared-with-everybody') {
+                vm.isSearching = true;
+                if (vm.showFavorites) {
+                  vm.showFavorites = false;
+                  updateFavorites();
+                }
+                // TODO: DO WE NEED THIS??
+                getFacets();
+                doSharedWithEverybody();
               }
             } else if (vm.params.search) {
               vm.isSearching = true;
@@ -967,6 +978,8 @@ define([
           function buildBreadcrumbTitle(searchTerm) {
             if (vm.nodeListQueryType == 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
+            } else if (vm.nodeListQueryType == 'view-shared-with-everybody') {
+              return $translate.instant("BreadcrumbTitle.sharedWithEverybody");
             } else if (vm.nodeListQueryType == 'folder-content') {
               return $translate.instant("BreadcrumbTitle.viewAll");
             } else if (vm.nodeListQueryType == 'search-term') {
@@ -977,7 +990,15 @@ define([
           }
 
           function isSharedMode() {
+            return (vm.nodeListQueryType === 'view-shared-with-me' || vm.nodeListQueryType === 'view-shared-with-everybody');
+          }
+
+          function isSharedWithMeMode() {
             return (vm.nodeListQueryType === 'view-shared-with-me');
+          }
+
+          function isSharedWithEverybodyMode() {
+            return (vm.nodeListQueryType === 'view-shared-with-everybody');
           }
 
           function isSearchMode() {
@@ -1036,6 +1057,39 @@ define([
             let offset = vm.offset;
 
             resourceService.sharedWithMeResources(
+                {
+                  resourceTypes    : activeResourceTypes(),
+                  sort             : sortField(),
+                  limit            : vm.requestLimit,
+                  offset           : vm.offset,
+                  version          : vm.getFilterVersion(),
+                  publicationStatus: vm.getFilterStatus()
+                },
+                function (response) {
+                  vm.isSearching = true;
+                  vm.resources = response.resources;
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+
+                  vm.nextOffset = getNextOffset(response.paging.next);
+                  vm.totalCount = response.totalCount;
+                  vm.loading = false;
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                }
+            );
+          }
+
+          function doSharedWithEverybody() {
+
+            vm.offset = 0;
+            vm.nextOffset = null;
+            vm.totalCount = -1;
+            let offset = vm.offset;
+
+            resourceService.sharedWithEverybodyResources(
                 {
                   resourceTypes    : activeResourceTypes(),
                   sort             : sortField(),
@@ -2016,6 +2070,11 @@ define([
 
           vm.goToSharedWithMe = function () {
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
+            $location.url(url);
+          };
+
+          vm.goToSharedWithEverybody = function () {
+            var url = FrontendUrlService.getSharedWithEverybody(vm.getFolderId());
             $location.url(url);
           };
 

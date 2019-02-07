@@ -483,6 +483,7 @@
     "sidebar": {
       "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
+      "sharedWithEverybody": "Shared with Everybody",
       "all": "All"
     },
     "version": {
@@ -633,6 +634,7 @@
   },
   "BreadcrumbTitle": {
     "sharedWithMe": "Shared with Me",
+    "sharedWithEverybody": "Shared with Everybody",
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'"
   },

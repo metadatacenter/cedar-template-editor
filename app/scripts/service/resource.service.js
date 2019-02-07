@@ -36,6 +36,7 @@ define([
           getSearchResourcesPromise: getSearchResourcesPromise,
           hasMetadata              : hasMetadata,
           sharedWithMeResources    : sharedWithMeResources,
+          sharedWithEverybodyResources    : sharedWithEverybodyResources,
           updateFolder             : updateFolder,
           copyResourceToWorkspace  : copyResourceToWorkspace,
           copyResource             : copyResource,
@@ -478,6 +479,26 @@ define([
           }
           var params = {};
           var baseUrl = urlService.sharedWithMe();
+
+          addCommonParameters(params, options);
+
+          var url = $rootScope.util.buildUrl(baseUrl, params);
+
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function sharedWithEverybodyResources(options, successCallback, errorCallback) {
+          if (options == null) {
+            options = {};
+          }
+          var params = {};
+          var baseUrl = urlService.sharedWithEverybody();
 
           addCommonParameters(params, options);
 

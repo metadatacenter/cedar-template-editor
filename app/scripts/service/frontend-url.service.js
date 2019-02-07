@@ -57,6 +57,10 @@ define([
       return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
     };
 
+    service.getSharedWithEverybody = function (folderId) {
+      return '/dashboard?sharing=shared-with-everybody&folderId=' + folderId;
+    };
+
     service.getMessaging = function (folderId) {
       return '/messaging?folderId=' + encodeURIComponent(folderId);
     };
