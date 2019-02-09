@@ -426,9 +426,9 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "makeopen": "Make it open",
-      "makenotopen": "Make it not open",
-      "openopen": "View open artifact"
+      "makeopen": "Publish to Web",
+      "makenotopen": "Unpublish",
+      "openopen": "View on Web"
     },
     "delete": {
       "confirm": {
