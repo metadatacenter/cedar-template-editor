@@ -156,6 +156,10 @@ define([
       return this.resourceBase() + "/search?sharing=shared-with-me";
     };
 
+    service.sharedWithEverybody = function () {
+      return this.resourceBase() + "/search?sharing=shared-with-everybody";
+    };
+
     service.facets = function () {
       return this.resourceBase() + "/facets";
     };

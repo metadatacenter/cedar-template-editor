@@ -426,9 +426,9 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "makeopen": "Make it open",
-      "makenotopen": "Make it not open",
-      "openopen": "View open artifact"
+      "makeopen": "Publish to Web",
+      "makenotopen": "Unpublish",
+      "openopen": "View on Web"
     },
     "delete": {
       "confirm": {
@@ -483,6 +483,7 @@
     "sidebar": {
       "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
+      "sharedWithEverybody": "Shared with Everybody",
       "all": "All"
     },
     "version": {
@@ -633,6 +634,7 @@
   },
   "BreadcrumbTitle": {
     "sharedWithMe": "Shared with Me",
+    "sharedWithEverybody": "Shared with Everybody",
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'"
   },
