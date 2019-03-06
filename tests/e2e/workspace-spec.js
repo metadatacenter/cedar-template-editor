@@ -48,7 +48,7 @@ describe('workspace', function () {
 
     it("should create a  template", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      template = workspacePage.createTemplate('SourceWorkspace');
+      template = workspacePage.createTemplate('SrcWrksp');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -123,13 +123,13 @@ describe('workspace', function () {
 
     // create resources
     it("should create a folder", function () {
-      folder = workspacePage.createTitle('Source');
+      folder = workspacePage.createTitle('Src');
       workspacePage.createResource('folder', folder, 'description');
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create a  template", function () {
-      template = workspacePage.createTitle('Source');
+      template = workspacePage.createTitle('Src');
       workspacePage.createResource('template', template, 'description');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });

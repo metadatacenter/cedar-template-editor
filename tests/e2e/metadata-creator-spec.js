@@ -60,11 +60,11 @@ describe('metadata-creator', function () {
 
     it("should create the sample folder", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var target1Folder = workspacePage.createFolder('Target');
+      var target1Folder = workspacePage.createFolder('Trgt');
     });
 
     it("should create the sample template", function () {
-      template = workspacePage.createTitle('Source');
+      template = workspacePage.createTitle('Src');
       workspacePage.createPage('template', template, 'description');
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
       templatePage.clickSave('template');
@@ -102,7 +102,7 @@ describe('metadata-creator', function () {
     });
 
     it("should create an element", function () {
-      element = workspacePage.createElement('Source');
+      element = workspacePage.createElement('Src');
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
       workspacePage.onWorkspace();
     });
@@ -243,7 +243,7 @@ describe('metadata-creator', function () {
   xdescribe('create spreadsheets', function () {
 
     it("should view a template as spreadsheet", function () {
-      var template = workspacePage.createTemplate('Source');
+      var template = workspacePage.createTemplate('Src');
       workspacePage.onWorkspace();
       resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
 
