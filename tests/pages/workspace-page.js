@@ -54,7 +54,7 @@ var WorkspacePage = function () {
 
       var createResourceInstanceCss = '#workspace-view-container div.populate-form-boxes div.resource-instance';
       var resourceTypes = ['metadata', 'element', 'template', 'folder'];
-      var defaultTitle = 'Protractor';
+      var defaultTitle = 'Pr';
 
 
       // create more ellipsis on resource
