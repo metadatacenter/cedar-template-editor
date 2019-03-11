@@ -48,12 +48,12 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('TargetA');
+      targetFolder = workspacePage.createFolder('TrgtA');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create template for user " + testConfig.testUser1, function () {
-      sourceTemplate = workspacePage.createTemplate('SourceA');
+      sourceTemplate = workspacePage.createTemplate('SrcA');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
     });
@@ -100,9 +100,9 @@ describe('copy and move', function () {
 
     it('should create folder and template for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      sourceTemplate = workspacePage.createTemplate('SourceB');
+      sourceTemplate = workspacePage.createTemplate('SrcB');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
-      targetFolder = workspacePage.createFolder('TargetB');
+      targetFolder = workspacePage.createFolder('TrgtB');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -150,7 +150,7 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('TargetC');
+      targetFolder = workspacePage.createFolder('TrgtC');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -161,7 +161,7 @@ describe('copy and move', function () {
 
     it("should create a resource for user " + testConfig.testUser2, function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      sourceTemplate = workspacePage.createTemplate('SourceC');
+      sourceTemplate = workspacePage.createTemplate('SrcC');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 
@@ -193,7 +193,7 @@ describe('copy and move', function () {
 
     it('should create folder for user ' + testConfig.testUser1, function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      targetFolder = workspacePage.createFolder('TargetD');
+      targetFolder = workspacePage.createFolder('TrgtD');
       resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -204,7 +204,7 @@ describe('copy and move', function () {
 
     it("should create a resource for user " + testConfig.testUser2, function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      sourceTemplate = workspacePage.createTemplate('SourceD');
+      sourceTemplate = workspacePage.createTemplate('SrcD');
       resources.unshift(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
     });
 

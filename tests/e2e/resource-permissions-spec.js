@@ -46,17 +46,17 @@ describe('copy and move', function () {
     console.log('resource-permissions should create target folders');
 
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    target1Folder = workspacePage.createFolder('Target');
+    target1Folder = workspacePage.createFolder('Trgt');
     shareModal.shareResource(target1Folder, 'folder', testConfig.testUserName2, false, false);
     workspacePage.clearSearch();
 
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    target1Writable = workspacePage.createFolder('Target');
+    target1Writable = workspacePage.createFolder('Trgt');
     shareModal.shareResource(target1Writable, 'folder', testConfig.testUserName2, true, false);
     workspacePage.clearSearch();
 
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    target2Folder = workspacePage.createFolder('Target');
+    target2Folder = workspacePage.createFolder('Trgt');
     shareModal.shareResource(target2Folder, 'folder', testConfig.testUserName1, false, false);
     workspacePage.clearSearch();
   });
@@ -68,7 +68,7 @@ describe('copy and move', function () {
 
       // create a user 1 resource
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-      var sourceTemplate = workspacePage.createTemplate('Source');
+      var sourceTemplate = workspacePage.createTemplate('Src');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser1, testConfig.testPassword1));
 
       // copy resource to user 1 target
@@ -90,7 +90,7 @@ describe('copy and move', function () {
 
       // share readable resource with user 1
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
+      var sourceTemplate = workspacePage.createTemplate('Src');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
@@ -114,7 +114,7 @@ describe('copy and move', function () {
 
       // create a user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
+      var sourceTemplate = workspacePage.createTemplate('Src');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
 
       // cannot copy resource to user 1's readable folder
@@ -138,7 +138,7 @@ describe('copy and move', function () {
 
       // create user 2 resource
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-      var sourceTemplate = workspacePage.createTemplate('Source');
+      var sourceTemplate = workspacePage.createTemplate('Src');
       resources.push(createResource(sourceTemplate, 'template', testConfig.testUser2, testConfig.testPassword2));
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
@@ -161,8 +161,8 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create template and target folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceTemplate = workspacePage.createTemplate('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // copy template to target folder
       workspacePage.copyResource(sourceTemplate, 'template');
@@ -190,7 +190,7 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a template to copy to the shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
+      var sourceTemplate = workspacePage.createTemplate('Src');
 
       // copy created template to shared folder
       workspacePage.copyResource(sourceTemplate, 'template');
@@ -208,8 +208,8 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceTemplate = workspacePage.createTemplate('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share the template and folder
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
@@ -237,8 +237,8 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceTemplate = workspacePage.createTemplate('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
       workspacePage.clearSearch();
@@ -263,8 +263,8 @@ describe('copy and move', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
-      var sourceTemplate = workspacePage.createTemplate('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceTemplate = workspacePage.createTemplate('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share both folders
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);

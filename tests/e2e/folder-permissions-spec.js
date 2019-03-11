@@ -49,8 +49,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // move source to target folder
       workspacePage.moveResource(sourceFolder, 'folder');
@@ -77,7 +77,7 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a folder to move to the shared folder
-      var folderTitle = workspacePage.createFolder('Source');
+      var folderTitle = workspacePage.createFolder('Src');
       workspacePage.moveResource(folderTitle, 'folder');
       moveModal.moveToUserFolder(testConfig.testUserName1, sharedFolderTitle);
       sweetAlertModal.noWriteAccess();
@@ -95,8 +95,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, true, false);
@@ -126,8 +126,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName2, true, false);
       workspacePage.clearSearch(); // reset search
@@ -153,8 +153,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
@@ -189,8 +189,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // copy source to target folder
       workspacePage.copyResource(sourceFolder, 'folder');
@@ -216,7 +216,7 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a folder to move to the shared folder
-      var folderTitle = workspacePage.createFolder('Source');
+      var folderTitle = workspacePage.createFolder('Src');
       workspacePage.copyResource(folderTitle, 'folder');
       copyModal.copyToUserFolder(testConfig.testUserName1, sharedFolderTitle);
       sweetAlertModal.noWriteAccess();
@@ -234,8 +234,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, true, false);
@@ -264,8 +264,8 @@ describe('folder-permissions', function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName2, true, false);
       workspacePage.clearSearch(); // reset search
@@ -289,8 +289,8 @@ describe('folder-permissions', function () {
     it("should copy an unwritable folder not owned by current user to an unwritable folder", function () {
       console.log('folder-permissions copy folders should copy an unwritable folder not owned by current user to an unwritable folder');
       // create source and target shared folders
-      var sourceFolder = workspacePage.createFolder('Source');
-      var targetFolder = workspacePage.createFolder('Target');
+      var sourceFolder = workspacePage.createFolder('Src');
+      var targetFolder = workspacePage.createFolder('Trgt');
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
