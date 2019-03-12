@@ -50,7 +50,7 @@ describe('create-folders', function () {
 
 
   xit('should delete resource from the user workspace', function () {
-    resources.push(createResource('Protractor111', 'folder', testConfig.testUser1, testConfig.testPassword1));
+    resources.push(createResource('Pr111', 'folder', testConfig.testUser1, testConfig.testPassword1));
 
   });
 

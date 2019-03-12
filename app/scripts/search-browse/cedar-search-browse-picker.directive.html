@@ -146,7 +146,9 @@
 
               <p ng-if="!dc.isSearching">
                 <span class="folder-path" ng-repeat="folder in dc.pathInfo track by $index">
-                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(folder))}}</a> /
+                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs" ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <span class="breadcrumbs" ng-if="!dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  /
                 </span>
                 <a class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(dc.currentPath))}}</a>
               </p>

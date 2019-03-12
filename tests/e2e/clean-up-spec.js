@@ -40,31 +40,31 @@ describe('clean-up', function () {
   // reset user selections to defaults
   it('should remove all resources for user 1', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser1);
-    workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser1);
-    workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser1);
-    workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Pr', 'metadata', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Pr', 'field', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Pr', 'element', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Pr', 'template', testConfig.testUser1);
   });
 
   // reset user selections to defaults
   it('should remove all resources for user 2', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.deleteAllBySearching('Protractor', 'metadata', testConfig.testUser2);
-    workspacePage.deleteAllBySearching('Protractor', 'field', testConfig.testUser2);
-    workspacePage.deleteAllBySearching('Protractor', 'element', testConfig.testUser2);
-    workspacePage.deleteAllBySearching('Protractor', 'template', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Pr', 'metadata', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Pr', 'field', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Pr', 'element', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Pr', 'template', testConfig.testUser2);
   });
 
   // reset user selections to defaults
   it('should remove all folders for user 2', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser2);
+    workspacePage.deleteAllBySearching('Pr', 'folder', testConfig.testUser2);
   });
 
   // reset user selections to defaults
   it('should remove all folders for user 1', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.deleteAllBySearching('Protractor', 'folder', testConfig.testUser1);
+    workspacePage.deleteAllBySearching('Pr', 'folder', testConfig.testUser1);
   });
 
 
