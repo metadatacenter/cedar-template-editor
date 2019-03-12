@@ -7,9 +7,9 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService", "schemaService"];
+  recommendedValue.$inject = ["$rootScope", "$q", "DataManipulationService", "UIUtilService", "ValueRecommenderService", "autocompleteService", "schemaService"];
 
-  function recommendedValue($rootScope, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService, schemaService) {
+  function recommendedValue($rootScope, $q, DataManipulationService, UIUtilService, ValueRecommenderService, autocompleteService, schemaService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -17,10 +17,6 @@ define([
       $scope.valueRecommendationResults = ValueRecommenderService.valueRecommendationResults;
 
       $scope.order = function (arr) {
-        // if (arr) {
-        //   var dup = $scope.applyMods(arr);
-        //   return dup;
-        // }
         return arr;
       };
 
@@ -30,12 +26,16 @@ define([
 
       $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
 
-      $scope.updateValueRecommendationResults = function(node, query) {
-        ValueRecommenderService.updateValueRecommendationResults(node, query);
+      $scope.updateValueRecommendationResults = function(field, query) {
+        // We call BioPortal and wait for all the promises to complete
+        let promises = autocompleteService.updateFieldAutocomplete(field, query);
+        $q.all(promises).then(values => {
+          ValueRecommenderService.updateValueRecommendationResults(field, query);
+        });
       };
 
-      $scope.updateFieldAutocomplete = function(field, term) {
-        autocompleteService.updateFieldAutocomplete(field, term || '*');
+      $scope.updateFieldAutocomplete = function(field, query) {
+        autocompleteService.updateFieldAutocomplete(field, query || '*');
       };
 
       $scope.getNoResultsMsg = ValueRecommenderService.getNoResultsMsg;
@@ -129,7 +129,6 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        console.log('Initializing value recommendation field');
         autocompleteService.clearResults($scope.getId($scope.field)); // clear ontology terms cache for the field
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
@@ -144,8 +143,6 @@ define([
         else {
           $scope.modelValueRecommendation.push($scope.getModelVR($scope.model, fieldValue));
         }
-        console.log('modelValueRecommendation')
-        console.log($scope.modelValueRecommendation)
       };
 
       // Generates modelValueRecommendation from a given model
@@ -187,9 +184,6 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (field, select, modelvr, index) {
-
-        console.log('Is constrained?', schemaService.isConstrained(field));
-        console.log('Updating model when refresh');
 
         if (!$scope.isFirstRefresh && !schemaService.isConstrained(field)) {
           // Check that there are no controlled terms selected
