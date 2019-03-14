@@ -365,6 +365,10 @@ define([
             return schemaService.getTitle(node);
           };
 
+          vm.linkFolder = function (node) {
+            return node['activeUserCanRead']
+          };
+
           vm.getDescription = function (node) {
             return schemaService.getDescription(node);
           };
