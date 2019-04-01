@@ -8,20 +8,27 @@
       close-on-select="true"
       reset-search-input="false"
       aria-label="getDescription(field)">
-    <ui-select-match  allow-clear="true"  class="selection-field" placeholder="">{{$select.selected.valueLabel}}
-      <!--<i ng-if="$select.selected.value" class="fa fa-trash" aria-hidden="true"-->
-          <!--ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>-->
+    <ui-select-match allow-clear="true" class="selection-field" placeholder="">{{$select.selected.valueLabel}}
     </ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.valueLabel == getNoResultsMsg()"
         refresh="updateModelWhenRefresh(field, $select, modelValueRecommendation, index); updatePopulatedFields(field, $select.search); updateValueRecommendationResults(field, $select.search || '*')"
         refresh-delay="200"
         repeat="option in order(valueRecommendationResults[getId()]) | propsFilter: {valueLabel: $select.search} | limitTo:100">
-      <div>
+
+      <!-- Recommended value -->
+      <div ng-if="option.recommendationScore != undefined">
+        <span ng-if="option.valueType != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+        <span style="font-weight:bold" ng-bind-html="option.valueLabel | highlight: $select.search"></span>&nbsp;
+        <span ng-bind-html="'(' + calculateUIScore(option.recommendationScore) + ')'"></span>
+      </div>
+
+      <!-- Regular value -->
+      <div ng-if="option.recommendationScore == undefined">
         <span ng-if="option.valueType != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.valueLabel | highlight: $select.search"></span>&nbsp;
-        <small ng-if="option.recommendationScore != undefined">(<span>{{calculateUIScore(option.recommendationScore)}}</span>)</small>&nbsp;
       </div>
+
     </ui-select-choices>
   </ui-select>
 </div>
