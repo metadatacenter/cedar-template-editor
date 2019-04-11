@@ -63,7 +63,7 @@
       ]
     }
   },
-  "schema:name": "",
+  "schema:name": "Untitled",
   "schema:description": "",
   "required": [ "@context", "@id" ],
   "pav:createdOn": null,
