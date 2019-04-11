@@ -126,6 +126,17 @@
             }
           }
         },
+        "pav:derivedFrom": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": [
+                "@id"
+              ]
+            }
+          }
+        },
         "pav:createdOn": {
           "type": "object",
           "properties": {
@@ -228,6 +239,10 @@
     },
     "schema:description": {
       "type": "string"
+    },
+    "pav:derivedFrom": {
+      "type": "string",
+      "format": "uri"
     },
     "pav:createdOn": {
       "type": [
