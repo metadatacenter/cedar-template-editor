@@ -38,40 +38,34 @@ define([
     service.getField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.field);
       clonedField['@id'] = tempId;
-      setSchemaVersion(clonedField);
       return clonedField;
     };
 
     service.getStaticField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.staticField);
       clonedField['@id'] = tempId;
-      setSchemaVersion(clonedField);
       return clonedField;
     };
 
     service.getContainerField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.containerField);
       clonedField['@id'] = tempId;
-      setSchemaVersion(clonedField);
       return clonedField;
     };
 
     service.getAttributeValueField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.attributeValueField);
       clonedField['items']['@id'] = tempId;
-      setSchemaVersion(clonedField['items']);
       return clonedField;
     };
 
     service.getElement = function () {
       var clonedElement = angular.copy(dataTemplate.element);
-      setSchemaVersion(clonedElement);
       return clonedElement;
     };
 
     service.getTemplate = function () {
       var clonedTemplate = angular.copy(dataTemplate.template);
-      setSchemaVersion(clonedTemplate);
       return clonedTemplate;
     };
 
@@ -81,16 +75,6 @@ define([
 
     service.getAdditionalPropertiesForContextOfAttributeValueField = function () {
       return dataTemplate.additionalPropertiesContextAttValueField;
-    };
-
-    /**
-     * Sets the version of the CEDAR Template Model
-     * @param schema - template, element, or field
-     */
-    var setSchemaVersion = function (schema) {
-      // TODO: read it from config file
-      var SCHEMA_VERSION = '1.5.0';
-      schema['schema:schemaVersion'] = SCHEMA_VERSION;
     };
 
     return service;

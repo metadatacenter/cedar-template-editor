@@ -19,7 +19,7 @@
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
-  "schema:schemaVersion": null,
+  "schema:schemaVersion": "1.5.0",
   "schema:description": "",
   "additionalProperties": false
 }
