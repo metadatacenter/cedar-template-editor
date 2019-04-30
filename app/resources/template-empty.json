@@ -126,6 +126,17 @@
             }
           }
         },
+        "pav:derivedFrom": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": [
+                "@id"
+              ]
+            }
+          }
+        },
         "pav:createdOn": {
           "type": "object",
           "properties": {
@@ -229,6 +240,10 @@
     "schema:description": {
       "type": "string"
     },
+    "pav:derivedFrom": {
+      "type": "string",
+      "format": "uri"
+    },
     "pav:createdOn": {
       "type": [
         "string",
@@ -269,13 +284,13 @@
     "pav:lastUpdatedOn",
     "oslc:modifiedBy"
   ],
-  "schema:name": "",
+  "schema:name": "Untitled",
   "schema:description": "",
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
-  "schema:schemaVersion": null,
+  "schema:schemaVersion": "1.5.0",
   "additionalProperties": false,
   "pav:version"         : "0.0.1",
   "bibo:status"         : "bibo:draft"

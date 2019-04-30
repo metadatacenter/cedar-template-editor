@@ -43,13 +43,13 @@
     "_ui": {
       "inputType": "attribute-value"
     },
-    "schema:name": "",
+    "schema:name": "Untitled",
     "schema:description": "",
     "pav:createdOn": null,
     "pav:createdBy": null,
     "pav:lastUpdatedOn": null,
     "oslc:modifiedBy": null,
-    "schema:schemaVersion": null,
+    "schema:schemaVersion": "1.5.0",
     "additionalProperties": false
   }
 }
