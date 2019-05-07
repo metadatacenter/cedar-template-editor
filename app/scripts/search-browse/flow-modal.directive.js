@@ -105,17 +105,22 @@ define([
           };
 
 
-          var flowNcbiSra = 0;
-          var flowImmport = 1;
-          var flowLincs = 2;
-          $scope.modes = ['<strong>NCBI SRA</strong> - The Sequence Read Archive',
+          var flowNcbi = 0;
+          var flowNcbiMiAIRR = 1;
+          var flowImmport = 2;
+          var flowLincs = 3;
+          $scope.modes = ['<strong>NCBI</strong> - NCBI\'s BioSample, BioProject and SRA',
+                          '<strong>NCBI (MiAIRR)</strong> - NCBI\'s BioSample, BioProject and SRA using the MiARR standard',
                           '<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
                           '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
 
 
           $scope.getTarget = function () {
             var result;
-            if ($scope.model.selectedMode === flowNcbiSra) {
+            if ($scope.model.selectedMode === flowNcbi) {
+              result = UrlService.ncbiSubmission();
+            }
+            else if ($scope.model.selectedMode === flowNcbiMiAIRR) {
               result = UrlService.airrSubmission();
             } else if ($scope.model.selectedMode === flowImmport) {
               result = UrlService.immportSubmission();
@@ -169,7 +174,7 @@ define([
           $scope.model = {
             selectedInstance : undefined,
             selectedWorkspace: undefined,
-            selectedMode     : flowNcbiSra
+            selectedMode     : flowNcbi
           };
           $scope.loadingInstances;
           $scope.resources = [];

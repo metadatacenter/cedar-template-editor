@@ -362,6 +362,9 @@ define([
             case 'biosample':
               $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
               break;
+            case 'ncbi':
+              $scope.doValidation(instance, UrlService.ncbiValidation(), 'ncbi');
+              break;
             case 'airr':
               $scope.doValidation(instance, UrlService.airrValidation(), 'airr');
               break;

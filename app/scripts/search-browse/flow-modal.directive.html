@@ -28,18 +28,26 @@
           <div class="repository">
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flowNcbiSra" name="flow-repo" ng-model="model.selectedMode"
+              <input type="radio" class="select" id="flowNcbi" name="flow-repo" ng-model="model.selectedMode"
                   ng-click="setMode(0);" value="0">
-              <label for="flowNcbiSra">
+              <label for="flowNcbi">
                 <ng-bind-html ng-bind-html="modes[0]"/>
               </label>
             </div>
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flowImmport" name="flow-repo" ng-model="model.selectedMode"
+              <input type="radio" class="select" id="flowNcbiMiAIRR" name="flow-repo" ng-model="model.selectedMode"
                   ng-click="setMode(1);" value="1">
-              <label for="flowImmport">
+              <label for="flowNcbiMiAIRR">
                 <ng-bind-html ng-bind-html="modes[1]"/>
+              </label>
+            </div>
+
+            <div class="radio radio-primary" style="padding:10px">
+              <input type="radio" class="select" id="flowImmport" name="flow-repo" ng-model="model.selectedMode"
+                  ng-click="setMode(2);" value="2">
+              <label for="flowImmport">
+                <ng-bind-html ng-bind-html="modes[2]"/>
               </label>
             </div>
 
