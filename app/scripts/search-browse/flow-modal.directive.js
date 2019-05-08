@@ -109,8 +109,8 @@ define([
           var flowNcbiMiAIRR = 1;
           var flowImmport = 2;
           var flowLincs = 3;
-          $scope.modes = ['<strong>NCBI</strong> - NCBI\'s BioSample, BioProject and SRA',
-                          '<strong>NCBI (MiAIRR)</strong> - NCBI\'s BioSample, BioProject and SRA using the MiARR standard',
+          $scope.modes = ['<strong>NCBI (Human Tissue)</strong> - NCBI\'s BioProject, BioSample and SRA following the Human Tissue profile',
+                          '<strong>NCBI MiAIRR</strong> - NCBI\'s BioProject, BioSample and SRA following the MiARR standard',
                           '<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
                           '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
 

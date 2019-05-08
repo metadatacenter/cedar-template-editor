@@ -328,13 +328,15 @@ define([
               function (response) {
 
                 var data = response.data;
-                if (!data.isValid || !data.validates) {
+
+                if (data.isValid == false) {
 
                   $scope.$emit('validationError',
                       ['remove', '', type]);
 
                   var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
+
                     // log to the console always
                     console.log(errors[i]);
 
@@ -342,12 +344,13 @@ define([
                         ['add', errors[i], type + i]);
 
                   }
-                } else {
+                }
+                else {
 
                   $scope.$emit('validationError',
                       ['remove', '', type]);
 
-                  UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
+                  UIMessageService.flashSuccess('The metadata instance is valid', {"title": "title"},
                       'Success');
                 }
               },

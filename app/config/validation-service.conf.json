@@ -6,7 +6,7 @@
   },
   {
     "type": "ncbi",
-    "template": "cedar-ncbiv2",
+    "template": "cedar-ncbi",
     "action": ["validation", "submission"]
   },
   {

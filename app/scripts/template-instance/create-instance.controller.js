@@ -305,7 +305,9 @@ define([
     });
 
     $scope.getValidationHeader = function (key) {
-      return $translate.instant('VALIDATION.groupHeader.' + key);
+      if (key != 'undefined') { // Note that here 'undefined' is a string
+        return $translate.instant('VALIDATION.groupHeader.' + key);
+      }
     };
 
     $scope.hasKeys = function (value) {
