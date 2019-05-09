@@ -350,7 +350,7 @@ define([
                   $scope.$emit('validationError',
                       ['remove', '', type]);
 
-                  UIMessageService.flashSuccess('The metadata instance is valid', {"title": "title"},
+                  UIMessageService.flashSuccess('The metadata are valid', {"title": "title"},
                       'Success');
                 }
               },

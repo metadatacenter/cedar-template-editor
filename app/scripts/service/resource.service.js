@@ -843,8 +843,7 @@ define([
         }
 
         function canSubmit(resource) {
-          return true;
-          //return this.canDo(resource, 'canSubmit');
+          return this.canDo(resource, 'canSubmit');
         }
 
         function canCreateDraft(resource) {
