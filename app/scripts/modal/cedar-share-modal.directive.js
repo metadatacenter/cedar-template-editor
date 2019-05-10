@@ -178,7 +178,7 @@ define([
           // can this user be the owner of the selected resource
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' && vm.canChangeOwner();
+            return id && node && node.resourceType === 'user' && vm.canChangeOwner();
           }
 
 
@@ -205,7 +205,7 @@ define([
 
           // is this node a user?
           function isUser(node) {
-            return node && (!node.hasOwnProperty('nodeType') || node.nodeType === 'user');
+            return node && (!node.hasOwnProperty('resourceType') || node.resourceType === 'user');
           }
 
           // save the modified permissions to the server
@@ -236,7 +236,7 @@ define([
                   getShares();
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           }
@@ -250,14 +250,14 @@ define([
                 var share = {};
                 share.permission = vm.resourcePermissions.groupPermissions[i].permission;
                 share.node = vm.resourcePermissions.groupPermissions[i].group;
-                share.node.nodeType = 'group';
+                share.node.resourceType = 'group';
                 vm.shares.push(share);
               }
               for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
                 var share = {};
                 share.permission = vm.resourcePermissions.userPermissions[i].permission;
                 share.node = vm.resourcePermissions.userPermissions[i].user;
-                share.node.nodeType = 'user';
+                share.node.resourceType = 'user';
                 share.node['schema:name'] = getName(share.node);
                 vm.shares.push(share);
               }
@@ -272,7 +272,7 @@ define([
             for (var i = 0; i < vm.shares.length; i++) {
               var share = jQuery.extend(true, {}, vm.shares[i]);
 
-              if (share.node.nodeType === 'user') {
+              if (share.node.resourceType === 'user') {
                 share.user = share.node;
                 delete share.node;
                 vm.resourcePermissions.userPermissions.push(share);
@@ -290,7 +290,7 @@ define([
                 function (response) {
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           }
@@ -384,7 +384,7 @@ define([
           function updateUserPermission(id) {
             if (id) {
               var node = getNode(id);
-              if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
+              if (node.resourceType === 'group' && vm.giveNodePermission === 'own') {
                 vm.giveNodePermission = 'read';
               }
             }
@@ -420,7 +420,7 @@ define([
           function updateGroupPermission(id) {
             if (id) {
               var node = getNode(id);
-              if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
+              if (node.resourceType === 'group' && vm.giveNodePermission === 'own') {
                 vm.giveNodePermission = 'read';
               }
             }
@@ -459,7 +459,7 @@ define([
 
                   share.permission = 'write';
                   share.node = owner;
-                  share.node.nodeType = 'user';
+                  share.node.resourceType = 'user';
                   share.node.name = getName(share.node);
                   vm.shares.push(share);
                   saveShare(resource);
@@ -702,7 +702,7 @@ define([
                   vm.selectedResource = response;
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           }

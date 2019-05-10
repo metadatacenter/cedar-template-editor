@@ -35,7 +35,6 @@ define([
             result += CONST.resourceIcon.FIELD;
             break;
         }
-
         return result;
       };
 

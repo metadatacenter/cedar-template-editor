@@ -234,7 +234,7 @@
                     <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
 
                       <div class="toolbar">
-                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                        <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
                         <div class="right-side">
 
                           <button id="{{dc.getId(resource, 'list')}}"
@@ -301,7 +301,7 @@
                       <div class="toolbar" >
 
 
-                        <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                        <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
 
                         <div class="right-side">
 
@@ -373,7 +373,7 @@
                 <div class="box-title flex">
                   <div class="flex" style="width:100%;justify-content:space-between;">
                     <cedar-resource-icon style="visibility:hidden"
-                        resource-type="resource.nodeType"></cedar-resource-icon>
+                        resource-type="resource.resourceType"></cedar-resource-icon>
                     <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#"
                         ng-click="dc.updateSort('name')">Title</a>
                   </div>
@@ -401,7 +401,7 @@
 
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis">
-                      <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
 
 
                         <div class="title-text ellipsis" style="width:100%" uib-tooltip='{{dc.getTitle(resource)}}'
@@ -464,7 +464,7 @@
 
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis" style="justify-content:space-between">
-                      <cedar-resource-icon resource-type="resource.nodeType"></cedar-resource-icon>
+                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
                       <!--<div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>-->
 
                         <div class="title-text ellipsis" style="width:100%" uib-tooltip='{{dc.getTitle(resource)}}'
@@ -546,8 +546,8 @@
       <div class="col-sm-3 row-offcanvas-right ng-cloak" id="sidebar-right" ng-if="dc.isInfoOpen()">
 
         <div class="flex">
-          <cedar-resource-icon resource-type="dc.getSelectedNode().nodeType"></cedar-resource-icon>
-          <div class="title full-width" ng-class="dc.getSelectedNode().nodeType">
+          <cedar-resource-icon resource-type="dc.getSelectedNode().resourceType"></cedar-resource-icon>
+          <div class="title full-width" ng-class="dc.getSelectedNode().resourceType">
             <span class="ellipsis" ng-bind="dc.getSelectedNode()[dc.titleLocation()]"></span>
           </div>
           <div class="goaway">

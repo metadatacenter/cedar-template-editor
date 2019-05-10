@@ -250,9 +250,9 @@ define([
           function getResourceIconClass(resource) {
             var result = "";
             if (resource) {
-              result += resource.nodeType + " ";
+              result += resource.resourceType + " ";
 
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += "fa-folder";
                   break;
@@ -278,7 +278,7 @@ define([
           function isFolder(resource) {
             var result = false;
             if (resource) {
-              result = (resource.nodeType == CONST.resourceType.FOLDER);
+              result = (resource.resourceType == CONST.resourceType.FOLDER);
             }
             return result;
           }

@@ -238,7 +238,7 @@ define([
 
             vm.params.search = null;
 
-            if (r.nodeType == 'folder') {
+            if (r.resourceType == 'folder') {
               goToFolder(r['@id']);
             } else {
               if (typeof vm.pickResourceCallback === 'function') {
@@ -257,7 +257,7 @@ define([
 
             vm.params.search = null;
 
-            if (r.nodeType == 'folder') {
+            if (r.resourceType == 'folder') {
               goToFolder(r['@id']);
             } else {
               if (typeof vm.pickResourceCallback === 'function') {
@@ -303,7 +303,7 @@ define([
             var result = '';
             if (resource) {
 
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += "fa-folder";
                   break;
@@ -320,7 +320,7 @@ define([
                   result += "fa-cube";
                   break;
               }
-              result += ' ' + resource.nodeType;
+              result += ' ' + resource.resourceType;
             }
             return result;
           }
@@ -328,7 +328,7 @@ define([
           function getResourceTypeClass(resource) {
             var result = '';
             if (resource) {
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += "folder";
                   break;
@@ -355,7 +355,7 @@ define([
 
           function canBeVersioned(resource) {
             if (resource) {
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.TEMPLATE:
                   return true;
                 case CONST.resourceType.ELEMENT:
@@ -366,25 +366,25 @@ define([
           }
 
           function isTemplate() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+            return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.TEMPLATE));
           }
 
           function isElement() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.ELEMENT));
+            return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.ELEMENT));
           }
 
           function isFolder(resource) {
             var result = false;
             if (resource) {
-              result = (resource.nodeType == CONST.resourceType.FOLDER);
+              result = (resource.resourceType == CONST.resourceType.FOLDER);
             } else {
-              result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.FOLDER))
+              result = (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.FOLDER))
             }
             return result;
           }
 
           function isMeta() {
-            return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+            return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.INSTANCE));
           }
 
           function goToFolder(folderId) {
@@ -434,7 +434,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           };
@@ -470,7 +470,7 @@ define([
           function getResourceTypeClass(resource) {
             var result = '';
             if (resource) {
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += "folder";
                   break;
@@ -690,7 +690,7 @@ define([
 
             if (vm.resources) {
               var result = vm.resources.filter(function (obj) {
-                return obj.nodeType == CONST.resourceType.FOLDER;
+                return obj.resourceType == CONST.resourceType.FOLDER;
               });
             }
             return result;
@@ -705,7 +705,7 @@ define([
 
             if (vm.resources) {
               var result = vm.resources.filter(function (obj) {
-                return obj.nodeType == CONST.resourceType.ELEMENT;
+                return obj.resourceType == CONST.resourceType.ELEMENT;
               });
             }
             return result;
@@ -720,7 +720,7 @@ define([
 
             if (vm.resources) {
               var result = vm.resources.filter(function (obj) {
-                return obj.nodeType == CONST.resourceType.FIELD || obj.nodeType == CONST.resourceType.ELEMENT;
+                return obj.resourceType == CONST.resourceType.FIELD || obj.resourceType == CONST.resourceType.ELEMENT;
               });
             }
             return result;
