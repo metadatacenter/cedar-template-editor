@@ -692,11 +692,11 @@ define([
           };
 
           vm.canMakeOpen = function () {
-            return resourceService.canMakeOpen(vm.getSelectedNode());
+            return window.makeOpenEnabled && resourceService.canMakeOpen(vm.getSelectedNode());
           };
 
           vm.canMakeNotOpen = function () {
-            return resourceService.canMakeNotOpen(vm.getSelectedNode());
+            return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
