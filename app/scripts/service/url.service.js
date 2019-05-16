@@ -185,11 +185,11 @@ define([
     };
 
     service.copyResourceToFolder = function () {
-      return this.resourceBase() + "/command/copy-resource-to-folder";
+      return this.resourceBase() + "/command/copy-artifact-to-folder";
     };
 
     service.moveNodeToFolder = function () {
-      return this.resourceBase() + "/command/move-node-to-folder";
+      return this.resourceBase() + "/command/move-resource-to-folder";
     };
 
     service.renameNode = function () {
@@ -474,11 +474,11 @@ define([
     };
 
     service.publishResource = function () {
-      return this.resourceBase() + "/command/publish-resource";
+      return this.resourceBase() + "/command/publish-artifact";
     };
 
     service.createDraftResource = function () {
-      return this.resourceBase() + "/command/create-draft-resource";
+      return this.resourceBase() + "/command/create-draft-artifact";
     };
 
     service.makeOpen = function () {

@@ -470,7 +470,7 @@ var TemplateCreatorPage = function () {
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
     "oslc:modifiedBy"     : null,
-    "schema:schemaVersion": "1.1.0",
+    "schema:schemaVersion": "1.6.0",
     "additionalProperties": false,
     "pav:version"         : "0.0.1",
     "bibo:status"         : "bibo:draft"
@@ -558,7 +558,7 @@ var TemplateCreatorPage = function () {
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
     "oslc:modifiedBy"     : null,
-    "schema:schemaVersion": "1.1.0",
+    "schema:schemaVersion": "1.6.0",
     "additionalProperties": false,
     "schema:name"         : "Untitled",
     "schema:description"  : "Description",

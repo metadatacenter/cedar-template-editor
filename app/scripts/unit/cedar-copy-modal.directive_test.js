@@ -124,7 +124,7 @@ define(['app', 'angular'], function (app) {
             lastUpdatedByUserName   : null,
             lastUpdatedOnTS         : 1511895932,
             name                    : "Test User 1",
-            nodeType                : "folder",
+            resourceType                : "folder",
             modifiedBy              : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
             ownedBy                 : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",
             createdBy               : "https://metadatacenter.org/users/84c0e798-fd6a-4615-bd41-738baba31ea4",

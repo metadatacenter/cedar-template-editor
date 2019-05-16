@@ -53,7 +53,7 @@ var httpData = {
             "first": "http://127.0.0.1:9008/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2Ff55c5f4b-1ee6-4839-8836-fcb7509cecfe/contents?resource_types=element%2Cfolder&sort=createdOnTS&offset=0&limit=100"
           },
           "resources"        : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1502146452,
             "lastUpdatedOnTS"       : 1502146452,
             "schema:name"                  : "testing",
@@ -80,7 +80,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1499810129,
             "lastUpdatedOnTS"       : 1499810129,
             "schema:name"                  : "element",
@@ -104,7 +104,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1499810169,
             "lastUpdatedOnTS"       : 1499814624,
             "schema:name"                  : "parent element",
@@ -128,7 +128,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1499814283,
             "lastUpdatedOnTS"       : 1499814288,
             "schema:name"                  : "Untitled",
@@ -152,7 +152,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1500699258,
             "lastUpdatedOnTS"       : 1500699258,
             "schema:name"                  : "Untitled",
@@ -176,7 +176,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1501279403,
             "lastUpdatedOnTS"       : 1501279440,
             "schema:name"                  : "one",
@@ -200,7 +200,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1501279412,
             "lastUpdatedOnTS"       : 1501279421,
             "schema:name"                  : "one again",
@@ -224,7 +224,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1501279497,
             "lastUpdatedOnTS"       : 1501279497,
             "schema:name"                  : "Untitled",
@@ -248,7 +248,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1501285535,
             "lastUpdatedOnTS"       : 1501285535,
             "schema:name"                  : "inner",
@@ -272,7 +272,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "element",
+            "resourceType"              : "element",
             "createdOnTS"           : 1501285549,
             "lastUpdatedOnTS"       : 1501285580,
             "schema:name"                  : "parent",
@@ -297,7 +297,7 @@ var httpData = {
             }
           }],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1499799926,
             "lastUpdatedOnTS"       : 1499799926,
             "schema:name"                  : "/",
@@ -324,7 +324,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1499799926,
             "lastUpdatedOnTS"       : 1499799926,
             "schema:name"                  : "Users",
@@ -351,7 +351,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1499799927,
             "lastUpdatedOnTS"       : 1499799927,
             "schema:name"                  : "Test User 2",
@@ -405,7 +405,7 @@ var httpData = {
           },
           "resources"        : [
             {
-              "nodeType"              : "template",
+              "resourceType"              : "template",
               "createdOnTS"           : 1502146462,
               "lastUpdatedOnTS"       : 1502146462,
               "schema:name"                  : "test",
@@ -432,7 +432,7 @@ var httpData = {
           ],
           "pathInfo"         : [
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "/",
@@ -460,7 +460,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "Users",
@@ -488,7 +488,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799927,
               "lastUpdatedOnTS"       : 1499799927,
               "schema:name"                  : "Test User 2",
@@ -542,7 +542,7 @@ var httpData = {
           },
           "resources"        : [
             {
-              "nodeType"              : "template",
+              "resourceType"              : "template",
               "createdOnTS"           : 1502146462,
               "lastUpdatedOnTS"       : 1502146462,
               "schema:name"                  : "test",
@@ -569,7 +569,7 @@ var httpData = {
           ],
           "pathInfo"         : [
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "/",
@@ -597,7 +597,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "Users",
@@ -625,7 +625,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799927,
               "lastUpdatedOnTS"       : 1499799927,
               "schema:name"                  : "Test User 2",
@@ -679,7 +679,7 @@ var httpData = {
           },
           "resources"        : [
             {
-              "nodeType"              : "template",
+              "resourceType"              : "template",
               "createdOnTS"           : 1502146462,
               "lastUpdatedOnTS"       : 1502146462,
               "schema:name"                  : "test",
@@ -706,7 +706,7 @@ var httpData = {
           ],
           "pathInfo"         : [
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "/",
@@ -734,7 +734,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799926,
               "lastUpdatedOnTS"       : 1499799926,
               "schema:name"                  : "Users",
@@ -762,7 +762,7 @@ var httpData = {
               }
             },
             {
-              "nodeType"              : "folder",
+              "resourceType"              : "folder",
               "createdOnTS"           : 1499799927,
               "lastUpdatedOnTS"       : 1499799927,
               "schema:name"                  : "Test User 2",
@@ -810,7 +810,7 @@ var httpData = {
           }
           ,
           "resources"        : [{
-            "nodeType"              : "template",
+            "resourceType"              : "template",
             "createdOnTS"           : 1512434377,
             "lastUpdatedOnTS"       : 1512434393,
             "schema:name"                  : "t2",
@@ -835,7 +835,7 @@ var httpData = {
             }
           }],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -862,7 +862,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -889,7 +889,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 1",
@@ -934,7 +934,7 @@ var httpData = {
             "first": "http://127.0.0.1:9008/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80a3dbf6-a840-48e9-8542-2fd31f475861/contents?resource_types=element%2Cinstance%2Ctemplate%2Cfolder&sort=name&offset=0&limit=100"
           },
           "resources"        : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "CEDAR Admin",
@@ -961,7 +961,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Debra Willrett",
@@ -988,7 +988,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 1",
@@ -1015,7 +1015,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 2",
@@ -1043,7 +1043,7 @@ var httpData = {
             }
           }],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -1070,7 +1070,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -1116,7 +1116,7 @@ var httpData = {
           },
           "resources"        : [],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -1143,7 +1143,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -1170,7 +1170,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "CEDAR Admin",
@@ -1216,7 +1216,7 @@ var httpData = {
           },
           "resources": [],
           "pathInfo": [{
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
             "schema:name": "/",
@@ -1243,7 +1243,7 @@ var httpData = {
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
             "schema:name": "Users",
@@ -1270,7 +1270,7 @@ var httpData = {
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895932,
             "lastUpdatedOnTS": 1511895932,
             "schema:name": "CEDAR Admin",
@@ -1317,7 +1317,7 @@ var httpData = {
           }
           ,
           "resources"        : [{
-            "nodeType"              : "template",
+            "resourceType"              : "template",
             "createdOnTS"           : 1512434377,
             "lastUpdatedOnTS"       : 1512434393,
             "schema:name"                  : "t2",
@@ -1342,7 +1342,7 @@ var httpData = {
             }
           }],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -1369,7 +1369,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -1396,7 +1396,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 1",
@@ -1441,7 +1441,7 @@ var httpData = {
             "first": "http://127.0.0.1:9008/folders/https%3A%2F%2Frepo.metadatacenter.orgx%2Ffolders%2F80a3dbf6-a840-48e9-8542-2fd31f475861/contents?resource_types=element%2Cinstance%2Ctemplate%2Cfolder&sort=name&offset=0&limit=100"
           },
           "resources"        : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "CEDAR Admin",
@@ -1468,7 +1468,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Debra Willrett",
@@ -1495,7 +1495,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 1",
@@ -1522,7 +1522,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "Test User 2",
@@ -1550,7 +1550,7 @@ var httpData = {
             }
           }],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -1577,7 +1577,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -1623,7 +1623,7 @@ var httpData = {
           },
           "resources"        : [],
           "pathInfo"         : [{
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "/",
@@ -1650,7 +1650,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895931,
             "lastUpdatedOnTS"       : 1511895931,
             "schema:name"                  : "Users",
@@ -1677,7 +1677,7 @@ var httpData = {
               "oslc"  : "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType"              : "folder",
+            "resourceType"              : "folder",
             "createdOnTS"           : 1511895932,
             "lastUpdatedOnTS"       : 1511895932,
             "schema:name"                  : "CEDAR Admin",
@@ -1723,7 +1723,7 @@ var httpData = {
           },
           "resources": [],
           "pathInfo": [{
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
             "schema:name": "/",
@@ -1750,7 +1750,7 @@ var httpData = {
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895931,
             "lastUpdatedOnTS": 1511895931,
             "schema:name": "Users",
@@ -1777,7 +1777,7 @@ var httpData = {
               "oslc": "http://open-services.net/ns/core#"
             }
           }, {
-            "nodeType": "folder",
+            "resourceType": "folder",
             "createdOnTS": 1511895932,
             "lastUpdatedOnTS": 1511895932,
             "schema:name": "CEDAR Admin",

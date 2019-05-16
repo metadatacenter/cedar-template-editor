@@ -101,7 +101,7 @@ define(['app', 'angular'], function (app) {
           var currentFolderId = 'https://repo.metadatacenter.orgx/folders/f55c5f4b-1ee6-4839-8836-fcb7509cecfe';
           var currentPath = '';
           var resource = {
-            "nodeType": "template",
+            "resourceType": "template",
             "createdOnTS": 1502146462,
             "lastUpdatedOnTS": 1502146462,
             "name": "test",
