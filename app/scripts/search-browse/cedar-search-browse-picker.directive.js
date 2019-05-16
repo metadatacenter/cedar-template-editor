@@ -626,7 +626,7 @@ define([
                   }
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           };
@@ -650,7 +650,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
           };
@@ -692,11 +692,11 @@ define([
           };
 
           vm.canMakeOpen = function () {
-            return resourceService.canMakeOpen(vm.getSelectedNode());
+            return window.makeOpenEnabled && resourceService.canMakeOpen(vm.getSelectedNode());
           };
 
           vm.canMakeNotOpen = function () {
-            return resourceService.canMakeNotOpen(vm.getSelectedNode());
+            return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -733,7 +733,7 @@ define([
 
               var postData = {};
               var id = resource['@id'];
-              var nodeType = resource.nodeType;
+              var nodeType = resource.resourceType;
               var description = resource[CONST.model.DESCRIPTION];
 
               if (nodeType == 'instance') {
@@ -1295,12 +1295,12 @@ define([
 
             var resource = value || getSelected();
             if (resource) {
-              if (resource.nodeType === 'folder') {
+              if (resource.resourceType === 'folder') {
                 if (action !== 'populate') {
                   goToFolder(resource['@id']);
                 }
               } else {
-                if (resource.nodeType === 'template' && action === 'populate') {
+                if (resource.resourceType === 'template' && action === 'populate') {
                   launchInstance(resource);
                 } else {
                   editResource(resource);
@@ -1317,7 +1317,7 @@ define([
               if (typeof vm.pickResourceCallback === 'function') {
                 vm.pickResourceCallback(resource);
               }
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.TEMPLATE:
                   $location.path(FrontendUrlService.getTemplateEdit(id));
                   break;
@@ -1371,19 +1371,19 @@ define([
                           r,
                           function (response) {
 
-                            UIMessageService.flashSuccess('SERVER.' + r.nodeType.toUpperCase() + '.delete.success',
-                                {"title": r.nodeType},
+                            UIMessageService.flashSuccess('SERVER.' + r.resourceType.toUpperCase() + '.delete.success',
+                                {"title": r.resourceType},
                                 'GENERIC.Deleted');
                             removeResource(r);
                           },
                           function (error) {
-                            UIMessageService.showBackendError('SERVER.' + r.nodeType.toUpperCase() + '.delete.error',
+                            UIMessageService.showBackendError('SERVER.' + r.resourceType.toUpperCase() + '.delete.error',
                                 error);
                           }
                       );
                     },
                     'GENERIC.AreYouSure',
-                    'DASHBOARD.delete.confirm.' + r.nodeType,
+                    'DASHBOARD.delete.confirm.' + r.resourceType,
                     'GENERIC.YesDeleteIt'
                 );
               }
@@ -1463,7 +1463,7 @@ define([
           function getCurrentFolderSummary(folderId) {
             var params = {
               '@id'     : folderId,
-              'nodeType': CONST.resourceType.FOLDER
+              'resourceType': CONST.resourceType.FOLDER
             };
             resourceService.getResourceDetail(
                 params,
@@ -1509,15 +1509,15 @@ define([
           }
 
           function getNodeType(resource) {
-            return resource ? resource.nodeType : '';
+            return resource ? resource.resourceType : '';
           }
 
           function getResourceIconClass(resource) {
             var result = "";
             if (resource) {
-              result += resource.nodeType + " ";
+              result += resource.resourceType + " ";
 
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += CONST.resourceIcon.FOLDER;
                   break;
@@ -1541,7 +1541,7 @@ define([
           function getResourceTypeClass(resource) {
             var result = '';
             if (resource) {
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
                   result += "folder";
                   break;
@@ -1568,7 +1568,7 @@ define([
 
           function canBeVersioned(resource) {
             if (resource) {
-              switch (resource.nodeType) {
+              switch (resource.resourceType) {
                 case CONST.resourceType.TEMPLATE:
                   return true;
                 case CONST.resourceType.ELEMENT:
@@ -1580,8 +1580,8 @@ define([
 
           /*          function canPublishStatic() {
                       return (hasSelected() &&
-                          (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
-                              getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                          (getSelected().resourceType == CONST.resourceType.TEMPLATE ||
+                              getSelected().resourceType == CONST.resourceType.ELEMENT) &&
                           getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
                     }*/
 
@@ -1597,41 +1597,41 @@ define([
 
           /*          function canCreateDraftStatic() {
                       return (hasSelected() &&
-                          (getSelected().nodeType == CONST.resourceType.TEMPLATE ||
-                              getSelected().nodeType == CONST.resourceType.ELEMENT) &&
+                          (getSelected().resourceType == CONST.resourceType.TEMPLATE ||
+                              getSelected().resourceType == CONST.resourceType.ELEMENT) &&
                           getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
                     }*/
 
           function isTemplate(resource) {
             var result = false;
             if (resource) {
-              result = (resource.nodeType == CONST.resourceType.TEMPLATE);
+              result = (resource.resourceType == CONST.resourceType.TEMPLATE);
             } else {
-              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.TEMPLATE));
+              result = (hasSelected() && (getSelected().resourceType == CONST.resourceType.TEMPLATE));
             }
             return result;
           }
 
           function isElement() {
-            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.ELEMENT));
+            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.ELEMENT));
           }
 
           function isField() {
-            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.FIELD));
+            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.FIELD));
           }
 
           function isFolder(resource) {
             var result = false;
             if (resource) {
-              result = (resource.nodeType == CONST.resourceType.FOLDER);
+              result = (resource.resourceType == CONST.resourceType.FOLDER);
             } else {
-              result = (hasSelected() && (getSelected().nodeType == CONST.resourceType.FOLDER))
+              result = (hasSelected() && (getSelected().resourceType == CONST.resourceType.FOLDER))
             }
             return result;
           }
 
           function isMeta() {
-            return (hasSelected() && (getSelected().nodeType == CONST.resourceType.INSTANCE));
+            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.INSTANCE));
           }
 
           function goToHomeFolder(resourceId) {

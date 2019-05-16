@@ -94,7 +94,7 @@ define([
         function deleteResource(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
-          switch (resource.nodeType) {
+          switch (resource.resourceType) {
             case CONST.resourceType.FIELD:
               url = urlService.getTemplateField(id);
               break;
@@ -277,7 +277,7 @@ define([
         function getResourceDetail(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
-          switch (resource.nodeType) {
+          switch (resource.resourceType) {
             case CONST.resourceType.FOLDER:
               url = urlService.folders() + '/' + encodeURIComponent(id);
               break;
@@ -317,7 +317,7 @@ define([
         function getResourceReport(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
-          switch (resource.nodeType) {
+          switch (resource.resourceType) {
             case CONST.resourceType.FOLDER:
               url = urlService.folders() + '/' + encodeURIComponent(id);
               break;
@@ -585,7 +585,7 @@ define([
         function moveResource(resource, folderId, successCallback, errorCallback) {
           var postData = {};
           postData['sourceId'] = resource['@id'];
-          postData['nodeType'] = resource['nodeType'];
+          postData['resourceType'] = resource['resourceType'];
           postData['folderId'] = folderId;
 
           var url = urlService.moveNodeToFolder();
@@ -655,7 +655,7 @@ define([
         function getResourceShare(resource, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
-          switch (resource.nodeType) {
+          switch (resource.resourceType) {
             case CONST.resourceType.FOLDER:
               url = urlService.folderPermission(id);
               break;
@@ -684,7 +684,7 @@ define([
         function setResourceShare(resource, permissions, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
-          switch (resource.nodeType) {
+          switch (resource.resourceType) {
             case CONST.resourceType.FOLDER:
               url = urlService.folderPermission(id);
               break;

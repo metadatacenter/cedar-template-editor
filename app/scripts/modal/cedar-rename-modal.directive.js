@@ -51,7 +51,7 @@ define([
             var resource = vm.renameResource;
             if (resource != null) {
               var id = resource['@id'];
-              var type = resource.nodeType.toUpperCase();
+              var type = resource.resourceType.toUpperCase();
               var name = resource['schema:name'];
 
               AuthorizedBackendService.doCall(

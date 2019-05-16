@@ -519,9 +519,9 @@ define([
 
 
     $scope.pickElementFromPicker = function (resource) {
-      if (resource.nodeType == 'element') {
+      if (resource.resourceType == 'element') {
         $scope.addElementToElement(resource);
-      } else if (resource.nodeType == 'field') {
+      } else if (resource.resourceType == 'field') {
         $scope.addStandAloneFieldToElement(resource);
       }
 

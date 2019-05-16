@@ -75,7 +75,7 @@ define([
 
               },
               function (error) {
-                UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
               }
           );
         };
@@ -518,9 +518,9 @@ define([
         // };
 
         $scope.pickElementFromPicker = function (resource) {
-          if (resource.nodeType == 'element') {
+          if (resource.resourceType == 'element') {
             $scope.addElementToTemplate(resource);
-          } else if (resource.nodeType == 'field') {
+          } else if (resource.resourceType == 'field') {
             $scope.addStandAloneFieldToTemplate(resource);
           }
 

@@ -241,7 +241,7 @@ define(['app', 'angular'], function (app) {
             "pav:createdBy"       : "https://metadatacenter.org/users/287aef81-b87c-4278-9c40-5f3d464c5b30",
             "pav:lastUpdatedOn"   : "2017-05-30T14:15:52-0700",
             "oslc:modifiedBy"     : "https://metadatacenter.org/users/287aef81-b87c-4278-9c40-5f3d464c5b30",
-            "schema:schemaVersion": "1.1.0",
+            "schema:schemaVersion": "1.6.0",
             "additionalProperties": false,
             "$schema"             : "http://json-schema.org/draft-04/schema#",
             "pav:version"         : "0.0.1",
