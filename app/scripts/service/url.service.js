@@ -193,7 +193,7 @@ define([
     };
 
     service.renameNode = function () {
-      return this.resourceBase() + "/command/rename-node";
+      return this.resourceBase() + "/command/rename-resource";
     };
 
     service.getUsers = function () {
