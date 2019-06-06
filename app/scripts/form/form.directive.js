@@ -331,27 +331,22 @@ define([
 
                 if (data.isValid == false) {
 
-                  $scope.$emit('validationError',
-                      ['remove', '', type]);
+                  $scope.$emit('validationError', ['remove', '', type]);
 
-                  var errors = data.messages || data.errors;
-                  for (var i = 0; i < errors.length; i++) {
+                  let errors = data.messages || data.errors;
+                  for (let i = 0; i < errors.length; i++) {
 
                     // log to the console always
                     console.log(errors[i]);
 
-                    $scope.$emit('validationError',
-                        ['add', errors[i], type + i]);
-
+                    $scope.$emit('validationError', ['add', errors[i], type + i]);
                   }
                 }
                 else {
 
-                  $scope.$emit('validationError',
-                      ['remove', '', type]);
+                  $scope.$emit('validationError', ['remove', '', type]);
 
-                  UIMessageService.flashSuccess('The metadata are valid', {"title": "title"},
-                      'Success');
+                  UIMessageService.flashSuccess('The metadata are valid', {"title": "title"}, 'Success');
                 }
               },
               function (err) {
@@ -361,18 +356,19 @@ define([
         };
 
         $scope.validateInstance = function (instance, type) {
+          let body = {instance: instance};
           switch (type) {
             case 'biosample':
-              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              $scope.doValidation(body, UrlService.biosampleValidation(), 'biosample');
               break;
             case 'ncbi':
-              $scope.doValidation(instance, UrlService.ncbiValidation(), 'ncbi');
+              $scope.doValidation(body, UrlService.ncbiValidation(), 'ncbi');
               break;
             case 'airr':
-              $scope.doValidation(instance, UrlService.airrValidation(), 'airr');
+              $scope.doValidation(body, UrlService.airrValidation(), 'airr');
               break;
             case 'lincs':
-              $scope.doValidation(instance, UrlService.lincsValidation(), 'lincs');
+              $scope.doValidation(body, UrlService.lincsValidation(), 'lincs');
               break;
           }
         };
@@ -444,10 +440,11 @@ define([
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
-          var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
-          if (type) {
-            $scope.validateInstance($scope.$parent.instance, type);
-          }
+          // Perform external validation (currently disabled when saving the instance to avoid showing duplicate messages)
+          // let type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
+          // if (type) {
+          //   $scope.validateInstance($scope.$parent.instance, type);
+          // }
         });
 
         $scope.$on('formHasRequiredFields', function (event) {

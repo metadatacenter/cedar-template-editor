@@ -304,6 +304,10 @@ define([
       }
     });
 
+    $scope.resetValidationErrors = function() {
+      $scope.validationErrors = {};
+    };
+
     $scope.getValidationHeader = function (key) {
       if (key != 'undefined') { // Note that here 'undefined' is a string
         return $translate.instant('VALIDATION.groupHeader.' + key);
