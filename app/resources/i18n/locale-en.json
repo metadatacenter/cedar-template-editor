@@ -671,7 +671,7 @@
     "from": {
       "process": {
         "submission": {
-          "AIRR": "AIRR Submission Process",
+          "NCBI": "NCBI Submission Process",
           "IMMPORT": "ImmPort Submission Process"
         }
       }
