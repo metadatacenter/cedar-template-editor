@@ -5,6 +5,11 @@
     "action": []
   },
   {
+    "type": "ncbi",
+    "template": "cedar-ncbi",
+    "action": ["validation", "submission"]
+  },
+  {
     "type": "airr",
     "template": "miairr",
     "action": ["validation", "submission"]
