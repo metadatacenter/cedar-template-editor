@@ -23,42 +23,50 @@
 
     <div class="modal-body">
 
-      <uib-tabset active="state.active" >
-        <uib-tab index="0" heading="Repository" >
+      <uib-tabset active="state.active">
+        <uib-tab index="0" heading="Step 1. Select repository">
           <div class="repository">
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flowNcbiSra" name="flow-repo" ng-model="model.selectedMode"
-                  ng-click="setMode(0);" value="0">
-              <label for="flowNcbiSra">
+              <input type="radio" class="select" id="flowNcbi" name="flow-repo" ng-model="model.selectedMode"
+                  ng-click="setMode(0);" value="0" ng-disabled="isFlowDisabled(0)">
+              <label for="flowNcbi">
                 <ng-bind-html ng-bind-html="modes[0]"/>
               </label>
             </div>
 
             <div class="radio radio-primary" style="padding:10px">
-              <input type="radio" class="select" id="flowImmport" name="flow-repo" ng-model="model.selectedMode"
-                  ng-click="setMode(1);" value="1">
-              <label for="flowImmport">
+              <input type="radio" class="select" id="flowNcbiMiAIRR" name="flow-repo" ng-model="model.selectedMode"
+                  ng-click="setMode(1);" value="1" ng-disabled="isFlowDisabled(1)">
+              <label for="flowNcbiMiAIRR">
                 <ng-bind-html ng-bind-html="modes[1]"/>
               </label>
             </div>
 
-            <div style="padding:0 0 0 40px">
-              <label class="sm" for="immport-workspace">Workspace<i
-                  style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>
-              <input ng-disabled="model.selectedMode != 'flow-immport'"
-                  id="immport-workspace"
-                  type="text"
-                  ng-model="model.selectedWorkspace"
-                  placeholder="search ImmPort for workspace"
-                  uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"
-                  class="form-control typeahead"
-                  style="width:250px">
-              <i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>
-              <div ng-if="noWorkspaces">
-                <i class="glyphicon glyphicon-remove"></i> No Results Found
-              </div>
-            </div>
+            <!--<div class="radio radio-primary" style="padding:10px">-->
+            <!--<input type="radio" class="select" id="flowImmport" name="flow-repo" ng-model="model.selectedMode"-->
+            <!--ng-click="setMode(2);" value="2">-->
+            <!--<label for="flowImmport">-->
+            <!--<ng-bind-html ng-bind-html="modes[2]"/>-->
+            <!--</label>-->
+            <!--</div>-->
+
+            <!--<div style="padding:0 0 0 40px">-->
+            <!--<label class="sm" for="immport-workspace">Workspace<i-->
+            <!--style="color:#FF5722;vertical-align: super;font-size:.5em" class="fa fa-asterisk"></i></label>-->
+            <!--<input ng-disabled="model.selectedMode != 'flow-immport'"-->
+            <!--id="immport-workspace"-->
+            <!--type="text"-->
+            <!--ng-model="model.selectedWorkspace"-->
+            <!--placeholder="search ImmPort for workspace"-->
+            <!--uib-typeahead="workspace for workspace in workspaces | filter:$viewValue | limitTo:8"-->
+            <!--class="form-control typeahead"-->
+            <!--style="width:250px">-->
+            <!--<i ng-if="loadingWorkspaces" class="glyphicon glyphicon-refresh"></i>-->
+            <!--<div ng-if="noWorkspaces">-->
+            <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
+            <!--</div>-->
+            <!--</div>-->
 
             <!--<div class="radio radio-primary" style="padding:10px">-->
             <!--<input type="radio" class="select" id="flow-lincs" name="flow-repo" ng-model="model.selectedMode"-->
@@ -70,39 +78,46 @@
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="Upload" >
+        <uib-tab index="1" heading="Step 2. Upload files">
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
                 <!--<div class="row metadata">-->
 
-                  <!--<h5 class="header"> Metadata <i class="fa fa-tags "></i></h5>-->
-                  <!--<div class="col-sm-10">-->
-                    <!--<input type="text" ng-disabled="!canInsert()"-->
-                        <!--ng-model="model.selectedInstance"-->
-                        <!--placeholder="search workspace"-->
-                        <!--uib-typeahead="instance for instance in instances($viewValue)"-->
-                        <!--typeahead-loading="loadingInstances"-->
-                        <!--typeahead-no-results="noInstances"-->
-                        <!--class="form-control typeahead"-->
-                        <!--typeahead-on-select="">-->
-                    <!--<i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>-->
-                    <!--<span ng-if="noInstances">-->
-                      <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
-                    <!--</span>-->
-                  <!--</div>-->
+                <!--<h5 class="header"> Metadata <i class="fa fa-tags "></i></h5>-->
+                <!--<div class="col-sm-10">-->
+                <!--<input type="text" ng-disabled="!canInsert()"-->
+                <!--ng-model="model.selectedInstance"-->
+                <!--placeholder="search workspace"-->
+                <!--uib-typeahead="instance for instance in instances($viewValue)"-->
+                <!--typeahead-loading="loadingInstances"-->
+                <!--typeahead-no-results="noInstances"-->
+                <!--class="form-control typeahead"-->
+                <!--typeahead-on-select="">-->
+                <!--<i ng-if="loadingInstances" class="glyphicon glyphicon-refresh"></i>-->
+                <!--<span ng-if="noInstances">-->
+                <!--<i class="glyphicon glyphicon-remove"></i> No Results Found-->
+                <!--</span>-->
+                <!--</div>-->
 
 
-                  <!--<span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"-->
-                      <!--uib-tooltip="Add to upload list" tooltip-trigger="" tooltip-animation="false" tooltip-placement="bottom" data-toggle="tooltip"-->
-                      <!--ng-click="insertItems($flow, model.selectedInstance)">-->
-                    <!--<i class="fa fa-plus-circle btn-add"></i></span>-->
+                <!--<span ng-disabled="!canInsert()" ng-if="canInsert() && !loadingInstances && !noInstances && model.selectedInstance"-->
+                <!--uib-tooltip="Add to upload list" tooltip-trigger="" tooltip-animation="false" tooltip-placement="bottom" data-toggle="tooltip"-->
+                <!--ng-click="insertItems($flow, model.selectedInstance)">-->
+                <!--<i class="fa fa-plus-circle btn-add"></i></span>-->
                 <!--</div>-->
                 <div class="row">
                   <div class="col-sm-12">
-                    <div class="actions">
-                      Select files to upload.
-                      <div><span class="btn btn-clear" flow-btn ng-disabled="!canInsert()">Select</span></div>
+                    <div class="actions" style="text-align:center" >
+                      Click the button below to select the data files that will be submitted to the repository. Note that the selected files must match the file names and file types entered in the SRA section of the metadata
+                      <div style="margin-top: 20px">
+                        <div class="btn btn-save" flow-btn ng-disabled="!canInsert()">Select files</div>
+                        <div ng-if="$flow.files.length==1" style="margin-top: 20px">No data files selected</div>
+                        <div ng-if="$flow.files.length > 1" style="margin-top: 20px">
+                          <span ng-if="$flow.files.length == 2">{{$flow.files.length - 1}} data file selected</span>
+                          <span ng-if="$flow.files.length > 2">{{$flow.files.length - 1}} data files selected</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -137,8 +152,9 @@
                           </form>
 
                         </div>
-                        <div class="col-sm-1 clear-item" >
-                          <button type="button"  ng-click="removeItem($flow, file)" aria-label="Close"><i class="fa fa-remove"></i></button>
+                        <div class="col-sm-1 clear-item">
+                          <button type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i
+                              class="fa fa-remove"></i></button>
                         </div>
                       </div>
                     </div>
@@ -163,48 +179,70 @@
                 <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume"
                     class="btn btn-clear " translate>GENERIC.Resume
                 </button>
-                <button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear"
-                    class="btn btn-clear " translate>GENERIC.Clear
-                </button>
+                <!--<button type="button" ng-click="cancelAll($flow)" ng-disabled="!canClear($flow)" aria-label="Clear"-->
+                    <!--class="btn btn-clear " translate>GENERIC.Clear-->
+                <!--</button>-->
               </div>
             </div>
           </div>
 
         </uib-tab>
-        <uib-tab index="2" heading="Log" >
-          <div style="margin-top:10px;max-height: 270px;height:270px;overflow-y:auto;overflow-x:hidden;">
-          <div style="display:flex;justify-content:center;align-items:flex-start" ng-repeat="(key, value) in state.status">
-              <div style="width:100%;margin-right:10px">
-                <div style="padding:4px;">{{value.label}}</div>
-              </div>
-            <div style="width:100%;" >
-              <div style="padding:4px;">{{value.file}}</div>
-            </div>
-          </div>
-          </div>
-        </uib-tab>
+        <!--<uib-tab index="2" heading="Log">-->
+          <!--<div style="margin-top:10px;max-height: 270px;height:270px;overflow-y:auto;overflow-x:hidden;">-->
+            <!--<div style="display:flex;justify-content:center;align-items:flex-start"-->
+                <!--ng-repeat="(key, value) in state.status">-->
+              <!--<div style="width:100%;margin-right:10px">-->
+                <!--<div style="padding:4px;">{{value.label}}</div>-->
+              <!--</div>-->
+              <!--<div style="width:100%;">-->
+                <!--<div style="padding:4px;">{{value.file}}</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</uib-tab>-->
       </uib-tabset>
 
+    </div>
+
+    <!-- Validation messages -->
+    <div ng-if="showValidation==true" style="color:red; margin: 20px">
+      <span>Please correct the following errors and try again:</span>
+      <ul>
+        <li ng-repeat="message in validationMessages">
+          {{message}}
+        </li>
+      </ul>
     </div>
 
     <!-- footer closes the dialog -->
     <div class="modal-footer actions">
       <div style="display: flex;justify-content:space-between;align-items: center;">
-        <div  style="font-weight:bold;display:flex;justify-content:center;width:100%">
-          <span >{{getStatus()}}</span>
+        <div style="font-weight:bold;display:flex;justify-content:center;width:100%">
+          <span>{{getStatus()}}</span>
         </div>
-        <div class="clear-save" style="width:100%" >
+        <div class="clear-save" style="width:100%">
 
-          <button type="button" ng-click="flowModalVisible=false;"
+          <button type="button" ng-click="flowModalVisible=false"
               data-dismiss="modal" aria-label="Close"
-              class="btn done" ng-class="{'btn-save': state.complete, 'btn-clear': !state.complete}"  translate>GENERIC.Close
+              class="btn done" ng-class="{'btn-save': state.complete, 'btn-clear': !state.complete}" translate>
+            GENERIC.Close
           </button>
-          <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit"
-              class="btn" ng-class="{'btn-save': !state.complete, 'btn-clear': state.complete}" translate>GENERIC.Submit
-          </button>
+
+          <span ng-if="state.active == 0">
+            <button type="button" ng-click="state.active = 1" aria-label="Next"
+                class="btn btn-save" translate>GENERIC.Next
+            </button>
+          </span>
+
+          <span ng-if="state.active == 1">
+            <button type="button" ng-disabled="!canSubmit($flow)" ng-click="submit($flow)" aria-label="Submit"
+                class="btn btn-save" translate>GENERIC.Submit
+            </button>
+          </span>
 
         </div>
       </div>
     </div>
+
   </div>
 </div>

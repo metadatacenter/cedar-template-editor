@@ -264,6 +264,10 @@ define([
       return submissionService + '/command/validate-biosample';
     };
 
+    service.ncbiSubmission = function () {
+      return submissionService + '/command/upload-ncbi-to-cedar';
+    };
+
     service.airrSubmission = function () {
       return submissionService + '/command/upload-cairr-to-cedar';
     };
@@ -274,6 +278,10 @@ define([
 
     service.lincsSubmission = function () {
       return 'https://httpbin.org/post';
+    };
+
+    service.ncbiValidation = function () {
+      return submissionService + '/command/validate-ncbi';
     };
 
     service.airrValidation = function () {

@@ -46,8 +46,7 @@ define([
 
         function flowModalController($scope, $rootScope, $timeout, QueryParamUtilsService, UISettingsService,
                                      UIMessageService, resourceService, TemplateInstanceService, AuthorizedBackendService,
-                                     UrlService,
-                                     SubmissionService) {
+                                     UrlService, HttpBuilderService, SubmissionService, $translate) {
 
           //
           // init
@@ -61,9 +60,13 @@ define([
             'active'   : false
           };
 
+          $scope.showValidation;
+          $scope.validationMessages;
 
           $scope.init = function (flow) {
             $scope.flow = flow;
+            $scope.showValidation = false;
+            $scope.validationMessages = [];
           };
 
           $scope.isTest = false;
@@ -104,18 +107,21 @@ define([
             }, 10000);
           };
 
-
-          var flowNcbiSra = 0;
-          var flowImmport = 1;
-          var flowLincs = 2;
-          $scope.modes = ['<strong>NCBI SRA</strong> - The Sequence Read Archive',
+          var flowNcbi = 0;
+          var flowNcbiMiAIRR = 1;
+          var flowImmport = 2;
+          var flowLincs = 3;
+          $scope.modes = ['<strong>NCBI (Human Tissue)</strong> - NCBI\'s BioProject, BioSample and SRA following the BioSample Human package v1.0',
+                          '<strong>NCBI MiAIRR</strong> - NCBI\'s BioProject, BioSample and SRA following the MiARR standard',
                           '<strong>ImmPort</strong> - The Immunology Database and Analysis Portal',
                           '<strong>LINCS</strong> - Library of Integrated Network-Based Cellular Signatures'];
 
 
           $scope.getTarget = function () {
             var result;
-            if ($scope.model.selectedMode === flowNcbiSra) {
+            if ($scope.model.selectedMode === flowNcbi) {
+              result = UrlService.ncbiSubmission();
+            } else if ($scope.model.selectedMode === flowNcbiMiAIRR) {
               result = UrlService.airrSubmission();
             } else if ($scope.model.selectedMode === flowImmport) {
               result = UrlService.immportSubmission();
@@ -169,14 +175,14 @@ define([
           $scope.model = {
             selectedInstance : undefined,
             selectedWorkspace: undefined,
-            selectedMode     : flowNcbiSra
+            selectedMode     : flowNcbi
           };
+
           $scope.loadingInstances;
           $scope.resources = [];
           $scope.metadataFiles = [];
 
           $scope.instances = function (term) {
-            console.log('instances', term);
 
             var limit = UISettingsService.getRequestLimit();
             var offset = 0;
@@ -194,8 +200,6 @@ define([
                   // keep the full data in the resources array
                   // give the name map back to the typeahead directive
                   $scope.resources = response.data.resources;
-                  //console.log('response', $scope.resources);
-
 
                   return $scope.resources.map(function (item) {
                     return item.name;
@@ -207,7 +211,7 @@ define([
             );
           };
 
-          // load and add the instances to the flow queue
+          // load and add the instance to the flow queue
           $scope.insertItems = function (flow, name) {
             if (!$state.submitted) {
               for (var i = 0; i < $scope.resources.length; i++) {
@@ -227,7 +231,7 @@ define([
                           $scope.metadataFiles.push(blob.name);
                           flow.addFile(blob);
 
-                          $scope.model.selectedInstance = '';
+                          $scope.model.selectedInstance = instanceResponse.data;
 
                         }, 0);
 
@@ -241,7 +245,7 @@ define([
             }
           };
 
-          // load and add the instances to the flow queue
+          // load and add the instance to the flow queue
           $scope.insertItemById = function (flow, instanceId, name) {
 
             if (instanceId && name) {
@@ -258,13 +262,46 @@ define([
                       $scope.metadataFiles.push(blob.name);
                       flow.addFile(blob);
 
-                      $scope.model.selectedInstance = '';
+                      $scope.model.selectedInstance = instanceResponse.data;
+
+                      // Read the value of the the submission_pipeline hidden field from the instance to decide what pipeline should be used to submit this instance
+                      var pipelineFieldName = 'submission_pipeline';
+                      if ((pipelineFieldName in instanceResponse.data) && ('@value' in instanceResponse.data[pipelineFieldName])) {
+                        var pipeline = instanceResponse.data[pipelineFieldName]['@value'];
+                        if (pipeline.toUpperCase() == 'NCBI-HUMAN') {
+                          $scope.setMode(flowNcbi);
+                        }
+                        else if (pipeline.toUpperCase() == 'NCBI-MIAIRR') {
+                          $scope.setMode(flowNcbiMiAIRR);
+                        }
+                        else {
+                          $scope.setMode(flowNcbi); // Default submission pipeline
+                        }
+                      }
+                      else { // if there is no submission_pipeline value
+                        if (name.toLowerCase().includes('miairr')) {
+                          $scope.setMode(flowNcbiMiAIRR);
+                        }
+                        else {
+                          $scope.setMode(flowNcbi); // Default submission pipeline
+                        }
+                      }
+
                     }, 0);
                   },
                   function (instanceErr) {
                     UIMessageService.showBackendError('SERVER.INSTANCE.load.error', instanceErr);
                   }
               );
+            }
+          };
+
+          $scope.isFlowDisabled = function (flowId) {
+            if (flowId == $scope.model.selectedMode) {
+              return false;
+            }
+            else {
+              return true;
             }
           };
 
@@ -275,6 +312,56 @@ define([
               flow.files.splice(index, 1);
             }
           };
+
+          /**
+           * Performs the final validation before submission
+           * @param flow
+           */
+          $scope.submit = function (flow) {
+            var selectedFileNames = [];
+            flow.files.forEach(function (flowFile) {
+              if (flowFile.file.type != 'application/json') { // Ignore the metadata file
+                selectedFileNames.push(flowFile.name)
+              }
+            });
+
+            var instanceAndFilenames = {
+              "instance" : $scope.model.selectedInstance,
+              "userFileNames": selectedFileNames
+            };
+
+            let url;
+            if ($scope.model.selectedMode == 0) {
+              url = UrlService.ncbiValidation();
+            }
+            else {
+              url = UrlService.airrValidation();
+            }
+
+            AuthorizedBackendService.doCall(
+                HttpBuilderService.post(url, instanceAndFilenames),
+
+                function (response) {
+
+                  if (response.data.isValid == false) {
+                    $scope.showValidation = true;
+                    $scope.validationMessages = response.data.messages;
+                  }
+                  else {
+                    // We start the submission
+                    $scope.startUpload(flow);
+                  }
+                },
+                function (err) {
+                  UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
+                }
+            );
+          };
+
+          $scope.resetValidation = function() {
+            $scope.validationMessages = [];
+            $scope.showValidation = false;
+          }
 
           //
           // flow of control
@@ -339,7 +426,7 @@ define([
             var substring = 'Error';
             if ($scope.state.status.length > 0) {
 
-              for (var i=0; i<$scope.state.status.length; i++) {
+              for (var i = 0; i < $scope.state.status.length; i++) {
                 if ($scope.state.status[i].label.indexOf(substring) !== -1) {
                   return $scope.state.status[i].label;
                 }
@@ -365,7 +452,8 @@ define([
 
           $scope.canSubmit = function (flow) {
             var validRepo = ($scope.model.selectedWorkspace && $scope.model.selectedMode == flowImmport) || ($scope.model.selectedMode != flowImmport);
-            return validRepo && !$scope.state.complete && !$scope.state.submitted && flow.files.length > 0;
+            // We check that the selected files are more than 1 to ensure that the user is uploading the instance plus at least one additional file
+            return validRepo && !$scope.state.complete && !$scope.state.submitted && flow.files.length > 1;
           };
 
           $scope.cancelAll = function (flow) {
@@ -396,6 +484,8 @@ define([
 
           // modal open or closed
           $scope.$on('flowModalVisible', function (event, params) {
+
+            $scope.resetValidation();
 
             if (params && params[0]) {
               $timeout(function () {

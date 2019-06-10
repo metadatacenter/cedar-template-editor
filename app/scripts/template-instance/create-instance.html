@@ -31,10 +31,10 @@
               </button>
               <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata"
                   ng-disabled="saveButtonDisabled" class="btn btn-clear metadata " style="outline:none;"
-                  ng-click="doValidation()" translate>GENERIC.Validate
+                  ng-click="resetValidationErrors(); doValidation()" translate>GENERIC.Validate
               </button>
               <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled"
-                  class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;" translate>GENERIC.Save
+                  class="btn btn-save metadata" ng-click="resetValidationErrors(); saveInstance()" style="outline:none;" translate>GENERIC.Save
               </button>
             </div>
           </div>
