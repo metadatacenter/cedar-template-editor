@@ -13,12 +13,8 @@
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
     "install": "npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@mjd.git.beanstalkapp.com:/mjd/stanford-cedar.git"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Metadatacenter.org",
+  "license": "GNU 2-clause",
   "devDependencies": {
     "bower": "1.8.0",
     "chai": "4.1.1",
