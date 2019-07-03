@@ -835,11 +835,13 @@ define([
         }
 
         function canMakeOpen(resource) {
-          return this.canDo(resource, 'canMakeOpen');
+          // TODO: change this back to canMakeOpen when the backend sends it correctly
+          return this.canDo(resource, 'canWrite') && !resource['isOpen'];
         }
 
         function canMakeNotOpen(resource) {
-          return this.canDo(resource, 'canMakeNotOpen');
+          // TODO: change this back to canMakeNotOpen when the backend sends it correctly
+          return this.canDo(resource, 'canWrite') && resource['isOpen'];
         }
 
         function canSubmit(resource) {
