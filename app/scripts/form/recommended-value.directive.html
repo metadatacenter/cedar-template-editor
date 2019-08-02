@@ -14,6 +14,7 @@
         ui-disable-choice="option.valueLabel == getNoResultsMsg()"
         refresh="updateModelWhenRefresh(field, $select, modelValueRecommendation, index); updatePopulatedFields(field, $select.search); updateValueRecommendationResults(field, $select.search || '*')"
         refresh-delay="200"
+        minimum-input-length="1"
         repeat="option in order(valueRecommendationResults[getId()]) | propsFilter: {valueLabel: $select.search} | limitTo:100">
 
       <!-- Recommended value -->
