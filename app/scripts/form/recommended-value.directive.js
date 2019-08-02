@@ -21,12 +21,14 @@ define([
       };
 
       $scope.updatePopulatedFields = function(field, valueLabel, valueType) {
+        console.log('*** updatePopulatedFields')
         ValueRecommenderService.updatePopulatedFields(field, valueLabel, valueType);
       };
 
       $scope.getValueRecommendationResults = ValueRecommenderService.getValueRecommendationResults;
 
       $scope.updateValueRecommendationResults = function(field, query) {
+        console.log('*** updateValueRecommendationResults')
         // We call BioPortal and wait for all the promises to complete
         let promises = autocompleteService.updateFieldAutocomplete(field, query);
         $q.all(promises).then(values => {
@@ -81,6 +83,7 @@ define([
       }, true);
 
       $scope.updateModelWhenChangeSelection = function (modelvr, index) {
+        console.log('*** updateModelWhenChangeSelection')
         if (modelvr[index] && modelvr[index].valueInfo) {
           // URI
           if (modelvr[index].valueInfo.valueType) {
@@ -129,6 +132,7 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
+        console.log('*** initializeValueRecommendationField')
         autocompleteService.clearResults($scope.getId($scope.field)); // clear ontology terms cache for the field
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
@@ -184,12 +188,14 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (field, select, modelvr, index) {
-
+        console.log('*** updateModelWhenRefresh')
+        console.log('modelvr: ')
+        console.log(modelvr)
         if (!$scope.isFirstRefresh && !schemaService.isConstrained(field)) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
             // If the user entered a new value
-            if (select.search != modelvr[index].valueInfo.value) {
+            if (select.search != modelvr[index].valueInfo.valueLabel) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
                 modelValue = null;
