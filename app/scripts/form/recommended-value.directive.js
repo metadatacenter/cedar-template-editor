@@ -183,13 +183,13 @@ define([
         $scope.isFirstRefresh = value;
       };
 
+      // Updates the model as the user types into the field
       $scope.updateModelWhenRefresh = function (field, select, modelvr, index) {
-
         if (!$scope.isFirstRefresh && !schemaService.isConstrained(field)) {
           // Check that there are no controlled terms selected
-          if (select.selected.valueUri == null) {
+          if (select.selected && select.selected.valueType) {
             // If the user entered a new value
-            if (select.search != modelvr[index].valueInfo.value) {
+            //if (select.search != modelvr[index].valueInfo.valueLabel) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
                 modelValue = null;
@@ -204,7 +204,7 @@ define([
                 $scope.model['@value'] = modelValue;
               }
               modelvr[index].valueInfo.valueLabel = modelValue;
-            }
+            //}
           }
         }
       };
