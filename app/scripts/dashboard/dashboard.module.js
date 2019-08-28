@@ -18,8 +18,13 @@ define([
   'cedar/template-editor/search-browse/cedar-live-search.directive',
   'cedar/template-editor/form/auto-focus.directive',
   'cedar/template-editor/search-browse/flow-modal.directive',
-  'cedar/template-editor/widget/cedar-resource-icon.directive'
-], function(angular) {
+  'cedar/template-editor/widget/cedar-resource-icon.directive',
+
+  'cedar/template-editor/category-tree/category-tree.controller',
+  'cedar/template-editor/category-tree/category-tree.directive',
+  'cedar/template-editor/category-tree/category-tree-node.directive',
+  'cedar/template-editor/category-tree/category-tree-helper'
+], function (angular) {
   angular.module('cedar.templateEditor.dashboard', [
     'cedar.templateEditor.dashboard.routes',
     'cedar.templateEditor.dashboard.dashboardController',
@@ -37,6 +42,11 @@ define([
     'cedar.templateEditor.searchBrowse.cedarLiveSearchDirective',
     'cedar.templateEditor.form.autoFocusDirective',
     'cedar.templateEditor.searchBrowse.flowModal',
-    'cedar.templateEditor.widget.cedarResourceIconDirective'
+    'cedar.templateEditor.widget.cedarResourceIconDirective',
+
+    'cedar.templateEditor.categoryTree.categoryTreeController',
+    'cedar.templateEditor.categoryTree.categoryTreeDirective',
+    'cedar.templateEditor.categoryTree.categoryTreeNodeDirective',
+    'cedar.templateEditor.categoryTree.categoryTreeHelper',
   ]);
 });

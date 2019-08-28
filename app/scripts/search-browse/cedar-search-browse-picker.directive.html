@@ -122,6 +122,26 @@
                 </ul>
               </li>
 
+              <li><a href="#" ng-click="dc.toggleFilters('category')">{{'GENERIC.Categories' |translate}}<i
+                  class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('category'), 'fa-caret-left': !dc.isFilterSection('category') }"></i></a>
+
+                <ul id="filter-resource-category" class="list-inline">
+                  <li ng-if="!dc.categoryTreeAvailable">
+                    <div class="latest no-select">
+                      <i class="btn fa " ng-class="dc.getLatestIcon()"></i>{{'GENERIC.Loading' | translate}}
+                    </div>
+                  </li>
+                  <li ng-if="dc.categoryTreeAvailable">
+                    <div class="latest no-select">
+                      <div ng-controller="categoryTreeController" class="category-tree-container">
+                        <category-tree helper="categoryTreeHelper" category="dc.categoryTree"></category-tree>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
             </ul>
 
           </div>

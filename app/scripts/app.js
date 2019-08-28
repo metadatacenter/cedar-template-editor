@@ -53,9 +53,6 @@ define([
   'cedar/template-editor/profile/profile.module',
   'cedar/template-editor/messaging/messaging.module',
 
-  // search browse
-  //'cedar/template-editor/search-browse/search-browse.module',
-
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
 ], function (angular, jsonld, flow) {

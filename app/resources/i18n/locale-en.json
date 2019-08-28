@@ -188,7 +188,9 @@
     "OntologyName": "Ontology Name",
     "UILabel": "UI Label",
     "MadeOpen": "Made Open",
-    "MadeNotOpen": "Made Not Open"
+    "MadeNotOpen": "Made Not Open",
+    "Categories": "Categories",
+    "Loading": "Loading"
   },
   "HELP": {
     "createFolder": "Create folder",
