@@ -30,16 +30,28 @@ define([
           },
 
           expand: function (folder) {
-            if (folder.children) {
+            if (folder.children && folder.children.length > 0) {
               folder.isExpanded = true;
               return folder.children;
             }
           },
 
           collapse: function (folder) {
-            if (folder.children) {
+            if (folder.children && folder.children.length > 0) {
               folder.isExpanded = false;
             }
+          },
+
+          isExpanded(child) {
+            return child.isExpanded && child.children.length > 0;
+          },
+
+          isCollapsed(child) {
+            return !child.isExpanded && child.children.length > 0;
+          },
+
+          isLeaf(child) {
+            return child.children.length == 0;
           },
 
           navigateTo: function (file) {
