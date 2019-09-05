@@ -429,9 +429,10 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "makeopen": "Publish to Web",
-      "makenotopen": "Unpublish",
-      "openopen": "View on Web"
+      "openview": "OpenView:",
+      "makeopen": "&nbsp;&nbsp;&nbsp;Make Open",
+      "makenotopen": "&nbsp;&nbsp;&nbsp;Make not Open",
+      "openopen": "&nbsp;&nbsp;&nbsp;View on Web"
     },
     "delete": {
       "confirm": {
