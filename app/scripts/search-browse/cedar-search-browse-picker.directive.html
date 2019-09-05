@@ -122,7 +122,7 @@
                 </ul>
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('category')">{{'GENERIC.Categories' |translate}}<i
+              <li ng-if="dc.doShowCategoryTree()"><a href="#" ng-click="dc.toggleFilters('category')">{{'GENERIC.Categories' |translate}}<i
                   class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('category'), 'fa-caret-left': !dc.isFilterSection('category') }"></i></a>
 

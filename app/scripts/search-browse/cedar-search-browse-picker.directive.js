@@ -703,6 +703,10 @@ define([
             return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
+          vm.doShowCategoryTree = function () {
+            return window.categoryTreeEnabled;
+          };
+
           vm.canWriteToCurrentFolder = function () {
             return resourceService.canWrite(vm.currentFolder);
           };
@@ -916,6 +920,9 @@ define([
           init();
 
           function initCategories() {
+            if (!vm.doShowCategoryTree()) {
+              return;
+            }
             CategoryService.initCategories(
             function (response) {
               vm.categoryTreeAvailable = true;

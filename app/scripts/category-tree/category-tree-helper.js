@@ -13,7 +13,7 @@ define([
         angular.extend(CategoryTreeHelper.prototype, {
 
           open: function (child) {
-            console.log("Clicked open");
+            //console.log("Clicked open");
             if (child.children) {
               this.toggle(child);
             } else {
