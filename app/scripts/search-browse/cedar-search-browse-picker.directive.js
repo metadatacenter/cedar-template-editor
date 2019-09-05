@@ -1288,6 +1288,7 @@ define([
             } else if (isMeta(resource)) {
               url = FrontendUrlService.openInstance(resource['@id']);
             }
+            console.log("OpenView:" + url);
             $window.open(url, '_blank');
           }
 
