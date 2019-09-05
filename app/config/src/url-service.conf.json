@@ -8,5 +8,5 @@
   "bioontologyRestAPI": "https://data.bioontology.org/",
   "submissionRestAPI": "submissionServerUrl",
   "messagingRestAPI": "messagingServerUrl",
-  "openMetadataBase": "openMetadataBaseUrl"
+  "openViewBase": "openViewBaseUrl"
 }

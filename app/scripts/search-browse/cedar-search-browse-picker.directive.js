@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService', 'CategoryService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService) {
 
         var directive = {
           bindToController: {
@@ -197,6 +197,10 @@ define([
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
           vm.forms = null;
+
+          vm.initCategories = initCategories;
+          vm.categoryTreeAvailable = false;
+          vm.categoryTree = null;
 
 
           UIUtilService.setTotalMetadata(0);
@@ -699,6 +703,10 @@ define([
             return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
+          vm.doShowCategoryTree = function () {
+            return window.categoryTreeEnabled;
+          };
+
           vm.canWriteToCurrentFolder = function () {
             return resourceService.canWrite(vm.currentFolder);
           };
@@ -908,8 +916,23 @@ define([
           getPreferences();
           CedarUser.setStatus(CONST.publication.ALL);
           UISettingsService.saveStatus(CONST.publication.ALL);
+          initCategories();
           init();
 
+          function initCategories() {
+            if (!vm.doShowCategoryTree()) {
+              return;
+            }
+            CategoryService.initCategories(
+            function (response) {
+              vm.categoryTreeAvailable = true;
+              vm.categoryTree = response;
+            },
+            function (error) {
+              UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+              vm.loading = false;
+            });
+          }
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
@@ -922,7 +945,8 @@ define([
             };
             vm.filterSections = {
               type   : true,
-              version: false
+              version: false,
+              category:true
             };
           }
 

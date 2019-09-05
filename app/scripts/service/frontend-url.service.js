@@ -11,14 +11,14 @@ define([
 
   function FrontendUrlService() {
 
-    var openMetadataBase = null;
+    var openViewBase = null;
 
     var service = {
       serviceId: "FrontendUrlService"
     };
 
     service.init = function () {
-      openMetadataBase = config.openMetadataBase;
+      openViewBase = config.openViewBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -66,19 +66,19 @@ define([
     };
 
     service.openField = function (id) {
-      return openMetadataBase + '/template-fields/' + encodeURIComponent(id);
+      return openViewBase + '/template-fields/' + encodeURIComponent(id);
     };
 
     service.openElement = function (id) {
-      return openMetadataBase + '/template-elements/' + encodeURIComponent(id);
+      return openViewBase + '/template-elements/' + encodeURIComponent(id);
     };
 
     service.openTemplate = function (id) {
-      return openMetadataBase + '/templates/' + encodeURIComponent(id);
+      return openViewBase + '/templates/' + encodeURIComponent(id);
     };
 
     service.openInstance = function (id) {
-      return openMetadataBase + '/template-instances/' + encodeURIComponent(id);
+      return openViewBase + '/template-instances/' + encodeURIComponent(id);
     };
 
     return service;
