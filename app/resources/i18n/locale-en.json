@@ -429,10 +429,9 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "openview": "OpenView:",
-      "makeopen": "&nbsp;&nbsp;&nbsp;Make Open",
-      "makenotopen": "&nbsp;&nbsp;&nbsp;Make not Open",
-      "openopen": "&nbsp;&nbsp;&nbsp;View on Web"
+      "makeopen": "Enable OpenView",
+      "makenotopen": "Disable OpenView",
+      "openopen": "Visit OpenView"
     },
     "delete": {
       "confirm": {
