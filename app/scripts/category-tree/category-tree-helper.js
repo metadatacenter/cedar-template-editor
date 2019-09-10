@@ -4,62 +4,56 @@ define([
   'angular'
 ], function (angular) {
   angular.module('cedar.templateEditor.categoryTree.categoryTreeHelper', [])
-      .factory('CategoryTreeHelper', function () {
+      .factory('categoryTreeHelper', categoryTreeHelper);
 
-        function CategoryTreeHelper() {
-        }
+  categoryTreeHelper.$inject = ['resourceService'];
 
-        // Define prototype methods
-        angular.extend(CategoryTreeHelper.prototype, {
+  function categoryTreeHelper(resourceService) {
 
-          open: function (child) {
-            //console.log("Clicked open");
-            if (child.children) {
-              this.toggle(child);
-            } else {
-              this.navigateTo(child);
-            }
-          },
+    var service = {};
 
-          toggle: function (folder) {
-            if (folder.isExpanded) {
-              this.collapse(folder);
-            } else {
-              this.expand(folder);
-            }
-          },
+    service.open = function (child, callback) {
+      //console.log("Clicked open");
+      if (child.children) {
+        service.toggle(child);
+      }
+      callback(child['@id']);
+    };
 
-          expand: function (folder) {
-            if (folder.children && folder.children.length > 0) {
-              folder.isExpanded = true;
-              return folder.children;
-            }
-          },
+    service.toggle = function (folder) {
+      if (folder.isExpanded) {
+        service.collapse(folder);
+      } else {
+        service.expand(folder);
+      }
+    };
 
-          collapse: function (folder) {
-            if (folder.children && folder.children.length > 0) {
-              folder.isExpanded = false;
-            }
-          },
+    service.expand = function (folder) {
+      if (folder.children && folder.children.length > 0) {
+        folder.isExpanded = true;
+        return folder.children;
+      }
+    };
 
-          isExpanded(child) {
-            return child.isExpanded && child.children.length > 0;
-          },
+    service.collapse = function (folder) {
+      if (folder.children && folder.children.length > 0) {
+        folder.isExpanded = false;
+      }
+    };
 
-          isCollapsed(child) {
-            return !child.isExpanded && child.children.length > 0;
-          },
+    service.isExpanded = function (child) {
+      return child.isExpanded && child.children.length > 0;
+    };
 
-          isLeaf(child) {
-            return child.children.length == 0;
-          },
+    service.isCollapsed = function (child) {
+      return !child.isExpanded && child.children.length > 0;
+    };
 
-          navigateTo: function (file) {
-            window.alert('Open category');
-          }
-        });
+    service.isLeaf = function (child) {
+      return child.children.length == 0;
+    };
 
-        return CategoryTreeHelper;
-      })
+    return service;
+  }
 
 });

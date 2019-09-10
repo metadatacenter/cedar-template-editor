@@ -7,13 +7,14 @@ define([
       .directive('categoryTreeNode', categoryTreeNodeDirective);
 
 
-  categoryTreeNodeDirective.$inject = ['$interpolate', '$compile', 'CategoryTreeHelper'];
+  categoryTreeNodeDirective.$inject = ['$interpolate', '$compile', 'categoryTreeHelper'];
 
-  function categoryTreeNodeDirective($interpolate, $compile, CategoryTreeHelper) {
+  function categoryTreeNodeDirective($interpolate, $compile, categoryTreeHelper) {
 
     return {
       scope   : {
-        child: '='
+        child: '=',
+        callback: '='
       },
       restrict: 'E',
 
@@ -26,12 +27,10 @@ define([
 
           expand: function () {
             this.domId = 'document-children-' + Math.floor(Math.random() * 10000);//scope.child['@id'];
-            scope.helper = new CategoryTreeHelper();
-            //console.log("SCOPE");
-            //console.log(scope);
+            scope.helper = categoryTreeHelper;
 
             // Insert child documents
-            var template = '<category-tree id="{{ childrenId }}" category="child" helper="helper"></category-tree>';
+            var template = '<category-tree id="{{ childrenId }}" category="child" helper="helper" callback="callback"></category-tree>';
             var html = $interpolate(template)({childrenId: this.domId});
             var childrenElement = $compile(html)(scope);
 

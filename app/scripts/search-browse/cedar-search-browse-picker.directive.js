@@ -201,6 +201,7 @@ define([
           vm.initCategories = initCategories;
           vm.categoryTreeAvailable = false;
           vm.categoryTree = null;
+          vm.doCategorySearch = doCategorySearch;
 
 
           UIUtilService.setTotalMetadata(0);
@@ -1141,6 +1142,10 @@ define([
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
+          }
+
+          function doCategorySearch(categoryId) {
+            console.log("DO category search:" + categoryId);
           }
 
           function copyToWorkspace(resource) {
