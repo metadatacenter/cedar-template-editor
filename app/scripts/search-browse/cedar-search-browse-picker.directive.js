@@ -973,6 +973,15 @@ define([
                 getFacets();
                 doSharedWithEverybody();
               }
+            } else if (vm.params.searchCategory) {
+              vm.isSearching = true;
+              if (vm.showFavorites) {
+                vm.showFavorites = false;
+                updateFavorites();
+              }
+              // TODO: DO WE NEED THIS??
+              getFacets();
+              doCategorySearch(vm.params.searchCategory);
             } else if (vm.params.search) {
               vm.isSearching = true;
               if (vm.showFavorites) {
@@ -1146,6 +1155,42 @@ define([
 
           function doCategorySearch(categoryId) {
             console.log("DO category search:" + categoryId);
+            $timeout(function () {
+              vm.offset = 0;
+              vm.nextOffset = null;
+              vm.totalCount = -1;
+              vm.loading = true;
+
+              resourceService.categorySearchResources(
+                  categoryId,
+                  {
+                    resourceTypes    : activeResourceTypes(),
+                    sort             : sortField(),
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
+                    version          : vm.getFilterVersion(),
+                    publicationStatus: vm.getFilterStatus()
+                  },
+                  function (response) {
+
+                    vm.categoryId = categoryId;
+                    vm.isSearching = true;
+                    vm.resources = response.resources;
+                    vm.nextOffset = getNextOffset(response.paging.next);
+                    vm.totalCount = response.totalCount;
+                    vm.loading = false;
+
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                    UIProgressService.complete();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);
+                    vm.loading = false;
+                  }
+              );
+            }, 1000);
+
           }
 
           function copyToWorkspace(resource) {
@@ -2146,6 +2191,26 @@ define([
             }
 
           };
+
+          vm.categorySearch=function(categoryId) {
+            vm.categoryId = categoryId;
+            var baseUrl = '/dashboard';
+            var queryParams = {};
+            var folderId = QueryParamUtilsService.getFolderId();
+            if (folderId) {
+              queryParams['folderId'] = folderId;
+            }
+            queryParams['searchCategory'] = categoryId;
+            // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+            // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+            queryParams['t'] = Date.now();
+            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            $location.url(url);
+            if (categoryId) {
+              UIProgressService.start();
+            }
+
+          }
 
 
         }
