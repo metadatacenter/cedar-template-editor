@@ -639,7 +639,8 @@
     "sharedWithMe": "Shared with Me",
     "sharedWithEverybody": "Shared with Everybody",
     "viewAll": "View All",
-    "searchResult": "Search Results For: '{{searchTerm}}'"
+    "searchResult": "Search Results For: '{{searchTerm}}'",
+    "categorySearchResult": "Category search Results For: '{{searchTerm}}'"
   },
   "REST_ERROR": {
     "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",

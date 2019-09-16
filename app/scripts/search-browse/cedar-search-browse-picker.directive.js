@@ -1022,6 +1022,8 @@ define([
               return $translate.instant("BreadcrumbTitle.viewAll");
             } else if (vm.nodeListQueryType == 'search-term') {
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
+            } else if (vm.nodeListQueryType == 'search-category-id') {
+              return $translate.instant("BreadcrumbTitle.categorySearchResult", {searchTerm: searchTerm});
             } else {
               return "";
             }
@@ -1154,7 +1156,6 @@ define([
           }
 
           function doCategorySearch(categoryId) {
-            console.log("DO category search:" + categoryId);
             $timeout(function () {
               vm.offset = 0;
               vm.nextOffset = null;
@@ -1181,7 +1182,7 @@ define([
                     vm.loading = false;
 
                     vm.nodeListQueryType = response.nodeListQueryType;
-                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.categoryName);
                     UIProgressService.complete();
                   },
                   function (error) {

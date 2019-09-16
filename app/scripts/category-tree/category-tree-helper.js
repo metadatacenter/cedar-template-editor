@@ -12,11 +12,13 @@ define([
 
     var service = {};
 
-    service.open = function (child, callback) {
-      //console.log("Clicked open");
+    service.open = function (child) {
       if (child.children) {
         service.toggle(child);
       }
+    };
+
+    service.searchCategory = function (child, callback) {
       callback(child['@id']);
     };
 
