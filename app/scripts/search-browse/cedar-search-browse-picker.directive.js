@@ -129,6 +129,7 @@ define([
           vm.hasSelected = hasSelected;
           vm.getSelected = getSelected;
           vm.getSelectedVersions = getSelectedVersions;
+          vm.getSelectedCategories = getSelectedCategories;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
@@ -174,6 +175,7 @@ define([
           vm.toggleInfo = toggleInfo;
           vm.isInfoTab = isInfoTab;
           vm.isVersionTab = isVersionTab;
+          vm.isCategoryTab = isCategoryTab;
 
           vm.toggleResourceType = toggleResourceType;
 
@@ -1925,6 +1927,10 @@ define([
             return UISettingsService.getSelected().versions;
           }
 
+          function getSelectedCategories() {
+            return UISettingsService.getSelected().categories;
+          }
+
           function setSelected(value) {
             UISettingsService.setSelected(value);
           }
@@ -2040,6 +2046,10 @@ define([
             return CedarUser.isInfoTab();
           }
 
+          function isCategoryTab() {
+            return CedarUser.isCategoryTab();
+          }
+
           function toggleInfoTab(tab) {
             UISettingsService.saveInfoTab(CedarUser.toggleInfoTab(tab));
           }
@@ -2053,6 +2063,8 @@ define([
             if (vm.activeTab == 'resource-version') {
               vm.getResourceReport(vm.getSelectedNode());
               toggleInfoTab('version');
+            } else if (vm.activeTab == 'resource-category') {
+              toggleInfoTab('category');
             } else {
               toggleInfoTab('info');
             }

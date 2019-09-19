@@ -145,12 +145,16 @@ define([
       return service.getUIPreferences().infoPanel.opened;
     };
 
+    service.getInfoTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab;
+    };
+
     service.isVersionTab = function () {
       return service.getUIPreferences().infoPanel.activeTab == 'version';
     };
 
-    service.getInfoTab = function () {
-      return service.getUIPreferences().infoPanel.activeTab;
+    service.isCategoryTab = function () {
+      return service.getUIPreferences().infoPanel.activeTab == 'category';
     };
 
     service.isInfoTab = function () {

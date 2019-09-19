@@ -593,6 +593,24 @@
               ng-click="dc.setTab('resource-version');">
             <span>{{'GENERIC.Version' |translate}}</span>
           </div>
+          <div class="element-toggle table-cell-style "
+               ng-class="{active: dc.isCategoryTab()}"
+               ng-click="dc.setTab('resource-category');">
+            <span>{{'GENERIC.Category' |translate}}</span>
+          </div>
+        </div>
+
+        <div class="half-padding-top" id="resource-category" ng-show="dc.isCategoryTab()">
+          <div class="info" ng-if="dc.hasSelected() && dc.getSelectedCategories()">
+            <div ng-repeat="(pathIndex, categoryPath) in dc.getSelectedCategories() track by $index">
+              <div ng-class="{'selected-version':dc.isSelected(dc.getSelected())}" style="padding:5px;border: 1px solid #ccc">
+                <div>
+                  <span ng-repeat="(categoryIndex, category) in categoryPath track by $index"><span ng-if="categoryIndex > 0"><span ng-if="categoryIndex > 1">, </span>
+                      {{category['schema:name']}}</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="half-padding-top" id="resource-version" ng-show="dc.isVersionTab()">
