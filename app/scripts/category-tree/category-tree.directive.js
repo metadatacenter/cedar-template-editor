@@ -25,7 +25,7 @@ define([
         '<a ng-click="helper.open(child)" href="javascript:void(0);">',
         '<span ng-if="helper.isCollapsed(child)"><i class="fa fa-caret-right"></i></span>',
         '<span ng-if="helper.isExpanded(child)"><i class="fa fa-caret-down"></i></span>',
-        '<span ng-if="helper.isLeaf(child)"><i class="fa fa-circle-o"></i></span>',
+        '<span ng-if="helper.isLeaf(child)">·</span>',
         '</a>',
         '<a ng-click="helper.searchCategory(child, callback)" href="javascript:void(0);">',
         '&nbsp;{{ child["schema:name"] }}',
