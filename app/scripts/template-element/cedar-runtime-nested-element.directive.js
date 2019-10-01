@@ -19,7 +19,7 @@ define([
         field         : '=',
         model         : '=',
         labels        : "=",
-        descriptions        : "=",
+        descriptions  : "=",
         relabel       : '=',
         preview       : "=",
         removeChild   : '=',
@@ -104,7 +104,7 @@ define([
         return DataManipulationService.getId(scope.field);
       };
 
-      scope.activateNextSiblingOf = function(fieldKey, parentKey) {
+      scope.activateNextSiblingOf = function (fieldKey, parentKey) {
         scope.$parent.activateNextSiblingOf(fieldKey, parentKey);
       };
 
