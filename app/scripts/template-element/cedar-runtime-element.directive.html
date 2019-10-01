@@ -12,7 +12,11 @@
          ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
       <div ng-click="toggleExpanded(index)" class="question element title" style="width:100%;padding-top:3px;">
         {{getLabel()}}
-        <span ng-if="valueArray.length > 1" class="count">({{index+1}} of {{valueArray.length}})</span>
+        <!-- display cardinality -->
+        <span ng-if="isCardinalElement(element)" class="count">{{getCardinality(element)}}</span>
+        <!-- button to create first item of the array -->
+        <button ng-if="valueArray.length == 0" type="button" class="add" tooltip-append-to-body="true"><i
+            class="fa fa-plus-circle"></i></button>
       </div>
     </div>
 

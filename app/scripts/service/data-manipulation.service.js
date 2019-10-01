@@ -2098,7 +2098,7 @@ define([
 
                 if (populateNestedElements) { // recursive call
                   let properties = schemaService.propertiesOf(service.schemaOf(value));
-                  service.findChildren(properties, parentModel[name]);
+                  service.findChildren(properties, parentModel[name], true);
                 }
 
               } else { // It is not an element

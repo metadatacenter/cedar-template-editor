@@ -259,7 +259,7 @@ define([
 
       // toggle visibility at this index and activate if visible
       scope.toggleExpanded = function (idx) {
-        console.log('toggleExpanded', idx);
+        //console.log('toggleExpanded', idx);
 
         if (scope.model.length == 0) {
           scope.addElement()
@@ -380,7 +380,6 @@ define([
           // create a new element from scratch
           var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
-            console.log('here')
             var seed = {};
             var properties = schemaService.propertiesOf(scope.element);
             scope.model.push(seed);
@@ -399,9 +398,6 @@ define([
         if (scope.isMultiple()) {
           if (scope.model.length > schemaService.getMinItems(scope.element)) {
             scope.model.splice(index, 1);
-            if (scope.model.length === 0) {
-              scope.toggleExpanded(0);
-            }
           }
         }
       };
@@ -581,6 +577,15 @@ define([
       scope.setIndex = function (idx) {
         scope.index = idx;
       };
+
+      scope.isCardinalElement = function(element) {
+        return schemaService.isCardinalElement(element);
+      }
+
+      // Returns the cardinality of an element
+      scope.getCardinality = function(element) {
+        return schemaService.getCardinalityAsString(element);
+      }
 
       // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
