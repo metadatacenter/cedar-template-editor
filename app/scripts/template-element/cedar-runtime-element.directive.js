@@ -192,11 +192,12 @@ define([
       // watch for changes in the selection for spreadsheet view to get out of spreadsheet mode
       scope.$watch(
           function () {
-            return ( UIUtilService.activeLocator);
+            return (UIUtilService.activeLocator);
           },
           function (newValue, oldValue) {
 
-            if (scope.zeroedLocator(newValue) != scope.zeroedLocator(oldValue) &&  scope.getLocator(0) == scope.zeroedLocator(oldValue) && scope.isSpreadsheetView()) {
+            if (scope.zeroedLocator(newValue) != scope.zeroedLocator(oldValue) && scope.getLocator(
+                0) == scope.zeroedLocator(oldValue) && scope.isSpreadsheetView()) {
               scope.toggleView();
             }
           }
@@ -233,8 +234,8 @@ define([
                 var node = valueElement[prop];
                 if (Object.getOwnPropertyNames(node).length > 0) {
                   if (node.hasOwnProperty(
-                          '@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty(
-                          '@id') && (node['@id'] != null && node['@id'] != ''))) {
+                      '@value') && (node['@value'] != null && node['@value'] != '') || (node.hasOwnProperty(
+                      '@id') && (node['@id'] != null && node['@id'] != ''))) {
                     empty = false;
                     break loop;
                   }
@@ -258,9 +259,17 @@ define([
 
       // toggle visibility at this index and activate if visible
       scope.toggleExpanded = function (idx) {
-        console.log('toggleExpanded',idx)
-        scope.expanded[idx] = !scope.expanded[idx];
-        scope.setActive(idx, scope.expanded[idx]);
+        console.log('toggleExpanded', idx);
+
+        if (scope.model.length == 0) {
+          scope.addElement()
+          scope.expanded[0] = true;
+          scope.setActive(0, scope.expanded[0]);
+        }
+        else {
+          scope.expanded[idx] = !scope.expanded[idx];
+          scope.setActive(idx, scope.expanded[idx]);
+        }
       };
 
       // is this index viewable?
@@ -294,25 +303,23 @@ define([
       // expand all the nodes and their children
       scope.expandAll = function () {
 
-        // expand all the items in the valueArray
-        if (scope.valueArray.length == 0) {
-          scope.addMoreInput();
-        } else {
+        // expand all the items in the valueArray (if the array is not empty)
+        if (scope.valueArray.length > 0) {
           for (var i = 0; i < scope.valueArray.length; i++) {
             scope.expanded[i] = true;
             scope.setActive(0, true);
           }
-        }
 
-        // let these draw, then send out expandAll to the newly drawn elements
-        $timeout(function () {
-          var props = schemaService.propertiesOf(scope.element);
-          angular.forEach(props, function (value, key) {
-            if (DataUtilService.isElement(schemaService.schemaOf(value))) {
-              scope.$broadcast("expandAll", [schemaService.getId(value)]);
-            }
+          // let these draw, then send out expandAll to the newly drawn elements
+          $timeout(function () {
+            var props = schemaService.propertiesOf(scope.element);
+            angular.forEach(props, function (value, key) {
+              if (DataUtilService.isElement(schemaService.schemaOf(value))) {
+                scope.$broadcast("expandAll", [schemaService.getId(value)]);
+              }
+            });
           });
-        });
+        }
       };
 
       // listen for requests to expand this element
@@ -343,7 +350,7 @@ define([
         return schemaService.getPreferredLabel(scope.element);
       };
 
-      scope.getLabel = function() {
+      scope.getLabel = function () {
         return scope.getPreferredLabel() || scope.getPropertyLabel() || scope.getTitle();
       };
 
@@ -367,29 +374,24 @@ define([
         }
       };
 
-      // TODO add a new empty element at the end of the array
-      // add is not working, so call copy instead for now
+      // Adds a new empty element to the array
       scope.addElement = function () {
         if (angular.isArray(scope.model) && scope.model.length == 0) {
           // create a new element from scratch
           var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
+            console.log('here')
             var seed = {};
             var properties = schemaService.propertiesOf(scope.element);
             scope.model.push(seed);
-            if (angular.isArray(scope.model)) {
-              angular.forEach(scope.model, function (m) {
-                dms.findChildren(properties, m);
-              });
-            } else {
-              dms.findChildren(properties, scope.model);
-            }
+            angular.forEach(scope.model, function (m) {
+              dms.findChildren(properties, m, true);
+            });
           }
           scope.setActive(0, true);
         } else {
           scope.copyElement();
         }
-
       };
 
       // remove the element at index
@@ -608,7 +610,7 @@ define([
         // is the element multiple
         if (!found) {
           if (scope.isMultiple()) {
-            if (typeof(i) == 'undefined') {
+            if (typeof (i) == 'undefined') {
               if (scope.index + 1 < scope.model.length) {
                 scope.onSetActive(scope.index + 1, true);
                 found = true;

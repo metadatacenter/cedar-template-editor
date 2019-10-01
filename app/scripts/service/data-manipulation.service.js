@@ -8,9 +8,10 @@ define([
           .service('DataManipulationService', DataManipulationService);
 
       DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
-                                         'schemaService','$rootScope', "$translate", "$sce", 'CONST'];
+                                         'schemaService', '$rootScope', "$translate", "$sce", 'CONST'];
 
-      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, schemaService,$rootScope,
+      function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, schemaService,
+                                       $rootScope,
                                        $translate, $sce, CONST) {
 
         // Base path to generate field ids
@@ -451,8 +452,7 @@ define([
         service.isMultipleChoice = function (node) {
           if (service.schemaOf(node)._valueConstraints) {
             return service.schemaOf(node)._valueConstraints.multipleChoice;
-          }
-          else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
+          } else if (service.schemaOf(node).items && service.schemaOf(node)._valueConstraints) {
             return service.schemaOf(node).items._valueConstraints.multipleChoice;
           }
         };
@@ -549,7 +549,7 @@ define([
 
         service.cardinalizeField = function (field) {
           var hasVersion = service.hasVersion(field);
-          if (typeof(field.minItems) != 'undefined' && !field.items) {
+          if (typeof (field.minItems) != 'undefined' && !field.items) {
 
             field.items = {
               '$schema'             : field.$schema,
@@ -673,20 +673,17 @@ define([
           if (newMultipleChoiceValue == true) { // set multipleChoice to true
             if (node.items) {
               node.items._valueConstraints.multipleChoice = true;
-            }
-            else {
+            } else {
               node.minItems = 1;
               node._valueConstraints.multipleChoice = true;
               service.cardinalizeField(node);
             }
-          }
-          else { // set multipleChoice to false
+          } else { // set multipleChoice to false
             if (node.items) {
               delete node.minItems;
               node.items._valueConstraints.multipleChoice = false;
               service.uncardinalizeField(node);
-            }
-            else {
+            } else {
               node._valueConstraints.multipleChoice = false;
             }
           }
@@ -700,9 +697,9 @@ define([
           delete service.schemaOf(node)._valueConstraints.actions;
         };
 
-        service.setSortOrder = function (node,  actions) {
+        service.setSortOrder = function (node, actions) {
           if (node && actions) {
-              service.schemaOf(node)._valueConstraints.actions = actions;
+            service.schemaOf(node)._valueConstraints.actions = actions;
           }
         };
 
@@ -710,7 +707,7 @@ define([
           var result = [];
           if (node) {
             if (service.schemaOf(node)._valueConstraints.hasOwnProperty('actions')) {
-              result= service.schemaOf(node)._valueConstraints.actions;
+              result = service.schemaOf(node)._valueConstraints.actions;
             }
           }
           return result;
@@ -1092,8 +1089,7 @@ define([
               //valueAtType.enum = ['xsd:dateTime'];
               // Make @type required
               field.required.push('@type');
-            }
-            else if (inputType == 'numeric') {
+            } else if (inputType == 'numeric') {
               //valueAtType.enum = ['xsd:decimal'];
               // Make @type required
               field.required.push('@type');
@@ -1155,8 +1151,7 @@ define([
                   context[key][key2] = value2.enum[0];
                 }
               });
-            }
-            else {
+            } else {
               if (value.enum) {
                 context[key] = value.enum[0];
               }
@@ -1172,8 +1167,7 @@ define([
           if (angular.isUndefined(schemaType.oneOf)) {
             enumeration = schemaType.enum;
 
-          }
-          else {
+          } else {
             enumeration = schemaType.oneOf[0].enum;
           }
           // If the type is defined at the schema level
@@ -1242,8 +1236,7 @@ define([
           if (service.isMultipleChoiceField(field)) {
             if (!model || !$rootScope.isArray(model)) {
               model = [];
-            }
-            else if (force) {
+            } else if (force) {
               // Remove all elements from the 'model' array if not empty. Note that using $scope.model = []
               // may not work because there are references to the original array
               model.splice(0);
@@ -1362,8 +1355,7 @@ define([
                 model.splice(i, 1);
               }
             }
-          }
-          else {
+          } else {
             if (model[fieldValue] == "") {
               delete model[fieldValue];
             }
@@ -1379,11 +1371,9 @@ define([
           var fieldType;
           if (service.isNumericField(field)) {
             fieldType = service.generateInstanceTypeForNumericField(field);
-          }
-          else if (service.isDateField(field)) {
+          } else if (service.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();
-          }
-          else {
+          } else {
             var properties = service.propertiesOf(field);
             if (properties && !angular.isUndefined(properties['@type'])) {
               fieldType = service.generateInstanceType(properties['@type']);
@@ -1486,7 +1476,7 @@ define([
 
         service.getAcceptableKey = function (obj, suggestedKey, currentKey) {
 
-          if (!obj || typeof(obj) != "object") {
+          if (!obj || typeof (obj) != "object") {
             return;
           }
 
@@ -1513,7 +1503,7 @@ define([
         };
 
         service.addKeyToObject = function (obj, key, value) {
-          if (!obj || typeof(obj) != "object") {
+          if (!obj || typeof (obj) != "object") {
             return;
           }
 
@@ -1543,8 +1533,7 @@ define([
               if (service.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 if (path == null) {
                   service.addPathInfo(value, name);
-                }
-                else {
+                } else {
                   service.addPathInfo(value, path + '.' + name);
                 }
               }
@@ -1556,8 +1545,7 @@ define([
                   var fieldPath = path;
                   if (fieldPath == null || fieldPath.length == 0) {
                     fieldPath = name;
-                  }
-                  else {
+                  } else {
                     fieldPath = fieldPath + '.' + name;
                   }
                   properties[name]['_path'] = fieldPath;
@@ -1764,8 +1752,7 @@ define([
         service.isSelectedByDefault = function (literal) {
           if (literal.selectedByDefault) {
             return true;
-          }
-          else {
+          } else {
             return false;
           }
         };
@@ -1825,13 +1812,11 @@ define([
         service.getFieldControlledTerms = function (node) {
           if (service.isStaticField(node) || service.isAttributeValueType(node)) { // static or attribute value fields
             return null;
-          }
-          else { // regular fields
+          } else { // regular fields
             var properties = service.propertiesOf(node);
             if (properties['@type'] && properties['@type'].oneOf && properties['@type'].oneOf[1]) {
               return properties['@type'].oneOf[1].items['enum'];
-            }
-            else {
+            } else {
               return null;
             }
           }
@@ -1986,7 +1971,7 @@ define([
                     model.splice(0, model.length);
                   } else {
                     for (var i = 0; i < model.length; i++) {
-                      if (typeof(model[i]['@value']) == "string") {
+                      if (typeof (model[i]['@value']) == "string") {
                         model[i]['@value'] = "";
                       } else if (angular.isArray(model[i]['@value'])) {
                         model[i]['@value'] = [];
@@ -1995,7 +1980,7 @@ define([
                       }
                     }
                   }
-                } else if (typeof(model) == "string") {
+                } else if (typeof (model) == "string") {
                   el[key] = "";
                 } else if (angular.isArray(model)) {
                   el[key] = [];
@@ -2015,7 +2000,7 @@ define([
                         } else {
                           for (var i = 0; i < v.length; i++) {
 
-                            if (typeof(v[i]['@value']) == "string") {
+                            if (typeof (v[i]['@value']) == "string") {
                               v[i]['@value'] = "";
                             } else if (angular.isArray(v[i]['@value'])) {
                               v[i]['@value'] = [];
@@ -2025,7 +2010,7 @@ define([
 
                           }
                         }
-                      } else if (typeof(v) == "string") {
+                      } else if (typeof (v) == "string") {
                         model[k] = "";
                       } else if (angular.isArray(v)) {
                         model[k] = [];
@@ -2080,29 +2065,16 @@ define([
         };
 
         // Used in cedar-template-element.directive.js, form.directive
-        service.findChildren = function (iterator, parentModel) {
-          var ctx, min, type, i;
-          angular.forEach(iterator, function (value, name) {
-            // Add @context information to instance
-            if (name == '@context') {
-              ctx = service.generateInstanceContext(value);
-            }
-          });
+        service.findChildren = function (iterator, parentModel, populateNestedElements) {
 
           angular.forEach(iterator, function (value, name) {
+
             // Add @context information to instance
             if (name == '@context') {
               parentModel['@context'] = service.generateInstanceContext(value);
             }
-            // Add @type information to instance
-            // else if (name == '@type') {
-            //   type = DataManipulationService.generateInstanceType(value);
-            //   if (type) {
-            //     parentModel['@type'] = type;
-            //   }
-            // }
 
-            min = value.minItems || 0;
+            let min = value.minItems || 0;
 
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
@@ -2113,7 +2085,7 @@ define([
                     parentModel[name] = [];
                   }
 
-                  for (i = 0; i < min - parentModel[name].length; i++) {
+                  for (let i = 0; i < min - parentModel[name].length; i++) {
                     parentModel[name].push({});
                   }
 
@@ -2123,8 +2095,13 @@ define([
                     parentModel[name] = {};
                   }
                 }
-              } else {
 
+                if (populateNestedElements) { // recursive call
+                  let properties = schemaService.propertiesOf(service.schemaOf(value));
+                  service.findChildren(properties, parentModel[name]);
+                }
+
+              } else { // It is not an element
                 // Assign empty field instance model to $scope.model only if it does not exist
                 if (!parentModel[name]) {
                   // Not multiple instance
@@ -2140,29 +2117,12 @@ define([
                     // Multiple instance
                   } else {
                     parentModel[name] = [];
-                    for (i = 0; i < min; i++) {
-                      var obj = {};
+                    for (let i = 0; i < min; i++) {
+                      let obj = {};
                       parentModel[name].push(obj);
                     }
                   }
                 }
-
-                var p = service.propertiesOf(value);
-
-                // Add @type information to instance at the field level
-                // if (p && !angular.isUndefined(p['@type'])) {
-                //   type = DataManipulationService.generateInstanceType(p['@type']);
-                //
-                //   if (type) {
-                //     if (angular.isArray(parentModel[name])) {
-                //       for (i = 0; i < min; i++) {
-                //         parentModel[name][i]["@type"] = type || "";
-                //       }
-                //     } else {
-                //       parentModel[name]["@type"] = type || "";
-                //     }
-                //   }
-                // }
               }
             }
           });
@@ -2170,10 +2130,9 @@ define([
 
         service.hasUserDefinedDefaultValue = function (field) {
           var schema = service.schemaOf(field);
-          if (schema._valueConstraints && schema._valueConstraints.defaultValue ) {
+          if (schema._valueConstraints && schema._valueConstraints.defaultValue) {
             return true;
-          }
-          else {
+          } else {
             return false;
           }
         };
@@ -2181,8 +2140,7 @@ define([
         service.getUserDefinedDefaultValue = function (field) {
           if (service.hasUserDefinedDefaultValue(field)) {
             return service.schemaOf(field)._valueConstraints.defaultValue;
-          }
-          else {
+          } else {
             return null;
           }
         };
