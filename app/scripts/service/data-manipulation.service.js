@@ -242,10 +242,12 @@ define([
         };
 
         service.setDescription = function (node, value) {
-          var schema = service.schemaOf(node);
+          let schema = service.schemaOf(node);
           if (schema) {
+            if (value == null) {
+              value = ""; // Our model does not allow a 'null' description
+            }
             service.schemaOf(node)[CONST.model.DESCRIPTION] = value;
-            //service.schemaOf(node)._ui.description = value;
           }
         };
 
@@ -1677,7 +1679,7 @@ define([
           }
         };
 
-        // update the propertyid for a field inside a template or element
+        // update the property id for a field inside a template or element
         // set the field title and description to property label and definition
         service.updateProperty = function (propertyId, propertyLabel, propertyDescription, fieldId, parent) {
 
