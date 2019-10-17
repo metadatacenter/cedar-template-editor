@@ -188,7 +188,9 @@
     "OntologyName": "Ontology Name",
     "UILabel": "UI Label",
     "MadeOpen": "Made Open",
-    "MadeNotOpen": "Made Not Open"
+    "MadeNotOpen": "Made Not Open",
+    "Categories": "Categories",
+    "Loading": "Loading"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -427,9 +429,9 @@
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
-      "makeopen": "Publish to Web",
-      "makenotopen": "Unpublish",
-      "openopen": "View on Web"
+      "makeopen": "Enable OpenView",
+      "makenotopen": "Disable OpenView",
+      "openopen": "Visit OpenView"
     },
     "delete": {
       "confirm": {
@@ -637,7 +639,8 @@
     "sharedWithMe": "Shared with Me",
     "sharedWithEverybody": "Shared with Everybody",
     "viewAll": "View All",
-    "searchResult": "Search Results For: '{{searchTerm}}'"
+    "searchResult": "Search Results For: '{{searchTerm}}'",
+    "categorySearchResult": "Category search Results For: '{{searchTerm}}'"
   },
   "REST_ERROR": {
     "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",
@@ -648,13 +651,13 @@
     "templateNotDeleted": "The template was not deleted.",
     "folderNotFound": "Folder not found.<br>Please use the UI elements to navigate to an existing folder.",
     "folderCopyNotAllowed": "Copying folders is not allowed.",
-    "noReadAccessToResource": "You do not have permission to read the resource.",
-    "noWriteAccessToResource": "You do not have permission to write the resource.",
+    "noReadAccessToArtifact": "You do not have permission to read the artifact.",
+    "noWriteAccessToArtifact": "You do not have permission to write the resource.",
     "permissionMissing": "You do not have permission to perform this action.<br />Please request the <b>{{permissionName}}</b> permission.",
     "createInvalidFolderName": "The folder was not created since the folder name ({{name}}) was invalid!<br />Please try to create it again with a different name.",
     "updateInvalidFolderName": "The folder was not renamed since the folder name ({{name}}) was invalid!<br />Please try to rename it again to a different name.",
-    "publishedResourceCanNotBeChanged": "The resource <b>{{name}}</b> can not be changed since it is published!",
-    "publishedResourceCanNotBeDeleted": "The resource <b>{{name}}</b> can not be deleted since it is published!",
+    "publishedArtifactCanNotBeChanged": "The artifact <b>{{name}}</b> can not be changed since it is published!",
+    "publishedArtifactCanNotBeDeleted": "The artifact <b>{{name}}</b> can not be deleted since it is published!",
     "groupCanBeModifiedOnlyByGroupAdmin": "The group can be modified only by the administrators of the groups!",
     "groupCanBeDeletedOnlyByGroupAdmin": "The group can be deleted only by the administrators of the groups!",
     "specialGroupCanNotBeDeleted": "The special group <b>{{name}}</b> can not be deleted!",

@@ -474,14 +474,14 @@ define([
 
       scope.$on("property:propertyAdded", function (event, args) {
 
-        var id = args[1];
+        let id = args[1];
         if (scope.getId() == id) {
 
           scope.hideModal();
 
-          var propertyId = args[0];
-          var propertyLabel = args[2];
-          var propertyDescription = args[3];
+          let propertyId = args[0];
+          let propertyLabel = args[2];
+          let propertyDescription = args[3];
 
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, scope.parentElement);
         }

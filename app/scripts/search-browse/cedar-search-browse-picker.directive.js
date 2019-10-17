@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService', 'CategoryService'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService) {
 
         var directive = {
           bindToController: {
@@ -129,6 +129,7 @@ define([
           vm.hasSelected = hasSelected;
           vm.getSelected = getSelected;
           vm.getSelectedVersions = getSelectedVersions;
+          vm.getSelectedCategories = getSelectedCategories;
           vm.hasUnreadMessages = hasUnreadMessages;
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
@@ -174,6 +175,7 @@ define([
           vm.toggleInfo = toggleInfo;
           vm.isInfoTab = isInfoTab;
           vm.isVersionTab = isVersionTab;
+          vm.isCategoryTab = isCategoryTab;
 
           vm.toggleResourceType = toggleResourceType;
 
@@ -197,6 +199,11 @@ define([
           vm.nodeListQueryType = null;
           vm.breadcrumbTitle = null;
           vm.forms = null;
+
+          vm.initCategories = initCategories;
+          vm.categoryTreeAvailable = false;
+          vm.categoryTree = null;
+          vm.doCategorySearch = doCategorySearch;
 
 
           UIUtilService.setTotalMetadata(0);
@@ -699,6 +706,10 @@ define([
             return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
           };
 
+          vm.doShowCategoryTree = function () {
+            return window.categoryTreeEnabled;
+          };
+
           vm.canWriteToCurrentFolder = function () {
             return resourceService.canWrite(vm.currentFolder);
           };
@@ -908,8 +919,23 @@ define([
           getPreferences();
           CedarUser.setStatus(CONST.publication.ALL);
           UISettingsService.saveStatus(CONST.publication.ALL);
+          initCategories();
           init();
 
+          function initCategories() {
+            if (!vm.doShowCategoryTree()) {
+              return;
+            }
+            CategoryService.initCategories(
+            function (response) {
+              vm.categoryTreeAvailable = true;
+              vm.categoryTree = response;
+            },
+            function (error) {
+              UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+              vm.loading = false;
+            });
+          }
 
           function getPreferences() {
             var uip = CedarUser.getUIPreferences();
@@ -922,7 +948,8 @@ define([
             };
             vm.filterSections = {
               type   : true,
-              version: false
+              version: false,
+              category:true
             };
           }
 
@@ -948,6 +975,15 @@ define([
                 getFacets();
                 doSharedWithEverybody();
               }
+            } else if (vm.params.searchCategory) {
+              vm.isSearching = true;
+              if (vm.showFavorites) {
+                vm.showFavorites = false;
+                updateFavorites();
+              }
+              // TODO: DO WE NEED THIS??
+              getFacets();
+              doCategorySearch(vm.params.searchCategory);
             } else if (vm.params.search) {
               vm.isSearching = true;
               if (vm.showFavorites) {
@@ -988,6 +1024,8 @@ define([
               return $translate.instant("BreadcrumbTitle.viewAll");
             } else if (vm.nodeListQueryType == 'search-term') {
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
+            } else if (vm.nodeListQueryType == 'search-category-id') {
+              return $translate.instant("BreadcrumbTitle.categorySearchResult", {searchTerm: searchTerm});
             } else {
               return "";
             }
@@ -1117,6 +1155,45 @@ define([
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
+          }
+
+          function doCategorySearch(categoryId) {
+            $timeout(function () {
+              vm.offset = 0;
+              vm.nextOffset = null;
+              vm.totalCount = -1;
+              vm.loading = true;
+
+              resourceService.categorySearchResources(
+                  categoryId,
+                  {
+                    resourceTypes    : activeResourceTypes(),
+                    sort             : sortField(),
+                    limit            : vm.requestLimit,
+                    offset           : vm.offset,
+                    version          : vm.getFilterVersion(),
+                    publicationStatus: vm.getFilterStatus()
+                  },
+                  function (response) {
+
+                    vm.categoryId = categoryId;
+                    vm.isSearching = true;
+                    vm.resources = response.resources;
+                    vm.nextOffset = getNextOffset(response.paging.next);
+                    vm.totalCount = response.totalCount;
+                    vm.loading = false;
+
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.categoryName);
+                    UIProgressService.complete();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);
+                    vm.loading = false;
+                  }
+              );
+            }, 1000);
+
           }
 
           function copyToWorkspace(resource) {
@@ -1264,6 +1341,7 @@ define([
             } else if (isMeta(resource)) {
               url = FrontendUrlService.openInstance(resource['@id']);
             }
+            console.log("OpenView:" + url);
             $window.open(url, '_blank');
           }
 
@@ -1849,6 +1927,10 @@ define([
             return UISettingsService.getSelected().versions;
           }
 
+          function getSelectedCategories() {
+            return UISettingsService.getSelected().categories;
+          }
+
           function setSelected(value) {
             UISettingsService.setSelected(value);
           }
@@ -1964,6 +2046,10 @@ define([
             return CedarUser.isInfoTab();
           }
 
+          function isCategoryTab() {
+            return CedarUser.isCategoryTab();
+          }
+
           function toggleInfoTab(tab) {
             UISettingsService.saveInfoTab(CedarUser.toggleInfoTab(tab));
           }
@@ -1977,6 +2063,8 @@ define([
             if (vm.activeTab == 'resource-version') {
               vm.getResourceReport(vm.getSelectedNode());
               toggleInfoTab('version');
+            } else if (vm.activeTab == 'resource-category') {
+              toggleInfoTab('category');
             } else {
               toggleInfoTab('info');
             }
@@ -2116,6 +2204,26 @@ define([
             }
 
           };
+
+          vm.categorySearch=function(categoryId) {
+            vm.categoryId = categoryId;
+            var baseUrl = '/dashboard';
+            var queryParams = {};
+            var folderId = QueryParamUtilsService.getFolderId();
+            if (folderId) {
+              queryParams['folderId'] = folderId;
+            }
+            queryParams['searchCategory'] = categoryId;
+            // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+            // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+            queryParams['t'] = Date.now();
+            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            $location.url(url);
+            if (categoryId) {
+              UIProgressService.start();
+            }
+
+          }
 
 
         }

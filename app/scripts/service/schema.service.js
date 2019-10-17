@@ -223,6 +223,18 @@ define([
       return node.minItems;
     };
 
+    service.getCardinalityAsString = function (node) {
+      let min = "1";
+      let max = "N";
+      if (service.getMinItems(node) != null) {
+        min = service.getMinItems(node);
+      }
+      if (service.getMaxItems(node) != null) {
+        max = service.getMaxItems(node);
+      }
+      return "(" + min + ".." + max + ")";
+    }
+
     service.defaultMinMax = function (node) {
       node.minItems = 1;
       node.maxItems = 0;

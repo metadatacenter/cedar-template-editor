@@ -240,6 +240,10 @@ define([
       return this.messagingBase() + '/messages';
     };
 
+    service.getCategoryTree = function () {
+      return this.resourceBase() + '/categories/tree';
+    };
+
     service.messagingNotNotifiedMessages = function () {
       return this.messagingMessages() + "?notification_status=notnotified";
     };

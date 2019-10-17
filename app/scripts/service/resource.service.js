@@ -22,6 +22,7 @@ define([
                                uiUtilService, urlService, DataManipulationService, CedarUser, CONST) {
 
         var searchTerm = null;
+        var categoryId = null;
         var service = {
           createFolder             : createFolder,
           deleteFolder             : deleteFolder,
@@ -33,6 +34,7 @@ define([
           getResourceDetailFromId  : getResourceDetailFromId,
           getResources             : getResources,
           searchResources          : searchResources,
+          categorySearchResources  : categorySearchResources,
           getSearchResourcesPromise: getSearchResourcesPromise,
           hasMetadata              : hasMetadata,
           sharedWithMeResources    : sharedWithMeResources,
@@ -399,6 +401,35 @@ define([
 
           if (searchTerm) {
             params['q'] = searchTerm;
+          }
+
+          addCommonParameters(params, options);
+
+          var url = $rootScope.util.buildUrl(baseUrl, params);
+
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function categorySearchResources(categoryId, options, successCallback, errorCallback) {
+          if (options == null) {
+            options = {};
+          }
+          this.categoryId = categoryId;
+          var params = {};
+          var baseUrl = urlService.search();
+
+          if (categoryId == 'null') {
+            categoryId = '';
+          }
+
+          if (categoryId) {
+            params['categoryId'] = categoryId;
           }
 
           addCommonParameters(params, options);

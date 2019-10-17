@@ -39,7 +39,7 @@ define([
           },
           function (err) {
             console.log('err', err);
-            var message = (err.data.errorKey == 'noReadAccessToResource') ? 'Whoa!' : $translate.instant(
+            var message = (err.data.errorKey == 'noReadAccessToArtifact') ? 'Whoa!' : $translate.instant(
                 'SERVER.TEMPLATE.load.error');
 
             UIMessageService.acknowledgedExecution(
@@ -128,7 +128,7 @@ define([
                 },
                 function (err) {
                   // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
-                  var message = (err.data.errorKey == 'noReadAccessToResource') ? $translate.instant(
+                  var message = (err.data.errorKey == 'noReadAccessToArtifact') ? $translate.instant(
                       'SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
                   UIMessageService.acknowledgedExecution(
                       function () {

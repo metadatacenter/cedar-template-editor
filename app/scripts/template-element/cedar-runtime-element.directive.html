@@ -1,5 +1,5 @@
 <div ng-if="model !== undefined" class="item-root element-root flex"
-    style="justify-content:flex-start;align-items:stretch">
+     style="justify-content:flex-start;align-items:stretch">
 
   <div class="element-bar" ng-click="toggleExpanded(index)">
     <div class='bar' ng-class="['bar' + nest]">
@@ -8,34 +8,41 @@
 
   <div class="elementTotalContent" style="width:100%">
 
-    <div  style="cursor:pointer;padding-top: 3px;" ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
+    <div style="cursor:pointer;padding-top: 3px;"
+         ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
       <div ng-click="toggleExpanded(index)" class="question element title" style="width:100%;padding-top:3px;">
-        {{getLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}} of {{valueArray.length}})</span>
+        {{getLabel()}}
+        <!-- display cardinality -->
+        <span ng-if="isCardinalElement(element)" class="count">{{getCardinality(element)}}</span>
+        <!-- button to create first item of the array -->
+        <button ng-if="valueArray.length == 0" type="button" class="add" tooltip-append-to-body="true"><i
+            class="fa fa-plus-circle"></i></button>
       </div>
     </div>
 
     <!-- a spreadsheet list of elements -->
     <div ng-if="isSpreadsheetView() && valueArray.length > 0">
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
-        <div  ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
+        <div ng-class="{'isInactive' : !isActive(index), 'isActive': isActive(index)}">
 
           <field-toolbar style="width:auto" ng-click="toggleExpanded(index)"
-              ng-if="isExpanded(index)" values="valueArray" index="index" paging="isMultiple()"
-              min="pageMin" max="pageMax" range="pageRange"
-              field="element" model="valueArray" index="index" view-state="viewState"
-              remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
-              spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
-              expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
+                         ng-if="isExpanded(index)" values="valueArray" index="index" paging="isMultiple()"
+                         min="pageMin" max="pageMax" range="pageRange"
+                         field="element" model="valueArray" index="index" view-state="viewState"
+                         remove="removeElement" add="addElement" copy="copyElement" is-active="isActive"
+                         set-active="setActive"
+                         spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
+                         expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
           </field-toolbar>
 
-        <div ng-if="isExpanded(index)">
-          <div class="spreadsheetViewDetector"></div>
-          <div class="spreadsheetViewContainer"></div>
-          <div id="spreadsheetViewLogs"></div>
-          <div id="hooksList"></div>
+          <div ng-if="isExpanded(index)">
+            <div class="spreadsheetViewDetector"></div>
+            <div class="spreadsheetViewContainer"></div>
+            <div id="spreadsheetViewLogs"></div>
+            <div id="hooksList"></div>
+          </div>
         </div>
       </div>
-    </div>
     </div>
 
     <!-- a paged list of elements -->
@@ -59,7 +66,7 @@
             ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="isDisplayable(key)">
 
           <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"
-              style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;"></div>
+               style="min-height:30px;min-width:30px;margin: 5px 5px 5px 15px;"></div>
           <div ng-if=" isExpanded(index) && index === i">
 
             <cedar-runtime-nested-element
