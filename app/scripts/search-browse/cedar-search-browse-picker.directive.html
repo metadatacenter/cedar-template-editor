@@ -159,7 +159,7 @@
               <p ng-if="dc.isSearching">
                 <span class="search-result">
                   <span ng-class="{'no-search-results':dc.searchTerm}">
-                    <span>{{dc.breadcrumbTitle}}</span>
+                    <span><div ng-bind-html="dc.breadcrumbTitle"></div></span>
                   </span>
                 </span>
               </p>
