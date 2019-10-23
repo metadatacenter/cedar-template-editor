@@ -27,7 +27,7 @@ define([
         '<a ng-click="helper.open(child)" href="javascript:void(0);">',
         '<span ng-if="helper.isCollapsed(child)"><i class="fa fa-caret-right"></i></span>',
         '<span ng-if="helper.isExpanded(child)"><i class="fa fa-caret-down"></i></span>',
-        '<span ng-if="helper.isLeaf(child)"><i class="fa fa-dot-circle-o"></i></span>',
+        '<span ng-if="helper.isLeaf(child)"><i class="fa fa-circle category-leaf"></i></span>',
         '</a>',
         '</div>',
         '<div class="category-search-link">',
