@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService', 'CategoryService'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService', 'CategoryService', '$sce'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService, $sce) {
 
         var directive = {
           bindToController: {
@@ -1184,7 +1184,16 @@ define([
                     vm.loading = false;
 
                     vm.nodeListQueryType = response.nodeListQueryType;
-                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.categoryName);
+                    var title = '';
+                    var separator = '';
+                    for (var ti in response.categoryPath) {
+                      if (ti > 0) {
+                        var name = response.categoryPath[ti]['schema:name']
+                        title += separator + name;
+                        separator = ' &raquo; ';
+                      }
+                    }
+                    vm.breadcrumbTitle = $sce.trustAsHtml(vm.buildBreadcrumbTitle(title));
                     UIProgressService.complete();
                   },
                   function (error) {
