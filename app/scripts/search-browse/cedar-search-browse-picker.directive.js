@@ -1511,6 +1511,7 @@ define([
               vm.loading = true;
               vm.offset = 0;
               vm.loading = true;
+              vm.isSearching = false;
 
               return resourceService.getResources(
                   {
