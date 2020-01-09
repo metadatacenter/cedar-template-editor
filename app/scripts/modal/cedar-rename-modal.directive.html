@@ -9,12 +9,12 @@
       <h5 translate>DASHBOARD.rename.label</h5>
 
       <form ng-submit="rename.updateResource();dc.renameModalVisible=false">
-        <p><input size="40" type="text"  ng-model="rename.renameResource['schema:name']"/></p>
+        <p><input id="rename-modal-name-input" size="40" type="text"  ng-model="rename.renameResource['schema:name']"/></p>
       </form>
     </div>
     <div class="modal-footer actions">
       <div class="clear-save">
-        <button ng-click="rename.updateResource();dc.renameModalVisible=false;" type="button"
+        <button id="rename-modal-save-button" ng-click="rename.updateResource();dc.renameModalVisible=false;" type="button"
             class="btn btn-save confirm" translate>
           GENERIC.Save
         </button>
