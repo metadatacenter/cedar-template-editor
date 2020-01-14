@@ -291,6 +291,12 @@ define([
       }
     };
 
+    service.formatTitleStringFull = function (title) {
+      if (title) {
+        return title;
+      }
+    };
+
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
       var hashId = DataUtilService.getHashCode(id);
