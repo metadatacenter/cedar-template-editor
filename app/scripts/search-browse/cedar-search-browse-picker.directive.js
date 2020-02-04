@@ -887,28 +887,69 @@ define([
 
                 vm.offset = vm.nextOffset;
                 vm.loading = true;
-                return resourceService.searchResources(vm.searchTerm,
-                    {
-                      resourceTypes: activeResourceTypes(),
-                      sort         : sortField(),
-                      limit        : vm.requestLimit,
-                      offset       : vm.offset
-                    },
-                    function (response) {
 
+                if (vm.nodeListQueryType == 'search-category-id') {
+                  return resourceService.categorySearchResources(
+                      vm.categoryId,
+                      {
+                        resourceTypes    : activeResourceTypes(),
+                        sort             : sortField(),
+                        limit            : vm.requestLimit,
+                        offset           : vm.offset,
+                        version          : vm.getFilterVersion(),
+                        publicationStatus: vm.getFilterStatus()
+                      },
+                      function (response) {
+                        vm.isSearching = true;
+                        for (let i = 0; i < response.resources.length; i++) {
+                          vm.resources[i + vm.offset] = response.resources[i];
+                        }
+                        vm.nextOffset = getNextOffset(response.paging.next);
+                        vm.totalCount = response.totalCount;
+                        vm.loading = false;
 
-                      for (let i = 0; i < response.resources.length; i++) {
-                        vm.resources[i + vm.offset] = response.resources[i];
+                        vm.nodeListQueryType = response.nodeListQueryType;
+                        var title = '';
+                        var separator = '';
+                        for (var ti in response.categoryPath) {
+                          if (ti > 0) {
+                            var name = response.categoryPath[ti]['schema:name']
+                            title += separator + name;
+                            separator = ' &raquo; ';
+                          }
+                        }
+                        vm.breadcrumbTitle = $sce.trustAsHtml(vm.buildBreadcrumbTitle(title));
+                        UIProgressService.complete();
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);
+                        vm.loading = false;
                       }
-                      vm.totalCount = response.totalCount;
-                      vm.nextOffset = getNextOffset(response.paging.next);
-                      vm.loading = false;
-                    },
-                    function (error) {
-                      UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                      vm.loading = false;
-                    }
-                );
+                  );
+                } else {
+                  return resourceService.searchResources(vm.searchTerm,
+                      {
+                        resourceTypes: activeResourceTypes(),
+                        sort         : sortField(),
+                        limit        : vm.requestLimit,
+                        offset       : vm.offset
+                      },
+                      function (response) {
+
+
+                        for (let i = 0; i < response.resources.length; i++) {
+                          vm.resources[i + vm.offset] = response.resources[i];
+                        }
+                        vm.totalCount = response.totalCount;
+                        vm.nextOffset = getNextOffset(response.paging.next);
+                        vm.loading = false;
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                        vm.loading = false;
+                      }
+                  );
+                }
               }
             }
           };
