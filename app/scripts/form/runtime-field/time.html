@@ -1,0 +1,36 @@
+<div ng-init="initializeValue(field); initializeValueType(field)">
+
+  <div ng-if="isActive(index)" class="form-group input-group has-success has-feedback">
+    <div
+        name="timeField"
+        uib-timepicker
+        ng-model="time.dt"
+        ng-change="updateModelFromUI(time.dt, '{{valueArray[index]['@value']}}',false); "
+        hour-step="1"
+        minute-step="1"
+        second-step="1"
+        show-seconds="true"
+        show-meridian="true"
+    ></div>
+
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <pre class="alert alert-info">Time is: {{time.dt | date:'mediumTime' }}</pre>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <div class="validation" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['timeField']['$error']['required']">{{ 'VALIDATION.requiredTime' | translate }}</div>
+      <div ng-if="forms['fieldEditForm' + index]['timeField']['$error']['date']">{{ 'VALIDATION.invalidTime' | translate }}</div>
+    </div>
+  </div>
+
+  <!--- not active --->
+  <div ng-if="!isActive(index)" class="form-group has-feedback value" ng-click="setActive(index,true)">
+    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{timeFormat(valueArray[index]['@value'])}}</div>
+  </div>
+
+</div>
+

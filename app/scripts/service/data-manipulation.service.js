@@ -390,6 +390,14 @@ define([
           return (service.getInputType(node) == 'date');
         };
 
+        service.isDateTimeField = function (node) {
+          return (service.getInputType(node) == 'datetime');
+        };
+
+        service.isTimeField = function (node) {
+          return (service.getInputType(node) == 'time');
+        };
+
         // is this a date range?
         service.isDateRange = function (node) {
           return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
@@ -1189,6 +1197,14 @@ define([
           return "xsd:date";
         };
 
+        service.generateInstanceTypeForDateTimeField = function () {
+          return "xsd:dateTime";
+        };
+
+        service.generateInstanceTypeForTimeField = function () {
+          return "xsd:time";
+        };
+
         service.generateInstanceTypeForNumericField = function (node) {
           return service.getNumberType(service.schemaOf(node));
         };
@@ -1375,6 +1391,10 @@ define([
             fieldType = service.generateInstanceTypeForNumericField(field);
           } else if (service.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();
+          } else if (service.isDateTimeField(field)) {
+            fieldType = service.generateInstanceTypeForDateTimeField();
+          } else if (service.isTimeField(field)) {
+            fieldType = service.generateInstanceTypeForTimeField();
           } else {
             var properties = service.propertiesOf(field);
             if (properties && !angular.isUndefined(properties['@type'])) {

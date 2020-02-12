@@ -1,0 +1,62 @@
+<div ng-init="initializeValue(field); initializeValueType(field)">
+  <div ng-if="isActive(index)" class="form-group input-group has-success has-feedback">
+    <input
+        name="dateTimeField"
+        type="string"
+        placeholder="{{ 'PLACEHOLDER.datetime' | translate }}"
+        class="form-control select dateField "
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        uib-datepicker-popup="{{date.format}}"
+        ng-model="date.dt"
+        ng-change="updateModelFromUI(date.dt, '{{valueArray[index]['@value']}}',false, 'date'); "
+        is-open="date.opened"
+        ng-required="isRequired()"
+        close-text="Close"
+        alt-input-formats="date.altInputFormats"/>
+    <div class="input-indicator-icons"
+         style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <span class="input-group-btn">
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="setDateValue(); date.opened = true">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </span>
+
+  </div>
+
+  <div ng-if="isActive(index)" class="form-group input-group has-success has-feedback">
+    <div
+        name="timeField"
+        uib-timepicker
+        ng-model="time.dt"
+        ng-change="updateModelFromUI(time.dt, '{{valueArray[index]['@value']}}',false, 'time'); "
+        hour-step="1"
+        minute-step="1"
+        second-step="1"
+        show-seconds="true"
+        show-meridian="true"
+    ></div>
+
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <pre class="alert alert-info">DateTime is: {{datetime | date:'medium' }}</pre>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <div class="validation" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['required']">{{ 'VALIDATION.requiredDateTime' | translate }}</div>
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['date']">{{ 'VALIDATION.invalidDateTime' | translate }}</div>
+    </div>
+  </div>
+
+
+  <!--- not active --->
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
+    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{dateTimeFormat(valueArray[index]['@value'])}}</div>
+  </div>
+
+</div>
+

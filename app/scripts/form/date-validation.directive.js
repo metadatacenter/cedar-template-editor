@@ -7,11 +7,9 @@ define([
 
       .directive('dateValidation', dateValidation);
 
-  dateValidation.$inject = ["$rootScope",  "$document", "$translate", "$filter", "$location",
-                        "$window", '$timeout'];
+  dateValidation.$inject = ["$rootScope", "$document", "$translate", "$filter", "$location", "$window", '$timeout'];
 
-  function dateValidation($rootScope,  $document, $translate, $filter, $location, $window,
-                      $timeout) {
+  function dateValidation($rootScope, $document, $translate, $filter, $location, $window, $timeout) {
 
     var linker = function ($scope, $element, attrs, mCtrl) {
 
@@ -27,8 +25,12 @@ define([
         mCtrl.$setValidity('date', $scope.parseDate(mCtrl.$modelValue));
       });
 
+      $scope.$on('runTimeValidation', function () {
+        mCtrl.$setValidity('time', $scope.parseTime(mCtrl.$modelValue));
+      });
+
       $scope.parseDate = function (value) {
-        console.log('parseDate',value);
+        console.log('parseDate', value);
         var result = false;
         if (value && value.length > 0) {
 
@@ -43,14 +45,32 @@ define([
         }
         return result;
       };
+
+      $scope.parseTime = function (value) {
+        console.log('parseTime', value);
+        var result = false;
+        if (value && value.length > 0) {
+
+          var date = new Date(value);
+          var hour = date.getHours();
+          var minute = date.getMinutes();
+          var second = date.getSeconds();
+
+          if (!isNaN(hour) && !isNaN(minute) && !isNaN(second)) {
+            result = hour + ':' + minute + ':' + second;
+          }
+        }
+        return result;
+      };
+
     };
 
     return {
-      require: 'ngModel',
-      controller : function ($scope, $element) {
+      require   : 'ngModel',
+      controller: function ($scope, $element) {
       },
-      replace    : true,
-      link       : linker
+      replace   : true,
+      link      : linker
     };
   }
 });

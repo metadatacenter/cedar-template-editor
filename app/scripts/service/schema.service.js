@@ -488,6 +488,14 @@ define([
       return (service.getInputType(node) == 'date');
     };
 
+    service.isDateTimeType = function (node) {
+      return (service.getInputType(node) == 'datetime');
+    };
+
+    service.isTimeType = function (node) {
+      return (service.getInputType(node) == 'time');
+    };
+
     service.isLinkType = function (node) {
       return (service.getInputType(node) == 'link');
     };
