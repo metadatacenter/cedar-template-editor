@@ -1357,7 +1357,6 @@ define([
 //
 // date picker  date parser
 //
-
       $scope.date = {
         dt             : '',
         language       : navigator.language,

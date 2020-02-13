@@ -537,8 +537,6 @@
   "PLACEHOLDER": {
     "email": "bob@company.com",
     "url": "http://company.com",
-    "date": "10/20/2010",
-    "datetime": "10/20/2010 01:02:03",
     "phoneNumber": "123-456-7890"
   },
   "VALIDATION": {

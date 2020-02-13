@@ -4,7 +4,7 @@
     <input
         name="dateField"
         type="string"
-        placeholder="{{ 'PLACEHOLDER.date' | translate }}"
+        placeholder="{{date.format}}"
         class="form-control select dateField "
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         uib-datepicker-popup="{{date.format}}"
@@ -27,7 +27,7 @@
 
   <div ng-if="isActive(index)">
     <br/>
-    <pre class="alert alert-info">Date is: {{date.dt | date:'mediumDate' }}</pre>
+    <pre class="alert alert-info">Date is: {{date.dt | date:date.format}}</pre>
   </div>
 
   <div ng-if="isActive(index)">
