@@ -230,12 +230,22 @@
 
         <div id="workspace-view-container" cedar-infinite-scroll load-more="dc.loadMore()"
             class="center-panel scrollable-content" style="padding-top:0;overflow:scroll">
-          <div class="no-selection" ng-if="!dc.hasResources()">
+
+          <div class="no-selection" ng-if="dc.resourceListIsEmpty()">
             <div class="row no-file">
               <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
             </div>
             <div class="row no-message">
               <div class="col-sm-12 center" translate>Nothing found</div>
+            </div>
+          </div>
+
+          <div class="no-selection" ng-if="dc.resourceListIsLoading()">
+            <div class="row no-file">
+              <div class="col-sm-12 center"><i class="fa fa-spinner"></i></div>
+            </div>
+            <div class="row no-message">
+              <div class="col-sm-12 center" translate>Resources are loading ...</div>
             </div>
           </div>
 

@@ -2235,6 +2235,14 @@ define([
             return vm.totalCount > 0;
           };
 
+          vm.resourceListIsLoading = function () {
+            return vm.totalCount == -1;
+          };
+
+          vm.resourceListIsEmpty = function () {
+            return vm.totalCount == 0;
+          };
+
           vm.search = function (searchTerm) {
 
             vm.searchTerm = searchTerm;
