@@ -487,6 +487,7 @@
       "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
       "sharedWithEverybody": "Shared with Everybody",
+      "specialFolders": "Special Folders",
       "all": "All"
     },
     "version": {
@@ -640,7 +641,8 @@
     "sharedWithEverybody": "Shared with Everybody",
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'",
-    "categorySearchResult": "Category search Results For: '{{searchTerm}}'"
+    "categorySearchResult": "Category search Results For: '{{searchTerm}}'",
+    "specialFolders": "Special Folders"
   },
   "REST_ERROR": {
     "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",

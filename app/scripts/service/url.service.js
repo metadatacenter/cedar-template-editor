@@ -160,6 +160,10 @@ define([
       return this.resourceBase() + "/search?sharing=shared-with-everybody";
     };
 
+    service.specialFolders = function () {
+      return this.resourceBase() + "/search?mode=special-folders";
+    };
+
     service.facets = function () {
       return this.resourceBase() + "/facets";
     };
