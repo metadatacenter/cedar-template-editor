@@ -68,7 +68,7 @@ define([
           vm.resourceTypes = null;
           vm.sortOptionField = null;
           vm.offset = 0;
-          vm.totalCount = null;
+          vm.totalCount = -1;
           $scope.destinationResources = [];
 
           function canWrite() {

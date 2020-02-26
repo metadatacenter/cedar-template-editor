@@ -773,9 +773,16 @@ define([
       };
 
       $scope.onChange = function () {
-        $scope.valueArray[$scope.index]['@value'] = $scope.data.info[$scope.index].value ? $scope.data.info[$scope.index].value + '' : null;
+        var idxval = $scope.data.info[$scope.index].value;
         if ($scope.getInputType() == "numeric") {
+          if (isNaN(idxval)) {
+            $scope.valueArray[$scope.index]['@value'] = null;
+          } else {
+            $scope.valueArray[$scope.index]['@value'] = idxval + '';
+          }
           validateValueRange($scope.valueArray[$scope.index]['@value']);
+        } else {
+          $scope.valueArray[$scope.index]['@value'] = idxval ? idxval + '' : null;
         }
       };
 
