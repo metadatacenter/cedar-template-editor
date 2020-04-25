@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.autocompleteService', [])
       .factory('autocompleteService', autocompleteService);
 
-  autocompleteService.$inject = ['$translate', 'controlledTermDataService', 'DataManipulationService',
+  autocompleteService.$inject = ['$translate', 'controlledTermService', 'controlledTermDataService', 'DataManipulationService',
                                  'StringUtilsService'];
 
-  function autocompleteService($translate, controlledTermDataService, DataManipulationService, StringUtilsService) {
+  function autocompleteService($translate, controlledTermService, controlledTermDataService, DataManipulationService, StringUtilsService) {
     var service = {
       serviceId               : "autocompleteService",
       autocompleteResultsCache: {}
@@ -119,10 +119,10 @@ define([
 
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
-
       // results could be a list or not, put all results into an array
-      var collection = [];
-      var result;
+      let collection = [];
+      let result;
+      let sourceFieldName = field_type == 'OntologyClass'? 'ontology' : 'vsCollection';
       if (angular.isDefined(response.collection)) {
         for (i = 0; i < response.collection.length; i++) {
           result = {
@@ -130,6 +130,7 @@ define([
             'notation' : response.collection[i].notation,
             'label'    : response.collection[i].prefLabel,
             'type'     : response.collection[i].type,
+            'source'   : controlledTermService.getLastFragmentOfUri(response.collection[i][sourceFieldName]),
             'sourceUri': source_uri,
           };
           collection.push(result);
@@ -140,6 +141,7 @@ define([
           'notation' : response.notation,
           'label'    : response.prefLabel,
           'type'     : response.type,
+          'source'   : controlledTermService.getLastFragmentOfUri(response[sourceFieldName]),
           'sourceUri': source_uri,
 
         };
@@ -227,8 +229,8 @@ define([
                   'label'     : klass.label,
                   'rdfs:label': klass.label,
                   'type'      : klass.type,
-                  'sourceUri' : 'template',
-
+                  'source'    : klass.source,
+                  'sourceUri' : 'template'
                 }
             );
           } else {
@@ -239,6 +241,7 @@ define([
                     'label'     : klass.label,
                     'rdfs:label': klass.label,
                     'type'      : klass.type,
+                    'source'    : klass.source,
                     'sourceUri' : 'template'
                   }
               );
@@ -325,11 +328,12 @@ define([
           if (action.action == 'move') {
 
             if (!service.hasTerm(id, query, action.sourceUri, action['@id'])) {
-              let uriArr = action.sourceUri.split('/');
+              //let uriArr = action.sourceUri.split('/');
               let classId = action['termUri'];
 
               if (action.type == "Value") {
-                let vsCollection = uriArr[uriArr.length - 2];
+                //let vsCollection = uriArr[uriArr.length - 2];
+                let vsCollection = action.source;
 
                 var promise =
                     controlledTermDataService.getValueTermById(vsCollection, action.sourceUri, classId).then(
@@ -339,7 +343,8 @@ define([
                         });
               }
               if (action.type == "OntologyClass") {
-                let acronym = uriArr[uriArr.length - 1];
+                //let acronym = uriArr[uriArr.length - 1];
+                let acronym = action.source;
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
                   service.processAutocompleteClassResults(id, query, 'OntologyClass', action.sourceUri, response);
