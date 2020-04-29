@@ -95,7 +95,8 @@ define([
                   action   : 'move',
                   termUri  : vm.list[stopIndex]['termUri'],
                   type     : vm.list[stopIndex]['type'],
-                  sourceUri: vm.list[stopIndex]['sourceUri']
+                  sourceUri: vm.list[stopIndex]['sourceUri'],
+                  source   : vm.list[stopIndex]['source']
                 });
               }
             }
@@ -115,8 +116,8 @@ define([
                 action   : 'move',
                 termUri  : vm.list[changeTo]['termUri'],
                 type     : vm.list[changeTo]['type'],
-                sourceUri: vm.list[changeTo]['sourceUri']
-
+                sourceUri: vm.list[changeTo]['sourceUri'],
+                source   : vm.list[changeTo]['source']
               });
             }
             vm.showPosition = false;
@@ -143,6 +144,7 @@ define([
             vm.actions.push({
                   'termUri'  : entry[0]['termUri'],
                   'sourceUri': entry[0]['sourceUri'],
+                  'source'   : entry[0]['source'],
                   'type'     : entry[0]['type'],
                   'action'   : 'delete'
                 }
@@ -191,6 +193,7 @@ define([
           };
 
           vm.applyActions = function (list, actions) {
+
             // apply mods to a duplicate of the list
 
             var dup = list.slice();
@@ -214,24 +217,23 @@ define([
 
           // initialize the share dialog
           vm.openTerms = function (resource, actions) {
-            console.log('actions',actions);
             vm.isloading = true;
-
             autocompleteService.clearResults(vm.id, vm.term);
-            var foundResults = autocompleteService.initResults(vm.id, vm.term);
-            var promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term, false);
+            let foundResults = autocompleteService.initResults(vm.id, vm.term);
+            let promises = autocompleteService.updateFieldAutocomplete(vm.schema, vm.term, false);
             vm.fullList = [];
             $q.all(promises).then(values => {
 
               for (let i = 1; i <= foundResults.length; i++) {
                 var found = foundResults[i - 1];
-
                 vm.fullList.push({
                   termUri     : found['@id'],
                   label       : found['label'],
                   notation    : found['notation'],
                   sourceUri   : found['sourceUri'],
-                  acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                  source      : found['source'],
+                  acronym     : found['source'],
+                  //acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
                   type        : found['type'],
                   id          : found['id'],
                   vsCollection: found['vsCollection']
@@ -312,25 +314,14 @@ define([
 
                   for (let i = 1; i <= foundResults.length; i++) {
                     var found = foundResults[i - 1];
-
-                    // vm.fullList.push({
-                    //   '@id'       : found['@id'],
-                    //   label       : found['label'],
-                    //   notation    : found['notation'],
-                    //   sourceUri   : found['sourceUri'],
-                    //   termUri     : found['@id'],
-                    //   acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
-                    //   type        : found['type'],
-                    //   id          : found['id'],
-                    //   vsCollection: found['vsCollection']
-                    // });
-
                     vm.fullList.push({
                       label       : found['label'],
                       notation    : found['notation'],
                       sourceUri   : found['sourceUri'],
+                      source      : found['source'],
+                      acronym     : found['source'],
                       termUri     : found['@id'],
-                      acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
+                      //acronym     : vm.getAcronym(found['sourceUri'], found['@id'], found['type'], found),
                       type        : found['type'],
                       id          : found['id'],
                       vsCollection: found['vsCollection']
