@@ -57,6 +57,10 @@ define([
       return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
     };
 
+    service.getSpecialFolders = function (folderId) {
+      return '/dashboard?viewMode=view-special-folders&folderId=' + folderId;
+    };
+
     service.getSharedWithEverybody = function (folderId) {
       return '/dashboard?sharing=shared-with-everybody&folderId=' + folderId;
     };

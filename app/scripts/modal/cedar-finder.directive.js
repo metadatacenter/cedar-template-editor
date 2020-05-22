@@ -50,7 +50,7 @@ define([
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
-          vm.totalCount = null;
+          vm.totalCount = -1;
 
           vm.isSearching = false;
           vm.pathInfo = [];
