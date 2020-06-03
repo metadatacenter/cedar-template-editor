@@ -1481,7 +1481,7 @@ define([
 
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
+        const addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded
           setTimeout(function () {
             if ($element.find('#field-value-tooltip').length > 0) {

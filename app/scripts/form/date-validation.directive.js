@@ -14,7 +14,7 @@ define([
     var linker = function ($scope, $element, attrs, mCtrl) {
 
       function dateValidation(value) {
-        var result = $scope.parseDate(value);
+        const result = $scope.parseDate(value);
         mCtrl.$setValidity('date', result);
         return result || value;
       }
@@ -31,13 +31,13 @@ define([
 
       $scope.parseDate = function (value) {
         console.log('parseDate', value);
-        var result = false;
+        let result = false;
         if (value && value.length > 0) {
 
-          var date = new Date(value);
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
+          const date = new Date(value);
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
 
           if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
             result = year + '-' + month + '-' + day;
@@ -48,13 +48,13 @@ define([
 
       $scope.parseTime = function (value) {
         console.log('parseTime', value);
-        var result = false;
+        let result = false;
         if (value && value.length > 0) {
 
-          var date = new Date(value);
-          var hour = date.getHours();
-          var minute = date.getMinutes();
-          var second = date.getSeconds();
+          const date = new Date(value);
+          const hour = date.getHours();
+          const minute = date.getMinutes();
+          const second = date.getSeconds();
 
           if (!isNaN(hour) && !isNaN(minute) && !isNaN(second)) {
             result = hour + ':' + minute + ':' + second;

@@ -65,35 +65,9 @@
     "allowsRequired": true
   },
   {
-    "cedarType": "date",
-    "iconClass": "fa fa-calendar-o",
-    "label": "Date",
-    "allowedInElement": true,
-    "primaryField": true,
-    "hasControlledTerms": false,
-    "staticField": false,
-    "allowsMultiple": true,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
-    "allowsRequired": true
-  },
-  {
     "cedarType": "datetime",
     "iconClass": "fa fa-calendar",
     "label": "DateTime",
-    "allowedInElement": true,
-    "primaryField": true,
-    "hasControlledTerms": false,
-    "staticField": false,
-    "allowsMultiple": true,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
-    "allowsRequired": true
-  },
-  {
-    "cedarType": "time",
-    "iconClass": "fa fa-clock-o",
-    "label": "Time",
     "allowedInElement": true,
     "primaryField": true,
     "hasControlledTerms": false,

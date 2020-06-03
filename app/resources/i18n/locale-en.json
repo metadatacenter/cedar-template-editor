@@ -628,7 +628,8 @@
     "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
-    "enterPrefLabel": "Enter Preferred Label"
+    "enterPrefLabel": "Enter Preferred Label",
+    "selectDateTimeType": "Select DateTime Type"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

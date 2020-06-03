@@ -138,6 +138,60 @@
             with-floating-label>
       </div>
     </div>
+
+    <div ng-if="isDateTimeField()">
+
+      <!-- subtype  -->
+      <div ng-init="setDateTimeTypeFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setDateTimeTypeFromUI($select.selected)"
+            ng-model="selectedDateTimeType"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDateTimeType' | translate}}">{{selectedDateTimeType.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in dateTimeTypes">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- min number value constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+               class="form-control field-min-max-definition"
+               placeholder="{{'CREATOR.enterMinValue' | translate}}"
+               aria-label="{{'CREATOR.enterMinValue' | translate}}"
+               ng-model="$root.schemaOf(field)._valueConstraints.minValue"
+               ng-disabled="isPublished()"
+               with-floating-label>
+      </div>
+
+      <!-- max number value constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+               class="form-control field-min-max-definition"
+               placeholder="{{'CREATOR.enterMaxValue' | translate}}"
+               aria-label="{{'CREATOR.enterMaxValue' | translate}}"
+               ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
+               ng-disabled="isPublished()"
+               with-floating-label>
+      </div>
+
+      <!-- decimal place constraint -->
+      <div class="form-group floating-label-wrapper">
+        <input type="number" auto-focus
+               class="form-control"
+               placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
+               aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
+               ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
+               ng-disabled="isPublished()"
+               with-floating-label>
+      </div>
+    </div>
+
   </div>
 
   <!-- Required tab  -->
