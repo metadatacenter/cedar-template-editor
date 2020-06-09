@@ -1810,20 +1810,24 @@ define([
         };
 
         service.defaultOptions = function (node, value) {
-          var MIN_OPTIONS = 2;
-          var schema = service.schemaOf(node);
+          let MIN_OPTIONS = 2;
+          if (service.getInputType(node) == 'checkbox') {
+            MIN_OPTIONS = 1;
+          }
+
+          let schema = service.schemaOf(node);
 
           // make sure we have the minimum number of options
           while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
-            var emptyOption = {
+            const emptyOption = {
               "label": name || ""
             };
             schema._valueConstraints.literals.push(emptyOption);
           }
 
           // and they all have text fields filled in
-          for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
-            if (schema._valueConstraints.literals[i].label.length === 0) {
+          for (let i = 0; i < schema._valueConstraints.literals.length; i++) {
+            if (schema._valueConstraints.literals[i].label.length == 0) {
               schema._valueConstraints.literals[i].label = value + "-" + i;
             }
           }
