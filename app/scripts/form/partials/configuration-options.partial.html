@@ -158,38 +158,91 @@
         </ui-select>
       </div>
 
-      <!-- min number value constraint -->
-      <div class="form-group floating-label-wrapper">
-        <input type="number" auto-focus
-               class="form-control field-min-max-definition"
-               placeholder="{{'CREATOR.enterMinValue' | translate}}"
-               aria-label="{{'CREATOR.enterMinValue' | translate}}"
-               ng-model="$root.schemaOf(field)._valueConstraints.minValue"
-               ng-disabled="isPublished()"
-               with-floating-label>
+      <!-- date precision  -->
+      <div ng-init="setDatePrecisionFormatFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setDatePrecisionFormatFromUI($select.selected)"
+            ng-model="selectedDatePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDatePrecisionFormat' | translate}}">{{selectedDatePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in datePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
       </div>
 
-      <!-- max number value constraint -->
-      <div class="form-group floating-label-wrapper">
-        <input type="number" auto-focus
-               class="form-control field-min-max-definition"
-               placeholder="{{'CREATOR.enterMaxValue' | translate}}"
-               aria-label="{{'CREATOR.enterMaxValue' | translate}}"
-               ng-model="$root.schemaOf(field)._valueConstraints.maxValue"
-               ng-disabled="isPublished()"
-               with-floating-label>
+      <!-- time precision  -->
+      <div ng-init="setTimePrecisionFormatFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimePrecisionFormatFromUI($select.selected)"
+            ng-model="selectedTimePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimePrecisionFormat' | translate}}">{{selectedTimePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in timePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
       </div>
 
-      <!-- decimal place constraint -->
-      <div class="form-group floating-label-wrapper">
-        <input type="number" auto-focus
-               class="form-control"
-               placeholder="{{'CREATOR.enterDecimalPlace' | translate}}"
-               aria-label="{{'CREATOR.enterDecimalPlace' | translate}}"
-               ng-model="$root.schemaOf(field)._valueConstraints.decimalPlace"
-               ng-disabled="isPublished()"
-               with-floating-label>
+      <!-- enable microseconds  -->
+      <div ng-init="setTimeEnableMicrosecondsFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimeEnableMicrosecondsFromUI($select.selected)"
+            ng-model="selectedTimeEnableMicroseconds"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableMicroseconds' | translate}}">{{selectedTimeEnableMicroseconds.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in timeEnableMicrosecondsOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
       </div>
+
+      <!-- enable timezone  -->
+      <div ng-init="setTimeEnableTimezoneFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimeEnableTimezoneFromUI($select.selected)"
+            ng-model="selectedTimeEnableTimezone"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableTimezone' | translate}}">{{selectedTimeEnableTimezone.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in timeEnableTimezoneOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- enable am/pm (or 24h)-->
+      <div ng-init="setTimeEnableAmPmFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimeEnableAmPmFromUI($select.selected)"
+            ng-model="selectedTimeEnableAmPm"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableAmPm' | translate}}">{{selectedTimeEnableAmPm.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in timeEnableAmPmOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
     </div>
 
   </div>

@@ -629,7 +629,12 @@
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
     "enterPrefLabel": "Enter Preferred Label",
-    "selectDateTimeType": "Select DateTime Type"
+    "selectDateTimeType": "Select DateTime Type",
+    "selectDatePrecisionFormat": "Select Date Precision",
+    "selectTimePrecisionFormat": "Select Time Precision",
+    "selectTimeEnableMicroseconds": "Enable/Disable Second Fractions (Milli, Micro, Nanoseconds)",
+    "selectTimeEnableTimezone": "Enable/Disable Timezone",
+    "selectTimeEnableAmPm": "Enable/Disable AM/PM"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
