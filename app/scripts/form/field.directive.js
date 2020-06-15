@@ -44,21 +44,19 @@ define([
       ];
 
       $scope.datePrecisionFormats = [
-        {id: "YYYY-MM-DD", label: "Year, Month, Date (MM/DD/YYYY)"},
-        {id: "YYYY-MM", label: "Year, Month (MM/YYYY)"},
-        {id: "MM-DD", label: "Month, Day (MM/DD)"},
-        {id: "YYYY", label: "Year (YYYY)"}
+        {id: "Century", label: "Century"},
+        {id: "Year", label: "Year"},
+        {id: "Month", label: "Month"},
+        {id: "Day", label: "Day"}
       ];
 
       $scope.timePrecisionFormats = [
-        {id: "hh:ii:ss", label: "Hour, Minute, Second (hh:ii:ss)"},
-        {id: "hh:ii", label: "Hour, Minute (hh:ii)"},
-        {id: "hh", label: "Hour(hh)"},
-      ];
-
-      $scope.timeEnableMicrosecondsOptions = [
-        {id: "true", label: "Allow second fractions"},
-        {id: "false", label: "Do not allow second fractions"}
+        {id: "Hour", label: "Hour"},
+        {id: "Minute", label: "Minute"},
+        {id: "Second", label: "Second"},
+        {id: "MilliSecond", label: "MilliSecond"},
+        {id: "MicroSecond", label: "MicroSecond"},
+        {id: "NanoSecond", label: "NanoSecond"}
       ];
 
       $scope.timeEnableTimezoneOptions = [
@@ -67,8 +65,8 @@ define([
       ];
 
       $scope.timeEnableAmPmOptions = [
-        {id: "true", label: "Allow AM/PM Information"},
-        {id: "false", label: "Do not allow AM/PM Information"}
+        {id: "true", label: "Use AM/PM Input"},
+        {id: "false", label: "Use 24H Input"}
       ];
 
       let dms = DataManipulationService;
@@ -294,6 +292,14 @@ define([
 
       $scope.isDateTimeField = function () {
         return schemaService.isDateTimeType($scope.field);
+      };
+
+      $scope.hasTimeComponent = function () {
+        return schemaService.hasTimeComponent($scope.field);
+      };
+
+      $scope.hasDateComponent = function () {
+        return schemaService.hasDateComponent($scope.field);
       };
 
       $scope.hasOptions = function () {
@@ -699,10 +705,10 @@ define([
       $scope.setDateTimeTypeFromModel = function () {
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.dateTimeType;
+          let typeId = schema._valueConstraints.temporalType;
           if (!typeId) {
             typeId = "xsd:dateTime";
-            schema._valueConstraints.dateTimeType = typeId;
+            schema._valueConstraints.temporalType = typeId;
           }
           const getDateTimeLabel = function (id) {
             for (let i = 0; i < $scope.dateTimeTypes.length; i++) {
@@ -723,10 +729,10 @@ define([
       $scope.setDatePrecisionFormatFromModel = function () {
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.datePrecisionFormat;
+          let typeId = schema._valueConstraints.xsdDateFinestGranularity;
           if (!typeId) {
-            typeId = "YYYY-MM-DD";
-            schema._valueConstraints.datePrecisionFormat = typeId;
+            typeId = "Day";
+            schema._valueConstraints.xsdDateFinestGranularity = typeId;
           }
           const getDatePrecisionFormatLabel = function (id) {
             for (let i = 0; i < $scope.datePrecisionFormats.length; i++) {
@@ -747,10 +753,10 @@ define([
       $scope.setTimePrecisionFormatFromModel = function () {
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.timePrecisionFormat;
+          let typeId = schema._valueConstraints.xsdTimeFinestGranularity;
           if (!typeId) {
-            typeId = "hh:ii:ss";
-            schema._valueConstraints.timePrecisionFormat = typeId;
+            typeId = "Second";
+            schema._valueConstraints.xsdTimeFinestGranularity = typeId;
           }
           const getTimePrecisionFormatLabel = function (id) {
             for (let i = 0; i < $scope.timePrecisionFormats.length; i++) {
@@ -767,38 +773,14 @@ define([
         }
       };
 
-      // Sets the time precision format based on the item stored at the model
-      $scope.setTimeEnableMicrosecondsFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.timeEnableMicroseconds;
-          if (!typeId) {
-            typeId = "true";
-            schema._valueConstraints.timeEnableMicroseconds = typeId;
-          }
-          const getTimeEnableMicrosecondsLabel = function (id) {
-            for (let i = 0; i < $scope.timeEnableMicrosecondsOptions.length; i++) {
-              const type = $scope.timeEnableMicrosecondsOptions[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedTimeEnableMicroseconds = {
-            id   : typeId,
-            label: getTimeEnableMicrosecondsLabel(typeId)
-          }
-        }
-      };
-
       // Sets the timezone enable based on the item stored at the model
       $scope.setTimeEnableTimezoneFromModel = function () {
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.timeEnableTimezone;
+          let typeId = schema._valueConstraints.xsdTimeZoneEnable;
           if (!typeId) {
             typeId = "true";
-            schema._valueConstraints.timeEnableTimezone = typeId;
+            schema._valueConstraints.xsdTimeZoneEnable = typeId;
           }
           const getTimeEnableTimezoneLabel = function (id) {
             for (let i = 0; i < $scope.timeEnableTimezoneOptions.length; i++) {
@@ -819,10 +801,10 @@ define([
       $scope.setTimeEnableAmPmFromModel = function () {
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.timeEnableAmPm;
+          let typeId = schema._ui.inputTimeDisplayAmPm;
           if (!typeId) {
             typeId = "true";
-            schema._valueConstraints.timeEnableAmPm = typeId;
+            schema._ui.inputTimeDisplayAmPm = typeId;
           }
           const getTimeEnableAmPmLabel = function (id) {
             for (let i = 0; i < $scope.timeEnableAmPmOptions.length; i++) {
@@ -841,32 +823,27 @@ define([
 
       // Sets the dateTime type based on the item selected at the UI
       $scope.setDateTimeTypeFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.dateTimeType = item.id;
+        dms.schemaOf($scope.field)._valueConstraints.temporalType = item.id;
       };
 
       // Sets the date precision format based on the item selected at the UI
       $scope.setDatePrecisionFormatFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.datePrecisionFormat = item.id;
+        dms.schemaOf($scope.field)._valueConstraints.xsdDateFinestGranularity = item.id;
       };
 
       // Sets the time precision format based on the item selected at the UI
       $scope.setTimePrecisionFormatFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.timePrecisionFormat = item.id;
-      };
-
-      // Sets the time enable microseconds based on the item selected at the UI
-      $scope.setTimeEnableMicrosecondsFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.timeEnableMicroseconds = item.id;
+        dms.schemaOf($scope.field)._valueConstraints.xsdTimeFinestGranularity = item.id;
       };
 
       // Sets the time enable microseconds based on the item selected at the UI
       $scope.setTimeEnableTimezoneFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.timeEnableTimezone = item.id;
+        dms.schemaOf($scope.field)._valueConstraints.xsdTimeZoneEnable = item.id;
       };
 
       // Sets the time enable microseconds based on the item selected at the UI
       $scope.setTimeEnableAmPmFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.timeEnableAmPm = item.id;
+        dms.schemaOf($scope.field)._ui.inputTimeDisplayAmPm = item.id;
       };
 
       // Sets the instance @value fields based on the options selected at the UI

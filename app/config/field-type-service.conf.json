@@ -65,7 +65,7 @@
     "allowsRequired": true
   },
   {
-    "cedarType": "datetime",
+    "cedarType": "temporal",
     "iconClass": "fa fa-calendar",
     "label": "DateTime",
     "allowedInElement": true,

@@ -22,14 +22,8 @@
       "checkbox": {
         "NAME": "Checkbox"
       },
-      "date": {
-        "NAME": "Date"
-      },
-      "datetime": {
+      "temporal": {
         "NAME": "DateTime"
-      },
-      "time": {
-        "NAME": "Time"
       },
       "email": {
         "NAME": "Email"
@@ -632,9 +626,8 @@
     "selectDateTimeType": "Select DateTime Type",
     "selectDatePrecisionFormat": "Select Date Precision",
     "selectTimePrecisionFormat": "Select Time Precision",
-    "selectTimeEnableMicroseconds": "Enable/Disable Second Fractions (Milli, Micro, Nanoseconds)",
-    "selectTimeEnableTimezone": "Enable/Disable Timezone",
-    "selectTimeEnableAmPm": "Enable/Disable AM/PM"
+    "selectTimeEnableTimezone": "Allow Timezone Information?",
+    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

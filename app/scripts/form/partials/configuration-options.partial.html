@@ -159,7 +159,7 @@
       </div>
 
       <!-- date precision  -->
-      <div ng-init="setDatePrecisionFormatFromModel()" class="form-group">
+      <div ng-init="setDatePrecisionFormatFromModel()" class="form-group" ng-if="hasDateComponent()">
         <ui-select
             class="form-control"
             theme="bootstrap"
@@ -176,7 +176,7 @@
       </div>
 
       <!-- time precision  -->
-      <div ng-init="setTimePrecisionFormatFromModel()" class="form-group">
+      <div ng-init="setTimePrecisionFormatFromModel()" class="form-group" ng-if="hasTimeComponent()">
         <ui-select
             class="form-control"
             theme="bootstrap"
@@ -192,25 +192,8 @@
         </ui-select>
       </div>
 
-      <!-- enable microseconds  -->
-      <div ng-init="setTimeEnableMicrosecondsFromModel()" class="form-group">
-        <ui-select
-            class="form-control"
-            theme="bootstrap"
-            close-on-select="true"
-            ng-change="setTimeEnableMicrosecondsFromUI($select.selected)"
-            ng-model="selectedTimeEnableMicroseconds"
-            ng-disabled="isPublished()">
-          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableMicroseconds' | translate}}">{{selectedTimeEnableMicroseconds.label}}
-          </ui-select-match>
-          <ui-select-choices repeat="option in timeEnableMicrosecondsOptions">
-            {{option.label}}
-          </ui-select-choices>
-        </ui-select>
-      </div>
-
       <!-- enable timezone  -->
-      <div ng-init="setTimeEnableTimezoneFromModel()" class="form-group">
+      <div ng-init="setTimeEnableTimezoneFromModel()" class="form-group" ng-if="hasTimeComponent()">
         <ui-select
             class="form-control"
             theme="bootstrap"
@@ -227,7 +210,7 @@
       </div>
 
       <!-- enable am/pm (or 24h)-->
-      <div ng-init="setTimeEnableAmPmFromModel()" class="form-group">
+      <div ng-init="setTimeEnableAmPmFromModel()" class="form-group" ng-if="hasTimeComponent()">
         <ui-select
             class="form-control"
             theme="bootstrap"

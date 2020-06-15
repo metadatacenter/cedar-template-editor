@@ -801,23 +801,23 @@ define([
             validateDecimals($scope.valueArray[$scope.index]['@value']);
             validateValueRange($scope.valueArray[$scope.index]['@value']);
             break;
-          case "date":
-            var str = $scope.toXSDDate(newValue);
-            if ($scope.model.length > 0) {
-              $scope.model[$scope.index]['@value'] = str;
-            } else {
-              $scope.model['@value'] = str;
-            }
-            break;
-          case "time":
-            var str = $scope.toXSDTime(newValue);
-            if ($scope.model.length > 0) {
-              $scope.model[$scope.index]['@value'] = str;
-            } else {
-              $scope.model['@value'] = str;
-            }
-            break;
-          case "datetime":
+          // case "date":
+          //   var str = $scope.toXSDDate(newValue);
+          //   if ($scope.model.length > 0) {
+          //     $scope.model[$scope.index]['@value'] = str;
+          //   } else {
+          //     $scope.model['@value'] = str;
+          //   }
+          //   break;
+          // case "time":
+          //   var str = $scope.toXSDTime(newValue);
+          //   if ($scope.model.length > 0) {
+          //     $scope.model[$scope.index]['@value'] = str;
+          //   } else {
+          //     $scope.model['@value'] = str;
+          //   }
+          //   break;
+          case "temporal":
             var str = null;
             if (subType == 'date') {
               var basedate;
@@ -957,13 +957,13 @@ define([
               $scope.data.info[i] = {'value': value};
             }
             break;
-          case "date":
-            $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
-            break;
-          case "time":
-            $scope.time.dt = new Date($scope.valueArray[$scope.index]['@value']);
-            break;
-          case "datetime":
+          // case "date":
+          //   $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          // case "time":
+          //   $scope.time.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          case "temporal":
             $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
             $scope.time.dt = new Date($scope.valueArray[$scope.index]['@value']);
             $scope.datetime = new Date($scope.time.dt);

@@ -442,6 +442,9 @@ define([
       }
     };
 
+    service.getTemporalType = function (node) {
+      return node && service.schemaOf(node)._valueConstraints.temporalType;
+    };
 
 
     //
@@ -480,7 +483,15 @@ define([
     };
 
     service.isDateTimeType = function (node) {
-      return (service.getInputType(node) === 'datetime');
+      return (service.getInputType(node) === 'temporal');
+    };
+
+    service.hasTimeComponent = function (node) {
+      return service.isDateTimeType(node) && (service.getTemporalType() == 'xsd:dateTime' || service.getTemporalType() == 'xsd:time');
+    };
+
+    service.hasDateComponent = function (node) {
+      return service.isDateTimeType(node) && (service.getTemporalType() == 'xsd:dateTime' || service.getTemporalType() == 'xsd:date');
     };
 
     service.isLinkType = function (node) {
@@ -722,11 +733,11 @@ define([
     };
 
     service.hasDateTimeType = function (node) {
-      return service.getValueConstraints(node).hasOwnProperty('dateTimeType');
+      return service.getValueConstraints(node).hasOwnProperty('temporalType');
     };
 
     service.getDateTimeType = function (node) {
-      return service.hasDateTimeType(node) && service.getValueConstraints(node).dateTimeType;
+      return service.hasDateTimeType(node) && service.getValueConstraints(node).temporalType;
     };
 
     service.hasUnitOfMeasure = function (node) {

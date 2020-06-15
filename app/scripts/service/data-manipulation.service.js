@@ -396,15 +396,15 @@ define([
 
         // is this a date field?
         service.isDateField = function (node) {
-          return (service.getInputType(node) === 'date');
+          return (service.getInputType(node) === 'temporal');
         };
 
         service.isDateTimeField = function (node) {
-          return (service.getInputType(node) === 'datetime');
+          return (service.getInputType(node) === 'temporal');
         };
 
         service.isTimeField = function (node) {
-          return (service.getInputType(node) === 'time');
+          return (service.getInputType(node) === 'temporal');
         };
 
         // is this a date range?
