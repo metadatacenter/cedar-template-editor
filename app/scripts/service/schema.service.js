@@ -487,11 +487,11 @@ define([
     };
 
     service.hasTimeComponent = function (node) {
-      return service.isDateTimeType(node) && (service.getTemporalType() == 'xsd:dateTime' || service.getTemporalType() == 'xsd:time');
+      return service.isDateTimeType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:time');
     };
 
     service.hasDateComponent = function (node) {
-      return service.isDateTimeType(node) && (service.getTemporalType() == 'xsd:dateTime' || service.getTemporalType() == 'xsd:date');
+      return service.isDateTimeType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:date');
     };
 
     service.isLinkType = function (node) {

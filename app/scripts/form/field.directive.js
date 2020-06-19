@@ -44,19 +44,19 @@ define([
       ];
 
       $scope.datePrecisionFormats = [
-        {id: "Century", label: "Century"},
-        {id: "Year", label: "Year"},
-        {id: "Month", label: "Month"},
-        {id: "Day", label: "Day"}
+        {id: "Century", label: "Century (CC)"},
+        {id: "Year", label: "Year (YYYY)"},
+        {id: "Month", label: "Month (YYYY-MM)"},
+        {id: "Day", label: "Day (YYYY-MM-DD)"}
       ];
 
       $scope.timePrecisionFormats = [
-        {id: "Hour", label: "Hour"},
-        {id: "Minute", label: "Minute"},
-        {id: "Second", label: "Second"},
-        {id: "MilliSecond", label: "MilliSecond"},
-        {id: "MicroSecond", label: "MicroSecond"},
-        {id: "NanoSecond", label: "NanoSecond"}
+        {id: "Hour", label: "Hour (hh)"},
+        {id: "Minute", label: "Minute (hh:mm)"},
+        {id: "Second", label: "Second (hh:mm:ss)"},
+        {id: "MilliSecond", label: "MilliSecond (hh:mm:ss.sss)"},
+        {id: "MicroSecond", label: "MicroSecond (hh:mm:ss.ssssss)"},
+        {id: "NanoSecond", label: "NanoSecond (hh:mm:ss.sssssssss)"}
       ];
 
       $scope.timeEnableTimezoneOptions = [
