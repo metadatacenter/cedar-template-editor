@@ -17,19 +17,6 @@ define([
        */
       function cedarTermsModalDirective(CedarUser, DataManipulationService, schemaService, $q) {
 
-        var directive = {
-          bindToController: {
-            termsResource: '=',
-            modalVisible : '='
-          },
-          controller      : cedarTermsModalController,
-          controllerAs    : 'terms',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-terms-modal.directive.html'
-        };
-
-        return directive;
-
         cedarTermsModalController.$inject = [
           '$timeout',
           '$scope',
@@ -362,6 +349,20 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            termsResource: '=',
+            modalVisible : '='
+          },
+          controller      : cedarTermsModalController,
+          controllerAs    : 'terms',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-terms-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );

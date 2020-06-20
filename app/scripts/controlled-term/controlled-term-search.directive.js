@@ -11,32 +11,6 @@ define([
       controlledTermSearchDirective.$inject = ["StringUtilsService"];
 
       function controlledTermSearchDirective(StringUtilsService) {
-        var directive = {
-          bindToController: {
-            fieldName            : '=',
-            searchTerm           : '=',
-            searchMode           : '=',
-            selectedClass        : '=',
-            currentOntology      : '=',
-            advanced             : '=',
-            selectedOntologies   : '=',
-            resetCallback        : '=',
-            addCallback          : '=',
-            isLoadingClassDetails: '=',
-            isCreatingMappings   : '=',
-            isCreatingVs         : '=',
-            treeVisible          : '=',
-            modalId              : '=',
-            searchScope          : '='
-          },
-          controller      : controlledTermSearchDirectiveController,
-          controllerAs    : 'tsc',
-          restrict        : 'E',
-          scope           : {},
-          templateUrl     : 'scripts/controlled-term/controlled-term-search.directive.html'
-        };
-
-        return directive;
 
         controlledTermSearchDirectiveController.$inject = [
           '$q',
@@ -669,7 +643,34 @@ define([
                 [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
         }
+
+        var directive = {
+          bindToController: {
+            fieldName            : '=',
+            searchTerm           : '=',
+            searchMode           : '=',
+            selectedClass        : '=',
+            currentOntology      : '=',
+            advanced             : '=',
+            selectedOntologies   : '=',
+            resetCallback        : '=',
+            addCallback          : '=',
+            isLoadingClassDetails: '=',
+            isCreatingMappings   : '=',
+            isCreatingVs         : '=',
+            treeVisible          : '=',
+            modalId              : '=',
+            searchScope          : '='
+          },
+          controller      : controlledTermSearchDirectiveController,
+          controllerAs    : 'tsc',
+          restrict        : 'E',
+          scope           : {},
+          templateUrl     : 'scripts/controlled-term/controlled-term-search.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );
-

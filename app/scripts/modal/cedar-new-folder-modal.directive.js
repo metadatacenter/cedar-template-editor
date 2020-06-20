@@ -13,19 +13,6 @@ define([
       /* new folder modal  */
       function cedarNewFolderModalDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            renameResource: '=',
-            modalVisible  : '='
-          },
-          controller      : cedarNewFolderModalController,
-          controllerAs    : 'folder',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-new-folder-modal.directive.html'
-        };
-
-        return directive;
-
         cedarNewFolderModalController.$inject = [
           '$scope',
           '$uibModal',
@@ -37,7 +24,7 @@ define([
           'TemplateInstanceService',
           'TemplateElementService',
           'TemplateService',
-          , 'CONST'
+          'CONST'
         ];
 
         function cedarNewFolderModalController($scope, $uibModal, $timeout, CedarUser,
@@ -96,6 +83,20 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            renameResource: '=',
+            modalVisible  : '='
+          },
+          controller      : cedarNewFolderModalController,
+          controllerAs    : 'folder',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-new-folder-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );

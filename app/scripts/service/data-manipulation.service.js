@@ -421,7 +421,7 @@ define([
         };
 
         service.isDateType = function (node) {
-          return (service.getInputType(node) === 'date');
+          return (service.getInputType(node) === 'temporal');
         };
 
         service.isLinkType = function (node) {

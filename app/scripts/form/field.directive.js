@@ -44,29 +44,27 @@ define([
       ];
 
       $scope.datePrecisionFormats = [
-        {id: "Century", label: "Century (CC)"},
-        {id: "Year", label: "Year (YYYY)"},
+        {id: "Day", label: "Day (YYYY-MM-DD)"},
         {id: "Month", label: "Month (YYYY-MM)"},
-        {id: "Day", label: "Day (YYYY-MM-DD)"}
+        {id: "Year", label: "Year (YYYY)"},
+        {id: "Century", label: "Century (CC)"}
       ];
 
       $scope.timePrecisionFormats = [
-        {id: "Hour", label: "Hour (hh)"},
-        {id: "Minute", label: "Minute (hh:mm)"},
         {id: "Second", label: "Second (hh:mm:ss)"},
-        {id: "MilliSecond", label: "MilliSecond (hh:mm:ss.sss)"},
-        {id: "MicroSecond", label: "MicroSecond (hh:mm:ss.ssssss)"},
-        {id: "NanoSecond", label: "NanoSecond (hh:mm:ss.sssssssss)"}
+        {id: "DecimalSecond", label: "DecimalSecond (hh:mm:ss.sss...s)"},
+        {id: "Minute", label: "Minute (hh:mm)"},
+        {id: "Hour", label: "Hour (hh)"}
       ];
 
       $scope.timeEnableTimezoneOptions = [
-        {id: "true", label: "Allow Timezone Information"},
-        {id: "false", label: "Do not allow Timezone Information"}
+        {id: true, label: "Allow Timezone Information"},
+        {id: false, label: "Do not allow Timezone Information"}
       ];
 
       $scope.timeEnableAmPmOptions = [
-        {id: "true", label: "Use AM/PM Input"},
-        {id: "false", label: "Use 24H Input"}
+        {id: true, label: "Use AM/PM Input"},
+        {id: false, label: "Use 24H Input"}
       ];
 
       let dms = DataManipulationService;
@@ -290,8 +288,8 @@ define([
         return schemaService.isTextFieldType($scope.field);
       };
 
-      $scope.isDateTimeField = function () {
-        return schemaService.isDateTimeType($scope.field);
+      $scope.isTemporalField = function () {
+        return schemaService.isTemporalType($scope.field);
       };
 
       $scope.hasTimeComponent = function () {
@@ -303,7 +301,7 @@ define([
       };
 
       $scope.hasOptions = function () {
-        return $scope.isNumericField() || $scope.isTextField() || $scope.isDateTimeField();
+        return $scope.isNumericField() || $scope.isTextField() || $scope.isTemporalField();
       };
 
       $scope.canViewTerms = function () {
@@ -604,6 +602,7 @@ define([
       }
 
       const parseField = function () {
+        console.log("**ParseField")
         if ($scope.field) {
           const min = schemaService.getMinItems($scope.field) || 0;
           if (!schemaService.isCardinalElement($scope.field)) {
@@ -778,8 +777,8 @@ define([
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
           let typeId = schema._valueConstraints.xsdTimeZoneEnable;
-          if (!typeId) {
-            typeId = "true";
+          if (typeof typeId === "undefined") {
+            typeId = true;
             schema._valueConstraints.xsdTimeZoneEnable = typeId;
           }
           const getTimeEnableTimezoneLabel = function (id) {
@@ -802,8 +801,8 @@ define([
         let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
           let typeId = schema._ui.inputTimeDisplayAmPm;
-          if (!typeId) {
-            typeId = "true";
+          if (typeof typeId === "undefined") {
+            typeId = true;
             schema._ui.inputTimeDisplayAmPm = typeId;
           }
           const getTimeEnableAmPmLabel = function (id) {

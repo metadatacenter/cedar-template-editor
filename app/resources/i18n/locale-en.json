@@ -190,7 +190,10 @@
     "MadeOpen": "Made Open",
     "MadeNotOpen": "Made Not Open",
     "Categories": "Categories",
-    "Loading": "Loading"
+    "Loading": "Loading",
+    "PublishedVersion": "Published Version",
+    "DraftVersion": "Draft Version",
+    "IsOpen": "OpenView Enabled"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -224,6 +227,13 @@
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
     "repoSubmission": "Submit to repository"
+  },
+  "resourceType": {
+    "folder": "Folder",
+    "template": "Template",
+    "field": "Field",
+    "element": "Element",
+    "metadata": "Metadata"
   },
   "SERVER": {
     "WORKSPACE": {

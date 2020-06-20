@@ -127,8 +127,7 @@ define([
     };
 
     service.hasPreferredLabel = function (node) {
-      return node && service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(
-          node)['skos:prefLabel'].length > 0;
+      return node && service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(node)['skos:prefLabel'].length > 0;
     };
 
     service.getPreferredLabel = function (node) {
@@ -163,6 +162,10 @@ define([
     // toggle the hidden field attribute
     service.setHidden = function (node, value) {
       service.schemaOf(node)._ui.hidden = value;
+    };
+
+    service.getDisplayAmPm = function (node) {
+      return service.schemaOf(node)._ui.inputTimeDisplayAmPm;
     };
 
     service.getIdentifier = function (node) {
@@ -466,7 +469,7 @@ define([
 
     // is this a numeric field?
     service.isNumericField = function (node) {
-      return (service.getInputType(node) === 'numeric');
+      return service.getInputType(node) === 'numeric';
     };
 
     // is this a date range?
@@ -475,43 +478,57 @@ define([
     };
 
     service.isAttributeValueType = function (node) {
-      return (service.getInputType(node) === 'attribute-value');
+      return service.getInputType(node) === 'attribute-value';
     };
 
     service.isTextFieldType = function (node) {
-      return (service.getInputType(node) === 'textfield');
+      return service.getInputType(node) === 'textfield';
     };
 
-    service.isDateTimeType = function (node) {
-      return (service.getInputType(node) === 'temporal');
+    service.isTemporalType = function (node) {
+      return service.getInputType(node) === 'temporal';
     };
 
     service.hasTimeComponent = function (node) {
-      return service.isDateTimeType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:time');
+      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:time');
     };
 
     service.hasDateComponent = function (node) {
-      return service.isDateTimeType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:date');
+      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:date');
+    };
+
+    service.isTemporalDateTime = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:dateTime';
+    };
+
+    service.isTemporalDate = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:date';
+    };
+
+    service.isTemporalTime = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:time';
     };
 
     service.isLinkType = function (node) {
-      return (service.getInputType(node) === 'link');
+      return service.getInputType(node) === 'link';
     };
 
     service.isCheckboxType = function (node) {
-      return (service.getInputType(node) === 'checkbox');
+      return service.getInputType(node) === 'checkbox';
     };
 
     service.isRadioType = function (node) {
-      return (service.getInputType(node) === 'radio');
+      return service.getInputType(node) === 'radio';
     };
 
     service.isListType = function (node) {
-      return (service.getInputType(node) === 'list');
+      return service.getInputType(node) === 'list';
     };
 
     service.isListMultiAnswerType = function (node) {
-      if (node && service.hasValueConstraints(node)) return (service.getInputType(node) === 'list') && (service.getValueConstraints(node).multipleChoice);
+      if (node && service.hasValueConstraints(node)) {
+        return (service.getInputType(node) === 'list') && (service.getValueConstraints(node).multipleChoice);
+      }
     };
 
     // is this a checkbox, radio or list question?
@@ -521,12 +538,12 @@ define([
     };
 
     service.isCheckboxListRadioType = function (inputType) {
-      return ((inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list'));
+      return (inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list');
     };
 
     service.isCheckboxListRadio = function (node) {
       const inputType = service.getInputType(node);
-      return ((inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list'));
+      return (inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list');
     };
 
     // is this a multiple choice list?
@@ -536,23 +553,23 @@ define([
 
     // is this a checkbox, or a multiple choice list field?
     service.isMultipleChoiceField = function (node) {
-      return ((service.getInputType(node) === 'checkbox') || (service.isMultipleChoice(node)));
+      return (service.getInputType(node) === 'checkbox') || (service.isMultipleChoice(node));
     };
 
     // is this a radio, or a sigle-choice ?
     service.isSingleChoiceListField = function (node) {
       const inputType = service.getInputType(node);
-      return ((inputType === 'radio') || ((inputType === 'list') && !service.isMultipleChoice(node)));
+      return (inputType === 'radio') || ((inputType === 'list') && !service.isMultipleChoice(node));
     };
 
     // is this a youTube field?
     service.isYouTube = function (node) {
-      return (service.getInputType(node) === 'youtube');
+      return service.getInputType(node) === 'youtube';
     };
 
     // is this richText?
     service.isRichText = function (node) {
-      return (service.getInputType(node) === 'richtext');
+      return service.getInputType(node) === 'richtext';
     };
 
     // Used in richtext.html
@@ -562,17 +579,17 @@ define([
 
     // is this an image?
     service.isImage = function (node) {
-      return (service.getInputType(node) === 'image');
+      return service.getInputType(node) === 'image';
     };
 
     // is this a section break?
     service.isSectionBreak = function (node) {
-      return (service.getInputType(node) === 'section-break');
+      return service.getInputType(node) === 'section-break';
     };
 
     // is this a page break?
     service.isPageBreak = function (node) {
-      return (service.getInputType(node) === 'page-break');
+      return service.getInputType(node) === 'page-break';
     };
 
     // get order array

@@ -17,19 +17,6 @@ define([
        */
       function cedarShareModalDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            shareResource: '=',
-            modalVisible : '='
-          },
-          controller      : cedarShareModalController,
-          controllerAs    : 'share',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-share-modal.directive.html'
-        };
-
-        return directive;
-
         cedarShareModalController.$inject = [
           '$timeout',
           '$scope',
@@ -707,7 +694,20 @@ define([
             );
           }
         }
+
+        let directive = {
+          bindToController: {
+            shareResource: '=',
+            modalVisible : '='
+          },
+          controller      : cedarShareModalController,
+          controllerAs    : 'share',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-share-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
-)
-;
+);

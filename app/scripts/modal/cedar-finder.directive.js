@@ -12,20 +12,6 @@ define([
 
       function cedarFinderDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            modalVisible          : '=',
-            selectResourceCallback: '=',
-            pickResourceCallback  : '='
-          },
-          controller      : cedarFinderController,
-          controllerAs    : 'finder',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-finder.directive.html'
-        };
-
-        return directive;
-
         cedarFinderController.$inject = [
           '$location',
           '$scope',
@@ -731,7 +717,21 @@ define([
           }
 
         }
-      }
 
+        let directive = {
+          bindToController: {
+            modalVisible          : '=',
+            selectResourceCallback: '=',
+            pickResourceCallback  : '='
+          },
+          controller      : cedarFinderController,
+          controllerAs    : 'finder',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-finder.directive.html'
+        };
+
+        return directive;
+
+      }
     }
 );

@@ -12,19 +12,6 @@ define([
 
       function cedarCopyModalDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            copyResource: '=',
-            modalVisible: '='
-          },
-          controller      : cedarCopyModalController,
-          controllerAs    : 'copyto',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-copy-modal.directive.html'
-        };
-
-        return directive;
-
         cedarCopyModalController.$inject = [
           '$scope',
           '$uibModal',
@@ -316,6 +303,20 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            copyResource: '=',
+            modalVisible: '='
+          },
+          controller      : cedarCopyModalController,
+          controllerAs    : 'copyto',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-copy-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );

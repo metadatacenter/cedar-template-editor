@@ -12,19 +12,6 @@ define([
 
       function cedarRenameModalDirective(CedarUser, DataManipulationService) {
 
-        var directive = {
-          bindToController: {
-            renameResource: '=',
-            modalVisible  : '='
-          },
-          controller      : cedarRenameModalController,
-          controllerAs    : 'rename',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-rename-modal.directive.html'
-        };
-
-        return directive;
-
         cedarRenameModalController.$inject = [
           '$scope',
           '$timeout',
@@ -90,6 +77,20 @@ define([
           });
 
         }
+
+        let directive = {
+          bindToController: {
+            renameResource: '=',
+            modalVisible  : '='
+          },
+          controller      : cedarRenameModalController,
+          controllerAs    : 'rename',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-rename-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );

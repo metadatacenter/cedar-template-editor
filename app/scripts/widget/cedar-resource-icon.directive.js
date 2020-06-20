@@ -15,7 +15,7 @@ define([
     var linker = function (scope, element, attrs) {
 
       scope.getResourceIconClass = function () {
-        var result = scope.resourceType + " ";
+        let result = scope.resourceType + " ";
 
         switch (scope.resourceType) {
           case CONST.resourceType.FOLDER:
@@ -39,7 +39,7 @@ define([
       };
 
       scope.getResourceTypeClass = function () {
-        var result = '';
+        let result = '';
 
         switch (scope.resourceType) {
           case CONST.resourceType.FOLDER:
@@ -61,7 +61,12 @@ define([
         }
 
         return result;
-      }
+      };
+
+      scope.getResourceTypeLanguageKey = function () {
+        let result = 'resourceType.' + scope.resourceType;
+        return result;
+      };
 
     };
 
