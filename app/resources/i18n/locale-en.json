@@ -22,8 +22,8 @@
       "checkbox": {
         "NAME": "Checkbox"
       },
-      "date": {
-        "NAME": "Date"
+      "temporal": {
+        "NAME": "DateTime"
       },
       "email": {
         "NAME": "Email"
@@ -190,7 +190,10 @@
     "MadeOpen": "Made Open",
     "MadeNotOpen": "Made Not Open",
     "Categories": "Categories",
-    "Loading": "Loading"
+    "Loading": "Loading",
+    "PublishedVersion": "Published Version",
+    "DraftVersion": "Draft Version",
+    "IsOpen": "OpenView Enabled"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -224,6 +227,13 @@
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
     "repoSubmission": "Submit to repository"
+  },
+  "resourceType": {
+    "folder": "Folder",
+    "template": "Template",
+    "field": "Field",
+    "element": "Element",
+    "metadata": "Metadata"
   },
   "SERVER": {
     "WORKSPACE": {
@@ -532,7 +542,6 @@
   "PLACEHOLDER": {
     "email": "bob@company.com",
     "url": "http://company.com",
-    "date": "10/10/2010",
     "phoneNumber": "123-456-7890"
   },
   "VALIDATION": {
@@ -623,7 +632,12 @@
     "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
-    "enterPrefLabel": "Enter Preferred Label"
+    "enterPrefLabel": "Enter Preferred Label",
+    "selectDateTimeType": "Select DateTime Type",
+    "selectDatePrecisionFormat": "Select Date Precision",
+    "selectTimePrecisionFormat": "Select Time Precision",
+    "selectTimeEnableTimezone": "Allow Timezone Information?",
+    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

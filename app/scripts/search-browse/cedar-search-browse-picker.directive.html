@@ -271,12 +271,14 @@
 
                           <button id="{{dc.getId(resource, 'list')}}"
                               ng-click="dc.toggledCedarDropdownMenu($event, resource,'grid' )"
-                              title="More"
                               class="dropup more-button"
                               data-toggle="dropdown"
                               aria-haspopup="true"
-                              aria-expanded="true">
-                            <i class=" fa fa-ellipsis-v" style="color:#aaa"></i>
+                              aria-expanded="true"
+                              uib-tooltip="{{'GENERIC.More' | translate}}"
+                              tooltip-placement="left"
+                          >
+                            <i class=" fa fa-ellipsis-v"></i>
                           </button>
 
                           <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"
@@ -338,15 +340,20 @@
                         <div class="right-side">
 
                           <button ng-if="dc.isTemplate(resource)"  ng-click="dc.goToResource(resource, 'populate')"><i
-                               class="fa fa-tag" ></i></button>
+                               class="fa fa-tag"
+                               uib-tooltip="{{'DASHBOARD.menu.populate' | translate}}"
+                               tooltip-placement="left"
+                          ></i></button>
                           <button id="{{dc.getId(resource, 'list')}}"
                               ng-click="dc.toggledCedarDropdownMenu($event, resource,'grid' )"
-                              title="More"
                               class="dropup more-button"
                               data-toggle="dropdown"
                               aria-haspopup="true"
-                              aria-expanded="true">
-                            <i class="fa fa-ellipsis-v" ></i>
+                              aria-expanded="true"
+                              uib-tooltip="{{'GENERIC.More' | translate}}"
+                              tooltip-placement="left"
+                           >
+                            <i class="fa fa-ellipsis-v"></i>
                           </button>
 
                           <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"
@@ -385,11 +392,23 @@
 
                       <hr style="margin:0;padding:0"/>
                       <div style="min-height:2em;padding:2px 4px">
-                        <div ng-if="dc.isPublished(resource)">
+                        <div ng-if="dc.isPublished(resource)" style="display:inline"
+                             uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
+                             tooltip-placement="top"
+                        >
                           <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
                         </div>
-                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'">
+                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'" style="display:inline"
+                             uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
+                             tooltip-placement="top"
+                        >
                           {{dc.getResourceVersion(resource)}}
+                        </div>
+                        <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
+                             tooltip-placement="top"
+                        >
+                          <i class="action fa fa-external-link-square"></i>
                         </div>
                       </div>
                     </div>
@@ -456,12 +475,14 @@
                       <button id="{{dc.getId(resource, 'list')}}"
                           style="background-color:transparent;padding-right:15px;"
                           ng-click="dc.toggledCedarDropdownMenu($event, resource,'list' )"
-                          title="More"
                           class="dropup more-button"
                           data-toggle="dropdown"
                           aria-haspopup="true"
-                          aria-expanded="true">
-                        <i class="action fa fa-ellipsis-v" style="color:#aaa;font-size:18px"></i>
+                          aria-expanded="true"
+                          uib-tooltip="{{'GENERIC.More' | translate}}"
+                          tooltip-placement="left"
+                      >
+                        <i class="action fa fa-ellipsis-v" style="font-size:18px"></i>
                       </button>
 
                       <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"
@@ -515,23 +536,44 @@
                       prettyDate }}
                     </div>
                     <div  class="ellipsis" style="width:100px;">
-                      <div ng-if="!dc.isPublished(resource)"><i class="action fa fa-globe"
-                          style="visibility:hidden"></i><span ng-show="dc.getResourceVersion(resource) != '0.0.1'"> {{dc.getResourceVersion(resource)}}</span>
+                      <div ng-if="!dc.isPublished(resource)" style="display: inline"><i class="fa fa-globe"
+                          style="visibility:hidden"></i><span ng-show="dc.getResourceVersion(resource) != '0.0.1'"
+                                uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
+                                tooltip-placement="left"
+                      > {{dc.getResourceVersion(resource)}}</span>
                       </div>
-                      <div ng-if="dc.isPublished(resource)">
-                        <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
+                      <div ng-if="dc.isPublished(resource)" style="display: inline"
+                           uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
+                           tooltip-placement="left"
+                      >
+                        <i class="fa fa-globe" style="color:#aaa;font-size:18px"></i> {{dc.getResourceVersion(resource)}}
                       </div>
+                      <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;color:#aaa"
+                           uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
+                           tooltip-placement="left"
+                      >
+                        <i class="action fa fa-external-link-square" style="font-size:18px"></i>
+                      </div>
+
                     </div>
                     <div class="flex" style="width:80px;justify-content:flex-end;">
 
-                      <button  ng-class="{'invisible': !dc.isTemplate(resource)}"  ng-click="dc.goToResource(resource, 'populate')">
-                        <i class="fa fa-tag" style="background-color:transparent;color:#aaa;font-size:18px"></i></button>
+                      <button ng-class="{'invisible': !dc.isTemplate(resource)}" ng-click="dc.goToResource(resource, 'populate')"
+                              style="background-color:transparent;"
+                      >
+                        <i class="fa fa-tag action" style="font-size:18px"
+                           uib-tooltip="{{'DASHBOARD.menu.populate' | translate}}"
+                           tooltip-placement="left"
+                        ></i></button>
 
-                      <button id="{{dc.getId(resource, 'list')}}" title="More" class="more-button"
+                      <button id="{{dc.getId(resource, 'list')}}" class="more-button"
                           ng-click="dc.toggledCedarDropdownMenu($event, resource,'list')"
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                          style="background-color:transparent;padding:0 15px 0 5px;">
-                        <i class="action fa fa-ellipsis-v" style="color:#aaa;font-size:18px"></i>
+                          style="background-color:transparent;padding:0 15px 0 5px;"
+                          uib-tooltip="{{'GENERIC.More' | translate}}"
+                          tooltip-placement="left"
+                          >
+                        <i class="action fa fa-ellipsis-v" style="font-size:18px"></i>
                       </button>
 
                       <cedar-dropdown-menu id="{{dc.getId(resource, 'menu')}}"

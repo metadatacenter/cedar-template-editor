@@ -1,0 +1,76 @@
+<div ng-init="initializeValue(field); initializeValueType(field);">
+
+  <div ng-if="isActive(index) && hasDateComponent(field)" class="form-group input-group has-success has-feedback">
+    <input
+        ng-init="showHideDateTimeElements(field)"
+        name="dateTimeField"
+        type="string"
+        class="form-control select dateField"
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        uib-datepicker-popup="{{datepickerOptions.format}}"
+        placeholder="{{datepickerOptions.format}}"
+        datepicker-options="datepickerOptions"
+        ng-model="date.dt"
+        ng-change="updateModelFromUI(date.dt, valueArray[index]['@value'],false, 'date', datepickerOptions.storageFormat, field)"
+        is-open="date.opened"
+        ng-required="isRequired()"
+        close-text="Close"
+        alt-input-formats="date.altInputFormats"/>
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <span class="input-group-btn">
+        <button type="button"
+                class="btn btn-default"
+                ng-click="setDateValue(); date.opened = true">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+  </div>
+
+  <div ng-if="isActive(index) && hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
+    <div
+        ng-init="showHideDateTimeElements(field)"
+        name="timeField"
+        uib-timepicker
+        ng-model="time.dt"
+        ng-change="updateModelFromUI(time.dt, valueArray[index]['@value'],false, 'time', timepickerOptions.storageFormat, field)"
+        hour-step="1"
+        minute-step="1"
+        second-step="1"
+        mousewheel="false"
+        show-meridian="timepickerOptions.displayAmPm"
+        show-seconds="timepickerOptions.showSeconds"
+        template-url="scripts/form/partials/cedar-timepicker.html"
+    ></div>
+
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <div ng-if="isActive(index) && isTemporalDateTime(field)">
+    <pre class="alert alert-info">DateTime is  : {{datetime | date:timepickerOptions.renderingFormat }}
+Stored as    : {{datetime | date:timepickerOptions.storageFormat }}</pre>
+  </div>
+
+  <div ng-if="isActive(index) && isTemporalDate(field)">
+    <pre class="alert alert-info">Date is  : {{date.dt | date:datepickerOptions.renderingFormat }}
+Stored as: {{date.dt | date:datepickerOptions.storageFormat }}</pre>
+  </div>
+
+  <div ng-if="isActive(index) && isTemporalTime(field)">
+    <pre class="alert alert-info">Time is: {{time.dt | date:timepickerOptions.renderingFormat }}
+Stored as: {{time.dt | date:timepickerOptions.storageFormat }}</pre>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <div class="validation" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['required']">{{ 'VALIDATION.requiredDateTime' | translate }}</div>
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['date']">{{ 'VALIDATION.invalidDateTime' | translate }}</div>
+    </div>
+  </div>
+
+  <!--- not active --->
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
+    <div aria-label="{{getHelp(field)}}" class="isInactive ">{{dateFormat(field, valueArray[index]['@value'], datepickerOptions.renderingFormat, timepickerOptions.renderingFormat)}}</div>
+  </div>
+
+</div>
+

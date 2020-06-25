@@ -138,6 +138,96 @@
             with-floating-label>
       </div>
     </div>
+
+    <div ng-if="isTemporalField()">
+
+      <!-- subtype  -->
+      <div ng-init="setDateTimeTypeFromModel()" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setDateTimeTypeFromUI($select.selected)"
+            ng-model="selectedDateTimeType"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDateTimeType' | translate}}">{{selectedDateTimeType.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in dateTimeTypes">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- date precision  -->
+      <div ng-init="setDatePrecisionFormatFromModel()" class="form-group" ng-if="hasDateComponent()">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setDatePrecisionFormatFromUI($select.selected)"
+            ng-model="selectedDatePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDatePrecisionFormat' | translate}}">{{selectedDatePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in datePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- time precision  -->
+      <div ng-init="setTimePrecisionFormatFromModel()" class="form-group" ng-if="hasTimeComponent()">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimePrecisionFormatFromUI($select.selected)"
+            ng-model="selectedTimePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimePrecisionFormat' | translate}}">{{selectedTimePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in timePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- enable timezone  -->
+      <div ng-init="setTimeEnableTimezoneFromModel()" class="form-group" ng-if="hasTimeComponent()">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimeEnableTimezoneFromUI($select.selected)"
+            ng-model="selectedTimeEnableTimezone"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableTimezone' | translate}}">{{selectedTimeEnableTimezone.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in timeEnableTimezoneOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- enable am/pm (or 24h)-->
+      <div ng-init="setTimeEnableAmPmFromModel()" class="form-group" ng-if="hasTimeComponent()">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="setTimeEnableAmPmFromUI($select.selected)"
+            ng-model="selectedTimeEnableAmPm"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableAmPm' | translate}}">{{selectedTimeEnableAmPm.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in timeEnableAmPmOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- Required tab  -->

@@ -8,21 +8,21 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
-                            "SpreadsheetService", "CONST",
-                            "DataManipulationService","schemaService", "FieldTypeService", "controlledTermDataService",
-                            "StringUtilsService", "UIUtilService", "ValidationService"];
+    "SpreadsheetService", "CONST",
+    "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
+    "StringUtilsService", "UIUtilService", "ValidationService"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService, schemaService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService, ValidationService) {
 
 
-    var linker = function ($scope, $element, attrs) {
+    let linker = function ($scope, $element, attrs) {
 
       $scope.termsModalVisible = false;
-      $scope.errorMessages;
-      var tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
-      $scope.activeTab;
+      $scope.errorMessages = null;
+      const tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
+      $scope.activeTab = null;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
       $scope.isFirstRefresh = true;
@@ -34,10 +34,39 @@ define([
         {id: "xsd:long", label: "Long integer numbers"},
         {id: "xsd:int", label: "Integer numbers"},
         {id: "xsd:double", label: "Double-precision real numbers"},
-        {id: "xsd:float", label: "Single-precision real numbers"},
+        {id: "xsd:float", label: "Single-precision real numbers"}
       ];
 
-      var dms = DataManipulationService;
+      $scope.dateTimeTypes = [
+        {id: "xsd:dateTime", label: "DateTime"},
+        {id: "xsd:date", label: "Date"},
+        {id: "xsd:time", label: "Time"}
+      ];
+
+      $scope.datePrecisionFormats = [
+        {id: "Day", label: "Day (YYYY-MM-DD)"},
+        {id: "Month", label: "Month (YYYY-MM)"},
+        {id: "Year", label: "Year (YYYY)"}
+      ];
+
+      $scope.timePrecisionFormats = [
+        {id: "Second", label: "Second (hh:mm:ss)"},
+        {id: "DecimalSecond", label: "DecimalSecond (hh:mm:ss.sss...s)"},
+        {id: "Minute", label: "Minute (hh:mm)"},
+        {id: "Hour", label: "Hour (hh)"}
+      ];
+
+      $scope.timeEnableTimezoneOptions = [
+        {id: true, label: "Allow Timezone Information"},
+        {id: false, label: "Do not allow Timezone Information"}
+      ];
+
+      $scope.timeEnableAmPmOptions = [
+        {id: true, label: "Use AM/PM Input"},
+        {id: false, label: "Use 24H Input"}
+      ];
+
+      let dms = DataManipulationService;
 
 
       //
@@ -116,8 +145,6 @@ define([
       };
 
 
-
-
       $scope.isSelectable = function () {
         return !$scope.isNested();
       };
@@ -127,16 +154,9 @@ define([
       };
 
 
-
       $scope.isRootNode = function () {
         return dms.isRootNode($scope.parentElement, $scope.field);
       };
-
-
-
-
-
-
 
 
       $scope.isRoot = function () {
@@ -160,7 +180,6 @@ define([
       };
 
 
-
       // is this multiple cardinality?
       $scope.isMultiple = function () {
         return schemaService.isCardinalElement($scope.field);
@@ -177,7 +196,7 @@ define([
       };
 
       $scope.getCount = function () {
-        var min = schemaService.getMinItems($scope.field) || 0;
+        const min = schemaService.getMinItems($scope.field) || 0;
         return new Array(Math.max(1, min));
       };
 
@@ -200,7 +219,7 @@ define([
 
       $scope.setRequired = function (value) {
         schemaService.setRequired($scope.field, value);
-        if (value && $scope.isMultiple() && schemaService.getMinItems($scope.field) == 0) {
+        if (value && $scope.isMultiple() && schemaService.getMinItems($scope.field) === 0) {
           $scope.field.minItems = 1;
         }
       };
@@ -210,14 +229,13 @@ define([
       };
 
 
-
       $scope.getPropertyDescription = function () {
-        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        const descriptions = dms.getPropertyDescriptions($scope.parentElement);
         return descriptions ? descriptions[$scope.fieldKey] : false;
       };
 
       $scope.hasPropertyDescription = function () {
-        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        const descriptions = dms.getPropertyDescriptions($scope.parentElement);
         return descriptions && descriptions[$scope.fieldKey] && descriptions[$scope.fieldKey].length > 0;
       };
 
@@ -269,20 +287,32 @@ define([
         return schemaService.isTextFieldType($scope.field);
       };
 
+      $scope.isTemporalField = function () {
+        return schemaService.isTemporalType($scope.field);
+      };
+
+      $scope.hasTimeComponent = function () {
+        return schemaService.hasTimeComponent($scope.field);
+      };
+
+      $scope.hasDateComponent = function () {
+        return schemaService.hasDateComponent($scope.field);
+      };
+
       $scope.hasOptions = function () {
-        return $scope.isNumericField() || $scope.isTextField();
+        return $scope.isNumericField() || $scope.isTextField() || $scope.isTemporalField();
       };
 
       $scope.canViewTerms = function () {
-        var allowed = $scope.allowsControlledTerms();
-        var noVersion = !$scope.hasVersion();
-        var versionAndTermsOrRoot = $scope.hasVersion() && ($scope.hasValueConstraint() || $scope.isRootNode());
+        const allowed = $scope.allowsControlledTerms();
+        const noVersion = !$scope.hasVersion();
+        const versionAndTermsOrRoot = $scope.hasVersion() && ($scope.hasValueConstraint() || $scope.isRootNode());
         return allowed && (noVersion || versionAndTermsOrRoot);
       };
 
       $scope.canAddTerms = function () {
-        var noVersion = !$scope.hasVersion();
-        var draftAndRoot = $scope.isDraft() && $scope.isRootNode();
+        const noVersion = !$scope.hasVersion();
+        const draftAndRoot = $scope.isDraft() && $scope.isRootNode();
         return noVersion || draftAndRoot;
       };
 
@@ -335,7 +365,7 @@ define([
 
       // try to select this field
       $scope.canSelect = function (select) {
-        var result = select;
+        let result = select;
         if (select) {
           result = UIUtilService.canSelect($scope.field);
         }
@@ -358,32 +388,32 @@ define([
 
       // does this field allow multiple cardinality?
       $scope.allowsRequired = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == schemaService.getInputType($scope.field);
+        const result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType === schemaService.getInputType($scope.field);
         });
         return result.length > 0 && result[0].allowsRequired && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does this field allow multiple cardinality?
       $scope.allowsMultiple = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == schemaService.getInputType($scope.field);
+        const result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType === schemaService.getInputType($scope.field);
         });
         return result.length > 0 && result[0].allowsMultiple && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
       // does the field support value recommendation?
       $scope.allowsValueRecommendation = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == schemaService.getInputType($scope.field);
+        const result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType === schemaService.getInputType($scope.field);
         });
         return result.length > 0 && result[0].allowsValueRecommendation;
       };
 
       // does the field support using controlled terms
       $scope.allowsControlledTerms = function () {
-        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType == schemaService.getInputType($scope.field);
+        const result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType === schemaService.getInputType($scope.field);
         });
         return result.length > 0 && result[0].hasControlledTerms;
       };
@@ -432,7 +462,7 @@ define([
       };
 
       $scope.addMoreInput = function () {
-        var maxItems = schemaService.getMaxItems($scope.field);
+        const maxItems = schemaService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
           $scope.model.push({'@value': null});
           $scope.setDirty();
@@ -440,7 +470,7 @@ define([
       };
 
       $scope.removeInput = function (index) {
-        var minItems = schemaService.getMinItems($scope.field) || 0;
+        const minItems = schemaService.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
           $scope.model.splice(index, 1);
           $scope.setDirty();
@@ -466,9 +496,6 @@ define([
       };
 
 
-
-
-
       //
       // watchers
       //
@@ -476,12 +503,12 @@ define([
       // watch for this field's deselect
       $scope.$on('deselect', function (event, args) {
 
-        var field = args[0];
-        var errors = args[1];
+        let field = args[0];
+        let errors = args[1];
 
-        if (field == $scope.field) {
+        if (field === $scope.field) {
           $scope.errorMessages = errors;
-          if ($scope.errorMessages.length == 0) parseField();
+          if ($scope.errorMessages.length === 0) parseField();
         }
       });
 
@@ -489,7 +516,7 @@ define([
       $scope.$watch("field", function (newField, oldField) {
 
         // set the schema title for the field with autogenerated values
-        if (dms.getTitle(newField) != dms.getTitle(oldField)) {
+        if (dms.getTitle(newField) !== dms.getTitle(oldField)) {
           schemaService.setFieldSchemaTitleAndDescription(newField, dms.getTitle(newField));
         }
 
@@ -540,7 +567,7 @@ define([
         //   $scope.relabelField($scope.getTitle());
         // }
 
-        var action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
+        const action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
         $scope.$emit("invalidFieldState",
             [action, dms.getTitle($scope.field), dms.getId($scope.field)]);
       });
@@ -549,10 +576,10 @@ define([
       // initialization
       //
 
-      var setDirectory = function () {
-        var schema = dms.schemaOf($scope.field);
-        var state = schema._tmp && schema._tmp.state || "completed";
-        if ((state == "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
+      const setDirectory = function () {
+        const schema = dms.schemaOf($scope.field);
+        const state = schema._tmp && schema._tmp.state || "completed";
+        if ((state === "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
@@ -569,19 +596,20 @@ define([
 
       // Load values when opening an instance
       if ($scope.model) {
-        var fieldValue = dms.getValueLocation($scope.field);
+        const fieldValue = dms.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
-      var parseField = function () {
+      const parseField = function () {
+        console.log("**ParseField")
         if ($scope.field) {
-          var min = schemaService.getMinItems($scope.field) || 0;
+          const min = schemaService.getMinItems($scope.field) || 0;
           if (!schemaService.isCardinalElement($scope.field)) {
             $scope.model = {};
           } else {
             $scope.model = [];
-            for (var i = 0; i < min; i++) {
-              var obj = {};
+            for (let i = 0; i < min; i++) {
+              const obj = {};
               $scope.model.push(obj);
             }
           }
@@ -591,17 +619,17 @@ define([
 
       // If selectedByDefault is false, it is removed from the model
       $scope.cleanSelectedByDefault = function (index) {
-        var literals = dms.getLiterals($scope.field);
-        if (literals[index].selectedByDefault == false) {
+        const literals = dms.getLiterals($scope.field);
+        if (literals[index].selectedByDefault === false) {
           delete literals[index].selectedByDefault;
         }
-      }
+      };
 
       // Sets the default options for the 'radio' button based on the options selected at the UI
       $scope.radioModelToDefaultOptions = function (index) {
-        var literals = dms.getLiterals($scope.field);
-        for (var i = 0; i < literals.length; i++) {
-          if (i != index) {
+        const literals = dms.getLiterals($scope.field);
+        for (let i = 0; i < literals.length; i++) {
+          if (i !== index) {
             delete literals[i].selectedByDefault;
           }
         }
@@ -610,34 +638,31 @@ define([
       // Sets UI selections based on the default options
       $scope.defaultOptionsToUI = function () {
         if (schemaService.isMultiAnswer($scope.field)) {
-          var literals = dms.getLiterals($scope.field);
+          const literals = dms.getLiterals($scope.field);
           if (schemaService.isCheckboxType($scope.field)) {
             $scope.optionsUI = {};
-            for (var i = 0; i < literals.length; i++) {
-              var literal = literals[i];
-              if (literal.selectedByDefault == true) {
+            for (let i = 0; i < literals.length; i++) {
+              let literal = literals[i];
+              if (literal.selectedByDefault === true) {
                 $scope.optionsUI[literal.label] = true;
-              }
-              else {
+              } else {
                 $scope.optionsUI[literal.label] = false;
               }
             }
-          }
-          else if (schemaService.isRadioType($scope.field)) {
+          } else if (schemaService.isRadioType($scope.field)) {
             $scope.optionsUI = {option: null};
-            for (var i = 0; i < literals.length; i++) {
-              var literal = literals[i];
-              if (literal.selectedByDefault == true) {
+            for (let i = 0; i < literals.length; i++) {
+              let literal = literals[i];
+              if (literal.selectedByDefault === true) {
                 $scope.optionsUI.option = literal.label;
               }
             }
-          }
-          else if (schemaService.isListType($scope.field)) {
+          } else if (schemaService.isListType($scope.field)) {
             // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
             $scope.optionsUI = {options: []};
-            for (var i = 0; i < literals.length; i++) {
-              var literal = literals[i];
-              if (literal.selectedByDefault == true) {
+            for (let i = 0; i < literals.length; i++) {
+              let literal = literals[i];
+              if (literal.selectedByDefault === true) {
                 $scope.optionsUI.options.push(literal.label);
               }
             }
@@ -647,21 +672,21 @@ define([
 
       // Sets the number type based on the item stored at the model
       $scope.setNumberTypeFromModel = function () {
-        var schema = dms.schemaOf($scope.field);
+        let schema = dms.schemaOf($scope.field);
         if (schema._valueConstraints) {
-          var typeId = schema._valueConstraints.numberType;
+          let typeId = schema._valueConstraints.numberType;
           if (!typeId) {
             typeId = "xsd:decimal";
             schema._valueConstraints.numberType = typeId;
           }
-          var getNumericLabel = function (id) {
-            for (var i = 0; i < $scope.numberTypes.length; i++) {
-              var type = $scope.numberTypes[i];
-              if (type.id == id) {
+          const getNumericLabel = function (id) {
+            for (let i = 0; i < $scope.numberTypes.length; i++) {
+              const type = $scope.numberTypes[i];
+              if (type.id === id) {
                 return type.label;
               }
             }
-          }
+          };
           $scope.selectedNumberType = {
             id   : typeId,
             label: getNumericLabel(typeId)
@@ -674,39 +699,181 @@ define([
         dms.schemaOf($scope.field)._valueConstraints.numberType = item.id;
       };
 
+      // Sets the dateTime type based on the item stored at the model
+      $scope.setDateTimeTypeFromModel = function () {
+        let schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints) {
+          let typeId = schema._valueConstraints.temporalType;
+          if (!typeId) {
+            typeId = "xsd:dateTime";
+            schema._valueConstraints.temporalType = typeId;
+          }
+          const getDateTimeLabel = function (id) {
+            for (let i = 0; i < $scope.dateTimeTypes.length; i++) {
+              const type = $scope.dateTimeTypes[i];
+              if (type.id === id) {
+                return type.label;
+              }
+            }
+          };
+          $scope.selectedDateTimeType = {
+            id   : typeId,
+            label: getDateTimeLabel(typeId)
+          }
+        }
+      };
+
+      // Sets the date precision format based on the item stored at the model
+      $scope.setDatePrecisionFormatFromModel = function () {
+        let schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints) {
+          let typeId = schema._valueConstraints.xsdDateFinestGranularity;
+          if (!typeId) {
+            typeId = "Day";
+            schema._valueConstraints.xsdDateFinestGranularity = typeId;
+          }
+          const getDatePrecisionFormatLabel = function (id) {
+            for (let i = 0; i < $scope.datePrecisionFormats.length; i++) {
+              const type = $scope.datePrecisionFormats[i];
+              if (type.id === id) {
+                return type.label;
+              }
+            }
+          };
+          $scope.selectedDatePrecisionFormat = {
+            id   : typeId,
+            label: getDatePrecisionFormatLabel(typeId)
+          }
+        }
+      };
+
+      // Sets the time precision format based on the item stored at the model
+      $scope.setTimePrecisionFormatFromModel = function () {
+        let schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints) {
+          let typeId = schema._valueConstraints.xsdTimeFinestGranularity;
+          if (!typeId) {
+            typeId = "Second";
+            schema._valueConstraints.xsdTimeFinestGranularity = typeId;
+          }
+          const getTimePrecisionFormatLabel = function (id) {
+            for (let i = 0; i < $scope.timePrecisionFormats.length; i++) {
+              const type = $scope.timePrecisionFormats[i];
+              if (type.id === id) {
+                return type.label;
+              }
+            }
+          };
+          $scope.selectedTimePrecisionFormat = {
+            id   : typeId,
+            label: getTimePrecisionFormatLabel(typeId)
+          }
+        }
+      };
+
+      // Sets the timezone enable based on the item stored at the model
+      $scope.setTimeEnableTimezoneFromModel = function () {
+        let schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints) {
+          let typeId = schema._valueConstraints.xsdTimeZoneEnable;
+          if (typeof typeId === "undefined") {
+            typeId = true;
+            schema._valueConstraints.xsdTimeZoneEnable = typeId;
+          }
+          const getTimeEnableTimezoneLabel = function (id) {
+            for (let i = 0; i < $scope.timeEnableTimezoneOptions.length; i++) {
+              const type = $scope.timeEnableTimezoneOptions[i];
+              if (type.id === id) {
+                return type.label;
+              }
+            }
+          };
+          $scope.selectedTimeEnableTimezone = {
+            id   : typeId,
+            label: getTimeEnableTimezoneLabel(typeId)
+          }
+        }
+      };
+
+      // Sets the ampm enable based on the item stored at the model
+      $scope.setTimeEnableAmPmFromModel = function () {
+        let schema = dms.schemaOf($scope.field);
+        if (schema._valueConstraints) {
+          let typeId = schema._ui.inputTimeDisplayAmPm;
+          if (typeof typeId === "undefined") {
+            typeId = true;
+            schema._ui.inputTimeDisplayAmPm = typeId;
+          }
+          const getTimeEnableAmPmLabel = function (id) {
+            for (let i = 0; i < $scope.timeEnableAmPmOptions.length; i++) {
+              const type = $scope.timeEnableAmPmOptions[i];
+              if (type.id === id) {
+                return type.label;
+              }
+            }
+          };
+          $scope.selectedTimeEnableAmPm = {
+            id   : typeId,
+            label: getTimeEnableAmPmLabel(typeId)
+          }
+        }
+      };
+
+      // Sets the dateTime type based on the item selected at the UI
+      $scope.setDateTimeTypeFromUI = function (item) {
+        dms.schemaOf($scope.field)._valueConstraints.temporalType = item.id;
+      };
+
+      // Sets the date precision format based on the item selected at the UI
+      $scope.setDatePrecisionFormatFromUI = function (item) {
+        dms.schemaOf($scope.field)._valueConstraints.xsdDateFinestGranularity = item.id;
+      };
+
+      // Sets the time precision format based on the item selected at the UI
+      $scope.setTimePrecisionFormatFromUI = function (item) {
+        dms.schemaOf($scope.field)._valueConstraints.xsdTimeFinestGranularity = item.id;
+      };
+
+      // Sets the time enable microseconds based on the item selected at the UI
+      $scope.setTimeEnableTimezoneFromUI = function (item) {
+        dms.schemaOf($scope.field)._valueConstraints.xsdTimeZoneEnable = item.id;
+      };
+
+      // Sets the time enable microseconds based on the item selected at the UI
+      $scope.setTimeEnableAmPmFromUI = function (item) {
+        dms.schemaOf($scope.field)._ui.inputTimeDisplayAmPm = item.id;
+      };
+
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
 
 
         if (!$scope.model || !angular.isArray($scope.model)) {
           $scope.model = [];
-        }
-        else {
+        } else {
           // Remove all elements from the 'model' array. Note that using $scope.model = []
           // is dangerous because we have references to the original array
           $scope.model.splice(0, $scope.model.length);
         }
         if (schemaService.isCheckboxType($scope.field)) {
-          for (var option in $scope.optionsUI) {
-            if ($scope.optionsUI[option] == true) {
+          for (const option in $scope.optionsUI) {
+            if ($scope.optionsUI[option] === true) {
               $scope.model.push({'@value': option});
             }
           }
-        }
-        else if (schemaService.isRadioType($scope.field)) {
+        } else if (schemaService.isRadioType($scope.field)) {
           // If 'updateModelFromUI' was invoked from the UI (option is not null)
           if ($scope.optionsUI.option != null) {
             $scope.model.push({'@value': $scope.optionsUI.option});
           }
-        }
-        else if (schemaService.isListType($scope.field)) {
+        } else if (schemaService.isListType($scope.field)) {
           // Update model
-          for (var i = 0; i < $scope.optionsUI.options.length; i++) {
+          for (let i = 0; i < $scope.optionsUI.options.length; i++) {
             $scope.model.push({'@value': $scope.optionsUI.options[i]});
           }
         }
         // Default value
-        if ($scope.model.length == 0) {
+        if ($scope.model.length === 0) {
           $scope.model.push({'@value': null});
         }
       };
@@ -724,8 +891,7 @@ define([
                 };
               }
             });
-          }
-          else {
+          } else {
             // Default value
             $scope.model = [{'@value': null}];
           }
@@ -744,24 +910,22 @@ define([
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
         var inputType = schemaService.getInputType($scope.field);
-        if (inputType == 'checkbox') {
+        if (inputType === 'checkbox') {
           $scope.optionsUI = {};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
+          for (const item in $scope.model) {
+            const valueLabel = $scope.model[item]['@value'];
             $scope.optionsUI[valueLabel] = true;
           }
-        }
-        else if (inputType == 'radio') {
+        } else if (inputType === 'radio') {
           $scope.optionsUI = {option: null};
           // Note that for this element only one selected option is possible
           if ($scope.model[0]['@value'] != null) {
             $scope.optionsUI.option = $scope.model[0]['@value'];
           }
-        }
-        else if (inputType == 'list') {
+        } else if (inputType === 'list') {
           $scope.optionsUI = {options: []};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
+          for (const item in $scope.model) {
+            const valueLabel = $scope.model[item]['@value'];
             $scope.optionsUI.options.push(valueLabel);
           }
         }
@@ -777,8 +941,7 @@ define([
               label: m['rdfs:label']
             };
           });
-        }
-        else {
+        } else {
           $scope.modelValue = {};
           $scope.modelValue['@value'] = {
             '@id': $scope.model['@value'],
@@ -789,11 +952,11 @@ define([
 
       // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function () {
-        var inputType = schemaService.getInputType($scope.field);
+        const inputType = schemaService.getInputType($scope.field);
         if (schemaService.isMultiAnswer($scope.field)) {
           // If we are populating a template, we need to initialize the model with the default values (if they exist)
           // Note that $scope.isEditData = false means that we are populating the template
-          if ($scope.isEditData == null || $scope.isEditData == false) {
+          if ($scope.isEditData === null || $scope.isEditData === false) {
             $scope.defaultOptionsToUI();
             $scope.updateModelFromUI();
           }
@@ -832,19 +995,17 @@ define([
       $scope.initializeControlledField = function () {
         // If modelValue has not been initialized
         if (!$scope.modelValue) {
-          var isMultiple = false;
+          let isMultiple = false;
           if ($scope.field.items) {
             isMultiple = true;
           }
-          if ($scope.directory == "render") {
-            if ($rootScope.schemaOf($scope.field)._ui.inputType == "textfield" &&
-                $scope.hasValueConstraint()) {
+          if ($scope.directory === "render") {
+            if ($rootScope.schemaOf($scope.field)._ui.inputType === "textfield" && $scope.hasValueConstraint()) {
               // We are populating the template
-              if ($scope.isEditData == null || $scope.isEditData == false) {
+              if ($scope.isEditData == null || $scope.isEditData === false) {
                 if (isMultiple) {
                   $scope.modelValue = []
-                }
-                else {
+                } else {
                   $scope.modelValue = {};
                 }
               }
@@ -884,7 +1045,7 @@ define([
       // };
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = dms.getValueLocation($scope.field);
+        const fieldValue = dms.getValueLocation($scope.field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['rdfs:label']) {
@@ -892,8 +1053,7 @@ define([
               'value'   : $scope.model['rdfs:label'],
               'valueUri': $scope.model[fieldValue]
             };
-          }
-          else {
+          } else {
             $scope.modelValueRecommendation.valueInfo = {
               'value': $scope.model[fieldValue]
             };
@@ -902,12 +1062,12 @@ define([
       };
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
-        var fieldValue = dms.getValueLocation($scope.field);
+        const fieldValue = dms.getValueLocation($scope.field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if (angular.isArray($scope.model)) {
           angular.forEach(modelvr, function (m, i) {
-            if (m && m.valueInfo & m.valueInfo.value) {
+            if (m && m.valueInfo && m.valueInfo.value) {
               $scope.model[i][fieldValue] = m.valueInfo.value;
               if (m.valueInfo.valueUri) {
                 $scope.model[i]['rdfs:label'] = m.valueInfo.valueUri;
@@ -920,8 +1080,7 @@ define([
           if (modelvr.valueInfo.valueUri) {
             $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
             $scope.model['rdfs:label'] = modelvr.valueInfo.value;
-          }
-          else {
+          } else {
             $scope.model[fieldValue] = modelvr.valueInfo.value;
             delete $scope.model['rdfs:label'];
           }
@@ -933,7 +1092,7 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
-        var fieldValue = dms.getValueLocation($scope.field);
+        const fieldValue = dms.getValueLocation($scope.field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -941,12 +1100,11 @@ define([
               // TODO
             } else {
               // If the user entered a new value
-              if (select.search != modelvr.valueInfo.value) {
-                var modelValue;
-                if (select.search == "" || select.search == undefined) {
+              if (select.search !== modelvr.valueInfo.value) {
+                let modelValue;
+                if (select.search === "" || select.search === undefined) {
                   modelValue = null;
-                }
-                else {
+                } else {
                   modelValue = select.search;
                 }
                 $scope.model[fieldValue] = modelValue;
@@ -963,7 +1121,7 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
-        var fieldValue = dms.getValueLocation($scope.field);
+        const fieldValue = dms.getValueLocation($scope.field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
           valueInfo: {'value': null, 'valueUri': null},
@@ -975,20 +1133,18 @@ define([
       };
 
       $scope.calculateUIScore = function (score) {
-        var s = Math.floor(score * 100);
+        const s = Math.floor(score * 100);
         if (s < 1) {
           return "<1%";
-        }
-        else {
+        } else {
           return s.toString() + "%";
         }
       };
 
       $scope.getRecommendationType = function (type) {
-        if (type == 'CONTEXT_INDEPENDENT') {
+        if (type === 'CONTEXT_INDEPENDENT') {
           return '*';
-        }
-        else {
+        } else {
           return '';
         }
       };
@@ -1008,15 +1164,15 @@ define([
       // build a map with the added field controlled term id as the key and the details for that class as the value
       $scope.setAddedFieldMap = function () {
 
-        var fields = dms.getFieldControlledTerms($scope.field);
+        let fields = dms.getFieldControlledTerms($scope.field);
         if (fields) {
 
           // create a new map to avoid any duplicates coming from the modal
-          var myMap = new Map();
+          let myMap = new Map();
 
           // move the keys into the new map
-          for (var i = 0; i < fields.length; i++) {
-            var key = fields[i];
+          for (let i = 0; i < fields.length; i++) {
+            const key = fields[i];
             if (myMap.has(key)) {
 
               // here is a duplicate, so delete it
@@ -1037,7 +1193,7 @@ define([
 
           // get any missing responses
           myMap.forEach(function (value, key) {
-            if (myMap.get(key) == "") {
+            if (myMap.get(key) === "") {
               setResponse(key, dms.parseOntologyName(key),
                   dms.parseClassLabel(key));
             }
@@ -1053,8 +1209,7 @@ define([
           // hang on to the new map
           $scope.addedFields = myMap;
 
-        }
-        else {
+        } else {
           // If there are no controlled terms for the field type defined in the model, the map will be empty
           $scope.addedFields = new Map();
           $scope.addedFieldKeys = [];
@@ -1062,7 +1217,7 @@ define([
       };
 
       // get the class details from the server
-      var setResponse = function (item, ontologyName, className) {
+      const setResponse = function (item, ontologyName, className) {
 
         // Get selected class details from the links.self endpoint provided.
         controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
@@ -1072,7 +1227,7 @@ define([
 
       // get the ontology name from the addedFields map
       $scope.getOntologyName = function (item) {
-        var result = "";
+        let result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
           result = $scope.addedFields.get(item).ontology;
         }
@@ -1081,7 +1236,7 @@ define([
 
       // get the class description from the addedFields map
       $scope.getPrefLabel = function (item) {
-        var result = "";
+        let result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
           result = $scope.addedFields.get(item).prefLabel;
         }
@@ -1090,7 +1245,7 @@ define([
 
       // get the class description from the the addedFields map
       $scope.getClassDescription = function (item) {
-        var result = "";
+        let result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
           if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
             result = $scope.addedFields.get(item).definitions[0];
@@ -1100,7 +1255,7 @@ define([
       };
 
       $scope.getClassId = function (item) {
-        var result = "";
+        let result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
           if ($scope.addedFields.get(item).id) {
             result = $scope.addedFields.get(item).id;
@@ -1138,12 +1293,12 @@ define([
         dms.deleteFieldAddedValueSet(valueSet, $scope.field);
       };
 
-      $scope.getOntologyCode = function (ontology) {
-        var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
-      };
+      // $scope.getOntologyCode = function (ontology) {
+      //   const ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
+      // };
 
       $scope.getPropertyLabel = function () {
-        var labels = dms.getPropertyLabels($scope.parentElement);
+        const labels = dms.getPropertyLabels($scope.parentElement);
         return (labels && labels[$scope.fieldKey]) ? labels[$scope.fieldKey] : '';
       };
 
@@ -1160,7 +1315,7 @@ define([
       };
 
       $scope.getPropertyDescription = function () {
-        var descriptions = dms.getPropertyDescriptions($scope.parentElement);
+        const descriptions = dms.getPropertyDescriptions($scope.parentElement);
         return descriptions && descriptions[$scope.fieldKey];
       };
 
@@ -1178,22 +1333,45 @@ define([
       };
 
 
-
       // show the controlled terms modal
       $scope.showModalReadOnly = function (type, searchScope, termType, term) {
-        var q = term.prefLabel || term.name;
-        if (searchScope == 'value-sets') {
+        let q = term.prefLabel || term.name;
+        if (searchScope === 'value-sets') {
           q = term.uri.substr(term.uri.lastIndexOf('/') + 1);
         }
-        var source = term.acronym || term.source;
-        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), 'q': q, 'source': source,'termType': termType, 'term': term, "advanced": true, "permission": ["read"]};
+        const source = term.acronym || term.source;
+        const options = {
+          "filterSelection": type,
+          "searchScope"    : searchScope,
+          "modalId"        : "controlled-term-modal",
+          "model"          : $scope.field,
+          "id"             : $scope.getId(),
+          'q'              : q,
+          'source'         : source,
+          'termType'       : termType,
+          'term'           : term,
+          "advanced"       : true,
+          "permission"     : ["read"]
+        };
         UIUtilService.showModal(options);
       };
 
 
       // show the controlled terms modal
       $scope.showModal = function (type, searchScope) {
-        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.field, "id":$scope.getId(), "q": $scope.getLabel(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+        const options = {
+          "filterSelection": type,
+          "searchScope"    : searchScope,
+          "modalId"        : "controlled-term-modal",
+          "model"          : $scope.field,
+          "id"             : $scope.getId(),
+          "q"              : $scope.getLabel(),
+          'source'         : null,
+          'termType'       : null,
+          'term'           : null,
+          "advanced"       : false,
+          "permission"     : ["read", "write"]
+        };
         UIUtilService.showModal(options);
       };
 
@@ -1204,7 +1382,7 @@ define([
 
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function (event, args) {
-        if ($scope.getId() == args[1]) {
+        if ($scope.getId() === args[1]) {
           UIUtilService.hideModal(args);
           UIUtilService.setDirty(true);
           $scope.setAddedFieldMap();
@@ -1212,22 +1390,21 @@ define([
       });
 
 
-
       // update the property for a field with controlled terms modal selection
       $scope.$on("property:propertyAdded", function (event, args) {
-        if ($scope.getId() == args[1]) {
+        if ($scope.getId() === args[1]) {
           UIUtilService.hideModal();
-          var id = args[1];
-          var propertyId = args[0];
-          var propertyLabel = args[2];
-          var propertyDescription = args[3];
+          const id = args[1];
+          const propertyId = args[0];
+          const propertyLabel = args[2];
+          const propertyDescription = args[3];
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, $scope.parentElement);
         }
       });
 
 
       // open the terms modal
-      $scope.showTermsModal = function() {
+      $scope.showTermsModal = function () {
         $scope.termsModalVisible = true;
         $rootScope.$broadcast('termsModalVisible', [$scope.termsModalVisible, $scope.field]);
       };
@@ -1241,7 +1418,7 @@ define([
 
       $scope.$watch('fieldSchema["skos:prefLabel"]', function (prefLabel) {
         if (prefLabel == '') {
-          dms.removePreferredLabel($scope.field) ;
+          dms.removePreferredLabel($scope.field);
         }
       });
 
@@ -1282,7 +1459,7 @@ define([
         nested        : '='
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
+        const addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded
           setTimeout(function () {
             if ($element.find('#field-value-tooltip').length > 0) {

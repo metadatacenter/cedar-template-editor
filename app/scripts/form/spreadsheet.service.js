@@ -222,9 +222,15 @@ define([
                   value[key] = true;
                 }
                 sds.tableDataSource[row][col]['@value'] = value;
-              } else if (cedarType === 'date') {
+              // } else if (cedarType === 'date') {
+              //   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              //   sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField($element);
+              } else if (cedarType === 'temporal') {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateField($element);
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForDateTimeField($element);
+              // } else if (cedarType === 'time') {
+              //   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              //   sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForTimeField($element);
               } else if (cedarType === 'numeric') {
                 if (sds.tableData[row][col]) {
                   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();

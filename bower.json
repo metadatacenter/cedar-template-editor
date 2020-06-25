@@ -18,7 +18,7 @@
     "angulartics-google-analytics": "0.1.4",
     "bootstrap": "3.3.6",
     "bootstrap-less": "3.3.4",
-    "fontawesome": "^5.0.10",
+    "fontawesome": "4.7.0",
     "jquery": "1.9.1",
     "moment": "2.10.6",
     "ng-ckeditor": "0.2.1",

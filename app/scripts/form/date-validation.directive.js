@@ -7,16 +7,14 @@ define([
 
       .directive('dateValidation', dateValidation);
 
-  dateValidation.$inject = ["$rootScope",  "$document", "$translate", "$filter", "$location",
-                        "$window", '$timeout'];
+  dateValidation.$inject = ["$rootScope", "$document", "$translate", "$filter", "$location", "$window", '$timeout'];
 
-  function dateValidation($rootScope,  $document, $translate, $filter, $location, $window,
-                      $timeout) {
+  function dateValidation($rootScope, $document, $translate, $filter, $location, $window, $timeout) {
 
     var linker = function ($scope, $element, attrs, mCtrl) {
 
       function dateValidation(value) {
-        var result = $scope.parseDate(value);
+        const result = $scope.parseDate(value);
         mCtrl.$setValidity('date', result);
         return result || value;
       }
@@ -27,15 +25,19 @@ define([
         mCtrl.$setValidity('date', $scope.parseDate(mCtrl.$modelValue));
       });
 
+      $scope.$on('runTimeValidation', function () {
+        mCtrl.$setValidity('time', $scope.parseTime(mCtrl.$modelValue));
+      });
+
       $scope.parseDate = function (value) {
-        console.log('parseDate',value);
-        var result = false;
+        console.log('parseDate', value);
+        let result = false;
         if (value && value.length > 0) {
 
-          var date = new Date(value);
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var day = date.getDate();
+          const date = new Date(value);
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
 
           if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
             result = year + '-' + month + '-' + day;
@@ -43,14 +45,32 @@ define([
         }
         return result;
       };
+
+      $scope.parseTime = function (value) {
+        console.log('parseTime', value);
+        let result = false;
+        if (value && value.length > 0) {
+
+          const date = new Date(value);
+          const hour = date.getHours();
+          const minute = date.getMinutes();
+          const second = date.getSeconds();
+
+          if (!isNaN(hour) && !isNaN(minute) && !isNaN(second)) {
+            result = hour + ':' + minute + ':' + second;
+          }
+        }
+        return result;
+      };
+
     };
 
     return {
-      require: 'ngModel',
-      controller : function ($scope, $element) {
+      require   : 'ngModel',
+      controller: function ($scope, $element) {
       },
-      replace    : true,
-      link       : linker
+      replace   : true,
+      link      : linker
     };
   }
 });

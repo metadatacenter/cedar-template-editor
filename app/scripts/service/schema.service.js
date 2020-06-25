@@ -22,7 +22,7 @@ define([
     // Returns the field schema. If the field is defined as an array, this function will return field.items, because the schema is defined at that level.
     service.schemaOf = function (field) {
       if (field) {
-        if (field.type == 'array' && field.items) {
+        if (field.type === 'array' && field.items) {
           return field.items;
         } else {
           return field;
@@ -127,8 +127,7 @@ define([
     };
 
     service.hasPreferredLabel = function (node) {
-      return node && service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(
-          node)['skos:prefLabel'].length > 0;
+      return node && service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(node)['skos:prefLabel'].length > 0;
     };
 
     service.getPreferredLabel = function (node) {
@@ -163,6 +162,10 @@ define([
     // toggle the hidden field attribute
     service.setHidden = function (node, value) {
       service.schemaOf(node)._ui.hidden = value;
+    };
+
+    service.getDisplayAmPm = function (node) {
+      return service.schemaOf(node)._ui.inputTimeDisplayAmPm;
     };
 
     service.getIdentifier = function (node) {
@@ -233,7 +236,7 @@ define([
         max = service.getMaxItems(node);
       }
       return "(" + min + ".." + max + ")";
-    }
+    };
 
     service.defaultMinMax = function (node) {
       node.minItems = 1;
@@ -246,7 +249,7 @@ define([
     };
 
     service.isCardinalElement = function (node) {
-      return node.type == 'array';
+      return node.type === 'array';
     };
 
     service.elementIsMultiInstance = function (element) {
@@ -382,11 +385,11 @@ define([
     service.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
-          if ((value.minItems == 1 && value.maxItems == 1)) {
+          if ((value.minItems === 1 && value.maxItems === 1)) {
             delete value.minItems;
             delete value.maxItems;
           }
-          if (value.maxItems == 0) {
+          if (value.maxItems === 0) {
             delete value.maxItems;
           }
         }
@@ -395,7 +398,7 @@ define([
 
     // sets the multiple choice option to true or false
     service.setMultipleChoice = function (node, newMultipleChoiceValue) {
-      if (newMultipleChoiceValue == true) { // set multipleChoice to true
+      if (newMultipleChoiceValue === true) { // set multipleChoice to true
         if (node.items) {
           node.items._valueConstraints.multipleChoice = true;
         }
@@ -424,12 +427,12 @@ define([
 
     // is a draft if status is draft or has no status
     service.isDraft = function (node) {
-      return node &&  service.schemaOf(node)['bibo:status'] == 'bibo:draft';
+      return node &&  service.schemaOf(node)['bibo:status'] === 'bibo:draft';
     };
 
     // is published if has status and it is published
     service.isPublished = function (node) {
-      return node &&  service.schemaOf(node)['bibo:status'] == 'bibo:published';
+      return node &&  service.schemaOf(node)['bibo:status'] === 'bibo:published';
     };
 
     service.hasVersion = function (node) {
@@ -442,6 +445,9 @@ define([
       }
     };
 
+    service.getTemporalType = function (node) {
+      return node && service.schemaOf(node)._valueConstraints.temporalType;
+    };
 
 
     //
@@ -463,64 +469,81 @@ define([
 
     // is this a numeric field?
     service.isNumericField = function (node) {
-      return (service.getInputType(node) == 'numeric');
-    };
-
-    // is this a date field?
-    service.isDateField = function (node) {
-      return (service.getInputType(node) == 'date');
+      return service.getInputType(node) === 'numeric';
     };
 
     // is this a date range?
     service.isDateRange = function (node) {
-      return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+      return service.isDateField(node) && service.schemaOf(node)._ui.dateType === "date-range";
     };
 
     service.isAttributeValueType = function (node) {
-      return (service.getInputType(node) == 'attribute-value');
+      return service.getInputType(node) === 'attribute-value';
     };
 
     service.isTextFieldType = function (node) {
-      return (service.getInputType(node) == 'textfield');
+      return service.getInputType(node) === 'textfield';
     };
 
-    service.isDateType = function (node) {
-      return (service.getInputType(node) == 'date');
+    service.isTemporalType = function (node) {
+      return service.getInputType(node) === 'temporal';
+    };
+
+    service.hasTimeComponent = function (node) {
+      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:time');
+    };
+
+    service.hasDateComponent = function (node) {
+      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:date');
+    };
+
+    service.isTemporalDateTime = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:dateTime';
+    };
+
+    service.isTemporalDate = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:date';
+    };
+
+    service.isTemporalTime = function (node) {
+      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:time';
     };
 
     service.isLinkType = function (node) {
-      return (service.getInputType(node) == 'link');
+      return service.getInputType(node) === 'link';
     };
 
     service.isCheckboxType = function (node) {
-      return (service.getInputType(node) == 'checkbox');
+      return service.getInputType(node) === 'checkbox';
     };
 
     service.isRadioType = function (node) {
-      return (service.getInputType(node) == 'radio');
+      return service.getInputType(node) === 'radio';
     };
 
     service.isListType = function (node) {
-      return (service.getInputType(node) == 'list');
+      return service.getInputType(node) === 'list';
     };
 
     service.isListMultiAnswerType = function (node) {
-      if (node && service.hasValueConstraints(node)) return (service.getInputType(node) == 'list') && (service.getValueConstraints(node).multipleChoice);
+      if (node && service.hasValueConstraints(node)) {
+        return (service.getInputType(node) === 'list') && (service.getValueConstraints(node).multipleChoice);
+      }
     };
 
     // is this a checkbox, radio or list question?
     service.isMultiAnswer = function (node) {
-      var inputType = service.getInputType(node);
+      const inputType = service.getInputType(node);
       return service.isCheckboxListRadioType(inputType);
     };
 
     service.isCheckboxListRadioType = function (inputType) {
-      return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+      return (inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list');
     };
 
     service.isCheckboxListRadio = function (node) {
-      var inputType = service.getInputType(node);
-      return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+      const inputType = service.getInputType(node);
+      return (inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list');
     };
 
     // is this a multiple choice list?
@@ -530,23 +553,23 @@ define([
 
     // is this a checkbox, or a multiple choice list field?
     service.isMultipleChoiceField = function (node) {
-      return ((service.getInputType(node) == 'checkbox') || (service.isMultipleChoice(node)));
+      return (service.getInputType(node) === 'checkbox') || (service.isMultipleChoice(node));
     };
 
     // is this a radio, or a sigle-choice ?
     service.isSingleChoiceListField = function (node) {
-      var inputType = service.getInputType(node);
-      return ((inputType == 'radio') || ((inputType == 'list') && !service.isMultipleChoice(node)));
+      const inputType = service.getInputType(node);
+      return (inputType === 'radio') || ((inputType === 'list') && !service.isMultipleChoice(node));
     };
 
     // is this a youTube field?
     service.isYouTube = function (node) {
-      return (service.getInputType(node) === 'youtube');
+      return service.getInputType(node) === 'youtube';
     };
 
     // is this richText?
     service.isRichText = function (node) {
-      return (service.getInputType(node) === 'richtext');
+      return service.getInputType(node) === 'richtext';
     };
 
     // Used in richtext.html
@@ -556,17 +579,17 @@ define([
 
     // is this an image?
     service.isImage = function (node) {
-      return (service.getInputType(node) === 'image');
+      return service.getInputType(node) === 'image';
     };
 
     // is this a section break?
     service.isSectionBreak = function (node) {
-      return (service.getInputType(node) === 'section-break');
+      return service.getInputType(node) === 'section-break';
     };
 
     // is this a page break?
     service.isPageBreak = function (node) {
-      return (service.getInputType(node) === 'page-break');
+      return service.getInputType(node) === 'page-break';
     };
 
     // get order array
@@ -597,14 +620,14 @@ define([
     };
 
     service.isConstrained = function (node) {
-      var result = false;
+      let result = false;
 
-      var vcst = service.schemaOf(node)._valueConstraints;
+      const vcst = service.schemaOf(node)._valueConstraints;
       if (vcst) {
-        var hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
-        var hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
-        var hasClasses = vcst.classes && vcst.classes.length > 0;
-        var hasBranches = vcst.branches && vcst.branches.length > 0;
+        const hasOntologies = vcst.ontologies && vcst.ontologies.length > 0;
+        const hasValueSets = vcst.valueSets && vcst.valueSets.length > 0;
+        const hasClasses = vcst.classes && vcst.classes.length > 0;
+        const hasBranches = vcst.branches && vcst.branches.length > 0;
         result = hasOntologies || hasValueSets || hasClasses || hasBranches;
       }
 
@@ -726,6 +749,14 @@ define([
       return service.hasNumberType(node) && service.getValueConstraints(node).numberType;
     };
 
+    service.hasDateTimeType = function (node) {
+      return service.getValueConstraints(node).hasOwnProperty('temporalType');
+    };
+
+    service.getDateTimeType = function (node) {
+      return service.hasDateTimeType(node) && service.getValueConstraints(node).temporalType;
+    };
+
     service.hasUnitOfMeasure = function (node) {
       return service.getValueConstraints(node).hasOwnProperty('unitOfMeasure');
     };
@@ -745,7 +776,7 @@ define([
     };
 
     service.getActions = function (node) {
-      var result = [];
+      let result = [];
       if (node) {
         if (service.schemaOf(node)._valueConstraints.hasOwnProperty('actions')) {
           result= service.schemaOf(node)._valueConstraints.actions;
@@ -755,6 +786,6 @@ define([
     };
 
     return service;
-  };
+  }
 
 });

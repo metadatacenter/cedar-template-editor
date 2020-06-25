@@ -7,11 +7,9 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                               "$window", '$timeout',
-                               "SpreadsheetService", "UrlService",
-                               "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService",
-                               "ValueRecommenderService", "uibDateParser", "CONST"];
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$window", '$timeout', "SpreadsheetService",
+    "UrlService", "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService", "ValueRecommenderService", "uibDateParser",
+    "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
                              $timeout, SpreadsheetService, UrlService, DataManipulationService, schemaService,
@@ -460,13 +458,11 @@ define([
         // set it active or inactive
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
-        if (schemaService.isDateType($scope.field)) {
+        if (schemaService.isTemporalType($scope.field)) {
           $scope.setDateValue(index);
-
           $timeout(function () {
             $rootScope.$broadcast('runDateValidation');
           }, 0);
-
         }
 
         if (active) {
@@ -548,7 +544,7 @@ define([
           // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
           if ($scope.isMultipleCardinality() && !schemaService.isMultipleChoiceField($scope.field)) {
 
-            if (typeof(next) == 'undefined') {
+            if (typeof (next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
                 $scope.setActive(index + 1, true);
                 found = true;
@@ -620,7 +616,7 @@ define([
       $scope.getValueLocation = function () {
         return dms.getValueLocation($scope.field);
       };
-      
+
       $scope.isRecommended = function () {
         return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
@@ -718,8 +714,7 @@ define([
             $scope.optionsUI.radioOption = null;
             $scope.optionsUI.radioPreviousOption = null;
             $scope.updateModelFromUI();
-          }
-          else {
+          } else {
             $scope.optionsUI.radioPreviousOption = label;
           }
         }
@@ -787,7 +782,7 @@ define([
       };
 
 // set the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
+      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName, subType, storageFormat, field) {
 
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
@@ -799,12 +794,54 @@ define([
             validateDecimals($scope.valueArray[$scope.index]['@value']);
             validateValueRange($scope.valueArray[$scope.index]['@value']);
             break;
-          case "date":
-            var str = $scope.toXSDDate(newValue);
-            if ($scope.model.length > 0) {
-              $scope.model[$scope.index]['@value'] = str;
-            } else {
-              $scope.model['@value'] = str;
+          case "temporal":
+            if ($scope.isTemporalDate($scope.field)) {
+
+              let basedate = $filter('date')(newValue, storageFormat);
+              $scope.model['@value'] = basedate;
+              $scope.datetime = new Date(basedate);
+
+            } else if ($scope.isTemporalTime($scope.field)) {
+
+              let gran = dms.schemaOf(field)._valueConstraints.xsdTimeFinestGranularity;
+              if (newValue !== null) {
+                if (gran === 'Hour') {
+                  newValue.setMinutes(0);
+                  newValue.setSeconds(0);
+                } else if (gran === 'Minute') {
+                  newValue.setSeconds(0);
+                }
+              }
+              let basedate = $filter('date')(newValue, storageFormat);
+              $scope.model['@value'] = basedate;
+              $scope.datetime = new Date(basedate);
+
+            } else if ($scope.isTemporalDateTime($scope.field)) {
+              let oldDateTime = new Date($scope.model['@value']);
+
+              if (subType === 'time') {
+                oldDateTime.setHours(newValue.getHours());
+                oldDateTime.setMinutes(newValue.getMinutes());
+                oldDateTime.setSeconds(newValue.getSeconds());
+              } else if (subType === 'date') {
+                oldDateTime.setFullYear(newValue.getFullYear());
+                oldDateTime.setMonth(newValue.getMonth());
+                oldDateTime.setDate(newValue.getDate());
+              }
+
+              let gran = dms.schemaOf(field)._valueConstraints.xsdTimeFinestGranularity;
+              if (newValue !== null) {
+                if (gran === 'Hour') {
+                  oldDateTime.setMinutes(0);
+                  oldDateTime.setSeconds(0);
+                } else if (gran === 'Minute') {
+                  oldDateTime.setSeconds(0);
+                }
+              }
+
+              let basedate = $filter('date')(oldDateTime, storageFormat);
+              $scope.model['@value'] = basedate;
+              $scope.datetime = new Date(basedate);
             }
             break;
           case 'attribute-value':
@@ -923,8 +960,26 @@ define([
               $scope.data.info[i] = {'value': value};
             }
             break;
-          case "date":
-            $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          // case "date":
+          //   $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          // case "time":
+          //   $scope.time.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          case "temporal":
+            $scope.initializeDateTimeOptions($scope.field);
+
+            if ($scope.hasDateComponent($scope.field)) {
+              $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+              $scope.date.dt.setMinutes($scope.date.dt.getTimezoneOffset());
+            }
+            if ($scope.hasTimeComponent($scope.field)) {
+              let thisMoment = moment($scope.valueArray[$scope.index]['@value'], [$scope.timepickerOptions.storageFormat]);
+              $scope.time.dt = thisMoment.toDate();
+            }
+            if ($scope.hasDateComponent($scope.field) && $scope.hasTimeComponent($scope.field)) {
+              $scope.datetime = new Date($scope.valueArray[$scope.index]['@value']);
+            }
             break;
           case "checkbox":
             $scope.optionsUI = {};
@@ -1322,7 +1377,6 @@ define([
 //
 // date picker  date parser
 //
-
       $scope.date = {
         dt             : '',
         language       : navigator.language,
@@ -1330,6 +1384,16 @@ define([
         opened         : false,
         altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy', 'yyyy-MM-dd']
       };
+
+      $scope.time = {
+        dt             : '',
+        language       : navigator.language,
+        format         : 'HH:mm:ss',
+        opened         : false,
+        altInputFormats: []
+      };
+
+      $scope.datetime = null;
 
 // always store the xsd:date format
       $scope.toXSDDate = function (value) {
@@ -1340,24 +1404,63 @@ define([
         }
       };
 
+      $scope.toXSDTime = function (value) {
+        if ($scope.isInvalidTime(value)) {
+          return null;
+        } else {
+          return $filter('date')(new Date(value), 'HH:mm:ss');
+        }
+      };
+
       $scope.setDateValue = function (index) {
         if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
           var date = new Date($scope.valueArray[index]['@value']);
           var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
               date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
           $scope.date.dt = utcDate;
-
         } else {
           $scope.date.dt = null;
         }
-
       };
 
-      $scope.dateFormat = function (value) {
+      $scope.setTimeValue = function (index) {
+        if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
+          var time = uibDateParser.parse($scope.valueArray[index]['@value'], "HH:mm:ss");
+          $scope.time.dt = time;
+        } else {
+          $scope.time.dt = null;
+        }
+      };
+
+      $scope.dateFormat = function (field, value, dateFormatString, timeFormatString) {
         if (value) {
-          var date = new Date(value);
-          date.setMinutes(date.getTimezoneOffset());
-          return date.toLocaleDateString(navigator.language);
+          if ($scope.hasDateComponent(field)) {
+            let date = new Date(value);
+            date.setMinutes(date.getTimezoneOffset());
+            //return date.toLocaleDateString(navigator.language);
+            return $filter('date')(date, dateFormatString);
+          }
+          if ($scope.hasTimeComponent(field)) {
+            let mom = moment(value, $scope.timepickerOptions.storageFormat);
+            let date = mom.toDate();
+            //return date.toLocaleDateString(navigator.language);
+            return $filter('date')(date, timeFormatString);
+          }
+        }
+      };
+
+      $scope.timeFormat = function (value) {
+        if (value) {
+          var time = uibDateParser.parse(value, "HH:mm:ss");
+          return time.toLocaleTimeString(navigator.language);
+        }
+      };
+
+      $scope.dateTimeFormat = function (value) {
+        if (value) {
+          var date = uibDateParser.parse(value, "yyyy-MM-dd HH:mm:ss");
+          var options = { dateStyle: 'full', timeStyle: 'full', hour: '2-digit', minute: '2-digit', second: '2-digit'};
+          return date.toLocaleDateString(navigator.language, options);
         }
       };
 
@@ -1366,114 +1469,204 @@ define([
         return date == null;
       };
 
-// $scope.getPlaceholderText = function () {
-//   var text = "Enter a value";
-//   if (dms.isTextFieldType($scope.field)) {
-//     text = getPlaceholderForTextField($scope.field);
-//   } else if (dms.isNumericField($scope.field)) {
-//     text = getPlaceholderForNumericField($scope.field);
-//   }
-//   return text;
-// };
+      $scope.isInvalidTime = function (value) {
+        var time = uibDateParser.parse(value);
+        return time == null;
+      };
 
-// var getPlaceholderForTextField = function (node) {
-//   var text = "Enter a value";
-//   text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
-//   text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
-//   return text;
-// }
+      $scope.hasDateComponent = function (field) {
+        return schemaService.hasDateComponent(field);
+      };
 
+      $scope.hasTimeComponent = function (field) {
+        return schemaService.hasTimeComponent(field);
+      };
 
-// var getPlaceholderForNumericField = function (node) {
-//   var numberType = dms.getNumberType(node);
-//   var text = "Enter " + getNumberLabel(numberType) + " number";
-//   if (dms.hasUnitOfMeasure(node)) {
-//     text += " (in " + dms.getUnitOfMeasure(node) + ")";
-//   }
-//   var decimalPlace = dms.getDecimalPlace(node) || 0;
-//   if (decimalPlace == 0) {
-//     text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
-//     text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
-//   } else {
-//     if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
-//       var decimalPlacesText = "." + "0".repeat(decimalPlace)
-//       text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
-//       text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
-//     } else {
-//       text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
-//     }
-//   }
-//   return text;
-// }
+      $scope.isTemporalDateTime = function (field) {
+        return schemaService.isTemporalDateTime(field);
+      };
 
-// var getNumberLabel = function (numberType) {
-//   var label = "a";
-//   if (numberType == "xsd:decimal") {
-//     label = "a decimal"
-//   } else if (numberType == "xsd:int") {
-//     label = "an integer";
-//   } else if (numberType == "xsd:long") {
-//     label = "a long-integer";
-//   } else if (numberType == "xsd:float") {
-//     label = "a single-precision floating"
-//   } else if (numberType == "xsd:double") {
-//     label = "a double-precision floating";
-//   }
-//   return label;
-// }
+      $scope.isTemporalDate = function (field) {
+        return schemaService.isTemporalDate(field);
+      };
 
-// Check the string length of the input value
-// $scope.checkStringLength = function () {
-//   var value = $scope.valueArray[$scope.index]['@value']
-//   if (value) {
-//     var valueLength = value.length;
-//     var isTooShort = false;
-//     if (dms.hasMinLength($scope.field)) {
-//       isTooShort = valueLength < dms.getMinLength($scope.field);
-//     }
-//     var isTooLong = false;
-//     if (dms.hasMaxLength($scope.field)) {
-//       isTooLong = valueLength > dms.getMaxLength($scope.field);
-//     }
-//     var isValid = !isTooLong && !isTooShort;
-//     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
-//   } else {
-//     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
-//   }
-// };
-
-// Check the numeric value of the input value
-// $scope.checkNumberValue = function () {
-//   var value = $scope.valueArray[$scope.index]['@value'];
-//   if (value) {
-//     value = Number(value);
-//     var isTooLarge = false;
-//     if (dms.hasMaxValue($scope.field)) {
-//       isTooLarge = value > dms.getMaxValue($scope.field);
-//     }
-//     var isTooSmall = false;
-//     if (dms.hasMinValue($scope.field)) {
-//       isTooSmall = value < dms.getMinValue($scope.field);
-//     }
-//     var isValid = !isTooLarge && !isTooSmall;
-//     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
-//   } else {
-//     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
-//   }
-// };
+      $scope.isTemporalTime = function (field) {
+        return schemaService.isTemporalTime(field);
+      };
 
 
-//
-// initialization
-//
+      $scope.initializeDateTimeOptions = function(field) {
+
+        let dpo = {};
+        if (schemaService.isTemporalDate(field)) {
+          let vc = schemaService.getValueConstraints(field);
+          let gran = vc.xsdDateFinestGranularity;
+          if (gran === 'Year') {
+            dpo.datepickerMode = 'year';
+            dpo.minMode = 'year';
+            dpo.format = 'yyyy';
+            dpo.renderingFormat = 'y'
+          } else if (gran === 'Month') {
+            dpo.datepickerMode = 'month';
+            dpo.minMode = 'month';
+            dpo.format = 'MM/yyyy';
+            dpo.renderingFormat = 'MMM y'
+          } else if (gran === 'Day') {
+            dpo.datepickerMode = 'day';
+            dpo.minMode = 'day';
+            dpo.format = 'MM/dd/yyyy';
+            dpo.renderingFormat = 'MMM d, y'
+          }
+          dpo.storageFormat = 'yyyy-MM-dd'
+        }
+        $scope.datepickerOptions = dpo;
+
+        let tpo = {};
+        if (schemaService.isTemporalTime(field)) {
+          tpo.displayAmPm = schemaService.getDisplayAmPm(field);
+          let vc = schemaService.getValueConstraints(field);
+          let gran = vc.xsdTimeFinestGranularity;
+          if (gran === 'Hour') {
+            tpo.showMinutes = false;
+            tpo.showSeconds = false;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh a'
+            } else {
+              tpo.renderingFormat = 'HH'
+            }
+          } else if (gran === 'Minute') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = false;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm a'
+            } else {
+              tpo.renderingFormat = 'HH:mm'
+            }
+          } else if (gran === 'Second') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = true;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm:ss a'
+            } else {
+              tpo.renderingFormat = 'HH:mm:ss'
+            }
+          } else if (gran === 'DecimalSecond') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = true;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm:ss a'
+            } else {
+              tpo.renderingFormat = 'HH:mm:ss'
+            }
+          }
+          tpo.storageFormat = 'HH:mm:ss'
+        }
+
+        $scope.timepickerOptions = tpo;
+
+        if (schemaService.isTemporalDateTime(field)) {
+          let vc = schemaService.getValueConstraints(field);
+          let gran = vc.xsdDateFinestGranularity;
+          if (gran === 'Year') {
+            dpo.datepickerMode = 'year';
+            dpo.minMode = 'year';
+            dpo.format = 'yyyy';
+            dpo.renderingFormat = 'y'
+          } else if (gran === 'Month') {
+            dpo.datepickerMode = 'month';
+            dpo.minMode = 'month';
+            dpo.format = 'MM/yyyy';
+            dpo.renderingFormat = 'MMM y'
+          } else if (gran === 'Day') {
+            dpo.datepickerMode = 'day';
+            dpo.minMode = 'day';
+            dpo.format = 'MM/dd/yyyy';
+            dpo.renderingFormat = 'MMM d, y'
+          }
+
+          tpo.displayAmPm = schemaService.getDisplayAmPm(field);
+          vc = schemaService.getValueConstraints(field);
+          gran = vc.xsdTimeFinestGranularity;
+          if (gran === 'Hour') {
+            tpo.showMinutes = false;
+            tpo.showSeconds = false;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh a'
+            } else {
+              tpo.renderingFormat = 'HH'
+            }
+          } else if (gran === 'Minute') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = false;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm a'
+            } else {
+              tpo.renderingFormat = 'HH:mm'
+            }
+          } else if (gran === 'Second') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = true;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm:ss a'
+            } else {
+              tpo.renderingFormat = 'HH:mm:ss'
+            }
+          } else if (gran === 'DecimalSecond') {
+            tpo.showMinutes = true;
+            tpo.showSeconds = true;
+            if (tpo.displayAmPm) {
+              tpo.renderingFormat = 'hh:mm:ss a'
+            } else {
+              tpo.renderingFormat = 'HH:mm:ss'
+            }
+          }
+
+          let renderingFormat = dpo.renderingFormat + ' ' + tpo.renderingFormat;
+
+          dpo.renderingFormat = renderingFormat;
+          tpo.renderingFormat = renderingFormat;
+
+          dpo.storageFormat = 'yyyy-MM-ddTHH:mm:ss';
+          tpo.storageFormat = 'yyyy-MM-ddTHH:mm:ss';
+        }
+
+        $scope.timepickerOptions = tpo;
+        $scope.datepickerOptions = dpo;
+
+      };
+
+      $scope.showHideDateTimeElements = function(field) {
+        // if (typeof $scope.timepickerOptions === 'undefined') {
+        //   return;
+        // }
+        // return;
+        let tpO = $scope.timepickerOptions;
+        if (angular.element("#timepickerIncMinuteButton")[0]) {
+          angular.element("#timepickerIncMinuteButton")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
+        }
+        if (angular.element("#timepickerIncMinuteSpacer")[0]) {
+          angular.element("#timepickerIncMinuteSpacer")[0].style.display = tpO.showMinutes?'table-cell':'none';
+        }
+        if (angular.element("#timepickerDecMinuteButton")[0]) {
+          angular.element("#timepickerDecMinuteButton")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
+        }
+        if (angular.element("#timepickerDecMinuteSpacer")[0]) {
+          angular.element("#timepickerDecMinuteSpacer")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
+        }
+        if (angular.element("#timepickerMinuteSparator")[0]) {
+          angular.element("#timepickerMinuteSparator")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
+        }
+        if (angular.element("#timepickerMinuteInput")[0]) {
+          angular.element("#timepickerMinuteInput")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
+        }
+
+      };
 
       $scope.setValueArray();
       $scope.setAttributeValueArray();
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
-
-
-    }
+    };
 
 
     return {
@@ -1498,7 +1691,7 @@ define([
 
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
+        const addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded
           setTimeout(function () {
             if ($element.find('#field-value-tooltip').length > 0) {
@@ -1517,5 +1710,4 @@ define([
     };
 
   }
-
 });

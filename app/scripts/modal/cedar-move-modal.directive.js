@@ -12,19 +12,6 @@ define([
 
       function cedarMoveModalDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            moveResource: '=',
-            modalVisible: '='
-          },
-          controller      : cedarMoveModalController,
-          controllerAs    : 'move',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-move-modal.directive.html'
-        };
-
-        return directive;
-
         cedarMoveModalController.$inject = [
           '$scope',
           '$uibModal',
@@ -314,6 +301,20 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            moveResource: '=',
+            modalVisible: '='
+          },
+          controller      : cedarMoveModalController,
+          controllerAs    : 'move',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-move-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );
