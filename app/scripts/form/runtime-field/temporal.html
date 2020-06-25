@@ -1,8 +1,8 @@
-<div ng-init="initializeValue(field); initializeValueType(field)">
+<div ng-init="initializeValue(field); initializeValueType(field);">
 
   <div ng-if="isActive(index) && hasDateComponent(field)" class="form-group input-group has-success has-feedback">
     <input
-        ng-init="initializeDateTimeOptions(index, field)"
+        ng-init="showHideDateTimeElements(field)"
         name="dateTimeField"
         type="string"
         class="form-control select dateField"
@@ -11,7 +11,7 @@
         placeholder="{{datepickerOptions.format}}"
         datepicker-options="datepickerOptions"
         ng-model="date.dt"
-        ng-change="updateModelFromUI(date.dt, '{{valueArray[index]['@value']}}',false, 'date'); "
+        ng-change="updateModelFromUI(date.dt, valueArray[index]['@value'],false, 'date', datepickerOptions.storageFormat, field)"
         is-open="date.opened"
         ng-required="isRequired()"
         close-text="Close"
@@ -28,11 +28,11 @@
 
   <div ng-if="isActive(index) && hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
     <div
-        ng-init="initializeDateTimeOptions(index, field)"
+        ng-init="showHideDateTimeElements(field)"
         name="timeField"
         uib-timepicker
         ng-model="time.dt"
-        ng-change="updateModelFromUI(time.dt, '{{valueArray[index]['@value']}}',false, 'time'); "
+        ng-change="updateModelFromUI(time.dt, valueArray[index]['@value'],false, 'time', timepickerOptions.storageFormat, field)"
         hour-step="1"
         minute-step="1"
         second-step="1"
@@ -46,15 +46,18 @@
   </div>
 
   <div ng-if="isActive(index) && isTemporalDateTime(field)">
-    <pre class="alert alert-info">DateTime is: {{datetime | date:'medium' }}</pre>
+    <pre class="alert alert-info">DateTime is  : {{datetime | date:timepickerOptions.renderingFormat }}
+Stored as    : {{datetime | date:timepickerOptions.storageFormat }}</pre>
   </div>
 
   <div ng-if="isActive(index) && isTemporalDate(field)">
-    <pre class="alert alert-info">Date is: {{datetime | date:'medium' }}</pre>
+    <pre class="alert alert-info">Date is  : {{date.dt | date:datepickerOptions.renderingFormat }}
+Stored as: {{date.dt | date:datepickerOptions.storageFormat }}</pre>
   </div>
 
   <div ng-if="isActive(index) && isTemporalTime(field)">
-    <pre class="alert alert-info">Time is: {{datetime | date:'medium' }}</pre>
+    <pre class="alert alert-info">Time is: {{time.dt | date:timepickerOptions.renderingFormat }}
+Stored as: {{time.dt | date:timepickerOptions.storageFormat }}</pre>
   </div>
 
   <div ng-if="isActive(index)">
@@ -66,7 +69,7 @@
 
   <!--- not active --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
-    <div aria-label="{{getHelp(field)}}" class="isInactive "> {{dateTimeFormat(valueArray[index]['@value'])}}</div>
+    <div aria-label="{{getHelp(field)}}" class="isInactive ">{{dateFormat(field, valueArray[index]['@value'], datepickerOptions.renderingFormat, timepickerOptions.renderingFormat)}}</div>
   </div>
 
 </div>

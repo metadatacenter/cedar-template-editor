@@ -396,15 +396,15 @@ define([
 
         // is this a date field?
         service.isDateField = function (node) {
-          return (service.getInputType(node) === 'temporal');
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:date';
         };
 
         service.isDateTimeField = function (node) {
-          return (service.getInputType(node) === 'temporal');
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:dateTime';
         };
 
         service.isTimeField = function (node) {
-          return (service.getInputType(node) === 'temporal');
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:time';
         };
 
         // is this a date range?

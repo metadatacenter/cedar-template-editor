@@ -46,8 +46,7 @@ define([
       $scope.datePrecisionFormats = [
         {id: "Day", label: "Day (YYYY-MM-DD)"},
         {id: "Month", label: "Month (YYYY-MM)"},
-        {id: "Year", label: "Year (YYYY)"},
-        {id: "Century", label: "Century (CC)"}
+        {id: "Year", label: "Year (YYYY)"}
       ];
 
       $scope.timePrecisionFormats = [
