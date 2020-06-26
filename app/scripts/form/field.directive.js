@@ -601,7 +601,7 @@ define([
       }
 
       const parseField = function () {
-        console.log("**ParseField")
+        //console.log("**ParseField")
         if ($scope.field) {
           const min = schemaService.getMinItems($scope.field) || 0;
           if (!schemaService.isCardinalElement($scope.field)) {
@@ -822,16 +822,32 @@ define([
       // Sets the dateTime type based on the item selected at the UI
       $scope.setDateTimeTypeFromUI = function (item) {
         dms.schemaOf($scope.field)._valueConstraints.temporalType = item.id;
+        $scope.cleanupExtraSchemaKeys();
       };
 
       // Sets the date precision format based on the item selected at the UI
       $scope.setDatePrecisionFormatFromUI = function (item) {
         dms.schemaOf($scope.field)._valueConstraints.xsdDateFinestGranularity = item.id;
+        $scope.cleanupExtraSchemaKeys();
       };
 
       // Sets the time precision format based on the item selected at the UI
       $scope.setTimePrecisionFormatFromUI = function (item) {
         dms.schemaOf($scope.field)._valueConstraints.xsdTimeFinestGranularity = item.id;
+        $scope.cleanupExtraSchemaKeys();
+      };
+
+      $scope.cleanupExtraSchemaKeys = function(item) {
+        if (!$scope.hasTimeComponent($scope.field)) {
+          let schema = dms.schemaOf($scope.field);
+          delete schema._valueConstraints.xsdTimeFinestGranularity;
+          delete schema._valueConstraints.xsdTimeZoneEnable;
+          delete schema._ui.inputTimeDisplayAmPm;
+        }
+        if (!$scope.hasDateComponent($scope.field)) {
+          let schema = dms.schemaOf($scope.field);
+          delete schema._valueConstraints.xsdDateFinestGranularity;
+        }
       };
 
       // Sets the time enable microseconds based on the item selected at the UI

@@ -43,6 +43,55 @@
     ></div>
 
     <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+    <table style="margin-bottom: 20px;">
+      <tr>
+        <td style="width:180px;white-space: nowrap;"><img src="/img/v.png" width="180" height=1" /></td>
+        <td style="width:99%"></td>
+      </tr>
+      <tr ng-if="isDecimalSecondsEnabled(field)">
+        <td>
+          <div style="margin-top:12px">{{'EDITOR.decimalSeconds' | translate}}</div>
+        </td>
+        <td>
+          <div class="form-group" style="margin-left:12px;margin-right:52px">
+            <input
+                ng-change="setDecimalSecondsFromUI(decimalSeconds, valueArray[index]['@value'], field)"
+                ng-model="decimalSeconds"
+                type="number"
+                name="numericField"
+                min="0"
+                step="1"
+                ng-pattern="handlePattern"
+                class="form-control isActive select"
+                placeholder="{{'EDITOR.enterDecimalSeconds' | translate}}">
+          </div>
+        </td>
+      </tr>
+      <tr ng-if="isTimezoneEnabled(field)">
+        <td>
+          <div style="margin-top:12px">{{'EDITOR.timezone' | translate}}</div>
+        </td>
+        <td>
+          <div class="form-group">
+            <ui-select
+                ng-init="initTimezoneDropdown()"
+                class="form-control"
+                theme="bootstrap"
+                close-on-select="true"
+                ng-change="setTimezoneFromUI($select.selected)"
+                ng-model="selectedTimezone">
+              <ui-select-match placeholder="{{'EDITOR.selectTimezone' | translate}}">{{selectedTimezone.label}}
+              </ui-select-match>
+              <ui-select-choices repeat="timezone in availableTimezones">
+                {{timezone.label}}
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </td>
+      </tr>
+    </table>
+
   </div>
 
   <div ng-if="isActive(index) && isTemporalDateTime(field)">

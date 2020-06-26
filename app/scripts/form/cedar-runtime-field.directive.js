@@ -781,7 +781,16 @@ define([
         }
       };
 
-// set the instance @value fields based on the options selected at the UI
+      $scope.setDecimalSecondsFromUI = function(newValue, oldValue, field) {
+        console.log("setDecimalSecondsFromUI");
+        console.log(newValue);
+        console.log(oldValue);
+        console.log(field);
+
+        console.log(basedata)
+      };
+
+      // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName, subType, storageFormat, field) {
 
         var fieldValue = $scope.getValueLocation();
@@ -950,6 +959,7 @@ define([
 // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
         let inputType = $scope.getInputType();
+        let valueLocation = null;
         switch (inputType) {
           case "numeric":
             for (let i = 0; i < $scope.valueArray.length; i++) {
@@ -974,35 +984,45 @@ define([
               $scope.date.dt.setMinutes($scope.date.dt.getTimezoneOffset());
             }
             if ($scope.hasTimeComponent($scope.field)) {
+              $scope.initTimezoneDropdown();
               let thisMoment = moment($scope.valueArray[$scope.index]['@value'], [$scope.timepickerOptions.storageFormat]);
               $scope.time.dt = thisMoment.toDate();
+              $scope.decimalSeconds = 0;
+              let tzId = '-08:00';
+              let tzLabel = null;
+              for(let i in $scope.availableTimezones) {
+                if ($scope.availableTimezones[i].id === tzId) {
+                  tzLabel = $scope.availableTimezones[i].label;
+                }
+              }
+              $scope.selectedTimezone = {'id': tzId, 'label': tzLabel};
             }
-            if ($scope.hasDateComponent($scope.field) && $scope.hasTimeComponent($scope.field)) {
+            if ($scope.isTemporalDateTime($scope.field)) {
               $scope.datetime = new Date($scope.valueArray[$scope.index]['@value']);
             }
             break;
           case "checkbox":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             for (var i = 0; i < $scope.model.length; i++) {
-              var value = $scope.model[i][valueLocation];
+              let value = $scope.model[i][valueLocation];
               $scope.optionsUI[value] = value;
             }
             break;
           case "radio":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             if ($scope.model) {
               $scope.optionsUI.radioOption = $scope.model[valueLocation];
             }
             break;
           case "list":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
-                var v = $scope.model[i][valueLocation];
+                let v = $scope.model[i][valueLocation];
                 if (v) {
                   $scope.optionsUI.listMultiSelect.push({"label": $scope.model[i][valueLocation]});
                 }
@@ -1494,6 +1514,58 @@ define([
         return schemaService.isTemporalTime(field);
       };
 
+      $scope.isTimezoneEnabled = function (field) {
+        return schemaService.isTimezoneEnabled(field);
+      };
+
+      $scope.isDecimalSecondsEnabled = function (field) {
+        return schemaService.isDecimalSecondsEnabled(field);
+      };
+
+      $scope.initTimezoneDropdown = function () {
+        $scope.availableTimezones = [
+          {id: "-12:00", label: "(GMT -12:00) Eniwetok, Kwajalein"},
+          {id: "-11:00", label: "(GMT -11:00) Midway Island, Samoa"},
+          {id: "-10:00", label: "(GMT -10:00) Hawaii"},
+          {id: "-09:50", label: "(GMT -9:30) Taiohae"},
+          {id: "-09:00", label: "(GMT -9:00) Alaska"},
+          {id: "-08:00", label: "(GMT -8:00) Pacific Time (US & Canada)"},
+          {id: "-07:00", label: "(GMT -7:00) Mountain Time (US & Canada)"},
+          {id: "-06:00", label: "(GMT -6:00) Central Time (US & Canada), Mexico City"},
+          {id: "-05:00", label: "(GMT -5:00) Eastern Time (US & Canada), Bogota, Lima"},
+          {id: "-04:50", label: "(GMT -4:30) Caracas"},
+          {id: "-04:00", label: "(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz"},
+          {id: "-03:50", label: "(GMT -3:30) Newfoundland"},
+          {id: "-03:00", label: "(GMT -3:00) Brazil, Buenos Aires, Georgetown"},
+          {id: "-02:00", label: "(GMT -2:00) Mid-Atlantic"},
+          {id: "-01:00", label: "(GMT -1:00) Azores, Cape Verde Islands"},
+          {id: "+00:00", label: "(GMT) Western Europe Time, London, Lisbon, Casablanca"},
+          {id: "+01:00", label: "(GMT +1:00) Brussels, Copenhagen, Madrid, Paris"},
+          {id: "+02:00", label: "(GMT +2:00) Kaliningrad, South Africa"},
+          {id: "+03:00", label: "(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg"},
+          {id: "+03:50", label: "(GMT +3:30) Tehran"},
+          {id: "+04:00", label: "(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi"},
+          {id: "+04:50", label: "(GMT +4:30) Kabul"},
+          {id: "+05:00", label: "(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent"},
+          {id: "+05:50", label: "(GMT +5:30) Bombay, Calcutta, Madras, New Delhi"},
+          {id: "+05:75", label: "(GMT +5:45) Kathmandu, Pokhara"},
+          {id: "+06:00", label: "(GMT +6:00) Almaty, Dhaka, Colombo"},
+          {id: "+06:50", label: "(GMT +6:30) Yangon, Mandalay"},
+          {id: "+07:00", label: "(GMT +7:00) Bangkok, Hanoi, Jakarta"},
+          {id: "+08:00", label: "(GMT +8:00) Beijing, Perth, Singapore, Hong Kong"},
+          {id: "+08:75", label: "(GMT +8:45) Eucla"},
+          {id: "+09:00", label: "(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk"},
+          {id: "+09:50", label: "(GMT +9:30) Adelaide, Darwin"},
+          {id: "+10:00", label: "(GMT +10:00) Eastern Australia, Guam, Vladivostok"},
+          {id: "+10:50", label: "(GMT +10:30) Lord Howe Island"},
+          {id: "+11:00", label: "(GMT +11:00) Magadan, Solomon Islands, New Caledonia"},
+          {id: "+11:50", label: "(GMT +11:30) Norfolk Island"},
+          {id: "+12:00", label: "(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka"},
+          {id: "+12:75", label: "(GMT +12:45) Chatham Islands"},
+          {id: "+13:00", label: "(GMT +13:00) Apia, Nukualofa"},
+          {id: "+14:00", label: "(GMT +14:00) Line Islands, Tokelau"}
+        ];
+      };
 
       $scope.initializeDateTimeOptions = function(field) {
 

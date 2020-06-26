@@ -587,7 +587,8 @@
     "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
     "invalidMaxValue": "Please enter a value less than or equal to {{max}}",
     "invalidDate": "Please enter a valid date, e.g. 10/10/2010",
-    "invalidRangeValue": "Value is out of range for type {{type}}"
+    "invalidRangeValue": "Value is out of range for type {{type}}",
+    "invalidDateTime": "Invalid temporal value"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
@@ -648,7 +649,11 @@
   "EDITOR": {
     "TOOLBAR": {
       "searchForMore": "Search for fields and elements"
-    }
+    },
+    "selectTimezone": "Select Timezone",
+    "enterDecimalSeconds": "Enter Decimal Seconds",
+    "timezone": "Timezone:",
+    "decimalSeconds": "Decimal Seconds:"
   },
   "BreadcrumbTitle": {
     "sharedWithMe": "Shared with Me",

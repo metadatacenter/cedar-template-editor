@@ -490,23 +490,33 @@ define([
     };
 
     service.hasTimeComponent = function (node) {
-      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:time');
+      return service.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:time');
     };
 
     service.hasDateComponent = function (node) {
-      return service.isTemporalType(node) && (service.getTemporalType(node) == 'xsd:dateTime' || service.getTemporalType(node) == 'xsd:date');
+      return service.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:date');
     };
 
     service.isTemporalDateTime = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:dateTime';
+      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:dateTime';
     };
 
     service.isTemporalDate = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:date';
+      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:date';
     };
 
     service.isTemporalTime = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) == 'xsd:time';
+      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:time';
+    };
+
+    service.isTimezoneEnabled = function (node) {
+      let r = service.hasTimeComponent(node) && service.getValueConstraints(node).xsdTimeZoneEnable;
+      return r;
+    };
+
+    service.isDecimalSecondsEnabled = function (node) {
+      let r = service.hasTimeComponent(node) && service.getValueConstraints(node).xsdTimeFinestGranularity === 'DecimalSecond';
+      return r;
     };
 
     service.isLinkType = function (node) {
