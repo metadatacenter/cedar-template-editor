@@ -17,11 +17,11 @@ define([
   'cedar/template-editor/service/template-instance.service',
   'cedar/template-editor/service/template.service',
   'cedar/template-editor/service/url.service',
+  'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/ui-message.service',
   'cedar/template-editor/service/schema.service',
   'cedar/template-editor/service/instance-model.service',
   'cedar/template-editor/service/ui-progress.service',
-  'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/ui-util.service',
   'cedar/template-editor/service/user.service',
   'cedar/template-editor/service/rich-text-config.service',
@@ -37,7 +37,9 @@ define([
   'cedar/template-editor/service/frontend-url.service',
   'cedar/template-editor/service/validation.service',
   'cedar/template-editor/service/category.service',
-  'cedar/template-editor/service/local-storage.service'
+  'cedar/template-editor/service/local-storage.service',
+  'cedar/template-editor/service/temporal-runtime-field.service',
+  'cedar/template-editor/service/temporal-editor-field.service'
 
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
@@ -75,6 +77,9 @@ define([
     'cedar.templateEditor.service.queryParamUtilsService',
     'cedar.templateEditor.service.frontendUrlService',
     'cedar.templateEditor.service.validationService',
-    'cedar.templateEditor.service.categoryService'
+    'cedar.templateEditor.service.categoryService',
+    'cedar.templateEditor.service.localStorageService',
+    'cedar.templateEditor.service.temporalRuntimeFieldService',
+    'cedar.templateEditor.service.temporalEditorFieldService'
   ]);
 });

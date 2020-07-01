@@ -1,8 +1,13 @@
+<!--<hr />
+{{datepickerOptions | json}}
+<hr />
+{{timepickerOptions | json}}
+<hr />-->
 <div ng-init="initializeValue(field); initializeValueType(field);">
 
-  <div ng-if="isActive(index) && hasDateComponent(field)" class="form-group input-group has-success has-feedback">
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.hasDateComponent(field)" class="form-group input-group has-success has-feedback">
     <input
-        ng-init="showHideDateTimeElements(field)"
+        ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
         name="dateTimeField"
         type="string"
         class="form-control select dateField"
@@ -26,9 +31,9 @@
     </span>
   </div>
 
-  <div ng-if="isActive(index) && hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
     <div
-        ng-init="showHideDateTimeElements(field)"
+        ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
         name="timeField"
         uib-timepicker
         ng-model="time.dt"
@@ -49,14 +54,14 @@
         <td style="width:180px;white-space: nowrap;"><img src="/img/v.png" width="180" height=1" /></td>
         <td style="width:99%"></td>
       </tr>
-      <tr ng-if="isDecimalSecondsEnabled(field)">
+      <tr ng-if="temporalRuntimeFieldService.isDecimalSecondsEnabled(field)">
         <td>
           <div style="margin-top:12px">{{'EDITOR.decimalSeconds' | translate}}</div>
         </td>
         <td>
           <div class="form-group" style="margin-left:12px;margin-right:52px">
             <input
-                ng-change="setDecimalSecondsFromUI(decimalSeconds, valueArray[index]['@value'], field)"
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsFromUI(decimalSeconds, valueArray[index]['@value'], field)"
                 ng-model="decimalSeconds"
                 type="number"
                 name="numericField"
@@ -75,11 +80,11 @@
         <td>
           <div class="form-group">
             <ui-select
-                ng-init="initTimezoneDropdown()"
+                ng-init="temporalRuntimeFieldService.initTimezoneDropdown($scope)"
                 class="form-control"
                 theme="bootstrap"
                 close-on-select="true"
-                ng-change="setTimezoneFromUI($select.selected)"
+                ng-change="temporalRuntimeFieldService.setTimezoneFromUI($select.selected)"
                 ng-model="selectedTimezone">
               <ui-select-match placeholder="{{'EDITOR.selectTimezone' | translate}}">{{selectedTimezone.label}}
               </ui-select-match>
@@ -94,17 +99,17 @@
 
   </div>
 
-  <div ng-if="isActive(index) && isTemporalDateTime(field)">
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDateTime(field)">
     <pre class="alert alert-info">DateTime is  : {{datetime | date:timepickerOptions.renderingFormat }}
 Stored as    : {{datetime | date:timepickerOptions.storageFormat }}</pre>
   </div>
 
-  <div ng-if="isActive(index) && isTemporalDate(field)">
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDate(field)">
     <pre class="alert alert-info">Date is  : {{date.dt | date:datepickerOptions.renderingFormat }}
 Stored as: {{date.dt | date:datepickerOptions.storageFormat }}</pre>
   </div>
 
-  <div ng-if="isActive(index) && isTemporalTime(field)">
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalTime(field)">
     <pre class="alert alert-info">Time is: {{time.dt | date:timepickerOptions.renderingFormat }}
 Stored as: {{time.dt | date:timepickerOptions.storageFormat }}</pre>
   </div>

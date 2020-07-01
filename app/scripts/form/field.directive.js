@@ -10,11 +10,11 @@ define([
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
     "SpreadsheetService", "CONST",
     "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
-    "StringUtilsService", "UIUtilService", "ValidationService"];
+    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService, schemaService,
-                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService, ValidationService) {
+                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService, ValidationService, TemporalEditorFieldService) {
 
 
     let linker = function ($scope, $element, attrs) {
@@ -43,28 +43,8 @@ define([
         {id: "xsd:time", label: "Time"}
       ];
 
-      $scope.datePrecisionFormats = [
-        {id: "Day", label: "Day (YYYY-MM-DD)"},
-        {id: "Month", label: "Month (YYYY-MM)"},
-        {id: "Year", label: "Year (YYYY)"}
-      ];
-
-      $scope.timePrecisionFormats = [
-        {id: "Second", label: "Second (hh:mm:ss)"},
-        {id: "DecimalSecond", label: "DecimalSecond (hh:mm:ss.sss...s)"},
-        {id: "Minute", label: "Minute (hh:mm)"},
-        {id: "Hour", label: "Hour (hh)"}
-      ];
-
-      $scope.timeEnableTimezoneOptions = [
-        {id: true, label: "Allow Timezone Information"},
-        {id: false, label: "Do not allow Timezone Information"}
-      ];
-
-      $scope.timeEnableAmPmOptions = [
-        {id: true, label: "Use AM/PM Input"},
-        {id: false, label: "Use 24H Input"}
-      ];
+      $scope.temporalEditorFieldService = TemporalEditorFieldService;
+      $scope.thisScope = $scope;
 
       let dms = DataManipulationService;
 
@@ -289,14 +269,6 @@ define([
 
       $scope.isTemporalField = function () {
         return schemaService.isTemporalType($scope.field);
-      };
-
-      $scope.hasTimeComponent = function () {
-        return schemaService.hasTimeComponent($scope.field);
-      };
-
-      $scope.hasDateComponent = function () {
-        return schemaService.hasDateComponent($scope.field);
       };
 
       $scope.hasOptions = function () {
@@ -697,167 +669,6 @@ define([
       // Sets the number type based on the item selected at the UI
       $scope.setNumberTypeFromUI = function (item) {
         dms.schemaOf($scope.field)._valueConstraints.numberType = item.id;
-      };
-
-      // Sets the dateTime type based on the item stored at the model
-      $scope.setDateTimeTypeFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.temporalType;
-          if (!typeId) {
-            typeId = "xsd:dateTime";
-            schema._valueConstraints.temporalType = typeId;
-          }
-          const getDateTimeLabel = function (id) {
-            for (let i = 0; i < $scope.dateTimeTypes.length; i++) {
-              const type = $scope.dateTimeTypes[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedDateTimeType = {
-            id   : typeId,
-            label: getDateTimeLabel(typeId)
-          }
-        }
-      };
-
-      // Sets the date precision format based on the item stored at the model
-      $scope.setDatePrecisionFormatFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.xsdDateFinestGranularity;
-          if (!typeId) {
-            typeId = "Day";
-            schema._valueConstraints.xsdDateFinestGranularity = typeId;
-          }
-          const getDatePrecisionFormatLabel = function (id) {
-            for (let i = 0; i < $scope.datePrecisionFormats.length; i++) {
-              const type = $scope.datePrecisionFormats[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedDatePrecisionFormat = {
-            id   : typeId,
-            label: getDatePrecisionFormatLabel(typeId)
-          }
-        }
-      };
-
-      // Sets the time precision format based on the item stored at the model
-      $scope.setTimePrecisionFormatFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.xsdTimeFinestGranularity;
-          if (!typeId) {
-            typeId = "Second";
-            schema._valueConstraints.xsdTimeFinestGranularity = typeId;
-          }
-          const getTimePrecisionFormatLabel = function (id) {
-            for (let i = 0; i < $scope.timePrecisionFormats.length; i++) {
-              const type = $scope.timePrecisionFormats[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedTimePrecisionFormat = {
-            id   : typeId,
-            label: getTimePrecisionFormatLabel(typeId)
-          }
-        }
-      };
-
-      // Sets the timezone enable based on the item stored at the model
-      $scope.setTimeEnableTimezoneFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._valueConstraints.xsdTimeZoneEnable;
-          if (typeof typeId === "undefined") {
-            typeId = true;
-            schema._valueConstraints.xsdTimeZoneEnable = typeId;
-          }
-          const getTimeEnableTimezoneLabel = function (id) {
-            for (let i = 0; i < $scope.timeEnableTimezoneOptions.length; i++) {
-              const type = $scope.timeEnableTimezoneOptions[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedTimeEnableTimezone = {
-            id   : typeId,
-            label: getTimeEnableTimezoneLabel(typeId)
-          }
-        }
-      };
-
-      // Sets the ampm enable based on the item stored at the model
-      $scope.setTimeEnableAmPmFromModel = function () {
-        let schema = dms.schemaOf($scope.field);
-        if (schema._valueConstraints) {
-          let typeId = schema._ui.inputTimeDisplayAmPm;
-          if (typeof typeId === "undefined") {
-            typeId = true;
-            schema._ui.inputTimeDisplayAmPm = typeId;
-          }
-          const getTimeEnableAmPmLabel = function (id) {
-            for (let i = 0; i < $scope.timeEnableAmPmOptions.length; i++) {
-              const type = $scope.timeEnableAmPmOptions[i];
-              if (type.id === id) {
-                return type.label;
-              }
-            }
-          };
-          $scope.selectedTimeEnableAmPm = {
-            id   : typeId,
-            label: getTimeEnableAmPmLabel(typeId)
-          }
-        }
-      };
-
-      // Sets the dateTime type based on the item selected at the UI
-      $scope.setDateTimeTypeFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.temporalType = item.id;
-        $scope.cleanupExtraSchemaKeys();
-      };
-
-      // Sets the date precision format based on the item selected at the UI
-      $scope.setDatePrecisionFormatFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.xsdDateFinestGranularity = item.id;
-        $scope.cleanupExtraSchemaKeys();
-      };
-
-      // Sets the time precision format based on the item selected at the UI
-      $scope.setTimePrecisionFormatFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.xsdTimeFinestGranularity = item.id;
-        $scope.cleanupExtraSchemaKeys();
-      };
-
-      $scope.cleanupExtraSchemaKeys = function(item) {
-        if (!$scope.hasTimeComponent($scope.field)) {
-          let schema = dms.schemaOf($scope.field);
-          delete schema._valueConstraints.xsdTimeFinestGranularity;
-          delete schema._valueConstraints.xsdTimeZoneEnable;
-          delete schema._ui.inputTimeDisplayAmPm;
-        }
-        if (!$scope.hasDateComponent($scope.field)) {
-          let schema = dms.schemaOf($scope.field);
-          delete schema._valueConstraints.xsdDateFinestGranularity;
-        }
-      };
-
-      // Sets the time enable microseconds based on the item selected at the UI
-      $scope.setTimeEnableTimezoneFromUI = function (item) {
-        dms.schemaOf($scope.field)._valueConstraints.xsdTimeZoneEnable = item.id;
-      };
-
-      // Sets the time enable microseconds based on the item selected at the UI
-      $scope.setTimeEnableAmPmFromUI = function (item) {
-        dms.schemaOf($scope.field)._ui.inputTimeDisplayAmPm = item.id;
       };
 
       // Sets the instance @value fields based on the options selected at the UI

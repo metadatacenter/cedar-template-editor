@@ -142,12 +142,12 @@
     <div ng-if="isTemporalField()">
 
       <!-- subtype  -->
-      <div ng-init="setDateTimeTypeFromModel()" class="form-group">
+      <div ng-init="temporalEditorFieldService.setDateTimeTypeFromModel(thisScope)" class="form-group">
         <ui-select
             class="form-control"
             theme="bootstrap"
             close-on-select="true"
-            ng-change="setDateTimeTypeFromUI($select.selected)"
+            ng-change="temporalEditorFieldService.setDateTimeTypeFromUI($select.selected, thisScope)"
             ng-model="selectedDateTimeType"
             ng-disabled="isPublished()">
           <ui-select-match placeholder="{{'CREATOR.selectDateTimeType' | translate}}">{{selectedDateTimeType.label}}
@@ -159,68 +159,68 @@
       </div>
 
       <!-- date precision  -->
-      <div ng-init="setDatePrecisionFormatFromModel()" class="form-group" ng-if="hasDateComponent()">
+      <div ng-init="temporalEditorFieldService.setDatePrecisionFormatFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasDateGranularity(field)">
         <ui-select
             class="form-control"
             theme="bootstrap"
             close-on-select="true"
-            ng-change="setDatePrecisionFormatFromUI($select.selected)"
+            ng-change="temporalEditorFieldService.setDatePrecisionFormatFromUI($select.selected, thisScope)"
             ng-model="selectedDatePrecisionFormat"
             ng-disabled="isPublished()">
           <ui-select-match placeholder="{{'CREATOR.selectDatePrecisionFormat' | translate}}">{{selectedDatePrecisionFormat.label}}
           </ui-select-match>
-          <ui-select-choices repeat="type in datePrecisionFormats">
+          <ui-select-choices repeat="type in temporalEditorFieldService.datePrecisionFormats">
             {{type.label}}
           </ui-select-choices>
         </ui-select>
       </div>
 
-      <!-- time precision  -->
-      <div ng-init="setTimePrecisionFormatFromModel()" class="form-group" ng-if="hasTimeComponent()">
+      <!-- time precision -->
+      <div ng-init="temporalEditorFieldService.setTimePrecisionFormatFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeGranularity(field)">
         <ui-select
             class="form-control"
             theme="bootstrap"
             close-on-select="true"
-            ng-change="setTimePrecisionFormatFromUI($select.selected)"
+            ng-change="temporalEditorFieldService.setTimePrecisionFormatFromUI($select.selected, thisScope)"
             ng-model="selectedTimePrecisionFormat"
             ng-disabled="isPublished()">
           <ui-select-match placeholder="{{'CREATOR.selectTimePrecisionFormat' | translate}}">{{selectedTimePrecisionFormat.label}}
           </ui-select-match>
-          <ui-select-choices repeat="type in timePrecisionFormats">
+          <ui-select-choices repeat="type in temporalEditorFieldService.timePrecisionFormats">
             {{type.label}}
           </ui-select-choices>
         </ui-select>
       </div>
 
-      <!-- enable timezone  -->
-      <div ng-init="setTimeEnableTimezoneFromModel()" class="form-group" ng-if="hasTimeComponent()">
+      <!-- enable timezone -->
+      <div ng-init="temporalEditorFieldService.setTimeEnableTimezoneFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeComponent(field)">
         <ui-select
             class="form-control"
             theme="bootstrap"
             close-on-select="true"
-            ng-change="setTimeEnableTimezoneFromUI($select.selected)"
+            ng-change="temporalEditorFieldService.setTimeEnableTimezoneFromUI($select.selected, thisScope)"
             ng-model="selectedTimeEnableTimezone"
             ng-disabled="isPublished()">
           <ui-select-match placeholder="{{'CREATOR.selectTimeEnableTimezone' | translate}}">{{selectedTimeEnableTimezone.label}}
           </ui-select-match>
-          <ui-select-choices repeat="option in timeEnableTimezoneOptions">
+          <ui-select-choices repeat="option in temporalEditorFieldService.timeEnableTimezoneOptions">
             {{option.label}}
           </ui-select-choices>
         </ui-select>
       </div>
 
-      <!-- enable am/pm (or 24h)-->
-      <div ng-init="setTimeEnableAmPmFromModel()" class="form-group" ng-if="hasTimeComponent()">
+      <!-- 12h or 24h -->
+      <div ng-init="temporalEditorFieldService.setTimeEnableAmPmFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeComponent(field)">
         <ui-select
             class="form-control"
             theme="bootstrap"
             close-on-select="true"
-            ng-change="setTimeEnableAmPmFromUI($select.selected)"
+            ng-change="temporalEditorFieldService.setTimeEnableAmPmFromUI($select.selected, thisScope)"
             ng-model="selectedTimeEnableAmPm"
             ng-disabled="isPublished()">
           <ui-select-match placeholder="{{'CREATOR.selectTimeEnableAmPm' | translate}}">{{selectedTimeEnableAmPm.label}}
           </ui-select-match>
-          <ui-select-choices repeat="option in timeEnableAmPmOptions">
+          <ui-select-choices repeat="option in temporalEditorFieldService.timeEnableAmPmOptions">
             {{option.label}}
           </ui-select-choices>
         </ui-select>

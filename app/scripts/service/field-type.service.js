@@ -49,7 +49,7 @@ define([
 
     service.isStaticField = function (fieldType) {
       for (var ft in fieldTypes) {
-        if (fieldTypes[ft].cedarType == fieldType) {
+        if (fieldTypes[ft].cedarType === fieldType) {
           return fieldTypes[ft].staticField;
         }
       }
@@ -57,12 +57,12 @@ define([
     };
 
     service.isAttributeValueField = function (fieldType) {
-      return fieldType == 'attribute-value';
+      return fieldType === 'attribute-value';
     };
 
     service.getFieldIconClass = function (fieldType) {
       for (var ft in fieldTypes) {
-        if (fieldTypes[ft].cedarType == fieldType) {
+        if (fieldTypes[ft].cedarType === fieldType) {
           return fieldTypes[ft].iconClass;
         }
       }

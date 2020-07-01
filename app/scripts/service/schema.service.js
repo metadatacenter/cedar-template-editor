@@ -164,8 +164,8 @@ define([
       service.schemaOf(node)._ui.hidden = value;
     };
 
-    service.getDisplayAmPm = function (node) {
-      return service.schemaOf(node)._ui.inputTimeDisplayAmPm;
+    service.getInputTimeFormat = function (node) {
+      return service.schemaOf(node)._ui.inputTimeFormat;
     };
 
     service.getIdentifier = function (node) {
@@ -445,11 +445,6 @@ define([
       }
     };
 
-    service.getTemporalType = function (node) {
-      return node && service.schemaOf(node)._valueConstraints.temporalType;
-    };
-
-
     //
     // inputType
     //
@@ -487,36 +482,6 @@ define([
 
     service.isTemporalType = function (node) {
       return service.getInputType(node) === 'temporal';
-    };
-
-    service.hasTimeComponent = function (node) {
-      return service.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:time');
-    };
-
-    service.hasDateComponent = function (node) {
-      return service.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:date');
-    };
-
-    service.isTemporalDateTime = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:dateTime';
-    };
-
-    service.isTemporalDate = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:date';
-    };
-
-    service.isTemporalTime = function (node) {
-      return service.isTemporalType(node) && service.getTemporalType(node) === 'xsd:time';
-    };
-
-    service.isTimezoneEnabled = function (node) {
-      let r = service.hasTimeComponent(node) && service.getValueConstraints(node).xsdTimeZoneEnable;
-      return r;
-    };
-
-    service.isDecimalSecondsEnabled = function (node) {
-      let r = service.hasTimeComponent(node) && service.getValueConstraints(node).xsdTimeFinestGranularity === 'DecimalSecond';
-      return r;
     };
 
     service.isLinkType = function (node) {
@@ -612,6 +577,10 @@ define([
       if (node) return service.schemaOf(node).properties;
     };
 
+
+    service.getUI = function (field) {
+      return service.schemaOf(field)._ui;
+    };
 
     //
     // valueConstraints
