@@ -3,9 +3,16 @@
 <hr />
 {{timepickerOptions | json}}
 <hr />-->
+<!--<hr />
+date:{{date}}
+<hr />
+time:{{time}}
+<hr />
+datetime:{{datetime}}
+<hr />-->
 <div ng-init="initializeValue(field); initializeValueType(field);">
 
-  <div ng-if="isActive(index) && temporalRuntimeFieldService.hasDateComponent(field)" class="form-group input-group has-success has-feedback">
+  <div ng-if="isActive(index) && temporalEditorFieldService.hasDateComponent(field)" class="form-group input-group has-success has-feedback">
     <input
         ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
         name="dateTimeField"
@@ -31,7 +38,7 @@
     </span>
   </div>
 
-  <div ng-if="isActive(index) && temporalRuntimeFieldService.hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
+  <div ng-if="isActive(index) && temporalEditorFieldService.hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
     <div
         ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
         name="timeField"
@@ -61,8 +68,8 @@
         <td>
           <div class="form-group" style="margin-left:12px;margin-right:52px">
             <input
-                ng-change="temporalRuntimeFieldService.setDecimalSecondsFromUI(decimalSeconds, valueArray[index]['@value'], field)"
-                ng-model="decimalSeconds"
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsFromUI(thisScope, time, valueArray[index]['@value'])"
+                ng-model="time.decimalSeconds"
                 type="number"
                 name="numericField"
                 min="0"
@@ -101,17 +108,17 @@
 
   <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDateTime(field)">
     <pre class="alert alert-info">DateTime is  : {{datetime | date:timepickerOptions.renderingFormat }}
-Stored as    : {{datetime | date:timepickerOptions.storageFormat }}</pre>
+Stored as    : {{valueArray[index]['@value']}}</pre>
   </div>
 
   <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDate(field)">
     <pre class="alert alert-info">Date is  : {{date.dt | date:datepickerOptions.renderingFormat }}
-Stored as: {{date.dt | date:datepickerOptions.storageFormat }}</pre>
+Stored as: {{valueArray[index]['@value']}}</pre>
   </div>
 
   <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalTime(field)">
     <pre class="alert alert-info">Time is: {{time.dt | date:timepickerOptions.renderingFormat }}
-Stored as: {{time.dt | date:timepickerOptions.storageFormat }}</pre>
+Stored as: {{valueArray[index]['@value']}}</pre>
   </div>
 
   <div ng-if="isActive(index)">

@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.temporalRuntimeFieldService', [])
       .service('TemporalRuntimeFieldService', TemporalRuntimeFieldService);
 
-  TemporalRuntimeFieldService.$inject = ["$rootScope", "schemaService", "TemporalEditorFieldService"];
+  TemporalRuntimeFieldService.$inject = ["$rootScope", "$filter", "schemaService", "TemporalEditorFieldService", "DataManipulationService"];
 
-  function TemporalRuntimeFieldService($rootScope, schemaService, TemporalEditorFieldService) {
+  function TemporalRuntimeFieldService($rootScope, $filter, schemaService, TemporalEditorFieldService, DataManipulationService) {
 
     let service = {
       serviceId: "TemporalRuntimeFieldService"
@@ -71,19 +71,11 @@ define([
     };
 
     service.isTimezoneEnabled = function (node) {
-      return service.hasTimeComponent(node) && schemaService.getValueConstraints(node).xsdTimeZoneEnable;
+      return TemporalEditorFieldService.hasTimeComponent(node) && schemaService.getUI(node).timezoneEnable;
     };
 
     service.isDecimalSecondsEnabled = function (node) {
-      return service.hasTimeComponent(node) && schemaService.getValueConstraints(node).xsdTimeFinestGranularity === 'DecimalSecond';
-    };
-
-    service.hasTimeComponent = function (node) {
-      return schemaService.isTemporalType(node) && (TemporalEditorFieldService.getTemporalType(node) === 'xsd:dateTime' || TemporalEditorFieldService.getTemporalType(node) === 'xsd:time');
-    };
-
-    service.hasDateComponent = function (node) {
-      return schemaService.isTemporalType(node) && (TemporalEditorFieldService.getTemporalType(node) === 'xsd:dateTime' || TemporalEditorFieldService.getTemporalType(node) === 'xsd:date');
+      return TemporalEditorFieldService.hasTimeComponent(node) && schemaService.getUI(node).temporalGranularity === 'decimalSecond';
     };
 
     service.initTimezoneDropdown = function (scope) {
@@ -120,8 +112,6 @@ define([
       if (service.isTemporalTime($scope.field)) {
         tpo.displayAmPm = schemaService.getInputTimeFormat($scope.field) === '12h';
         let ui = schemaService.getUI($scope.field);
-        console.log($scope.field);
-        console.log(ui);
         let gran = ui.temporalGranularity;
         if (gran === 'hour') {
           tpo.showMinutes = false;
@@ -220,15 +210,22 @@ define([
       $scope.datepickerOptions = dpo;
 
 
-      if (service.hasDateComponent($scope.field)) {
+      if (TemporalEditorFieldService.hasDateComponent($scope.field)) {
         $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
         $scope.date.dt.setMinutes($scope.date.dt.getTimezoneOffset());
       }
-      if (service.hasTimeComponent($scope.field)) {
+      if (TemporalEditorFieldService.hasTimeComponent($scope.field)) {
         service.initTimezoneDropdown($scope);
-        let thisMoment = moment($scope.valueArray[$scope.index]['@value'], [$scope.timepickerOptions.storageFormat]);
+        let val = $scope.valueArray[$scope.index]['@value'];
+        let thisMoment = moment(val, [$scope.timepickerOptions.storageFormat]);
         $scope.time.dt = thisMoment.toDate();
-        $scope.decimalSeconds = 0;
+        $scope.time.decimalSeconds = 0;
+        if (val !== null) {
+          let matchFractional = val.match(/\d\.(\d+)/);
+          if (matchFractional != null && matchFractional.length > 1) {
+            $scope.time.decimalSeconds = Number(matchFractional[1]);
+          }
+        }
         let tzId = '-08:00';
         let tzLabel = null;
         for (let i in $scope.availableTimezones) {
@@ -244,13 +241,13 @@ define([
 
     };
 
-    service.showHideDateTimeElements = function($scope) {
+    service.showHideDateTimeElements = function ($scope) {
       let tpO = $scope.timepickerOptions;
       if (angular.element("#timepickerIncMinuteButton")[0]) {
         angular.element("#timepickerIncMinuteButton")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
       }
       if (angular.element("#timepickerIncMinuteSpacer")[0]) {
-        angular.element("#timepickerIncMinuteSpacer")[0].style.display = tpO.showMinutes?'table-cell':'none';
+        angular.element("#timepickerIncMinuteSpacer")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
       }
       if (angular.element("#timepickerDecMinuteButton")[0]) {
         angular.element("#timepickerDecMinuteButton")[0].style.display = tpO.showMinutes ? 'table-cell' : 'none';
@@ -266,6 +263,75 @@ define([
       }
 
     };
+
+    service.setDecimalSecondsFromUI = function (scope, timeWrapper, oldValue) {
+      let dateToParse = oldValue;
+      if (!TemporalEditorFieldService.hasDateComponent(scope.field)) {
+        dateToParse = '2020-02-02T' + dateToParse;
+      }
+      let parsedDate = new Date(dateToParse);
+      let formattedDate = $filter('date')(parsedDate, scope.timepickerOptions.storageFormat);
+      if (!isNaN(Number(timeWrapper.decimalSeconds))) {
+        formattedDate += '.' + timeWrapper.decimalSeconds;
+      }
+      scope.valueArray[scope.index]['@value'] = formattedDate;
+    };
+
+    service.updateModelFromUI = function($scope, newValue, oldValue, isAttributeName, subType, storageFormat, field) {
+      if (service.isTemporalDate($scope.field)) {
+
+        let basedate = $filter('date')(newValue, storageFormat);
+        $scope.model['@value'] = basedate;
+        $scope.datetime = new Date(basedate);
+
+      } else if (service.isTemporalTime($scope.field)) {
+
+        let gran = DataManipulationService.schemaOf(field)._ui.temporalGranularity;
+        if (newValue !== null) {
+          if (gran === 'hour') {
+            newValue.setMinutes(0);
+            newValue.setSeconds(0);
+          } else if (gran === 'minute') {
+            newValue.setSeconds(0);
+          }
+        }
+        let basedate = $filter('date')(newValue, storageFormat);
+        $scope.model['@value'] = basedate;
+        $scope.datetime = new Date(basedate);
+
+        service.setDecimalSecondsFromUI($scope, $scope.time, $scope.valueArray[$scope.index]['@value']);
+
+      } else if (service.isTemporalDateTime($scope.field)) {
+        let oldDateTime = new Date($scope.model['@value']);
+
+        if (subType === 'time') {
+          oldDateTime.setHours(newValue.getHours());
+          oldDateTime.setMinutes(newValue.getMinutes());
+          oldDateTime.setSeconds(newValue.getSeconds());
+        } else if (subType === 'date') {
+          oldDateTime.setFullYear(newValue.getFullYear());
+          oldDateTime.setMonth(newValue.getMonth());
+          oldDateTime.setDate(newValue.getDate());
+        }
+
+        let gran = DataManipulationService.schemaOf(field)._ui.temporalGranularity;
+        if (newValue !== null) {
+          if (gran === 'hour') {
+            oldDateTime.setMinutes(0);
+            oldDateTime.setSeconds(0);
+          } else if (gran === 'minute') {
+            oldDateTime.setSeconds(0);
+          }
+        }
+
+        let basedate = $filter('date')(oldDateTime, storageFormat);
+        $scope.model['@value'] = basedate;
+        $scope.datetime = new Date(basedate);
+
+        service.setDecimalSecondsFromUI($scope, $scope.time, $scope.valueArray[$scope.index]['@value']);
+
+      }
+    }
 
     return service;
   }

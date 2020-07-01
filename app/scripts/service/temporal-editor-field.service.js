@@ -217,6 +217,15 @@ define([
       return schemaService.isTemporalType(node) && service.getTemporalType(node) === 'xsd:date';
     };
 
+    service.hasTimeComponent = function (node) {
+      return schemaService.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:time');
+    };
+
+    service.hasDateComponent = function (node) {
+      return schemaService.isTemporalType(node) && (service.getTemporalType(node) === 'xsd:dateTime' || service.getTemporalType(node) === 'xsd:date');
+    };
+
+
     return service;
   }
 

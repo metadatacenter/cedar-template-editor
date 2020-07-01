@@ -30,7 +30,6 @@ define([
       });
 
       $scope.parseDate = function (value) {
-        console.log('parseDate', value);
         let result = false;
         if (value && value.length > 0) {
 
@@ -47,7 +46,6 @@ define([
       };
 
       $scope.parseTime = function (value) {
-        console.log('parseTime', value);
         let result = false;
         if (value && value.length > 0) {
 

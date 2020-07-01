@@ -9,11 +9,11 @@ define([
 
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$window", '$timeout', "SpreadsheetService",
     "UrlService", "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService", "ValueRecommenderService",
-    "uibDateParser", "TemporalRuntimeFieldService", "CONST"];
+    "uibDateParser", "TemporalRuntimeFieldService", "TemporalEditorFieldService", "CONST"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window, $timeout, SpreadsheetService,
                              UrlService, DataManipulationService, schemaService, UIUtilService, autocompleteService, ValueRecommenderService,
-                             uibDateParser, TemporalRuntimeFieldService, CONST) {
+                             uibDateParser, TemporalRuntimeFieldService, TemporalEditorFieldService, CONST) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -34,6 +34,7 @@ define([
       $scope.CONST = CONST;
 
       $scope.temporalRuntimeFieldService = TemporalRuntimeFieldService;
+      $scope.temporalEditorFieldService = TemporalEditorFieldService;
       $scope.thisScope = $scope;
 
 
@@ -781,15 +782,6 @@ define([
         }
       };
 
-      $scope.setDecimalSecondsFromUI = function(newValue, oldValue, field) {
-        console.log("setDecimalSecondsFromUI");
-        console.log(newValue);
-        console.log(oldValue);
-        console.log(field);
-
-        console.log(basedata)
-      };
-
       // set the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName, subType, storageFormat, field) {
 
@@ -804,54 +796,7 @@ define([
             validateValueRange($scope.valueArray[$scope.index]['@value']);
             break;
           case "temporal":
-            if (TemporalRuntimeFieldService.isTemporalDate($scope.field)) {
-
-              let basedate = $filter('date')(newValue, storageFormat);
-              $scope.model['@value'] = basedate;
-              $scope.datetime = new Date(basedate);
-
-            } else if (TemporalRuntimeFieldService.isTemporalTime($scope.field)) {
-
-              let gran = dms.schemaOf(field)._ui.temporalGranularity;
-              if (newValue !== null) {
-                if (gran === 'hour') {
-                  newValue.setMinutes(0);
-                  newValue.setSeconds(0);
-                } else if (gran === 'minute') {
-                  newValue.setSeconds(0);
-                }
-              }
-              let basedate = $filter('date')(newValue, storageFormat);
-              $scope.model['@value'] = basedate;
-              $scope.datetime = new Date(basedate);
-
-            } else if (TemporalRuntimeFieldService.isTemporalDateTime($scope.field)) {
-              let oldDateTime = new Date($scope.model['@value']);
-
-              if (subType === 'time') {
-                oldDateTime.setHours(newValue.getHours());
-                oldDateTime.setMinutes(newValue.getMinutes());
-                oldDateTime.setSeconds(newValue.getSeconds());
-              } else if (subType === 'date') {
-                oldDateTime.setFullYear(newValue.getFullYear());
-                oldDateTime.setMonth(newValue.getMonth());
-                oldDateTime.setDate(newValue.getDate());
-              }
-
-              let gran = dms.schemaOf(field)._ui.temporalGranularity;
-              if (newValue !== null) {
-                if (gran === 'hour') {
-                  oldDateTime.setMinutes(0);
-                  oldDateTime.setSeconds(0);
-                } else if (gran === 'minute') {
-                  oldDateTime.setSeconds(0);
-                }
-              }
-
-              let basedate = $filter('date')(oldDateTime, storageFormat);
-              $scope.model['@value'] = basedate;
-              $scope.datetime = new Date(basedate);
-            }
+            TemporalRuntimeFieldService.updateModelFromUI($scope, newValue, oldValue, isAttributeName, subType, storageFormat, field);
             break;
           case 'attribute-value':
             var parentModel = $scope.parentModel || $scope.$parent.model;
@@ -1432,13 +1377,13 @@ define([
 
       $scope.dateFormat = function (field, value, dateFormatString, timeFormatString) {
         if (value) {
-          if (TemporalRuntimeFieldService.hasDateComponent(field)) {
+          if (TemporalEditorFieldService.hasDateComponent(field)) {
             let date = new Date(value);
             date.setMinutes(date.getTimezoneOffset());
             //return date.toLocaleDateString(navigator.language);
             return $filter('date')(date, dateFormatString);
           }
-          if (TemporalRuntimeFieldService.hasTimeComponent(field)) {
+          if (TemporalEditorFieldService.hasTimeComponent(field)) {
             let mom = moment(value, $scope.timepickerOptions.storageFormat);
             let date = mom.toDate();
             //return date.toLocaleDateString(navigator.language);
