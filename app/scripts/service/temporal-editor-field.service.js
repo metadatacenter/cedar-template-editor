@@ -168,31 +168,33 @@ define([
     service.setDateTimeTypeFromUI = function (item, $scope) {
       let schema = dms.schemaOf($scope.field);
       schema._valueConstraints.temporalType = item.id;
-      delete schema._ui.temporalGranularity;
       service.cleanupExtraSchemaKeys(item, $scope);
+      if (item.id == 'xsd:date') {
+        schema._ui.temporalGranularity = 'day';
+      } else {
+        schema._ui.temporalGranularity = 'second';
+      }
     };
 
     // Sets the date precision format based on the item selected at the UI
     service.setDatePrecisionFormatFromUI = function (item, $scope) {
-      dms.schemaOf($scope.field)._ui.temporalGranularity = item.id;
       service.cleanupExtraSchemaKeys(item, $scope);
+      dms.schemaOf($scope.field)._ui.temporalGranularity = item.id;
     };
 
     // Sets the time precision format based on the item selected at the UI
     service.setTimePrecisionFormatFromUI = function (item, $scope) {
-      dms.schemaOf($scope.field)._ui.temporalGranularity = item.id;
       service.cleanupExtraSchemaKeys(item, $scope);
+      dms.schemaOf($scope.field)._ui.temporalGranularity = item.id;
     };
 
     service.cleanupExtraSchemaKeys = function (item, $scope) {
+      let schema = dms.schemaOf($scope.field);
       if (!service.hasTimeComponent($scope.field)) {
-        let schema = dms.schemaOf($scope.field);
         delete schema._ui.inputTimeFormat;
         delete schema._ui.timezoneEnabled;
       }
-      // if (!service.hasDateComponent($scope.field)) {
-      //   let schema = dms.schemaOf($scope.field);
-      // }
+      delete schema._ui.temporalGranularity;
     };
 
     // Sets the time enable microseconds based on the item selected at the UI

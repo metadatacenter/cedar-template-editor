@@ -1,6 +1,6 @@
 <!--<hr />
-{{datepickerOptions | json}}
-<hr />
+{{datepickerOptions | json}}-->
+<!--<hr />
 {{timepickerOptions | json}}
 <hr />-->
 <!--<hr />
@@ -68,7 +68,7 @@ datetime:{{datetime}}
         <td>
           <div class="form-group" style="margin-left:12px;margin-right:52px">
             <input
-                ng-change="temporalRuntimeFieldService.setDecimalSecondsFromUI(thisScope, time, valueArray[index]['@value'])"
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsAndTimezoneFromUI(thisScope, time, time.decimalSeconds, null, valueArray[index]['@value'])"
                 ng-model="time.decimalSeconds"
                 type="number"
                 name="numericField"
@@ -80,20 +80,20 @@ datetime:{{datetime}}
           </div>
         </td>
       </tr>
-      <tr ng-if="isTimezoneEnabled(field)">
+      <tr ng-if="temporalRuntimeFieldService.isTimezoneEnabled(field)">
         <td>
           <div style="margin-top:12px">{{'EDITOR.timezone' | translate}}</div>
         </td>
         <td>
           <div class="form-group">
             <ui-select
-                ng-init="temporalRuntimeFieldService.initTimezoneDropdown($scope)"
+                ng-init="temporalRuntimeFieldService.initTimezoneDropdown(thisScope)"
                 class="form-control"
                 theme="bootstrap"
                 close-on-select="true"
-                ng-change="temporalRuntimeFieldService.setTimezoneFromUI($select.selected)"
-                ng-model="selectedTimezone">
-              <ui-select-match placeholder="{{'EDITOR.selectTimezone' | translate}}">{{selectedTimezone.label}}
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsAndTimezoneFromUI(thisScope, time, null, $select.selected, valueArray[index]['@value'])"
+                ng-model="time.selectedTimezone">
+              <ui-select-match placeholder="{{'EDITOR.selectTimezone' | translate}}">{{time.selectedTimezone.label}}
               </ui-select-match>
               <ui-select-choices repeat="timezone in availableTimezones">
                 {{timezone.label}}
