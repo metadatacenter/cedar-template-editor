@@ -6,10 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.autocompleteService', [])
       .factory('autocompleteService', autocompleteService);
 
-  autocompleteService.$inject = ['$translate', 'controlledTermService', 'controlledTermDataService', 'DataManipulationService',
-                                 'StringUtilsService'];
+  autocompleteService.$inject = ['$translate', 'controlledTermService', 'controlledTermDataService', 'DataManipulationService'];
 
-  function autocompleteService($translate, controlledTermService, controlledTermDataService, DataManipulationService, StringUtilsService) {
+  function autocompleteService($translate, controlledTermService, controlledTermDataService, DataManipulationService) {
     var service = {
       serviceId               : "autocompleteService",
       autocompleteResultsCache: {}
