@@ -7,18 +7,13 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                               "$window", '$timeout',
-                               "SpreadsheetService", "UrlService",
-                               "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService",
-                               "ValueRecommenderService", "uibDateParser", "CONST"];
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$window", '$timeout', "SpreadsheetService",
+    "UrlService", "DataManipulationService", "schemaService", "UIUtilService", "autocompleteService", "ValueRecommenderService",
+    "uibDateParser", "TemporalRuntimeFieldService", "TemporalEditorFieldService", "CONST"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, UrlService, DataManipulationService, schemaService,
-                             UIUtilService,
-                             autocompleteService,
-                             ValueRecommenderService, uibDateParser, CONST) {
-
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window, $timeout, SpreadsheetService,
+                             UrlService, DataManipulationService, schemaService, UIUtilService, autocompleteService, ValueRecommenderService,
+                             uibDateParser, TemporalRuntimeFieldService, TemporalEditorFieldService, CONST) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -37,6 +32,10 @@ define([
       $scope.pageRange = 6;
       $scope.valueArray;
       $scope.CONST = CONST;
+
+      $scope.temporalRuntimeFieldService = TemporalRuntimeFieldService;
+      $scope.temporalEditorFieldService = TemporalEditorFieldService;
+      $scope.thisScope = $scope;
 
 
       //
@@ -460,13 +459,11 @@ define([
         // set it active or inactive
         UIUtilService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
-        if (schemaService.isDateType($scope.field)) {
+        if (schemaService.isTemporalType($scope.field)) {
           $scope.setDateValue(index);
-
           $timeout(function () {
             $rootScope.$broadcast('runDateValidation');
           }, 0);
-
         }
 
         if (active) {
@@ -548,7 +545,7 @@ define([
           // is there a next one to set active (except for checkboxes and multi-choice lists, for which we don't add new array items)
           if ($scope.isMultipleCardinality() && !schemaService.isMultipleChoiceField($scope.field)) {
 
-            if (typeof(next) == 'undefined') {
+            if (typeof (next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
                 $scope.setActive(index + 1, true);
                 found = true;
@@ -620,7 +617,7 @@ define([
       $scope.getValueLocation = function () {
         return dms.getValueLocation($scope.field);
       };
-      
+
       $scope.isRecommended = function () {
         return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
@@ -718,8 +715,7 @@ define([
             $scope.optionsUI.radioOption = null;
             $scope.optionsUI.radioPreviousOption = null;
             $scope.updateModelFromUI();
-          }
-          else {
+          } else {
             $scope.optionsUI.radioPreviousOption = label;
           }
         }
@@ -786,8 +782,8 @@ define([
         }
       };
 
-// set the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName) {
+      // set the instance @value fields based on the options selected at the UI
+      $scope.updateModelFromUI = function (newValue, oldValue, isAttributeName, subType, storageFormat, field) {
 
         var fieldValue = $scope.getValueLocation();
         var inputType = $scope.getInputType();
@@ -799,13 +795,8 @@ define([
             validateDecimals($scope.valueArray[$scope.index]['@value']);
             validateValueRange($scope.valueArray[$scope.index]['@value']);
             break;
-          case "date":
-            var str = $scope.toXSDDate(newValue);
-            if ($scope.model.length > 0) {
-              $scope.model[$scope.index]['@value'] = str;
-            } else {
-              $scope.model['@value'] = str;
-            }
+          case "temporal":
+            TemporalRuntimeFieldService.updateModelFromUI($scope, newValue, oldValue, isAttributeName, subType, storageFormat, field);
             break;
           case 'attribute-value':
             var parentModel = $scope.parentModel || $scope.$parent.model;
@@ -913,6 +904,7 @@ define([
 // set the UI with the values from the model
       $scope.updateUIFromModel = function () {
         let inputType = $scope.getInputType();
+        let valueLocation = null;
         switch (inputType) {
           case "numeric":
             for (let i = 0; i < $scope.valueArray.length; i++) {
@@ -923,31 +915,37 @@ define([
               $scope.data.info[i] = {'value': value};
             }
             break;
-          case "date":
-            $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          // case "date":
+          //   $scope.date.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          // case "time":
+          //   $scope.time.dt = new Date($scope.valueArray[$scope.index]['@value']);
+          //   break;
+          case "temporal":
+            TemporalRuntimeFieldService.initializeDateTimeOptions($scope);
             break;
           case "checkbox":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             for (var i = 0; i < $scope.model.length; i++) {
-              var value = $scope.model[i][valueLocation];
+              let value = $scope.model[i][valueLocation];
               $scope.optionsUI[value] = value;
             }
             break;
           case "radio":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             if ($scope.model) {
               $scope.optionsUI.radioOption = $scope.model[valueLocation];
             }
             break;
           case "list":
             $scope.optionsUI = {};
-            var valueLocation = $scope.getValueLocation();
+            valueLocation = $scope.getValueLocation();
             if ($scope.isMultipleChoice()) {
               $scope.optionsUI.listMultiSelect = [];
               for (var i = 0; i < $scope.model.length; i++) {
-                var v = $scope.model[i][valueLocation];
+                let v = $scope.model[i][valueLocation];
                 if (v) {
                   $scope.optionsUI.listMultiSelect.push({"label": $scope.model[i][valueLocation]});
                 }
@@ -1322,7 +1320,6 @@ define([
 //
 // date picker  date parser
 //
-
       $scope.date = {
         dt             : '',
         language       : navigator.language,
@@ -1330,6 +1327,16 @@ define([
         opened         : false,
         altInputFormats: ['MM/dd/yyyy', 'MM-dd-yyyy', 'yyyy-MM-dd']
       };
+
+      $scope.time = {
+        dt             : '',
+        language       : navigator.language,
+        format         : 'HH:mm:ss',
+        opened         : false,
+        altInputFormats: []
+      };
+
+      $scope.datetime = null;
 
 // always store the xsd:date format
       $scope.toXSDDate = function (value) {
@@ -1340,24 +1347,63 @@ define([
         }
       };
 
+      $scope.toXSDTime = function (value) {
+        if ($scope.isInvalidTime(value)) {
+          return null;
+        } else {
+          return $filter('date')(new Date(value), 'HH:mm:ss');
+        }
+      };
+
       $scope.setDateValue = function (index) {
         if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
           var date = new Date($scope.valueArray[index]['@value']);
           var utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
               date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
           $scope.date.dt = utcDate;
-
         } else {
           $scope.date.dt = null;
         }
-
       };
 
-      $scope.dateFormat = function (value) {
+      $scope.setTimeValue = function (index) {
+        if ($scope.valueArray && $scope.valueArray[index] && $scope.valueArray[index]['@value']) {
+          var time = uibDateParser.parse($scope.valueArray[index]['@value'], "HH:mm:ss");
+          $scope.time.dt = time;
+        } else {
+          $scope.time.dt = null;
+        }
+      };
+
+      $scope.dateFormat = function (field, value, dateFormatString, timeFormatString) {
         if (value) {
-          var date = new Date(value);
-          date.setMinutes(date.getTimezoneOffset());
-          return date.toLocaleDateString(navigator.language);
+          if (TemporalEditorFieldService.hasDateComponent(field)) {
+            let date = new Date(value);
+            date.setMinutes(date.getTimezoneOffset());
+            //return date.toLocaleDateString(navigator.language);
+            return $filter('date')(date, dateFormatString);
+          }
+          if (TemporalEditorFieldService.hasTimeComponent(field)) {
+            let mom = moment(value, $scope.timepickerOptions.storageFormat);
+            let date = mom.toDate();
+            //return date.toLocaleDateString(navigator.language);
+            return $filter('date')(date, timeFormatString);
+          }
+        }
+      };
+
+      $scope.timeFormat = function (value) {
+        if (value) {
+          var time = uibDateParser.parse(value, "HH:mm:ss");
+          return time.toLocaleTimeString(navigator.language);
+        }
+      };
+
+      $scope.dateTimeFormat = function (value) {
+        if (value) {
+          var date = uibDateParser.parse(value, "yyyy-MM-dd HH:mm:ss");
+          var options = { dateStyle: 'full', timeStyle: 'full', hour: '2-digit', minute: '2-digit', second: '2-digit'};
+          return date.toLocaleDateString(navigator.language, options);
         }
       };
 
@@ -1366,114 +1412,16 @@ define([
         return date == null;
       };
 
-// $scope.getPlaceholderText = function () {
-//   var text = "Enter a value";
-//   if (dms.isTextFieldType($scope.field)) {
-//     text = getPlaceholderForTextField($scope.field);
-//   } else if (dms.isNumericField($scope.field)) {
-//     text = getPlaceholderForNumericField($scope.field);
-//   }
-//   return text;
-// };
-
-// var getPlaceholderForTextField = function (node) {
-//   var text = "Enter a value";
-//   text += dms.hasMinLength(node) ? ", min length: " + dms.getMinLength(node) : "";
-//   text += dms.hasMaxLength(node) ? ", max length: " + dms.getMaxLength(node) : "";
-//   return text;
-// }
-
-
-// var getPlaceholderForNumericField = function (node) {
-//   var numberType = dms.getNumberType(node);
-//   var text = "Enter " + getNumberLabel(numberType) + " number";
-//   if (dms.hasUnitOfMeasure(node)) {
-//     text += " (in " + dms.getUnitOfMeasure(node) + ")";
-//   }
-//   var decimalPlace = dms.getDecimalPlace(node) || 0;
-//   if (decimalPlace == 0) {
-//     text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) : "";
-//     text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) : "";
-//   } else {
-//     if (dms.hasMinValue(node) || dms.hasMaxValue(node)) {
-//       var decimalPlacesText = "." + "0".repeat(decimalPlace)
-//       text += dms.hasMinValue(node) ? ", min: " + dms.getMinValue(node) + decimalPlacesText : "";
-//       text += dms.hasMaxValue(node) ? ", max: " + dms.getMaxValue(node) + decimalPlacesText : "";
-//     } else {
-//       text += " up to " + decimalPlace + " decimal " + (decimalPlace == 1 ? "place" : "places");
-//     }
-//   }
-//   return text;
-// }
-
-// var getNumberLabel = function (numberType) {
-//   var label = "a";
-//   if (numberType == "xsd:decimal") {
-//     label = "a decimal"
-//   } else if (numberType == "xsd:int") {
-//     label = "an integer";
-//   } else if (numberType == "xsd:long") {
-//     label = "a long-integer";
-//   } else if (numberType == "xsd:float") {
-//     label = "a single-precision floating"
-//   } else if (numberType == "xsd:double") {
-//     label = "a double-precision floating";
-//   }
-//   return label;
-// }
-
-// Check the string length of the input value
-// $scope.checkStringLength = function () {
-//   var value = $scope.valueArray[$scope.index]['@value']
-//   if (value) {
-//     var valueLength = value.length;
-//     var isTooShort = false;
-//     if (dms.hasMinLength($scope.field)) {
-//       isTooShort = valueLength < dms.getMinLength($scope.field);
-//     }
-//     var isTooLong = false;
-//     if (dms.hasMaxLength($scope.field)) {
-//       isTooLong = valueLength > dms.getMaxLength($scope.field);
-//     }
-//     var isValid = !isTooLong && !isTooShort;
-//     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', isValid);
-//   } else {
-//     $scope.forms['fieldEditForm' + $scope.index].textField.$setValidity('stringlength', true);
-//   }
-// };
-
-// Check the numeric value of the input value
-// $scope.checkNumberValue = function () {
-//   var value = $scope.valueArray[$scope.index]['@value'];
-//   if (value) {
-//     value = Number(value);
-//     var isTooLarge = false;
-//     if (dms.hasMaxValue($scope.field)) {
-//       isTooLarge = value > dms.getMaxValue($scope.field);
-//     }
-//     var isTooSmall = false;
-//     if (dms.hasMinValue($scope.field)) {
-//       isTooSmall = value < dms.getMinValue($scope.field);
-//     }
-//     var isValid = !isTooLarge && !isTooSmall;
-//     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', isValid);
-//   } else {
-//     $scope.forms['fieldEditForm' + $scope.index].numericField.$setValidity('numberValue', true);
-//   }
-// };
-
-
-//
-// initialization
-//
+      $scope.isInvalidTime = function (value) {
+        var time = uibDateParser.parse(value);
+        return time == null;
+      };
 
       $scope.setValueArray();
       $scope.setAttributeValueArray();
       $scope.viewState = UIUtilService.createViewState($scope.field, $scope.switchToSpreadsheet,
           $scope.cleanupSpreadsheet);
-
-
-    }
+    };
 
 
     return {
@@ -1498,7 +1446,7 @@ define([
 
       },
       controller : function ($scope, $element) {
-        var addPopover = function ($scope) {
+        const addPopover = function () {
           //Initializing Bootstrap Popover fn for each item loaded
           setTimeout(function () {
             if ($element.find('#field-value-tooltip').length > 0) {
@@ -1517,5 +1465,4 @@ define([
     };
 
   }
-
 });

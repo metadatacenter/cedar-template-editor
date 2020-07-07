@@ -19,8 +19,7 @@ define([
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
                                         UIUtilService, DataManipulationService, schemaService, ValidationService,
-                                        controlledTermDataService,
-                                        StringUtilsService,
+                                        controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST, CedarUser) {
 

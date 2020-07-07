@@ -11,40 +11,9 @@ define([
       controlledTermSearchDirective.$inject = ["StringUtilsService"];
 
       function controlledTermSearchDirective(StringUtilsService) {
-        var directive = {
-          bindToController: {
-            fieldName            : '=',
-            searchTerm           : '=',
-            searchMode           : '=',
-            selectedClass        : '=',
-            currentOntology      : '=',
-            advanced             : '=',
-            selectedOntologies   : '=',
-            resetCallback        : '=',
-            addCallback          : '=',
-            isLoadingClassDetails: '=',
-            isCreatingMappings   : '=',
-            isCreatingVs         : '=',
-            treeVisible          : '=',
-            modalId              : '=',
-            searchScope          : '='
-          },
-          controller      : controlledTermSearchDirectiveController,
-          controllerAs    : 'tsc',
-          restrict        : 'E',
-          scope           : {},
-          templateUrl     : 'scripts/controlled-term/controlled-term-search.directive.html'
-        };
 
-        return directive;
-
-        controlledTermSearchDirectiveController.$inject = [
-          '$q',
-          '$rootScope',
-          '$scope',
-          '$timeout',
-          'controlledTermDataService'
-        ];
+        controlledTermSearchDirectiveController.$inject = ['$q', '$rootScope', '$scope', '$timeout', 'controlledTermService',
+                                                        'controlledTermDataService' ];
 
         function controlledTermSearchDirectiveController($q, $rootScope, $scope, $timeout, controlledTermService,
                                                          controlledTermDataService) {
@@ -119,7 +88,7 @@ define([
           function search(event) {
             var select = null;
             reset(true, true, true, true, true);
-            if (isEmptySearchQuery() == false) {
+            if (isEmptySearchQuery() === false) {
               vm.showEmptyQueryMsg = false;
               var searchProperties = false;
               var searchClasses = true;
@@ -136,14 +105,12 @@ define([
                 searchClasses = true;
                 searchValues = false;
                 searchValueSets = false;
-              }
-              else if ((isFieldValuesMode()) && (!isSearchingValueSets())) {
+              } else if ((isFieldValuesMode()) && (!isSearchingValueSets())) {
                 searchProperties = false;
                 searchClasses = true;
                 searchValues = true;
                 searchValueSets = false;
-              }
-              else if ((isFieldValuesMode()) && (isSearchingValueSets())) {
+              } else if ((isFieldValuesMode()) && (isSearchingValueSets())) {
                 searchProperties = false;
                 searchClasses = false;
                 searchValues = false;
@@ -163,7 +130,7 @@ define([
               bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
                   searchValueSets, searchProperties).then(function (response) {
                 if (response.collection && response.collection.length > 0) {
-                  var tArry = [], i;
+                  var tArry = [];
                   for (var i = 0; i < response.collection.length; i += 1) {
                     var source = null;
                     if (isTypeClass(response.collection[i].type) || isTypeProperty(response.collection[i].type)) {
@@ -182,7 +149,7 @@ define([
                         source   : source
                       });
 
-                      if (select==null && vm.searchTerm && vm.searchTerm.uri &&  response.collection[i].id == vm.searchTerm.uri) {
+                      if (select==null && vm.searchTerm && vm.searchTerm.uri &&  response.collection[i].id === vm.searchTerm.uri) {
                         select = tArry.length-1;
                       }
                     }
@@ -237,18 +204,16 @@ define([
               return controlledTermDataService.searchClasses(query, sources, maxResults).then(function (response) {
                 return response;
               });
-            }
-            else if ((searchClasses) && (searchValues) && (!searchValueSets)) {
+            } else if ((searchClasses) && (searchValues) && (!searchValueSets)) {
               return controlledTermDataService.searchClassesAndValues(query, sources, maxResults).then(function (response) {
                 return response;
               });
-            }
-            else if ((!searchClasses) && (!searchValues) && (searchValueSets)) {
+            } else if ((!searchClasses) && (!searchValues) && (searchValueSets)) {
               return controlledTermDataService.searchValueSets(query, sources, maxResults).then(function (response) {
                 return response;
               });
             }
-          };
+          }
 
           function getDefaultSearchQuery() {
             //return isFieldTypesMode() ? vm.fieldName : '';
@@ -316,43 +281,43 @@ define([
            */
 
           function isFieldPropertiesMode() {
-            return vm.searchMode == 'properties';
+            return vm.searchMode === 'properties';
           }
 
           function isFieldTypesMode() {
-            return vm.searchMode == 'field';
+            return vm.searchMode === 'field';
           }
 
           function isFieldValuesMode() {
-            return vm.searchMode == 'values';
+            return vm.searchMode === 'values';
           }
 
           function isSearching() {
-            return (vm.action == 'search');
+            return (vm.action === 'search');
           }
 
           function isSearchingClasses() {
-            return (vm.action == 'search' && vm.searchScope == 'classes');
+            return (vm.action === 'search' && vm.searchScope === 'classes');
           }
 
           function isSearchingOntologies() {
-            return (vm.action == 'search' && vm.searchScope == 'ontologies');
+            return (vm.action === 'search' && vm.searchScope === 'ontologies');
           }
 
           function isSearchingValueSets() {
-            return (vm.action == 'search' && vm.searchScope == 'value-sets');
+            return (vm.action === 'search' && vm.searchScope === 'value-sets');
           }
 
           function isSearchingProperties() {
-            return (vm.action == 'search' && vm.searchScope == 'properties');
+            return (vm.action === 'search' && vm.searchScope === 'properties');
           }
 
           function isCreating() {
-            return (vm.action == 'create');
+            return (vm.action === 'create');
           }
 
           function isEmptySearchQuery() {
-            return (vm.searchQuery == '' || vm.searchQuery == null);
+            return (vm.searchQuery === '' || vm.searchQuery == null);
           }
 
           /**
@@ -363,12 +328,12 @@ define([
             vm.treeVisible = false;
             vm.searchFinished = false;
             vm.showSearchPreloader = true;
-            if (vm.allOntologies.length == 0) {
+            if (vm.allOntologies.length === 0) {
               vm.allOntologies = controlledTermDataService.getAllOntologies();
             }
             if (searchQuery) {
               vm.ontologiesFound = vm.allOntologies.filter(function (ontology) {
-                return ontology.fullName.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
+                return ontology.fullName.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1;
               });
             }
             else {
@@ -389,9 +354,9 @@ define([
             if (close) {
               if (vm.isSearchingClasses()) {
                 if (typeof vm.addCallback === "function") {
-                  if (vm.searchMode == 'field') {
+                  if (vm.searchMode === 'field') {
                     vm.addCallback(vm.selectedClass, vm.currentOntology);
-                  } else if (vm.searchMode == 'values') {
+                  } else if (vm.searchMode === 'values') {
                     vm.addCallback();
                   }
                 }
@@ -430,10 +395,10 @@ define([
               vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
-              if (selection.details.type == 'OntologyClass') {
+              if (selection.details.type === 'OntologyClass') {
                 controlledTermService.loadTreeOfClass(selection.details, vm);
                 handleClose(close);
-              } else if (selection.details.type == 'Value') {
+              } else if (selection.details.type === 'Value') {
                 controlledTermService.loadTreeOfValue(selection.details, vm);
                 handleClose(close);
               }
@@ -453,7 +418,7 @@ define([
               vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
-              if (selection.details.type == 'ValueSet') {
+              if (selection.details.type === 'ValueSet') {
                 controlledTermService.loadTreeOfValueSet(selection.details, vm);
                 handleClose(close);
               }
@@ -479,7 +444,7 @@ define([
           }
 
           function isCurrentOntology() {
-            return vm.currentOntology && vm.currentOntology != '';
+            return vm.currentOntology && vm.currentOntology !== '';
           }
 
           /* Used in ontology tree directive. */
@@ -494,7 +459,7 @@ define([
             if (vm.selectedClass && vm.selectedClass["@id"]) {
               st = vm.selectedClass["@id"];
             }
-            return spl == st;
+            return spl === st;
           }
 
           function showTree() {
@@ -569,17 +534,6 @@ define([
             });
           }
 
-          function getShortText(text, maxLength, finalString, emptyString) {
-            return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
-          }
-
-          /* Hide Ontology Tree and Details */
-          function hideTree() {
-            vm.treeVisible = false;
-            vm.currentOntology = '';
-            vm.classDetails = '';
-          }
-
           /**
            * Watch functions
            */
@@ -616,45 +570,41 @@ define([
           }
 
           function isTypeClass(type) {
-            if (type == "OntologyClass") return true;
-            else return false;
+            return type === "OntologyClass";
           }
 
           function isTypeValueSet(type) {
-            if (type == "ValueSet") return true;
-            else return false;
+            return type === "ValueSet";
           }
 
           function isTypeValue(type) {
-            if (type == "Value") return true;
-            else return false;
+            return type === "Value";
           }
 
           function isTypeProperty(type) {
-            if ((type == "ObjectProperty") || (type == "DatatypeProperty") || (type == "AnnotationProperty")) return true;
-            else return false;
+            return (type === "ObjectProperty") || (type === "DatatypeProperty") || (type === "AnnotationProperty");
           }
 
           function getTypeForUi(type) {
-            if (type == 'OntologyClass') {
+            if (type === 'OntologyClass') {
               return ('Class');
             }
-            else if (type == 'Ontology') {
+            else if (type === 'Ontology') {
               return ('Ontology');
             }
-            else if (type == 'ValueSet') {
+            else if (type === 'ValueSet') {
               return ('Value Set');
             }
-            else if (type == 'Value') {
+            else if (type === 'Value') {
               return ('Value');
             }
-            else if (type == 'DatatypeProperty') {
+            else if (type === 'DatatypeProperty') {
               return ('Datatype Property');
             }
-            else if (type == 'ObjectProperty') {
+            else if (type === 'ObjectProperty') {
               return ('Object Property');
             }
-            else if (type == 'AnnotationProperty') {
+            else if (type === 'AnnotationProperty') {
               return ('Annotation Property');
             }
           }
@@ -669,7 +619,34 @@ define([
                 [vm.propertyUri, vm.propertyLabel, vm.propertyDescription]);
           }
         }
+
+        let directive = {
+          bindToController: {
+            fieldName            : '=',
+            searchTerm           : '=',
+            searchMode           : '=',
+            selectedClass        : '=',
+            currentOntology      : '=',
+            advanced             : '=',
+            selectedOntologies   : '=',
+            resetCallback        : '=',
+            addCallback          : '=',
+            isLoadingClassDetails: '=',
+            isCreatingMappings   : '=',
+            isCreatingVs         : '=',
+            treeVisible          : '=',
+            modalId              : '=',
+            searchScope          : '='
+          },
+          controller      : controlledTermSearchDirectiveController,
+          controllerAs    : 'tsc',
+          restrict        : 'E',
+          scope           : {},
+          templateUrl     : 'scripts/controlled-term/controlled-term-search.directive.html'
+        };
+
+        return directive;
+
       }
     }
 );
-

@@ -295,7 +295,7 @@ define([
                     // Set default values and types for fields
                     dms.initializeValue(value, parentModel[name]);
                     // Initialize value type for those fields that have it
-                    if (schemaService.isTextFieldType(value) || schemaService.isDateType(value) || schemaService.isNumericField(value)) {
+                    if (schemaService.isTextFieldType(value) || schemaService.isTemporalType(value) || schemaService.isNumericField(value)) {
                       dms.initializeValueType(value, parentModel[name]);
                     }
                     if (schemaService.isAttributeValueType(value)) {

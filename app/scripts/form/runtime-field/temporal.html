@@ -1,0 +1,137 @@
+<!--<hr />
+{{datepickerOptions | json}}-->
+<!--<hr />
+{{timepickerOptions | json}}
+<hr />-->
+<!--<hr />
+date:{{date}}
+<hr />
+time:{{time}}
+<hr />
+datetime:{{datetime}}
+<hr />-->
+<div ng-init="initializeValue(field); initializeValueType(field);">
+
+  <div ng-if="isActive(index) && temporalEditorFieldService.hasDateComponent(field)" class="form-group input-group has-success has-feedback">
+    <input
+        ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
+        name="dateTimeField"
+        type="string"
+        class="form-control select dateField"
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        uib-datepicker-popup="{{datepickerOptions.format}}"
+        placeholder="{{datepickerOptions.format}}"
+        datepicker-options="datepickerOptions"
+        ng-model="date.dt"
+        ng-change="updateModelFromUI(date.dt, valueArray[index]['@value'],false, 'date', datepickerOptions.storageFormat, field)"
+        is-open="date.opened"
+        ng-required="isRequired()"
+        close-text="Close"
+        alt-input-formats="date.altInputFormats"/>
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <span class="input-group-btn">
+        <button type="button"
+                class="btn btn-default"
+                ng-click="setDateValue(); date.opened = true">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+  </div>
+
+  <div ng-if="isActive(index) && temporalEditorFieldService.hasTimeComponent(field)" class="form-group input-group has-success has-feedback">
+    <div
+        ng-init="temporalRuntimeFieldService.showHideDateTimeElements(thisScope)"
+        name="timeField"
+        uib-timepicker
+        ng-model="time.dt"
+        ng-change="updateModelFromUI(time.dt, valueArray[index]['@value'],false, 'time', timepickerOptions.storageFormat, field)"
+        hour-step="1"
+        minute-step="1"
+        second-step="1"
+        mousewheel="false"
+        show-meridian="timepickerOptions.displayAmPm"
+        show-seconds="timepickerOptions.showSeconds"
+        template-url="scripts/form/partials/cedar-timepicker.html"
+    ></div>
+
+    <div class="input-indicator-icons" style="right:50px;z-index:99" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+    <table style="margin-bottom: 20px;">
+      <tr>
+        <td style="width:180px;white-space: nowrap;"><img src="/img/v.png" width="180" height=1" /></td>
+        <td style="width:99%"></td>
+      </tr>
+      <tr ng-if="temporalRuntimeFieldService.isDecimalSecondsEnabled(field)">
+        <td>
+          <div style="margin-top:12px">{{'EDITOR.decimalSeconds' | translate}}</div>
+        </td>
+        <td>
+          <div class="form-group" style="margin-left:12px;margin-right:52px">
+            <input
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsAndTimezoneFromUI(thisScope, time, time.decimalSeconds, null, valueArray[index]['@value'])"
+                ng-model="time.decimalSeconds"
+                type="number"
+                name="numericField"
+                min="0"
+                step="1"
+                ng-pattern="handlePattern"
+                class="form-control isActive select"
+                placeholder="{{'EDITOR.enterDecimalSeconds' | translate}}">
+          </div>
+        </td>
+      </tr>
+      <tr ng-if="temporalRuntimeFieldService.isTimezoneEnabled(field)">
+        <td>
+          <div style="margin-top:12px">{{'EDITOR.timezone' | translate}}</div>
+        </td>
+        <td>
+          <div class="form-group">
+            <ui-select
+                ng-init="temporalRuntimeFieldService.initTimezoneDropdown(thisScope)"
+                class="form-control"
+                theme="bootstrap"
+                close-on-select="true"
+                ng-change="temporalRuntimeFieldService.setDecimalSecondsAndTimezoneFromUI(thisScope, time, null, $select.selected, valueArray[index]['@value'])"
+                ng-model="time.selectedTimezone">
+              <ui-select-match placeholder="{{'EDITOR.selectTimezone' | translate}}">{{time.selectedTimezone.label}}
+              </ui-select-match>
+              <ui-select-choices repeat="timezone in availableTimezones">
+                {{timezone.label}}
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDateTime(field)">
+    <pre class="alert alert-info">DateTime is  : {{datetime | date:timepickerOptions.renderingFormat }}
+Stored as    : {{valueArray[index]['@value']}}</pre>
+  </div>
+
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalDate(field)">
+    <pre class="alert alert-info">Date is  : {{date.dt | date:datepickerOptions.renderingFormat }}
+Stored as: {{valueArray[index]['@value']}}</pre>
+  </div>
+
+  <div ng-if="isActive(index) && temporalRuntimeFieldService.isTemporalTime(field)">
+    <pre class="alert alert-info">Time is: {{time.dt | date:timepickerOptions.renderingFormat }}
+Stored as: {{valueArray[index]['@value']}}</pre>
+  </div>
+
+  <div ng-if="isActive(index)">
+    <div class="validation" role="alert">
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['required']">{{ 'VALIDATION.requiredDateTime' | translate }}</div>
+      <div ng-if="forms['fieldEditForm' + index]['dateTimeField']['$error']['date']">{{ 'VALIDATION.invalidDateTime' | translate }}</div>
+    </div>
+  </div>
+
+  <!--- not active --->
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
+    <div aria-label="{{getHelp(field)}}" class="isInactive ">{{dateFormat(field, valueArray[index]['@value'], datepickerOptions.renderingFormat, timepickerOptions.renderingFormat)}}</div>
+  </div>
+
+</div>
+

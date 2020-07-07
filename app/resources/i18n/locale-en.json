@@ -22,8 +22,8 @@
       "checkbox": {
         "NAME": "Checkbox"
       },
-      "date": {
-        "NAME": "Date"
+      "temporal": {
+        "NAME": "DateTime"
       },
       "email": {
         "NAME": "Email"
@@ -190,7 +190,10 @@
     "MadeOpen": "Made Open",
     "MadeNotOpen": "Made Not Open",
     "Categories": "Categories",
-    "Loading": "Loading"
+    "Loading": "Loading",
+    "PublishedVersion": "Published Version",
+    "DraftVersion": "Draft Version",
+    "IsOpen": "OpenView Enabled"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -224,6 +227,13 @@
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
     "repoSubmission": "Submit to repository"
+  },
+  "resourceType": {
+    "folder": "Folder",
+    "template": "Template",
+    "field": "Field",
+    "element": "Element",
+    "metadata": "Metadata"
   },
   "SERVER": {
     "WORKSPACE": {
@@ -487,7 +497,7 @@
       "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
       "sharedWithEverybody": "Shared with Everybody",
-      "specialFolders": "Special Folders",
+      "specialFolders": "Community Folders",
       "all": "All"
     },
     "version": {
@@ -532,7 +542,6 @@
   "PLACEHOLDER": {
     "email": "bob@company.com",
     "url": "http://company.com",
-    "date": "10/10/2010",
     "phoneNumber": "123-456-7890"
   },
   "VALIDATION": {
@@ -578,7 +587,8 @@
     "invalidMinValue": "Please enter a value greater than or equal to {{min}}",
     "invalidMaxValue": "Please enter a value less than or equal to {{max}}",
     "invalidDate": "Please enter a valid date, e.g. 10/10/2010",
-    "invalidRangeValue": "Value is out of range for type {{type}}"
+    "invalidRangeValue": "Value is out of range for type {{type}}",
+    "invalidDateTime": "Invalid temporal value"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
@@ -623,7 +633,12 @@
     "enterMaxValue": "Enter Maximum Value",
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
-    "enterPrefLabel": "Enter Preferred Label"
+    "enterPrefLabel": "Enter Preferred Label",
+    "selectDateTimeType": "Select DateTime Type",
+    "selectDatePrecisionFormat": "Select Date Precision",
+    "selectTimePrecisionFormat": "Select Time Precision",
+    "selectTimeEnableTimezone": "Allow Timezone Information?",
+    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
@@ -634,7 +649,11 @@
   "EDITOR": {
     "TOOLBAR": {
       "searchForMore": "Search for fields and elements"
-    }
+    },
+    "selectTimezone": "Select Timezone",
+    "enterDecimalSeconds": "Enter Decimal Seconds",
+    "timezone": "Timezone:",
+    "decimalSeconds": "Decimal Seconds:"
   },
   "BreadcrumbTitle": {
     "sharedWithMe": "Shared with Me",
@@ -642,7 +661,7 @@
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'",
     "categorySearchResult": "Category search Results For: '{{searchTerm}}'",
-    "specialFolders": "Special Folders"
+    "specialFolders": "Community Folders"
   },
   "REST_ERROR": {
     "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location. Please try to create it with a different name.",

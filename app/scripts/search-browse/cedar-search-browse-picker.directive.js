@@ -12,21 +12,6 @@ define([
 
       function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService, $sce) {
 
-        var directive = {
-          bindToController: {
-            selectResourceCallback: '=',
-            pickResourceCallback  : '=',
-            mode                  : '='
-          },
-          controller      : cedarSearchBrowsePickerController,
-          controllerAs    : 'dc',
-          restrict        : 'E',
-          scope           : {},
-          templateUrl     : 'scripts/search-browse/cedar-search-browse-picker.directive.html'
-        };
-
-        return directive;
-
         cedarSearchBrowsePickerController.$inject = [
           '$location',
           '$timeout',
@@ -134,6 +119,7 @@ define([
           vm.getUnreadMessageCount = getUnreadMessageCount;
           vm.openMessaging = openMessaging;
           vm.isPublished = isPublished;
+          vm.isOpen = isOpen;
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -1773,6 +1759,16 @@ define([
             return result;
           };
 
+          function isOpen(resource) {
+            let result = false;
+            if (resource) {
+              result = resource['isOpen'];
+            } else {
+              result = (hasSelected() && (getSelected()['isOpen']));
+            }
+            return result;
+          }
+
           /*          function canCreateDraftStatic() {
                       return (hasSelected() &&
                           (getSelected().resourceType == CONST.resourceType.TEMPLATE ||
@@ -2340,7 +2336,22 @@ define([
 
 
         }
+
+        let directive = {
+          bindToController: {
+            selectResourceCallback: '=',
+            pickResourceCallback  : '=',
+            mode                  : '='
+          },
+          controller      : cedarSearchBrowsePickerController,
+          controllerAs    : 'dc',
+          restrict        : 'E',
+          scope           : {},
+          templateUrl     : 'scripts/search-browse/cedar-search-browse-picker.directive.html'
+        };
+
+        return directive;
+
       }
     }
-)
-;
+);

@@ -12,19 +12,6 @@ define([
 
       function cedarPublishModalDirective(CedarUser) {
 
-        var directive = {
-          bindToController: {
-            publishResource: '=',
-            modalVisible   : '='
-          },
-          controller      : cedarPublishModalController,
-          controllerAs    : 'publish',
-          restrict        : 'E',
-          templateUrl     : 'scripts/modal/cedar-publish-modal.directive.html'
-        };
-
-        return directive;
-
         cedarPublishModalController.$inject = [
           '$scope'
         ];
@@ -156,7 +143,20 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            publishResource: '=',
+            modalVisible   : '='
+          },
+          controller      : cedarPublishModalController,
+          controllerAs    : 'publish',
+          restrict        : 'E',
+          templateUrl     : 'scripts/modal/cedar-publish-modal.directive.html'
+        };
+
+        return directive;
+
       }
     }
-)
-;
+);

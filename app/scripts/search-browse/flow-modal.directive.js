@@ -7,20 +7,8 @@ define([
     ], function (angular) {
       angular.module('cedar.templateEditor.searchBrowse.flowModal', []).directive('flowModal', flowModal);
 
-
       /* new folder modal  */
       function flowModal() {
-
-        var directive = {
-          bindToController: {
-            modalVisible: '='
-          },
-          controller      : flowModalController,
-          controllerAs    : 'flowCntl',
-          restrict        : 'E',
-          templateUrl     : 'scripts/search-browse/flow-modal.directive.html',
-        };
-        return directive;
 
         flowModalController.$inject = [
           '$scope',
@@ -515,6 +503,18 @@ define([
             }
           });
         }
+
+        let directive = {
+          bindToController: {
+            modalVisible: '='
+          },
+          controller      : flowModalController,
+          controllerAs    : 'flowCntl',
+          restrict        : 'E',
+          templateUrl     : 'scripts/search-browse/flow-modal.directive.html',
+        };
+        return directive;
+
       }
     }
 );

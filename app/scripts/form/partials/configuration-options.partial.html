@@ -138,6 +138,96 @@
             with-floating-label>
       </div>
     </div>
+
+    <div ng-if="isTemporalField()">
+
+      <!-- subtype  -->
+      <div ng-init="temporalEditorFieldService.setDateTimeTypeFromModel(thisScope)" class="form-group">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="temporalEditorFieldService.setDateTimeTypeFromUI($select.selected, thisScope)"
+            ng-model="selectedDateTimeType"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDateTimeType' | translate}}">{{selectedDateTimeType.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in dateTimeTypes">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- date precision  -->
+      <div ng-init="temporalEditorFieldService.setDatePrecisionFormatFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasDateGranularity(field)">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="temporalEditorFieldService.setDatePrecisionFormatFromUI($select.selected, thisScope)"
+            ng-model="selectedDatePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectDatePrecisionFormat' | translate}}">{{selectedDatePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in temporalEditorFieldService.datePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- time precision -->
+      <div ng-init="temporalEditorFieldService.setTimePrecisionFormatFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeGranularity(field)">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="temporalEditorFieldService.setTimePrecisionFormatFromUI($select.selected, thisScope)"
+            ng-model="selectedTimePrecisionFormat"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimePrecisionFormat' | translate}}">{{selectedTimePrecisionFormat.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="type in temporalEditorFieldService.timePrecisionFormats">
+            {{type.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- enable timezone -->
+      <div ng-init="temporalEditorFieldService.setTimeEnableTimezoneFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeComponent(field)">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="temporalEditorFieldService.setTimeEnableTimezoneFromUI($select.selected, thisScope)"
+            ng-model="selectedTimeEnableTimezone"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableTimezone' | translate}}">{{selectedTimeEnableTimezone.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in temporalEditorFieldService.timeEnableTimezoneOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+      <!-- 12h or 24h -->
+      <div ng-init="temporalEditorFieldService.setTimeEnableAmPmFromModel(thisScope)" class="form-group" ng-if="temporalEditorFieldService.hasTimeComponent(field)">
+        <ui-select
+            class="form-control"
+            theme="bootstrap"
+            close-on-select="true"
+            ng-change="temporalEditorFieldService.setTimeEnableAmPmFromUI($select.selected, thisScope)"
+            ng-model="selectedTimeEnableAmPm"
+            ng-disabled="isPublished()">
+          <ui-select-match placeholder="{{'CREATOR.selectTimeEnableAmPm' | translate}}">{{selectedTimeEnableAmPm.label}}
+          </ui-select-match>
+          <ui-select-choices repeat="option in temporalEditorFieldService.timeEnableAmPmOptions">
+            {{option.label}}
+          </ui-select-choices>
+        </ui-select>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- Required tab  -->

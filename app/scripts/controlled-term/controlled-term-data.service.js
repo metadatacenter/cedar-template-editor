@@ -6,11 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.controlledTermDataService', [])
       .service('controlledTermDataService', controlledTermDataService);
 
-  controlledTermDataService.$inject = ['UIMessageService', 'ControlledTermHttpService', 'AuthorizedBackendService',
-                                       '$translate'];
+  controlledTermDataService.$inject = ['UIMessageService', 'ControlledTermHttpService', 'AuthorizedBackendService', '$translate'];
 
-  function controlledTermDataService(UIMessageService, ControlledTermHttpService, AuthorizedBackendService,
-                                     $translate) {
+  function controlledTermDataService(UIMessageService, ControlledTermHttpService, AuthorizedBackendService, $translate) {
 
     var ontologiesCache = {};
     var valueSetsCollectionsCache = {};
@@ -80,7 +78,7 @@ define([
      * Generic error handling
      */
     function handleServerError(err) {
-      if (err.status == 502) {
+      if (err.status === 502) {
         UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
       } else {
         UIMessageService.flashWarning("TERMINOLOGY.errorBioPortal")
@@ -101,7 +99,7 @@ define([
             angular.forEach(ontologies, function (value) {
               // Ignore ontologies without submissions, except for CEDARPC
               if (value.details != null) {
-                if ((value.details.hasSubmissions || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS' && value.id != 'CADSR-VS') {
+                if ((value.details.hasSubmissions || (value.id === 'CEDARPC')) && value.id !== "NLMVS" && value.id !== 'CEDARVS' && value.id !== 'CADSR-VS') {
                   value.fullName = value.name + ' (' + value.id + ')';
                   ontologiesCache[value.id] = value;
                 }
@@ -367,19 +365,6 @@ define([
       );
     }
 
-    function getClassById(acronym, classId) {
-      init();
-      return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getClassById(acronym, classId),
-          function (response) {
-            return response.data;
-          },
-          function (err) {
-            return handleServerError(err);
-          }
-      );
-    }
-
     function getPropertyChildren(acronym, propertyId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -486,7 +471,7 @@ define([
 
     function getAcronym(result) {
       var ontologyUri = '';
-      if (result.type == 'Ontology' || result.type == 'OntologyClass') {
+      if (result.type === 'Ontology' || result.type === 'OntologyClass') {
         if (result.ontology) {
           ontologyUri = result.ontology;
         }
@@ -494,11 +479,10 @@ define([
           ontologyUri = result.source;
         }
       }
-      else if (result.type == 'ValueSet' || result.type == 'Value') {
+      else if (result.type === 'ValueSet' || result.type === 'Value') {
         ontologyUri = result.vsCollection;
       }
-      var acronym = ontologyUri.substr(ontologyUri.lastIndexOf('/') + 1);
-      return acronym;
+      return ontologyUri.substr(ontologyUri.lastIndexOf('/') + 1);
     }
 
     function searchProperties(query, sources, size) {

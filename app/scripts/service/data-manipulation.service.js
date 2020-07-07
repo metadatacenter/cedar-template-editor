@@ -17,10 +17,10 @@ define([
         // Base path to generate field ids
         // TODO: fields will be saved as objects on server, they will get their id there
         // TODO: need to assign a temporary id, which will be replaced on server side
-        var idBasePath = null;
+        let idBasePath = null;
 
 
-        var service = {
+        const service = {
           serviceId: "DataManipulationService"
         };
 
@@ -32,7 +32,7 @@ define([
         // constants
         //
 
-        var cedarFieldType = 'https://schema.metadatacenter.org/core/TemplateField';
+        const cedarFieldType = 'https://schema.metadatacenter.org/core/TemplateField';
 
         //
         // basics
@@ -44,7 +44,7 @@ define([
 
         service.getFieldProperties = function (field) {
           if (field) {
-            if (field.type == 'array' && field.items && field.items.properties) {
+            if (field.type === 'array' && field.items && field.items.properties) {
               return field.items.properties;
             } else {
               return field.properties;
@@ -55,7 +55,7 @@ define([
         // Returns the field schema. If the field is defined as an array, this function will return field.items, because the schema is defined at that level.
         service.getFieldSchema = function (field) {
           if (field) {
-            if (field.type == 'array' && field.items) {
+            if (field.type === 'array' && field.items) {
               return field.items;
             } else {
               return field;
@@ -106,14 +106,14 @@ define([
         service.isDraft = function (node) {
           var schema = service.schemaOf(node);
           var hasBiboStatus = schema.hasOwnProperty('bibo:status');
-          return hasBiboStatus && schema['bibo:status'] == 'bibo:draft';
+          return hasBiboStatus && schema['bibo:status'] === 'bibo:draft';
         };
 
         // is published if has status and it is published
         service.isPublished = function (node) {
           var schema = service.schemaOf(node);
           var hasBiboStatus = schema.hasOwnProperty('bibo:status');
-          return hasBiboStatus && schema['bibo:status'] == 'bibo:published';
+          return hasBiboStatus && schema['bibo:status'] === 'bibo:published';
         };
 
         service.getId = function (node) {
@@ -272,63 +272,72 @@ define([
         // min/max string length
         service.hasMinLength = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('minLength');
-        }
+        };
 
         service.getMinLength = function (node) {
           return service.hasMinLength(node) && service.getValueConstraint(node).minLength;
-        }
+        };
 
         service.hasMaxLength = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('maxLength');
-        }
+        };
 
         service.getMaxLength = function (node) {
           return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
-        }
+        };
 
         // min/max numeric value
         service.hasMinValue = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('minValue');
-        }
+        };
 
         service.getMinValue = function (node) {
           return service.hasMinValue(node) && service.getValueConstraint(node).minValue;
-        }
+        };
 
         service.hasMaxValue = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('maxValue')
-        }
+        };
 
         service.getMaxValue = function (node) {
           return service.hasMaxValue(node) && service.getValueConstraint(node).maxValue;
-        }
+        };
 
         // decimal places
         service.hasDecimalPlace = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('decimalPlace');
-        }
+        };
 
         service.getDecimalPlace = function (node) {
           return service.hasDecimalPlace(node) && service.getValueConstraint(node).decimalPlace;
-        }
+        };
 
         // number type
         service.hasNumberType = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('numberType');
-        }
+        };
 
         service.getNumberType = function (node) {
           return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
-        }
+        };
+
+        // dateTime type
+        service.hasNumberType = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('numberType');
+        };
+
+        service.getNumberType = function (node) {
+          return service.hasNumberType(node) && service.getValueConstraint(node).numberType;
+        };
 
         // unit of measure
         service.hasUnitOfMeasure = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('unitOfMeasure');
-        }
+        };
 
         service.getUnitOfMeasure = function (node) {
           return service.hasUnitOfMeasure(node) && service.getValueConstraint(node).unitOfMeasure;
-        }
+        };
 
         // schema title and description
         service.setSchemaTitle = function (node, value) {
@@ -382,49 +391,57 @@ define([
 
         // is this a numeric field?
         service.isNumericField = function (node) {
-          return (service.getInputType(node) == 'numeric');
+          return (service.getInputType(node) === 'numeric');
         };
 
         // is this a date field?
         service.isDateField = function (node) {
-          return (service.getInputType(node) == 'date');
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:date';
+        };
+
+        service.isDateTimeField = function (node) {
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:dateTime';
+        };
+
+        service.isTimeField = function (node) {
+          return service.getInputType(node) === 'temporal' && service.schemaOf(node)._valueConstraints.temporalType === 'xsd:time';
         };
 
         // is this a date range?
         service.isDateRange = function (node) {
-          return service.isDateField(node) && service.schemaOf(node)._ui.dateType == "date-range";
+          return service.isDateField(node) && service.schemaOf(node)._ui.dateType === "date-range";
         };
 
         service.isAttributeValueType = function (node) {
-          return (service.getInputType(node) == 'attribute-value');
+          return (service.getInputType(node) === 'attribute-value');
         };
 
         service.isTextFieldType = function (node) {
-          return (service.getInputType(node) == 'textfield');
+          return (service.getInputType(node) === 'textfield');
         };
 
         service.isDateType = function (node) {
-          return (service.getInputType(node) == 'date');
+          return (service.getInputType(node) === 'temporal');
         };
 
         service.isLinkType = function (node) {
-          return (service.getInputType(node) == 'link');
+          return (service.getInputType(node) === 'link');
         };
 
         service.isCheckboxType = function (node) {
-          return (service.getInputType(node) == 'checkbox');
+          return (service.getInputType(node) === 'checkbox');
         };
 
         service.isRadioType = function (node) {
-          return (service.getInputType(node) == 'radio');
+          return (service.getInputType(node) === 'radio');
         };
 
         service.isListType = function (node) {
-          return (service.getInputType(node) == 'list');
+          return (service.getInputType(node) === 'list');
         };
 
         service.isListMultiAnswerType = function (node) {
-          return (service.getInputType(node) == 'list') && (service.schemaOf(node)._valueConstraints.multipleChoice);
+          return (service.getInputType(node) === 'list') && (service.schemaOf(node)._valueConstraints.multipleChoice);
         };
 
         // is this a checkbox, radio or list question?
@@ -434,12 +451,12 @@ define([
         };
 
         service.isCheckboxListRadioType = function (inputType) {
-          return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+          return ((inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list'));
         };
 
         service.isCheckboxListRadio = function (node) {
           var inputType = service.getInputType(node);
-          return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+          return ((inputType === 'checkbox') || (inputType === 'radio') || (inputType === 'list'));
         };
 
 
@@ -461,13 +478,13 @@ define([
 
         // is this a checkbox, or a multiple choice list field?
         service.isMultipleChoiceField = function (node) {
-          return ((service.getInputType(node) == 'checkbox') || (service.isMultipleChoice(node)));
+          return ((service.getInputType(node) === 'checkbox') || (service.isMultipleChoice(node)));
         };
 
         // is this a radio, or a sigle-choice ?
         service.isSingleChoiceListField = function (node) {
           var inputType = service.getInputType(node);
-          return ((inputType == 'radio') || ((inputType == 'list') && !service.isMultipleChoice(node)));
+          return ((inputType === 'radio') || ((inputType === 'list') && !service.isMultipleChoice(node)));
         };
 
         // is this a youTube field?
@@ -523,7 +540,7 @@ define([
         };
 
         service.isCardinalElement = function (node) {
-          return node.type == 'array';
+          return node.type === 'array';
         };
 
         service.elementIsMultiInstance = function (element) {
@@ -659,11 +676,11 @@ define([
         service.removeUnnecessaryMaxItems = function (properties) {
           angular.forEach(properties, function (value, key) {
             if (!DataUtilService.isSpecialKey(key)) {
-              if ((value.minItems == 1 && value.maxItems == 1)) {
+              if ((value.minItems === 1 && value.maxItems === 1)) {
                 delete value.minItems;
                 delete value.maxItems;
               }
-              if (value.maxItems == 0) {
+              if (value.maxItems === 0) {
                 delete value.maxItems;
               }
             }
@@ -672,7 +689,7 @@ define([
 
         // sets the multiple choice option to true or false
         service.setMultipleChoice = function (node, newMultipleChoiceValue) {
-          if (newMultipleChoiceValue == true) { // set multipleChoice to true
+          if (newMultipleChoiceValue === true) { // set multipleChoice to true
             if (node.items) {
               node.items._valueConstraints.multipleChoice = true;
             } else {
@@ -739,13 +756,13 @@ define([
         // Relabel the element key with a new value from the propertyLabels
         service.relabel = function (parent, key, title, label, description) {
 
-          if (key != title) {
+          if (key !== title) {
             var schema = service.schemaOf(parent);
             var properties = service.propertiesOf(parent);
             var newKey = service.getAcceptableKey(properties, label, key);
 
             angular.forEach(properties, function (value, k) {
-              if (value && key == k) {
+              if (value && key === k) {
                 service.relabelField(schema, key, newKey, label, description);
               }
             });
@@ -757,7 +774,7 @@ define([
           if (!label) {
             console.log('Error: relabelField missing label');
           }
-          if (key != newKey) {
+          if (key !== newKey) {
 
             // get the new key
             var properties = service.propertiesOf(schema);
@@ -812,7 +829,7 @@ define([
 
           service.stripTmpIfPresent(node);
 
-          if (node.type == 'array') {
+          if (node.type === 'array') {
             node = node.items;
           }
 
@@ -877,21 +894,21 @@ define([
 
         // is this a nested field?
         service.isNested = function (field) {
-          var schema = service.schemaOf(field);
+          const schema = service.schemaOf(field);
           schema._tmp = schema._tmp || {};
           return (schema._tmp.nested || false);
         };
 
         // set the _tmp.expanded
         service.setExpanded = function (node, value) {
-          var schema = service.schemaOf(node);
+          const schema = service.schemaOf(node);
           schema._tmp = schema._tmp || {};
           schema._tmp.expanded = value;
         };
 
         // check the _tmp.expanded
         service.isExpanded = function (node) {
-          var schema = service.schemaOf(node);
+          const schema = service.schemaOf(node);
           schema._tmp = schema._tmp || {};
           if (!schema._tmp.hasOwnProperty('expanded')) {
             // schema._tmp.expanded = !DataUtilService.isElement(node);
@@ -902,22 +919,22 @@ define([
 
         // set the _tmp.state
         service.setTmpState = function (node, value) {
-          var schema = service.schemaOf(node);
+          const schema = service.schemaOf(node);
           schema._tmp = schema._tmp || {};
           schema._tmp.state = value;
         };
 
         service.clearEditState = function (node, value) {
-          var schema = service.schemaOf(node);
+          const schema = service.schemaOf(node);
           schema._tmp = schema._tmp || {};
           delete schema._tmp.state;
         };
 
         // check the _tmp.state
         service.isTmpState = function (node, value) {
-          var schema = service.schemaOf(node);
+          const schema = service.schemaOf(node);
           schema._tmp = schema._tmp || {};
-          return (schema._tmp.state == value);
+          return (schema._tmp.state === value);
         };
 
         //
@@ -933,14 +950,14 @@ define([
         // get order array that can be used to build the spreadsheet columns
         service.getFlatSpreadsheetOrder = function (node, model) {
 
-          var result = [];
+          const result = [];
           service.schemaOf(node)._ui.order.forEach(function (key) {
-            var field = service.schemaOf(service.propertiesOf(node)[key]);
+            const field = service.schemaOf(service.propertiesOf(node)[key]);
 
             if (service.isAttributeValueType(field)) {
 
               if (Array.isArray(model)) {
-                for (var i = 0; i < model[0][key].length; i++) {
+                for (let i = 0; i < model[0][key].length; i++) {
                   if (model[0][key][i]) {
                     result.push(model[0][key][i]);
                   }
@@ -966,14 +983,14 @@ define([
         };
 
         service.isRootNode = function (parent, child) {
-          return parent && child && service.getId(child) == service.getId(parent);
+          return parent && child && service.getId(child) === service.getId(parent);
         };
 
 
         // get the non-CEDAR propertyId for this node
         service.getPropertyId = function (parent, node) {
-          var result = '';
-          if (parent && node && (service.getId(node) != service.getId(parent))) {
+          let result = '';
+          if (parent && node && (service.getId(node) !== service.getId(parent))) {
 
             var property;
             var prop;
@@ -986,7 +1003,7 @@ define([
                 if (schema.properties['@context'].properties[prop]) {
                   property = schema.properties['@context'].properties[prop]['enum'][0];
 
-                  if (property.indexOf(UrlService.schemaProperties()) == -1) {
+                  if (property.indexOf(UrlService.schemaProperties()) === -1) {
                     result = property;
                   }
                   break;
@@ -999,13 +1016,13 @@ define([
 
         // delete the non-CEDAR propertyId by using a CEDAR property
         service.deletePropertyId = function (parent, node) {
-          if (parent && node && (service.getId(node) != service.getId(parent))) {
-            var id = service.getId(node);
-            var props = service.propertiesOf(parent);
-            var schema = service.schemaOf(parent);
-            for (var prop in props) {
+          if (parent && node && (service.getId(node) !== service.getId(parent))) {
+            const id = service.getId(node);
+            const props = service.propertiesOf(parent);
+            const schema = service.schemaOf(parent);
+            for (let prop in props) {
               if (service.getId(props[prop]) === id) {
-                var randomPropertyName = service.generateGUID();
+                const randomPropertyName = service.generateGUID();
                 if (schema.properties['@context'].properties[prop]) {
                   schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
                   break;
@@ -1046,11 +1063,11 @@ define([
 
         // Generating a RFC4122 version 4 compliant GUID
         service.generateGUID = function () {
-          var d = Date.now();
-          var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
+          let d = Date.now();
+          let guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
           });
           return guid;
         };
@@ -1061,7 +1078,7 @@ define([
 
         // Function that generates a basic field definition
         service.generateField = function (inputType, container) {
-          var valueType = ["string", "null"];
+          const valueType = ["string", "null"];
 
 
           var field;
@@ -1082,16 +1099,16 @@ define([
           //field._ui.inputType = inputType;
 
           // Constrain the @type of @value according to the field type
-          var valueAtType = null;
-          if (inputType == 'date' || inputType == 'numeric') {
+          let valueAtType = null;
+          if (inputType === 'date' || inputType === 'numeric') {
             valueAtType = {};
             valueAtType.type = 'string';
             valueAtType.format = 'uri';
-            if (inputType == 'date') {
+            if (inputType === 'date') {
               //valueAtType.enum = ['xsd:dateTime'];
               // Make @type required
               field.required.push('@type');
-            } else if (inputType == 'numeric') {
+            } else if (inputType === 'numeric') {
               //valueAtType.enum = ['xsd:decimal'];
               // Make @type required
               field.required.push('@type');
@@ -1100,13 +1117,13 @@ define([
             field.properties['@type'] = valueAtType;
           }
 
-          if (!container && (inputType == "checkbox")) {
+          if (!container && (inputType === "checkbox")) {
             field.minItems = 1;
             service.cardinalizeField(field);
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType == "link") {
+          if (inputType === "link") {
             // Define the @id field
             var idField = {};
             idField.type = "string";
@@ -1126,7 +1143,7 @@ define([
           // }
 
           // Set default schema title and description
-          var defaultTitle = $translate.instant("GENERIC.Untitled");
+          const defaultTitle = $translate.instant("GENERIC.Untitled");
           service.setFieldSchemaTitleAndDescription(field, defaultTitle);
 
           return field;
@@ -1136,17 +1153,17 @@ define([
 
         // Function that generates a basic field definition
         service.isStaticField = function (field) {
-          var schema = service.schemaOf(field);
-          var type = schema._ui.inputType;
+          const schema = service.schemaOf(field);
+          const type = schema._ui.inputType;
           return FieldTypeService.isStaticField(type);
         };
 
 
         // Function that generates the @context for an instance, based on the schema @context definition
         service.generateInstanceContext = function (schemaContext) {
-          var context = {};
+          const context = {};
           angular.forEach(schemaContext.properties, function (value, key) {
-            if (value.type == "object") {
+            if (value.type === "object") {
               context[key] = {};
               angular.forEach(schemaContext.properties[key].properties, function (value2, key2) {
                 if (value2.enum) {
@@ -1164,8 +1181,8 @@ define([
 
         // Function that generates the @type for a field in an instance, based on the schema @type definition
         service.generateInstanceType = function (schemaType) {
-          var instanceType = null;
-          var enumeration = {};
+          let instanceType = null;
+          let enumeration = {};
           if (angular.isUndefined(schemaType.oneOf)) {
             enumeration = schemaType.enum;
 
@@ -1175,7 +1192,7 @@ define([
           // If the type is defined at the schema level
           if (angular.isDefined(enumeration)) {
             // If only one type has been defined, it is returned
-            if (enumeration.length == 1) {
+            if (enumeration.length === 1) {
               instanceType = enumeration[0];
               // If more than one type have been defined for the template/element/field, an array is returned
             } else {
@@ -1189,6 +1206,14 @@ define([
           return "xsd:date";
         };
 
+        service.generateInstanceTypeForDateTimeField = function () {
+          return "xsd:dateTime";
+        };
+
+        service.generateInstanceTypeForTimeField = function () {
+          return "xsd:time";
+        };
+
         service.generateInstanceTypeForNumericField = function (node) {
           return service.getNumberType(service.schemaOf(node));
         };
@@ -1200,15 +1225,15 @@ define([
 
         // If necessary, updates the field schema according to whether the field is controlled or not
         service.initializeSchema = function (field) {
-          var fieldSchema = service.schemaOf(field);
+          const fieldSchema = service.schemaOf(field);
           // If regular field
           if (!service.hasValueConstraint(field)) {
-            if (!fieldSchema.required || fieldSchema.required[0] != "@value") {
+            if (!fieldSchema.required || fieldSchema.required[0] !== "@value") {
               fieldSchema.required = [];
               fieldSchema.required.push("@value")
             }
             if (angular.isUndefined(fieldSchema.properties["@value"])) {
-              var valueField = {};
+              const valueField = {};
               valueField.type = [];
               valueField.type.push("string");
               valueField.type.push("null");
@@ -1222,7 +1247,7 @@ define([
             delete field.required;
 
             if (angular.isUndefined(fieldSchema.properties["@id"])) {
-              var idField = {};
+              const idField = {};
               idField.type = "string";
               idField.format = "uri";
               fieldSchema.properties["@id"] = idField;
@@ -1260,10 +1285,10 @@ define([
 
           if (service.isAttributeValueType(field)) {
           } else {
-            var fieldValue = service.getValueLocation(field);
-            if (fieldValue == "@value") {
+            const fieldValue = service.getValueLocation(field);
+            if (fieldValue === "@value") {
 
-              var defaultValue = service.getDefaultValue(fieldValue, field);
+              const defaultValue = service.getDefaultValue(fieldValue, field);
 
               // Not an array
               if (!$rootScope.isArray(model)) {
@@ -1274,7 +1299,7 @@ define([
                 if (model.hasOwnProperty(fieldValue)) {
                   // If undefined value or empty string
                   if ((angular.isUndefined(
-                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                      model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length === 0))) {
                     model[fieldValue] = defaultValue;
                   }
                 }
@@ -1286,7 +1311,7 @@ define([
               // An array
               else {
                 // Length is 0
-                if (model.length == 0) {
+                if (model.length === 0) {
                   model.push({});
                   model[0][fieldValue] = defaultValue;
                 }
@@ -1303,9 +1328,9 @@ define([
         };
 
         service.getDefaultValue = function (fieldValue, field) {
-          if (fieldValue == "@value") {
+          if (fieldValue === "@value") {
             // If the template contains a user-defined default value, we use it as the default value for the field
-            if (service.schemaOf(field)._ui.inputType == "textfield" && service.hasUserDefinedDefaultValue(field)) {
+            if (service.schemaOf(field)._ui.inputType === "textfield" && service.hasUserDefinedDefaultValue(field)) {
               return service.getUserDefinedDefaultValue(field);
             }
             if (service.isAttributeValueType(field)) {
@@ -1321,12 +1346,13 @@ define([
 
         // Sets the default selections for multi-answer fields
         service.defaultOptionsToModel = function (field, model) {
+          let i;
           if (service.isMultiAnswer(field)) {
-            var literals = service.getLiterals(field);
-            var fieldValue = service.getValueLocation(field);
+            const literals = service.getLiterals(field);
+            const fieldValue = service.getValueLocation(field);
             // Checkbox or multi-choice  list
             if (service.isMultipleChoiceField(field)) {
-              for (var i = 0; i < literals.length; i++) {
+              for (i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   var newValue = {};
                   newValue[fieldValue] = literals[i].label;
@@ -1336,7 +1362,7 @@ define([
             }
             // Radio or single-choice list
             else if (service.isSingleChoiceListField(field)) {
-              for (var i = 0; i < literals.length; i++) {
+              for (i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   model[fieldValue] = literals[i].label;
                   break;
@@ -1350,19 +1376,19 @@ define([
         // Removes empty strings from the model. This function is used to remove the empty string generated by the
         // 'Nothing selected' option in single-selection fields
         service.removeEmptyStrings = function (field, model) {
-          var fieldValue = service.getValueLocation(field);
+          const fieldValue = service.getValueLocation(field);
           if ($rootScope.isArray(model)) {
-            for (var i = model.length - 1; i >= 0; i--) {
-              if (model[i][fieldValue] == "") {
+            for (let i = model.length - 1; i >= 0; i--) {
+              if (model[i][fieldValue] === "") {
                 model.splice(i, 1);
               }
             }
           } else {
-            if (model[fieldValue] == "") {
+            if (model[fieldValue] === "") {
               delete model[fieldValue];
             }
           }
-        }
+        };
 
         // Initializes the value @type field in the model based on the fieldType.
         // Note that for 'date' and 'numeric' fields, the field schema is flexible, allowing any string as a type.
@@ -1370,35 +1396,39 @@ define([
         // As a consequence, we cannot use the @type definition from the schema to generate the @type for the instance
         // field. We 'manually' generate those types.
         service.initializeValueType = function (field, model) {
-          var fieldType;
+          let fieldType;
           if (service.isNumericField(field)) {
             fieldType = service.generateInstanceTypeForNumericField(field);
           } else if (service.isDateField(field)) {
             fieldType = service.generateInstanceTypeForDateField();
+          } else if (service.isDateTimeField(field)) {
+            fieldType = service.generateInstanceTypeForDateTimeField();
+          } else if (service.isTimeField(field)) {
+            fieldType = service.generateInstanceTypeForTimeField();
           } else {
-            var properties = service.propertiesOf(field);
+            const properties = service.propertiesOf(field);
             if (properties && !angular.isUndefined(properties['@type'])) {
               fieldType = service.generateInstanceType(properties['@type']);
             }
           }
           if (fieldType) {
             // It is not an array
-            if (field.type == 'object') {
+            if (field.type === 'object') {
               // If the @type has not been defined yet, define it
               if (angular.isUndefined(model['@type'])) {
                 // No need to set the type if it is xsd:string. It is the type by default
-                if (fieldType != "xsd:string") {
+                if (fieldType !== "xsd:string") {
                   model['@type'] = fieldType;
                 }
               }
             }
             // It is an array
-            else if (field.type == 'array') {
-              for (var i = 0; i < model.length; i++) {
+            else if (field.type === 'array') {
+              for (let i = 0; i < model.length; i++) {
                 // If there is an item in the array for which the @type has not been defined, define it
                 if (angular.isUndefined(model[i]['@type'])) {
                   // No need to set the type if it is xsd:string. It is the type by default
-                  if (fieldType != "xsd:string") {
+                  if (fieldType !== "xsd:string") {
                     model[i]['@type'] = fieldType;
                   }
                 }
@@ -1410,7 +1440,7 @@ define([
 
         // get the location of the value and null it
         service.resetValue = function (field) {
-          var fieldValue = service.getValueLocation(field);
+          let fieldValue = service.getValueLocation(field);
           field[fieldValue] = null;
 
           return result;
@@ -1420,7 +1450,7 @@ define([
         // where is the value of this field, @id or @value?
         service.getValueLocation = function (field) {
           // usually it is in  @value
-          var fieldValue = "@value";
+          let fieldValue = "@value";
           // but these three put it @id
           if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
             fieldValue = "@id";
@@ -1431,7 +1461,7 @@ define([
         // where is the value that we show the user?
         service.getValueLabelLocation = function (field, valueNode) {
           // the printable value is usually in @value
-          var location = "@value";
+          let location = "@value";
           // but a link puts it in @id
           if (service.isLinkType(field)) {
             location = "@id";
@@ -1471,7 +1501,7 @@ define([
         };
 
         service.generateFieldContextProperties = function (fieldName) {
-          var c = {};
+          let c = {};
           c.enum = new Array(service.getEnumOf(fieldName));
           return c;
         };
@@ -1482,17 +1512,17 @@ define([
             return;
           }
 
-          if (currentKey == suggestedKey) {
+          if (currentKey === suggestedKey) {
             return currentKey;
           }
 
-          var key = suggestedKey;
+          let key = suggestedKey;
 
           if (obj[key]) { // if the object already contains the suggested key, generate an acceptable key
-            var idx = 1;
-            var newKey = "" + key + idx;
+            let idx = 1;
+            let newKey = "" + key + idx;
             while (obj[newKey]) {
-              if (currentKey == newKey) {
+              if (currentKey === newKey) {
                 break; // currentKey is an acceptable key
               }
               idx += 1;
@@ -1528,11 +1558,11 @@ define([
 
         // Add path for every field in the template
         service.addPathInfo = function (template, path) {
-          var properties = service.propertiesOf(template);
+          const properties = service.propertiesOf(template);
           angular.forEach(properties, function (value, name) {
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
-              if (service.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (service.schemaOf(value)['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement') {
                 if (path == null) {
                   service.addPathInfo(value, name);
                 } else {
@@ -1545,7 +1575,7 @@ define([
                 if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var fieldPath = path;
-                  if (fieldPath == null || fieldPath.length == 0) {
+                  if (fieldPath == null || fieldPath.length === 0) {
                     fieldPath = name;
                   } else {
                     fieldPath = fieldPath + '.' + name;
@@ -1579,7 +1609,7 @@ define([
             templateOrElement.required = [];
           }
           // Check that the key is not already present in the required array
-          if (templateOrElement.required.indexOf(key) == -1) {
+          if (templateOrElement.required.indexOf(key) === -1) {
             templateOrElement.required.push(key);
           }
           return templateOrElement;
@@ -1598,7 +1628,7 @@ define([
           }
           // If the required field is empty, delete it. Note that empty 'required' seem to be valid in JSON Schema, however
           // (http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.17)
-          if (templateOrElement.required.length == 0) {
+          if (templateOrElement.required.length === 0) {
             delete templateOrElement.required;
           }
           return templateOrElement;
@@ -1615,7 +1645,7 @@ define([
             }
             // If the required field is empty, delete it. Note that empty 'required' seem to be valid in JSON Schema, however
             // (http://json-schema.org/latest/json-schema-validation.html#rfc.section.6.17)
-            if (schema.properties["@context"].required.length == 0) {
+            if (schema.properties["@context"].required.length === 0) {
               delete schema.properties["@context"].required;
             }
           }
@@ -1640,7 +1670,7 @@ define([
           var childId = service.idOf(child);
           if (!childId || /^tmp\-/.test(childId)) {
             var p = service.propertiesOf(parent);
-            if (p[newKey] && p[newKey] == child) {
+            if (p[newKey] && p[newKey] === child) {
               return;
             }
             newKey = service.getAcceptableKey(p, newKey);
@@ -1649,7 +1679,7 @@ define([
                 return;
               }
               var idOfValue = service.idOf(value);
-              if (idOfValue && idOfValue == childId) {
+              if (idOfValue && idOfValue === childId) {
 
                 service.renameKeyOfObject(p, key, newKey);
                 if (p["@context"] && p["@context"].properties) {
@@ -1683,20 +1713,20 @@ define([
         // set the field title and description to property label and definition
         service.updateProperty = function (propertyId, propertyLabel, propertyDescription, fieldId, parent) {
 
-          var props = service.propertiesOf(parent);
-          var schema = service.schemaOf(parent);
-          var fieldProp;
-          for (var prop in props) {
+          const props = service.propertiesOf(parent);
+          const schema = service.schemaOf(parent);
+          let fieldProp;
+          for (let prop in props) {
             if (service.getId(props[prop]) === fieldId) {
-              var fieldProp = prop;
+              fieldProp = prop;
               break;
             }
           }
           if (fieldProp) {
             // set the property as the field title and description
-            var field = service.schemaOf(props[prop]);
-            var label = service.getTitle(field) || propertyLabel;
-            var description = service.getDescription(field) || propertyDescription;
+            const field = service.schemaOf(props[prop]);
+            const label = service.getTitle(field) || propertyLabel;
+            const description = service.getDescription(field) || propertyDescription;
 
             // title and description
             service.setTitle(field, label);
@@ -1763,7 +1793,7 @@ define([
         service.indexOfLiteral = function (field, literal) {
           var literals = service.getLiterals(field);
           for (var i = 0; i < literals.length; i++) {
-            if (literals[i] == literal) {
+            if (literals[i] === literal) {
               return i;
             }
           }
@@ -1780,19 +1810,23 @@ define([
         };
 
         service.defaultOptions = function (node, value) {
-          var MIN_OPTIONS = 2;
-          var schema = service.schemaOf(node);
+          let MIN_OPTIONS = 2;
+          if (service.getInputType(node) == 'checkbox') {
+            MIN_OPTIONS = 1;
+          }
+
+          let schema = service.schemaOf(node);
 
           // make sure we have the minimum number of options
           while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
-            var emptyOption = {
+            const emptyOption = {
               "label": name || ""
             };
             schema._valueConstraints.literals.push(emptyOption);
           }
 
           // and they all have text fields filled in
-          for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
+          for (let i = 0; i < schema._valueConstraints.literals.length; i++) {
             if (schema._valueConstraints.literals[i].label.length == 0) {
               schema._valueConstraints.literals[i].label = value + "-" + i;
             }
@@ -1875,7 +1909,7 @@ define([
 
           if (idx >= 0) {
             properties["@type"].oneOf[0].enum.splice(idx, 1);
-            if (properties["@type"].oneOf[0].enum.length == 0) {
+            if (properties["@type"].oneOf[0].enum.length === 0) {
               delete properties["@type"].oneOf[0].enum;
             }
           }
@@ -1884,7 +1918,7 @@ define([
 
           if (idx >= 0) {
             properties['@type'].oneOf[1].items.enum.splice(idx, 1);
-            if (properties["@type"].oneOf[1].items.enum.length == 0) {
+            if (properties["@type"].oneOf[1].items.enum.length === 0) {
               delete properties["@type"].oneOf[1].items.enum;
             }
           }
@@ -1896,7 +1930,7 @@ define([
 
           var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.branches.length; i < len; i += 1) {
-            if (valueConstraints.branches[i]['uri'] == branch['uri']) {
+            if (valueConstraints.branches[i]['uri'] === branch['uri']) {
               valueConstraints.branches.splice(i, 1);
               break;
             }
@@ -1908,7 +1942,7 @@ define([
         service.getFieldAddedClassByUri = function (uri, node) {
           var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
-            if (valueConstraints.classes[i].uri == uri) {
+            if (valueConstraints.classes[i].uri === uri) {
               return valueConstraints.classes[i];
             }
           }
@@ -1919,7 +1953,7 @@ define([
 
           var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
-            if (valueConstraints.classes[i] == ontologyClass) {
+            if (valueConstraints.classes[i] === ontologyClass) {
               valueConstraints.classes.splice(i, 1);
               break;
             }
@@ -1932,7 +1966,7 @@ define([
 
           var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.ontologies.length; i < len; i += 1) {
-            if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
+            if (valueConstraints.ontologies[i]['uri'] === ontology['uri']) {
               valueConstraints.ontologies.splice(i, 1);
               break;
             }
@@ -1945,7 +1979,7 @@ define([
 
           var valueConstraints = service.schemaOf(node)._valueConstraints;
           for (var i = 0, len = valueConstraints.valueSets.length; i < len; i += 1) {
-            if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
+            if (valueConstraints.valueSets[i]['uri'] === valueSet['uri']) {
               valueConstraints.valueSets.splice(i, 1);
               break;
             }
@@ -1967,9 +2001,9 @@ define([
               model.splice(settings[key].minItems, model.length);
             }
             if (!DataUtilService.isSpecialKey(key)) {
-              if (key == '@value') {
+              if (key === '@value') {
                 if (angular.isArray(model)) {
-                  if (service.schemaOf(settings)._ui.inputType == "list") {
+                  if (service.schemaOf(settings)._ui.inputType === "list") {
                     model.splice(0, model.length);
                   } else {
                     for (var i = 0; i < model.length; i++) {
@@ -1995,9 +2029,9 @@ define([
                 } else {
                   // This case el is an array
                   angular.forEach(model, function (v, k) {
-                    if (k == '@value') {
+                    if (k === '@value') {
                       if (angular.isArray(v)) {
-                        if (service.schemaOf(settings)._ui.inputType == "list") {
+                        if (service.schemaOf(settings)._ui.inputType === "list") {
                           v.splice(0, v.length);
                         } else {
                           for (var i = 0; i < v.length; i++) {
@@ -2072,7 +2106,7 @@ define([
           angular.forEach(iterator, function (value, name) {
 
             // Add @context information to instance
-            if (name == '@context') {
+            if (name === '@context') {
               parentModel['@context'] = service.generateInstanceContext(value);
             }
 
@@ -2080,7 +2114,7 @@ define([
 
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
-              if (service.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (service.schemaOf(value)['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement') {
 
                 if (service.isCardinalElement(value)) {
                   if (!parentModel[name] || angular.isObject(parentModel[name])) {
@@ -2131,7 +2165,7 @@ define([
         };
 
         service.hasUserDefinedDefaultValue = function (field) {
-          var schema = service.schemaOf(field);
+          const schema = service.schemaOf(field);
           if (schema._valueConstraints && schema._valueConstraints.defaultValue) {
             return true;
           } else {
@@ -2177,10 +2211,10 @@ define([
             for (let i = 0; i < actions.length; i++) {
               let action = actions[i];
               let from = dup.findIndex(item => item['@id'] === action['termUri']);
-              if (from != -1) {
+              if (from !== -1) {
                 // delete it at from
                 let entry = dup.splice(from, 1);
-                if (action.to != -1 && action.action == 'move') {
+                if (action.to !== -1 && action.action === 'move') {
                   // insert it at to
                   dup.splice(action.to, 0, entry[0]);
                 }
@@ -2191,7 +2225,7 @@ define([
         };
 
         return service;
-      };
+      }
 
     }
 )
