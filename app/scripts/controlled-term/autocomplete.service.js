@@ -109,20 +109,18 @@ define([
       }
     };
 
-
     // is this term in the the cache?
     service.hasTerm = function (id, query, source_uri, termId) {
       var source = service.autocompleteResultsCache[id][query].results[source_uri];
       return source && source['@id'] == termId;
     };
-
-
+    
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
       // results could be a list or not, put all results into an array
       let collection = [];
       let result;
-      let sourceFieldName = field_type == 'OntologyClass'? 'ontology' : 'vsCollection';
       if (angular.isDefined(response.collection)) {
+        let sourceFieldName = service.getSourceFieldNameFromResults(response.collection);
         for (i = 0; i < response.collection.length; i++) {
           result = {
             '@id'      : response.collection[i]['@id'],
@@ -135,6 +133,7 @@ define([
           collection.push(result);
         }
       } else {
+        let sourceFieldName = service.getSourceFieldNameFromResult(response);
         result = {
           '@id'      : response['@id'],
           'notation' : response.notation,
@@ -180,6 +179,22 @@ define([
 
       // finally sort the list
       service.sortAutocompleteResults(id, query);
+    };
+
+    service.getSourceFieldNameFromResults = function(results) {
+      if (results.length > 0) {
+        return service.getSourceFieldNameFromResult(results[0]);
+      }
+    };
+
+    service.getSourceFieldNameFromResult = function(result) {
+        if ('ontology' in result) {
+          return 'ontology';
+        } else if ('vsCollection' in result) {
+          return 'vsCollection';
+        } else {
+          return 'source'
+        }
     };
 
     service.clearResults = function (id, term) {
