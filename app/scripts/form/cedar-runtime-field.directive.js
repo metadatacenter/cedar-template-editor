@@ -756,7 +756,7 @@ define([
             valid = (value >= -3.402823e+1038) && (value <= 3.402823e+1038);
             break;
           case "xsd:double":
-            valid = (value >= Number.MIN_VALUE) && (value <= Number.MAX_VALUE);
+            valid = (value >= -Number.MAX_VALUE) && (value <= Number.MAX_VALUE);
             break;
           case "xsd:decimal":
             // No implementation. Reason: Decimal numbers has a min/max range of infinity
