@@ -93,12 +93,12 @@ define([
 
     function addProperty(property, label, definition) {
       if (vm.filterSelection === 'properties') {
-        var id = DataManipulationService.getId(vm.field);
+        let id = DataManipulationService.getId(vm.field);
 
         // tell the form to update the property for this field
         $rootScope.$broadcast('property:propertyAdded', [property, id, label, definition]);
       }
-    };
+    }
 
     function addBranchToValueConstraint() {
       var alreadyAdded, constraint, i, j;
@@ -106,7 +106,7 @@ define([
         constraint = vm.stagedBranchesValueConstraints[i];
         alreadyAdded = false;
         for (j = 0; j < vm.valueConstraint.branches.length; j++) {
-          if (vm.valueConstraint.branches[j]['uri'] == constraint['uri']) {
+          if (vm.valueConstraint.branches[j]['uri'] === constraint['uri']) {
             alreadyAdded = true;
             break;
           }
@@ -125,7 +125,7 @@ define([
 
       assignValueConstraintToField();
       vm.startOver();
-    };
+    }
 
     function closeDialog() {
 
@@ -133,13 +133,13 @@ define([
 
 
     function addCallback(p1, p2, p3) {
-      if (vm.filterSelection == 'field') {
+      if (vm.filterSelection === 'field') {
         vm.addClass(p1, p2, p3);
       }
-      if (vm.filterSelection == 'properties') {
+      if (vm.filterSelection === 'properties') {
         vm.addProperty(p1, p2, p3);
       }
-      if (vm.filterSelection == 'values') {
+      if (vm.filterSelection === 'values') {
         vm.addValueConstraint(p1, p2, p3);
       }
     }
@@ -148,13 +148,13 @@ define([
       // has this selection been added yet?
       var alreadyAdded = false;
       for (var i = 0, len = vm.addedFieldItems.length; i < len; i += 1) {
-        if (vm.addedFieldItems[i]['@id'] == selection['@id']) {
+        if (vm.addedFieldItems[i]['@id'] === selection['@id']) {
           alreadyAdded = true;
           break;
         }
       }
 
-      if (alreadyAdded == false) {
+      if (alreadyAdded === false) {
 
         // do we have info about this ontology?
         if (!ontology.info) {
@@ -204,16 +204,16 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
-      if (!action || action == 'add_class') {
+      if (!action || action === 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
-      else if (action == 'add_children') {
+      else if (action === 'add_children') {
         addBranchToValueConstraint();
       }
-      else if (action == 'add_ontology') {
+      else if (action === 'add_ontology') {
         addOntologyToValueConstraint();
       }
-      else if (action == 'add_entire_value_set') {
+      else if (action === 'add_entire_value_set') {
         addValueSetToValueConstraint();
       }
       // Updates the field schema according to whether the field is controlled or not
@@ -229,13 +229,13 @@ define([
         constraint = vm.stagedOntologyClassValueConstraints[i];
         alreadyAdded = false;
         for (j = 0; j < vm.valueConstraint.classes.length; j++) {
-          if (vm.valueConstraint.classes[j]['uri'] == constraint['uri']) {
+          if (vm.valueConstraint.classes[j]['uri'] === constraint['uri']) {
             alreadyAdded = true;
             break;
           }
         }
         if (!alreadyAdded) {
-          if (constraint.label == '') {
+          if (constraint.label === '') {
             constraint.label = vm.stagedOntologyClassValueConstraintData[i].label;
           }
           vm.valueConstraint.classes.push(angular.copy(constraint));
@@ -246,7 +246,7 @@ define([
       assignValueConstraintToField();
 
       vm.startOver();
-    };
+    }
 
     /**
      * Add ontology class to value constraint to field values _ui definition.
@@ -255,14 +255,14 @@ define([
       var alreadyAdded = false;
 
       for (var j = 0; j < vm.valueConstraint.classes.length; j++) {
-        if (vm.valueConstraint.classes[j]['uri'] == constraint['uri']) {
+        if (vm.valueConstraint.classes[j]['uri'] === constraint['uri']) {
           alreadyAdded = true;
           break;
         }
       }
 
       if (!alreadyAdded && constraint) {
-        if (constraint.label == '' && !constraint.provisionalClass) {
+        if (constraint.label === '' && !constraint.provisionalClass) {
           var i = vm.stagedOntologyClassValueConstraints.indexOf(constraint);
           constraint.label = vm.stagedOntologyClassValueConstraintData[i].label;
         }
@@ -273,7 +273,7 @@ define([
       vm.stagedOntologyClassValueConstraintData = [];
       assignValueConstraintToField();
       vm.startOver();
-    };
+    }
 
     function addOntologyToValueConstraint() {
       var alreadyAdded, constraint, i, j;
@@ -281,7 +281,7 @@ define([
         constraint = vm.stagedOntologyValueConstraints[i];
         alreadyAdded = false;
         for (j = 0; j < vm.valueConstraint.ontologies.length; j++) {
-          if (vm.valueConstraint.ontologies[j]['uri'] == constraint['uri']) {
+          if (vm.valueConstraint.ontologies[j]['uri'] === constraint['uri']) {
             alreadyAdded = true;
             break;
           }
@@ -301,7 +301,7 @@ define([
         constraint = vm.stagedValueSetValueConstraints[i];
         alreadyAdded = false;
         for (j = 0; j < vm.valueConstraint.valueSets.length; j++) {
-          if (vm.valueConstraint.valueSets[j]['uri'] == constraint['uri']) {
+          if (vm.valueConstraint.valueSets[j]['uri'] === constraint['uri']) {
             alreadyAdded = true;
             break;
           }
@@ -314,36 +314,36 @@ define([
 
       assignValueConstraintToField();
       vm.startOver();
-    };
+    }
 
     function deleteFieldAddedBranch(branch) {
       for (var i = 0, len = vm.valueConstraint.branches.length; i < len; i += 1) {
-        if (vm.valueConstraint.branches[i]['uri'] == branch['uri']) {
+        if (vm.valueConstraint.branches[i]['uri'] === branch['uri']) {
           vm.valueConstraint.branches.splice(i, 1);
           break;
         }
       }
-    };
+    }
 
     function deleteFieldAddedClass(ontologyClass) {
       for (var i = 0, len = vm.valueConstraint.classes.length; i < len; i += 1) {
-        if (vm.valueConstraint.classes[i] == ontologyClass) {
+        if (vm.valueConstraint.classes[i] === ontologyClass) {
           vm.valueConstraint.classes.splice(i, 1);
           break;
         }
       }
-    };
+    }
 
     function deleteFieldAddedItem(itemData) {
       var properties = $rootScope.propertiesOf(vm.field);
       for (var i = 0, len = vm.addedFieldItems.length; i < len; i += 1) {
-        if (vm.addedFieldItems[i] == itemData) {
+        if (vm.addedFieldItems[i] === itemData) {
           var itemDataId = itemData["@id"];
           var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
 
           if (idx >= 0) {
             properties["@type"].oneOf[0].enum.splice(idx, 1);
-            if (properties["@type"].oneOf[0].enum.length == 0) {
+            if (properties["@type"].oneOf[0].enum.length === 0) {
               delete properties["@type"].oneOf[0].enum;
             }
           }
@@ -352,7 +352,7 @@ define([
 
           if (idx >= 0) {
             properties['@type'].oneOf[1].items.enum.splice(idx, 1);
-            if (properties["@type"].oneOf[1].items.enum.length == 0) {
+            if (properties["@type"].oneOf[1].items.enum.length === 0) {
               delete properties["@type"].oneOf[1].items.enum;
             }
           }
@@ -361,31 +361,31 @@ define([
           break;
         }
       }
-    };
+    }
 
     function deleteFieldAddedOntology(ontology) {
       for (var i = 0, len = vm.valueConstraint.ontologies.length; i < len; i += 1) {
-        if (vm.valueConstraint.ontologies[i]['uri'] == ontology['uri']) {
+        if (vm.valueConstraint.ontologies[i]['uri'] === ontology['uri']) {
           vm.valueConstraint.ontologies.splice(i, 1);
           break;
         }
       }
-    };
+    }
 
     function deleteFieldAddedValueSet(valueSet) {
       for (var i = 0, len = vm.valueConstraint.valueSets.length; i < len; i += 1) {
-        if (vm.valueConstraint.valueSets[i]['uri'] == valueSet['uri']) {
+        if (vm.valueConstraint.valueSets[i]['uri'] === valueSet['uri']) {
           vm.valueConstraint.valueSets.splice(i, 1);
           break;
         }
       }
-    };
+    }
 
     function stageOntologyValueConstraint() {
       vm.stagedOntologyValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function (ontologyValueConstraint) {
-        existed = existed || ontologyValueConstraint.uri == vm.currentOntology.info["@id"];
+        existed = existed || ontologyValueConstraint.uri === vm.currentOntology.info["@id"];
       });
 
       if (!existed) {
@@ -398,7 +398,7 @@ define([
       }
 
       vm.stageValueConstraintAction = "add_ontology";
-    };
+    }
 
     /**
      * Reset to the beginning where you select field or value filter.
@@ -421,11 +421,11 @@ define([
       setTimeout(function () {
         angular.element('#field-value-tooltip').popover();
       }, 500);
-    };
+    }
 
     function hasPermission(perm) {
       return vm.permission.includes(perm);
-    };
+    }
 
     /**
      * Set field as primary search/browse parameter.
@@ -433,12 +433,12 @@ define([
     function selectFieldFilter(event) {
       angular.element('#field-value-tooltip').popover('hide');
       vm.filterSelection = "field";
-    };
+    }
 
     function selectValueFilter() {
       angular.element('#field-value-tooltip').popover('hide');
       vm.filterSelection = "values";
-    };
+    }
 
     // Default values for depth options select field
     vm.depthOptions = [
@@ -454,7 +454,7 @@ define([
       vm.stagedBranchesValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedBranchesValueConstraints, function (branchValueConstraint) {
-        existed = existed || branchValueConstraint && branchValueConstraint.uri == selection["@id"];
+        existed = existed || branchValueConstraint && branchValueConstraint.uri === selection["@id"];
       });
 
       if (!existed) {
@@ -490,13 +490,13 @@ define([
         }
       });
       vm.stageValueConstraintAction = "add_siblings";
-    };
+    }
 
     function stageOntologyClassValueConstraint(selection, type) {
       vm.stageValueConstraintAction = "add_class";
       vm.stagedOntologyClassValueConstraints = [];
       stageOntologyClass(selection, type);
-    };
+    }
 
     function stageOntologyClass(selection, type) {
       if (selection && vm.currentOntology) {
@@ -510,7 +510,7 @@ define([
           'label'    : selection.prefLabel
           //'default'  : false
         };
-        if (type == 'OntologyClass') {
+        if (type === 'OntologyClass') {
           klass['source'] = vm.currentOntology.info.id;
         } else {
           klass['source'] = vm.currentValueSet.prefLabel;
@@ -520,7 +520,7 @@ define([
         //  'label': selection.prefLabel
         //});
       }
-    };
+    }
 
     function stageValueSetValueConstraint() {
       vm.stagedValueSetValueConstraints = [];
@@ -531,7 +531,7 @@ define([
         'numTerms'    : vm.currentOntology.tree.length
       });
       vm.stageValueConstraintAction = "add_entire_value_set";
-    };
+    }
 
     vm.bioportalFilterResultLabel = function () {
       if (vm.controlledTerm.bioportalValueSetsFilter && vm.controlledTerm.bioportalOntologiesFilter) {
@@ -676,13 +676,13 @@ define([
 
     // Reset element's ontology
     $scope.$watch("field.properties['@type'].oneOf[0].enum", function (newVal, oldVal) {
-      if (oldVal && oldVal.length > 0 && (!newVal || newVal.length == 0)) {
+      if (oldVal && oldVal.length > 0 && (!newVal || newVal.length === 0)) {
         vm.addedFieldItems = [];
       }
     }, true);
 
     $scope.$watch("field.items.properties['@type'].oneOf[0].enum", function (newVal, oldVal) {
-      if (oldVal && oldVal.length > 0 && (!newVal || newVal.length == 0)) {
+      if (oldVal && oldVal.length > 0 && (!newVal || newVal.length === 0)) {
         vm.addedFieldItems = [];
       }
     }, true);
@@ -721,7 +721,7 @@ define([
             vm.stageValueConstraintAction = 'add_class';
           }
           else {
-            if (value.type == "OntologyClass") {
+            if (value.type === "OntologyClass") {
               if (value.hasChildren) {
                 vm.stageBranchValueConstraint(value);
               }
@@ -729,10 +729,10 @@ define([
                 vm.stageOntologyClassValueConstraint(value);
               }
             }
-            else if (value.type == "Value") {
+            else if (value.type === "Value") {
               vm.stageOntologyClassValueConstraint(value);
             }
-            else if (value.type == "ValueSet") {
+            else if (value.type === "ValueSet") {
               vm.stageValueConstraintAction = 'add_entire_value_set';
             }
           }
@@ -766,7 +766,7 @@ define([
           return vm.currentOntology;
         },
         function (value) {
-          if (!vm.selectedClass || vm.stageValueConstraintAction == 'add_ontology') {
+          if (!vm.selectedClass || vm.stageValueConstraintAction === 'add_ontology') {
             if (value && value.info && value.info.details) {
               vm.stageOntologyValueConstraint();
             }
@@ -775,7 +775,7 @@ define([
             }
           }
 
-          if (vm.selectedClass && vm.stageValueConstraintAction == 'add_entire_value_set') {
+          if (vm.selectedClass && vm.stageValueConstraintAction === 'add_entire_value_set') {
             if (vm.currentOntology.vs) {
               vm.stageValueSetValueConstraint();
             }
@@ -815,8 +815,8 @@ define([
         vm.valueConstraint.branches = vm.valueConstraint.branches || [];
         vm.valueConstraint.multipleChoice = false;
       }
-    };
+    }
 
-  };
+  }
 
 });
