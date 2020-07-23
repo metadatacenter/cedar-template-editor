@@ -1724,7 +1724,7 @@ define([
           }
           if (fieldProp) {
             // set the property as the field title and description
-            const field = service.schemaOf(props[prop]);
+            const field = service.schemaOf(props[fieldProp]);
             const label = service.getTitle(field) || propertyLabel;
             const description = service.getDescription(field) || propertyDescription;
 
@@ -1733,7 +1733,7 @@ define([
             service.setDescription(field, description);
 
             // property label
-            service.getPropertyLabels(parent)[prop] = propertyLabel;
+            service.getPropertyLabels(parent)[fieldProp] = propertyLabel;
 
             // property id
             if (!propertyId || propertyId.length < 1) {
