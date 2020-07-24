@@ -416,7 +416,6 @@ define([
           var propertyId = args[0];
           var propertyLabel = args[2];
           var propertyDescription = args[3];
-          console.log('property:propertyAdded',propertyId, propertyLabel, propertyDescription);
 
           dms.updateProperty(propertyId, propertyLabel, propertyDescription, id, scope.parentElement);
         }
