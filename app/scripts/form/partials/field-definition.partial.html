@@ -34,14 +34,33 @@
     </div>
   </div>
 
-  <!-- question text -->
-  <div  class="form-group floating-label-wrapper" >
-    <input type="text"
-        class="form-control"
-        placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
-        aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
-        ng-model="$root.schemaOf(field)['skos:prefLabel']"
-        with-floating-label>
+  <!-- Question text -->
+  <div class="form-group floating-label-wrapper">
+    <!-- If the field does not contain any alternate question texts (skos:altLabel), we render it using a text field -->
+    <div ng-if="!schemaService.hasAlternateLabels(field)">
+      <input type="text"
+             class="form-control"
+             placeholder="{{'CREATOR.enterPrefLabel' | translate}}"
+             aria-label="{{'CREATOR.enterPrefLabel' | translate}}"
+             ng-model="$root.schemaOf(field)['skos:prefLabel']"
+             with-floating-label>
+    </div>
+    <!-- If the field contains alternate question texts, we use ui-select to display them -->
+    <div ng-if="schemaService.hasAlternateLabels(field)">
+      <ui-select
+          class="form-control"
+          ng-model="$root.schemaOf(field)['skos:prefLabel']">
+        <ui-select-match placeholder="{{'CREATOR.enterPrefLabel' | translate}}">
+          <span ng-bind="$select.selected"></span>
+        </ui-select-match>
+        <ui-select-choices
+            repeat="questionText in questionTextService.getCandidateLabels(field)"
+            refresh="questionTextService.updateModelWhenTyping(field, $select.search)"
+            refresh-delay="0">
+          <span ng-bind="questionText"></span>
+        </ui-select-choices>
+      </ui-select>
+    </div>
   </div>
 
   <!-- help text -->
@@ -71,8 +90,6 @@
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-
-
 
     <div ng-if="hasPropertyId()" class="property-icon">
       <div class="flex">
