@@ -39,8 +39,8 @@ define([
   'cedar/template-editor/service/category.service',
   'cedar/template-editor/service/local-storage.service',
   'cedar/template-editor/service/temporal-runtime-field.service',
-  'cedar/template-editor/service/temporal-editor-field.service'
-
+  'cedar/template-editor/service/temporal-editor-field.service',
+  'cedar/template-editor/service/question-text.service'
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
     'cedar.templateEditor.service.authorizedBackendService',
@@ -80,6 +80,7 @@ define([
     'cedar.templateEditor.service.categoryService',
     'cedar.templateEditor.service.localStorageService',
     'cedar.templateEditor.service.temporalRuntimeFieldService',
-    'cedar.templateEditor.service.temporalEditorFieldService'
+    'cedar.templateEditor.service.temporalEditorFieldService',
+    'cedar.templateEditor.service.questionTextService'
   ]);
 });

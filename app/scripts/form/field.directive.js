@@ -8,13 +8,13 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
-    "SpreadsheetService", "CONST",
-    "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
-    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService"];
+    "SpreadsheetService", "CONST", "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
+    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService, schemaService,
-                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService, ValidationService, TemporalEditorFieldService) {
+                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService,
+                          ValidationService, TemporalEditorFieldService, QuestionTextService) {
 
 
     let linker = function ($scope, $element, attrs) {
@@ -43,7 +43,9 @@ define([
         {id: "xsd:time", label: "Time"}
       ];
 
+      $scope.schemaService = schemaService;
       $scope.temporalEditorFieldService = TemporalEditorFieldService;
+      $scope.questionTextService = QuestionTextService;
       $scope.thisScope = $scope;
 
       let dms = DataManipulationService;

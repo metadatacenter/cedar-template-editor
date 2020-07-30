@@ -66,24 +66,6 @@ define([
       if (node) service.schemaOf(node)['schema:description'] = value;
     };
 
-    // node title and description
-    service.getPreferredLabel = function (node) {
-      if (node) return service.schemaOf(node)['skos:prefLabel'];
-    };
-
-    service.hasPreferredLabel = function (node) {
-      return service.schemaOf(node).hasOwnProperty('skos:prefLabel') && service.schemaOf(
-          node)['skos:prefLabel'].length > 0;
-    };
-
-    service.setPreferredLabel = function (node, value) {
-      if (node) service.schemaOf(node)['skos:prefLabel'] = value;
-    };
-
-    service.removePreferredLabel = function (node) {
-      if (node) delete schema['skos:prefLabel'];
-    };
-
     service.titleLocation = function () {
       return 'schema:name';
     };
@@ -142,6 +124,41 @@ define([
       if (node) {
         delete service.schemaOf(node)['skos:prefLabel'];
       }
+    };
+
+    service.hasAlternateLabels = function (node) {
+      return node && service.schemaOf(node).hasOwnProperty('skos:altLabel') && service.schemaOf(node)['skos:altLabel'].length > 0;
+    };
+
+    service.getAlternateLabels = function (node) {
+      if (service.hasAlternateLabels(node)) return service.schemaOf(node)['skos:altLabel'];
+    };
+
+    service.setAlternateLabels = function (node, value) {
+      if (node) service.schemaOf(node)['skos:altLabel'] = value;
+    };
+
+    service.removeAlternateLabels = function (node) {
+      if (node) {
+        delete service.schemaOf(node)['skos:altLabel'];
+      }
+    };
+
+    // preferred label plus alternate labels
+    service.getAllLabels = function (node) {
+      let allLabels = [];
+      if (service.hasPreferredLabel(node)) {
+        allLabels.push(service.getPreferredLabel(node));
+      }
+      if (service.hasAlternateLabels(node)) {
+        for (let i = 0; i < service.getAlternateLabels(node).length; i++) {
+          let altLabel = service.getAlternateLabels(node)[i];
+          if (!allLabels.includes(altLabel)) {
+            allLabels.push(altLabel);
+          }
+        }
+      }
+      return allLabels;
     };
 
     // does this field allow the hidden attribute?
