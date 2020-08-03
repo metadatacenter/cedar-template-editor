@@ -23,7 +23,7 @@
     "moment": "2.10.6",
     "ng-ckeditor": "0.2.1",
     "ngHandsontable": "0.7.0",
-    "ng-tags-input": "3.1.1",
+    "ng-tags-input": "3.2.0",
     "perfnow-polyfill": "*",
     "requirejs": "2.1.22",
     "requirejs-plugins": "1.0.3",

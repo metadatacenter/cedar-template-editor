@@ -16,7 +16,7 @@ define([
     };
 
     service.getCandidateLabels = function(schema) {
-      return schemaService.getAllLabels(schema);
+      return schemaService.getAlternateLabels(schema);
     };
 
     // Updates the preferred label with the new label entered by the user

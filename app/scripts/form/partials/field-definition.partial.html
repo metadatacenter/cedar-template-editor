@@ -50,9 +50,8 @@
       <ui-select
           class="form-control"
           ng-model="$root.schemaOf(field)['skos:prefLabel']">
-        <ui-select-match placeholder="{{'CREATOR.enterPrefLabel' | translate}}">
-          <span ng-bind="$select.selected"></span>
-        </ui-select-match>
+        <ui-select-match
+            placeholder="{{'CREATOR.enterPrefLabel' | translate}}" allow-clear>{{$select.selected}}</ui-select-match>
         <ui-select-choices
             repeat="questionText in questionTextService.getCandidateLabels(field)"
             refresh="questionTextService.updateModelWhenTyping(field, $select.search)"
@@ -62,6 +61,9 @@
       </ui-select>
     </div>
   </div>
+
+
+
 
   <!-- help text -->
   <div class="form-group floating-label-wrapper">

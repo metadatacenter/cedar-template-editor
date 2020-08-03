@@ -634,6 +634,7 @@
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
     "enterPrefLabel": "Enter Preferred Label",
+    "enterAltLabels": "Enter Alternate Labels",
     "selectDateTimeType": "Select DateTime Type",
     "selectDatePrecisionFormat": "Select Date Precision",
     "selectTimePrecisionFormat": "Select Time Precision",
