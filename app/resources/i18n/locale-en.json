@@ -193,7 +193,9 @@
     "Loading": "Loading",
     "PublishedVersion": "Published Version",
     "DraftVersion": "Draft Version",
-    "IsOpen": "OpenView Enabled"
+    "IsOpen": "OpenView Enabled",
+    "Header": "Header",
+    "Footer": "Footer"
   },
   "HELP": {
     "createFolder": "Create folder",
