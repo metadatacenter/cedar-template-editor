@@ -641,7 +641,9 @@
     "selectDatePrecisionFormat": "Select Date Precision",
     "selectTimePrecisionFormat": "Select Time Precision",
     "selectTimeEnableTimezone": "Allow Timezone Information?",
-    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?"
+    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?",
+    "showAdditionalFields": "Show additional fields",
+    "hideAdditionalFields": "Hide additional fields"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

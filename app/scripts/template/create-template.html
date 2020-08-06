@@ -101,7 +101,8 @@
           <button
               class="btn-additional-info"
               type="button"
-              ng-click="toggleAdditionalInfoPanel()">
+              ng-click="toggleAdditionalInfoPanel()"
+              uib-tooltip="{{getAdditionalInfoButtonTooltip()}}">
             <i ng-class="{'fa fa-chevron-down': !additionalInfoPanelIsOpen, 'fa fa-chevron-up': additionalInfoPanelIsOpen}"></i>
           </button>
           </button>

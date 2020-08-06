@@ -597,7 +597,14 @@ define([
         $scope.toggleAdditionalInfoPanel = function () {
           $scope.additionalInfoPanelIsOpen = !$scope.additionalInfoPanelIsOpen;
         };
-
+        $scope.getAdditionalInfoButtonTooltip = function() {
+          if (!$scope.additionalInfoPanelIsOpen) {
+            return $translate.instant("CREATOR.showAdditionalFields");
+          }
+          else {
+            return $translate.instant("CREATOR.hideAdditionalFields");
+          }
+        };
       }
     }
 );
