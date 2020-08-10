@@ -20,6 +20,11 @@
       </div>
     </div>
 
+    <!-- Header -->
+    <div ng-if="schemaService.getHeader(element) && isExpanded(index)" class="header-instructions">
+      <p>{{schemaService.getHeader(element)}}</p>
+    </div>
+
     <!-- a spreadsheet list of elements -->
     <div ng-if="isSpreadsheetView() && valueArray.length > 0">
       <div class="element expand" id="{{getLocator(0)}}" style="position:relative">
@@ -91,6 +96,12 @@
         </li>
       </ul>
     </div>
+
+    <!-- Footer -->
+    <div ng-if="schemaService.getFooter(element) && isExpanded(index)" class="footer-instructions">
+      <p>{{schemaService.getFooter(element)}}</p>
+    </div>
+
 
   </div>
 </div>

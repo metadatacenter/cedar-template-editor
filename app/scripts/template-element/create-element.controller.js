@@ -580,5 +580,21 @@ define([
       }
     });
 
+    //
+    // Collapsible panel with additional metadata for the template
+    //
+    $scope.additionalInfoPanelIsOpen = false;
+    $scope.toggleAdditionalInfoPanel = function () {
+      $scope.additionalInfoPanelIsOpen = !$scope.additionalInfoPanelIsOpen;
+    };
+    $scope.getAdditionalInfoButtonTooltip = function() {
+      if (!$scope.additionalInfoPanelIsOpen) {
+        return $translate.instant("CREATOR.showAdditionalFields");
+      }
+      else {
+        return $translate.instant("CREATOR.hideAdditionalFields");
+      }
+    };
+
   }
 });

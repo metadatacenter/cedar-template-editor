@@ -8,26 +8,26 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text"
-                    class="form-control"
-                    id="template-name"
-                    placeholder="{{'GENERIC.Name' | translate}}"
-                    aria-label="{{'GENERIC.Name' | translate}}"
-                    ng-model="form['schema:name']"
-                    with-floating-label>
+                       class="form-control"
+                       id="template-name"
+                       placeholder="{{'GENERIC.Name' | translate}}"
+                       aria-label="{{'GENERIC.Name' | translate}}"
+                       ng-model="form['schema:name']"
+                       with-floating-label>
               </div>
             </form>
           </div>
         </div>
-        <div class="left-sidebar col-sm-3 ">
+        <div class="left-sidebar col-sm-3">
           <div id="template-identifier-container">
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
-                    id="template-identifier"
-                    placeholder="{{'GENERIC.Identifier' | translate}}"
-                    aria-label="{{'GENERIC.Identifier' | translate}}"
-                    ng-model="form['schema:identifier']"
-                    with-floating-label>
+                       id="template-identifier"
+                       placeholder="{{'GENERIC.Identifier' | translate}}"
+                       aria-label="{{'GENERIC.Identifier' | translate}}"
+                       ng-model="form['schema:identifier']"
+                       with-floating-label>
               </div>
             </form>
           </div>
@@ -37,17 +37,17 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
-                    id="template-description"
-                    placeholder="{{'GENERIC.Description' | translate}}"
-                    aria-label="{{'GENERIC.Description' | translate}}"
-                    ng-model="form['schema:description']"
-                    with-floating-label>
+                       id="template-description"
+                       placeholder="{{'GENERIC.Description' | translate}}"
+                       aria-label="{{'GENERIC.Description' | translate}}"
+                       ng-model="form['schema:description']"
+                       with-floating-label>
               </div>
             </form>
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('field','classes')">
+                ng-click="showModal('field','classes')">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
@@ -58,8 +58,61 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <!-- Template Header and Footer -->
+        <div ng-hide="!additionalInfoPanelIsOpen">
+          <div class="left-sidebar col-sm-10 col-sm-offset-1">
+            <div id="template-header-text-container">
+              <form>
+                <div class="form-group floating-label-wrapper">
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(form._ui, 'header')"
+                              id="template-header-text"
+                              placeholder="{{'GENERIC.Header' | translate}}"
+                              aria-label="{{'GENERIC.Header' | translate}}"
+                              ng-model="form._ui.header"
+                              tooltip-placement="bottom"
+                              with-floating-label></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="left-sidebar col-sm-10 col-sm-offset-1">
+            <div id="template-footer-text-container">
+              <form>
+                <div class="form-group floating-label-wrapper">
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(form._ui, 'footer')"
+                              id="template-footer-text"
+                              placeholder="{{'GENERIC.Footer' | translate}}"
+                              aria-label="{{'GENERIC.Footer' | translate}}"
+                              ng-model="form._ui.footer"
+                              tooltip-placement="bottom"
+                              with-floating-label></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The following line fixes the button positioning issues caused by the extra space taken by the collapsible panel when it's expanded -->
+      <div ng-hide="additionalInfoPanelIsOpen">&nbsp;</div>
+      <div class="row">
+        <div class="additional-info-button-container">
+          <button
+              class="btn-additional-info"
+              type="button"
+              ng-click="toggleAdditionalInfoPanel()"
+              uib-tooltip="{{getAdditionalInfoButtonTooltip()}}">
+            <i ng-class="{'fa fa-chevron-down': !additionalInfoPanelIsOpen, 'fa fa-chevron-up': additionalInfoPanelIsOpen}"></i>
+          </button>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+
 
   <div class="template-body create-template-body template">
 
@@ -69,7 +122,7 @@
           <div id="form-preview-section">
             <div class="form-preview collapse in">
               <form-directive dirty="dirty" forms="forms" form="form" page="page" model="instance" page-index="0"
-                  ng-if="!isPropertiesEmpty()"></form-directive>
+                              ng-if="!isPropertiesEmpty()"></form-directive>
             </div>
           </div>
 
@@ -108,16 +161,16 @@
             </div>
             <div class="clear-save">
               <button id="button-clear-template" type="button" class="btn btn-clear template" ng-click="reset()"
-                  ng-hide="isPropertiesEmpty()"
-                  translate>
+                      ng-hide="isPropertiesEmpty()"
+                      translate>
                 GENERIC.Clear
               </button>
               <button id="button-cancel-template" type="button" class="btn btn-clear template"
-                  ng-click="cancelTemplate()" translate>GENERIC.Cancel
+                      ng-click="cancelTemplate()" translate>GENERIC.Cancel
               </button>
               <button id="button-save-template" ng-disabled="saveButtonDisabled" type="button"
-                  class="btn btn-save template" ng-click="saveTemplate()"
-                  translate>
+                      class="btn btn-save template" ng-click="saveTemplate()"
+                      translate>
                 GENERIC.SaveTemplate
               </button>
             </div>
@@ -138,34 +191,34 @@
 
     <section>
       <cedar-finder id="finder-modal" cedar-modal-show modal-visible="finderModalVisible" class="modal fade"
-          tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"
-          data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
-          pick-resource-callback="pickElementFromPicker" >
+                    tabindex="-1" role="dialog" aria-labelledby="finderModalHeader"
+                    data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
+                    pick-resource-callback="pickElementFromPicker">
       </cedar-finder>
     </section>
 
     <section>
       <cedar-terms-modal id="terms-modal" cedar-modal-show modal-visible="termsModalVisible" class="modal fade"
-           tabindex="-1" role="dialog" aria-labelledby="termsModalHeader"
-          data-keyboard="true" data-backdrop="static">
+                         tabindex="-1" role="dialog" aria-labelledby="termsModalHeader"
+                         data-keyboard="true" data-backdrop="static">
       </cedar-terms-modal>
     </section>
 
     <section>
-    <div class="modal fade controlled-terms-modal" id="controlled-term-modal" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content" style="overflow:auto">
-          <div class="modal-header">
-            <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                aria-label="Close"><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-          </div>
-          <div class="modal-body">
-            <div controlled-term ></div>
+      <div class="modal fade controlled-terms-modal" id="controlled-term-modal" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content" style="overflow:auto">
+            <div class="modal-header">
+              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true"><img
+                  src="/img/close_modal.png" width="22"/></span></button>
+            </div>
+            <div class="modal-body">
+              <div controlled-term></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </section>
 
 

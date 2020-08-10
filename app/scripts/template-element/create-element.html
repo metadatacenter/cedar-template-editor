@@ -51,6 +51,59 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <!-- Element Header and Footer -->
+        <div ng-hide="!additionalInfoPanelIsOpen">
+          <div class="left-sidebar col-sm-10 col-sm-offset-1">
+            <div id="element-header-text-container">
+              <form>
+                <div class="form-group floating-label-wrapper">
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(elementSchema._ui, 'header')"
+                              id="element-header-text"
+                              placeholder="{{'GENERIC.Header' | translate}}"
+                              aria-label="{{'GENERIC.Header' | translate}}"
+                              ng-model="elementSchema._ui.header"
+                              tooltip-placement="bottom"
+                              with-floating-label></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="left-sidebar col-sm-10 col-sm-offset-1">
+            <div id="element-footer-text-container">
+              <form>
+                <div class="form-group floating-label-wrapper">
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(elementSchema._ui, 'footer')"
+                              id="element-footer-text"
+                              placeholder="{{'GENERIC.Footer' | translate}}"
+                              aria-label="{{'GENERIC.Footer' | translate}}"
+                              ng-model="elementSchema._ui.footer"
+                              tooltip-placement="bottom"
+                              with-floating-label></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- The following line fixes the button positioning issues caused by the extra space taken by the collapsible panel when it's expanded -->
+      <div ng-hide="additionalInfoPanelIsOpen">&nbsp;</div>
+      <div class="row">
+        <div class="additional-info-button-container">
+          <button
+              class="btn-additional-info"
+              type="button"
+              ng-click="toggleAdditionalInfoPanel()"
+              uib-tooltip="{{getAdditionalInfoButtonTooltip()}}">
+            <i ng-class="{'fa fa-chevron-down': !additionalInfoPanelIsOpen, 'fa fa-chevron-up': additionalInfoPanelIsOpen}"></i>
+          </button>
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 

@@ -49,6 +49,9 @@ define([
         $scope.metaToRDF = null;
         $scope.metaToRDFError = null;
 
+        $scope.dataManipulationService = DataManipulationService;
+        $scope.schemaService = schemaService;
+
 
 
         $scope.isRuntime = function () {
@@ -539,6 +542,10 @@ define([
 
         $scope.isElement = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
+        };
+
+        $scope.isTemplate = function (schema) {
+          return (schema['@type'] === 'https://schema.metadatacenter.org/core/Template');
         };
 
         $scope.toggleExpanded = function () {

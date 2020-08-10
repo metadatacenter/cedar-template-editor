@@ -1,103 +1,115 @@
 <div class="row">
   <div class="col-xs-12 ">
     <cedar-pager ng-if="isRuntime() && pagesArray.length>1" field="form" class="pull-right"
-        close="close" is-active="isActive" paging="pagesArray.length>1"
-        expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
-        max="pageMax" select="selectPage" range="6">
+                 close="close" is-active="isActive" paging="pagesArray.length>1"
+                 expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
+                 max="pageMax" select="selectPage" range="6">
     </cedar-pager>
   </div>
 </div>
 
 
 <form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1) + '-' + path}}"
-    ng-class="{'validate': checkSubmission}" novalidate>
+      ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At runtime, the new form-->
-  <div class=" page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
+  <div class="page runtime" ng-if="isRuntime()" ng-class="{'not-expanded': !isExpanded()}">
 
-    <div class="flex" style="min-height:2em;padding:5px 0;">
-          <div class="title form text-nowrap">
-            {{pageTitle()}}</div>
+    <div ng-if="!isTemplate(form)" class="flex" style="min-height:2em;padding:5px 0;">
+      <div class="title form text-nowrap">
+        {{pageTitle()}}
+      </div>
 
-
-        <field-toolbar field="form"
-            close="close" is-active="isActive" paging="false"
-            expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
-            max="pageMax" select="selectPage" range="6">
-        </field-toolbar>
-
+      <field-toolbar field="form"
+                     close="close" is-active="isActive" paging="false"
+                     expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex"
+                     min="pageMin"
+                     max="pageMax" select="selectPage" range="6">
+      </field-toolbar>
     </div>
+
+    <!-- Header -->
+    <div ng-if="schemaService.getHeader(form)" class="header-instructions">
+      <p>{{schemaService.getHeader(form)}}</p>
+    </div>
+
     <div class="flex" style="justify-content:flex-start;align-items:stretch">
 
       <div class="element-bar">
-        <div class='bar bar0' ></div>
+        <div class='bar bar0'></div>
       </div>
 
       <ul class="treeview tv" style="padding-left:0;list-style-type: none;">
 
-      <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
-          ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
-          ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
+        <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
+            ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
+            ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
 
-        <div ng-if="isSectionBreak(item)" class="row">
-          <div class="section-break-inline">
-            {{getFormTitle(item)}}
+          <div ng-if="isSectionBreak(item)" class="row">
+            <div class="section-break-inline">
+              {{getFormTitle(item)}}
+            </div>
           </div>
-        </div>
 
 
-        <!--If field-->
-        <div ng-if="isField(item)" class="field-instance">
+          <!--If field-->
+          <div ng-if="isField(item)" class="field-instance">
 
-          <cedar-runtime-field
-              nested="false" field="form.properties[item]" model="model[item]"
-              delete="removeChild(form.properties[item]);"
-              rename-child-key="renameChildKey"
-              is-edit-data="isEditData"
-              path="0"
-              uid="uid+'-'+item"
-              parent-key="'form'"
-              parent-model="model"
-              labels="form._ui.propertyLabels"
-              descriptions="form._ui.propertyDescriptions"
-              field-key="item"
-              previous="form.properties[pagesArray[pageIndex][$index-1]]"></cedar-runtime-field>
-        </div>
+            <cedar-runtime-field
+                nested="false" field="form.properties[item]" model="model[item]"
+                delete="removeChild(form.properties[item]);"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                path="0"
+                uid="uid+'-'+item"
+                parent-key="'form'"
+                parent-model="model"
+                labels="form._ui.propertyLabels"
+                descriptions="form._ui.propertyDescriptions"
+                field-key="item"
+                previous="form.properties[pagesArray[pageIndex][$index-1]]"></cedar-runtime-field>
+          </div>
 
-        <!--If element-->
-        <div ng-if="isElement(item)" class=" element-group full">
-          <cedar-runtime-element nested="false" element="form.properties[item]"
-              key="item"
-              parent-key="'form'"
-              field-key="item"
-              model="model[item]"
-              parent-model="model"
-              labels="form._ui.propertyLabels"
-              relabel="relabel"
-              delete="removeChild(form.properties[item])"
-              is-edit-data="isEditData"
-              path="0"
+          <!--If element-->
+          <div ng-if="isElement(item)" class=" element-group full">
+            <cedar-runtime-element nested="false" element="form.properties[item]"
+                                   key="item"
+                                   parent-key="'form'"
+                                   field-key="item"
+                                   model="model[item]"
+                                   parent-model="model"
+                                   labels="form._ui.propertyLabels"
+                                   relabel="relabel"
+                                   delete="removeChild(form.properties[item])"
+                                   is-edit-data="isEditData"
+                                   path="0"
 
-              uid="uid+'-'+item">
-          </cedar-runtime-element>
-        </div>
+                                   uid="uid+'-'+item">
+            </cedar-runtime-element>
+          </div>
 
-      </li>
-    </ul>
+        </li>
+      </ul>
     </div>
     <p ng-if="form.requiredFields" class="required-text">Required</p>
+
+    <!-- Footer -->
+    <div ng-if="schemaService.getFooter(form)" class="footer-instructions">
+      <p>{{schemaService.getFooter(form)}}</p>
+    </div>
+
   </div>
 
 
   <!--At build time, the old form-->
   <div class="page build" ng-if="!isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
 
-    <div ng-if="isFirstClassField(form)" >
+    <div ng-if="isFirstClassField(form)">
       <field-directive parent-element="form" nested="false" field-key="" field="form"
-          model="model"
-          delete="removeChild"
-          rename-child-key=""></field-directive>
+                       model="model"
+                       delete="removeChild"
+                       rename-child-key=""></field-directive>
     </div>
 
     <div ng-repeat="item in form._ui.order" class="animate-fade">
@@ -106,11 +118,11 @@
         <!--If  field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
-            ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
+             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
           <field-directive parent-element="form" nested="false" field-key="item" field="form.properties[item]"
-              model="model[item]"
-              delete="removeChild(form.properties[item]); $event.stopPropagation();"
-              rename-child-key="renameChildKey"></field-directive>
+                           model="model[item]"
+                           delete="removeChild(form.properties[item]); $event.stopPropagation();"
+                           rename-child-key="renameChildKey"></field-directive>
         </div>
 
         <!-- if element  -->
@@ -118,12 +130,12 @@
              ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
            <div class="element-group full">
              <cedar-template-element element="form.properties[item]"
-                 key="item"
-                 model="model[item]"
-                 parent-element="form"
-                 rename-child-key="renameChildKey"
-                 delete="removeChild"
-                 is-edit-data="isEditData">
+                                     key="item"
+                                     model="model[item]"
+                                     parent-element="form"
+                                     rename-child-key="renameChildKey"
+                                     delete="removeChild"
+                                     is-edit-data="isEditData">
              </cedar-template-element>
            </div>
          </div>
@@ -131,14 +143,15 @@
     </div>
   </div>
 
+
 </form>
 
 <div class="row">
   <div class="col-xs-12 ">
     <cedar-pager ng-if="isRuntime() && pagesArray.length>1" field="form" class="pull-right"
-        close="close" is-active="isActive" paging="pagesArray.length>1"
-        expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
-        max="pageMax" select="selectPage" range="6">
+                 close="close" is-active="isActive" paging="pagesArray.length>1"
+                 expand-all="expandAll" is-expandable="isExpandable" values="pagesArray" index="pageIndex" min="pageMin"
+                 max="pageMax" select="selectPage" range="6">
     </cedar-pager>
   </div>
 </div>
