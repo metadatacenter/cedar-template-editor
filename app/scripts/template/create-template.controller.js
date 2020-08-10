@@ -31,6 +31,7 @@ define([
         $rootScope.finderModalId = "finder-modal";
 
         var dms = DataManipulationService;
+        $scope.schemaService = schemaService;
 
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
@@ -591,7 +592,7 @@ define([
         });
 
         //
-        // Collapsible panel with additional metadata for the template
+        // Collapsible panel with additional metadata for the element
         //
         $scope.additionalInfoPanelIsOpen = false;
         $scope.toggleAdditionalInfoPanel = function () {
@@ -605,6 +606,7 @@ define([
             return $translate.instant("CREATOR.hideAdditionalFields");
           }
         };
+
       }
     }
 );

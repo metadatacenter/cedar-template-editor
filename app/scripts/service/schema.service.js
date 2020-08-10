@@ -594,9 +594,20 @@ define([
       if (node) return service.schemaOf(node).properties;
     };
 
-
     service.getUI = function (field) {
       return service.schemaOf(field)._ui;
+    };
+
+    service.getHeader = function(node) {
+      if (service.schemaOf(node)._ui.header && service.schemaOf(node)._ui.header.length > 0) {
+        return service.schemaOf(node)._ui.header;
+      }
+    };
+
+    service.getFooter = function(node) {
+      if (service.schemaOf(node)._ui.footer && service.schemaOf(node)._ui.footer.length > 0) {
+        return service.schemaOf(node)._ui.footer;
+      }
     };
 
     //
@@ -779,6 +790,12 @@ define([
         }
       }
       return result;
+    };
+
+    service.deleteStringFieldIfEmpty = function (node, fieldName) {
+      if (!node[fieldName] || node[fieldName].trim().length == 0) {
+        delete node[fieldName];
+      }
     };
 
     return service;

@@ -748,7 +748,7 @@ define([
         } else if (inputType === 'radio') {
           $scope.optionsUI = {option: null};
           // Note that for this element only one selected option is possible
-          if ($scope.model[0]['@value'] != null) {
+          if ($scope.model[0] && $scope.model[0]['@value'] != null) {
             $scope.optionsUI.option = $scope.model[0]['@value'];
           }
         } else if (inputType === 'list') {

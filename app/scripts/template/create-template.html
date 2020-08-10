@@ -66,11 +66,12 @@
             <div id="template-header-text-container">
               <form>
                 <div class="form-group floating-label-wrapper">
-                    <textarea rows="1" class="form-control"
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(form._ui, 'header')"
                               id="template-header-text"
                               placeholder="{{'GENERIC.Header' | translate}}"
                               aria-label="{{'GENERIC.Header' | translate}}"
-                              ng-model="form['_ui']['header']"
+                              ng-model="form._ui.header"
                               tooltip-placement="bottom"
                               with-floating-label></textarea>
                 </div>
@@ -81,11 +82,12 @@
             <div id="template-footer-text-container">
               <form>
                 <div class="form-group floating-label-wrapper">
-                    <textarea rows="1" class="form-control"
+                    <textarea rows="1" class="form-control" style="margin-top: 10px"
+                              ng-change="schemaService.deleteStringFieldIfEmpty(form._ui, 'footer')"
                               id="template-footer-text"
                               placeholder="{{'GENERIC.Footer' | translate}}"
                               aria-label="{{'GENERIC.Footer' | translate}}"
-                              ng-model="form['_ui']['footer']"
+                              ng-model="form._ui.footer"
                               tooltip-placement="bottom"
                               with-floating-label></textarea>
                 </div>
