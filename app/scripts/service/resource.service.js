@@ -430,7 +430,7 @@ define([
           }
 
           if (categoryId) {
-            params['categoryId'] = categoryId;
+            params['category_id'] = categoryId;
           }
 
           addCommonParameters(params, options);
