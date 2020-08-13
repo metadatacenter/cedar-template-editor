@@ -734,7 +734,7 @@ define([
               var nodeType = resource.resourceType;
               var description = resource[CONST.model.DESCRIPTION];
 
-              if (nodeType == 'instance') {
+              if (nodeType === 'instance') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
@@ -744,7 +744,7 @@ define([
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
                     }
                 );
-              } else if (nodeType == 'field') {
+              } else if (nodeType === 'field') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
@@ -757,7 +757,7 @@ define([
                       UIMessageService.showBackendError('SERVER.field.update.error', err);
                     }
                 );
-              } else if (nodeType == 'element') {
+              } else if (nodeType === 'element') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
@@ -770,7 +770,7 @@ define([
                       UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
                     }
                 );
-              } else if (nodeType == 'template') {
+              } else if (nodeType === 'template') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
@@ -784,7 +784,7 @@ define([
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
                     }
                 );
-              } else if (nodeType == 'folder') {
+              } else if (nodeType === 'folder') {
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
