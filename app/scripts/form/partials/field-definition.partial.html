@@ -52,12 +52,12 @@
           ng-model="$root.schemaOf(field)['skos:prefLabel']">
         <ui-select-match
             placeholder="{{'CREATOR.enterPrefLabel' | translate}}" allow-clear>{{$select.selected}}</ui-select-match>
-        <ui-select-choices
-            repeat="questionText in questionTextService.getCandidateLabels(field)"
-            refresh="questionTextService.updateModelWhenTyping(field, $select.search)"
-            refresh-delay="0">
-          <span ng-bind="questionText"></span>
-        </ui-select-choices>
+          <ui-select-choices
+              repeat="questionText in questionTextService.getCandidateLabels(field) | filter: $select.search""
+              refresh="questionTextService.updateModelWhenTyping(field, $select.search, isPublished())"
+              refresh-delay="0">
+            <span ng-bind="questionText"></span>
+          </ui-select-choices>
       </ui-select>
     </div>
   </div>

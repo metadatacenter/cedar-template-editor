@@ -19,10 +19,15 @@ define([
       return schemaService.getAlternateLabels(schema);
     };
 
-    // Updates the preferred label with the new label entered by the user
-    service.updateModelWhenTyping = function (schema, value) {
-      if (value.length > 0 && value != schemaService.getPreferredLabel(schema)) {
-        schemaService.setPreferredLabel(schema, value);
+    // Updates the preferred label with the new label entered by the user (only for unpublished fields)
+    service.updateModelWhenTyping = function (schema, value, isPublished) {
+      if (!isPublished) {
+        if (value.length > 0 && value != schemaService.getPreferredLabel(schema)) {
+          schemaService.setPreferredLabel(schema, value);
+        }
+      }
+      else {
+        // Do nothing. For published fields, we don't allow typing a new preferred label
       }
     };
 
