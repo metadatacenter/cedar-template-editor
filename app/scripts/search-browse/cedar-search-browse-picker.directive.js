@@ -94,7 +94,6 @@ define([
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
 
-
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];

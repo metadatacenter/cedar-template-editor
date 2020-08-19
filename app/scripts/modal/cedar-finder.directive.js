@@ -14,6 +14,7 @@ define([
 
         cedarFinderController.$inject = [
           '$location',
+          '$timeout',
           '$scope',
           '$rootScope',
           '$translate',
@@ -23,12 +24,13 @@ define([
           'UISettingsService',
           'DataManipulationService',
           'QueryParamUtilsService',
+          'CategoryService',
           'CONST'
         ];
 
-        function cedarFinderController($location, $scope, $rootScope, $translate, CedarUser, resourceService,
+        function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,DataManipulationService,
-                                       QueryParamUtilsService, CONST) {
+                                       QueryParamUtilsService, CategoryService, CONST) {
 
           var vm = this;
           vm.id = 'finder-modal';
@@ -49,6 +51,11 @@ define([
           vm.resources = [];
           vm.selectedResource = null;
 
+          // Categories
+          vm.categoryTreeAvailable = false;
+          vm.categoryTreeEnabled = true;
+          vm.categoryTree;
+          vm.loadingCategoryTree = false;
 
           /*
            * public functions
@@ -83,6 +90,7 @@ define([
           vm.isMeta = isMeta;
 
           vm.search = search;
+          vm.categorySearch = categorySearch;
           vm.openResource = openResource;
 
           vm.hasFolders = hasFolders;
@@ -110,6 +118,7 @@ define([
 
 
           init();
+          initCategories();
 
           function init() {
             vm.resourceTypes = {
@@ -128,7 +137,7 @@ define([
             } else {
               goToFolder(CedarUser.getHomeFolderId());
             }
-          }
+          };
 
           function initSearch() {
             if (vm.params.search) {
@@ -142,18 +151,18 @@ define([
                 goToFolder(CedarUser.getHomeFolderId());
               }
             }
-          }
+          };
 
           function breadcrumbName(folderName) {
             if (folderName == '/') {
               return 'All';
             }
             return folderName;
-          }
+          };
 
           function buildBreadcrumbTitle(searchTerm) {
             return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
-          }
+          };
 
           function getPathInfo(folderId) {
             var resourceTypes = activeResourceTypes();
@@ -186,7 +195,7 @@ define([
             } else {
               //vm.resources = [];
             }
-          }
+          };
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
@@ -214,7 +223,7 @@ define([
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
-          }
+          };
 
           function openResource(resource) {
             var r = resource;
@@ -420,7 +429,8 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error',
+                      error);
                 }
             );
           };
@@ -488,11 +498,11 @@ define([
               vm.searchMore();
             } else {
 
-              var limit = UISettingsService.getRequestLimit();
+              let limit = UISettingsService.getRequestLimit();
               vm.offset += limit;
-              var offset = vm.offset;
-              var folderId = vm.currentFolderId;
-              var resourceTypes = activeResourceTypes();
+              let offset = vm.offset;
+              let folderId = vm.currentFolderId;
+              let resourceTypes = activeResourceTypes();
 
               // are there more?
               if (offset < vm.totalCount) {
@@ -536,8 +546,7 @@ define([
             if (vm.totalCount == -1) {
               // Search for more results
               vm.totalCount = Number.MAX_VALUE;
-            }
-            else if (vm.totalCount == 0) {
+            } else if (vm.totalCount == 0) {
               // No more results available. Stop searching
               vm.totalCount = -2;
             }
@@ -600,7 +609,7 @@ define([
            */
 
           function activeResourceTypes() {
-            var activeResourceTypes = ['element','field','folder'];
+            var activeResourceTypes = ['element', 'field', 'folder'];
             return activeResourceTypes;
           }
 
@@ -714,7 +723,99 @@ define([
 
           function hasFields() {
             return getFields().length > 0;
-          }
+          };
+
+
+          /**
+           * Category-related functions
+           */
+          function initCategories() {
+            if (!doShowCategoryTree()) {
+              return;
+            }
+            CategoryService.initCategories(
+                function (response) {
+                  vm.categoryTreeAvailable = true;
+                  vm.categoryTree = response;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+                  //vm.loading = false;
+                });
+          };
+
+          function doShowCategoryTree() {
+            return vm.categoryTreeEnabled;
+          };
+
+          function categorySearch(categoryId) {
+            doCategorySearch(categoryId);
+            // console.log('searching by category id: ' + categoryId);
+            // vm.categoryId = categoryId;
+            // let baseUrl = '/dashboard';
+            // let queryParams = {};
+            // let folderId = QueryParamUtilsService.getFolderId();
+            // if (folderId) {
+            //   queryParams['folderId'] = folderId;
+            // }
+            // queryParams['searchCategory'] = categoryId;
+            // // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
+            // // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
+            // queryParams['t'] = Date.now();
+            // let url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            // $location.url(url);
+            // if (categoryId) {
+            //   UIProgressService.start();
+            //}
+            //}
+          };
+
+          function doCategorySearch(categoryId) {
+            console.log('doing category search');
+            let offset = vm.offset;
+            vm.nextOffset = null;
+            vm.totalCount = -1;
+            vm.loading = true;
+
+            resourceService.categorySearchResources(
+                categoryId,
+                {
+                  resourceTypes    : activeResourceTypes(),
+                  sort             : sortField(),
+                  limit            : vm.requestLimit,
+                  offset           : vm.offset,
+                  version          : getFilterVersion(),
+                  publicationStatus: getFilterStatus()
+                },
+                function (response) {
+
+                  vm.categoryId = categoryId;
+                  vm.isSearching = true;
+                  vm.resources = response.resources;
+                  vm.nextOffset = getNextOffset(response.paging.next);
+                  vm.totalCount = response.totalCount;
+                  vm.loading = false;
+
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  var title = '';
+                  var separator = '';
+                  for (var ti in response.categoryPath) {
+                    if (ti > 0) {
+                      var name = response.categoryPath[ti]['schema:name']
+                      title += separator + name;
+                      separator = ' &raquo; ';
+                    }
+                  }
+                  vm.breadcrumbTitle = $sce.trustAsHtml(vm.buildBreadcrumbTitle(title));
+                  UIProgressService.complete();
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);
+                  vm.loading = false;
+                }
+            );
+          };
+
 
         }
 
