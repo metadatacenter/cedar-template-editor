@@ -25,12 +25,13 @@ define([
           'DataManipulationService',
           'QueryParamUtilsService',
           'CategoryService',
-          'CONST'
+          'CONST',
+          '$sce'
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,DataManipulationService,
-                                       QueryParamUtilsService, CategoryService, CONST) {
+                                       QueryParamUtilsService, CategoryService, CONST, $sce) {
 
           var vm = this;
           vm.id = 'finder-modal';
@@ -773,7 +774,7 @@ define([
           function doCategorySearch(categoryId) {
             console.log('doing category search');
             let offset = vm.offset;
-            vm.nextOffset = null;
+            //vm.nextOffset = null;
             vm.totalCount = -1;
             vm.loading = true;
 
@@ -792,7 +793,7 @@ define([
                   vm.categoryId = categoryId;
                   vm.isSearching = true;
                   vm.resources = response.resources;
-                  vm.nextOffset = getNextOffset(response.paging.next);
+                  //vm.nextOffset = getNextOffset(response.paging.next);
                   vm.totalCount = response.totalCount;
                   vm.loading = false;
 
@@ -807,7 +808,7 @@ define([
                     }
                   }
                   vm.breadcrumbTitle = $sce.trustAsHtml(vm.buildBreadcrumbTitle(title));
-                  UIProgressService.complete();
+                  //UIProgressService.complete();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);

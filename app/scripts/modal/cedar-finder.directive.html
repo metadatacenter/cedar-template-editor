@@ -67,93 +67,96 @@
       </div>
     </div>
 
-    <div class="modal-body scrollable-content" ng-if="finder.isGridView()" cedar-infinite-scroll
-         load-more="finder.loadMore()">
-      <section class="all-items-view " ng-class="as-modal">
-        <div class="container-fluid">
-          <div class="populate-form-boxes">
-            <div class="grid-view">
+    <!--    <div class="modal-body scrollable-content" ng-if="finder.isGridView()" cedar-infinite-scroll-->
+    <!--         load-more="finder.loadMore()">-->
+    <!--      <section class="all-items-view " ng-class="as-modal">-->
+    <!--        <div class="container-fluid">-->
+    <!--          <div class="populate-form-boxes">-->
+    <!--            <div class="grid-view">-->
 
-              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
-                <div class="row no-file">
-                  <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
-                </div>
-                <div class="row no-message">
-                  <div class="col-sm-12 center" translate>Nothing found</div>
-                </div>
-              </div>
+    <!--              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">-->
+    <!--                <div class="row no-file">-->
+    <!--                  <div class="col-sm-12 center"><i class="fa fa-file"></i></div>-->
+    <!--                </div>-->
+    <!--                <div class="row no-message">-->
+    <!--                  <div class="col-sm-12 center" translate>Nothing found</div>-->
+    <!--                </div>-->
+    <!--              </div>-->
 
-              <!-- show the folders first -->
-              <div ng-if="finder.isFolder(resource)" class="form-box-container"
-                   ng-class="{ selected: finder.isResourceSelected(resource) }"
-                   ng-repeat="(index, resource) in finder.resources">
+    <!--              &lt;!&ndash; show the folders first &ndash;&gt;-->
+    <!--              <div ng-if="finder.isFolder(resource)" class="form-box-container"-->
+    <!--                   ng-class="{ selected: finder.isResourceSelected(resource) }"-->
+    <!--                   ng-repeat="(index, resource) in finder.resources">-->
 
-                <div ng-click="finder.selectResource(resource)"
-                     ng-dblclick="finder.goToResource(resource)" class="form-box resource-instance"
-                     ng-class="finder.getResourceTypeClass(resource)">
-                  <div class="box-content text-center " ng-class="finder.getResourceTypeClass(resource)">
+    <!--                <div ng-click="finder.selectResource(resource)"-->
+    <!--                     ng-dblclick="finder.goToResource(resource)" class="form-box resource-instance"-->
+    <!--                     ng-class="finder.getResourceTypeClass(resource)">-->
+    <!--                  <div class="box-content text-center " ng-class="finder.getResourceTypeClass(resource)">-->
 
-                    <div class="toolbar">
-                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                    </div>
+    <!--                    <div class="toolbar">-->
+    <!--                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
+    <!--                    </div>-->
 
-                    <div class="title-container">
-                      <div class="title-text">{{ finder.getTitle(resource) }}</div>
-                    </div>
+    <!--                    <div class="title-container">-->
+    <!--                      <div class="title-text">{{ finder.getTitle(resource) }}</div>-->
+    <!--                    </div>-->
 
-                  </div>
-                </div>
-              </div>
+    <!--                  </div>-->
+    <!--                </div>-->
+    <!--              </div>-->
 
-              <br/>
+    <!--              <br/>-->
 
-              <!-- then the other resources -->
-              <div ng-if="!finder.isFolder(resource)"
-                   class="form-box-container" ng-class="{ selected: finder.isResourceSelected(resource) }"
-                   ng-repeat="(index, resource) in finder.resources">
+    <!--              &lt;!&ndash; then the other resources &ndash;&gt;-->
+    <!--              <div ng-if="!finder.isFolder(resource)"-->
+    <!--                   class="form-box-container" ng-class="{ selected: finder.isResourceSelected(resource) }"-->
+    <!--                   ng-repeat="(index, resource) in finder.resources">-->
 
-                <div ng-click="finder.selectResource(resource)"
-                     ng-dblclick="finder.openResource(resource)"
-                     class="form-box resource-instance"
-                     ng-class="dc.getResourceTypeClass(resource)">
-                  <div class="box-content text-center" ng-class="finder.getResourceTypeClass(resource)">
+    <!--                <div ng-click="finder.selectResource(resource)"-->
+    <!--                     ng-dblclick="finder.openResource(resource)"-->
+    <!--                     class="form-box resource-instance"-->
+    <!--                     ng-class="dc.getResourceTypeClass(resource)">-->
+    <!--                  <div class="box-content text-center" ng-class="finder.getResourceTypeClass(resource)">-->
 
-                    <div class="toolbar">
-                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                    </div>
+    <!--                    <div class="toolbar">-->
+    <!--                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
+    <!--                    </div>-->
 
-                    <div class="title-container">
-                      <div class="title-text">{{ finder.getTitle(resource) }}</div>
+    <!--                    <div class="title-container">-->
+    <!--                      <div class="title-text">{{ finder.getTitle(resource) }}</div>-->
 
-                      <div ng-if="finder.isPublished(resource)">
-                        <hr style="margin:0;padding:0"/>
-                        <i class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}
-                      </div>
-                      <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">
-                        <hr style="margin:0;padding:0"/>
-                        {{finder.getResourceVersion(resource)}}
-                      </div>
-                    </div>
+    <!--                      <div ng-if="finder.isPublished(resource)">-->
+    <!--                        <hr style="margin:0;padding:0"/>-->
+    <!--                        <i class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}-->
+    <!--                      </div>-->
+    <!--                      <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">-->
+    <!--                        <hr style="margin:0;padding:0"/>-->
+    <!--                        {{finder.getResourceVersion(resource)}}-->
+    <!--                      </div>-->
+    <!--                    </div>-->
 
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+    <!--                  </div>-->
+    <!--                </div>-->
+    <!--              </div>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </section>-->
+    <!--    </div>-->
 
-    <div class="modal-body scrollable-content" style="overflow-y:scroll" ng-if="finder.isListView()"
-         cedar-infinite-scroll load-more="finder.loadMore()">
-      <section class="all-items-view " ng-class="as-modal">
+    <!--    <div class="modal-body scrollable-content" style="overflow-y:scroll" ng-if="finder.isListView()"-->
+    <!--         cedar-infinite-scroll load-more="finder.loadMore()">-->
+    <div class="modal-body">
+
+      <!--      <section class="all-items-view" ng-class="as-modal">-->
+
+      <div class="container-fluid">
 
         <div class="row">
           <!-- Left column (category tree)-->
-          <div class="col-sm-3 row-offcanvas-left filter-options" style="background-color: yellow">
+          <div class="col-sm-4 filters-panel">
             <ul class="list-unstyled clearfix">
               <li>{{'GENERIC.Categories' | translate}}
-
                 <ul id="filter-resource-category" class="list-inline">
                   <li ng-if="!finder.categoryTreeAvailable">
                     <div class="latest no-select">
@@ -173,252 +176,249 @@
             </ul>
           </div>
           <!-- Center column (resources)-->
-          <div class="col-sm-5" style="background-color: red">
-            <div class="list-view">
-              <div class="list-side">
+          <div class="col-sm-4 results-panel">
 
-                <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
-                  <div class="row no-file">
-                    <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
-                  </div>
-                  <div class="row no-message">
-                    <div class="col-sm-12 center" translate>Nothing found</div>
-                  </div>
+
+            <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
+              <div class="row no-file">
+                <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+              </div>
+              <div class="row no-message">
+                <div class="col-sm-12 center" translate>Nothing found</div>
+              </div>
+            </div>
+
+            <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
+                 ng-class="{ selected: finder.isResourceSelected(resource) }"
+                 ng-click="finder.selectResource(resource)"
+                 ng-dblclick="finder.openResource(resource)"
+                 ng-repeat="(index, resource) in finder.getFolders()">
+
+              <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
+                <div class="flex ellipsis" style="justify-content:space-between">
+                  <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
+                  <div class="ellipsis" style="width:100%"> {{ finder.getTitle(resource)}}</div>
                 </div>
 
-                <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
-                     ng-class="{ selected: finder.isResourceSelected(resource) }"
-                     ng-click="finder.selectResource(resource)"
-                     ng-dblclick="finder.openResource(resource)"
-                     ng-repeat="(index, resource) in finder.getFolders()">
+              </div>
+            </div>
 
-                  <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
-                    <div class="flex ellipsis" style="justify-content:space-between">
-                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                      <div class="ellipsis" style="width:100%"> {{ finder.getTitle(resource)}}</div>
-                    </div>
+            <div ng-if="!finder.isFolder(resource)" class="box-row"
+                 ng-class="{ selected: finder.isResourceSelected(resource) }"
+                 ng-click="finder.selectResource(resource)"
+                 ng-dblclick="finder.openResource(resource)"
+                 ng-repeat="(index, resource) in finder.getElementsAndFields()">
 
-                  </div>
+              <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
+                <div class="flex ellipsis" style="justify-content:space-between">
+                  <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
+                  <div class="ellipsis" style="width:100%">{{ finder.getTitle(resource)}}</div>
                 </div>
 
-                <div ng-if="!finder.isFolder(resource)" class="box-row"
-                     ng-class="{ selected: finder.isResourceSelected(resource) }"
-                     ng-click="finder.selectResource(resource)"
-                     ng-dblclick="finder.openResource(resource)"
-                     ng-repeat="(index, resource) in finder.getElementsAndFields()">
-
-                  <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
-                    <div class="flex ellipsis" style="justify-content:space-between">
-                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                      <div class="ellipsis" style="width:100%">{{ finder.getTitle(resource)}}</div>
-                    </div>
-
-                    <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i
-                        class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}
-                    </div>
-                    <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">
-                      {{finder.getResourceVersion(resource)}}
-                    </div>
-                  </div>
+                <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i
+                    class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}
                 </div>
+                <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">
+                  {{finder.getResourceVersion(resource)}}
+                </div>
+
 
               </div>
             </div>
           </div>
           <!-- Right column (info panel)-->
-          <div class="col-sm-4" style="background-color: green">
-            <div class="list-view">
-              <div class="info-side">
-                <div class="info" ng-if="finder.selectedResource">
+          <div class="col-sm-4 info-panel">
 
-                  <div class="title flex resource-instance"
-                       ng-class="finder.getResourceTypeClass(finder.selectedResource)">
-                    <div class="flex ellipsis" style="justify-content:space-between">
-                      <cedar-resource-icon resource-type="finder.selectedResource.resourceType"></cedar-resource-icon>
-                      <div class="ellipsis" style="width:100%"> {{ finder.getTitle(finder.selectedResource)}}</div>
-                    </div>
-                  </div>
+            <div class="info" ng-if="finder.selectedResource">
 
-                  <table class="table-details">
-
-                    <tbody>
-                    <tr>
-                      <td class="label">Location</td>
-                      <td>{{ finder.selectedResource.path }}</td>
-                    </tr>
-                    <tr>
-                      <td class="label">Owner</td>
-                      <td>{{ finder.selectedResource.ownedByUserName }}</td>
-                    </tr>
-                    <tr>
-                      <td class="label">Created</td>
-                      <td>
-                        <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>
-                        by
-                        <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="label">Modified</td>
-                      <td>
-                        <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>
-                        by
-                        <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="label">Permission</td>
-                      <td>
-                        <span ng-if="finder.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
-                        <span ng-if="finder.canWrite()" class="can-write ellipsis"><i
-                            class="fa fa-check"></i>write </span>
-                        <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis"><i
-                            class="fa fa-check"></i>owner</span></td>
-                    </tr>
-                    <tr ng-if="finder.isPublished(finder.selectedResource) || (!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1')">
-                      <td class="label">Version</td>
-                      <td>
-                        <div style="white-space:nowrap" ng-if="finder.isPublished(finder.selectedResource)"><i
-                            class="action fa fa-globe"></i> {{finder.getResourceVersion(finder.selectedResource)}}
-                        </div>
-                        <div
-                            ng-if="!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1'">
-                          {{finder.getResourceVersion(finder.selectedResource)}}
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>
-                    </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-                <div class="info" ng-if="!finder.selectedResource">
-                  <div class="no-title" translate>GENERIC.SelectToViewDetails</div>
+              <div class="title flex resource-instance"
+                   ng-class="finder.getResourceTypeClass(finder.selectedResource)">
+                <div class="flex ellipsis" style="justify-content:space-between">
+                  <cedar-resource-icon resource-type="finder.selectedResource.resourceType"></cedar-resource-icon>
+                  <div class="ellipsis" style="width:100%"> {{ finder.getTitle(finder.selectedResource)}}</div>
                 </div>
               </div>
+
+              <table class="table-details">
+
+                <tbody>
+                <tr>
+                  <td class="label">Location</td>
+                  <td>{{ finder.selectedResource.path }}</td>
+                </tr>
+                <tr>
+                  <td class="label">Owner</td>
+                  <td>{{ finder.selectedResource.ownedByUserName }}</td>
+                </tr>
+                <tr>
+                  <td class="label">Created</td>
+                  <td>
+                    <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>
+                    by
+                    <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">Modified</td>
+                  <td>
+                    <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>
+                    by
+                    <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="label">Permission</td>
+                  <td>
+                          <span ng-if="finder.canRead()" class="can-read ellipsis"><i
+                              class="fa fa-check"></i>read </span>
+                    <span ng-if="finder.canWrite()" class="can-write ellipsis"><i
+                        class="fa fa-check"></i>write </span>
+                    <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis"><i
+                        class="fa fa-check"></i>owner</span></td>
+                </tr>
+                <tr ng-if="finder.isPublished(finder.selectedResource) || (!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1')">
+                  <td class="label">Version</td>
+                  <td>
+                    <div style="white-space:nowrap" ng-if="finder.isPublished(finder.selectedResource)"><i
+                        class="action fa fa-globe"></i> {{finder.getResourceVersion(finder.selectedResource)}}
+                    </div>
+                    <div
+                        ng-if="!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1'">
+                      {{finder.getResourceVersion(finder.selectedResource)}}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>
+                </tr>
+                </tbody>
+              </table>
+
             </div>
+            <div class="info" ng-if="!finder.selectedResource">
+              <div class="no-title" translate>GENERIC.SelectToViewDetails</div>
+            </div>
+
           </div>
         </div>
+      </div>
+
+      <!--        <div class="populate-form-boxes">-->
+      <!--          <div class="list-view">-->
+
+      <!--            <div class="info-side">-->
+      <!--              <div class="info" ng-if="finder.selectedResource" >-->
+
+      <!--                <div class="title flex resource-instance" ng-class="finder.getResourceTypeClass(finder.selectedResource)">-->
+      <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
+      <!--                    <cedar-resource-icon resource-type="finder.selectedResource.resourceType"></cedar-resource-icon>-->
+      <!--                    <div class="ellipsis" style="width:100%"> {{ finder.getTitle(finder.selectedResource)}}</div>-->
+      <!--                  </div>-->
+      <!--                </div>-->
+
+      <!--                <table class="table-details">-->
+
+      <!--                  <tbody>-->
+      <!--                  <tr>-->
+      <!--                    <td class="label">Location</td>-->
+      <!--                    <td>{{ finder.selectedResource.path }}</td>-->
+      <!--                  </tr>-->
+      <!--                  <tr>-->
+      <!--                    <td class="label">Owner</td>-->
+      <!--                    <td>{{ finder.selectedResource.ownedByUserName }}</td>-->
+      <!--                  </tr>-->
+      <!--                  <tr>-->
+      <!--                    <td class="label">Created</td>-->
+      <!--                    <td>-->
+      <!--                      <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>-->
+      <!--                      by-->
+      <!--                      <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>-->
+      <!--                    </td>-->
+      <!--                  </tr>-->
+      <!--                  <tr>-->
+      <!--                    <td class="label">Modified</td>-->
+      <!--                    <td>-->
+      <!--                      <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>-->
+      <!--                      by-->
+      <!--                      <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>-->
+      <!--                    </td>-->
+      <!--                  </tr>-->
+      <!--                  <tr>-->
+      <!--                    <td class="label">Permission</td>-->
+      <!--                    <td>-->
+      <!--                      <span ng-if="finder.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>-->
+      <!--                      <span ng-if="finder.canWrite()" class="can-write ellipsis"><i-->
+      <!--                          class="fa fa-check"></i>write </span>-->
+      <!--                      <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis"><i-->
+      <!--                          class="fa fa-check"></i>owner</span></td>-->
+      <!--                  </tr>-->
+      <!--                  <tr ng-if="finder.isPublished(finder.selectedResource) || (!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1')">-->
+      <!--                    <td class="label">Version</td>-->
+      <!--                    <td>-->
+      <!--                      <div style="white-space:nowrap" ng-if="finder.isPublished(finder.selectedResource)"><i class="action fa fa-globe"></i> {{finder.getResourceVersion(finder.selectedResource)}}</div>-->
+      <!--                      <div ng-if="!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1'" >{{finder.getResourceVersion(finder.selectedResource)}}</div>-->
+      <!--                    </td>-->
+      <!--                  </tr>-->
+      <!--                  <tr>-->
+      <!--                    <td colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>-->
+      <!--                  </tr>-->
+      <!--                  </tbody>-->
+      <!--                </table>-->
+
+      <!--              </div>-->
+      <!--              <div class="info" ng-if="!finder.selectedResource">-->
+      <!--                <div class="no-title" translate>GENERIC.SelectToViewDetails</div>-->
+      <!--              </div>-->
+      <!--            </div>-->
+
+      <!--            <div class="list-side">-->
+
+      <!--              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()"   >-->
+      <!--                <div class="row no-file">-->
+      <!--                  <div class="col-sm-12 center"><i class="fa fa-file"></i></div>-->
+      <!--                </div>-->
+      <!--                <div class="row no-message">-->
+      <!--                  <div class="col-sm-12 center" translate>Nothing found</div>-->
+      <!--                </div>-->
+      <!--              </div>-->
+
+      <!--              <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"-->
+      <!--                  ng-class="{ selected: finder.isResourceSelected(resource) }"-->
+      <!--                  ng-click="finder.selectResource(resource)"-->
+      <!--                  ng-dblclick="finder.openResource(resource)"-->
+      <!--                  ng-repeat="(index, resource) in finder.getFolders()">-->
 
 
-        <!--        <div class="populate-form-boxes">-->
-        <!--          <div class="list-view">-->
+      <!--                <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">-->
+      <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
+      <!--                    <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
+      <!--                    <div class="ellipsis" style="width:100%"> {{ finder.getTitle(resource)}}</div>-->
+      <!--                  </div>-->
 
-        <!--            <div class="info-side">-->
-        <!--              <div class="info" ng-if="finder.selectedResource" >-->
+      <!--                </div>-->
+      <!--              </div>-->
 
-        <!--                <div class="title flex resource-instance" ng-class="finder.getResourceTypeClass(finder.selectedResource)">-->
-        <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
-        <!--                    <cedar-resource-icon resource-type="finder.selectedResource.resourceType"></cedar-resource-icon>-->
-        <!--                    <div class="ellipsis" style="width:100%"> {{ finder.getTitle(finder.selectedResource)}}</div>-->
-        <!--                  </div>-->
-        <!--                </div>-->
+      <!--              <div ng-if="!finder.isFolder(resource)" class="box-row"-->
+      <!--                  ng-class="{ selected: finder.isResourceSelected(resource) }"-->
+      <!--                  ng-click="finder.selectResource(resource)"-->
+      <!--                  ng-dblclick="finder.openResource(resource)"-->
+      <!--                  ng-repeat="(index, resource) in finder.getElementsAndFields()">-->
 
-        <!--                <table class="table-details">-->
+      <!--                <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">-->
+      <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
+      <!--                    <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
+      <!--                    <div class="ellipsis" style="width:100%">{{ finder.getTitle(resource)}}</div>-->
+      <!--                  </div>-->
 
-        <!--                  <tbody>-->
-        <!--                  <tr>-->
-        <!--                    <td class="label">Location</td>-->
-        <!--                    <td>{{ finder.selectedResource.path }}</td>-->
-        <!--                  </tr>-->
-        <!--                  <tr>-->
-        <!--                    <td class="label">Owner</td>-->
-        <!--                    <td>{{ finder.selectedResource.ownedByUserName }}</td>-->
-        <!--                  </tr>-->
-        <!--                  <tr>-->
-        <!--                    <td class="label">Created</td>-->
-        <!--                    <td>-->
-        <!--                      <span class="no-wrap">{{ finder.selectedResource['pav:createdOn'] | prettyDate }}</span>-->
-        <!--                      by-->
-        <!--                      <span class="no-wrap">{{ finder.selectedResource.createdByUserName }}</span>-->
-        <!--                    </td>-->
-        <!--                  </tr>-->
-        <!--                  <tr>-->
-        <!--                    <td class="label">Modified</td>-->
-        <!--                    <td>-->
-        <!--                      <span class="no-wrap">{{ finder.selectedResource['pav:lastUpdatedOn'] | prettyDate }}</span>-->
-        <!--                      by-->
-        <!--                      <span class="no-wrap">{{ finder.selectedResource.lastUpdatedByUserName }}</span>-->
-        <!--                    </td>-->
-        <!--                  </tr>-->
-        <!--                  <tr>-->
-        <!--                    <td class="label">Permission</td>-->
-        <!--                    <td>-->
-        <!--                      <span ng-if="finder.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>-->
-        <!--                      <span ng-if="finder.canWrite()" class="can-write ellipsis"><i-->
-        <!--                          class="fa fa-check"></i>write </span>-->
-        <!--                      <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis"><i-->
-        <!--                          class="fa fa-check"></i>owner</span></td>-->
-        <!--                  </tr>-->
-        <!--                  <tr ng-if="finder.isPublished(finder.selectedResource) || (!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1')">-->
-        <!--                    <td class="label">Version</td>-->
-        <!--                    <td>-->
-        <!--                      <div style="white-space:nowrap" ng-if="finder.isPublished(finder.selectedResource)"><i class="action fa fa-globe"></i> {{finder.getResourceVersion(finder.selectedResource)}}</div>-->
-        <!--                      <div ng-if="!finder.isPublished(finder.selectedResource) && finder.getResourceVersion(finder.selectedResource) != '0.0.1'" >{{finder.getResourceVersion(finder.selectedResource)}}</div>-->
-        <!--                    </td>-->
-        <!--                  </tr>-->
-        <!--                  <tr>-->
-        <!--                    <td colspan="2" class="description">{{ finder.selectedResource['schema:description'] }}</td>-->
-        <!--                  </tr>-->
-        <!--                  </tbody>-->
-        <!--                </table>-->
+      <!--                  <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}</div>-->
+      <!--                  <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'" >{{finder.getResourceVersion(resource)}}</div>-->
+      <!--                </div>-->
+      <!--              </div>-->
 
-        <!--              </div>-->
-        <!--              <div class="info" ng-if="!finder.selectedResource">-->
-        <!--                <div class="no-title" translate>GENERIC.SelectToViewDetails</div>-->
-        <!--              </div>-->
-        <!--            </div>-->
-
-        <!--            <div class="list-side">-->
-
-        <!--              <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()"   >-->
-        <!--                <div class="row no-file">-->
-        <!--                  <div class="col-sm-12 center"><i class="fa fa-file"></i></div>-->
-        <!--                </div>-->
-        <!--                <div class="row no-message">-->
-        <!--                  <div class="col-sm-12 center" translate>Nothing found</div>-->
-        <!--                </div>-->
-        <!--              </div>-->
-
-        <!--              <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"-->
-        <!--                  ng-class="{ selected: finder.isResourceSelected(resource) }"-->
-        <!--                  ng-click="finder.selectResource(resource)"-->
-        <!--                  ng-dblclick="finder.openResource(resource)"-->
-        <!--                  ng-repeat="(index, resource) in finder.getFolders()">-->
-
-
-        <!--                <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">-->
-        <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
-        <!--                    <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
-        <!--                    <div class="ellipsis" style="width:100%"> {{ finder.getTitle(resource)}}</div>-->
-        <!--                  </div>-->
-
-        <!--                </div>-->
-        <!--              </div>-->
-
-        <!--              <div ng-if="!finder.isFolder(resource)" class="box-row"-->
-        <!--                  ng-class="{ selected: finder.isResourceSelected(resource) }"-->
-        <!--                  ng-click="finder.selectResource(resource)"-->
-        <!--                  ng-dblclick="finder.openResource(resource)"-->
-        <!--                  ng-repeat="(index, resource) in finder.getElementsAndFields()">-->
-
-        <!--                <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">-->
-        <!--                  <div class="flex ellipsis" style="justify-content:space-between">-->
-        <!--                    <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>-->
-        <!--                    <div class="ellipsis" style="width:100%">{{ finder.getTitle(resource)}}</div>-->
-        <!--                  </div>-->
-
-        <!--                  <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}</div>-->
-        <!--                  <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'" >{{finder.getResourceVersion(resource)}}</div>-->
-        <!--                </div>-->
-        <!--              </div>-->
-
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
-      </section>
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </section>-->
     </div>
 
     <div class="modal-footer actions">
@@ -438,7 +438,7 @@
           <div class=" clear-save">
             <button data-dismiss="modal" type="cancel" class="btn btn-clear canc">Cancel</button>
             <button ng-disabled="!finder.hasSelection()" class="btn btn-save subm" ng-click="finder.openResource()">
-              Add
+              Select
             </button>
           </div>
         </div>
