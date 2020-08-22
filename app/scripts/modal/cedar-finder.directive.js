@@ -25,13 +25,14 @@ define([
           'DataManipulationService',
           'QueryParamUtilsService',
           'CategoryService',
+          'schemaService',
           'CONST',
           '$sce'
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,DataManipulationService,
-                                       QueryParamUtilsService, CategoryService, CONST, $sce) {
+                                       QueryParamUtilsService, CategoryService, schemaService, CONST, $sce) {
 
           var vm = this;
           vm.id = 'finder-modal';
@@ -84,6 +85,9 @@ define([
           vm.isGridView = isGridView;
           vm.isListView = isListView;
           vm.toggleView = toggleView;
+
+          vm.getId = getId;
+          vm.isOverflow = isOverflow;
 
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
@@ -679,7 +683,20 @@ define([
 
           function toggleView() {
             UISettingsService.saveView(CedarUser.toggleView());
-          }
+          };
+
+          function getId(node, label) {
+            if (node) {
+              let id = schemaService.getId(node);
+              return id.substr(id.lastIndexOf('/') + 1) + label;
+            }
+          };
+
+          function isOverflow(node, label) {
+            let id = '#' + vm.getId(node, label);
+            let elm = jQuery(id);
+            return (elm[0].offsetWidth < elm[0].scrollWidth);
+          };
 
           function getFolders() {
             var result = [];

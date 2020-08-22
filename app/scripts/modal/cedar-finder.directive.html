@@ -154,8 +154,8 @@
 
         <div class="row">
           <!-- Left column (category tree)-->
-          <div class="col-sm-4 filters-panel">
-            <ul class="list-unstyled clearfix">
+          <div class="col-sm-3 filters-panel">
+            <ul class="list-unstyled">
               <li>{{'GENERIC.Categories' | translate}}
                 <ul id="filter-resource-category" class="list-inline">
                   <li ng-if="!finder.categoryTreeAvailable">
@@ -176,8 +176,7 @@
             </ul>
           </div>
           <!-- Center column (resources)-->
-          <div class="col-sm-4 results-panel">
-
+          <div class="col-sm-5 results-panel" id="results-panel-id">
 
             <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
               <div class="row no-file">
@@ -188,7 +187,8 @@
               </div>
             </div>
 
-            <div ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
+            <div
+                 ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
                  ng-class="{ selected: finder.isResourceSelected(resource) }"
                  ng-click="finder.selectResource(resource)"
                  ng-dblclick="finder.openResource(resource)"
@@ -197,22 +197,42 @@
               <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
                 <div class="flex ellipsis" style="justify-content:space-between">
                   <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                  <div class="ellipsis" style="width:100%"> {{ finder.getTitle(resource)}}</div>
+                  <div id="{{finder.getId(resource, 'row')}}"
+                      class="ellipsis" style="width:100%"
+                       uib-tooltip='{{finder.getTitle(resource)}}'
+                       tooltip-append-to-body="true"
+                       tooltip-trigger="mouseenter"
+                       tooltip-animation="false"
+                       tooltip-placement="bottom"
+                       data-toggle="tooltip"
+                       tooltip-enable="finder.isOverflow(resource, 'row')"
+                  > {{ finder.getTitle(resource)}}</div>
                 </div>
 
               </div>
             </div>
 
-            <div ng-if="!finder.isFolder(resource)" class="box-row"
+            <div
+                 ng-if="!finder.isFolder(resource)" class="box-row"
                  ng-class="{ selected: finder.isResourceSelected(resource) }"
                  ng-click="finder.selectResource(resource)"
                  ng-dblclick="finder.openResource(resource)"
                  ng-repeat="(index, resource) in finder.getElementsAndFields()">
 
-              <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
+              <div
+                   class="outer flex resource-instance"
+                   ng-class="finder.getResourceTypeClass(resource)">
                 <div class="flex ellipsis" style="justify-content:space-between">
                   <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                  <div class="ellipsis" style="width:100%">{{ finder.getTitle(resource)}}</div>
+                  <div id="{{finder.getId(resource, 'row')}}" class="ellipsis" style="width:100%"
+                       uib-tooltip='{{finder.getTitle(resource)}}'
+                       tooltip-append-to-body="true"
+                       tooltip-trigger="mouseenter"
+                       tooltip-animation="false"
+                       tooltip-placement="bottom"
+                       data-toggle="tooltip"
+                       tooltip-enable="finder.isOverflow(resource, 'row')"
+                  >{{ finder.getTitle(resource)}}</div>
                 </div>
 
                 <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i
