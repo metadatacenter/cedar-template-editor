@@ -7610,98 +7610,114 @@ table.apiKey {
 
           .filters-panel {
             height: 450px;
-            padding-top: 20px;
-            //background-color: orange;
+            padding-top: 10px;
             overflow: scroll;
 
-            //ul.list-unstyled > li {
-            //  margin-bottom: 10px;
-            //}
-            //
-            //ul.list-unstyled > li:last-child {
-            //  border-bottom: 1px solid @gray3;
-            //  padding-bottom: 10px;
-            //}
-            //ul.list-unstyled > li > a {
-            //  display: block;
-            //  padding: 0;
-            //  text-transform: uppercase;
-            //  color: @graytxt;
-            //
-            //  i {
-            //    color: @brand-primary;
-            //  }
-            //}
+            .shares {
+              margin: 0px 0 40px 0;
+              .share {
+                color: @brand-primary;
+                margin: 6px 0;
+                display: block;
+                font-size: 14px;
+                &.active {
+                  font-weight: bold;
+                }
+              }
+            }
+
+
           }
 
           .results-panel {
 
-            height: 450px;
-            padding: 0px;
-            overflow: scroll;
 
-            .category {
-              padding: 10px;
+
+            .breadcrumbs-sb {
+              height: 50px;
+              text-align: left;
+              padding: 15px 0 0 0;
             }
 
-            .box-row {
-              width: 100%;
-              border: 1px solid #ebebeb;
-              background: @white;
+            .results {
 
-              font-size: 14px;
+              height: 400px;
+              padding: 0px;
+              overflow: scroll;
 
-              color: #000;
-              cursor: pointer;
-              vertical-align: middle;
-
-              &:hover {
-                background-color: #f8f8f8;
-              }
-              .outer {
-                border-left: 5px solid transparent;
-                padding: 2px;
-              }
-              .resource-icon {
-                vertical-align: middle;
-              }
-              i.fa-pencil-square {
-                color: @draft;
-                font-size: 20px;
-              }
-              i.fa-check-square {
-                color: @published;
-                font-size: 20px;
+              .category {
+                padding: 10px;
               }
 
-              .cell.icon {
+              .box-row {
+                width: 100%;
+                border: 1px solid #ebebeb;
                 background: @white;
 
-                i {
-                  &.field {
-                    color: @field-color;
-                  }
-                  &.element {
-                    color: @element-color;
-                  }
-                  &.template {
-                    color: @template-color;
-                  }
-                  &.metadata, &.instance {
+                font-size: 14px;
 
-                    color: @metadata-color;
-                  }
-                  &.folder {
-                    color: @folder-color;
+                color: #000;
+                cursor: pointer;
+                vertical-align: middle;
 
+                &:hover {
+                  background-color: #f8f8f8;
+                }
+
+                .outer {
+                  border-left: 5px solid transparent;
+                  padding: 2px;
+                }
+
+                .resource-icon {
+                  vertical-align: middle;
+                }
+
+                i.fa-pencil-square {
+                  color: @draft;
+                  font-size: 20px;
+                }
+
+                i.fa-check-square {
+                  color: @published;
+                  font-size: 20px;
+                }
+
+                .cell.icon {
+                  background: @white;
+
+                  i {
+                    &.field {
+                      color: @field-color;
+                    }
+
+                    &.element {
+                      color: @element-color;
+                    }
+
+                    &.template {
+                      color: @template-color;
+                    }
+
+                    &.metadata, &.instance {
+
+                      color: @metadata-color;
+                    }
+
+                    &.folder {
+                      color: @folder-color;
+
+                    }
                   }
                 }
-              }
-              &.selected {
 
-                background-color: #f8f8f8;
-                .outer {
-                  border-left-color: @brand-primary;
+                &.selected {
+
+                  background-color: #f8f8f8;
+
+                  .outer {
+                    border-left-color: @brand-primary;
+                  }
                 }
               }
             }
@@ -7786,10 +7802,10 @@ table.apiKey {
       }
 
       .modal-footer {
-        .breadcrumbs-sb {
-          text-align: left;
-          padding: 10px 0 0 40px;
-        }
+        //.breadcrumbs-sb {
+        //  text-align: left;
+        //  padding: 10px 0 0 40px;
+        //}
       }
     }
   }

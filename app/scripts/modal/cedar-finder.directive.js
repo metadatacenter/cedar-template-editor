@@ -24,6 +24,7 @@ define([
           'UISettingsService',
           'DataManipulationService',
           'QueryParamUtilsService',
+          'FrontendUrlService',
           'CategoryService',
           'schemaService',
           'CONST',
@@ -32,7 +33,7 @@ define([
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,DataManipulationService,
-                                       QueryParamUtilsService, CategoryService, schemaService, CONST, $sce) {
+                                       QueryParamUtilsService, FrontendUrlService, CategoryService, schemaService, CONST, $sce) {
 
           var vm = this;
           vm.id = 'finder-modal';
@@ -74,6 +75,8 @@ define([
           vm.goToResource = goToResource;
           vm.goToFolder = goToFolder;
           vm.isResourceTypeActive = isResourceTypeActive;
+          vm.goToMyWorkspace = goToMyWorkspace;
+          vm.goToSharedWithMe = goToSharedWithMe;
 
           vm.setSortByName = setSortByName;
           vm.setSortByCreated = setSortByCreated;
@@ -203,10 +206,11 @@ define([
           };
 
           function doSearch(term) {
-            var resourceTypes = activeResourceTypes();
-            var limit = UISettingsService.getRequestLimit();
-            vm.offset = 0;
-            var offset = vm.offset;
+            let resourceTypes = activeResourceTypes();
+            let limit = UISettingsService.getRequestLimit();
+            // vm.offset = 0;
+            // let offset = vm.offset;
+            let offset = 0;
             resourceService.searchResources(
                 term,
                 {
@@ -229,6 +233,37 @@ define([
                 }
             );
           };
+
+          function doSharedWithMe() {
+
+            vm.offset = 0;
+            vm.nextOffset = null;
+            vm.totalCount = -1;
+            let offset = vm.offset;
+
+            resourceService.sharedWithMeResources(
+                {
+                  resourceTypes    : activeResourceTypes(),
+                  sort             : sortField(),
+                  limit            : vm.requestLimit,
+                  offset           : vm.offset
+                },
+                function (response) {
+                  vm.isSearching = true;
+                  vm.resources = response.resources;
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+
+                  //vm.nextOffset = getNextOffset(response.paging.next);
+                  vm.totalCount = response.totalCount;
+                  vm.loading = false;
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                }
+            );
+          }
 
           function openResource(resource) {
             var r = resource;
@@ -631,11 +666,7 @@ define([
           }
 
           function sortField() {
-            var result = '';
-            if (CedarUser.isSortByName()) {
-              result += '-';
-            }
-            return result += CedarUser.getSort();
+            return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
           }
 
           function setSortByCreated() {
@@ -768,28 +799,9 @@ define([
 
           function categorySearch(categoryId) {
             doCategorySearch(categoryId);
-            // console.log('searching by category id: ' + categoryId);
-            // vm.categoryId = categoryId;
-            // let baseUrl = '/dashboard';
-            // let queryParams = {};
-            // let folderId = QueryParamUtilsService.getFolderId();
-            // if (folderId) {
-            //   queryParams['folderId'] = folderId;
-            // }
-            // queryParams['searchCategory'] = categoryId;
-            // // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
-            // // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
-            // queryParams['t'] = Date.now();
-            // let url = $rootScope.util.buildUrl(baseUrl, queryParams);
-            // $location.url(url);
-            // if (categoryId) {
-            //   UIProgressService.start();
-            //}
-            //}
           };
 
           function doCategorySearch(categoryId) {
-            console.log('doing category search');
             let offset = vm.offset;
             //vm.nextOffset = null;
             vm.totalCount = -1;
@@ -834,6 +846,17 @@ define([
             );
           };
 
+          /**
+           * Quick access links
+           */
+
+          function goToMyWorkspace() {
+            goToFolder(CedarUser.getHomeFolderId());
+          }
+
+          function goToSharedWithMe() {
+            doSharedWithMe();
+          };
 
         }
 

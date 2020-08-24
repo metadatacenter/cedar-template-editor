@@ -17,48 +17,32 @@
         </div>
         <div class="col-sm-2 ">
           <ul class="list-inline ">
-            <!--            <li>-->
-            <!--              <button-->
-            <!--                  class="tool grid-view"-->
-            <!--                  type="button"-->
-            <!--                  uib-tooltip="{{'HELP.viewAsGrid' | translate}}"-->
-            <!--                  tooltip-trigger-->
-            <!--                  tooltip-animation="false"-->
-            <!--                  tooltip-placement="bottom"-->
-            <!--                  data-toggle="tooltip"-->
-            <!--                  ng-if="finder.isListView()"-->
-            <!--                  ng-click="finder.toggleView()"><i class="fa fa-th"></i></button>-->
-            <!--            </li>-->
-            <!--            <li>-->
-            <!--              <button type="button"-->
-            <!--                  class="tool list-view"-->
-            <!--                  uib-tooltip="{{'HELP.viewAsList' | translate}}"-->
-            <!--                  tooltip-trigger-->
-            <!--                  tooltip-animation="false"-->
-            <!--                  tooltip-placement="bottom"-->
-            <!--                  data-toggle="tooltip"-->
-            <!--                  ng-if="finder.isGridView()"-->
-            <!--                  ng-click="finder.toggleView()"><i-->
-            <!--                  class="fa fa-list-ul"></i></button>-->
-            <!--            </li>-->
-            <li>
+            <li uib-tooltip="{{ 'Sort' | translate  }}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip">
               <div class="btn-group dropdown">
-                <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                    class="fa fa-sort  inline "></i></button>
+                <button type="button" class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-sort-amount-asc"></i>
+                </button>
                 <ul class="dropdown-menu dropdown-menu-left">
-                  <li class="sort-by-name"><a ng-click="finder.setSortByName()"><i class="fa fa-check"
-                                                                                   ng-class="finder.sortName()"></i><span
-                      translate="DASHBOARD.sort.name"></span></a></li>
-                  <li class="sort-by-created"><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
-                                                                                         ng-class="finder.sortCreated()"></i><span
-                      translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                  <li class="sort-by-updated"><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
-                                                                                         ng-class="finder.sortUpdated()"></i><span
-                      translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
+                  <li class="sort-by-name">
+                    <a ng-click="finder.setSortByName()"><i class="fa fa-check" ng-class="finder.sortName()"></i>
+                      <span translate="DASHBOARD.sort.name"></span></a>
+                  </li>
+                  <li class="sort-by-created">
+                    <a ng-click="finder.setSortByCreated()"><i class="fa fa-check" ng-class="finder.sortCreated()"></i>
+                      <span translate="DASHBOARD.sort.createdOnTS"></span></a>
+                  </li>
+                  <li class="sort-by-updated">
+                    <a ng-click="finder.setSortByUpdated()"><i class="fa fa-check" ng-class="finder.sortUpdated()"></i>
+                      <span translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
                   </li>
                 </ul>
               </div>
             </li>
+
             <li>
               <div ng-if="finder.isSearching" class="search-result"></div>
             </li>
@@ -115,7 +99,7 @@
     <!--                <div ng-click="finder.selectResource(resource)"-->
     <!--                     ng-dblclick="finder.openResource(resource)"-->
     <!--                     class="form-box resource-instance"-->
-    <!--                     ng-class="dc.getResourceTypeClass(resource)">-->
+    <!--                     ng-class="finder.getResourceTypeClass(resource)">-->
     <!--                  <div class="box-content text-center" ng-class="finder.getResourceTypeClass(resource)">-->
 
     <!--                    <div class="toolbar">-->
@@ -155,6 +139,23 @@
         <div class="row">
           <!-- Left column (category tree)-->
           <div class="col-sm-3 filters-panel">
+
+            <div class="shares">
+              <a class="share workspace" ng-class="{active: finder.isHomeMode()}" href="#"
+                 ng-click="finder.goToMyWorkspace()"
+                 translate>DASHBOARD.sidebar.myWorkspace</a>
+              <a class="share shared" ng-class="{active: finder.isSharedWithMeMode()}" href="#"
+                 ng-click="finder.goToSharedWithMe()"
+                 translate>DASHBOARD.sidebar.sharedWithMe</a>
+              <a class="share shared" ng-class="{active: finder.isSharedWithEverybodyMode()}" href="#"
+                 ng-click="finder.goToSharedWithEverybody()"
+                 translate>DASHBOARD.sidebar.sharedWithEverybody</a>
+              <a class="share shared" ng-class="{active: finder.isSpecialFoldersMode()}" href="#"
+                 ng-click="finder.goToSpecialFolders()"
+                 translate>DASHBOARD.sidebar.specialFolders</a>
+            </div>
+
+
             <ul class="list-unstyled">
               <li>{{'GENERIC.Categories' | translate}}
                 <ul id="filter-resource-category" class="list-inline">
@@ -176,78 +177,100 @@
             </ul>
           </div>
           <!-- Center column (resources)-->
-          <div class="col-sm-5 results-panel" id="results-panel-id">
+          <div class="col-sm-6">
 
-            <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
-              <div class="row no-file">
-                <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+            <div class="results-panel" id="results-panel-id">
+
+              <div class="breadcrumbs-sb">
+                <p ng-show="!finder.isSearching" class="not-searching">
+          <span ng-repeat="folder in finder.pathInfo">
+              <a ng-click="finder.goToFolder(folder['@id'])"
+                 class="breadcrumbs browsing">{{finder.breadcrumbName(folder['schema:name'])}}</a> /
+            </span>
+                  <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath['schema:name'])}}</a>
+                </p>
+
+                <p ng-show="finder.isSearching" class="searching">
+                  {{finder.buildBreadcrumbTitle(finder.params.search)}}</p>
               </div>
-              <div class="row no-message">
-                <div class="col-sm-12 center" translate>Nothing found</div>
-              </div>
-            </div>
 
-            <div
-                 ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
-                 ng-class="{ selected: finder.isResourceSelected(resource) }"
-                 ng-click="finder.selectResource(resource)"
-                 ng-dblclick="finder.openResource(resource)"
-                 ng-repeat="(index, resource) in finder.getFolders()">
+              <div class="results">
 
-              <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
-                <div class="flex ellipsis" style="justify-content:space-between">
-                  <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                  <div id="{{finder.getId(resource, 'row')}}"
-                      class="ellipsis" style="width:100%"
-                       uib-tooltip='{{finder.getTitle(resource)}}'
-                       tooltip-append-to-body="true"
-                       tooltip-trigger="mouseenter"
-                       tooltip-animation="false"
-                       tooltip-placement="bottom"
-                       data-toggle="tooltip"
-                       tooltip-enable="finder.isOverflow(resource, 'row')"
-                  > {{ finder.getTitle(resource)}}</div>
+                <div ng-show="!finder.hasElementsOrFields() && !finder.hasFolders()">
+                  <div class="row no-file">
+                    <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+                  </div>
+                  <div class="row no-message">
+                    <div class="col-sm-12 center" translate>Nothing found</div>
+                  </div>
                 </div>
 
-              </div>
-            </div>
+                <div
+                    ng-show="!finder.isSearching" ng-if="finder.isFolder(resource)" class="box-row"
+                    ng-class="{ selected: finder.isResourceSelected(resource) }"
+                    ng-click="finder.selectResource(resource)"
+                    ng-dblclick="finder.openResource(resource)"
+                    ng-repeat="(index, resource) in finder.getFolders()">
 
-            <div
-                 ng-if="!finder.isFolder(resource)" class="box-row"
-                 ng-class="{ selected: finder.isResourceSelected(resource) }"
-                 ng-click="finder.selectResource(resource)"
-                 ng-dblclick="finder.openResource(resource)"
-                 ng-repeat="(index, resource) in finder.getElementsAndFields()">
+                  <div class="outer flex resource-instance" ng-class="finder.getResourceTypeClass(resource)">
+                    <div class="flex ellipsis" style="justify-content:space-between">
+                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
+                      <div id="{{finder.getId(resource, 'row')}}"
+                           class="ellipsis" style="width:100%"
+                           uib-tooltip='{{finder.getTitle(resource)}}'
+                           tooltip-append-to-body="true"
+                           tooltip-trigger="mouseenter"
+                           tooltip-animation="false"
+                           tooltip-placement="bottom"
+                           data-toggle="tooltip"
+                           tooltip-enable="finder.isOverflow(resource, 'row')"
+                      > {{ finder.getTitle(resource)}}
+                      </div>
+                    </div>
 
-              <div
-                   class="outer flex resource-instance"
-                   ng-class="finder.getResourceTypeClass(resource)">
-                <div class="flex ellipsis" style="justify-content:space-between">
-                  <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                  <div id="{{finder.getId(resource, 'row')}}" class="ellipsis" style="width:100%"
-                       uib-tooltip='{{finder.getTitle(resource)}}'
-                       tooltip-append-to-body="true"
-                       tooltip-trigger="mouseenter"
-                       tooltip-animation="false"
-                       tooltip-placement="bottom"
-                       data-toggle="tooltip"
-                       tooltip-enable="finder.isOverflow(resource, 'row')"
-                  >{{ finder.getTitle(resource)}}</div>
+
+                  </div>
                 </div>
 
-                <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i
-                    class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}
-                </div>
-                <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">
-                  {{finder.getResourceVersion(resource)}}
-                </div>
+                <div
+                    ng-if="!finder.isFolder(resource)" class="box-row"
+                    ng-class="{ selected: finder.isResourceSelected(resource) }"
+                    ng-click="finder.selectResource(resource)"
+                    ng-dblclick="finder.openResource(resource)"
+                    ng-repeat="(index, resource) in finder.getElementsAndFields()">
+
+                  <div
+                      class="outer flex resource-instance"
+                      ng-class="finder.getResourceTypeClass(resource)">
+                    <div class="flex ellipsis" style="justify-content:space-between">
+                      <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
+                      <div id="{{finder.getId(resource, 'row')}}" class="ellipsis" style="width:100%"
+                           uib-tooltip='{{finder.getTitle(resource)}}'
+                           tooltip-append-to-body="true"
+                           tooltip-trigger="mouseenter"
+                           tooltip-animation="false"
+                           tooltip-placement="bottom"
+                           data-toggle="tooltip"
+                           tooltip-enable="finder.isOverflow(resource, 'row')"
+                      >{{ finder.getTitle(resource)}}
+                      </div>
+                    </div>
+
+                    <div style="white-space:nowrap" ng-if="finder.isPublished(resource)"><i
+                        class="action fa fa-globe"></i> {{finder.getResourceVersion(resource)}}
+                    </div>
+                    <div ng-if="!finder.isPublished(resource) && finder.getResourceVersion(resource) != '0.0.1'">
+                      {{finder.getResourceVersion(resource)}}
+                    </div>
 
 
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           <!-- Right column (info panel)-->
-          <div class="col-sm-4 info-panel">
+          <div class="col-sm-3 info-panel">
 
             <div class="info" ng-if="finder.selectedResource">
 
@@ -443,19 +466,19 @@
 
     <div class="modal-footer actions">
       <div class="row">
-        <div class="col-lg-8 breadcrumbs-sb ">
-          <p ng-show="!finder.isSearching" class="not-searching">
-          <span ng-repeat="folder in finder.pathInfo">
-              <a ng-click="finder.goToFolder(folder['@id'])"
-                 class="breadcrumbs browsing">{{finder.breadcrumbName(folder['schema:name'])}}</a> /
-            </span>
-            <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath['schema:name'])}}</a>
-          </p>
+        <!--        <div class="col-lg-8 breadcrumbs-sb ">-->
+        <!--          <p ng-show="!finder.isSearching" class="not-searching">-->
+        <!--          <span ng-repeat="folder in finder.pathInfo">-->
+        <!--              <a ng-click="finder.goToFolder(folder['@id'])"-->
+        <!--                 class="breadcrumbs browsing">{{finder.breadcrumbName(folder['schema:name'])}}</a> /-->
+        <!--            </span>-->
+        <!--            <a class="breadcrumbs browsing">{{finder.breadcrumbName(finder.currentPath['schema:name'])}}</a>-->
+        <!--          </p>-->
 
-          <p ng-show="finder.isSearching" class="searching"> {{finder.buildBreadcrumbTitle(finder.params.search)}}</p>
-        </div>
-        <div class="col-lg-4 ">
-          <div class=" clear-save">
+        <!--          <p ng-show="finder.isSearching" class="searching"> {{finder.buildBreadcrumbTitle(finder.params.search)}}</p>-->
+        <!--        </div>-->
+        <div class="col-lg-12">
+          <div class="clear-save">
             <button data-dismiss="modal" type="cancel" class="btn btn-clear canc">Cancel</button>
             <button ng-disabled="!finder.hasSelection()" class="btn btn-save subm" ng-click="finder.openResource()">
               Select
