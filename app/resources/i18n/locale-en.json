@@ -663,9 +663,9 @@
   "BreadcrumbTitle": {
     "sharedWithMe": "Shared with Me",
     "sharedWithEverybody": "Shared with Everybody",
-    "viewAll": "View All",
-    "searchResult": "Search Results For: '{{searchTerm}}'",
-    "categorySearchResult": "Category search Results For: '{{searchTerm}}'",
+    "viewAll": "View all",
+    "searchResult": "Search results for: '{{searchTerm}}'",
+    "categorySearchResult": "Category search results for: '{{searchTerm}}'",
     "specialFolders": "Community Folders"
   },
   "REST_ERROR": {

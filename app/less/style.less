@@ -7430,14 +7430,14 @@ table.apiKey {
 
 #finder-modal {
 
-  overflow: hidden;
   .modal-dialog {
     width: 95%;
     min-width: 600px;
     max-width: 1400px;
-    height: 90%;
+    height: 100%;
     min-height: 500px;
-    max-height: 700px;
+    max-height: 750px;
+    overflow: scroll;
     .modal-content {
 
       margin: 0 auto;
@@ -7609,39 +7609,35 @@ table.apiKey {
         .row {
 
           .filters-panel {
-            height: 450px;
+            height: 600px;
             padding-top: 10px;
             overflow: scroll;
 
             .shares {
-              margin: 0px 0 40px 0;
+              margin: 0px 0 30px 0;
               .share {
                 color: @brand-primary;
                 margin: 6px 0;
                 display: block;
-                font-size: 14px;
+                font-size: 15px;
                 &.active {
                   font-weight: bold;
                 }
               }
             }
-
-
           }
 
           .results-panel {
 
-
-
             .breadcrumbs-sb {
               height: 50px;
               text-align: left;
-              padding: 15px 0 0 0;
+              padding: 10px 2px;
             }
 
             .results {
 
-              height: 400px;
+              height: 550px;
               padding: 0px;
               overflow: scroll;
 
@@ -7737,7 +7733,7 @@ table.apiKey {
             //  margin: 0;
             //}
 
-            height: 450px;
+            height: 600px;
             border-left: 1px solid #e0e0e0;
             background-color: @white;
 
@@ -7802,10 +7798,7 @@ table.apiKey {
       }
 
       .modal-footer {
-        //.breadcrumbs-sb {
-        //  text-align: left;
-        //  padding: 10px 0 0 40px;
-        //}
+
       }
     }
   }
