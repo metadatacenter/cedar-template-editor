@@ -37,6 +37,7 @@
   </div>
 
   <div id="options" class="options" ng-show="isTabActive('options')">
+
     <div ng-if="isNumericField()">
 
       <!-- unit of measure constraint -->
@@ -226,6 +227,18 @@
         </ui-select>
       </div>
 
+    </div>
+
+    <!-- For all fields -->
+    <div class="form-group floating-label-wrapper">
+      <tags-input
+          use-strings="true"
+          replace-spaces-with-dashes="false"
+          class="custom-tags-input"
+          placeholder="{{'CREATOR.enterAltLabels' | translate}}"
+          ng-model="$root.schemaOf(field)['skos:altLabel']"
+          ng-disabled="isPublished()">
+      </tags-input>
     </div>
 
   </div>

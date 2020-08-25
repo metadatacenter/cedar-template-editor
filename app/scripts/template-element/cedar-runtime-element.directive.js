@@ -35,6 +35,8 @@ define([
 
     function linker(scope, el, attrs) {
 
+      scope.schemaService = schemaService;
+
       // scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       // scope.uuid = DataManipulationService.generateTempGUID();
 

@@ -430,7 +430,7 @@ define([
           }
 
           if (categoryId) {
-            params['categoryId'] = categoryId;
+            params['category_id'] = categoryId;
           }
 
           addCommonParameters(params, options);
@@ -607,8 +607,8 @@ define([
         function copyResourceToWorkspace(resource, newTitle, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['folderId'] = CedarUser.getHomeFolderId();
-          postData['titleTemplate'] = newTitle;
+          postData['targetFolderId'] = CedarUser.getHomeFolderId();
+          postData['nameTemplate'] = newTitle;
           var url = urlService.copyResourceToFolder();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
@@ -622,8 +622,8 @@ define([
         function copyResource(resource, folderId, newTitle, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          postData['folderId'] = folderId;
-          postData['titleTemplate'] = newTitle;
+          postData['targetFolderId'] = folderId;
+          postData['nameTemplate'] = newTitle;
           var url = urlService.copyResourceToFolder();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
@@ -636,9 +636,9 @@ define([
 
         function moveResource(resource, folderId, successCallback, errorCallback) {
           var postData = {};
-          postData['sourceId'] = resource['@id'];
+          postData['@id'] = resource['@id'];
           postData['resourceType'] = resource['resourceType'];
-          postData['folderId'] = folderId;
+          postData['targetFolderId'] = folderId;
 
           var url = urlService.moveNodeToFolder();
           authorizedBackendService.doCall(
@@ -909,14 +909,14 @@ define([
         }
 
         function renameNode(id, name, description) {
-          var command = {
-            "id": id
+          let command = {
+            "@id": id
           };
           if (name != null) {
-            command["name"] = name;
+            command["schema:name"] = name;
           }
           if (description != null) {
-            command["description"] = description;
+            command["schema:description"] = description;
           }
           return httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
         }

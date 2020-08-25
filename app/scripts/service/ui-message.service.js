@@ -125,11 +125,12 @@ define([
 
 
     service.showBackendError = function (messageKey, response) {
-      var errorObject = response.data;
-      if (response.status == -1) {
-        var params = {};
+      let errorObject = response.data;
+      let interpolatedServerError = null;
+      if (response.status === -1) {
+        let params = {};
         params.url = response.config.url;
-        var interpolatedServerError = $translate.instant("SERVER.ERROR.BackendIsNotResponding", params);
+        interpolatedServerError = $translate.instant("SERVER.ERROR.BackendIsNotResponding", params);
         $timeout(function () {
           service.showBackendWarning(
               $translate.instant('GENERIC.Error'),
@@ -142,13 +143,13 @@ define([
       // If yes, show a warning, and return
       // If not, this is a server error, and we should show it.
       if (errorObject.hasOwnProperty("errorKey")) {
-        var i18nKey = 'REST_ERROR.' + errorObject.errorKey;
-        var interpolatedServerError = $translate.instant(i18nKey, errorObject.parameters);
-        if (interpolatedServerError != i18nKey) {
+        let i18nKey = 'REST_ERROR.' + errorObject.errorKey;
+        interpolatedServerError = $translate.instant(i18nKey, errorObject.parameters);
+        if (interpolatedServerError !== i18nKey) {
           if (errorObject.hasOwnProperty("errorReasonKey")) {
-            var i18nReasonKey = 'REST_ERROR_REASON.' + errorObject.errorReasonKey;
-            var interpolatedServerReason = $translate.instant(i18nReasonKey, errorObject.parameters);
-            if (interpolatedServerReason != i18nReasonKey) {
+            let i18nReasonKey = 'REST_ERROR_REASON.' + errorObject.errorReasonKey;
+            let interpolatedServerReason = $translate.instant(i18nReasonKey, errorObject.parameters);
+            if (interpolatedServerReason !== i18nReasonKey) {
               interpolatedServerError += "<br /><br />" + interpolatedServerReason;
             }
           }
@@ -167,30 +168,37 @@ define([
         msg    : $translate.instant(messageKey),
         //timeout: false,
         onClick: function () {
-          //console.log(response);
-          var message, exceptionMessage, stackTraceHtml, statusCode, statusText, url, method, errorKey;
+          let message, exceptionMessage, stackTraceHtml, statusCode, statusText, url, method, errorKey, errorReasonKey, objects;
           statusCode = response.status;
           statusText = response.statusText;
           url = response.config.url;
           method = response.config.method;
           //console.log(response);
-          if (response.status == -1) {
+          stackTraceHtml = "N/A";
+          objects = 'N/A';
+          exceptionMessage = 'N/A';
+          if (response.status === -1) {
             message = $translate.instant('SERVER.ERROR.InaccessibleMessage');
             exceptionMessage = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
-            stackTraceHtml = $translate.instant('GENERIC.NotAvailable');
           } else {
             if (errorObject !== null) {
-              message = errorObject.message;
+              message = errorObject.errorMessage;
               errorKey = errorObject.errorKey;
+              errorReasonKey = errorObject.errorReasonKey;
+              if (errorObject.hasOwnProperty('objects')) {
+                objects = '<textarea style="height: 100px; white-space: pre">';
+                objects += JSON.stringify(errorObject.objects, null, '  ');
+                objects += '</textarea>';
+              }
               if (errorObject.hasOwnProperty('sourceException')) {
-                var ex = errorObject.sourceException;
+                let ex = errorObject.sourceException;
                 if (ex != null) {
                   if (ex.hasOwnProperty('message')) {
                     exceptionMessage = ex.message;
                   }
                   if (ex.hasOwnProperty('stackTrace') && ex.stackTrace != null) {
-                    stackTraceHtml = "<textarea>";
-                    for (var i in ex.stackTrace) {
+                    stackTraceHtml = '<textarea style="height: 100px; white-space: pre">';
+                    for (let i in ex.stackTrace) {
                       stackTraceHtml += ex.stackTrace[i].className
                           + " -> " + ex.stackTrace[i].methodName
                           + " ( " + ex.stackTrace[i].lineNumber + " )"
@@ -203,18 +211,20 @@ define([
             }
           }
 
-          var content = $translate.instant('SERVER.ERROR.technicalDetailsTemplate', {
-            message   : message,
-            errorKey  : errorKey,
-            exception : exceptionMessage,
-            statusCode: statusCode,
-            statusText: statusText,
-            url       : url,
-            method    : method
+          let content = $translate.instant('SERVER.ERROR.technicalDetailsTemplate', {
+            message       : message,
+            errorKey      : errorKey,
+            errorReasonKey: errorReasonKey,
+            exception     : exceptionMessage,
+            statusCode    : statusCode,
+            statusText    : statusText,
+            url           : url,
+            method        : method,
+            objects       : objects
           });
-          if (stackTraceHtml != null) {
-            content += stackTraceHtml;
-          }
+          content += '<b>Stack trace</b>:' + stackTraceHtml + '<br />';
+          content += '<b>Error details</b>:' + objects + '<br />';
+          content += '<br/>';
           swal({
             title      : $translate.instant('SERVER.ERROR.technicalDetailsTitle'),
             type       : "error",

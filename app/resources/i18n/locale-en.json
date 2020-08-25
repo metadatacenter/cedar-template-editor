@@ -193,7 +193,9 @@
     "Loading": "Loading",
     "PublishedVersion": "Published Version",
     "DraftVersion": "Draft Version",
-    "IsOpen": "OpenView Enabled"
+    "IsOpen": "OpenView Enabled",
+    "Header": "Header Information",
+    "Footer": "Footer Information"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -413,7 +415,7 @@
     "ERROR": {
       "title": "Server Error",
       "technicalDetailsTitle": "Technical details of error",
-      "technicalDetailsTemplate": "<b>Status</b>: {{statusCode}}, {{statusText}}<br/><b>URL</b>: {{url}}<br/><b>Method</b>: {{method}}<br/><br/><b>Message</b>: {{message}}<br/><b>Error key</b>: {{errorKey}}<br /><b>Exception</b>: {{exception}}<br /><br /><b>Stack trace</b>:<br/>",
+      "technicalDetailsTemplate": "<b>Status</b>: {{statusCode}}, {{statusText}}<br/><b>Method</b>: {{method}}<br/><b>URL</b>: {{url}}<br/><br/><b>Message</b>: {{message}}<br/><b>Error key</b>: {{errorKey}}<br /><b>Error reason</b>: {{errorReasonKey}}<br /><b>Exception</b>: {{exception}}<br />",
       "NotFoundMessage": "Not Found.",
       "NotFoundString": "The object with the requested id can not be found.",
       "InaccessibleMessage": "Can not access endpoint.",
@@ -634,11 +636,14 @@
     "enterNumberType": "Enter Number Type",
     "enterDecimalPlace": "Enter Decimal Places",
     "enterPrefLabel": "Enter Preferred Label",
+    "enterAltLabels": "Enter Alternate Labels",
     "selectDateTimeType": "Select DateTime Type",
     "selectDatePrecisionFormat": "Select Date Precision",
     "selectTimePrecisionFormat": "Select Time Precision",
     "selectTimeEnableTimezone": "Allow Timezone Information?",
-    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?"
+    "selectTimeEnableAmPm": "Use AM/PM or 24H Input?",
+    "showAdditionalFields": "Show additional fields",
+    "hideAdditionalFields": "Hide additional fields"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
