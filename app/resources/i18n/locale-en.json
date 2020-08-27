@@ -122,7 +122,7 @@
     "FilterBy": "Filter by",
     "Untitled": "Untitled",
     "Description": "Description",
-    "SelectToViewDetails": "Select a folder or resource to view its details",
+    "SelectToViewDetails": "Select a resource to view its details",
     "canRead": "can read",
     "canWrite": "can write",
     "isOwner": "owner",

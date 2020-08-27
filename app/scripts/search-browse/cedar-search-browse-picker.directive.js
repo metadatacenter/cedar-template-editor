@@ -8,9 +8,11 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
-      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService','schemaService', 'UIUtilService', 'CategoryService', '$sce'];
+      cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService', 'schemaService', 'UIUtilService',
+                                                  'CategoryService', '$sce'];
 
-      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService,schemaService, UIUtilService, CategoryService, $sce) {
+      function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, schemaService, UIUtilService,
+                                                CategoryService, $sce) {
 
         cedarSearchBrowsePickerController.$inject = [
           '$location',
@@ -471,7 +473,7 @@ define([
             var result = null;
             if (next) {
               var result = [];
-              next.split("&").forEach(function(part) {
+              next.split("&").forEach(function (part) {
                 var item = part.split("=");
                 result[item[0]] = decodeURIComponent(item[1]);
               });
@@ -817,10 +819,8 @@ define([
               if (vm.isSearching) {
                 vm.searchMore();
               } else {
-
                 // are there more?
                 if (vm.nextOffset && !vm.loading && vm.nextOffset < vm.totalCount) {
-
                   vm.offset = vm.nextOffset;
                   vm.loading = true;
                   return resourceService.getResources(
@@ -848,7 +848,6 @@ define([
                       }
                   );
                 }
-
               }
             }
           };
@@ -861,7 +860,6 @@ define([
               $scope.selectResourceById(resource['@id']);
             }
           };
-
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
@@ -940,7 +938,6 @@ define([
             }
           };
 
-
           //*********** ENTRY POINT
 
           getPreferences();
@@ -954,14 +951,14 @@ define([
               return;
             }
             CategoryService.initCategories(
-            function (response) {
-              vm.categoryTreeAvailable = true;
-              vm.categoryTree = response;
-            },
-            function (error) {
-              UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
-              vm.loading = false;
-            });
+                function (response) {
+                  vm.categoryTreeAvailable = true;
+                  vm.categoryTree = response;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+                  vm.loading = false;
+                });
           }
 
           function getPreferences() {
@@ -974,9 +971,9 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type   : true,
-              version: false,
-              category:true
+              type    : true,
+              version : false,
+              category: true
             };
           }
 
@@ -1525,30 +1522,30 @@ define([
 
 
           function deleteResource(resource) {
-              var r = resource || getSelectedNode();
-              if (resourceService.canDelete(r)) {
-                UIMessageService.confirmedExecution(
-                    function () {
-                      resourceService.deleteResource(
-                          r,
-                          function (response) {
+            var r = resource || getSelectedNode();
+            if (resourceService.canDelete(r)) {
+              UIMessageService.confirmedExecution(
+                  function () {
+                    resourceService.deleteResource(
+                        r,
+                        function (response) {
 
-                            UIMessageService.flashSuccess('SERVER.' + r.resourceType.toUpperCase() + '.delete.success',
-                                {"title": r.resourceType},
-                                'GENERIC.Deleted');
-                            removeResource(r);
-                          },
-                          function (error) {
-                            UIMessageService.showBackendError('SERVER.' + r.resourceType.toUpperCase() + '.delete.error',
-                                error);
-                          }
-                      );
-                    },
-                    'GENERIC.AreYouSure',
-                    'DASHBOARD.delete.confirm.' + r.resourceType,
-                    'GENERIC.YesDeleteIt'
-                );
-              }
+                          UIMessageService.flashSuccess('SERVER.' + r.resourceType.toUpperCase() + '.delete.success',
+                              {"title": r.resourceType},
+                              'GENERIC.Deleted');
+                          removeResource(r);
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.' + r.resourceType.toUpperCase() + '.delete.error',
+                              error);
+                        }
+                    );
+                  },
+                  'GENERIC.AreYouSure',
+                  'DASHBOARD.delete.confirm.' + r.resourceType,
+                  'GENERIC.YesDeleteIt'
+              );
+            }
           }
 
           function getFacets() {
@@ -1573,8 +1570,6 @@ define([
                 }
             );
           }
-
-
 
 
           function getFolderContentsById(folderId, resourceId) {
@@ -1625,7 +1620,7 @@ define([
 
           function getCurrentFolderSummary(folderId) {
             var params = {
-              '@id'     : folderId,
+              '@id'         : folderId,
               'resourceType': CONST.resourceType.FOLDER
             };
             resourceService.getResourceDetail(
@@ -1945,7 +1940,6 @@ define([
           /**
            * Watch functions.
            */
-
 
 
           $scope.$on('$routeUpdate', function () {
@@ -2313,7 +2307,7 @@ define([
 
           };
 
-          vm.categorySearch=function(categoryId) {
+          vm.categorySearch = function (categoryId) {
             vm.categoryId = categoryId;
             var baseUrl = '/dashboard';
             var queryParams = {};

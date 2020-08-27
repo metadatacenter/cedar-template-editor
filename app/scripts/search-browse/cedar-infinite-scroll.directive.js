@@ -6,13 +6,12 @@ define([
   angular.module('cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective', [])
       .directive('cedarInfiniteScroll', cedarInfiniteScrollDirective);
 
-  cedarInfiniteScrollDirective.$inject = ['$timeout','$window'];
+  cedarInfiniteScrollDirective.$inject = ['$timeout', '$window'];
 
   /**
    * load more data when you are scrolled to the bottom
    */
-  function cedarInfiniteScrollDirective($timeout,$window) {
-
+  function cedarInfiniteScrollDirective($timeout, $window) {
 
     return {
       restrict: 'AC',
@@ -20,7 +19,10 @@ define([
 
 
         var visibleHeight = element.height();
-        var threshold = 60 + visibleHeight/10;
+        var threshold = 60 + visibleHeight / 10;
+
+        console.log('visibleHeight: ', visibleHeight);
+        console.log('threshold: ', threshold);
 
         function resize() {
           var scrollableHeight = element.prop('scrollHeight');
@@ -33,13 +35,13 @@ define([
           }
         }
 
-        element.scroll(function() {
+        element.scroll(function () {
           resize();
         });
 
         //scope.width = $window.innerWidth;
 
-        angular.element($window).bind('resize', function(){
+        angular.element($window).bind('resize', function () {
           visibleHeight = element.height();
           resize();
         });

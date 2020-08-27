@@ -42,6 +42,7 @@ define([
           vm.currentFolderId = "";
           vm.offset = 0;
           vm.totalCount = -1;
+          vm.requestLimit = UISettingsService.getRequestLimit();
 
           vm.isSearching = false;
           vm.pathInfo = [];
@@ -53,6 +54,7 @@ define([
 
           vm.resources = [];
           vm.selectedResource = null;
+          vm.isLoadingMore = false;
 
           // Categories
           vm.categoryTreeAvailable = false;
@@ -109,6 +111,7 @@ define([
           vm.isMeta = isMeta;
 
           vm.search = search;
+          vm.getSelectedCategories = getSelectedCategories;
           vm.categorySearch = categorySearch;
           vm.openResource = openResource;
 
@@ -116,7 +119,10 @@ define([
           vm.getFolders = getFolders;
           vm.hasElementsOrFields = hasElementsOrFields;
           vm.getElementsAndFields = getElementsAndFields;
+          vm.resourceListIsLoading = resourceListIsLoading;
+          vm.resourceListIsLoadingMore = resourceListIsLoadingMore;
           vm.resourceListIsEmpty =  resourceListIsEmpty;
+          vm.getVisibleCount = getVisibleCount;
 
           vm.selectResource = selectResource;
           vm.isResourceSelected = isResourceSelected;
@@ -653,11 +659,9 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
-
             if (vm.isSearching) {
               vm.searchMore();
             } else {
-
               let limit = UISettingsService.getRequestLimit();
               vm.offset += limit;
               let offset = vm.offset;
@@ -666,8 +670,8 @@ define([
 
               // are there more?
               if (offset < vm.totalCount) {
-
                 if (resourceTypes.length > 0) {
+                  vm.isLoadingMore = true;
                   return resourceService.getResources(
                       {
                         folderId         : folderId,
@@ -680,9 +684,11 @@ define([
                       },
                       function (response) {
                         vm.resources = vm.resources.concat(response.resources);
+                        vm.isLoadingMore = false;
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                        vm.isLoadingMore = false;
                       }
                   );
                 } else {
@@ -692,8 +698,20 @@ define([
             }
           };
 
+          function resourceListIsLoadingMore() {
+            return vm.isLoadingMore;
+          };
+
+          function resourceListIsLoading() {
+            return vm.totalCount == -1;
+          };
+
           function resourceListIsEmpty() {
             return vm.totalCount === 0;
+          };
+
+          function getVisibleCount() {
+            return Math.min(vm.offset + vm.requestLimit, vm.totalCount);
           };
 
           // callback to load more resources for the current folder
@@ -717,6 +735,7 @@ define([
 
             // are there more?
             if (offset < vm.totalCount) {
+              vm.isLoadingMore = true;
               return resourceService.searchResources(term,
                   {
                     resourceTypes    : resourceTypes,
@@ -730,9 +749,11 @@ define([
                     vm.resources = vm.resources.concat(response.resources);
                     vm.totalCount = response.totalCount;
                     vm.offset = offset;
+                    vm.isLoadingMore = false;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                    vm.isLoadingMore = false;
                   }
               );
             }
@@ -919,14 +940,16 @@ define([
             return vm.categoryTreeEnabled;
           };
 
+          function getSelectedCategories() {
+            return vm.selectedResource.categories;
+          };
+
           function categorySearch(categoryId) {
             doCategorySearch(categoryId);
           };
 
           function doCategorySearch(categoryId) {
-            console.log('doing category search');
-            let offset = vm.offset;
-            //vm.nextOffset = null;
+            vm.selectedResource = null;
             vm.totalCount = -1;
             vm.loading = true;
 
@@ -975,18 +998,22 @@ define([
 
           function goToMyWorkspace() {
             vm.isSearching = false;
+            vm.selectedResource = null;
             goToFolder(CedarUser.getHomeFolderId());
           }
 
           function goToSharedWithMe() {
+            vm.selectedResource = null;
             doSharedWithMe();
           };
 
           function goToSharedWithEverybody() {
+            vm.selectedResource = null;
             doSharedWithEverybody();
           };
 
           function goToSpecialFolders() {
+            vm.selectedResource = null;
             doSpecialFolders();
           };
 

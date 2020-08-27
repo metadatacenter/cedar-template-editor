@@ -7436,10 +7436,10 @@ table.apiKey {
     max-width: 1400px;
     height: 100%;
     min-height: 500px;
-    max-height: 750px;
-    overflow: scroll;
-    .modal-content {
+    max-height: 760px;
+    overflow-y: scroll;
 
+    .modal-content {
       margin: 0 auto;
 
       .modal-header {
@@ -7610,7 +7610,7 @@ table.apiKey {
 
           .filters-panel {
             height: 600px;
-            padding-top: 10px;
+            padding-top: 15px;
             overflow: scroll;
 
             .shares {
@@ -7625,21 +7625,32 @@ table.apiKey {
                 }
               }
             }
+
+            .filter-title {
+              text-transform: uppercase;
+              color: #666;
+            }
+
+            #filter-resource-category {
+              margin-top: 10px;
+            }
           }
 
           .results-panel {
 
             .breadcrumbs-sb {
-              height: 50px;
+              vertical-align: middle;
+              height: 60px;
               text-align: left;
               padding: 10px 2px;
             }
 
             .results {
 
-              height: 550px;
+              height: 520px;
+              max-height: 520px;
               padding: 0px;
-              overflow: scroll;
+              overflow-y: scroll;
 
               .category {
                 padding: 10px;
@@ -7717,79 +7728,94 @@ table.apiKey {
                 }
               }
             }
+
+            .no-selection {
+              padding: 100px 0 100px 0;
+              color: @very-lt-gray;
+              .no-file {
+                font-size: 50px
+              }
+              .no-message {
+                font-size: 16px
+              }
+            }
+
+            .results-count {
+              height: 30px;
+              padding-top: 5px;
+              color: #666;
+              text-align: center;
+            }
           }
 
           .info-panel {
 
+            height: 615px;
+            border-left: 1px solid #e0e0e0;
+            background-color: @white;
+            overflow-y: scroll;
+            font-size: 0.9em;
+
+
             .title {
-              padding: 10px 0 20px;
+              margin: auto;
+              padding: 15px;
+              text-align: left;
 
               i {
                 color: @brand-primary;
               }
             }
 
-            //tbody {
-            //  margin: 0;
-            //}
-
-            height: 600px;
-            border-left: 1px solid #e0e0e0;
-            background-color: @white;
-
             .info {
-              width: 100%;
               height: 450px;
 
+              .title {
+                font-size: 15px;
+                padding: 20px 0;
+                margin-left: 12px;
+              }
+
               .no-title {
-                padding-top: 150px;
+                color: #666;
+                padding-top: 250px;
                 text-align: center;
-                font-size: 1em;
+                font-size: 1.1em;
               }
             }
 
-            .title-icon {
-              font-size: 40px;
+            .label, .details-label {
+              text-transform: uppercase;
+              color: #888888;
+              font-size: .9em;
+              font-weight: normal;
               text-align: center;
-              padding-top: 30px;
-
-              &.template {
-                color: @button-template;
-              }
-
-              &.element {
-                color: @button-element;
-              }
-
-              &.field {
-                color: @button-field;
-              }
-
-              &.metadata, &.instance {
-                color: @button-metadata;
-              }
-
-              &.folder {
-                color: @button-folder;
-              }
             }
 
-            .title {
-              text-align: left;
-            }
-            .description {
-              text-align: left;
-              padding: 1em .4em;
-            }
             .table-details {
+
               margin: 0;
               font-size: 1em;
-              .label {
-                text-transform: uppercase;
-                color: #888888;
-                font-size: .9em;
-                font-weight: normal;
+              border-collapse:separate;
+              border-spacing: 10px 10px;
+
+            }
+
+            .block-details {
+              padding: 12px;
+
+              .details-label {
+                text-align: center;
+                margin: 10px auto;
               }
+
+              .details-content {
+                color: @gray;
+                font-size: 1em;
+                background-color: @lt-gray;
+                color: #333;
+              }
+
             }
 
           }
@@ -7798,6 +7824,56 @@ table.apiKey {
       }
 
       .modal-footer {
+
+      }
+
+      .clear-save {
+
+        .btn {
+          text-transform: uppercase;
+          padding: 10px 20px;
+          border: none;
+          .link-transition;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
+            &:focus {
+              color: @brand-primary-hover;
+            }
+          }
+
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
+            font-size: 16px;
+
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
+            }
+          }
+          &.btn-pause {
+            background-color: @button-pause;
+            &:hover {
+              background-color: @button-pause-hover;
+            }
+          }
+          &.btn-resume {
+            background-color: @button-resume;
+            &:hover {
+              background-color: @button-resume-hover;
+            }
+          }
+        }
 
       }
     }
