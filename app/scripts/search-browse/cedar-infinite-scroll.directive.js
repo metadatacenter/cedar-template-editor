@@ -21,9 +21,6 @@ define([
         var visibleHeight = element.height();
         var threshold = 60 + visibleHeight / 10;
 
-        console.log('visibleHeight: ', visibleHeight);
-        console.log('threshold: ', threshold);
-
         function resize() {
           var scrollableHeight = element.prop('scrollHeight');
           var hiddenContentHeight = scrollableHeight - visibleHeight;

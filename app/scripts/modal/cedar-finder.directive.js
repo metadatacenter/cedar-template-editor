@@ -32,10 +32,11 @@ define([
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
-                                       UIMessageService, UISettingsService,DataManipulationService,
-                                       QueryParamUtilsService, FrontendUrlService, CategoryService, schemaService, CONST, $sce) {
+                                       UIMessageService, UISettingsService, DataManipulationService,
+                                       QueryParamUtilsService, FrontendUrlService, CategoryService, schemaService, CONST,
+                                       $sce) {
 
-          var vm = this;
+          let vm = this;
           vm.id = 'finder-modal';
 
           vm.currentPath = "";
@@ -43,6 +44,7 @@ define([
           vm.offset = 0;
           vm.totalCount = -1;
           vm.requestLimit = UISettingsService.getRequestLimit();
+          console.log('request limit from service: ' + vm.requestLimit)
 
           vm.isSearching = false;
           vm.pathInfo = [];
@@ -57,6 +59,7 @@ define([
           vm.isLoadingMore = false;
 
           // Categories
+          vm.categoryId = null;
           vm.categoryTreeAvailable = false;
           vm.categoryTreeEnabled = true;
           vm.categoryTree;
@@ -121,7 +124,7 @@ define([
           vm.getElementsAndFields = getElementsAndFields;
           vm.resourceListIsLoading = resourceListIsLoading;
           vm.resourceListIsLoadingMore = resourceListIsLoadingMore;
-          vm.resourceListIsEmpty =  resourceListIsEmpty;
+          vm.resourceListIsEmpty = resourceListIsEmpty;
           vm.getVisibleCount = getVisibleCount;
 
           vm.selectResource = selectResource;
@@ -154,14 +157,29 @@ define([
               instance: false,
               template: false
             };
-            vm.isSearching = false;
+
             vm.searchTerm = null;
-            if (vm.params.search) {
+
+            if (isSearchMode()) {
               vm.isSearching = true;
               doSearch(vm.params.search);
+            } else if (isCategorySearchMode()) {
+              vm.isSearching = true;
+              doCategorySearch(vm.categoryId);
+            } else if (isSharedWithMeMode()) {
+              vm.isSearching = true;
+              doSharedWithMe();
+            } else if (isSharedWithEverybodyMode()) {
+              vm.isSearching = true;
+              doSharedWithEverybody();
+            } else if (isSpecialFoldersMode()) {
+              vm.isSearching = true;
+              doSpecialFolders();
             } else if (vm.params.folderId) {
+              vm.isSearching = false;
               getFolderContentsById(decodeURIComponent(vm.params.folderId));
             } else {
+              vm.isSearching = false;
               goToFolder(CedarUser.getHomeFolderId());
             }
           };
@@ -188,7 +206,6 @@ define([
           };
 
           function buildBreadcrumbTitle(searchTerm) {
-            console.log(searchTerm, vm.nodeListQueryType);
             if (isSharedWithMeMode()) {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
             } else if (isSharedWithEverybodyMode()) {
@@ -198,7 +215,6 @@ define([
             } else if (isFolderContentMode()) {
               return $translate.instant("BreadcrumbTitle.viewAll");
             } else if (isSearchMode()) {
-              console.log('is search mode');
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
             } else if (vm.nodeListQueryType == 'search-category-id') {
               return $translate.instant("BreadcrumbTitle.categorySearchResult", {searchTerm: searchTerm});
@@ -237,17 +253,17 @@ define([
 
           function doSearch(term) {
             let resourceTypes = activeResourceTypes();
-            let limit = UISettingsService.getRequestLimit();
-            // vm.offset = 0;
-            // let offset = vm.offset;
-            let offset = 0;
+            let limit = vm.requestLimit;
+            vm.offset = 0;
+            vm.nextOffset = null;
+
             resourceService.searchResources(
                 term,
                 {
                   resourceTypes    : resourceTypes,
                   sort             : sortField(),
                   limit            : limit,
-                  offset           : offset,
+                  offset           : vm.offset,
                   version          : getFilterVersion(),
                   publicationStatus: getFilterStatus()
                 },
@@ -268,10 +284,9 @@ define([
 
           function doSharedWithMe() {
 
+            vm.totalCount = -1;
             vm.offset = 0;
             vm.nextOffset = null;
-            vm.totalCount = -1;
-            let offset = vm.offset;
 
             resourceService.sharedWithMeResources(
                 {
@@ -285,7 +300,6 @@ define([
                 function (response) {
                   vm.isSearching = true;
                   vm.resources = response.resources;
-                  console.log(vm.resources)
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                   vm.nextOffset = getNextOffset(response.paging.next);
@@ -299,30 +313,26 @@ define([
             );
           };
 
-
           function doSharedWithEverybody() {
 
+            vm.totalCount = -1;
             vm.offset = 0;
             vm.nextOffset = null;
-            vm.totalCount = -1;
-            let offset = vm.offset;
 
             resourceService.sharedWithEverybodyResources(
                 {
                   resourceTypes    : activeResourceTypes(),
                   sort             : sortField(),
                   limit            : vm.requestLimit,
-                  offset           : vm.offset,
+                  offset           : 0,
                   version          : getFilterVersion(),
                   publicationStatus: getFilterStatus()
                 },
                 function (response) {
                   vm.isSearching = true;
                   vm.resources = response.resources;
-                  console.log(vm.resources);
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
-
                   vm.nextOffset = getNextOffset(response.paging.next);
                   vm.totalCount = response.totalCount;
                   vm.loading = false;
@@ -335,10 +345,9 @@ define([
 
           function doSpecialFolders() {
 
+            vm.totalCount = -1;
             vm.offset = 0;
             vm.nextOffset = null;
-            vm.totalCount = -1;
-            let offset = vm.offset;
 
             resourceService.specialFolders(
                 {
@@ -354,7 +363,6 @@ define([
                   vm.resources = response.resources;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
-
                   vm.nextOffset = getNextOffset(response.paging.next);
                   vm.totalCount = response.totalCount;
                   vm.loading = false;
@@ -370,7 +378,7 @@ define([
             let result = null;
             if (next) {
               result = [];
-              next.split("&").forEach(function(part) {
+              next.split("&").forEach(function (part) {
                 let item = part.split("=");
                 result[item[0]] = decodeURIComponent(item[1]);
               });
@@ -403,7 +411,6 @@ define([
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
             }
-
             vm.params.search = null;
 
             if (r.resourceType == 'folder') {
@@ -417,9 +424,9 @@ define([
 
           function getFolderContentsById(folderId) {
             var resourceTypes = activeResourceTypes();
-            vm.offset = 0;
-            var offset = vm.offset;
             var limit = UISettingsService.getRequestLimit();
+            vm.offset = 0;
+            vm.nextOffset = null;
 
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
@@ -428,11 +435,12 @@ define([
                     resourceTypes    : resourceTypes,
                     sort             : sortField(),
                     limit            : limit,
-                    offset           : offset,
+                    offset           : vm.offset,
                     version          : getFilterVersion(),
                     publicationStatus: getFilterStatus()
                   },
                   function (response) {
+                    vm.isSearching = false;
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
                     vm.nodeListQueryType = response.nodeListQueryType;
@@ -538,6 +546,7 @@ define([
           }
 
           function goToFolder(folderId) {
+            vm.isSearching = false;
             vm.params.search = null;
             vm.selectedResource = null;
             vm.params.folderId = folderId;
@@ -659,10 +668,12 @@ define([
 
           // callback to load more resources for the current folder or search
           function loadMore() {
+            console.log('loading more')
             if (vm.isSearching) {
               vm.searchMore();
             } else {
-              let limit = UISettingsService.getRequestLimit();
+              console.log('and here')
+              let limit = vm.requestLimit;
               vm.offset += limit;
               let offset = vm.offset;
               let folderId = vm.currentFolderId;
@@ -717,45 +728,76 @@ define([
           // callback to load more resources for the current folder
           function searchMore() {
 
-            var limit = UISettingsService.getRequestLimit();
-            //vm.offset += limit;
-            var offset = vm.offset;
-            offset += limit;
-            var term = vm.searchTerm;
-            var resourceTypes = activeResourceTypes();
+            if (activeResourceTypes().length > 0) {
 
-            // Temporary fix to load more results if the totalCount can't be computed by the backend
-            if (vm.totalCount == -1) {
-              // Search for more results
-              vm.totalCount = Number.MAX_VALUE;
-            } else if (vm.totalCount == 0) {
-              // No more results available. Stop searching
-              vm.totalCount = -2;
-            }
+              // are there more?
+              if (vm.nextOffset && !vm.isLoadingMore) {
 
-            // are there more?
-            if (offset < vm.totalCount) {
-              vm.isLoadingMore = true;
-              return resourceService.searchResources(term,
-                  {
-                    resourceTypes    : resourceTypes,
-                    sort             : sortField(),
-                    limit            : limit,
-                    offset           : offset,
-                    ersion           : getFilterVersion(),
-                    publicationStatus: getFilterStatus()
-                  },
-                  function (response) {
-                    vm.resources = vm.resources.concat(response.resources);
-                    vm.totalCount = response.totalCount;
-                    vm.offset = offset;
-                    vm.isLoadingMore = false;
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                    vm.isLoadingMore = false;
-                  }
-              );
+                vm.offset = vm.nextOffset;
+                vm.isLoadingMore = true;
+
+                if (vm.nodeListQueryType == 'search-category-id') {
+                  return resourceService.categorySearchResources(
+                      vm.categoryId,
+                      {
+                        resourceTypes    : activeResourceTypes(),
+                        sort             : sortField(),
+                        limit            : vm.requestLimit,
+                        offset           : vm.offset,
+                        version          : getFilterVersion(),
+                        publicationStatus: getFilterStatus()
+                      },
+                      function (response) {
+                        vm.isSearching = true;
+                        for (let i = 0; i < response.resources.length; i++) {
+                          vm.resources[i + vm.offset] = response.resources[i];
+                        }
+                        vm.nextOffset = getNextOffset(response.paging.next);
+                        vm.totalCount = response.totalCount;
+                        vm.isLoadingMore = false;
+
+                        vm.nodeListQueryType = response.nodeListQueryType;
+                        var title = '';
+                        var separator = '';
+                        for (var ti in response.categoryPath) {
+                          if (ti > 0) {
+                            var name = response.categoryPath[ti]['schema:name']
+                            title += separator + name;
+                            separator = ' &raquo; ';
+                          }
+                        }
+                        //vm.breadcrumbTitle = $sce.trustAsHtml(vm.buildBreadcrumbTitle(title));
+                        //UIProgressService.complete();
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.CATEGORYSEARCH.error', error);
+                        vm.isLoadingMore = false;
+                      }
+                  );
+                } else {
+                  return resourceService.searchResources(vm.searchTerm,
+                      {
+                        resourceTypes: activeResourceTypes(),
+                        sort         : sortField(),
+                        limit        : vm.requestLimit,
+                        offset       : vm.offset
+                      },
+                      function (response) {
+
+                        for (let i = 0; i < response.resources.length; i++) {
+                          vm.resources[i + vm.offset] = response.resources[i];
+                        }
+                        vm.totalCount = response.totalCount;
+                        vm.nextOffset = getNextOffset(response.paging.next);
+                        vm.isLoadingMore = false;
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                        vm.isLoadingMore = false;
+                      }
+                  );
+                }
+              }
             }
           };
 
@@ -917,7 +959,6 @@ define([
             return getFields().length > 0;
           };
 
-
           /**
            * Category-related functions
            */
@@ -932,7 +973,6 @@ define([
                 },
                 function (error) {
                   UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
-                  //vm.loading = false;
                 });
           };
 
@@ -951,6 +991,8 @@ define([
           function doCategorySearch(categoryId) {
             vm.selectedResource = null;
             vm.totalCount = -1;
+            vm.offset = 0;
+            vm.nextOffset = null;
             vm.loading = true;
 
             resourceService.categorySearchResources(
@@ -964,7 +1006,6 @@ define([
                   publicationStatus: getFilterStatus()
                 },
                 function (response) {
-
                   vm.categoryId = categoryId;
                   vm.isSearching = true;
                   vm.resources = response.resources;
@@ -973,11 +1014,11 @@ define([
                   vm.loading = false;
 
                   vm.nodeListQueryType = response.nodeListQueryType;
-                  var title = '';
-                  var separator = '';
-                  for (var ti in response.categoryPath) {
+                  let title = '';
+                  let separator = '';
+                  for (let ti in response.categoryPath) {
                     if (ti > 0) {
-                      var name = response.categoryPath[ti]['schema:name']
+                      let name = response.categoryPath[ti]['schema:name']
                       title += separator + name;
                       separator = ' &raquo; ';
                     }
@@ -997,8 +1038,6 @@ define([
            */
 
           function goToMyWorkspace() {
-            vm.isSearching = false;
-            vm.selectedResource = null;
             goToFolder(CedarUser.getHomeFolderId());
           }
 

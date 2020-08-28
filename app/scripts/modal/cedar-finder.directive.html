@@ -232,7 +232,7 @@
                 </tr>
                 <tr>
                   <td class="label">Location</td>
-                  <td>{{ finder.selectedResource.path }}</td>
+                  <td ng-if="finder.selectedResource.path">{{finder.selectedResource.path.substring(0,finder.selectedResource.path.lastIndexOf("/"));}}</td>
                 </tr>
                 <tr>
                   <td class="label">Owner</td>
