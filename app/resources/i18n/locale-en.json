@@ -113,6 +113,7 @@
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
+    "Select": "Select",
     "Reset": "Reset",
     "Copied": "Copied",
     "Moved": "Moved",
@@ -191,11 +192,14 @@
     "MadeNotOpen": "Made Not Open",
     "Categories": "Categories",
     "Loading": "Loading",
+    "LoadingResources": "Loading resources ...",
+    "LoadingMoreResources": "Loading more resources ...",
     "PublishedVersion": "Published Version",
     "DraftVersion": "Draft Version",
     "IsOpen": "OpenView Enabled",
     "Header": "Header Information",
-    "Footer": "Footer Information"
+    "Footer": "Footer Information",
+    "NothingFound": "Nothing found"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -494,6 +498,20 @@
     "filter": {
       "filterBy": "Filter",
       "reset": "Reset All"
+    },
+    "info": {
+      "Description": "Description",
+      "Location": "Location",
+      "Owner": "Owner",
+      "Created": "Created",
+      "Modified": "Modified",
+      "By": "by",
+      "Permissions": "Permissions",
+      "Version": "Version",
+      "Categories": "Categories",
+      "ReadPermission": "read",
+      "WritePermission": "write",
+      "OwnerPermission": "owner"
     },
     "sidebar": {
       "myWorkspace": "Workspace",
