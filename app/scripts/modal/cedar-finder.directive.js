@@ -239,6 +239,7 @@ define([
                   vm.searchTerm = term;
                   vm.isSearching = true;
                   vm.resources = response.resources;
+                  vm.nextOffset = getNextOffset(response.paging.next);
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle(term);
                   vm.selectedResource = null;
@@ -420,6 +421,7 @@ define([
                     vm.isSearching = false;
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
+                    vm.nextOffset = getNextOffset(response.paging.next);
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
