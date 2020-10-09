@@ -17,13 +17,14 @@ define([
           '$uibModal',
           'CedarUser',
           '$timeout',
+          '$translate',
           'resourceService',
           'UIMessageService',
           'UISettingsService', '$anchorScroll',
           'CONST'
         ];
 
-        function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
+        function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
                                           UIMessageService, UISettingsService, $anchorScroll,
                                           CONST) {
@@ -32,6 +33,7 @@ define([
 
           // move to...
           vm.openHome = openHome;
+          vm.openSpecialFolders = openSpecialFolders;
           vm.openParent = openParent;
           vm.currentTitle = currentTitle;
           vm.parentTitle = parentTitle;
@@ -183,7 +185,7 @@ define([
                 getDestinationById(vm.currentDestinationID);
               }
             }
-          };
+          }
 
           function getDestinationById(folderId) {
             var limit = UISettingsService.getRequestLimit();
@@ -216,6 +218,65 @@ define([
             } else {
               $scope.destinationResources = [];
             }
+          }
+
+
+          function openSpecialFolders() {
+
+            vm.totalCount = -1;
+            vm.offset = 0;
+            vm.nextOffset = null;
+
+            var limit = UISettingsService.getRequestLimit();
+            var offset = vm.offset;
+            var resourceTypes = activeResourceTypes();
+
+            if (resourceTypes.length > 0) {
+
+              resourceService.specialFolders(
+                  {
+                    resourceTypes: resourceTypes,
+                    sort         : sortField(),
+                    limit        : limit,
+                    offset       : offset
+                  },
+                  function (response) {
+
+                    if (vm.offset > 0) {
+                      $scope.destinationResources = $scope.destinationResources.concat(response.resources);
+                    } else {
+                      $scope.destinationResources = response.resources;
+                    }
+
+
+                    vm.isSearching = true;
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = $translate.instant("BreadcrumbTitle.specialFolders");
+                    vm.nextOffset = getNextOffset(response.paging.next);
+                    vm.totalCount = response.totalCount;
+                    vm.loading = false;
+
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
+            } else {
+              $scope.destinationResources = [];
+            }
+          }
+
+          function getNextOffset(next) {
+            let result = null;
+            if (next) {
+              result = [];
+              next.split("&").forEach(function (part) {
+                let item = part.split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+              });
+              result = parseInt(result['offset']);
+            }
+            return result;
           }
 
           function activeResourceTypes() {

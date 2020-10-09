@@ -10,7 +10,7 @@ define([
 
   function cedarChildTreeDirective(controlledTermService, controlledTermDataService, $compile) {
 
-    var directive = {
+    const directive = {
       restrict   : 'E',
       replace    : true,
       scope      : {
@@ -26,7 +26,7 @@ define([
 
     return directive;
 
-    cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlledTermDataService'];
+    //cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlledTermDataService'];
 
     function linker(scope, element, attrs) {
 
@@ -35,7 +35,7 @@ define([
         element.addClass('expanded');
         element.addClass('loaded');
 
-        var children = '<cedar-class-tree ' +
+        const childrenHtml = '<cedar-class-tree ' +
             'tree="' + children + '" ' +
             'term="term" ' +
             'level="' + (scope.level + 1) + '" ' +
@@ -43,7 +43,7 @@ define([
             'is-selected-callback="isSelectedCallback" ' +
             'get-class-details-callback="getClassDetailsCallback">' +
             '</cedar-class-tree>';
-        $compile(children)(scope, function (cloned, scope) {
+        $compile(childrenHtml)(scope, function (cloned, scope) {
           element.append(cloned);
         });
       }
@@ -68,7 +68,7 @@ define([
             var classId = scope.subtree['@id'];
             if (!scope.isPropertyTree) {
               controlledTermDataService.getClassChildren(acronym, classId).then(function (response) {
-                if (!response || response.length == 0) {
+                if (!response || response.length === 0) {
                   scope.subtree.hasChildren = false;
                 }
                 scope.children = response;
@@ -77,7 +77,7 @@ define([
             }
             else { // is property tree
               controlledTermDataService.getPropertyChildren(acronym, classId).then(function (response) {
-                if (!response || response.length == 0) {
+                if (!response || response.length === 0) {
                   scope.subtree.hasChildren = false;
                 }
                 scope.children = response;
@@ -87,7 +87,7 @@ define([
           }
         }
       });
-    };
+    }
 
-  };
+  }
 });
