@@ -239,7 +239,8 @@
     "template": "Template",
     "field": "Field",
     "element": "Element",
-    "metadata": "Metadata"
+    "metadata": "Metadata",
+    "instance": "Metadata"
   },
   "SERVER": {
     "WORKSPACE": {
@@ -594,6 +595,7 @@
     },
     "required": "Please enter a value",
     "requiredDate": "Please enter a date, e.g. 10/10/2010",
+    "requiredDateTime": "Please enter a valid datetime",
     "requiredSelect": "Please select a value from the list",
     "invalidEmail": "Please include an @ in your email, e.g. bob@company",
     "invalidPhoneNumber": "Please enter a valid phone number, e.g. 123-456-7890",
