@@ -1,78 +1,97 @@
 <div class="modal-dialog">
   <div class="modal-content">
-    <div class="modal-header row"  id="copyModalHeader">
+    <div class="row copyToModalContainer">
 
-      <div class="col-sm-1">
-        <h4 class="modal-title back-to-home" style="padding-left:4px;cursor:pointer;white-space:nowrap;" ng-click="copyto.openHome()"   >
-          <span class="arrow-click " type="button" aria-label="Back"
-            uib-tooltip="{{'HELP.backToHome' | translate}}"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="top"
-              data-toggle="tooltip"><i class="fa fa-home"></i></span>
-        </h4>
-      </div>
+      <div class="col-sm-4">
 
-      <div class="col-sm-10">
-        <h4 class="modal-title back-to-parent"  style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;" ng-click="copyto.openParent()">
-          <span type="button" class="arrow-click " aria-label="Back"
-              uib-tooltip="{{'HELP.backToParent' | translate}}"
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="top"
-              data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
-          <span id="folder-title" >{{copyto.currentTitle()}}</span>
-        </h4>
-      </div>
-
-      <div class="col-sm-1 pull-right">
-        <button class="close" type="button" ng-click="dc.copyModalVisible=false;copyto.hideModal()" aria-label="Close"><span
-            aria-hidden="true">&times;</span></button></div>
-
-    </div>
-
-    <div id="copyModalContent"  class="modal-body scrollable-content" cedar-infinite-scroll  load-more="copyto.loadMore()">
-
-      <!-- show the clickable folders  -->
-      <div ng-if="copyto.isFolder(resource)" class="box-row row"
-          ng-class="{ selected: copyto.isDestinationSelected(resource)}"
-          ng-repeat="(index, resource) in destinationResources">
-        <div class="col-sm-1 " ng-click="copyto.selectDestination(resource)"><i style="color:#9e9e9e;font-size:20px;padding-right:5px"
-            class="fa" ng-class="copyto.getResourceIconClass(resource)"></i>
-        </div>
-        <a class="contents-folder-title col-sm-10" ng-click="copyto.selectDestination(resource)">{{resource['schema:name']}}
-        </a>
-        <div class="col-sm-1 arrow-click"
-            ng-click="copyto.openDestination(resource)"
-            uib-tooltip="{{'HELP.openFolder' | translate}}"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="left"
-            data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
-      </div>
-
-      <!-- then the disabled documents -->
-      <div ng-if="!copyto.isFolder(resource)" class="box-row row disabled"
-          ng-repeat="(index, resource) in destinationResources">
-        <div class="col-sm-1" ng-click="copyto.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
-            ng-class="copyto.getResourceIconClass(resource)"></i>
-        </div>
-        <div class="contents-resource-title col-sm-10" ng-click="copyto.selectDestination(resource)"  disabled="disabled">{{resource['schema:name']}}
+        <div class="copyToModalLeftPanel">
+          <ul>
+            <li><a class="share workspace" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="copyto.openHome()"
+                   translate>DASHBOARD.sidebar.myWorkspace</a></li>
+            <li><a class="share shared" ng-class="{active: dc.isSpecialFoldersMode()}" href="#" ng-click="copyto.openSpecialFolders()"
+                   translate>DASHBOARD.sidebar.specialFolders</a></li>
+          </ul>
         </div>
 
       </div>
 
-    </div>
-    <div class="modal-footer actions">
-      <div class="clear-save">
-        <button ng-disabled="copyto.copyDisabled()" ng-click="copyto.updateResource();dc.copyModalVisible=false;copyto.hideModal()"
-            type="button"
-            class="btn btn-save confirm"> Copy
-        </button>
+      <div class="col-sm-8 copyToModalRightPanel">
+
+        <div class="modal-header row" id="copyModalHeader">
+
+          <div class="col-sm-11">
+            <p ng-if="copyto.isCommunity">
+                <span>
+                  Community Folders
+                </span>
+            </p>
+            <p ng-if="!copyto.isCommunity">
+                <span class="folder-path" ng-repeat="folder in copyto.destinationPathInfo track by $index">
+                  <a ng-click="copyto.openDestination(folder)" class="breadcrumbs" ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <span class="breadcrumbs"
+                        ng-if="!dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  /
+                </span>
+            </p>
+          </div>
+
+          <div class="col-sm-1 pull-right">
+            <button class="close" type="button" ng-click="dc.copyModalVisible=false;copyto.hideModal()" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+
+        </div>
+
+        <div id="copyModalContent" class="modal-body scrollable-content" cedar-infinite-scroll load-more="copyto.loadMore()">
+
+          <!-- show the clickable folders  -->
+          <div ng-if="copyto.isFolder(resource)" class="box-row row"
+               ng-class="{ selected: copyto.isDestinationSelected(resource)}"
+               ng-repeat="(index, resource) in destinationResources">
+            <div class="col-sm-1 " ng-click="copyto.selectDestination(resource)"><i style="color:#9e9e9e;font-size:20px;padding-right:5px"
+                                                                                    class="fa" ng-class="copyto.getResourceIconClass(resource)"></i>
+            </div>
+            <a class="contents-folder-title col-sm-10" ng-click="copyto.selectDestination(resource)">{{resource['schema:name']}}
+            </a>
+            <div class="col-sm-1 arrow-click"
+                 ng-click="copyto.openDestination(resource)"
+                 uib-tooltip="{{'HELP.openFolder' | translate}}"
+                 tooltip-trigger
+                 tooltip-animation="false"
+                 tooltip-placement="left"
+                 data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
+          </div>
+
+          <!-- then the disabled documents -->
+          <div ng-if="!copyto.isFolder(resource)" class="box-row row disabled"
+               ng-repeat="(index, resource) in destinationResources">
+            <div class="col-sm-1" ng-click="copyto.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px"
+                                                                                                       class="fa"
+                                                                                                       ng-class="copyto.getResourceIconClass(resource)"></i>
+            </div>
+            <div class="contents-resource-title col-sm-10" ng-click="copyto.selectDestination(resource)" disabled="disabled">{{resource['schema:name']}}
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer actions">
+          <div class="clear-save">
+            <button ng-disabled="copyto.copyDisabled()" ng-click="copyto.updateResource();dc.copyModalVisible=false;copyto.hideModal()"
+                    type="button"
+                    class="btn btn-save confirm"> Copy
+            </button>
+          </div>
+          <div class="clear-save">
+            <button type="button" class="btn btn-clear" ng-click="copyto.copyModalVisible=false;copyto.refresh();copyto.hideModal()" translate="">
+              Cancel
+            </button>
+          </div>
+        </div>
+
       </div>
-      <div class="clear-save">
-        <button type="button" class="btn btn-clear" ng-click="copyto.copyModalVisible=false;copyto.refresh();copyto.hideModal()" translate="">Cancel</button>
-      </div>
+
     </div>
+
   </div>
 </div>

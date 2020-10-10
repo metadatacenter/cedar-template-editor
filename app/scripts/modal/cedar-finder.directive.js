@@ -385,7 +385,7 @@ define([
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                 }
             );
-          };
+          }
 
           function getNextOffset(next) {
             let result = null;
@@ -899,7 +899,7 @@ define([
             } else {
               return "";
             }
-          };
+          }
 
           /**
            * Event listeners

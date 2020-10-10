@@ -32,6 +32,8 @@ define([
 
           // copy to...
           vm.openHome = openHome;
+          vm.openSpecialFolders = openSpecialFolders;
+          vm.getNextOffset = getNextOffset;
           vm.openParent = openParent;
           vm.currentTitle = currentTitle;
           vm.parentTitle = parentTitle;
@@ -56,6 +58,7 @@ define([
           vm.sortOptionField = null;
           vm.offset = 0;
           vm.totalCount = -1;
+          vm.isCommunity = false;
           $scope.destinationResources = [];
 
           function canWrite() {
@@ -63,9 +66,9 @@ define([
           }
 
           function hasPermission(permission, resource) {
-            var node = resource;
+            const node = resource;
             if (node != null) {
-              var perms = node.currentUserPermissions;
+              const perms = node.currentUserPermissions;
               if (perms != null) {
                 return perms[permission];
               }
@@ -75,22 +78,23 @@ define([
 
           function openHome() {
             vm.offset = 0;
+            vm.isCommunity = false;
             getDestinationById(vm.homeFolderId);
           }
 
           function openParent() {
             vm.offset = 0;
-            var length = vm.destinationPathInfo.length;
-            var parent = vm.destinationPathInfo[length - 1];
+            const length = vm.destinationPathInfo.length;
+            const parent = vm.destinationPathInfo[length - 1];
             openDestination(parent);
           }
 
           function parentTitle() {
-            var result = '';
+            let result = '';
             if (vm.destinationPathInfo && vm.destinationPathInfo.length > 1) {
 
-              var length = vm.destinationPathInfo.length;
-              var parent = vm.destinationPathInfo[length - 1];
+              const length = vm.destinationPathInfo.length;
+              const parent = vm.destinationPathInfo[length - 1];
               result = parent['schema:name'];
 
             }
@@ -100,12 +104,12 @@ define([
           function updateResource() {
 
             if (vm.selectedDestination) {
-              var folderId = vm.selectedDestination['@id'];
+              const folderId = vm.selectedDestination['@id'];
 
               if (vm.copyResource) {
-                var resource = vm.copyResource;
-                var newTitle = resource['schema:name'];
-                var sameFolder = vm.currentFolderId === folderId;
+                const resource = vm.copyResource;
+                let newTitle = resource['schema:name'];
+                const sameFolder = vm.currentFolderId === folderId;
                 if (sameFolder) {
                   newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource['schema:name']});
                 }
@@ -149,8 +153,9 @@ define([
           }
 
           function openDestination(resource) {
+            vm.isCommunity = false;
             if (resource) {
-              var id = resource['@id'];
+              const id = resource['@id'];
               vm.offset = 0;
               getDestinationById(id);
               vm.selectedDestination = resource;
@@ -166,12 +171,12 @@ define([
             if (resource == null || vm.selectedDestination == null) {
               return false;
             } else {
-              return (vm.selectedDestination['@id'] == resource['@id']);
+              return (vm.selectedDestination['@id'] === resource['@id']);
             }
           }
 
           function sortField() {
-            if (vm.sortOptionField == 'name') {
+            if (vm.sortOptionField === 'name') {
               return 'name';
             } else {
               return '-' + vm.sortOptionField;
@@ -186,13 +191,13 @@ define([
                 getDestinationById(vm.currentDestinationID);
               }
             }
-          };
+          }
 
           function getDestinationById(folderId) {
             if (folderId) {
-              var limit = UISettingsService.getRequestLimit();
-              var offset = vm.offset;
-              var resourceTypes = activeResourceTypes();
+              const limit = UISettingsService.getRequestLimit();
+              const offset = vm.offset;
+              const resourceTypes = activeResourceTypes();
               if (resourceTypes.length > 0) {
                 return resourceService.getResources(
                     {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
@@ -205,11 +210,11 @@ define([
                         $scope.destinationResources = response.resources;
                       }
 
-                      var resource = response.pathInfo[response.pathInfo.length - 1];
+                      const resource = response.pathInfo[response.pathInfo.length - 1];
                       vm.selectedDestination = resource;
                       vm.currentDestination = resource;
                       vm.destinationPathInfo = response.pathInfo;
-                      vm.destinationPath = vm.destinationPathInfo.pop();
+                      //vm.destinationPath = vm.destinationPathInfo.pop();
 
                     },
                     function (error) {
@@ -222,8 +227,68 @@ define([
             }
           }
 
+          function openSpecialFolders() {
+
+            vm.isCommunity = true;
+
+            vm.totalCount = -1;
+            vm.offset = 0;
+            vm.nextOffset = null;
+
+            const limit = UISettingsService.getRequestLimit();
+            const offset = vm.offset;
+            const resourceTypes = activeResourceTypes();
+
+            if (resourceTypes.length > 0) {
+
+              resourceService.specialFolders(
+                  {
+                    resourceTypes: resourceTypes,
+                    sort         : sortField(),
+                    limit        : limit,
+                    offset       : offset
+                  },
+                  function (response) {
+
+                    if (vm.offset > 0) {
+                      $scope.destinationResources = $scope.destinationResources.concat(response.resources);
+                    } else {
+                      $scope.destinationResources = response.resources;
+                    }
+
+
+                    vm.isSearching = true;
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = $translate.instant("BreadcrumbTitle.specialFolders");
+                    vm.nextOffset = getNextOffset(response.paging.next);
+                    vm.totalCount = response.totalCount;
+                    vm.loading = false;
+
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
+            } else {
+              $scope.destinationResources = [];
+            }
+          }
+
+          function getNextOffset(next) {
+            let result = null;
+            if (next) {
+              result = [];
+              next.split("&").forEach(function (part) {
+                let item = part.split("=");
+                result[item[0]] = decodeURIComponent(item[1]);
+              });
+              result = parseInt(result['offset']);
+            }
+            return result;
+          }
+
           function activeResourceTypes() {
-            var activeResourceTypes = [];
+            const activeResourceTypes = [];
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
                 activeResourceTypes.push(value);
@@ -235,7 +300,7 @@ define([
           }
 
           function getResourceIconClass(resource) {
-            var result = "";
+            let result = "";
             if (resource) {
               result += resource.resourceType + " ";
 
@@ -255,17 +320,17 @@ define([
                 case CONST.resourceType.FIELD:
                   result += "fa-file-code-o";
                   break;
-                  result += "fa-sitemap";
-                  break;
+                  //result += "fa-sitemap";
+                  //break;
               }
             }
             return result;
           }
 
           function isFolder(resource) {
-            var result = false;
+            let result = false;
             if (resource) {
-              result = (resource.resourceType == CONST.resourceType.FOLDER);
+              result = (resource.resourceType === CONST.resourceType.FOLDER);
             }
             return result;
           }
@@ -279,13 +344,13 @@ define([
           // modal open or closed
           $scope.$on('copyModalVisible', function (event, params) {
 
-            var visible = params[0];
-            var resource = params[1];
-            var currentPath = params[2];
-            var currentFolderId = params[3];
-            var homeFolderId = params[4];
-            var resourceTypes = params[5];
-            var sortOptionField = params[6];
+            const visible = params[0];
+            const resource = params[1];
+            const currentPath = params[2];
+            const currentFolderId = params[3];
+            const homeFolderId = params[4];
+            const resourceTypes = params[5];
+            const sortOptionField = params[6];
 
             if (visible && resource) {
               vm.modalVisible = visible;
@@ -304,7 +369,7 @@ define([
           });
         }
 
-        let directive = {
+        return {
           bindToController: {
             copyResource: '=',
             modalVisible: '='
@@ -314,8 +379,6 @@ define([
           restrict        : 'E',
           templateUrl     : 'scripts/modal/cedar-copy-modal.directive.html'
         };
-
-        return directive;
 
       }
     }
