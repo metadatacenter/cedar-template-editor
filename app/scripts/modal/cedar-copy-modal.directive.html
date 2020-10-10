@@ -20,16 +20,19 @@
         <div class="modal-header row" id="copyModalHeader">
 
           <div class="col-sm-11">
-            <h4 class="modal-title back-to-parent" style="cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;"
-                ng-click="copyto.openParent()">
-          <span type="button" class="arrow-click " aria-label="Back"
-                uib-tooltip="{{'HELP.backToParent' | translate}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
-              <span id="folder-title">{{copyto.currentTitle()}}</span>
-            </h4>
+            <p ng-if="copyto.isCommunity">
+                <span>
+                  Community Folders
+                </span>
+            </p>
+            <p ng-if="!copyto.isCommunity">
+                <span class="folder-path" ng-repeat="folder in copyto.destinationPathInfo track by $index">
+                  <a ng-click="copyto.openDestination(folder)" class="breadcrumbs" ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <span class="breadcrumbs"
+                        ng-if="!dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  /
+                </span>
+            </p>
           </div>
 
           <div class="col-sm-1 pull-right">

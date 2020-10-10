@@ -39,7 +39,7 @@ define([
                                                    AuthorizedBackendService,
                                                    FrontendUrlService,
                                                    UIProgressService, CONST, MessagingService) {
-          var vm = this;
+          const vm = this;
 
           vm.breadcrumbName = breadcrumbName;
           vm.currentPath = "";
@@ -217,23 +217,23 @@ define([
 
 
           vm.filterDraft = function () {
-            return (vm.getFilterStatus() == CONST.publication.DRAFT) || (vm.getFilterStatus() == CONST.publication.ALL);
+            return (vm.getFilterStatus() === CONST.publication.DRAFT) || (vm.getFilterStatus() === CONST.publication.ALL);
           };
 
           vm.filterPublished = function () {
-            return (vm.getFilterStatus() == CONST.publication.PUBLISHED) || (vm.getFilterStatus() == CONST.publication.ALL);
+            return (vm.getFilterStatus() === CONST.publication.PUBLISHED) || (vm.getFilterStatus() === CONST.publication.ALL);
           };
 
           vm.filterBoth = function () {
-            return (vm.getFilterStatus() == CONST.publication.ALL);
+            return (vm.getFilterStatus() === CONST.publication.ALL);
           };
 
           vm.filterLatest = function () {
-            return (vm.getFilterVersion() == CONST.publication.LATEST);
+            return (vm.getFilterVersion() === CONST.publication.LATEST);
           };
 
           vm.filterAll = function () {
-            return (vm.getFilterVersion() == CONST.publication.ALL);
+            return (vm.getFilterVersion() === CONST.publication.ALL);
           };
 
 
@@ -306,13 +306,10 @@ define([
             switch (value) {
               case CONST.publication.DRAFT:
                 return vm.getDraftIcon();
-                break;
               case CONST.publication.PUBLISHED:
                 return vm.getPublishedIcon();
-                break;
               case CONST.publication.LATEST:
                 return vm.getLatestIcon();
-                break;
             }
           };
 
@@ -325,7 +322,7 @@ define([
           };
 
           vm.toggleFilterLatest = function () {
-            if (vm.getFilterVersion() == CONST.publication.LATEST) {
+            if (vm.getFilterVersion() === CONST.publication.LATEST) {
               vm.setResourceVersion(CONST.publication.ALL);
             } else {
               vm.setResourceVersion(CONST.publication.LATEST);
@@ -378,14 +375,14 @@ define([
 
           vm.getId = function (node, label) {
             if (node) {
-              var id = schemaService.getId(node);
+              const id = schemaService.getId(node);
               return id.substr(id.lastIndexOf('/') + 1) + label;
             }
           };
 
           vm.isOverflow = function (node, label) {
-            var id = '#' + vm.getId(node, label) + ' .title-text';
-            var elm = jQuery(id);
+            const id = '#' + vm.getId(node, label) + ' .title-text';
+            const elm = jQuery(id);
             return (elm[0].scrollWidth > elm.innerWidth());
           };
 
@@ -399,26 +396,26 @@ define([
           // adjust the position of the context menu
           vm.toggledCedarDropdownMenu = function ($event, resource, view) {
 
-            var centerPanel = document.getElementById('workspace-view-container');
-            var row = document.getElementById(vm.getId(resource, 'row'));
-            var menu = document.getElementById(vm.getId(resource, 'menu'));
-            var offsetX = 200;
-            var offsetY = 30;
+            const centerPanel = document.getElementById('workspace-view-container');
+            const row = document.getElementById(vm.getId(resource, 'row'));
+            const menu = document.getElementById(vm.getId(resource, 'menu'));
+            const offsetX = 200;
+            const offsetY = 30;
 
             if (centerPanel && row && menu) {
 
-              var centerScrollTop = centerPanel.scrollTop;
-              var centerRect = centerPanel.getBoundingClientRect();
-              var rowRect = row.getBoundingClientRect();
+              const centerScrollTop = centerPanel.scrollTop;
+              const centerRect = centerPanel.getBoundingClientRect();
+              const rowRect = row.getBoundingClientRect();
 
               // position the menu at the button that opened it
-              if (view == 'list') {
+              if (view === 'list') {
                 // make an adjustment
                 menu.style.setProperty("left", (rowRect.width - offsetX - 20) + "px");
                 menu.style.setProperty("top", (rowRect.top - centerRect.top + offsetY + centerScrollTop) + "px");
               } else {
                 // open to the left if it would be hidden on the right
-                var offsetXMod = (rowRect.right + offsetX > centerRect.right) ? rowRect.width : 0;
+                const offsetXMod = (rowRect.right + offsetX > centerRect.right) ? rowRect.width : 0;
                 menu.style.setProperty("left", (rowRect.width - offsetXMod - 20) + "px");
                 menu.style.setProperty("top", offsetY + "px");
               }
@@ -439,21 +436,21 @@ define([
                   if (jqDescriptionField) {
                     jqDescriptionField.focus();
                     if (jqDescriptionField.val()) {
-                      var l = jqDescriptionField.val().length;
+                      const l = jqDescriptionField.val().length;
                       jqDescriptionField[0].setSelectionRange(0, l);
                     }
                   }
 
                   $window.onclick = function (event) {
                     // make sure we are hitting something else
-                    if (event.target.id != 'edit-description') {
+                    if (event.target.id !== 'edit-description') {
                       vm.editingDescription = false;
 
                       var jqDescriptionField = $('#edit-description');
                       if (jqDescriptionField) {
                         jqDescriptionField.blur();
                       }
-                      if (vm.editingDescriptionInitialValue != vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
+                      if (vm.editingDescriptionInitialValue !== vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
                         vm.updateDescription();
                       }
                       $window.onclick = null;
@@ -470,17 +467,17 @@ define([
           };
 
           function getNextOffset(next) {
-            var result = null;
+            let result = null;
             if (next) {
-              var result = [];
+              result = [];
               next.split("&").forEach(function (part) {
-                var item = part.split("=");
+                const item = part.split("=");
                 result[item[0]] = decodeURIComponent(item[1]);
               });
               result = parseInt(result['offset']);
             }
             return result;
-          };
+          }
 
 
           vm.selectResource = function (resource, force) {
@@ -526,7 +523,7 @@ define([
             if (resource == null || !hasSelected()) {
               return false;
             } else {
-              return getSelected()['@id'] == resource['@id'];
+              return getSelected()['@id'] === resource['@id'];
             }
           };
 
@@ -556,9 +553,9 @@ define([
 
           vm.doSearchTemplateInstances = function (id) {
 
-            var limit = 100;
-            var offset = 0;
-            var sort = 'name';
+            const limit = 100;
+            const offset = 0;
+            const sort = 'name';
 
             resourceService.hasMetadata(
                 id,
@@ -599,16 +596,16 @@ define([
             if (!resource && vm.hasSelected()) {
               resource = vm.getSelected();
             }
-            var id = resource['@id'];
+            const id = resource['@id'];
             resourceService.getResourceReport(
                 resource,
                 function (response) {
 
-                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                  if (!hasSelected() || (getSelected()['@id'] !== response['@id'])) {
                     setSelected(response);
 
                   } else {
-                    for (var prop in response) {
+                    for (let prop in response) {
                       getSelected()[prop] = response[prop];
 
                     }
@@ -631,14 +628,14 @@ define([
             if (!resource && vm.hasSelected()) {
               resource = vm.getSelected();
             }
-            var id = resource['@id'];
+            const id = resource['@id'];
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  if (!hasSelected() || (getSelected()['@id'] != response['@id'])) {
+                  if (!hasSelected() || (getSelected()['@id'] !== response['@id'])) {
                     setSelected(response);
                   } else {
-                    for (var prop in response) {
+                    for (let prop in response) {
                       getSelected()[prop] = response[prop];
                     }
                   }
@@ -709,9 +706,9 @@ define([
           };
 
           vm.getNextResourceVersion = function (resource) {
-            var currentVersion = vm.getResourceVersion(resource);
-            var parts = currentVersion.split(".");
-            if (parts.length == 3) {
+            const currentVersion = vm.getResourceVersion(resource);
+            const parts = currentVersion.split(".");
+            if (parts.length === 3) {
               parts[2] = parseInt(parts[2]) + 1;
               return parts.join(".");
             }
@@ -719,7 +716,7 @@ define([
           };
 
           vm.getResourcePublicationStatus = function (value) {
-            var resource = value || vm.getSelected();
+            const resource = value || vm.getSelected();
             if (resource != null) {
               return resource[CONST.publication.STATUS];
             }
@@ -727,13 +724,13 @@ define([
 
           vm.updateDescription = function () {
 
-            var resource = vm.editingDescriptionSelection;
+            let resource = vm.editingDescriptionSelection;
             if (resource != null) {
 
-              var postData = {};
-              var id = resource['@id'];
-              var nodeType = resource.resourceType;
-              var description = resource[CONST.model.DESCRIPTION];
+              const postData = {};
+              const id = resource['@id'];
+              const nodeType = resource.resourceType;
+              const description = resource[CONST.model.DESCRIPTION];
 
               if (nodeType === 'instance') {
                 AuthorizedBackendService.doCall(
@@ -872,7 +869,7 @@ define([
                 vm.offset = vm.nextOffset;
                 vm.loading = true;
 
-                if (vm.nodeListQueryType == 'search-category-id') {
+                if (vm.nodeListQueryType === 'search-category-id') {
                   return resourceService.categorySearchResources(
                       vm.categoryId,
                       {
@@ -893,11 +890,11 @@ define([
                         vm.loading = false;
 
                         vm.nodeListQueryType = response.nodeListQueryType;
-                        var title = '';
-                        var separator = '';
-                        for (var ti in response.categoryPath) {
+                        let title = '';
+                        let separator = '';
+                        for (let ti in response.categoryPath) {
                           if (ti > 0) {
-                            var name = response.categoryPath[ti]['schema:name']
+                            const name = response.categoryPath[ti]['schema:name'];
                             title += separator + name;
                             separator = ' &raquo; ';
                           }
@@ -980,7 +977,7 @@ define([
           function init() {
             vm.isSearching = false;
             if (vm.params.sharing) {
-              if (vm.params.sharing == 'shared-with-me') {
+              if (vm.params.sharing === 'shared-with-me') {
                 vm.isSearching = true;
                 if (vm.showFavorites) {
                   vm.showFavorites = false;
@@ -989,7 +986,7 @@ define([
                 // TODO: DO WE NEED THIS??
                 getFacets();
                 doSharedWithMe();
-              } else if (vm.params.sharing == 'shared-with-everybody') {
+              } else if (vm.params.sharing === 'shared-with-everybody') {
                 vm.isSearching = true;
                 if (vm.showFavorites) {
                   vm.showFavorites = false;
@@ -1042,24 +1039,24 @@ define([
           }
 
           function breadcrumbName(folderName) {
-            if (folderName == '/') {
+            if (folderName === '/') {
               return 'All';
             }
             return folderName;
           }
 
           function buildBreadcrumbTitle(searchTerm) {
-            if (vm.nodeListQueryType == 'view-shared-with-me') {
+            if (vm.nodeListQueryType === 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
-            } else if (vm.nodeListQueryType == 'view-shared-with-everybody') {
+            } else if (vm.nodeListQueryType === 'view-shared-with-everybody') {
               return $translate.instant("BreadcrumbTitle.sharedWithEverybody");
-            } else if (vm.nodeListQueryType == 'view-special-folders') {
+            } else if (vm.nodeListQueryType === 'view-special-folders') {
               return $translate.instant("BreadcrumbTitle.specialFolders");
-            } else if (vm.nodeListQueryType == 'folder-content') {
+            } else if (vm.nodeListQueryType === 'folder-content') {
               return $translate.instant("BreadcrumbTitle.viewAll");
-            } else if (vm.nodeListQueryType == 'search-term') {
+            } else if (vm.nodeListQueryType === 'search-term') {
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
-            } else if (vm.nodeListQueryType == 'search-category-id') {
+            } else if (vm.nodeListQueryType === 'search-category-id') {
               return $translate.instant("BreadcrumbTitle.categorySearchResult", {searchTerm: searchTerm});
             } else {
               return "";
@@ -1256,11 +1253,11 @@ define([
                     vm.loading = false;
 
                     vm.nodeListQueryType = response.nodeListQueryType;
-                    var title = '';
-                    var separator = '';
-                    for (var ti in response.categoryPath) {
+                    let title = '';
+                    let separator = '';
+                    for (let ti in response.categoryPath) {
                       if (ti > 0) {
-                        var name = response.categoryPath[ti]['schema:name']
+                        const name = response.categoryPath[ti]['schema:name'];
                         title += separator + name;
                         separator = ' &raquo; ';
                       }
@@ -1281,7 +1278,7 @@ define([
             if (!resource) {
               resource = getSelected();
             }
-            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
+            const newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
 
             resourceService.copyResourceToWorkspace(
                 resource, newTitle,
@@ -1302,8 +1299,8 @@ define([
             if (!resource) {
               resource = getSelected();
             }
-            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
-            var folderId = vm.currentFolderId;
+            const newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
+            let folderId = vm.currentFolderId;
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
@@ -1328,12 +1325,12 @@ define([
             if (!resource) {
               resource = getSelected();
             }
-            var newVersion = version || vm.getResourceVersion(resource);
+            const newVersion = version || vm.getResourceVersion(resource);
             resourceService.publishResource(
                 resource,
                 newVersion,
                 function (response) {
-                  var title = vm.getTitle(resource);
+                  const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.publishResource.success', {"title": title},
                       'GENERIC.Published');
                   vm.refreshWorkspace(resource);
@@ -1349,19 +1346,19 @@ define([
             if (!resource) {
               resource = getSelected();
             }
-            var folderId = vm.currentFolderId;
+            let folderId = vm.currentFolderId;
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
-            var newVersion = version || vm.getResourceVersion(resource);
-            var propagateSharing = true;
+            const newVersion = version || vm.getResourceVersion(resource);
+            const propagateSharing = true;
             resourceService.createDraftResource(
                 resource,
                 folderId,
                 newVersion,
                 propagateSharing,
                 function (response) {
-                  var title = vm.getTitle(resource);
+                  const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
                       'GENERIC.CreatedDraft');
                   vm.refreshWorkspace(resource);
@@ -1379,7 +1376,7 @@ define([
             resourceService.makeOpen(
                 resource,
                 function (response) {
-                  var title = vm.getTitle(resource);
+                  const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.makeOpenArtifact.success', {"title": title},
                       'GENERIC.MadeOpen');
                   vm.refreshWorkspace(resource);
@@ -1397,7 +1394,7 @@ define([
             resourceService.makeNotOpen(
                 resource,
                 function (response) {
-                  var title = vm.getTitle(resource);
+                  const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotOpenArtifact.success', {"title": title},
                       'GENERIC.MadeNotOpen');
                   vm.refreshWorkspace(resource);
@@ -1427,9 +1424,9 @@ define([
           }
 
           function launchInstance(value) {
-            var resource = value || getSelected();
+            const resource = value || getSelected();
             if (resource) {
-              var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
+              const url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
 
               // TODO exceptionally painful for users if we turn this on
               // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
@@ -1452,7 +1449,7 @@ define([
 
           function goToResource(value, action) {
 
-            var resource = value || getSelected();
+            const resource = value || getSelected();
             if (resource) {
               if (resource.resourceType === 'folder') {
                 if (action !== 'populate') {
@@ -1470,9 +1467,9 @@ define([
 
           function editResource(value) {
 
-            var resource = value || getSelected();
+            const resource = value || getSelected();
             if (resource) {
-              var id = resource['@id'];
+              const id = resource['@id'];
               if (typeof vm.pickResourceCallback === 'function') {
                 vm.pickResourceCallback(resource);
               }
@@ -1503,8 +1500,8 @@ define([
 
           function removeResource(resource) {
             // remove resource from list
-            var index = -1;
-            for (var i = 0, len = vm.resources.length; i < len; i++) {
+            let index = -1;
+            for (let i = 0, len = vm.resources.length; i < len; i++) {
               if (vm.resources[i]['@id'] === resource['@id']) {
                 index = i;
                 break;
@@ -1522,7 +1519,7 @@ define([
 
 
           function deleteResource(resource) {
-            var r = resource || getSelectedNode();
+            const r = resource || getSelectedNode();
             if (resourceService.canDelete(r)) {
               UIMessageService.confirmedExecution(
                   function () {
@@ -1619,7 +1616,7 @@ define([
           }
 
           function getCurrentFolderSummary(folderId) {
-            var params = {
+            const params = {
               '@id'         : folderId,
               'resourceType': CONST.resourceType.FOLDER
             };
@@ -1646,8 +1643,7 @@ define([
           }
 
           function getSelectedNode() {
-
-            var result = null;
+            let result = null;
             if (!hasSelected() && (vm.isSharedMode() || vm.isSearchMode())) {
               // nothing selected in share or search mode
             } else {
@@ -1662,7 +1658,7 @@ define([
 
           function isSelected(node) {
             if (hasSelected() && node) {
-              return (DataManipulationService.getId(vm.getSelectedNode()) == DataManipulationService.getId(node));
+              return (DataManipulationService.getId(vm.getSelectedNode()) === DataManipulationService.getId(node));
             }
           }
 
@@ -1671,7 +1667,7 @@ define([
           }
 
           function getResourceIconClass(resource) {
-            var result = "";
+            let result = "";
             if (resource) {
               result += resource.resourceType + " ";
 
@@ -1697,7 +1693,7 @@ define([
           }
 
           function getResourceTypeClass(resource) {
-            var result = '';
+            let result = '';
             if (resource) {
               switch (resource.resourceType) {
                 case CONST.resourceType.FOLDER:
@@ -1744,14 +1740,14 @@ define([
                     }*/
 
           function isPublished(resource) {
-            var result = false;
+            let result = false;
             if (resource) {
-              result = (resource[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
+              result = (resource[CONST.publication.STATUS] === CONST.publication.PUBLISHED);
             } else {
-              result = (hasSelected() && (getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED));
+              result = (hasSelected() && (getSelected()[CONST.publication.STATUS] === CONST.publication.PUBLISHED));
             }
             return result;
-          };
+          }
 
           function isOpen(resource) {
             let result = false;
@@ -1771,35 +1767,35 @@ define([
                     }*/
 
           function isTemplate(resource) {
-            var result = false;
+            let result = false;
             if (resource) {
-              result = (resource.resourceType == CONST.resourceType.TEMPLATE);
+              result = (resource.resourceType === CONST.resourceType.TEMPLATE);
             } else {
-              result = (hasSelected() && (getSelected().resourceType == CONST.resourceType.TEMPLATE));
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.TEMPLATE));
             }
             return result;
           }
 
           function isElement() {
-            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.ELEMENT));
+            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
           }
 
           function isField() {
-            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.FIELD));
+            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
           }
 
           function isFolder(resource) {
-            var result = false;
+            let result = false;
             if (resource) {
-              result = (resource.resourceType == CONST.resourceType.FOLDER);
+              result = (resource.resourceType === CONST.resourceType.FOLDER);
             } else {
-              result = (hasSelected() && (getSelected().resourceType == CONST.resourceType.FOLDER))
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.FOLDER))
             }
             return result;
           }
 
           function isMeta() {
-            return (hasSelected() && (getSelected().resourceType == CONST.resourceType.INSTANCE));
+            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
           }
 
           function goToHomeFolder(resourceId) {
@@ -1827,7 +1823,7 @@ define([
           }
 
           function onDashboard() {
-            return vm.mode == 'dashboard';
+            return vm.mode === 'dashboard';
           }
 
           function hasUnreadMessages() {
@@ -1848,17 +1844,17 @@ define([
 
           // is something changed by the filters?  for now, just look at the resource types
           function resetFiltersEnabled() {
-            var notLatest = vm.getFilterVersion() != CONST.publication.LATEST;
-            var notPublishedAndDraft = vm.getFilterStatus() != CONST.publication.ALL;
-            var typeHidden = Object.values(vm.resourceTypes).indexOf(false) > -1
+            const notLatest = vm.getFilterVersion() !== CONST.publication.LATEST;
+            const notPublishedAndDraft = vm.getFilterStatus() !== CONST.publication.ALL;
+            const typeHidden = Object.values(vm.resourceTypes).indexOf(false) > -1;
             return typeHidden || notLatest || notPublishedAndDraft;
           }
 
           function resetFilters() {
-            var updates = {};
-            for (var nodeType in vm.resourceTypes) {
+            const updates = {};
+            for (let nodeType in vm.resourceTypes) {
               vm.resourceTypes[nodeType] = true;
-              var key = 'resourceTypeFilters.' + nodeType;
+              const key = 'resourceTypeFilters.' + nodeType;
               updates[key] = true;
             }
             updates['resourcePublicationStatusFilter.publicationStatus'] = CONST.publication.ALL;
@@ -1900,7 +1896,7 @@ define([
           }
 
           function workspaceClass() {
-            var width = 12;
+            let width = 12;
             if (vm.onDashboard()) {
               if (vm.showFilters) {
                 width = width - 2;
@@ -1918,7 +1914,7 @@ define([
           }
 
           function isFilterSection(section) {
-            var result = false;
+            let result = false;
             if (!section) {
               result = vm.showFilters;
             } else {
@@ -1950,9 +1946,9 @@ define([
           $scope.selectResourceById = function (id) {
 
             if (id) {
-              for (var i = 0; i < vm.resources.length; i++) {
+              for (let i = 0; i < vm.resources.length; i++) {
                 if (id === vm.resources[i]['@id']) {
-                  var resource = vm.resources[i];
+                  const resource = vm.resources[i];
                   vm.cancelDescriptionEditing();
                   setSelected(resource);
                   vm.setPermissions();
@@ -1972,7 +1968,7 @@ define([
           };
 
           $scope.$on('refreshWorkspace', function (event, args) {
-            var selectedResource = args ? args[0] : null;
+            const selectedResource = args ? args[0] : null;
             vm.refreshWorkspace(selectedResource);
           });
 
@@ -1986,12 +1982,12 @@ define([
            */
 
           function activeResourceTypes() {
-            var activeResourceTypes = [];
+            const activeResourceTypes = [];
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
                 if (!vm.onDashboard()) {
                   // just elements can be selected
-                  if (value == 'element') {
+                  if (value === 'element') {
                     activeResourceTypes.push(value);
                   }
                 } else {
@@ -2028,7 +2024,6 @@ define([
             return UISettingsService.hasSelected();
           }
 
-
           function setSortByCreated() {
             UISettingsService.saveSortByCreated(CedarUser.setSortByCreated());
             init();
@@ -2045,7 +2040,7 @@ define([
           }
 
           function isSort(value) {
-            var result;
+            let result;
             switch (value) {
               case 'name':
                 result = CedarUser.isSortByName();
@@ -2149,10 +2144,10 @@ define([
 
           vm.setTab = function (item) {
             vm.activeTab = item;
-            if (vm.activeTab == 'resource-version') {
+            if (vm.activeTab === 'resource-version') {
               vm.getResourceReport(vm.getSelectedNode());
               toggleInfoTab('version');
-            } else if (vm.activeTab == 'resource-category') {
+            } else if (vm.activeTab === 'resource-category') {
               toggleInfoTab('category');
             } else {
               toggleInfoTab('info');
@@ -2164,8 +2159,8 @@ define([
           function showCopyModal(resource) {
             let r = resource || getSelected();
             if (r && !vm.isFolder(r)) {
-              var homeFolderId = CedarUser.getHomeFolderId();
-              var folderId = vm.currentFolderId || homeFolderId;
+              const homeFolderId = CedarUser.getHomeFolderId();
+              const folderId = vm.currentFolderId || homeFolderId;
               vm.copyModalVisible = true;
               $scope.$broadcast('copyModalVisible',
                   [vm.copyModalVisible, r, vm.currentPath, folderId, homeFolderId, vm.resourceTypes, CedarUser.getSort()]);
@@ -2177,7 +2172,7 @@ define([
             let r = getSelected();
             if (r && resourceService.canWrite(r)) {
               vm.moveModalVisible = true;
-              var homeFolderId = CedarUser.getHomeFolderId();
+              const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId,
                    vm.resourceTypes,
@@ -2190,7 +2185,7 @@ define([
             let r = getSelected();
             if (r && resourceService.canWrite(r)) {
               vm.publishModalVisible = true;
-              var homeFolderId = CedarUser.getHomeFolderId();
+              const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, action]);
             }
           }
@@ -2229,8 +2224,8 @@ define([
           }
 
           vm.getFolderId = function () {
-            var folderId;
-            var queryStringFolderId = QueryParamUtilsService.getFolderId();
+            let folderId;
+            const queryStringFolderId = QueryParamUtilsService.getFolderId();
             if (queryStringFolderId) {
               folderId = queryStringFolderId;
             } else {
@@ -2240,27 +2235,27 @@ define([
           };
 
           vm.goToMyWorkspace = function () {
-            var url = FrontendUrlService.getMyWorkspace();
+            const url = FrontendUrlService.getMyWorkspace();
             $location.url(url);
           };
 
           vm.goToSearchAll = function () {
-            var url = FrontendUrlService.getSearchAll(vm.getFolderId());
+            const url = FrontendUrlService.getSearchAll(vm.getFolderId());
             $location.url(url);
           };
 
           vm.goToSharedWithMe = function () {
-            var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
+            const url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
           };
 
           vm.goToSharedWithEverybody = function () {
-            var url = FrontendUrlService.getSharedWithEverybody(vm.getFolderId());
+            const url = FrontendUrlService.getSharedWithEverybody(vm.getFolderId());
             $location.url(url);
           };
 
           vm.goToSpecialFolders = function () {
-            var url = FrontendUrlService.getSpecialFolders(vm.getFolderId());
+            const url = FrontendUrlService.getSpecialFolders(vm.getFolderId());
             $location.url(url);
           };
 
@@ -2279,19 +2274,19 @@ define([
           };
 
           vm.resourceListIsLoading = function () {
-            return vm.totalCount == -1;
+            return vm.totalCount === -1;
           };
 
           vm.resourceListIsEmpty = function () {
-            return vm.totalCount == 0;
+            return vm.totalCount === 0;
           };
 
           vm.search = function (searchTerm) {
 
             vm.searchTerm = searchTerm;
-            var baseUrl = '/dashboard';
-            var queryParams = {};
-            var folderId = QueryParamUtilsService.getFolderId();
+            const baseUrl = '/dashboard';
+            const queryParams = {};
+            const folderId = QueryParamUtilsService.getFolderId();
             if (folderId) {
               queryParams['folderId'] = folderId;
             }
@@ -2299,7 +2294,7 @@ define([
             // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
             // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
             queryParams['t'] = Date.now();
-            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            const url = $rootScope.util.buildUrl(baseUrl, queryParams);
             $location.url(url);
             if (searchTerm) {
               UIProgressService.start();
@@ -2309,9 +2304,9 @@ define([
 
           vm.categorySearch = function (categoryId) {
             vm.categoryId = categoryId;
-            var baseUrl = '/dashboard';
-            var queryParams = {};
-            var folderId = QueryParamUtilsService.getFolderId();
+            const baseUrl = '/dashboard';
+            const queryParams = {};
+            const folderId = QueryParamUtilsService.getFolderId();
             if (folderId) {
               queryParams['folderId'] = folderId;
             }
@@ -2319,7 +2314,7 @@ define([
             // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
             // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
             queryParams['t'] = Date.now();
-            var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+            const url = $rootScope.util.buildUrl(baseUrl, queryParams);
             $location.url(url);
             if (categoryId) {
               UIProgressService.start();
@@ -2330,7 +2325,7 @@ define([
 
         }
 
-        let directive = {
+        return {
           bindToController: {
             selectResourceCallback: '=',
             pickResourceCallback  : '=',
@@ -2342,8 +2337,6 @@ define([
           scope           : {},
           templateUrl     : 'scripts/search-browse/cedar-search-browse-picker.directive.html'
         };
-
-        return directive;
 
       }
     }
