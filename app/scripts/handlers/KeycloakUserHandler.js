@@ -1,6 +1,6 @@
 function KeycloakUserHandler() {
 
-  var keycloak = Keycloak();
+  const keycloak = Keycloak();
 
   this.doLogin = function () {
     keycloak.login();

@@ -11,18 +11,18 @@ define([
 
   function UrlService() {
 
-    var userService = null;
-    var terminologyService = null;
-    var resourceService = null;
-    var valueRecommenderService = null;
-    var schemaService = null;
-    var groupService = null;
-    var submissionService = null;
-    var messagingService = null;
-    var paging = function(page,size, defaultPage, defaultSize, pageString, sizeString) {
-      var p = page > 0 ? page : defaultPage;
-      var s = size > 0 ? size : defaultSize;
-      return  pageString + '=' + p + '&' + sizeString + '=' + s;
+    let userService = null;
+    let terminologyService = null;
+    let resourceService = null;
+    let valueRecommenderService = null;
+    let schemaService = null;
+    let groupService = null;
+    let submissionService = null;
+    let messagingService = null;
+    const paging = function (page, size, defaultPage, defaultSize, pageString, sizeString) {
+      const p = page > 0 ? page : defaultPage;
+      const s = size > 0 ? size : defaultSize;
+      return pageString + '=' + p + '&' + sizeString + '=' + s;
     };
 
     var service = {
@@ -51,11 +51,11 @@ define([
     };
 
     service.getTemplate = function (id) {
-      return this.templates() + '/' + encodeURIComponent(id);
+      return this.templates() + '/' + this.encodeURIComponent(id);
     };
 
     service.postTemplate = function (folderId) {
-      return this.templates() + '?folder_id=' + encodeURIComponent(folderId);
+      return this.templates() + '?folder_id=' + this.encodeURIComponent(folderId);
     };
 
     service.templateElements = function () {
@@ -63,11 +63,11 @@ define([
     };
 
     service.getTemplateElement = function (id) {
-      return this.templateElements() + '/' + encodeURIComponent(id);
+      return this.templateElements() + '/' + this.encodeURIComponent(id);
     };
 
     service.postTemplateElement = function (folderId) {
-      return this.templateElements() + '?folder_id=' + encodeURIComponent(folderId);
+      return this.templateElements() + '?folder_id=' + this.encodeURIComponent(folderId);
     };
 
     service.templateFields = function () {
@@ -75,11 +75,11 @@ define([
     };
 
     service.getTemplateField = function (id) {
-      return this.templateFields() + '/' + encodeURIComponent(id);
+      return this.templateFields() + '/' + this.encodeURIComponent(id);
     };
 
     service.postTemplateField = function (folderId) {
-      return this.templateFields() + '?folder_id=' + encodeURIComponent(folderId);
+      return this.templateFields() + '?folder_id=' + this.encodeURIComponent(folderId);
     };
 
     service.templateInstances = function () {
@@ -87,17 +87,15 @@ define([
     };
 
     service.templateInstancesBasedOn = function (query,  size) {
-      var url = this.base() + "/search?is_based_on=" + encodeURIComponent(query)
-          +  "&page=1&page_size=" + size;
-      return url;
+      return this.base() + "/search?is_based_on=" + this.encodeURIComponent(query)+  "&page=1&page_size=" + size;
     };
 
     service.getTemplateInstance = function (id) {
-      return this.templateInstances() + '/' + encodeURIComponent(id);
+      return this.templateInstances() + '/' + this.encodeURIComponent(id);
     };
 
     service.postTemplateInstance = function (folderId) {
-      return this.templateInstances() + '?folder_id=' + encodeURIComponent(folderId);
+      return this.templateInstances() + '?folder_id=' + this.encodeURIComponent(folderId);
     };
 
     service.users = function () {
@@ -105,7 +103,7 @@ define([
     };
 
     service.getUser = function (id) {
-      return this.users() + '/' + encodeURIComponent(id);
+      return this.users() + '/' + this.encodeURIComponent(id);
     };
 
     service.terminology = function () {
@@ -141,7 +139,7 @@ define([
     };
 
     service.getFolder = function (id) {
-      return this.folders() + '/' + encodeURIComponent(id);
+      return this.folders() + '/' + this.encodeURIComponent(id);
     };
 
     service.folders = function () {
@@ -185,7 +183,7 @@ define([
     };
 
     service.validateResource = function (resourceType) {
-      return this.base() + '/command/validate' + '?resource_type=' + encodeURIComponent(resourceType);
+      return this.base() + '/command/validate' + '?resource_type=' + this.encodeURIComponent(resourceType);
     };
 
     service.copyResourceToFolder = function () {
@@ -209,31 +207,31 @@ define([
     };
 
     service.templateFieldPermission = function (id) {
-      return this.resourceBase() + '/template-fields/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/template-fields/' + this.encodeURIComponent(id) + "/permissions";
     };
 
     service.templateElementPermission = function (id) {
-      return this.resourceBase() + '/template-elements/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/template-elements/' + this.encodeURIComponent(id) + "/permissions";
     };
 
     service.templatePermission = function (id) {
-      return this.resourceBase() + '/templates/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/templates/' + this.encodeURIComponent(id) + "/permissions";
     };
 
     service.templateInstancePermission = function (id) {
-      return this.resourceBase() + '/template-instances/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/template-instances/' + this.encodeURIComponent(id) + "/permissions";
     };
 
     service.folderPermission = function (id) {
-      return this.resourceBase() + '/folders/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/folders/' + this.encodeURIComponent(id) + "/permissions";
     };
 
     service.getGroup = function (id) {
-      return this.getGroups() + '/' + encodeURIComponent(id);
+      return this.getGroups() + '/' + this.encodeURIComponent(id);
     };
 
     service.getGroupMembers = function (id) {
-      return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
+      return this.getGroups() + '/' + this.encodeURIComponent(id) + "/users";
     };
 
     service.messagingSummary = function () {
@@ -253,7 +251,7 @@ define([
     };
 
     service.messagingPatchMessage = function (id) {
-      return this.messagingMessages() + "/" + encodeURIComponent(id);
+      return this.messagingMessages() + "/" + this.encodeURIComponent(id);
     };
 
     service.messagingMarkAllMessagesAsRead = function() {
@@ -309,7 +307,7 @@ define([
     };
 
     service.getValueSetById = function (vsId) {
-      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId);
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + this.encodeURIComponent(vsId);
     };
 
     service.getValueSetsCache = function () {
@@ -329,82 +327,82 @@ define([
     };
 
     service.getClassById = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId);
     };
 
     service.createValue = function (vsId) {
-      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId) + '/values';
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + this.encodeURIComponent(vsId) + '/values';
     };
 
     service.getValueTree = function (vsId, vsCollection) {
-      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(vsId)
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + this.encodeURIComponent(vsId)
           + "/tree";
     };
 
     service.getValueSetTree = function (valueId, vsCollection) {
-      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(valueId)
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(valueId)
           + "/tree";
     };
 
     service.getAllValuesInValueSetByValue = function (valueId, vsCollection, page, size) {
       console.log('getAllValuesInValueSetByValue');
-      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId)
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + this.encodeURIComponent(valueId)
           + "/all-values?" + paging(page,size,1,50,'page','page_size');
     };
 
     service.getClassChildren = function (acronym, classId, page, size) {
       console.log('getClassChildreen',acronym, classId);
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
           + "/children?" + paging(page,size,1,1000,'page','pageSize');
     };
 
     service.getClassDescendants = function (acronym, classId, page, size) {
       console.log('getClassDescendants',acronym, classId);
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
           + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
 
 
     service.getPropertyChildren = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId)
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + this.encodeURIComponent(propertyId)
           + "/children";
     };
 
     service.getPropertyById = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId);
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + this.encodeURIComponent(propertyId);
     };
 
     service.getValueTermById = function (acronym, valueSetId, valueId) {
-      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + encodeURIComponent(valueId);
+      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + this.encodeURIComponent(valueId);
     };
 
     service.getValueById = function (acronym,  valueId) {
-      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + encodeURIComponent(valueId);
+      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + this.encodeURIComponent(valueId);
     };
 
     service.getClassParents = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
           + '/parents?include=hasChildren,prefLabel';
     };
 
     service.getClassTree = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree';
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId) + '/tree';
     };
 
     service.getPropertyTree = function (acronym, propertyId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + this.encodeURIComponent(
           propertyId) + '/tree';
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
-      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId)
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(vsId)
           + "/values?"  + paging(page,size,1,50,'page','pageSize');
     };
 
     service.searchClasses = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
-          + "&scope=classes&" +  paging(page,size,1,1000,'page','page_size');
+      let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query)
+          + "&scope=classes&" + paging(page, size, 1, 1000, 'page', 'page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -412,8 +410,8 @@ define([
     };
 
     service.searchProperties = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/property_search?q=" + encodeURIComponent(query)
-          + "&" + paging(page,size,1, 50,'page','pageSize');
+      let url = this.controlledTerm() + "/property_search?q=" + this.encodeURIComponent(query)
+          + "&" + paging(page, size, 1, 50, 'page', 'pageSize');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -421,8 +419,8 @@ define([
     };
 
     service.searchClassesAndValues = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
-          + "&scope=classes,values&" + paging(page,size,1, 50,'page','page_size');
+      let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query)
+          + "&scope=classes,values&" + paging(page, size, 1, 50, 'page', 'page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -430,8 +428,8 @@ define([
     };
 
     service.searchClassesValueSetsAndValues = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=all&"  + paging(page, size, 1, 50,'page','page_size');
+      let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
+          "&scope=all&" + paging(page, size, 1, 50, 'page', 'page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -439,8 +437,8 @@ define([
     };
 
     service.searchValueSetsAndValues = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=value_sets,values&" + paging(page, size, 1, 50,'page','page_size');
+      let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
+          "&scope=value_sets,values&" + paging(page, size, 1, 50, 'page', 'page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -448,8 +446,8 @@ define([
     };
 
     service.searchValueSets = function (query, sources, size, page) {
-      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
-          "&scope=value_sets&" +  paging(page, size, 1, 50,'page','page_size');
+      let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
+          "&scope=value_sets&" + paging(page, size, 1, 50, 'page', 'page_size');
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -457,25 +455,25 @@ define([
     };
 
     service.autocompleteOntology = function (query, acronym, page, size) {
-      var url = this.controlledTerm();
-      if (query == '*') {
+      let url = this.controlledTerm();
+      if (query === '*') {
         url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 1, 500,'page','page_size');
       } else {
-        url += "/search?q=" + encodeURIComponent(query) +
+        url += "/search?q=" + this.encodeURIComponent(query) +
             "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
       }
       return url;
     };
 
     service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth, page, size) {
-      var url = this.controlledTerm();
+      let url = this.controlledTerm();
 
-      if (query == '*') {
-        url += '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id)
+      if (query === '*') {
+        url += '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(subtree_root_id)
             + '/descendants?' + paging(page, size, 1, 500,'page','page_size');
       } else {
-        url += '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
-            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
+        url += '/search?q=' + this.encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+            '&subtree_root_id=' + this.encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
             "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
       }
       return url;
@@ -496,6 +494,15 @@ define([
     service.makeNotOpen = function () {
       return this.resourceBase() + "/command/make-artifact-not-open";
     };
+
+    service.encodeURIComponent = function(s) {
+      const HTTPS1 = 'https:/'
+      const HTTPS2 = 'https://'
+      if (s.startsWith(HTTPS1) && !s.startsWith(HTTPS2)) {
+        s = HTTPS2 + s.substring(HTTPS1.length);
+      }
+      return encodeURIComponent(s);
+    }
 
     return service;
   }
