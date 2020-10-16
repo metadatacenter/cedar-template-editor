@@ -14,7 +14,7 @@ function UserProfileHandler() {
   };
 
   this.loadUrlServiceConf = function (userId, success) {
-    var service = this;
+    const service = this;
     jQuery.get('config/url-service.conf.json?v=' + window.cedarCacheControl, function (urlConfigData) {
       service.usersUrl = urlConfigData.userRestAPI + '/users';
       service.userUrl = service.usersUrl + '/' + userId;
@@ -28,7 +28,7 @@ function UserProfileHandler() {
   };
 
   this.loadUserProfile = function () {
-    var service = this;
+    const service = this;
     jQuery.ajax(
         service.userUrl,
         {
@@ -40,7 +40,7 @@ function UserProfileHandler() {
             service.userProfileLoadedDoCallback(userData);
           },
           'error'  : function (error) {
-            if (error.status == 404) {
+            if (error.status === 404) {
               console.log("User was not found using the REST API. Create it!");
               service.userProfileLoadedDoCallback(null);
             }
@@ -53,10 +53,10 @@ function UserProfileHandler() {
     this.userHandler = userHandler;
     this.callback = callback;
 
-    var pt = this.userHandler.getParsedToken();
-    var userId = pt.sub;
+    const pt = this.userHandler.getParsedToken();
+    const userId = pt.sub;
 
-    var service = this;
+    const service = this;
     this.loadUrlServiceConf(userId, function () {
       service.loadUserProfile();
     });

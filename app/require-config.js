@@ -20,9 +20,9 @@ require.config({
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld': 'bower_components/jsonld/js/jsonld',
-    'ngFlow': 'bower_components/ng-flow/dist/ng-flow-standalone',
-    'flow': 'bower_components/flow.js/dist/flow'
+    'jsonld'  : 'bower_components/jsonld/js/jsonld',
+    'ngFlow'  : 'bower_components/ng-flow/dist/ng-flow-standalone',
+    'flow'    : 'bower_components/flow.js/dist/flow'
 
   },
   shim    : {
@@ -47,8 +47,7 @@ require.config({
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
     'ngFlow'                                                                             : ['angular'],
-    'flow'                                                                             : ['angular'],
-
+    'flow'                                                                               : ['angular'],
 
 
     '3rdparty/angular-fitvids/angular-fitvids': {
@@ -63,12 +62,12 @@ require.config({
 
     // 'lib/ngHandsontable/dist/ngHandsontable.min'                                 : ['angular',
     //                                                                                 'lib/handsontable/dist/handsontable.full'],
-    'lib/handsontable/dist/handsontable.full'                                : {'exports': 'Handsontable'},
-    'lib/bootstrap/dist/js/bootstrap.min'                                        : ['jquery'],
-    'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap.min'],
-    'cedar/template-editor/handsontable/SpreadsheetContext'                      : ['lib/handsontable/dist/handsontable.full'],
-    'cedar/template-editor/handsontable/MultiCheckboxEditor'                     : ['lib/handsontable/dist/handsontable.full'],
-    'lib/ngprogress/build/ngprogress.min'                                        : ['angular'],
+    'lib/handsontable/dist/handsontable.full'               : {'exports': 'Handsontable'},
+    'lib/bootstrap/dist/js/bootstrap.min'                   : ['jquery'],
+    'lib/bootstrap-select/dist/js/bootstrap-select.min'     : ['lib/bootstrap/dist/js/bootstrap.min'],
+    'cedar/template-editor/handsontable/SpreadsheetContext' : ['lib/handsontable/dist/handsontable.full'],
+    'cedar/template-editor/handsontable/MultiCheckboxEditor': ['lib/handsontable/dist/handsontable.full'],
+    'lib/ngprogress/build/ngprogress.min'                   : ['angular'],
   },
   priority: [
     'jquery',
@@ -89,7 +88,6 @@ require([
   angular.element().ready(function () {
 
     function continueWithAngularApp() {
-      //console.log("continueWithAngularApp");
       require([
         'angular',
         'app',
@@ -98,7 +96,7 @@ require([
         angular.bootstrap(document, ['cedar.templateEditor']);
 
         // Set the ng-app class for Angular Protractor tests
-        var root = document.documentElement;
+        const root = document.documentElement;
 
         angular.element(root).addClass('ng-app');
 
@@ -106,11 +104,10 @@ require([
     }
 
     function successInitUserHandler(authenticated) {
-      //console.log("User handler init success. Authenticated: " + authenticated);
       if (!authenticated) {
         window.bootstrapUserHandler.doLogin();
       } else {
-        var uph = new UserProfileHandler();
+        const uph = new UserProfileHandler();
         uph.proceed(window.bootstrapUserHandler, continueWithAngularApp);
       }
     }
@@ -121,10 +118,10 @@ require([
 
     function createUUID() {
       let dt = new Date().getTime();
-      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        let r = (dt + Math.random()*16)%16 | 0;
-        dt = Math.floor(dt/16);
-        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+      let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        let r = (dt + Math.random() * 16) % 16 | 0;
+        dt = Math.floor(dt / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
       });
       return uuid;
     }
