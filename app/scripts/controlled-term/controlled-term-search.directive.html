@@ -624,26 +624,31 @@
             uib-tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
       </div>
     </div>
-    <!-- Create Value Set (Tab Content) -->
-    <div ng-if="tsc.isCreatingValueSet" class="clear form-group add-ontology-class"
-        ng-controller="provisionalClassController as pcc">
-      <ng-include src="'scripts/controlled-term/create-value-set.html'"></ng-include>
-      <div class="clear btn-create-term">
-        <button type="button"
-            class="std-button btn"
-            ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
-            ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">Create
-          Value Set
-        </button>
-        <i class="cedar-svg-help-circle help-icon"
-            uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
-      </div>
-      <!--Create value set loader-->
-      <div ng-if="pcc.showCreateVsLoader">
-        <div class="loader2"></div>
-      </div>
+    <!-- The following block (value set creation) is temporarily disabled (see https://github.com/metadatacenter/cedar-project/issues/1103) -->
+    <div style="text-align: center" ng-if="tsc.isCreatingValueSet" class="clear form-group add-ontology-class">
       <br/>
+      <p>Value Set creation is temporarily disabled. If you need to create a value set, please contact us at <a href="mailto:user-support@metadatacenter.org">user-support@metadatacenter.org</a>.</p>
     </div>
+    <!-- Create Value Set (Tab Content) -->
+<!--    <div ng-if="tsc.isCreatingValueSet" class="clear form-group add-ontology-class"-->
+<!--        ng-controller="provisionalClassController as pcc">-->
+<!--      <ng-include src="'scripts/controlled-term/create-value-set.html'"></ng-include>-->
+<!--      <div class="clear btn-create-term">-->
+<!--        <button type="button"-->
+<!--            class="std-button btn"-->
+<!--            ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"-->
+<!--            ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">Create-->
+<!--          Value Set-->
+<!--        </button>-->
+<!--        <i class="cedar-svg-help-circle help-icon"-->
+<!--            uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>-->
+<!--      </div>-->
+<!--      &lt;!&ndash;Create value set loader&ndash;&gt;-->
+<!--      <div ng-if="pcc.showCreateVsLoader">-->
+<!--        <div class="loader2"></div>-->
+<!--      </div>-->
+<!--      <br/>-->
+<!--    </div>-->
   </div>
 </div>
 
