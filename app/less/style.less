@@ -6973,7 +6973,7 @@ table.apiKey {
   background: transparent;
 }
 
-#rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #terms-modal {
+#rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #terms-modal, #import-modal {
 
   i.fa-globe {
     color: @published;
@@ -7904,6 +7904,58 @@ table.apiKey {
 }
 
 #flow-modal {
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 600px;
+    width: 600px;
+    .modal-content {
+      max-width: 600px;
+      width: 600px;
+      margin: 0 auto;
+      .modal-body {
+        max-height: 350px;
+        height: 350px;
+        overflow: hidden;
+
+        .tab-content .tab-pane .repository {
+          margin: 30px auto;
+          width: 400px;
+        }
+        .tab-content .tab-pane .fileUpload {
+          margin-top: 20px;
+          .clear-item {
+            padding-left: 0px;
+            color: #aaa;
+            button {
+              background: transparent;
+              padding-top: 0;
+            }
+          }
+          .metadata {
+            height: 100px;
+            .header {
+              margin-left: 20px;
+              margin-top: 0;
+              color: #6A8B92;
+            }
+            .btn-add {
+              font-size: 28px;
+              padding: 4px 0;
+              color: #FF5722;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#import-modal {
   @media (max-width: @screen-sm-min) {
     .modal-content {
       width: calc(~"100% - 10px");

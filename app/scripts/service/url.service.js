@@ -19,6 +19,7 @@ define([
     let groupService = null;
     let submissionService = null;
     let messagingService = null;
+    let impexService = null;
     const paging = function (page, size, defaultPage, defaultSize, pageString, sizeString) {
       const p = page > 0 ? page : defaultPage;
       const s = size > 0 ? size : defaultSize;
@@ -38,6 +39,7 @@ define([
       groupService = config.groupRestAPI;
       submissionService = config.submissionRestAPI;
       messagingService = config.messagingRestAPI;
+      impexService = config.impexRestAPI;
     };
 
 
@@ -294,6 +296,10 @@ define([
       return submissionService + '/command/validate-cairr';
     };
 
+    service.importCadsrForm = function () {
+      return impexService = '/command/import-cadsr-form';
+    };
+
     service.getOntologies = function () {
       return this.controlledTerm() + "/ontologies";
     };
@@ -361,8 +367,6 @@ define([
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
           + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
     };
-
-
 
     service.getPropertyChildren = function (acronym, propertyId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + this.encodeURIComponent(propertyId)
