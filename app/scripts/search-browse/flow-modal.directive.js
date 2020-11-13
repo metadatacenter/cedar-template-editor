@@ -21,7 +21,9 @@ define([
           'TemplateInstanceService',
           'AuthorizedBackendService',
           'UrlService',
-          'SubmissionService'
+          'HttpBuilderService',
+          'SubmissionService',
+          '$translate'
         ];
 
 
