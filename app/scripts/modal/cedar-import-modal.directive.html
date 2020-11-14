@@ -1,18 +1,26 @@
 <div class="modal-dialog">
+  <!-- The modal uses ng-flow to manage the file uploads (documentation available at https://github.com/flowjs/ng-flow).
+  Note that in flow-init we set the chunkSize to less than 1MB because that's the default max size allowed by ningx
+  -->
   <div class="modal-content"
-       flow-init="{target: getTarget()}"
-       flow-complete="flowComplete($flow)"
-       flow-progress="flowProgress( $flow )"
-       flow-file-progress="flowFileProgress( $file, $flow )"
-       flow-file-success="$file.msg = $message; flowFileSuccess( $file, $message, $flow )"
-       flow-file-added="flowFileAdded( $file, $event, $flow )"
-       flow-files-added="flowFilesAdded( $files, $event, $flow )"
-       flow-files-submitted="flowFilesSubmitted( $files, $event, $flow )"
-       flow-file-retry="flowFileRetry( $file, $flow )"
-       flow-file-error="flowFileError( $file, $message, $flow )"
-       flow-error="flowError( $file, $message, $flow )"
-       flow-upload-started="flowUploadStarted($flow )"
-       ng-init="init($flow)">
+       ng-init="import.init($flow)"
+       flow-init="{target: import.getTarget(),
+       testChunks:false,
+       forceChunkSize: true,
+       maxChunkRetries: 1,
+       chunkRetryInterval: 1000,
+       chunkSize: (1024*1024)/2}"
+       flow-complete="import.flowComplete($flow)"
+       flow-progress="import.flowProgress( $flow )"
+       flow-file-progress="import.flowFileProgress( $file, $flow )"
+       flow-file-success="$file.msg = $message; import.flowFileSuccess( $file, $message, $flow )"
+       flow-file-added="import.flowFileAdded( $file, $event, $flow )"
+       flow-files-added="import.flowFilesAdded( $files, $event, $flow )"
+       flow-files-submitted="import.flowFilesSubmitted( $files, $event, $flow )"
+       flow-file-retry="import.flowFileRetry( $file, $flow )"
+       flow-file-error="import.flowFileError( $file, $message, $flow )"
+       flow-error="import.flowError( $file, $message, $flow )"
+       flow-upload-started="import.flowUploadStarted($flow )">
 
     <div class="modal-header" id="importModalHeader">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
@@ -22,18 +30,18 @@
 
     <div class="modal-body">
 
-      <uib-tabset active="state.active">
-        <uib-tab index="0" heading="Step 1. Upload files">
+      <uib-tabset active="import.state.active">
+        <uib-tab index="0" heading="Upload files">
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
                 <div class="row">
                   <div class="col-sm-12">
                     <div class="actions" style="text-align:left">
-                      Click the button below to select the files that will be imported into CEDAR. Accepted file types: caDSR forms (.xml).
+                      Click the button below to select the files that will be imported into CEDAR. Accepted file types:
+                      caDSR forms (.xml).
                       <div style="margin-top: 20px; text-align: center">
                         <div class="btn btn-save" flow-btn ng-disabled="!canInsert()">Select files</div>
-<!--                        <div ng-if="$flow.files.length==0" style="margin-top: 20px">No files selected</div>-->
                         <div ng-if="$flow.files.length > 0" style="margin-top: 20px">
                           <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
                           <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
@@ -126,12 +134,14 @@
 
           <button type="button" ng-click="importModalVisible=false"
                   data-dismiss="modal" aria-label="Cancel"
-                  class="btn done" ng-class="{'btn-save': state.complete, 'btn-clear': !state.complete}" translate>
+                  class="btn done" ng-class="{'btn-save': import.state.complete, 'btn-clear': !import.state.complete}"
+                  translate>
             Cancel
           </button>
 
-          <span ng-if="state.active == 0">
-            <button type="button" ng-disabled="!canSubmit($flow)" ng-click="startUpload($flow)" aria-label="Submit"
+          <span ng-if="import.state.active == 0">
+            <button type="button" ng-disabled="!import.canSubmit($flow)" ng-click="import.startUpload($flow)"
+                    aria-label="Submit"
                     class="btn btn-save" translate>Import
             </button>
           </span>

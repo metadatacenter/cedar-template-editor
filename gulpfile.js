@@ -94,7 +94,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('submissionServerUrl', 'https://submission.' + cedarRestHost))
       .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
       .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
-      .pipe(replace('impexBaseUrl', 'https://impex.' + cedarRestHost))
+      .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });
