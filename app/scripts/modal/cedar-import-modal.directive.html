@@ -3,7 +3,7 @@
   Note that in flow-init we set the chunkSize to less than 1MB because that's the default max size allowed by ningx
   -->
   <div class="modal-content"
-       ng-init="import.init($flow)"
+       ng-init="import.init()"
        flow-init="{target: import.getTarget(),
        testChunks:false,
        forceChunkSize: true,

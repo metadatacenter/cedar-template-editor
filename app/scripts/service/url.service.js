@@ -297,7 +297,7 @@ define([
     };
 
     service.importCadsrForm = function () {
-      return impexService + '/command/import-cadsr-form';
+      return impexService + '/command/import-cadsr-forms';
     };
 
     service.getOntologies = function () {
