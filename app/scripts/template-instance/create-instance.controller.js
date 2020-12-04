@@ -7,22 +7,22 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "TemplateService", "resourceService", "TemplateInstanceService",
-                                      "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
-                                      "ValueRecommenderService", "UIUtilService", "DataManipulationService",
-                                      "CedarUser"];
+    "HeaderService", "TemplateService", "resourceService", "TemplateInstanceService",
+    "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
+    "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
+    "ValueRecommenderService", "UIUtilService", "DataManipulationService",
+    "CedarUser", "UrlService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
-                                    ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser) {
+                                    ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
       AuthorizedBackendService.doCall(
-          TemplateService.getTemplate($routeParams.templateId),
+          TemplateService.getTemplate(UrlService.fixSingleSlashHttps($routeParams.templateId)),
           function (response) {
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
@@ -34,13 +34,12 @@ define([
             $rootScope.documentTitle = $scope.form['schema:name'];
 
             // Initialize value recommender service
-            ValueRecommenderService.init($routeParams.templateId, $scope.form);
+            ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
 
           },
           function (err) {
             console.log('err', err);
-            var message = (err.data.errorKey == 'noReadAccessToArtifact') ? 'Whoa!' : $translate.instant(
-                'SERVER.TEMPLATE.load.error');
+            const message = (err.data.errorKey === 'noReadAccessToArtifact') ? 'Whoa!' : $translate.instant('SERVER.TEMPLATE.load.error');
 
             UIMessageService.acknowledgedExecution(
                 function () {
@@ -61,7 +60,7 @@ define([
 
 // create a copy of the form with the _tmp fields stripped out
     $scope.cleanForm = function () {
-      var copiedForm = jQuery.extend(true, {}, $scope.instance);
+      const copiedForm = jQuery.extend(true, {}, $scope.instance);
       if (copiedForm) {
         DataManipulationService.stripTmps(copiedForm);
       }
@@ -74,7 +73,7 @@ define([
 
 
     $scope.canWrite = function () {
-      var result = !$scope.details || resourceService.canWrite($scope.details);
+      const result = !$scope.details || resourceService.canWrite($scope.details);
       $scope.cannotWrite = !result;
       return result;
     };
@@ -84,7 +83,7 @@ define([
       UIUtilService.setLocked($scope.cannotWrite);
     });
 
-    var getDetails = function (id) {
+    const getDetails = function (id) {
       if (id) {
         resourceService.getResourceDetailFromId(
             id, CONST.resourceType.INSTANCE,
@@ -121,14 +120,14 @@ define([
                   $scope.form = templateResponse.data;
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
-                  var templateId = instanceResponse.data['schema:isBasedOn'];
+                  const templateId = instanceResponse.data['schema:isBasedOn'];
                   ValueRecommenderService.init(templateId, $scope.form);
                   UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
                 function (err) {
                   // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
-                  var message = (err.data.errorKey == 'noReadAccessToArtifact') ? $translate.instant(
+                  const message = (err.data.errorKey === 'noReadAccessToArtifact') ? $translate.instant(
                       'SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
                   UIMessageService.acknowledgedExecution(
                       function () {
@@ -154,7 +153,7 @@ define([
 // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
 
-      var doSave = function (response) {
+      const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
 
@@ -175,7 +174,7 @@ define([
 
       };
 
-      var doUpdate = function (response) {
+      const doUpdate = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
@@ -184,19 +183,18 @@ define([
       };
 
       this.disableSaveButton();
-      var owner = this;
+      const owner = this;
 
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
 
-      if ($scope.instance['@id'] == undefined) {
+      if ($scope.instance['@id'] === undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-        $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
+        $scope.instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
         // Create fields that will store information used by the UI
         $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
-        $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant(
-            "GENERATEDVALUE.instanceDescription");
+        $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant("GENERATEDVALUE.instanceDescription");
         // Make create instance call
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(
@@ -206,7 +204,7 @@ define([
             },
             function (err) {
 
-              if (err.data.errorKey == "noWriteAccessToFolder") {
+              if (err.data.errorKey === "noWriteAccessToFolder") {
                 AuthorizedBackendService.doCall(
                     TemplateInstanceService.saveTemplateInstance(CedarUser.getHomeFolderId(), $scope.instance),
                     function (response) {
@@ -255,7 +253,7 @@ define([
 
     $scope.saveButtonDisabled = false;
 
-    var pageId = CONST.pageId.RUNTIME;
+    const pageId = CONST.pageId.RUNTIME;
     HeaderService.configure(pageId);
 
 // Create empty form object
@@ -281,19 +279,19 @@ define([
     // keep track of validation errors on metadata
     $scope.validationErrors = {};
     $scope.$on('validationError', function (event, args) {
-      var operation = args[0];
-      var title = args[1];
-      var id = args[2];
-      var error = args[3];
-      var key = id;
+      const operation = args[0];
+      const title = args[1];
+      const id = args[2];
+      const error = args[3];
+      const key = id;
 
-      if (operation == 'add') {
+      if (operation === 'add') {
         $scope.validationErrors[error] = $scope.validationErrors[error] || {};
         $scope.validationErrors[error][key] = {};
         $scope.validationErrors[error][key].title = title;
       }
 
-      if (operation == 'remove') {
+      if (operation === 'remove') {
         if ($scope.validationErrors[error] && $scope.validationErrors[error][key]) {
           delete $scope.validationErrors[error][key];
 
@@ -304,12 +302,12 @@ define([
       }
     });
 
-    $scope.resetValidationErrors = function() {
+    $scope.resetValidationErrors = function () {
       $scope.validationErrors = {};
     };
 
     $scope.getValidationHeader = function (key) {
-      if (key != 'undefined') { // Note that here 'undefined' is a string
+      if (key !== 'undefined') { // Note that here 'undefined' is a string
         return $translate.instant('VALIDATION.groupHeader.' + key);
       }
     };
@@ -339,7 +337,7 @@ define([
 //
 
     $scope.isValidationTemplate = function (action) {
-      var result;
+      let result;
       if ($rootScope.documentTitle) {
         result = ValidationService.isValidationTemplate($rootScope.documentTitle, action);
       }
@@ -347,7 +345,7 @@ define([
     };
 
     $scope.doValidation = function () {
-      var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
+      const type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
       }
@@ -362,7 +360,6 @@ define([
 // };
 
   }
-  ;
 
 })
 ;

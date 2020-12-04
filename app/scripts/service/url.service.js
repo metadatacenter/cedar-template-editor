@@ -500,12 +500,17 @@ define([
     };
 
     service.encodeURIComponent = function(s) {
+      s = this.fixSingleSlashHttps(s);
+      return encodeURIComponent(s);
+    }
+
+    service.fixSingleSlashHttps = function(s) {
       const HTTPS1 = 'https:/'
       const HTTPS2 = 'https://'
       if (s.startsWith(HTTPS1) && !s.startsWith(HTTPS2)) {
         s = HTTPS2 + s.substring(HTTPS1.length);
       }
-      return encodeURIComponent(s);
+      return s;
     }
 
     return service;
