@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.5.40",
+  "version": "2.5.41",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
