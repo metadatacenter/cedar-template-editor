@@ -31,7 +31,7 @@
     <div class="modal-body">
 
       <uib-tabset active="import.state.active">
-        <uib-tab index="0" heading="Upload files">
+        <uib-tab index="0" heading="{{'GENERIC.UploadFiles' | translate}}">
           <div class="fileUpload">
             <div class="row">
               <div class="col-sm-5">
@@ -56,8 +56,6 @@
                      flow-drag-leave="style={}"
                      ng-style="style" class="alert" flow-drop>
                   <div class="col-sm-12">
-
-
                     <div ng-if="$flow.files.length==0" class="empty"></div>
                     <div ng-repeat="file in $flow.files">
 
@@ -97,16 +95,93 @@
             <div class="col-sm-5 actions">
               <!--<div style="width:100%;text-align:center;"><span class="btn btn-clear" flow-btn>Select</span></div>-->
             </div>
-            <div class="col-sm-7 actions">
-              <div>
-                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause"
-                        class="btn btn-clear " translate>GENERIC.Pause
-                </button>
-                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume"
-                        class="btn btn-clear " translate>GENERIC.Resume
-                </button>
+<!--            <div class="col-sm-7 actions">-->
+<!--              <div>-->
+<!--                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause"-->
+<!--                        class="btn btn-clear " translate>GENERIC.Pause-->
+<!--                </button>-->
+<!--                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume"-->
+<!--                        class="btn btn-clear " translate>GENERIC.Resume-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+
+        </uib-tab>
+        <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="true">
+          <div class="fileUpload">
+            <div class="row">
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="actions" style="text-align:left">
+                      Click the button below to select the files that will be imported into CEDAR. Accepted file types:
+                      caDSR forms (.xml).
+                      <div style="margin-top: 20px; text-align: center">
+                        <div class="btn btn-save" flow-btn ng-disabled="!canInsert()">Select files</div>
+                        <div ng-if="$flow.files.length > 0" style="margin-top: 20px">
+                          <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
+                          <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-7">
+                <div class="row progress-zone" flow-drag-enter="style={}"
+                     flow-drag-leave="style={}"
+                     ng-style="style" class="alert" flow-drop>
+                  <div class="col-sm-12">
+                    <div ng-if="$flow.files.length==0" class="empty"></div>
+                    <div ng-repeat="file in $flow.files">
+
+                      <div class="row">
+                        <div class="col-sm-11">
+
+                          <form class="form-inline">
+                            <div class="progress">
+                              <div class="progress-bar"
+                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
+                                   style="min-width: 5%; width: {{file.progress()*100}}%;"
+                                   value="{{file.progress()*100}}"
+                                   role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
+                                   aria-valuemax="100">
+                                <strong ng-show="!file.error" class="error">
+                                  {{file.name}} </strong> <strong
+                                  ng-show="file.error">Ooops...</strong>
+                              </div>
+
+                            </div>
+                          </form>
+
+                        </div>
+                        <div class="col-sm-1 clear-item">
+                          <button type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i
+                              class="fa fa-remove"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-5 actions">
+              <!--<div style="width:100%;text-align:center;"><span class="btn btn-clear" flow-btn>Select</span></div>-->
+            </div>
+            <!--            <div class="col-sm-7 actions">-->
+            <!--              <div>-->
+            <!--                <button type="button" ng-click="pauseAll($flow)" ng-disabled="!canPause($flow)" aria-label="Pause"-->
+            <!--                        class="btn btn-clear " translate>GENERIC.Pause-->
+            <!--                </button>-->
+            <!--                <button type="button" ng-click="resumeAll($flow)" ng-disabled="!canResume($flow)" aria-label="Resume"-->
+            <!--                        class="btn btn-clear " translate>GENERIC.Resume-->
+            <!--                </button>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
 
         </uib-tab>
