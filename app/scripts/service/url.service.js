@@ -296,8 +296,12 @@ define([
       return submissionService + '/command/validate-cairr';
     };
 
-    service.importCadsrForm = function () {
+    service.importCadsrForms = function () {
       return impexService + '/command/import-cadsr-forms';
+    };
+
+    service.importCadsrFormsStatus = function () {
+      return impexService + '/command/import-cadsr-forms-status';
     };
 
     service.getOntologies = function () {
