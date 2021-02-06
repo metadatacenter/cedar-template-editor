@@ -300,8 +300,8 @@ define([
       return impexService + '/command/import-cadsr-forms';
     };
 
-    service.importCadsrFormsStatus = function () {
-      return impexService + '/command/import-cadsr-forms-status';
+    service.importCadsrFormsStatus = function (uploadId) {
+      return impexService + '/command/import-cadsr-forms-status?uploadId=' + uploadId;
     };
 
     service.getOntologies = function () {

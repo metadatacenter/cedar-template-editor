@@ -30,7 +30,7 @@
 
     <div class="modal-body">
 
-      <uib-tabset active="import.uploadState.active">
+      <uib-tabset active="import.uploadStatus.active">
         <uib-tab index="0" heading="{{'GENERIC.UploadFiles' | translate}}">
           <div class="fileUpload">
             <div class="row">
@@ -41,14 +41,10 @@
                       Click the button below to select the files that will be imported into CEDAR. Accepted file types:
                       caDSR forms (.xml).
                       <div style="margin-top: 20px; text-align: center">
-                        <div class="btn btn-save" flow-btn ng-disabled="!canInsert()">Select files</div>
-                        <div ng-if="!import.uploadState.submitted && $flow.files.length > 0" style="margin-top: 20px">
+                        <div class="btn btn-save" flow-btn ng-disabled="import.uploadStatus.submitted">Select files</div>
+                        <div ng-if="!import.uploadStatus.submitted && $flow.files.length > 0" style="margin-top: 20px">
                           <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
                           <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
-                        </div>
-                        <div>
-                          <span ng-if="import.uploadState.submitted && !import.uploadState.complete">Uploading and importing files...</span>
-                          <span ng-if="import.uploadState.complete">Import complete</span>
                         </div>
                       </div>
                     </div>
@@ -62,30 +58,39 @@
                   <div class="col-sm-12">
                     <div ng-if="$flow.files.length==0" class="empty"></div>
                     <div ng-repeat="file in $flow.files">
-
                       <div class="row">
                         <div class="col-sm-11">
-
                           <form class="form-inline">
                             <div class="progress">
                               <div class="progress-bar"
-                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error, 'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
+                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error,
+                                   'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
                                    style="min-width: 5%; width: {{file.progress()*100}}%;"
                                    value="{{file.progress()*100}}"
                                    role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
                                    aria-valuemax="100">
-                                <strong ng-show="!file.error" class="error">
-                                  {{file.name}} </strong> <strong
-                                  ng-show="file.error">Ooops...</strong>
+                                <strong ng-class="{ 'msg': !file.error, 'msg-error': file.error}">{{file.name}} </strong>
+                                <strong ng-if="import.uploadStatus.submitted" ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
+                                  {{'(' + import.getImportStatus(file.name).message + ')'}}</strong>
                               </div>
-
                             </div>
                           </form>
-
                         </div>
+
                         <div class="col-sm-1 clear-item">
-                          <button type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i
+                          <!-- Not submitted -->
+                          <button ng-if="!import.uploadStatus.submitted" type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i
                               class="fa fa-remove"></i></button>
+                          <!-- Uploading or Importing -->
+                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.UPLOAD_COMPLETE ||
+                          import.getImportStatus(file.name) == import.importFileStatus.UPLOADING ||
+                           import.getImportStatus(file.name) == import.importFileStatus.IMPORTING">
+                            <i class="fa fa-spinner fa-spin"></i>
+                          </div>
+                          <!-- Import Complete -->
+                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.IMPORT_COMPLETE">
+                            <i class="fa fa-check"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -150,19 +155,19 @@
     <div class="modal-footer actions">
       <div style="display: flex;justify-content:space-between;align-items: center;">
 <!--        <div style="font-weight:bold;display:flex;justify-content:center;width:100%">-->
-<!--            <span ng-if="import.uploadState.submitted && !import.uploadState.complete">Uploading and importing files...</span>-->
-<!--            <span ng-if="import.uploadState.complete">Import complete</span>-->
+<!--            <span ng-if="import.uploadStatus.submitted && !import.uploadStatus.complete">Uploading and importing files...</span>-->
+<!--            <span ng-if="import.uploadStatus.complete">Import complete</span>-->
 <!--        </div>-->
         <div class="clear-save" style="width:100%">
 
           <button type="button" ng-click="importModalVisible=false"
                   data-dismiss="modal" aria-label="Cancel"
-                  class="btn done" ng-class="{'btn-save': import.uploadState.complete, 'btn-clear': !import.uploadState.complete}"
+                  class="btn done" ng-class="{'btn-save': import.uploadStatus.complete, 'btn-clear': !import.uploadStatus.complete}"
                   translate>
             Cancel
           </button>
 
-          <span ng-if="import.uploadState.active == 0">
+          <span ng-if="import.uploadStatus.active == 0">
             <button type="button" ng-disabled="!import.canSubmit($flow)" ng-click="import.startUpload($flow)"
                     aria-label="Import"
                     class="btn btn-save" translate>Import
