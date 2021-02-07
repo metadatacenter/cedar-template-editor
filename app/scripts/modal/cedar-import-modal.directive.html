@@ -46,7 +46,7 @@
                           <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
                         </div>
                         <div ng-if="import.isImportComplete()" style="margin-top: 20px">
-                          <span>Import completed. Click on the 'Report' tab for details</span>
+                          <span>Import complete. Click on the 'Report' tab for details</span>
                         </div>
                       </div>
                     </div>
@@ -58,7 +58,7 @@
                      flow-drag-leave="style={}"
                      ng-style="style" class="alert" flow-drop>
                   <div class="col-sm-12">
-                    <div ng-if="$flow.files.length==0" class="empty"></div>
+                    <div ng-if="$flow.files.length==0" class="empty"><p class="msg">No files selected</p></div>
                     <div ng-repeat="file in $flow.files">
                       <div class="row">
                         <div class="col-sm-11">
