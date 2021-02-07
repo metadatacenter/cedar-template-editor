@@ -59,26 +59,18 @@ define([
           /**
            * Public functions
            */
-          vm.init = init;
           vm.getImportUrl = getImportUrl;
           vm.startUpload = startUpload;
-          vm.canSubmit = canSubmit;
           vm.getImportStatus = getImportStatus;
+          vm.isImportComplete = isImportComplete;
+          vm.resetModal = resetModal;
 
           /**
            * Function definitions
            */
-          function init() {
-            vm.showValidation = false;
-            vm.validationMessages = [];
-          };
 
           function getImportUrl() {
             return UrlService.importCadsrForms();
-          };
-
-          function canSubmit(flow) {
-            return true;
           };
 
           let importRefreshInterval; // Used to stop refreshing the status once the import is complete
@@ -108,7 +100,6 @@ define([
           function refreshImportStatus(files, uploadId) {
 
             if (vm.uploadStatus.complete) {
-
               return AuthorizedBackendService.doCall(
                   ImportService.getImportStatus(uploadId),
                   function (response) {
@@ -163,6 +154,22 @@ define([
             return true;
           };
 
+          // If the import process is complete, resets the modal. If the process is not complete, the user can reopen
+          // the modal and check the status.
+          function resetModal(flow) {
+            if (isImportComplete()) {
+              flow.cancel();
+              vm.uploadStatus = {
+                'submitted': false,
+                'paused'   : false,
+                'complete' : false,
+                'status'   : [],
+                'active'   : 0
+              };
+              vm.importStatus = {};
+            }
+          };
+
           vm.flowComplete = function ($flow) {
             vm.uploadStatus.status.unshift({'label': 'Upload Complete', 'file': ''});
             vm.uploadStatus.complete = true;
@@ -200,18 +207,6 @@ define([
             vm.uploadStatus.submitted = true;
             vm.uploadStatus.status.unshift({'label': 'Upload Started', 'file': ''});
           };
-
-          // vm.getStatus = function () {
-          //   let substring = 'Error';
-          //   if (vm.uploadStatus.status.length > 0) {
-          //     for (let i = 0; i < vm.uploadStatus.status.length; i++) {
-          //       console.log(vm.uploadStatus.status[i].label);
-          //       if (vm.uploadStatus.status[i].label.indexOf(substring) !== -1) {
-          //         return vm.uploadStatus.status[i].label;
-          //       }
-          //     }
-          //   }
-          // };
 
           // modal open or closed
           $scope.$on('importModalVisible', function (event, params) {

@@ -3,7 +3,6 @@
   Note that in flow-init we set the chunkSize to less than 1MB because that's the default max size allowed by ningx
   -->
   <div class="modal-content"
-       ng-init="import.init()"
        flow-init="{target: import.getImportUrl(),
        testChunks:false,
        forceChunkSize: true,
@@ -45,6 +44,9 @@
                         <div ng-if="!import.uploadStatus.submitted && $flow.files.length > 0" style="margin-top: 20px">
                           <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
                           <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
+                        </div>
+                        <div ng-if="import.isImportComplete()" style="margin-top: 20px">
+                          <span>Import completed. Click on the 'Report' tab for details</span>
                         </div>
                       </div>
                     </div>
@@ -101,7 +103,7 @@
           </div>
 
         </uib-tab>
-        <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="false">
+        <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="!import.isImportComplete()">
           <div class="report">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur efficitur placerat. Vivamus
               in lacus mattis, vestibulum risus nec, aliquet eros. Aenean sagittis, odio maximus semper lacinia, nibh
@@ -154,23 +156,20 @@
     <!-- footer closes the dialog -->
     <div class="modal-footer actions">
       <div style="display: flex;justify-content:space-between;align-items: center;">
-<!--        <div style="font-weight:bold;display:flex;justify-content:center;width:100%">-->
-<!--            <span ng-if="import.uploadStatus.submitted && !import.uploadStatus.complete">Uploading and importing files...</span>-->
-<!--            <span ng-if="import.uploadStatus.complete">Import complete</span>-->
-<!--        </div>-->
-        <div class="clear-save" style="width:100%">
 
-          <button type="button" ng-click="importModalVisible=false"
+        <div class="clear-save" style="width:100%">
+          <button type="button" ng-click="import.resetModal($flow)"
                   data-dismiss="modal" aria-label="Cancel"
-                  class="btn done" ng-class="{'btn-save': import.uploadStatus.complete, 'btn-clear': !import.uploadStatus.complete}"
+                  class="btn done btn-clear"
                   translate>
-            Cancel
+            Close
           </button>
 
-          <span ng-if="import.uploadStatus.active == 0">
-            <button type="button" ng-disabled="!import.canSubmit($flow)" ng-click="import.startUpload($flow)"
+          <span ng-if="!import.uploadStatus.submitted">
+            <button type="button" ng-click="import.startUpload($flow)"
                     aria-label="Import"
-                    class="btn btn-save" translate>Import
+                    class="btn btn-save" translate>
+              Import
             </button>
           </span>
 
