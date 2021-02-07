@@ -166,7 +166,7 @@
           </button>
 
           <span ng-if="!import.uploadStatus.submitted">
-            <button type="button" ng-click="import.startUpload($flow)"
+            <button type="button" ng-click="import.startUpload($flow)" ng-disabled="$flow.files.length == 0"
                     aria-label="Import"
                     class="btn btn-save" translate>
               Import
