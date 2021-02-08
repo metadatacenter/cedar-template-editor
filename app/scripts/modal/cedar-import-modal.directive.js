@@ -43,11 +43,13 @@ define([
 
           vm.importFileStatus = {
             UPLOADING      : {"value": "uploading", "message": "Uploading"},
-            UPLOAD_COMPLETE: {"value": "uploaded", "message": "In queue to be imported"},
+            UPLOAD_COMPLETE: {"value": "uploaded", "message": "Queued"},
             IMPORTING      : {"value": "importing", "message": "Importing"},
             IMPORT_COMPLETE: {"value": "complete", "message": "Complete"},
             ERROR          : {"value": "error", "message": "Error"},
           };
+
+          vm.importFileReport = {};
 
           // Statuses used in the Impex Server. Update if the Api changes
           const importFileStatusRestApi = {
@@ -63,6 +65,7 @@ define([
           vm.startUpload = startUpload;
           vm.getImportStatus = getImportStatus;
           vm.isImportComplete = isImportComplete;
+          vm.getImportFileReport = getImportFileReport;
           vm.resetModal = resetModal;
 
           /**
@@ -104,11 +107,12 @@ define([
                   ImportService.getImportStatus(uploadId),
                   function (response) {
                     vm.importStatus = {};
+                    vm.importFileReport = {};
                     if (response.data.filesImportStatus) {
                       let keys = Object.keys(response.data.filesImportStatus);
                       for (const key of keys) {
+                        vm.importFileReport[key] = response.data.filesImportStatus[key].report;
                         let status = response.data.filesImportStatus[key].importStatus;
-                        vm.importStatus[key] = "";
                         if (status == importFileStatusRestApi.PENDING) {
                           // this 'if' shouldn't have any effect since this status was already set by 'flowFileSuccess'
                           vm.importStatus[key] = vm.importFileStatus.UPLOAD_COMPLETE;
@@ -152,6 +156,12 @@ define([
               }
             }
             return true;
+          };
+
+          function getImportFileReport(fileName) {
+            if (vm.importFileReport[fileName]) {
+              return vm.importFileReport[fileName];
+            }
           };
 
           // If the import process is complete, resets the modal. If the process is not complete, the user can reopen

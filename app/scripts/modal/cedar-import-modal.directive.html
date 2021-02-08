@@ -101,43 +101,13 @@
               </div>
             </div>
           </div>
-
         </uib-tab>
         <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="!import.isImportComplete()">
-          <div class="report">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur efficitur placerat. Vivamus
-              in lacus mattis, vestibulum risus nec, aliquet eros. Aenean sagittis, odio maximus semper lacinia, nibh
-              dui gravida neque, eu lacinia ligula nunc eget erat. Aenean a neque dolor. Duis dignissim quam nibh, quis
-              condimentum sapien feugiat id. Sed maximus elit ac mauris placerat, sit amet egestas sem tempor. Maecenas
-              accumsan turpis urna, ut imperdiet justo imperdiet et. Sed tincidunt est vitae tellus commodo, vel mattis
-              neque faucibus.
-
-              Curabitur consequat posuere vestibulum. Nunc rutrum congue quam at convallis. Maecenas non enim
-              sollicitudin, lobortis nisl mattis, aliquam ligula. Donec dictum non ligula ultrices tempor. Sed rhoncus
-              sollicitudin arcu at volutpat. Nam at sapien accumsan, pellentesque erat id, luctus massa. Aliquam erat
-              volutpat.
-
-              Praesent faucibus diam sit amet mi faucibus vulputate. Nulla luctus tortor eget ante consequat, ac
-              consectetur dui efficitur. Integer nec placerat enim, sed maximus sem. Nunc auctor faucibus elit, eget
-              auctor tortor. Integer id elementum velit. Mauris vel justo sem. Ut placerat diam sit amet ante efficitur,
-              in venenatis diam mollis. Donec feugiat purus nec justo eleifend euismod. Nulla facilisi. Sed a dolor ut
-              ante pretium molestie ut non sem.
-
-              Ut ut tellus id erat aliquam mattis nec in sem. Proin fermentum justo et risus ullamcorper pretium. Etiam
-              vehicula augue eu iaculis feugiat. Mauris vitae porta eros. Mauris pharetra molestie elit eu bibendum. Nam
-              justo nisi, finibus non nisl vitae, cursus varius ex. Aliquam tristique urna odio, sit amet placerat dolor
-              pulvinar a. Etiam nibh metus, dapibus nec vestibulum vitae, gravida eget magna. Sed suscipit commodo dolor
-              eget finibus. Donec eros mi, venenatis a ligula at, malesuada interdum tellus.
-
-              Praesent pellentesque tristique odio at lobortis. Sed sed semper sem. Nulla facilisi. In hac habitasse
-              platea dictumst. Proin cursus, tortor eu interdum iaculis, odio ex vulputate ipsum, sed ullamcorper dui
-              nibh in arcu. Curabitur lorem sem, ultricies ac neque placerat, consectetur viverra risus. Phasellus et
-              elit sodales, aliquam velit et, euismod dolor. Donec a felis id lectus tempor scelerisque non sit amet
-              velit. Nunc tempor ligula in tellus fringilla volutpat. Ut elementum sapien ut purus viverra, ut porta
-              nisi laoreet. Etiam eget sem et lectus semper placerat. Phasellus ligula nulla, sagittis in congue ut,
-              lobortis et nulla. Pellentesque at tincidunt odio.</p>
-          </div>
-
+          <uib-tabset class="nested-tabs">
+            <uib-tab index="file.name" ng-repeat="file in $flow.files" heading="{{file.name}}">
+              <div class="report"><p>{{import.getImportFileReport(file.name)}}</p></div>
+            </uib-tab>
+          </uib-tabset>
         </uib-tab>
       </uib-tabset>
 

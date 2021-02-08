@@ -8002,11 +8002,36 @@ table.apiKey {
           }
         }
 
-        .tab-content .tab-pane .report {
-          padding-top: 20px;
+        .nested-tabs {
+          margin-top: 12px;
+        }
+
+        .nested-tabs .uib-tab a {
+          border-style: solid;
+          border-bottom-style: solid;
+          border-bottom-width: 1px;
+          color: @primary-text;
+          font-weight: normal;
+          padding: 2px 10px;
+          //background-color: @gray-lighter;
+        }
+
+        .nested-tabs .uib-tab.active a {
+          font-weight: bold;
+        }
+
+        .nested-tabs .report {
+          border-left-style: solid;
+          border-left-width: 1px;
+          border-right-style: solid;
+          border-right-width: 1px;
+          border-color: @gray-lighter;
+          padding: 20px;
           padding-bottom: 40px;
+          height: 300px;
           max-height: 300px;
           overflow-y: auto;
+          //background-color: #F8F8F8;
         }
       }
     }
