@@ -72,14 +72,18 @@ define([
            * Function definitions
            */
 
-          function getImportUrl() {
-            return UrlService.importCadsrForms();
+          function getImportUrl(folderId) {
+            return UrlService.importCadsrForms(folderId);
           };
 
           let importRefreshInterval; // Used to stop refreshing the status once the import is complete
 
           function startUpload(flow) {
-            flow.opts.target = vm.getImportUrl();
+            flow.opts.target = vm.getImportUrl(vm.importFolderId);
+
+            console.log("folderid", vm.importFolderId);
+            console.log("target", flow.opts.target);
+
             flow.opts.query = {
               uploadId     : Math.random().toString().replace('.', ''),
               numberOfFiles: flow.files.length
@@ -225,7 +229,8 @@ define([
 
         return {
           bindToController: {
-            modalVisible: '='
+            modalVisible: '=',
+            importFolderId: '='
           },
           controller      : cedarImportModalController,
           controllerAs    : 'import',

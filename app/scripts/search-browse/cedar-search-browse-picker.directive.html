@@ -965,7 +965,10 @@
 
 <!-- import modal -->
 <section>
-  <cedar-import-modal cedar-modal-show modal-visible="dc.importModalVisible" class="modal fade"
+  <cedar-import-modal cedar-modal-show
+                      modal-visible="dc.importModalVisible"
+                      import-folder-id="dc.currentFolderId"
+                      class="modal fade"
               id="import-modal" tabindex="-1" role="dialog" aria-labelledby="importModalHeader"
               data-keyboard="true" data-backdrop="static">
   </cedar-import-modal>

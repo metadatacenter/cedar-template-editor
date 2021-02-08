@@ -296,8 +296,8 @@ define([
       return submissionService + '/command/validate-cairr';
     };
 
-    service.importCadsrForms = function () {
-      return impexService + '/command/import-cadsr-forms';
+    service.importCadsrForms = function (folderId) {
+      return impexService + '/command/import-cadsr-forms?folderId=' + folderId;
     };
 
     service.importCadsrFormsStatus = function (uploadId) {
