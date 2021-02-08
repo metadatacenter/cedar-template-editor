@@ -81,9 +81,6 @@ define([
           function startUpload(flow) {
             flow.opts.target = vm.getImportUrl(vm.importFolderId);
 
-            console.log("folderid", vm.importFolderId);
-            console.log("target", flow.opts.target);
-
             flow.opts.query = {
               uploadId     : Math.random().toString().replace('.', ''),
               numberOfFiles: flow.files.length
@@ -131,6 +128,7 @@ define([
                       // If the import process is complete for all the files, stop refreshing the import status
                       if (isImportComplete()) {
                         clearInterval(importRefreshInterval);
+                        vm.refreshWorkspace();
                       }
                     }
                   },
@@ -230,7 +228,8 @@ define([
         return {
           bindToController: {
             modalVisible: '=',
-            importFolderId: '='
+            importFolderId: '=',
+            refreshWorkspace: '='
           },
           controller      : cedarImportModalController,
           controllerAs    : 'import',
