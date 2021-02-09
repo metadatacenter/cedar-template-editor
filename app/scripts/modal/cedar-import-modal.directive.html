@@ -28,74 +28,74 @@
     </div>
 
     <div class="modal-body">
-
-      <div class="fileUpload">
-        <div class="row">
-          <div class="col-sm-5">
+      <uib-tabset active="import.uploadStatus.active">
+        <uib-tab index="0" heading="{{'GENERIC.UploadFiles' | translate}}">
+          <div class="fileUpload">
             <div class="row">
-              <div class="col-sm-12">
-                <div class="actions" style="text-align:left">
-                  Click the button below to select the files that will be imported into CEDAR. Accepted file types:
-                  caDSR forms (.xml).
-                  <div style="margin-top: 20px; text-align: center">
-                    <div class="btn btn-save" flow-btn ng-disabled="import.uploadStatus.submitted">Select files</div>
-                    <div ng-if="!import.uploadStatus.submitted && $flow.files.length > 0" style="margin-top: 20px">
-                      <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
-                      <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
-                    </div>
-                    <div ng-if="import.isImportSuccessful()" style="margin-top: 20px">
-                      <span>All files were successfully imported and saved to the current folder</span>
+              <div class="col-sm-5">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="actions" style="text-align:left">
+                      Click the button below to select the files that will be imported into CEDAR. Accepted file types:
+                      caDSR forms (.xml).
+                      <div style="margin-top: 20px; text-align: center">
+                        <div class="btn btn-save" flow-btn ng-disabled="import.uploadStatus.submitted">Select files
+                        </div>
+                        <div ng-if="!import.uploadStatus.submitted && $flow.files.length > 0" style="margin-top: 20px">
+                          <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
+                          <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
+                        </div>
+                        <div ng-if="import.isImportComplete()" style="margin-top: 20px">
+                          <span>Import complete. <br/>Click on the 'Report' tab for details</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="col-sm-7">
-            <div class="row progress-zone" flow-drag-enter="style={}"
-                 flow-drag-leave="style={}"
-                 ng-style="style" class="alert" flow-drop>
-              <div class="col-sm-12">
-                <div ng-if="$flow.files.length==0" class="empty"><p class="msg">No files selected</p></div>
-                <div ng-repeat="file in $flow.files">
-                  <div class="row">
-                    <div class="col-sm-11">
-                      <form class="form-inline">
-                        <div class="progress">
-                          <div class="progress-bar"
-                               ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error,
+              <div class="col-sm-7">
+                <div class="row progress-zone" flow-drag-enter="style={}"
+                     flow-drag-leave="style={}"
+                     ng-style="style" class="alert" flow-drop>
+                  <div class="col-sm-12">
+                    <div ng-if="$flow.files.length==0" class="empty"><p class="msg">No files selected</p></div>
+                    <div ng-repeat="file in $flow.files">
+                      <div class="row">
+                        <div class="col-sm-11">
+                          <form class="form-inline">
+                            <div class="progress">
+                              <div class="progress-bar"
+                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error,
                                    'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
-                               style="min-width: 5%; width: {{file.progress()*100}}%;"
-                               value="{{file.progress()*100}}"
-                               role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
-                               aria-valuemax="100">
-
-                            <span ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
-                              <strong>{{file.name}}</strong>
-                              <span ng-if="import.getImportStatus(file.name)">{{'(' + import.getImportStatus(file.name).message + ')'}}</span>
-                            </span>
-
-                          </div>
+                                   style="min-width: 5%; width: {{file.progress()*100}}%;"
+                                   value="{{file.progress()*100}}"
+                                   role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
+                                   aria-valuemax="100">
+                                 <span ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
+                                   <strong>{{file.name}}</strong>
+                                   <span ng-if="import.getImportStatus(file.name)">{{'(' + import.getImportStatus(file.name).message + ')'}}</span>
+                                 </span>
+                              </div>
+                            </div>
+                          </form>
                         </div>
-                      </form>
-                    </div>
-                    <div class="col-sm-1 clear-item">
-                      <!-- Not submitted -->
-                      <button ng-if="!import.uploadStatus.submitted" type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i
-                          class="fa fa-remove"></i></button>
-                      <!-- Uploading or Importing -->
-                      <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.UPLOAD_COMPLETE ||
+
+                        <div class="col-sm-1 clear-item">
+                          <!-- Not submitted -->
+                          <button ng-if="!import.uploadStatus.submitted" type="button"
+                                  ng-click="removeItem($flow, file)" aria-label="Close"><i
+                              class="fa fa-remove"></i></button>
+                          <!-- Uploading or Importing -->
+                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.UPLOAD_COMPLETE ||
                           import.getImportStatus(file.name) == import.importFileStatus.UPLOADING ||
                            import.getImportStatus(file.name) == import.importFileStatus.IMPORTING">
-                        <i class="fa fa-spinner fa-spin"></i>
-                      </div>
-                      <!-- Import Complete -->
-                      <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.IMPORT_COMPLETE">
-                        <i class="fa fa-check"></i>
-                      </div>
-                      <!-- Error -->
-                      <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.ERROR">
-                        <i class="fa fa-exclamation-circle"></i>
+                            <i class="fa fa-spinner fa-spin"></i>
+                          </div>
+                          <!-- Import Complete -->
+                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.IMPORT_COMPLETE">
+                            <i class="fa fa-check"></i>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -103,90 +103,15 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-<!-- The following code can be used to add tabs to the dialog -->
-<!--      <uib-tabset active="import.uploadStatus.active">-->
-<!--        <uib-tab index="0" heading="{{'GENERIC.UploadFiles' | translate}}">-->
-<!--          <div class="fileUpload">-->
-<!--            <div class="row">-->
-<!--              <div class="col-sm-5">-->
-<!--                <div class="row">-->
-<!--                  <div class="col-sm-12">-->
-<!--                    <div class="actions" style="text-align:left">-->
-<!--                      Click the button below to select the files that will be imported into CEDAR. Accepted file types:-->
-<!--                      caDSR forms (.xml).-->
-<!--                      <div style="margin-top: 20px; text-align: center">-->
-<!--                        <div class="btn btn-save" flow-btn ng-disabled="import.uploadStatus.submitted">Select files</div>-->
-<!--                        <div ng-if="!import.uploadStatus.submitted && $flow.files.length > 0" style="margin-top: 20px">-->
-<!--                          <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>-->
-<!--                          <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>-->
-<!--                        </div>-->
-<!--                        <div ng-if="import.isImportComplete()" style="margin-top: 20px">-->
-<!--                          <span>Import complete. <br/>Click on the 'Report' tab for details</span>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="col-sm-7">-->
-<!--                <div class="row progress-zone" flow-drag-enter="style={}"-->
-<!--                     flow-drag-leave="style={}"-->
-<!--                     ng-style="style" class="alert" flow-drop>-->
-<!--                  <div class="col-sm-12">-->
-<!--                    <div ng-if="$flow.files.length==0" class="empty"><p class="msg">No files selected</p></div>-->
-<!--                    <div ng-repeat="file in $flow.files">-->
-<!--                      <div class="row">-->
-<!--                        <div class="col-sm-11">-->
-<!--                          <form class="form-inline">-->
-<!--                            <div class="progress">-->
-<!--                              <div class="progress-bar"-->
-<!--                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error,-->
-<!--                                   'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"-->
-<!--                                   style="min-width: 5%; width: {{file.progress()*100}}%;"-->
-<!--                                   value="{{file.progress()*100}}"-->
-<!--                                   role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"-->
-<!--                                   aria-valuemax="100">-->
-<!--                                <strong ng-class="{ 'msg': !file.error, 'msg-error': file.error}">{{file.name}} </strong>-->
-<!--                                <strong ng-if="import.uploadStatus.submitted" ng-class="{ 'msg': !file.error, 'msg-error': file.error}">-->
-<!--                                  {{'(' + import.getImportStatus(file.name).message + ')'}}</strong>-->
-<!--                              </div>-->
-<!--                            </div>-->
-<!--                          </form>-->
-<!--                        </div>-->
-
-<!--                        <div class="col-sm-1 clear-item">-->
-<!--                          &lt;!&ndash; Not submitted &ndash;&gt;-->
-<!--                          <button ng-if="!import.uploadStatus.submitted" type="button" ng-click="removeItem($flow, file)" aria-label="Close"><i-->
-<!--                              class="fa fa-remove"></i></button>-->
-<!--                          &lt;!&ndash; Uploading or Importing &ndash;&gt;-->
-<!--                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.UPLOAD_COMPLETE ||-->
-<!--                          import.getImportStatus(file.name) == import.importFileStatus.UPLOADING ||-->
-<!--                           import.getImportStatus(file.name) == import.importFileStatus.IMPORTING">-->
-<!--                            <i class="fa fa-spinner fa-spin"></i>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; Import Complete &ndash;&gt;-->
-<!--                          <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.IMPORT_COMPLETE">-->
-<!--                            <i class="fa fa-check"></i>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </uib-tab>-->
-<!--        <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="!import.isImportComplete()">-->
-<!--          <uib-tabset class="nested-tabs">-->
-<!--            <uib-tab index="file.name" ng-repeat="file in $flow.files" heading="{{file.name}}">-->
-<!--              <div class="report"><p>{{import.getImportFileReport(file.name)}}</p></div>-->
-<!--            </uib-tab>-->
-<!--          </uib-tabset>-->
-<!--        </uib-tab>-->
-<!--      </uib-tabset>-->
+        </uib-tab>
+        <uib-tab index="1" heading="{{'GENERIC.Report' | translate}}" disable="!import.isImportComplete()">
+          <uib-tabset class="nested-tabs">
+            <uib-tab index="file.name" ng-repeat="file in $flow.files" heading="{{file.name}}">
+              <div class="report"><p>{{import.getImportFileReport(file.name)}}</p></div>
+            </uib-tab>
+          </uib-tabset>
+        </uib-tab>
+      </uib-tabset>
 
     </div>
 
@@ -205,8 +130,13 @@
       <div style="display: flex;justify-content:space-between;align-items: center;">
 
         <div class="clear-save" style="width:100%">
-          <button type="button" ng-click="import.resetModal($flow)"
-                  data-dismiss="modal" aria-label="Cancel"
+
+          <button ng-if="import.isImportComplete()" type="button" ng-click="import.resetModal($flow)" class="btn done btn-clear" translate>
+            Reset
+          </button>
+
+          <button type="button"
+                  data-dismiss="modal" aria-label="Close"
                   class="btn done btn-clear"
                   translate>
             Close

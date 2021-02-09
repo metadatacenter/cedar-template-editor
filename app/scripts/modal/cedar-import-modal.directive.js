@@ -49,7 +49,7 @@ define([
             ERROR          : {"value": "error", "message": "Error"},
           };
 
-          //vm.importFileReport = {};
+          vm.importFileReport = {};
 
           // Statuses used in the Impex Server. Update if the Api changes
           const importFileStatusRestApi = {
@@ -67,7 +67,7 @@ define([
           vm.getImportStatus = getImportStatus;
           vm.isImportComplete = isImportComplete;
           vm.isImportSuccessful = isImportSuccessful;
-          //vm.getImportFileReport = getImportFileReport;
+          vm.getImportFileReport = getImportFileReport;
           vm.resetModal = resetModal;
 
           /**
@@ -108,12 +108,12 @@ define([
               return AuthorizedBackendService.doCall(
                   ImportService.getImportStatus(uploadId),
                   function (response) {
-                    //vm.importFileReport = {};
+                    vm.importFileReport = {};
                     vm.importStatus = {};
                     if (response.data.filesImportStatus) {
                       let keys = Object.keys(response.data.filesImportStatus);
                       for (const key of keys) {
-                        //vm.importFileReport[key] = response.data.filesImportStatus[key].report;
+                        vm.importFileReport[key] = response.data.filesImportStatus[key].report;
                         let status = response.data.filesImportStatus[key].importStatus;
                         if (status == importFileStatusRestApi.PENDING) {
                           // this 'if' shouldn't have any effect since this status was already set by 'flowFileSuccess'
@@ -176,16 +176,17 @@ define([
             return true;
           };
 
-          // function getImportFileReport(fileName) {
-          //   if (vm.importFileReport[fileName]) {
-          //     return vm.importFileReport[fileName];
-          //   }
-          // };
+          function getImportFileReport(fileName) {
+            if (vm.importFileReport[fileName]) {
+              return vm.importFileReport[fileName];
+            }
+          };
 
           // If the import process is complete, resets the modal. If the process is not complete, the user can reopen
           // the modal and check the status.
           function resetModal(flow) {
-            if (isImportComplete()) {
+            console.log('resetting')
+            //if (isImportComplete()) {
               flow.cancel();
               vm.uploadStatus = {
                 'submitted': false,
@@ -195,7 +196,8 @@ define([
                 'active'   : 0
               };
               vm.importStatus = {};
-            }
+              vm.importFileReport = {};
+            //}
           };
 
           vm.flowComplete = function ($flow) {
