@@ -55,7 +55,8 @@ define([
           const importFileStatusRestApi = {
             PENDING    : "PENDING",
             IN_PROGRESS: "IN_PROGRESS",
-            COMPLETE   : "COMPLETE"
+            COMPLETE   : "COMPLETE",
+            ERROR   : "ERROR"
           };
 
           /**
@@ -65,6 +66,7 @@ define([
           vm.startUpload = startUpload;
           vm.getImportStatus = getImportStatus;
           vm.isImportComplete = isImportComplete;
+          vm.isImportSuccessful = isImportSuccessful;
           //vm.getImportFileReport = getImportFileReport;
           vm.resetModal = resetModal;
 
@@ -91,7 +93,7 @@ define([
 
             // Initialize status
             for (const file of flow.files) {
-              vm.importStatus[file.file.name] = vm.importFileStatus.UPLOADING;
+              vm.importStatus[file.name] = vm.importFileStatus.UPLOADING;
             }
 
             refreshImportStatus(flow.files, flow.opts.query.uploadId);
@@ -102,13 +104,12 @@ define([
           };
 
           function refreshImportStatus(files, uploadId) {
-
             if (vm.uploadStatus.complete) {
               return AuthorizedBackendService.doCall(
                   ImportService.getImportStatus(uploadId),
                   function (response) {
-                    vm.importStatus = {};
                     //vm.importFileReport = {};
+                    vm.importStatus = {};
                     if (response.data.filesImportStatus) {
                       let keys = Object.keys(response.data.filesImportStatus);
                       for (const key of keys) {
@@ -121,7 +122,10 @@ define([
                           vm.importStatus[key] = vm.importFileStatus.IMPORTING;
                         } else if (status == importFileStatusRestApi.COMPLETE) {
                           vm.importStatus[key] = vm.importFileStatus.IMPORT_COMPLETE;
-                        } else {
+                        } else if (status == importFileStatusRestApi.ERROR) {
+                          vm.importStatus[key] = vm.importFileStatus.ERROR;
+                        }
+                        else {
                           console.error('Unknown import status: ' + status);
                         }
                       }
@@ -148,6 +152,18 @@ define([
           };
 
           // Checks if the import process is complete or errored
+          function isImportSuccessful() {
+            if (!vm.uploadStatus.complete) { // Upload is not complete yet, so import is not complete either
+              return false;
+            }
+            for (const key of Object.keys(vm.importStatus)) {
+              if (vm.importStatus[key] != vm.importFileStatus.IMPORT_COMPLETE) {
+                return false;
+              }
+            }
+            return true;
+          };
+
           function isImportComplete() {
             if (!vm.uploadStatus.complete) { // Upload is not complete yet, so import is not complete either
               return false;

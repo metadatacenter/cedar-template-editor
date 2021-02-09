@@ -43,8 +43,8 @@
                       <span ng-if="$flow.files.length == 1">{{$flow.files.length}} file selected</span>
                       <span ng-if="$flow.files.length > 1">{{$flow.files.length}} files selected</span>
                     </div>
-                    <div ng-if="import.isImportComplete()" style="margin-top: 20px">
-                      <span>Import complete</span>
+                    <div ng-if="import.isImportSuccessful()" style="margin-top: 20px">
+                      <span>All files were successfully imported and saved to the current folder</span>
                     </div>
                   </div>
                 </div>
@@ -69,9 +69,12 @@
                                value="{{file.progress()*100}}"
                                role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
                                aria-valuemax="100">
-                            <strong ng-class="{ 'msg': !file.error, 'msg-error': file.error}">{{file.name}} </strong>
-                            <strong ng-if="import.uploadStatus.submitted" ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
-                              {{'(' + import.getImportStatus(file.name).message + ')'}}</strong>
+
+                            <span ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
+                              <strong>{{file.name}}</strong>
+                              <span ng-if="import.getImportStatus(file.name)">{{'(' + import.getImportStatus(file.name).message + ')'}}</span>
+                            </span>
+
                           </div>
                         </div>
                       </form>
@@ -89,6 +92,10 @@
                       <!-- Import Complete -->
                       <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.IMPORT_COMPLETE">
                         <i class="fa fa-check"></i>
+                      </div>
+                      <!-- Error -->
+                      <div ng-if="import.getImportStatus(file.name) == import.importFileStatus.ERROR">
+                        <i class="fa fa-exclamation-circle"></i>
                       </div>
                     </div>
                   </div>
