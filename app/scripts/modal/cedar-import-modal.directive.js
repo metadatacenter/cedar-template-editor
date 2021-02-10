@@ -67,6 +67,7 @@ define([
           vm.getImportStatus = getImportStatus;
           vm.isImportComplete = isImportComplete;
           vm.isImportSuccessful = isImportSuccessful;
+          vm.importFileErrored = importFileErrored;
           vm.getImportFileReport = getImportFileReport;
           vm.resetModal = resetModal;
 
@@ -176,6 +177,15 @@ define([
             return true;
           };
 
+          function importFileErrored(file) {
+            if (file.error || getImportStatus(file.name) == vm.importFileStatus.ERROR) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          }
+
           function getImportFileReport(fileName) {
             if (vm.importFileReport[fileName]) {
               return vm.importFileReport[fileName];
@@ -185,7 +195,6 @@ define([
           // If the import process is complete, resets the modal. If the process is not complete, the user can reopen
           // the modal and check the status.
           function resetModal(flow) {
-            console.log('resetting')
             //if (isImportComplete()) {
               flow.cancel();
               vm.uploadStatus = {

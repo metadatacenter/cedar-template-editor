@@ -65,13 +65,13 @@
                           <form class="form-inline">
                             <div class="progress">
                               <div class="progress-bar"
-                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !file.error,
-                                   'progress-bar-danger': file.error, 'progress-bar-warning': file.paused}"
+                                   ng-class="{'progress-bar-success active': (file.progress()*100 <= 100) && !import.importFileErrored(file),
+                                   'progress-bar-danger': import.importFileErrored(file), 'progress-bar-warning': file.paused}"
                                    style="min-width: 5%; width: {{file.progress()*100}}%;"
                                    value="{{file.progress()*100}}"
                                    role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
                                    aria-valuemax="100">
-                                 <span ng-class="{ 'msg': !file.error, 'msg-error': file.error}">
+                                 <span ng-class="{ 'msg': !import.importFileErrored(file), 'msg-error': import.importFileErrored(file)}">
                                    <strong>{{file.name}}</strong>
                                    <span ng-if="import.getImportStatus(file.name)">{{'(' + import.getImportStatus(file.name).message + ')'}}</span>
                                  </span>
