@@ -70,6 +70,7 @@ define([
           vm.importFileErrored = importFileErrored;
           vm.getImportFileReport = getImportFileReport;
           vm.resetModal = resetModal;
+          vm.truncateString = truncateString;
 
           /**
            * Function definitions
@@ -208,6 +209,13 @@ define([
               vm.importFileReport = {};
             //}
           };
+
+          function truncateString(str, maxLength) {
+            if (str.length <= maxLength) {
+              return str
+            }
+            return str.slice(0, maxLength) + '...'
+          }
 
           vm.flowComplete = function ($flow) {
             vm.uploadStatus.status.unshift({'label': 'Upload Complete', 'file': ''});
