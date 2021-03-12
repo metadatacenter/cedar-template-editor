@@ -403,9 +403,12 @@ define([
           propertyId) + '/tree';
     };
 
+    // Note: BioPortal does not support returning value set values in alphabetical order, so we use 1000 as the default
+    // page size to avoid having UI issues in CDEs associated to large value sets.
+    // See https://github.com/metadatacenter/cedar-project/issues/1110
     service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(vsId)
-          + "/values?"  + paging(page,size,1,50,'page','pageSize');
+          + "/values?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
     service.searchClasses = function (query, sources, size, page) {
