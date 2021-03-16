@@ -403,8 +403,10 @@ define([
         $scope.$on("form:firstDirty", function (event) {
           if (UIUtilService.isRuntime()) {
             if (UIUtilService.isDraft() && !UIUtilService.isFirstVersion()) {
-              // if this is metadata editor, the template is a draft of a published version
-              UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
+              // If this is metadata editor, the template is a draft of a published version
+              // On Feb 2021 we decided to disable the following warning because, in the case of CDE forms imported into
+              // CEDAR, the template may not be a draft of a published version.
+              //UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
             }
           } else {
             if (UIUtilService.hasTotalMetadata()) {

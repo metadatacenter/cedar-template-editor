@@ -18,7 +18,7 @@
             </form>
           </div>
         </div>
-        <div class="left-sidebar col-sm-3">
+        <div class="left-sidebar col-sm-2">
           <div id="template-identifier-container">
             <form>
               <div class="form-group floating-label-wrapper">
@@ -27,6 +27,20 @@
                        placeholder="{{'GENERIC.Identifier' | translate}}"
                        aria-label="{{'GENERIC.Identifier' | translate}}"
                        ng-model="form['schema:identifier']"
+                       with-floating-label>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="left-sidebar col-sm-1">
+          <div id="template-version-container">
+            <form>
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control" readonly
+                       id="template-version"
+                       placeholder="{{'GENERIC.Version' | translate}}"
+                       aria-label="{{'GENERIC.Version' | translate}}"
+                       ng-model="form['pav:version']"
                        with-floating-label>
               </div>
             </form>

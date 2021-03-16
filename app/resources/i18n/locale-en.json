@@ -72,6 +72,8 @@
     "AddElement": "Add Element",
     "AddField": "Add Field",
     "Pause": "Pause",
+    "UploadFiles": "Upload files",
+    "Report": "Report",
     "Resume": "Resume",
     "Clear": "Clear",
     "Submit": "Submit",
@@ -245,6 +247,9 @@
   "SERVER": {
     "WORKSPACE": {
       "error": "There was an error while executing the workspace request!<br /><br />VIEW TECHNICAL DETAILS!"
+    },
+    "IMPEX": {
+      "error": "There was an error while importing the files!<br /><br />VIEW TECHNICAL DETAILS!"
     },
     "FOLDER": {
       "create": {

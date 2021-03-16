@@ -337,7 +337,6 @@ define([
       // only load the sorted move mods the first time, not on subsequent pages
       if (vcst.actions  && vcst.actions.length > 0 && !next) {
 
-
         angular.forEach(vcst.actions, function (action) {
           if (action.action == 'move') {
 

@@ -19,6 +19,7 @@ define([
     let groupService = null;
     let submissionService = null;
     let messagingService = null;
+    let impexService = null;
     const paging = function (page, size, defaultPage, defaultSize, pageString, sizeString) {
       const p = page > 0 ? page : defaultPage;
       const s = size > 0 ? size : defaultSize;
@@ -38,6 +39,7 @@ define([
       groupService = config.groupRestAPI;
       submissionService = config.submissionRestAPI;
       messagingService = config.messagingRestAPI;
+      impexService = config.impexRestAPI;
     };
 
 
@@ -294,6 +296,14 @@ define([
       return submissionService + '/command/validate-cairr';
     };
 
+    service.importCadsrForms = function (folderId) {
+      return impexService + '/command/import-cadsr-forms?folderId=' + folderId;
+    };
+
+    service.importCadsrFormsStatus = function (uploadId) {
+      return impexService + '/command/import-cadsr-forms-status?uploadId=' + uploadId;
+    };
+
     service.getOntologies = function () {
       return this.controlledTerm() + "/ontologies";
     };
@@ -362,8 +372,6 @@ define([
           + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
-
-
     service.getPropertyChildren = function (acronym, propertyId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + this.encodeURIComponent(propertyId)
           + "/children";
@@ -395,9 +403,12 @@ define([
           propertyId) + '/tree';
     };
 
+    // Note: BioPortal does not support returning value set values in alphabetical order, so we use 1000 as the default
+    // page size to avoid having UI issues in CDEs associated to large value sets.
+    // See https://github.com/metadatacenter/cedar-project/issues/1110
     service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(vsId)
-          + "/values?"  + paging(page,size,1,50,'page','pageSize');
+          + "/values?"  + paging(page,size,1,1000,'page','pageSize');
     };
 
     service.searchClasses = function (query, sources, size, page) {

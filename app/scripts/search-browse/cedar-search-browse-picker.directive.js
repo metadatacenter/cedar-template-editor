@@ -56,15 +56,16 @@ define([
           vm.forms = [];
           vm.activeTab = 'resource-info';
 
-
           // modals
+          vm.showCopyModal = showCopyModal;
           vm.showMoveModal = showMoveModal;
           vm.showPublishModal = showPublishModal;
-          vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
           vm.showFlowModal = showFlowModal;
+          vm.showImportModal = showImportModal;
+
           vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.publishModalVisible = false;
@@ -72,7 +73,7 @@ define([
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
           vm.flowModalVisible = false;
-
+          vm.importModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -2155,7 +2156,7 @@ define([
           };
 
 
-          // open the move modal
+          // open the 'copy' modal
           function showCopyModal(resource) {
             let r = resource || getSelected();
             if (r && !vm.isFolder(r)) {
@@ -2167,7 +2168,7 @@ define([
             }
           }
 
-          // open the move modal
+          // open the 'move' modal
           function showMoveModal() {
             let r = getSelected();
             if (r && resourceService.canWrite(r)) {
@@ -2180,7 +2181,7 @@ define([
             }
           }
 
-          // open the publish modal
+          // open the 'publish' modal
           function showPublishModal(callback, action) {
             let r = getSelected();
             if (r && resourceService.canWrite(r)) {
@@ -2190,6 +2191,7 @@ define([
             }
           }
 
+          // open the 'submission' modal
           function showFlowModal() {
             let r = getSelected();
             if (r && resourceService.canSubmit(r)) {
@@ -2199,7 +2201,7 @@ define([
             }
           }
 
-          // open the share modal
+          // open the 'share' modal
           function showShareModal() {
             let r = getSelected();
             if (r && resourceService.canShare(r)) {
@@ -2208,7 +2210,7 @@ define([
             }
           }
 
-          // open the rename modal
+          // open the 'rename' modal
           function showRenameModal() {
             let r = getSelected();
             if (r && resourceService.canWrite(r)) {
@@ -2217,10 +2219,16 @@ define([
             }
           }
 
-          // open the new folder modal
+          // open the 'new folder' modal
           function showNewFolderModal() {
             vm.newFolderModalVisible = true;
             $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, vm.getFolderId()]);
+          }
+
+          // open the 'import' modal
+          function showImportModal() {
+            vm.importModalVisible = true;
+            $scope.$broadcast('importModalVisible', [vm.importModalVisible, vm.getFolderId()]);
           }
 
           vm.getFolderId = function () {

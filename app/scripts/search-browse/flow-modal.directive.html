@@ -143,9 +143,8 @@
                                   value="{{file.progress()*100}}"
                                   role="progressbar" aria-valuenow="{{file.progress()*100}}" aria-valuemin="0"
                                   aria-valuemax="100">
-                                <strong ng-show="!file.error" class="error">
-                                  {{file.name}} </strong> <strong
-                                  ng-show="file.error">Ooops...</strong>
+                                <strong ng-show="!file.error" class="msg">{{file.name}} </strong>
+                                <strong ng-show="file.error" class="msg-error">Error</strong>
                               </div>
 
                             </div>

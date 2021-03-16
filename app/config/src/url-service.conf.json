@@ -8,5 +8,6 @@
   "bioontologyRestAPI": "https://data.bioontology.org/",
   "submissionRestAPI": "submissionServerUrl",
   "messagingRestAPI": "messagingServerUrl",
-  "openViewBase": "openViewBaseUrl"
+  "openViewBase": "openViewBaseUrl",
+  "impexRestAPI": "impexServerUrl"
 }

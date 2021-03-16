@@ -10,14 +10,13 @@
 
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
-
         <div class="compose-options add-new">
           <div class="btn-group dropdown">
             <button type="button"
                     id="button-create"
                     class="btn btn-save template" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">New
-              <i
-                  class="fa fa-plus"></i></button>
+              <i class="fa fa-plus"></i>
+            </button>
             <ul class="dropdown-menu " role="menu" aria-labelledby="button-create">
               <li><a id="button-create-folder" ng-click="dc.showNewFolderModal()">Folder</a></li>
               <li><a id="button-create-field"
@@ -26,12 +25,13 @@
                      ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Element</a></li>
               <li><a id="button-create-template"
                      ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">Template</a></li>
+              <li class="divider"></li>
+              <li><a id="button-import" ng-click="dc.showImportModal()">Import</a></li>
             </ul>
           </div>
         </div>
 
         <div class="filter-options">
-
           <div class="shares">
             <a class="share workspace" ng-class="{active: dc.isHomeMode()}" href="#" ng-click="dc.goToMyWorkspace()"
                translate>DASHBOARD.sidebar.myWorkspace</a>
@@ -44,7 +44,6 @@
             <a class="share shared" ng-class="{active: dc.isSpecialFoldersMode()}" href="#"
                ng-click="dc.goToSpecialFolders()"
                translate>DASHBOARD.sidebar.specialFolders</a>
-            <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
           </div>
 
           <div class="clearfix reset-text">
@@ -149,9 +148,7 @@
                   </li>
                 </ul>
               </li>
-
             </ul>
-
           </div>
         </div>
       </div>
@@ -899,21 +896,13 @@
                     data-toggle="tooltip"
                     ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
               </div>
-
             </div>
-
             <hr/>
-
           </div>
-
         </div>
-
       </div>
     </div>
-
-
   </div>
-
 
 </section>
 
@@ -957,15 +946,16 @@
   </cedar-publish-modal>
 </section>
 
-<!--- share modal  --->
+<!-- share modal -->
 <section>
   <cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"
                      tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
-                     style="padding:10px;list-style: none"
+                     style="padding: 10px;list-style: none"
                      data-keyboard="true" data-backdrop="static" share-resource="resource">
   </cedar-share-modal>
 </section>
 
+<!-- submission modal -->
 <section>
   <flow-modal cedar-modal-show modal-visible="dc.flowModalVisible" class="modal fade"
               id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
@@ -973,12 +963,14 @@
   </flow-modal>
 </section>
 
-
-
-
-
-
-
-
-
-
+<!-- import modal -->
+<section>
+  <cedar-import-modal cedar-modal-show
+                      modal-visible="dc.importModalVisible"
+                      import-folder-id="dc.currentFolderId"
+                      refresh-workspace="dc.refreshWorkspace"
+                      class="modal fade"
+              id="import-modal" tabindex="-1" role="dialog" aria-labelledby="importModalHeader"
+              data-keyboard="true" data-backdrop="static">
+  </cedar-import-modal>
+</section>
