@@ -563,7 +563,9 @@
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                       prettyDate }}
                     </div>
+
                     <div class="ellipsis" style="width:100px;">
+
                       <div ng-if="!dc.isPublished(resource)" style="display: inline"><i class="fa fa-globe"
                                                                                         style="visibility:hidden"></i><span
                           ng-show="dc.getResourceVersion(resource) != '0.0.1'"
@@ -571,10 +573,10 @@
                           tooltip-placement="left"
                       > {{dc.getResourceVersion(resource)}}</span>
                       </div>
+
                       <div ng-if="dc.isPublished(resource)" style="display: inline"
                            uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
-                           tooltip-placement="left"
-                      >
+                           tooltip-placement="left">
                         <i class="fa fa-globe" style="color:#aaa;font-size:18px"></i>
                         {{dc.getResourceVersion(resource)}}
                       </div>
@@ -583,6 +585,12 @@
                            tooltip-placement="left"
                       >
                         <i class="action fa fa-external-link-square" style="font-size:18px"></i>
+                      </div>
+
+                      <!-- Trusted badge -->
+                      <div ng-if="dc.getTrustedBy(resource)" style="display: inline"
+                           uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
+                        <i class="fa fa-shield" style="color:#333;font-size:18px"></i>
                       </div>
 
                     </div>

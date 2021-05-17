@@ -122,6 +122,7 @@ define([
           vm.openMessaging = openMessaging;
           vm.isPublished = isPublished;
           vm.isOpen = isOpen;
+          vm.getTrustedBy = getTrustedBy;
 
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
@@ -138,13 +139,6 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
           vm.composeOpen;
-
-          //
-          // publication
-          //
-          //vm.canPublishStatic = canPublishStatic;
-          //vm.canCreateDraftStatic = canCreateDraftStatic;
-
 
           vm.isGridView = isGridView;
           vm.isListView = isListView;
@@ -1420,7 +1414,7 @@ define([
             } else if (isMeta(resource)) {
               url = FrontendUrlService.openInstance(resource['@id']);
             }
-            console.log("OpenView:" + url);
+            //console.log("OpenView:" + url);
             $window.open(url, '_blank');
           }
 
@@ -1733,13 +1727,6 @@ define([
             return false;
           }
 
-          /*          function canPublishStatic() {
-                      return (hasSelected() &&
-                          (getSelected().resourceType == CONST.resourceType.TEMPLATE ||
-                              getSelected().resourceType == CONST.resourceType.ELEMENT) &&
-                          getSelected()[CONST.publication.STATUS] == CONST.publication.DRAFT);
-                    }*/
-
           function isPublished(resource) {
             let result = false;
             if (resource) {
@@ -1760,12 +1747,9 @@ define([
             return result;
           }
 
-          /*          function canCreateDraftStatic() {
-                      return (hasSelected() &&
-                          (getSelected().resourceType == CONST.resourceType.TEMPLATE ||
-                              getSelected().resourceType == CONST.resourceType.ELEMENT) &&
-                          getSelected()[CONST.publication.STATUS] == CONST.publication.PUBLISHED);
-                    }*/
+          function getTrustedBy(resource) {
+            return resource['trustedBy'];
+          }
 
           function isTemplate(resource) {
             let result = false;
