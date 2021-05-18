@@ -518,7 +518,8 @@
       "Categories": "Categories",
       "ReadPermission": "read",
       "WritePermission": "write",
-      "OwnerPermission": "owner"
+      "OwnerPermission": "owner",
+      "TrustedBy": "Trusted by"
     },
     "sidebar": {
       "myWorkspace": "Workspace",

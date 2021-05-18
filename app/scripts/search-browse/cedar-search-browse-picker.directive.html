@@ -432,7 +432,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
                    style="height:auto;position:relative">
 
@@ -889,6 +889,12 @@
               </div>
             </div>
 
+            <!-- Trusted by -->
+            <div ng-if="dc.getTrustedBy(dc.getSelectedNode())" class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak">{{'DASHBOARD.info.TrustedBy' | translate}}</div>
+              <div class="field-value"> {{ dc.getTrustedBy(dc.getSelectedNode()) }}</div>
+            </div>
+
             <!-- templates have instances -->
             <div ng-if="dc.getTotalMetadata()" class="instance-list">
               <div class="flex flex-wrap padding-top">
@@ -938,6 +944,7 @@
                     ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
               </div>
             </div>
+
             <hr/>
           </div>
         </div>

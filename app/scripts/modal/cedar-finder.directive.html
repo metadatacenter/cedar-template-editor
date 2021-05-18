@@ -180,6 +180,12 @@
                         >{{ finder.getTitle(resource)}}
                         </div>
                       </div>
+                      <!-- Trusted badge -->
+                      <div ng-if="finder.getTrustedBy(resource)"
+                           style="display:inline; float:right;font-size: 16px;padding-right:20px"
+                           uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{finder.getTrustedBy(resource)}}">
+                        <i class="fa fa-shield">&nbsp;</i>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -257,24 +263,29 @@
                       <i class="fa fa-check"></i>{{'DASHBOARD.info.OwnerPermission' | translate}}</span></td>
                 </tr>
                 <!-- Version -->
-                <tr ng-if="!finder.isFolder(resource)">
+                <tr ng-if="!finder.isFolder(finder.selectedResource)">
                   <td class="label">{{'DASHBOARD.info.Version' | translate}}</td>
                   <td>
                     <div style="white-space:nowrap">
-                      <div ng-if="finder.isPublished(resource)" style="display:inline"
+                      <div ng-if="finder.isPublished(finder.selectedResource)" style="display:inline"
                            uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-globe"></i>
                       </div>
-                      <div style="display:inline">{{finder.getResourceVersion(resource)}}
+                      <div style="display:inline">{{finder.getResourceVersion(finder.selectedResource)}}
                       </div>
-                      <div ng-if="finder.isOpen(resource)" style="display:inline; float:right;"
+                      <div ng-if="finder.isOpen(finder.selectedResource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-external-link-square"></i>
                       </div>
                     </div>
                   </td>
+                </tr>
+                <!-- Trusted by -->
+                <tr ng-if="finder.getTrustedBy(finder.selectedResource)">
+                  <td class="label">{{'DASHBOARD.info.TrustedBy' | translate}}</td>
+                  <td>{{finder.getTrustedBy(finder.selectedResource)}}</td>
                 </tr>
                 </tbody>
               </table>
