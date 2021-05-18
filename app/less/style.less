@@ -16,6 +16,8 @@
 @metadata-color: #0F7686;
 @folder-color: lighten(@top-nav-color, 10%);
 
+@info-icon: cadetblue;
+
 //grays
 @very-lt-gray: #CCCCCC;
 @lt-gray-1: #FAFAFA;
@@ -41,10 +43,6 @@
 @bar7: darken(@bar6, 5%);
 @bar8: darken(@bar7, 5%);
 @bar9: darken(@bar8, 5%);
-
-//@draft: #DAA520;
-//@published: #000000;
-//@latest: #8B0000;
 
 @draft: @dark-gray;
 @published: cadetblue;
@@ -920,9 +918,14 @@ button {
   //height: calc(~"100% - 55px");
   height: 100%;
 
-  // globe is the published icon
   i.fa-globe {
-    color: @published;
+    color: @info-icon;
+  }
+  i.fa-shield {
+    color: @info-icon;
+  }
+  i.fa-external-link-square {
+    color: @info-icon;
   }
 
   .center-panel {
@@ -1051,7 +1054,7 @@ button {
               background-color: transparent;
               padding-right: 5px;
               i {
-                color: #aaa
+                color: @top-nav-color;
               }
             }
 
@@ -1182,6 +1185,7 @@ button {
       .quick-details-box {
         display: none;
       }
+
     }
     .form-box:hover {
 
@@ -1332,7 +1336,7 @@ button {
 
       .box-title {
         width: 100%;
-        font-size: 16px;
+        font-size: 14px;
         color: @med-gray;
         border-left: 5px solid transparent;
         padding: 0 6px;
@@ -1375,7 +1379,6 @@ button {
           }
         }
       }
-
     }
   }
 
