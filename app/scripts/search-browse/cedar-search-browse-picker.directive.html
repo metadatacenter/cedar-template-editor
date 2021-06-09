@@ -113,7 +113,7 @@
                 </div>
               </li>
 
-              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Version' |translate}}<i
+              <li><a href="#" ng-click="dc.toggleFilters('version')">{{'GENERIC.Version' | translate}}<i
                   class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('version'), 'fa-caret-left': !dc.isFilterSection('version') }"></i></a>
 
@@ -128,9 +128,9 @@
               </li>
 
               <li ng-if="dc.doShowCategoryTree()"><a href="#" ng-click="dc.toggleFilters('category')">{{'GENERIC.Categories'
-                |translate}}<i
-                    class="fa pull-right"
-                    ng-class="{ 'fa-caret-down': dc.isFilterSection('category'), 'fa-caret-left': !dc.isFilterSection('category') }"></i></a>
+              | translate}}<i
+                  class="fa pull-right"
+                  ng-class="{ 'fa-caret-down': dc.isFilterSection('category'), 'fa-caret-left': !dc.isFilterSection('category') }"></i></a>
 
                 <ul id="filter-resource-category" class="list-inline">
                   <li ng-if="!dc.categoryTreeAvailable">
@@ -164,14 +164,15 @@
               <p ng-if="dc.isSearching">
                 <span class="search-result">
                   <span ng-class="{'no-search-results':dc.searchTerm}">
-                    <div ng-if="dc.isSearching" ng-bind-html="dc.breadcrumbTitle"></div>
-                  </span>
-                </span>
+              <div ng-if="dc.isSearching" ng-bind-html="dc.breadcrumbTitle"></div>
+              </span>
+              </span>
               </p>
 
               <p ng-if="!dc.isSearching">
                 <span class="folder-path" ng-repeat="folder in dc.pathInfo track by $index">
-                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs" ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs"
+                     ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
                   <span class="breadcrumbs"
                         ng-if="!dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
                   /
@@ -341,20 +342,14 @@
                        ng-dblclick="dc.goToResource(resource)"
                        class="form-box resource-instance"
                        ng-class="dc.getResourceTypeClass(resource)">
+
                     <div class="box-content text-center" ng-class="dc.getResourceTypeClass(resource)">
-
                       <div class="toolbar">
-
-
                         <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-
                         <div class="right-side">
-
-                          <button ng-if="dc.isTemplate(resource)" ng-click="dc.goToResource(resource, 'populate')"><i
-                              class="fa fa-tag"
-                              uib-tooltip="{{'DASHBOARD.menu.populate' | translate}}"
-                              tooltip-placement="left"
-                          ></i></button>
+                          <button ng-if="dc.isTemplate(resource)" ng-click="dc.goToResource(resource, 'populate')">
+                            <i class="fa fa-tag" uib-tooltip="{{'DASHBOARD.menu.populate' | translate}}"
+                              tooltip-placement="left"></i></button>
                           <button id="{{dc.getId(resource, 'list')}}"
                                   ng-click="dc.toggledCedarDropdownMenu($event, resource,'grid' )"
                                   class="dropup more-button"
@@ -362,8 +357,7 @@
                                   aria-haspopup="true"
                                   aria-expanded="true"
                                   uib-tooltip="{{'GENERIC.More' | translate}}"
-                                  tooltip-placement="left"
-                          >
+                                  tooltip-placement="left">
                             <i class="fa fa-ellipsis-v"></i>
                           </button>
 
@@ -405,35 +399,39 @@
                         </div>
                       </div>
 
-
                       <hr style="margin:0;padding:0"/>
+
                       <div style="min-height:2em;padding:2px 4px">
-                        <div ng-if="dc.isPublished(resource)" style="display:inline"
-                             uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
-                             tooltip-placement="top"
-                        >
-                          <i class="action fa fa-globe"></i> {{dc.getResourceVersion(resource)}}
+                        <!-- Version number -->
+                        <div ng-if="!dc.isPublished(resource)" style="display: inline">
+                          <i class="fa fa-globe" style="visibility:hidden"></i><span
+                            ng-show="dc.getResourceVersion(resource) != '0.0.1'"
+                            uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
+                            tooltip-placement="left"> {{dc.getResourceVersion(resource)}}</span>
                         </div>
-                        <div ng-if="!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1'"
-                             style="display:inline"
-                             uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
-                             tooltip-placement="top"
-                        >
+                        <!-- Globe icon and version number (for published version) -->
+                        <div ng-if="dc.isPublished(resource)" style="display: inline"
+                             uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
+                             tooltip-placement="left">
+                          <i class="fa fa-globe"></i>
                           {{dc.getResourceVersion(resource)}}
                         </div>
+                        <!-- Trusted badge -->
+                        <div ng-if="dc.getTrustedBy(resource)" style="display:inline; float:right;"
+                             uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
+                          <i class="fa fa-shield">&nbsp;</i>
+                        </div>
+                        <!-- OpenView icon -->
                         <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
                              uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
-                             tooltip-placement="top"
-                        >
-                          <i class="action fa fa-external-link-square"></i>
+                             tooltip-placement="top">
+                          <i class="action fa fa-external-link-square">&nbsp;</i>
                         </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
-
 
               <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
                    style="height:auto;position:relative">
@@ -452,10 +450,9 @@
                   <a class="ellipsis" style="width:100px;padding-right:10px;"
                      ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
                      ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
-                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:100px;"></div>
-                  <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:100px;"></div>
+                  <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:150px;"></div>
+                  <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:150px;"></div>
                   <div style="width:80px"></div>
-
                 </div>
 
                 <!-- show the folders first -->
@@ -485,12 +482,12 @@
 
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] |
-                      prettyDate}}
+                    prettyDate}}
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                      prettyDate}}
+                    prettyDate}}
                     </div>
-                    <div style="width:100px;"></div>
+                    <div style="width:150px;"></div>
                     <div class="flex" style="width:80px;justify-content:flex-end;">
 
 
@@ -502,8 +499,7 @@
                               aria-haspopup="true"
                               aria-expanded="true"
                               uib-tooltip="{{'GENERIC.More' | translate}}"
-                              tooltip-placement="left"
-                      >
+                              tooltip-placement="left">
                         <i class="action fa fa-ellipsis-v" style="font-size:18px"></i>
                       </button>
 
@@ -545,8 +541,6 @@
                   <div class="outer flex resource-instance" ng-class="dc.getResourceTypeClass(resource)">
                     <div class="flex ellipsis" style="justify-content:space-between">
                       <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
-                      <!--<div class="ellipsis" style="width:100%">{{ dc.getTitle(resource)}}</div>-->
-
                       <div class="title-text ellipsis" style="width:100%" uib-tooltip='{{dc.getTitle(resource)}}'
                            tooltip-append-to-body="true"
                            tooltip-trigger="mouseenter"
@@ -555,55 +549,102 @@
                            data-toggle="tooltip"
                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}
                       </div>
-
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:createdOn'] |
-                      prettyDate }}
+                    prettyDate }}
                     </div>
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
-                      prettyDate }}
+                    prettyDate }}
                     </div>
-                    <div class="ellipsis" style="width:100px;">
-                      <div ng-if="!dc.isPublished(resource)" style="display: inline"><i class="fa fa-globe"
-                                                                                        style="visibility:hidden"></i><span
+
+                    <div class="ellipsis" style="width:150px;">
+
+                      <!-- Version number -->
+<!--                      <div ng-if="(!dc.isPublished(resource) && dc.getResourceVersion(resource) != '0.0.1')"-->
+<!--                           style="display:inline; font-size: 12px"-->
+<!--                           uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"-->
+<!--                           tooltip-placement="top">-->
+<!--                        {{dc.getResourceVersion(resource)}}-->
+<!--                      </div>-->
+<!--                      <div ng-if="dc.isPublished(resource)"-->
+<!--                           style="display:inline; font-size: 12px"-->
+<!--                           uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"-->
+<!--                           tooltip-placement="top">-->
+<!--                        {{dc.getResourceVersion(resource)}}-->
+<!--                      </div>-->
+                      <!-- Version number -->
+                      <div ng-if="!dc.isPublished(resource)" style="display: inline">
+                        <i class="fa fa-globe" style="visibility:hidden"></i><span
                           ng-show="dc.getResourceVersion(resource) != '0.0.1'"
                           uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
-                          tooltip-placement="left"
-                      > {{dc.getResourceVersion(resource)}}</span>
+                          tooltip-placement="left"> {{dc.getResourceVersion(resource)}}</span>
                       </div>
+                      <!-- Globe icon and version number (for published version) -->
                       <div ng-if="dc.isPublished(resource)" style="display: inline"
                            uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
-                           tooltip-placement="left"
-                      >
-                        <i class="fa fa-globe" style="color:#aaa;font-size:18px"></i>
+                           tooltip-placement="left">
+                        <i class="fa fa-globe" style="font-size:18px"></i>
                         {{dc.getResourceVersion(resource)}}
                       </div>
-                      <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;color:#aaa"
-                           uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
-                           tooltip-placement="left"
-                      >
-                        <i class="action fa fa-external-link-square" style="font-size:18px"></i>
+                      <!-- Trusted badge -->
+                      <div ng-if="dc.getTrustedBy(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
+                        <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
                       </div>
+                      <!-- OpenView icon -->
+                      <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
+                           tooltip-placement="top">
+                        <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
+                      </div>
+                      <!-- Globe icon -->
+<!--                      <div ng-if="dc.isPublished(resource)" style="display:inline; float:right;"-->
+<!--                           uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"-->
+<!--                           tooltip-placement="top">-->
+<!--                        <i class="action fa fa-globe" style="font-size:18px">&nbsp;</i>-->
+<!--                      </div>-->
+
+
+
+
+
+                      <!---->
+
+
+
+<!--                      &lt;!&ndash; Trusted badge &ndash;&gt;-->
+<!--                      <div ng-if="dc.getTrustedBy(resource)"-->
+<!--                           style="display:inline; float:right"-->
+<!--                           uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">-->
+<!--                        <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>-->
+<!--                      </div>-->
+
+<!--                      &lt;!&ndash; OpenView icon &ndash;&gt;-->
+<!--                      <div ng-if="dc.isOpen(resource)"-->
+<!--                           style="display:inline; float:right; color:#aaa"-->
+<!--                           uib-tooltip="{{'GENERIC.IsOpen' | translate}}"-->
+<!--                           tooltip-placement="left">-->
+<!--                        <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>-->
+<!--                      </div>-->
+
+
 
                     </div>
                     <div class="flex" style="width:80px;justify-content:flex-end;">
 
                       <button ng-class="{'invisible': !dc.isTemplate(resource)}"
                               ng-click="dc.goToResource(resource, 'populate')"
-                              style="background-color:transparent;"
-                      >
+                              style="background-color:transparent;">
                         <i class="fa fa-tag action" style="font-size:18px"
                            uib-tooltip="{{'DASHBOARD.menu.populate' | translate}}"
-                           tooltip-placement="left"
-                        ></i></button>
+                           tooltip-placement="left"></i></button>
 
                       <button id="{{dc.getId(resource, 'list')}}" class="more-button"
                               ng-click="dc.toggledCedarDropdownMenu($event, resource,'list')"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
                               style="background-color:transparent;padding:0 15px 0 5px;"
                               uib-tooltip="{{'GENERIC.More' | translate}}"
-                              tooltip-placement="left"
-                      >
+                              tooltip-placement="left">
                         <i class="action fa fa-ellipsis-v" style="font-size:18px"></i>
                       </button>
 
@@ -680,12 +721,12 @@
           <div class="element-toggle table-cell-style "
                ng-class="{active: dc.isVersionTab()}"
                ng-click="dc.setTab('resource-version');">
-            <span>{{'GENERIC.Version' |translate}}</span>
+            <span>{{'GENERIC.Version' | translate}}</span>
           </div>
           <div class="element-toggle table-cell-style "
                ng-class="{active: dc.isCategoryTab()}"
                ng-click="dc.setTab('resource-category');">
-            <span>{{'GENERIC.Category' |translate}}</span>
+            <span>{{'GENERIC.Category' | translate}}</span>
           </div>
         </div>
 
@@ -848,6 +889,12 @@
               </div>
             </div>
 
+            <!-- Trusted by -->
+            <div ng-if="dc.getTrustedBy(dc.getSelectedNode())" class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak">{{'DASHBOARD.info.TrustedBy' | translate}}</div>
+              <div class="field-value"> {{ dc.getTrustedBy(dc.getSelectedNode()) }}</div>
+            </div>
+
             <!-- templates have instances -->
             <div ng-if="dc.getTotalMetadata()" class="instance-list">
               <div class="flex flex-wrap padding-top">
@@ -897,6 +944,7 @@
                     ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
               </div>
             </div>
+
             <hr/>
           </div>
         </div>
@@ -970,7 +1018,7 @@
                       import-folder-id="dc.currentFolderId"
                       refresh-workspace="dc.refreshWorkspace"
                       class="modal fade"
-              id="import-modal" tabindex="-1" role="dialog" aria-labelledby="importModalHeader"
-              data-keyboard="true" data-backdrop="static">
+                      id="import-modal" tabindex="-1" role="dialog" aria-labelledby="importModalHeader"
+                      data-keyboard="true" data-backdrop="static">
   </cedar-import-modal>
 </section>

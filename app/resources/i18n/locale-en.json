@@ -199,6 +199,7 @@
     "PublishedVersion": "Published Version",
     "DraftVersion": "Draft Version",
     "IsOpen": "OpenView Enabled",
+    "TrustedBy": "Trusted by",
     "Header": "Header Information",
     "Footer": "Footer Information",
     "NothingFound": "Nothing found"
@@ -517,7 +518,8 @@
       "Categories": "Categories",
       "ReadPermission": "read",
       "WritePermission": "write",
-      "OwnerPermission": "owner"
+      "OwnerPermission": "owner",
+      "TrustedBy": "Trusted by"
     },
     "sidebar": {
       "myWorkspace": "Workspace",

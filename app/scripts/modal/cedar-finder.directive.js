@@ -127,6 +127,8 @@ define([
           vm.breadcrumbName = breadcrumbName;
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
+          vm.getTrustedBy = getTrustedBy;
+
           //------
 
           init();
@@ -646,7 +648,7 @@ define([
           }
 
           function isFolder(resource) {
-            var result = false;
+            let result;
             if (resource) {
               result = (resource.resourceType == CONST.resourceType.FOLDER);
             } else {
@@ -899,6 +901,10 @@ define([
             } else {
               return "";
             }
+          }
+
+          function getTrustedBy(resource) {
+            return resource['trustedBy'];
           }
 
           /**
