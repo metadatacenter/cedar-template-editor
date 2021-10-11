@@ -300,7 +300,7 @@
         "error": "There was an error while loading the field!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
-        "success": "The v has been deleted.",
+        "success": "The field has been deleted.",
         "error": "There was an error while deleting the field!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
