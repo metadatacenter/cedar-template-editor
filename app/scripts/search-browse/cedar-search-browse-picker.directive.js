@@ -855,8 +855,6 @@ define([
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
-            console.log('searching more');
-            console.log(vm.params);
             if (activeResourceTypes().length > 0) {
 
               // are there more?

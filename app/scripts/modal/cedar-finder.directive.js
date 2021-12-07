@@ -209,9 +209,14 @@ define([
             return activeResourceTypes;
           };
 
-          function sortField() {
-            return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
-          };
+          function sortField(searchParams) {
+            if (searchParams && searchParams.fromSearchBox) {
+              return null;
+            }
+            else {
+              return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
+            }
+          }
 
           function getFilterVersion() {
             return CedarUser.getVersion();
@@ -231,7 +236,7 @@ define([
                 term,
                 {
                   resourceTypes    : resourceTypes,
-                  sort             : sortField(),
+                  sort             : sortField(vm.params),
                   limit            : limit,
                   offset           : vm.offset,
                   version          : getFilterVersion(),
@@ -557,7 +562,7 @@ define([
                   return resourceService.searchResources(vm.searchTerm,
                       {
                         resourceTypes: activeResourceTypes(),
-                        sort         : sortField(),
+                        sort         : sortField(vm.params),
                         limit        : vm.requestLimit,
                         offset       : vm.offset
                       },
@@ -774,6 +779,7 @@ define([
           };
 
           function search(searchTerm) {
+            vm.params.fromSearchBox = true;
             vm.searchTerm = searchTerm;
             $rootScope.$broadcast('search-finder', vm.searchTerm || '');
           };
@@ -823,31 +829,49 @@ define([
           /** Sort by... **/
 
           function setSortByCreated() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSort(CedarUser.setSortByCreated());
             init();
           };
 
           function setSortByName() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSort(CedarUser.setSortByName());
             init();
           };
 
           function setSortByUpdated() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSort(CedarUser.setSortByUpdated());
             init();
           };
 
           function sortName() {
-            return CedarUser.isSortByName() ? "" : 'invisible';
-          };
+            if (vm.params.fromSearchBox || !CedarUser.isSortByName()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
+          }
 
           function sortCreated() {
-            return CedarUser.isSortByCreated() ? "" : 'invisible';
-          };
+            if (vm.params.fromSearchBox || !CedarUser.isSortByCreated()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
+          }
 
           function sortUpdated() {
-            return CedarUser.isSortByUpdated() ? "" : 'invisible';
-          };
+            if (vm.params.fromSearchBox || !CedarUser.isSortByUpdated()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
+          }
 
           /** Shortcut functions **/
 
