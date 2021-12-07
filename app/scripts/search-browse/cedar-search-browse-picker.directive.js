@@ -855,7 +855,8 @@ define([
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
-
+            console.log('searching more');
+            console.log(vm.params);
             if (activeResourceTypes().length > 0) {
 
               // are there more?
@@ -906,7 +907,7 @@ define([
                   return resourceService.searchResources(vm.searchTerm,
                       {
                         resourceTypes: activeResourceTypes(),
-                        sort         : sortField(),
+                        sort         : sortField(vm.params),
                         limit        : vm.requestLimit,
                         offset       : vm.offset
                       },
@@ -1095,7 +1096,7 @@ define([
                   term,
                   {
                     resourceTypes    : activeResourceTypes(),
-                    sort             : sortField(),
+                    sort             : sortField(vm.params),
                     limit            : vm.requestLimit,
                     offset           : vm.offset,
                     version          : vm.getFilterVersion(),
@@ -2010,16 +2011,19 @@ define([
           }
 
           function setSortByCreated() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSortByCreated(CedarUser.setSortByCreated());
             init();
           }
 
           function setSortByName() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSortByName(CedarUser.setSortByName());
             init();
           }
 
           function setSortByUpdated() {
+            delete vm.params.fromSearchBox;
             UISettingsService.saveSort(CedarUser.setSortByUpdated());
             init();
           }
@@ -2054,22 +2058,41 @@ define([
             }
           }
 
-          function sortField() {
-            return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
+          function sortField(searchParams) {
+            if (searchParams && searchParams.fromSearchBox) {
+              return null;
+            }
+            else {
+              return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
+            }
           }
 
           function sortName() {
-            return CedarUser.isSortByName() ? "" : 'invisible';
+            if (vm.params.fromSearchBox || !CedarUser.isSortByName()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
           }
 
           function sortCreated() {
-            return CedarUser.isSortByCreated() ? "" : 'invisible';
+            if (vm.params.fromSearchBox || !CedarUser.isSortByCreated()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
           }
 
           function sortUpdated() {
-            return CedarUser.isSortByUpdated() ? "" : 'invisible';
+            if (vm.params.fromSearchBox || !CedarUser.isSortByUpdated()) {
+              return 'invisible';
+            }
+            else {
+              return "";
+            }
           }
-
 
           function updateFavorites(saveData) {
             $timeout(function () {

@@ -160,6 +160,7 @@ define([
         // Add timestamp to make the search work when the user searches for the same term multiple times. Without the
         // timestamp, the URL will not change and therefore $location.url will not trigger a new search.
         queryParams['t'] = Date.now();
+        queryParams['fromSearchBox'] = true;
         var url = $rootScope.util.buildUrl(baseUrl, queryParams);
         $location.url(url);
         if (searchTerm) {
