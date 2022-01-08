@@ -15,29 +15,29 @@ define([
       autocompleteResultsCache: {}
     };
 
-    // read the autosuggest cache
-    service.getAutocompleteResults = function (id, query) {
-      if (angular.isUndefined(service.autocompleteResultsCache[id])) {
-        service.autocompleteResultsCache[id] = [];
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
-
-      if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
-
-      return service.autocompleteResultsCache[id][query].results;
-    };
-
-    service.getAutocompleteResultsCache = function (id, query) {
-      if (service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
-        return service.autocompleteResultsCache[id][query].results;
-      }
-    };
+    // // read the autosuggest cache
+    // service.getAutocompleteResults = function (id, query) {
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id])) {
+    //     service.autocompleteResultsCache[id] = [];
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //
+    //   return service.autocompleteResultsCache[id][query].results;
+    // };
+    //
+    // service.getAutocompleteResultsCache = function (id, query) {
+    //   if (service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
+    //     return service.autocompleteResultsCache[id][query].results;
+    //   }
+    // };
 
     service.sortAutocompleteResults = function (field_id, query) {
       if (query == '*') { // When the query is not *, the user typed a query. In that case, BioPortal already will sort the results so we don't want to sort them
@@ -71,7 +71,6 @@ define([
       }
     };
 
-
     service.setAutocompleteResultsPaging = function (field_id, query, field_type, source_uri, response) {
 
       // page, pageCount, pageSize, prevPage, nextPage
@@ -97,7 +96,6 @@ define([
       }
     };
 
-
     service.removeAutocompleteResultsForSource = function (id, query, source_uri) {
       // remove results for this source
       if (service.autocompleteResultsCache[id][query]) {
@@ -109,14 +107,13 @@ define([
       }
     };
 
-    // is this term in the the cache?
+    // Checks if a term is cached
     service.hasTerm = function (id, query, source_uri, termId) {
       var source = service.autocompleteResultsCache[id][query].results[source_uri];
       return source && source['@id'] == termId;
     };
 
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
-
       // results could be a list or not, put all results into an array
       let collection = [];
       let result;
@@ -180,10 +177,8 @@ define([
           }
         }
       }
-
       // save the paging
       service.setAutocompleteResultsPaging(id, query, field_type, source_uri, response);
-
       // finally sort the list
       service.sortAutocompleteResults(id, query);
     };
@@ -237,7 +232,6 @@ define([
       var id = DataManipulationService.getId(field);
       var promises = [];
       service.initResults(id, query);
-
 
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {
@@ -342,7 +336,6 @@ define([
         });
       }
 
-
       // only load the sorted move mods the first time, not on subsequent pages
       if (vcst.actions && vcst.actions.length > 0 && !next) {
 
@@ -413,7 +406,7 @@ define([
       service.updateFieldAutocomplete(schema, term, false);
       return result;
     };
-
+    
     return service;
   }
 
