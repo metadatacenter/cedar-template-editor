@@ -248,6 +248,7 @@ define([
                 {
                   '@id'       : klass.uri,
                   'label'     : klass.label,
+                  'fullLabel' : klass.label,
                   'rdfs:label': klass.label,
                   'type'      : klass.type,
                   'source'    : klass.source,
@@ -260,6 +261,7 @@ define([
                   {
                     '@id'       : klass.uri,
                     'label'     : klass.label,
+                    'fullLabel' : klass.label,
                     'rdfs:label': klass.label,
                     'type'      : klass.type,
                     'source'    : klass.source,
@@ -363,7 +365,6 @@ define([
                         });
               }
               if (action.type == "OntologyClass") {
-                //let acronym = uriArr[uriArr.length - 1];
                 let acronym = action.source;
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
@@ -380,15 +381,13 @@ define([
       return promises;
     };
 
-    // Note that this only checks the values if the autocomplete cache has them and the cache
-    // will be empty if the user didn't use autocomplete in this session for this field.
+    // Note that this function only checks the values if they are in the cache. The cache will be empty if the user
+    // didn't use autocomplete in this session for this field.
     service.isValueConformedToConstraint = function (value, location, id, vcst, query) {
-
       var isValid = true;
       if (value && service.autocompleteResultsCache && service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
         var predefinedValues = service.autocompleteResultsCache[id][query].results;
         var isValid = false;
-
         angular.forEach(predefinedValues, function (val) {
           if (!isValid) {
             isValid = val[location] == value[location];
@@ -398,11 +397,9 @@ define([
       return isValid;
     };
 
-
-    // is this term in the the cache?
+    // Checks if 'term' is in the cache
     service.isCached = function (id, term, schema) {
       var result = false;
-
       if (term && id && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
         var values = Object.values(service.autocompleteResultsCache[id]);
         angular.forEach(values, function (obj) {

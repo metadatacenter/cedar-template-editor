@@ -9,7 +9,7 @@
     <ui-select-match allow-clear="true" placeholder="">{{$select.selected['label']}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
-        refresh="updateFieldAutocomplete(field,$select.search, false)"
+        refresh="updateFieldAutocomplete(field, $select.search, false)"
         refresh-delay="200"
         repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: { 'fullLabel': $select.search} | limitTo:500">
       <div>
