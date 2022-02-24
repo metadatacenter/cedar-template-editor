@@ -1,4 +1,4 @@
-<div class="has-constraint " >
+<div class="has-constraint ">
   <ui-select
       ng-change="onChange()"
       ng-model="data.termInfo"
@@ -9,12 +9,13 @@
     <ui-select-match allow-clear="true" placeholder="">{{$select.selected['label']}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
-        refresh="updateFieldAutocomplete(field,$select.search, false)"
+        refresh="updateFieldAutocomplete(field, $select.search, false)"
         refresh-delay="200"
-        repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: { 'label': $select.search} | limitTo:500">
+        repeat="option in order(autocompleteResultsCache[getId()][$select.search || '*']['results']) | propsFilter: { 'fullLabel': $select.search} | limitTo:500">
       <div>
         <span class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.label | highlight: $select.search"></span>&nbsp;
+        <span ng-if="option.matchedSynonym" style="color:#888888" ng-bind-html=" '(Synonym: ' + option.matchedSynonym + ')' | highlight: $select.search"></span>&nbsp;
       </div>
     </ui-select-choices>
   </ui-select>

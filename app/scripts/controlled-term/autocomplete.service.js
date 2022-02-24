@@ -6,7 +6,8 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.autocompleteService', [])
       .factory('autocompleteService', autocompleteService);
 
-  autocompleteService.$inject = ['$translate', 'controlledTermService', 'controlledTermDataService', 'DataManipulationService'];
+  autocompleteService.$inject = ['$translate', 'controlledTermService', 'controlledTermDataService',
+                                 'DataManipulationService'];
 
   function autocompleteService($translate, controlledTermService, controlledTermDataService, DataManipulationService) {
     var service = {
@@ -14,50 +15,50 @@ define([
       autocompleteResultsCache: {}
     };
 
-    // read the autosuggest cache
-    service.getAutocompleteResults = function (id, query) {
-      if (angular.isUndefined(service.autocompleteResultsCache[id])) {
-        service.autocompleteResultsCache[id] = [];
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
-
-      if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
-        service.autocompleteResultsCache[id][query] = {
-          'results': []
-        };
-      }
-
-      return service.autocompleteResultsCache[id][query].results;
-    };
-
-    service.getAutocompleteResultsCache = function (id, query) {
-      if (service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
-        return service.autocompleteResultsCache[id][query].results;
-      }
-    };
+    // // read the autosuggest cache
+    // service.getAutocompleteResults = function (id, query) {
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id])) {
+    //     service.autocompleteResultsCache[id] = [];
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //
+    //   if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
+    //     service.autocompleteResultsCache[id][query] = {
+    //       'results': []
+    //     };
+    //   }
+    //
+    //   return service.autocompleteResultsCache[id][query].results;
+    // };
+    //
+    // service.getAutocompleteResultsCache = function (id, query) {
+    //   if (service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
+    //     return service.autocompleteResultsCache[id][query].results;
+    //   }
+    // };
 
     service.sortAutocompleteResults = function (field_id, query) {
-      service.autocompleteResultsCache[field_id][query].results.sort(function (a, b) {
-        if (a.label && b.label) {
-          var labelA = a.label.toLowerCase();
-          var labelB = b.label.toLowerCase();
-          if (labelA < labelB)
-            return -1;
-          if (labelA > labelB)
-            return 1;
-        }
-        return 0;
-      });
+      if (query == '*') { // When the query is not *, the user typed a query. In that case, BioPortal already will sort the results so we don't want to sort them
+        service.autocompleteResultsCache[field_id][query].results.sort(function (a, b) {
+          if (a.label && b.label) {
+            var labelA = a.label.toLowerCase();
+            var labelB = b.label.toLowerCase();
+            if (labelA < labelB)
+              return -1;
+            if (labelA > labelB)
+              return 1;
+          }
+          return 0;
+        });
+      }
     };
-
 
     service.getPage = function (field_id, query, field_type, source_uri) {
       try {
         return service.autocompleteResultsCache[field_id][query].paging[field_type][source_uri].nextPage;
-      }
-      catch (error) {
+      } catch (error) {
         return 0;
       }
     };
@@ -65,12 +66,10 @@ define([
     service.getSize = function (field_id, query, field_type, source_uri) {
       try {
         return service.autocompleteResultsCache[field_id][query].paging[field_type][source_uri].pageSize;
-      }
-      catch (error) {
+      } catch (error) {
         return 0;
       }
     };
-
 
     service.setAutocompleteResultsPaging = function (field_id, query, field_type, source_uri, response) {
 
@@ -97,7 +96,6 @@ define([
       }
     };
 
-
     service.removeAutocompleteResultsForSource = function (id, query, source_uri) {
       // remove results for this source
       if (service.autocompleteResultsCache[id][query]) {
@@ -109,12 +107,12 @@ define([
       }
     };
 
-    // is this term in the the cache?
+    // Checks if a term is cached
     service.hasTerm = function (id, query, source_uri, termId) {
       var source = service.autocompleteResultsCache[id][query].results[source_uri];
       return source && source['@id'] == termId;
     };
-    
+
     service.processAutocompleteClassResults = function (id, query, field_type, source_uri, response) {
       // results could be a list or not, put all results into an array
       let collection = [];
@@ -122,33 +120,39 @@ define([
       if (angular.isDefined(response.collection)) {
         let sourceFieldName = service.getSourceFieldNameFromResults(response.collection);
         for (i = 0; i < response.collection.length; i++) {
+          let matchedSynonym = response.collection[i].matchedSynonyms ? response.collection[i].matchedSynonyms[0] : null;
           result = {
-            '@id'      : response.collection[i]['@id'],
-            'notation' : response.collection[i].notation,
-            'label'    : response.collection[i].prefLabel,
-            'type'     : response.collection[i].type,
-            'source'   : controlledTermService.getLastFragmentOfUri(response.collection[i][sourceFieldName]),
-            'sourceUri': source_uri,
+            '@id'           : response.collection[i]['@id'],
+            'notation'      : response.collection[i].notation,
+            'label'         : response.collection[i].prefLabel,
+            'matchedSynonym': matchedSynonym,
+            'fullLabel'     : response.collection[i].prefLabel + (matchedSynonym ? ' ' + matchedSynonym : ''), // Don't want to include parentheses because this label is just used for ranking the results
+            'type'          : response.collection[i].type,
+            'source'        : controlledTermService.getLastFragmentOfUri(response.collection[i][sourceFieldName]),
+            'sourceUri'     : source_uri,
           };
           collection.push(result);
         }
       } else {
         let sourceFieldName = service.getSourceFieldNameFromResult(response);
+        let matchedSynonym = response.matchedSynonyms ? response.matchedSynonyms[0] : null;
         result = {
-          '@id'      : response['@id'],
-          'notation' : response.notation,
-          'label'    : response.prefLabel,
-          'type'     : response.type,
-          'source'   : controlledTermService.getLastFragmentOfUri(response[sourceFieldName]),
-          'sourceUri': source_uri,
-
+          '@id'           : response['@id'],
+          'notation'      : response.notation,
+          'label'         : response.prefLabel,
+          'matchedSynonym': matchedSynonym,
+          'fullLabel'     : response.prefLabel + (matchedSynonym ? ' ' + matchedSynonym : ''),
+          'type'          : response.type,
+          'source'        : controlledTermService.getLastFragmentOfUri(response[sourceFieldName]),
+          'sourceUri'     : source_uri,
         };
         collection.push(result);
       }
 
       // mark the ones we already have to prevent flicker
       for (var i = 0; i < collection.length; i++) {
-        let index = service.autocompleteResultsCache[id][query].results.findIndex(item => (item['sourceUri'] == source_uri &&  item['@id'] == collection[i]['@id']));
+        let index = service.autocompleteResultsCache[id][query].results.findIndex(
+            item => (item['sourceUri'] == source_uri && item['@id'] == collection[i]['@id']));
         collection[i].found = (index > -1);
       }
 
@@ -173,28 +177,26 @@ define([
           }
         }
       }
-
       // save the paging
       service.setAutocompleteResultsPaging(id, query, field_type, source_uri, response);
-
       // finally sort the list
       service.sortAutocompleteResults(id, query);
     };
 
-    service.getSourceFieldNameFromResults = function(results) {
+    service.getSourceFieldNameFromResults = function (results) {
       if (results.length > 0) {
         return service.getSourceFieldNameFromResult(results[0]);
       }
     };
 
-    service.getSourceFieldNameFromResult = function(result) {
-        if ('ontology' in result) {
-          return 'ontology';
-        } else if ('vsCollection' in result) {
-          return 'vsCollection';
-        } else {
-          return 'source'
-        }
+    service.getSourceFieldNameFromResult = function (result) {
+      if ('ontology' in result) {
+        return 'ontology';
+      } else if ('vsCollection' in result) {
+        return 'vsCollection';
+      } else {
+        return 'source'
+      }
     };
 
     service.clearResults = function (id, term) {
@@ -231,7 +233,6 @@ define([
       var promises = [];
       service.initResults(id, query);
 
-
       // are we searching for classes?
       if (vcst.classes && vcst.classes.length > 0) {
         service.removeAutocompleteResultsForSource(id, query, 'template');
@@ -241,6 +242,7 @@ define([
                 {
                   '@id'       : klass.uri,
                   'label'     : klass.label,
+                  'fullLabel' : klass.label,
                   'rdfs:label': klass.label,
                   'type'      : klass.type,
                   'source'    : klass.source,
@@ -253,6 +255,7 @@ define([
                   {
                     '@id'       : klass.uri,
                     'label'     : klass.label,
+                    'fullLabel' : klass.label,
                     'rdfs:label': klass.label,
                     'type'      : klass.type,
                     'source'    : klass.source,
@@ -333,9 +336,8 @@ define([
         });
       }
 
-
       // only load the sorted move mods the first time, not on subsequent pages
-      if (vcst.actions  && vcst.actions.length > 0 && !next) {
+      if (vcst.actions && vcst.actions.length > 0 && !next) {
 
         angular.forEach(vcst.actions, function (action) {
           if (action.action == 'move') {
@@ -356,7 +358,6 @@ define([
                         });
               }
               if (action.type == "OntologyClass") {
-                //let acronym = uriArr[uriArr.length - 1];
                 let acronym = action.source;
 
                 var promise = controlledTermDataService.getClassById(acronym, classId).then(function (response) {
@@ -373,112 +374,13 @@ define([
       return promises;
     };
 
-
-    // Used in textfield.html
-    // service.updateFieldAutocompleteOld = function (field, term) {
-    //
-    //   var query = term || '*';
-    //   var results = [];
-    //   var vcst = DataManipulationService.getValueConstraint(field);
-    //   var id = DataManipulationService.getId(field);
-    //
-    //
-    //   // initialize the results array
-    //   if (angular.isUndefined(service.autocompleteResultsCache[id])) {
-    //     service.autocompleteResultsCache[id] = [];
-    //     service.autocompleteResultsCache[id][query] = {
-    //       'results': []
-    //     };
-    //   }
-    //   if (angular.isUndefined(service.autocompleteResultsCache[id][query])) {
-    //     service.autocompleteResultsCache[id][query] = {
-    //       'results': []
-    //     };
-    //   }
-    //
-    //   // are we searching for classes?
-    //   if (vcst.classes && vcst.classes.length > 0) {
-    //     service.removeAutocompleteResultsForSource(id, query, 'template');
-    //     angular.forEach(vcst.classes, function (klass) {
-    //       if (query == '*') {
-    //         service.autocompleteResultsCache[id][query].results.push(
-    //             {
-    //               '@id'      : klass.uri,
-    //               'label'    : klass.label,
-    //               'type'     : 'Ontology Class',
-    //               'sourceUri': 'template'
-    //             }
-    //         );
-    //       } else {
-    //         if (klass && klass.label && klass.label.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
-    //           service.autocompleteResultsCache[id][query].results.push(
-    //               {
-    //                 '@id'      : klass.uri,
-    //                 'label'    : klass.label,
-    //                 'type'     : 'Ontology Class',
-    //                 'sourceUri': 'template'
-    //               }
-    //           );
-    //         }
-    //       }
-    //     });
-    //     if (query !== '*') {
-    //       if (service.autocompleteResultsCache[id][query].results.length === 0) {
-    //         service.autocompleteResultsCache[id][query].results.push({
-    //           'label'    : $translate.instant('GENERIC.NoResults'),
-    //           'sourceUri': 'template'
-    //         });
-    //       }
-    //     }
-    //   }
-    //
-    //   if (vcst.valueSets && vcst.valueSets.length > 0) {
-    //     angular.forEach(vcst.valueSets, function (valueSet) {
-    //       if (query == '*') {
-    //         service.removeAutocompleteResultsForSource(id, query, valueSet.uri);
-    //       }
-    //       controlledTermDataService.autocompleteValueSetClasses(query, valueSet.vsCollection,
-    //           valueSet.uri).then(function (childResponse) {
-    //         service.processAutocompleteClassResults(id, query, 'Value Set Class', valueSet.uri, childResponse);
-    //       });
-    //     });
-    //   }
-    //
-    //   if (vcst.ontologies && vcst.ontologies.length > 0) {
-    //     angular.forEach(vcst.ontologies, function (ontology) {
-    //       if (query == '*') {
-    //         service.removeAutocompleteResultsForSource(id, query, ontology.uri);
-    //       }
-    //       controlledTermDataService.autocompleteOntology(query, ontology.acronym).then(function (childResponse) {
-    //         service.processAutocompleteClassResults(id, query, 'Ontology Class', ontology.uri, childResponse);
-    //       });
-    //     });
-    //   }
-    //
-    //   if (vcst.branches && vcst.branches.length > 0) {
-    //     angular.forEach(vcst.branches, function (branch) {
-    //       if (query == '*') {
-    //         service.removeAutocompleteResultsForSource(id, query, branch.uri);
-    //       }
-    //       controlledTermDataService.autocompleteOntologySubtree(query, branch.acronym, branch.uri,
-    //           branch.maxDepth).then(
-    //           function (childResponse) {
-    //             service.processAutocompleteClassResults(id, query, 'Ontology Class', branch.uri, childResponse);
-    //           }
-    //       );
-    //     });
-    //   }
-    // };
-
-    // Note that this only checks the values if the autocomplete cache has them and the cache
-    // will be empty if the user didn't use autocomplete in this session for this field.
+    // Note that this function only checks the values if they are in the cache. The cache will be empty if the user
+    // didn't use autocomplete in this session for this field.
     service.isValueConformedToConstraint = function (value, location, id, vcst, query) {
-
       var isValid = true;
       if (value && service.autocompleteResultsCache && service.autocompleteResultsCache[id] && service.autocompleteResultsCache[id][query]) {
         var predefinedValues = service.autocompleteResultsCache[id][query].results;
         var isValid = false;
-
         angular.forEach(predefinedValues, function (val) {
           if (!isValid) {
             isValid = val[location] == value[location];
@@ -488,11 +390,9 @@ define([
       return isValid;
     };
 
-
-    // is this term in the the cache?
+    // Checks if 'term' is in the cache
     service.isCached = function (id, term, schema) {
       var result = false;
-
       if (term && id && service.autocompleteResultsCache && service.autocompleteResultsCache[id]) {
         var values = Object.values(service.autocompleteResultsCache[id]);
         angular.forEach(values, function (obj) {
@@ -506,7 +406,7 @@ define([
       service.updateFieldAutocomplete(schema, term, false);
       return result;
     };
-
+    
     return service;
   }
 
