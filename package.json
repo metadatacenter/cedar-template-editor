@@ -9,7 +9,7 @@
   "scripts": {
     "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Chrome --single-run",
     "protractor": "node_modules/protractor/bin/protractor protractor.config.js",
-    "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=78.0.3904.70",
+    "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=105.0.5195.125",
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
     "install": "npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
@@ -38,7 +38,7 @@
     "gulp-wait": "0.0.2",
     "jasmine-core": "2.7.0",
     "jshint-stylish": "1.0.2",
-    "karma": "0.13.22",
+    "karma": "^6.4.1",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "0.2.3",
     "karma-firefox-launcher": "0.1.7",
