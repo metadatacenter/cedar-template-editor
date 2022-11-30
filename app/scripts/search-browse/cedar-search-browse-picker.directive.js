@@ -582,6 +582,7 @@ define([
             vm.canNotCreateDraft = !vm.canCreateDraft();
             vm.canNotMakeOpen = !vm.canMakeOpen();
             vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
+            vm.canNotOpenOpen = !vm.canOpenOpen();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -684,6 +685,10 @@ define([
 
           vm.canMakeNotOpen = function () {
             return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
+          };
+
+          vm.canOpenOpen = function () {
+            return window.makeOpenEnabled && resourceService.canOpenOpen(vm.getSelectedNode());
           };
 
           vm.doShowCategoryTree = function () {
