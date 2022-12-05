@@ -1765,12 +1765,24 @@ define([
             return result;
           }
 
-          function isElement() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
+          function isElement(resource) {
+            let result = false;
+            if(resource){
+              result = (resource.resourceType === CONST.resourceType.ELEMENT);
+            } else {
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
+            }
+            return result;
           }
 
-          function isField() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
+          function isField(resource) {
+            let result = false;
+            if (resource) {
+              result = (resource.resourceType === CONST.resourceType.FIELD);
+            } else {
+              result =  (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
+            }
+            return result;
           }
 
           function isFolder(resource) {
@@ -1783,8 +1795,14 @@ define([
             return result;
           }
 
-          function isMeta() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
+          function isMeta(resource) {
+            let result = false;
+            if(resource){
+              result = (resource.resourceType === CONST.resourceType.INSTANCE)
+            }else {
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
+            }
+            return result;
           }
 
           function goToHomeFolder(resourceId) {
