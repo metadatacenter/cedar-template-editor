@@ -1405,6 +1405,7 @@ define([
           }
 
           function openOpen(resource) {
+            console.log("Resource: ", resource);
             if (!resource) {
               resource = getSelected();
             }
@@ -1412,12 +1413,14 @@ define([
             if (isElement(resource)) {
               url = FrontendUrlService.openElement(resource['@id']);
             } else if (isField(resource)) {
+              console.log("Field :", FrontendUrlService.openField(resource['@id']));
               url = FrontendUrlService.openField(resource['@id']);
             } else if (isTemplate(resource)) {
               url = FrontendUrlService.openTemplate(resource['@id']);
             } else if (isMeta(resource)) {
               url = FrontendUrlService.openInstance(resource['@id']);
             }
+            console.log("Url: ", url);
             //console.log("OpenView:" + url);
             $window.open(url, '_blank');
           }

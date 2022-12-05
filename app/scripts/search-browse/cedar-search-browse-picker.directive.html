@@ -422,7 +422,7 @@
                           <i class="fa fa-shield">&nbsp;</i>
                         </div>
                         <!-- OpenView icon -->
-                        <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                        <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
                              uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                              tooltip-placement="top">
                           <i class="action fa fa-external-link-square">&nbsp;</i>
@@ -592,7 +592,7 @@
                         <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
                       </div>
                       <!-- OpenView icon -->
-                      <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                      <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
