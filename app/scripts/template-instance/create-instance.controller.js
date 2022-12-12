@@ -89,6 +89,7 @@ define([
             $scope.$apply();
         }).catch((err)=>{
             UIMessageService.flashWarning('METADATAEDITOR.JsonLDCopyFail', {"title": "METADATAEDITOR.JsonLDCopyFail"}, 'GENERIC.Error');
+            console.error(err);
             $scope.$apply();
         });
       };
