@@ -548,7 +548,8 @@
   "METADATAEDITOR": {
     "invalidTerm": "Invalid term",
     "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date.",
-    "JsonLDCopied" : "JSON-LD copied to clipboard"
+    "JsonLDCopied" : "JSON-LD copied to clipboard",
+    "JsonLDCopyFail" : "JSON-LD can not be copied to clipboard"
   },
   "TEMPLATEEDITOR": {
     "clear": {

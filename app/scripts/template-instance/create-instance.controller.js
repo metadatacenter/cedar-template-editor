@@ -83,6 +83,16 @@ define([
       UIUtilService.setLocked($scope.cannotWrite);
     });
 
+    $scope.copy2Clipboard = function () {
+        navigator.clipboard.writeText(JSON.stringify($rootScope.jsonToSave)).then(function(){
+            UIMessageService.flashSuccess('METADATAEDITOR.JsonLDCopied', {"title": "METADATAEDITOR.JsonLDCopied"}, 'GENERIC.Copied');
+            $scope.$apply();
+        }).catch((err)=>{
+            UIMessageService.flashWarning('METADATAEDITOR.JsonLDCopyFail', {"title": "METADATAEDITOR.JsonLDCopyFail"}, 'GENERIC.Error');
+            $scope.$apply();
+        });
+      };
+
     const getDetails = function (id) {
       if (id) {
         resourceService.getResourceDetailFromId(
