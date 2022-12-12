@@ -1025,9 +1025,10 @@ define([
       };
 
 // add more instances to a multiple cardinality field if possible by copying the selected instance
+// December 2022, Change: instead of copying the selected instance, an empty instance is created now
+// so copy actually works like add
       $scope.copyField = function () {
         let inputType = $scope.getInputType();
-        let valueLocation = $scope.getValueLocation();
         let maxItems = schemaService.getMaxItems($scope.field);
 
         if ((!maxItems || $scope.model.length < maxItems)) {
@@ -1037,28 +1038,22 @@ define([
               break;
             case 'textfield':
               if (schemaService.hasValueConstraints($scope.field)) {
-                let obj = {
-                  '@id'       : $scope.valueArray[$scope.index]['@id'],
-                  'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
-                };
+                let obj = {};
                 $scope.model.splice($scope.index + 1, 0, obj);
 
               } else {
                 let obj = {};
-                obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
                 $scope.model.splice($scope.index + 1, 0, obj);
               }
               $timeout($scope.setActive($scope.index + 1, true), 100);
               break;
             case 'numeric':
-              let numberObj = {'@value': $scope.valueArray[$scope.index]['@value']};
+              let numberObj = {};
               $scope.model.splice($scope.index + 1, 0, numberObj);
-              $scope.data.info.splice($scope.index + 1, 0, {'value': $scope.data.info[$scope.index].value});
               $timeout($scope.setActive($scope.index + 1, true), 100);
               break;
             default :
               let obj = {};
-              obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
               $scope.model.splice($scope.index + 1, 0, obj);
               $timeout($scope.setActive($scope.index + 1, true), 100);
           }

@@ -378,7 +378,7 @@ define([
 
       // Adds a new empty element to the array
       scope.addElement = function () {
-        if (angular.isArray(scope.model) && scope.model.length == 0) {
+        if (angular.isArray(scope.model)) {
           // create a new element from scratch
           var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
@@ -389,7 +389,7 @@ define([
               dms.findChildren(properties, m, true);
             });
           }
-          scope.setActive(0, true);
+          scope.setActive(scope.index + 1, true);
         } else {
           scope.copyElement();
         }
