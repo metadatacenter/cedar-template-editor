@@ -202,7 +202,8 @@
     "TrustedBy": "Trusted by",
     "Header": "Header Information",
     "Footer": "Footer Information",
-    "NothingFound": "Nothing found"
+    "NothingFound": "Nothing found",
+    "CopyToClipboard" : "Copy to clipboard"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -546,7 +547,8 @@
   },
   "METADATAEDITOR": {
     "invalidTerm": "Invalid term",
-    "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date."
+    "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date.",
+    "JsonLDCopied" : "JSON-LD copied to clipboard"
   },
   "TEMPLATEEDITOR": {
     "clear": {
