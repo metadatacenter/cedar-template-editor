@@ -1797,17 +1797,37 @@ define([
             return result;
           }
 
-          function copyFolderId(resource) {
-            if (!resource || !resource['@id'])
-              return;
-            navigator.clipboard.writeText(resource['@id']);
+          // Copies folder Id to clipboard
+          function copyFolderId() {
+            const folderId = getFolderId();
+            navigator.clipboard.writeText(folderId);
           }
 
-          function copyParentFolderId({pathInfo}) {
+          // returns folder id
+          function getFolderId() {
+            const resource = getSelected();
+            if (!resource || !resource['@id'])
+              return;
+            const folderId = resource['@id'];
+            console.log("Folder id", folderId);
+            return folderId;
+          }
+
+          function getParentFolderId() {
+            const {pathInfo} = getSelected();
+            console.log("Path info", pathInfo);
             if (!pathInfo.length)
               return;
             // parent folder is the second item from last
-            navigator.clipboard.writeText(pathInfo[pathInfo.length-2]['@id']);
+            const parentFolderId = pathInfo[pathInfo.length-2]['@id'];
+            console.log("Parent folder id", parentFolderId);
+            return parentFolderId;
+          }
+
+          // Copies parent folder Id to clipboard
+          function copyParentFolderId() {
+            const parentFolderId = getParentFolderId();
+            navigator.clipboard.writeText(parentFolderId);
           }
 
           function isMeta(resource) {

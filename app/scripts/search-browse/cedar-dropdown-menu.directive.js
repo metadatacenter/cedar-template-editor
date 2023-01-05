@@ -46,6 +46,8 @@ define([
         isFolder         : '=',
         toggleId         : "=",
         copyFolderId     : "=",
+        getFolderId     : "=",
+        getParentFolderId     : "=",
         copyParentFolderId     : "="
       },
       controller : function ($scope, $element) {
