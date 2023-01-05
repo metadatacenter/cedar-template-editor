@@ -97,6 +97,7 @@ define([
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
           vm.copyFolderId = copyFolderId;
+          vm.copyParentFolderId = copyParentFolderId;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -1797,12 +1798,16 @@ define([
           }
 
           function copyFolderId(resource) {
-            if (!resource)
+            if (!resource || !resource['@id'])
               return;
-            const url = resource['@id']
-            const id = url.split("/")
-            console.log(resource);
-            navigator.clipboard.writeText(id);
+            navigator.clipboard.writeText(resource['@id']);
+          }
+
+          function copyParentFolderId({pathInfo}) {
+            if (!pathInfo.length)
+              return;
+            // parent folder is the second item from last
+            navigator.clipboard.writeText(pathInfo[pathInfo.length-2]['@id']);
           }
 
           function isMeta(resource) {

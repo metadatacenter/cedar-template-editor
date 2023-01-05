@@ -8,6 +8,7 @@
   <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)" translate>DASHBOARD.menu.move</a></li>
   <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)" translate>DASHBOARD.menu.rename</a></li>
   <li><a href="#" class="copyFolderId" ng-class="{'link-disabled': !isFolder}" ng-click="copyFolderId(resource)" translate>DASHBOARD.menu.copyFolderId</a></li>
+  <li><a href="#" class="copyParentFolderId" ng-click="copyParentFolderId(resource)" translate>DASHBOARD.menu.copyParentFolderId</a></li>
   <li role="separator" class="divider"></li>
   <li><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
   <li><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>

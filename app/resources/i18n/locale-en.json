@@ -450,6 +450,7 @@
       "share": "Share...",
       "copy": "Copy to...",
       "copyFolderId": "Copy folder Id",
+      "copyParentFolderId": "Copy parent folder Id",
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",
