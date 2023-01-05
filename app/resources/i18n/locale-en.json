@@ -449,6 +449,7 @@
       "delete": "Delete",
       "share": "Share...",
       "copy": "Copy to...",
+      "copyFolderId": "Copy folder ID",
       "move": "Move to...",
       "rename": "Rename...",
       "submit": "Submit...",

@@ -96,6 +96,7 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
+          vm.copyFolderId = copyFolderId;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -1369,6 +1370,7 @@ define([
           }
 
           function makeOpen(resource) {
+            console.log("here");
             if (!resource) {
               resource = getSelected();
             }
@@ -1447,7 +1449,6 @@ define([
 
 
           function goToResource(value, action) {
-
             const resource = value || getSelected();
             if (resource) {
               if (resource.resourceType === 'folder') {
@@ -1793,6 +1794,15 @@ define([
               result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.FOLDER))
             }
             return result;
+          }
+
+          function copyFolderId(resource) {
+            if (!resource)
+              return;
+            const url = resource['@id']
+            const id = url.split("/")
+            console.log(resource);
+            navigator.clipboard.writeText(id);
           }
 
           function isMeta(resource) {
