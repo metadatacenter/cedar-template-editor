@@ -96,8 +96,10 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
-          vm.copyFolderId = copyFolderId;
-          vm.copyParentFolderId = copyParentFolderId;
+          vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
+          vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
+          vm.getSelectedFolderId = getSelectedFolderId;
+          vm.getSelectedParentFolderId = getSelectedParentFolderId;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -1797,36 +1799,32 @@ define([
             return result;
           }
 
-          // Copies folder Id to clipboard
-          function copyFolderId() {
-            const folderId = getFolderId();
-            navigator.clipboard.writeText(folderId);
-          }
-
-          // returns folder id
-          function getFolderId() {
+          function getSelectedFolderId() {
             const resource = getSelected();
             if (!resource || !resource['@id'])
               return;
             const folderId = resource['@id'];
-            console.log("Folder id", folderId);
             return folderId;
           }
 
-          function getParentFolderId() {
+          function getSelectedParentFolderId() {
             const {pathInfo} = getSelected();
-            console.log("Path info", pathInfo);
-            if (!pathInfo.length)
+            if (!pathInfo?.length)
               return;
             // parent folder is the second item from last
             const parentFolderId = pathInfo[pathInfo.length-2]['@id'];
-            console.log("Parent folder id", parentFolderId);
             return parentFolderId;
           }
 
+          // Copies folder Id to clipboard
+          function copyFolderId2Clipboard() {
+            const folderId = getSelectedFolderId();
+            navigator.clipboard.writeText(folderId);
+          }
+
           // Copies parent folder Id to clipboard
-          function copyParentFolderId() {
-            const parentFolderId = getParentFolderId();
+          function copyParentFolderId2Clipboard() {
+            const parentFolderId = getSelectedParentFolderId();
             navigator.clipboard.writeText(parentFolderId);
           }
 
