@@ -1025,10 +1025,9 @@ define([
       };
 
 // add more instances to a multiple cardinality field if possible by copying the selected instance
-// December 2022, Change: instead of copying the selected instance, an empty instance is created now
-// so copy actually works like add
       $scope.copyField = function () {
         let inputType = $scope.getInputType();
+        let valueLocation = $scope.getValueLocation();
         let maxItems = schemaService.getMaxItems($scope.field);
 
         if ((!maxItems || $scope.model.length < maxItems)) {
@@ -1038,22 +1037,28 @@ define([
               break;
             case 'textfield':
               if (schemaService.hasValueConstraints($scope.field)) {
-                let obj = {};
+                let obj = {
+                  '@id'       : $scope.valueArray[$scope.index]['@id'],
+                  'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
+                  '@value'    : $scope.valueArray[$scope.index][valueLocation]
+                };
                 $scope.model.splice($scope.index + 1, 0, obj);
-
               } else {
                 let obj = {};
+                obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
                 $scope.model.splice($scope.index + 1, 0, obj);
               }
               $timeout($scope.setActive($scope.index + 1, true), 100);
               break;
             case 'numeric':
-              let numberObj = {};
+              let numberObj = {'@value': $scope.valueArray[$scope.index]['@value']};
               $scope.model.splice($scope.index + 1, 0, numberObj);
+              $scope.data.info.splice($scope.index + 1, 0, {'value': $scope.data.info[$scope.index].value});
               $timeout($scope.setActive($scope.index + 1, true), 100);
               break;
             default :
               let obj = {};
+              obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
               $scope.model.splice($scope.index + 1, 0, obj);
               $timeout($scope.setActive($scope.index + 1, true), 100);
           }
@@ -1088,22 +1093,18 @@ define([
 
           var attributeName = $scope.getNewAttributeName('', parent);
           if (!$scope.isDuplicateAttribute(attributeName, parent)) {
-
             if (Array.isArray(parentModel)) {
               for (var i = 0; i < parentModel.length; i++) {
-
                 parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
                 parentModel[i][attributeName] = {'@value': null};
               }
             } else {
-
               parentModel[$scope.fieldKey][$scope.index] = attributeName;
               parentModel[attributeName] = {'@value': null};
             }
             $scope.setValueArray();
             $scope.setAttributeValueArray();
             $scope.setActive($scope.model.length - 1, true);
-
           }
 
         } else {
@@ -1122,7 +1123,6 @@ define([
           }
         }
         $scope.pageMinMax();
-
       };
 
 // remove the value of field at index

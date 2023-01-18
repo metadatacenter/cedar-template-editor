@@ -359,6 +359,7 @@ define([
 
       // make a copy of element at index, insert it after index
       scope.copyElement = function (index) {
+        console.log("copying element");
         if (scope.isMultiple()) {
           var fromIndex = (typeof index === 'undefined') ? scope.index : index;
           var maxItems = schemaService.getMaxItems(scope.element);
@@ -378,7 +379,9 @@ define([
 
       // Adds a new empty element to the array
       scope.addElement = function () {
-        if (angular.isArray(scope.model)) {
+        console.log("adding element", scope.model);
+        // if (angular.isArray(scope.model)&& scope.model.length == 0) {
+
           // create a new element from scratch
           var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
@@ -390,9 +393,9 @@ define([
             });
           }
           scope.setActive(scope.index + 1, true);
-        } else {
-          scope.copyElement();
-        }
+        // } else {
+        //   scope.copyElement();
+        // }
       };
 
       // remove the element at index

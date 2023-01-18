@@ -30,14 +30,14 @@
   <button type="button" class="copy" tooltip-append-to-body="true"
       ng-if="canCopy()"
       ng-click="copy(index);$event.stopPropagation()"
-      uib-tooltip="{{'GENERIC.Add' | translate}}"
+      uib-tooltip="{{'GENERIC.Copy' | translate}}"
       tooltip-enable="canCopy()">
     <i class="fa fa-copy"></i>
   </button>
 
   <button type="button" class="copy" tooltip-append-to-body="true"
           ng-if="canCopy()"
-          ng-click="copy(index);$event.stopPropagation()"
+          ng-click="add();$event.stopPropagation()"
           uib-tooltip="{{'GENERIC.Add' | translate}}"
           tooltip-enable="canCopy()">
     <i class="fa fa-plus"></i>
