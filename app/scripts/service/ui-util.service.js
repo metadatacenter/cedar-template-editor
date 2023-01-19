@@ -202,7 +202,7 @@ define([
 
       // create the new spreadsheet
       if (viewState.selected == 'spreadsheet' && typeof viewState.spreadsheetCallback == 'function') {
-        setTimeout(function () {
+          setTimeout(function () {
           viewState.spreadsheetCallback();
         });
       }
