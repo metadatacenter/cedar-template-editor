@@ -443,8 +443,10 @@ define([
 
         // build the table for one row
         var extractAndStoreCellData = function (cellDataObject, rowData, columnDescriptor) {
+          //cellDataObject is array for multi-field elements so linearize if that's the case
+          if(Array.isArray(cellDataObject))
+            cellDataObject = cellDataObject[0];
           if (cellDataObject) {
-
             var inputType = columnDescriptor.type;
             var cedarType = columnDescriptor.cedarType;
 
@@ -463,7 +465,6 @@ define([
             } else {
               rowData.push(cellDataObject['rdfs:label'] || cellDataObject['@value']);
             }
-
           } else {
             console.log('Error: missing cellDataObject');
           }

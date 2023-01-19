@@ -190,7 +190,6 @@ define([
 
     // toggle through the list of view states, call the callback for spreadsheets
     service.toggleView = function (viewState) {
-
       var oldState = viewState.selected;
       var index = viewState.views.indexOf(viewState.selected);
       index = (index + 1) % viewState.views.length;
