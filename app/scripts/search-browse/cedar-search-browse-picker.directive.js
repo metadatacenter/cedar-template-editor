@@ -96,6 +96,10 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
+          vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
+          vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
+          vm.getSelectedFolderId = getSelectedFolderId;
+          vm.getSelectedParentFolderId = getSelectedParentFolderId;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -1369,6 +1373,7 @@ define([
           }
 
           function makeOpen(resource) {
+            console.log("here");
             if (!resource) {
               resource = getSelected();
             }
@@ -1447,7 +1452,6 @@ define([
 
 
           function goToResource(value, action) {
-
             const resource = value || getSelected();
             if (resource) {
               if (resource.resourceType === 'folder') {
@@ -1793,6 +1797,35 @@ define([
               result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.FOLDER))
             }
             return result;
+          }
+
+          function getSelectedFolderId() {
+            const resource = getSelected();
+            if (!resource || !resource['@id'])
+              return;
+            const folderId = resource['@id'];
+            return folderId;
+          }
+
+          function getSelectedParentFolderId() {
+            const {pathInfo} = getSelected();
+            if (!pathInfo?.length)
+              return;
+            // parent folder is the second item from last
+            const parentFolderId = pathInfo[pathInfo.length-2]['@id'];
+            return parentFolderId;
+          }
+
+          // Copies folder Id to clipboard
+          function copyFolderId2Clipboard() {
+            const folderId = getSelectedFolderId();
+            navigator.clipboard.writeText(folderId);
+          }
+
+          // Copies parent folder Id to clipboard
+          function copyParentFolderId2Clipboard() {
+            const parentFolderId = getSelectedParentFolderId();
+            navigator.clipboard.writeText(parentFolderId);
           }
 
           function isMeta(resource) {
