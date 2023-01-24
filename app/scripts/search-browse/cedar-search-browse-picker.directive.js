@@ -96,6 +96,10 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.isSelected = isSelected;
+          vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
+          vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
+          vm.getSelectedFolderId = getSelectedFolderId;
+          vm.getSelectedParentFolderId = getSelectedParentFolderId;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -582,6 +586,7 @@ define([
             vm.canNotCreateDraft = !vm.canCreateDraft();
             vm.canNotMakeOpen = !vm.canMakeOpen();
             vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
+            vm.canNotOpenOpen = !vm.canOpenOpen();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -684,6 +689,10 @@ define([
 
           vm.canMakeNotOpen = function () {
             return window.makeOpenEnabled && resourceService.canMakeNotOpen(vm.getSelectedNode());
+          };
+
+          vm.canOpenOpen = function () {
+            return window.makeOpenEnabled && resourceService.canOpenOpen(vm.getSelectedNode());
           };
 
           vm.doShowCategoryTree = function () {
@@ -1364,6 +1373,7 @@ define([
           }
 
           function makeOpen(resource) {
+            console.log("here");
             if (!resource) {
               resource = getSelected();
             }
@@ -1442,7 +1452,6 @@ define([
 
 
           function goToResource(value, action) {
-
             const resource = value || getSelected();
             if (resource) {
               if (resource.resourceType === 'folder') {
@@ -1760,12 +1769,24 @@ define([
             return result;
           }
 
-          function isElement() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
+          function isElement(resource) {
+            let result = false;
+            if(resource){
+              result = (resource.resourceType === CONST.resourceType.ELEMENT);
+            } else {
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
+            }
+            return result;
           }
 
-          function isField() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
+          function isField(resource) {
+            let result = false;
+            if (resource) {
+              result = (resource.resourceType === CONST.resourceType.FIELD);
+            } else {
+              result =  (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
+            }
+            return result;
           }
 
           function isFolder(resource) {
@@ -1778,8 +1799,43 @@ define([
             return result;
           }
 
-          function isMeta() {
-            return (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
+          function getSelectedFolderId() {
+            const resource = getSelected();
+            if (!resource || !resource['@id'])
+              return;
+            const folderId = resource['@id'];
+            return folderId;
+          }
+
+          function getSelectedParentFolderId() {
+            const {pathInfo} = getSelected();
+            if (!pathInfo?.length)
+              return;
+            // parent folder is the second item from last
+            const parentFolderId = pathInfo[pathInfo.length-2]['@id'];
+            return parentFolderId;
+          }
+
+          // Copies folder Id to clipboard
+          function copyFolderId2Clipboard() {
+            const folderId = getSelectedFolderId();
+            navigator.clipboard.writeText(folderId);
+          }
+
+          // Copies parent folder Id to clipboard
+          function copyParentFolderId2Clipboard() {
+            const parentFolderId = getSelectedParentFolderId();
+            navigator.clipboard.writeText(parentFolderId);
+          }
+
+          function isMeta(resource) {
+            let result = false;
+            if(resource){
+              result = (resource.resourceType === CONST.resourceType.INSTANCE)
+            }else {
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
+            }
+            return result;
           }
 
           function goToHomeFolder(resourceId) {

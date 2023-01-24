@@ -14,8 +14,6 @@ npm-debug.log
 
 .DS_Store
 
-package-lock.json
-
 app/config/url-service.conf.json
 app/config/controlled-term-data-service.conf.json
 app/config/tracking-service.conf.json

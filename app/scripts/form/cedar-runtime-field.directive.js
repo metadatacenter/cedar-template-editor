@@ -1040,9 +1040,9 @@ define([
                 let obj = {
                   '@id'       : $scope.valueArray[$scope.index]['@id'],
                   'rdfs:label': $scope.valueArray[$scope.index]['rdfs:label'],
+                  '@value'    : $scope.valueArray[$scope.index][valueLocation]
                 };
                 $scope.model.splice($scope.index + 1, 0, obj);
-
               } else {
                 let obj = {};
                 obj[valueLocation] = $scope.valueArray[$scope.index][valueLocation];
@@ -1093,22 +1093,18 @@ define([
 
           var attributeName = $scope.getNewAttributeName('', parent);
           if (!$scope.isDuplicateAttribute(attributeName, parent)) {
-
             if (Array.isArray(parentModel)) {
               for (var i = 0; i < parentModel.length; i++) {
-
                 parentModel[i][$scope.fieldKey][$scope.index] = attributeName;
                 parentModel[i][attributeName] = {'@value': null};
               }
             } else {
-
               parentModel[$scope.fieldKey][$scope.index] = attributeName;
               parentModel[attributeName] = {'@value': null};
             }
             $scope.setValueArray();
             $scope.setAttributeValueArray();
             $scope.setActive($scope.model.length - 1, true);
-
           }
 
         } else {
@@ -1127,7 +1123,6 @@ define([
           }
         }
         $scope.pageMinMax();
-
       };
 
 // remove the value of field at index

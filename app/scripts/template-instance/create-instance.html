@@ -46,6 +46,7 @@
                 <uib-accordion-heading>
                   <i class="cedar-svg-rdf1"></i> JSON-LD <i class="pull-right glyphicon"
                     ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>
+                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyJson2Clipboard()" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
                 </uib-accordion-heading>
                 <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
               </div>
@@ -53,6 +54,7 @@
                 <uib-accordion-heading>
                   <i class="cedar-svg-rdf"></i> RDF <i class="pull-right glyphicon"
                     ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
+                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyRdf2Clipboard(RDF)" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
                 </uib-accordion-heading>
                 <div ng-if="RDF">
                   <pre id='form-json-preview-rdf'>{{RDF}}</pre>

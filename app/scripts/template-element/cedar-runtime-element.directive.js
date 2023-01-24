@@ -163,6 +163,7 @@ define([
         scope.deleteExtraRows();
         //scope.expanded[0] = false;
         SpreadsheetService.destroySpreadsheet(scope);
+        // scope.setValueArray();
       };
 
 
@@ -378,9 +379,7 @@ define([
 
       // Adds a new empty element to the array
       scope.addElement = function () {
-        if (angular.isArray(scope.model) && scope.model.length == 0) {
-          // create a new element from scratch
-          var maxItems = schemaService.getMaxItems(scope.element);
+        var maxItems = schemaService.getMaxItems(scope.element);
           if ((!maxItems || scope.model.length < maxItems)) {
             var seed = {};
             var properties = schemaService.propertiesOf(scope.element);
@@ -389,10 +388,7 @@ define([
               dms.findChildren(properties, m, true);
             });
           }
-          scope.setActive(0, true);
-        } else {
-          scope.copyElement();
-        }
+          scope.setActive(scope.index + 1, true);
       };
 
       // remove the element at index

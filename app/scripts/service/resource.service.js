@@ -61,6 +61,7 @@ define([
           canPublish               : canPublish,
           canMakeOpen              : canMakeOpen,
           canMakeNotOpen           : canMakeNotOpen,
+          canOpenOpen              : canOpenOpen,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
@@ -887,13 +888,15 @@ define([
         }
 
         function canMakeOpen(resource) {
-          // TODO: change this back to canMakeOpen when the backend sends it correctly
-          return this.canDo(resource, 'canWrite') && !(resource.hasOwnProperty('isOpen') && resource['isOpen']);
+          return this.canDo(resource, 'canWrite') && this.canDo(resource, 'canMakeOpen');
         }
 
         function canMakeNotOpen(resource) {
-          // TODO: change this back to canMakeNotOpen when the backend sends it correctly
-          return this.canDo(resource, 'canWrite') && (resource.hasOwnProperty('isOpen') && resource['isOpen']);
+          return this.canDo(resource, 'canWrite') && this.canDo(resource, 'canMakeNotOpen');
+        }
+
+        function canOpenOpen(resource) {
+          return resource.hasOwnProperty('isOpen') && resource['isOpen'];
         }
 
         function canSubmit(resource) {

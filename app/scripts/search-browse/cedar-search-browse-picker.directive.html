@@ -308,7 +308,9 @@
                                                can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="true" can-not-make-not-open="true"
                                                can-not-open-open="true"
-                                               is-folder="dc.isFolder()">
+                                               is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                               copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
+                                               get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -381,8 +383,10 @@
                                                can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen"
                                                can-not-make-not-open="dc.canNotMakeNotOpen"
-                                               can-not-open-open="dc.canNotMakeNotOpen"
-                                               is-folder="dc.isFolder()">
+                                               can-not-open-open="dc.canNotOpenOpen"
+                                               is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                               copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
+                                               get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -422,7 +426,7 @@
                           <i class="fa fa-shield">&nbsp;</i>
                         </div>
                         <!-- OpenView icon -->
-                        <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                        <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
                              uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                              tooltip-placement="top">
                           <i class="action fa fa-external-link-square">&nbsp;</i>
@@ -523,7 +527,9 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotMakeNotOpen">
+                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -592,7 +598,7 @@
                         <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
                       </div>
                       <!-- OpenView icon -->
-                      <div ng-if="dc.isOpen(resource)" style="display:inline; float:right;"
+                      <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
@@ -667,7 +673,9 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotMakeNotOpen">
+                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -944,6 +952,26 @@
                     ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
               </div>
             </div>
+
+            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.isFolder()">
+              <button ng-click="dc.copyFolderId2Clipboard()"
+                      uib-tooltip='{{dc.getSelectedFolderId()}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+              >Copy folder Id</button>
+            </div>
+            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+              <button ng-click="dc.copyParentFolderId2Clipboard()"
+                      uib-tooltip='{{dc.getSelectedParentFolderId()}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+              >Copy parent folder Id</button>
+            </div>
+
 
             <hr/>
           </div>

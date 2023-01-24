@@ -44,8 +44,11 @@ define([
         canNotMakeNotOpen: '=',
         canNotOpenOpen   : '=',
         isFolder         : '=',
-        toggleId         : "="
-
+        toggleId         : "=",
+        getSelectedFolderId     : "=",
+        getSelectedParentFolderId     : "=",
+        copyFolderId2Clipboard     : "=",
+        copyParentFolderId2Clipboard     : "="
       },
       controller : function ($scope, $element) {
       },
