@@ -11,7 +11,7 @@
     "protractor": "node_modules/protractor/bin/protractor protractor.config.js",
     "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=110.0.5481.77",
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
-    "install": "npm run webdrivermanager:clean && npm run webdrivermanager:update"
+    "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
   "author": "Metadatacenter.org",
   "license": "GNU 2-clause",
