@@ -12,6 +12,7 @@ define([
   function FrontendUrlService() {
 
     var openViewBase = null;
+    var openBase = null;
 
     var service = {
       serviceId: "FrontendUrlService"
@@ -19,6 +20,7 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
+      openBase = config.openBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -83,6 +85,11 @@ define([
 
     service.openInstance = function (id) {
       return openViewBase + '/template-instances/' + encodeURIComponent(id);
+    };
+
+    service.openFolder = function (id) {
+      console.log("Open:" + openBase + '/folders/' + encodeURIComponent(id));
+      return openBase + '/folders/' + encodeURIComponent(id);
     };
 
     return service;
