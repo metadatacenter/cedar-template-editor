@@ -498,12 +498,20 @@ define([
       return this.resourceBase() + "/command/create-draft-artifact";
     };
 
-    service.makeOpen = function () {
+    service.makeArtifactOpen = function () {
       return this.resourceBase() + "/command/make-artifact-open";
     };
 
-    service.makeNotOpen = function () {
+    service.makeArtifactNotOpen = function () {
       return this.resourceBase() + "/command/make-artifact-not-open";
+    };
+
+    service.makeFolderOpen = function () {
+      return this.resourceBase() + "/command/make-folder-open";
+    };
+
+    service.makeFolderNotOpen = function () {
+      return this.resourceBase() + "/command/make-folder-not-open";
     };
 
     service.encodeURIComponent = function(s) {

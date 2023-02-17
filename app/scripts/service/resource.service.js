@@ -67,8 +67,10 @@ define([
           canPopulate              : canPopulate,
           publishResource          : publishResource,
           createDraftResource      : createDraftResource,
-          makeOpen                 : makeOpen,
-          makeNotOpen              : makeNotOpen,
+          makeArtifactOpen         : makeArtifactOpen,
+          makeArtifactNotOpen      : makeArtifactNotOpen,
+          makeFolderOpen           : makeFolderOpen,
+          makeFolderNotOpen        : makeFolderNotOpen,
           renameNode               : renameNode,
           validateResource         : validateResource,
           canDo                    : canDo
@@ -679,10 +681,10 @@ define([
           );
         }
 
-        function makeOpen(resource, successCallback, errorCallback) {
+        function makeArtifactOpen(resource, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          var url = urlService.makeOpen();
+          var url = urlService.makeArtifactOpen();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
               function (response) {
@@ -692,10 +694,36 @@ define([
           );
         }
 
-        function makeNotOpen(resource, successCallback, errorCallback) {
+        function makeArtifactNotOpen(resource, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
-          var url = urlService.makeNotOpen();
+          var url = urlService.makeArtifactNotOpen();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function makeFolderOpen(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makeFolderOpen();
+          authorizedBackendService.doCall(
+              httpBuilderService.post(url, postData),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
+        function makeFolderNotOpen(resource, successCallback, errorCallback) {
+          var postData = {};
+          postData['@id'] = resource['@id'];
+          var url = urlService.makeFolderNotOpen();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),
               function (response) {

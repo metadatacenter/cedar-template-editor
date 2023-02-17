@@ -306,7 +306,7 @@
                                                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
                                                can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
                                                can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
-                                               can-not-make-open="true" can-not-make-not-open="true"
+                                               can-not-make-open="dc.canNotMakeOpen" can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="true"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
@@ -324,6 +324,17 @@
                              tooltip-placement="bottom"
                              data-toggle="tooltip"
                              tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}
+                        </div>
+                      </div>
+
+                      <hr style="margin:0;padding:0"/>
+
+                      <div style="min-height:2em;padding:2px 4px">
+                        <!-- OpenView icon -->
+                        <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
+                             tooltip-placement="top">
+                          <i class="action fa fa-external-link-square">&nbsp;</i>
                         </div>
                       </div>
 
