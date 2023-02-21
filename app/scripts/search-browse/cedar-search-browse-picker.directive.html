@@ -175,9 +175,11 @@
                      ng-if="dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
                   <span class="breadcrumbs"
                         ng-if="!dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  <span ng-if="folder['isOpen']"><i class="action fa fa-external-link-square">&nbsp;</i></span>
                   /
                 </span>
                 <a class="breadcrumbs">{{dc.breadcrumbName(dc.getTitle(dc.currentPath))}}</a>
+                <span ng-if="dc.currentPath['isOpen']"><i class="action fa fa-external-link-square">&nbsp;</i></span>
               </p>
             </div>
           </div>
@@ -502,7 +504,13 @@
                     <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                     prettyDate}}
                     </div>
-                    <div style="width:150px;"></div>
+                    <div style="width:150px;">
+                      <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
+                           tooltip-placement="top">
+                        <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
+                      </div>
+                    </div>
                     <div class="flex" style="width:80px;justify-content:flex-end;">
 
 
