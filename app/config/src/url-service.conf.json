@@ -9,6 +9,5 @@
   "submissionRestAPI": "submissionServerUrl",
   "messagingRestAPI": "messagingServerUrl",
   "openViewBase": "openViewBaseUrl",
-  "openBase": "openBaseUrl",
   "impexRestAPI": "impexServerUrl"
 }
