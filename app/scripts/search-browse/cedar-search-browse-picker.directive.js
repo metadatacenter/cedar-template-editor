@@ -126,6 +126,7 @@ define([
           vm.openMessaging = openMessaging;
           vm.isPublished = isPublished;
           vm.isOpen = isOpen;
+          vm.isOpenJustImplicitly = isOpenJustImplicitly;
           vm.getTrustedBy = getTrustedBy;
 
           vm.showFilters = true;
@@ -1804,6 +1805,16 @@ define([
               result = resource['isOpen'];
             } else {
               result = (hasSelected() && (getSelected()['isOpen']));
+            }
+            return result;
+          }
+
+          function isOpenJustImplicitly(resource) {
+            let result = false;
+            if (resource) {
+              result = !resource['isOpen'] && resource['isOpenImplicitly'];
+            } else {
+              result = (hasSelected() && !getSelected()['isOpen'] && getSelected()['isOpenImplicitly']);
             }
             return result;
           }

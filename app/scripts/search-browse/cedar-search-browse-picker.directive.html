@@ -338,6 +338,11 @@
                              tooltip-placement="top">
                           <i class="action fa fa-external-link-square">&nbsp;</i>
                         </div>
+                        <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
+                             tooltip-placement="top">
+                          <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
+                        </div>
                       </div>
 
                     </div>
@@ -444,6 +449,11 @@
                              tooltip-placement="top">
                           <i class="action fa fa-external-link-square">&nbsp;</i>
                         </div>
+                        <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
+                             tooltip-placement="top">
+                          <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -509,6 +519,11 @@
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
+                      </div>
+                      <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
+                           tooltip-placement="top">
+                        <i class="action fa fa-external-link-square isOpenImplicitly" style="font-size:18px">&nbsp;</i>
                       </div>
                     </div>
                     <div class="flex" style="width:80px;justify-content:flex-end;">
@@ -621,6 +636,11 @@
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
                            tooltip-placement="top">
                         <i class="action fa fa-external-link-square" style="font-size:18px">&nbsp;</i>
+                      </div>
+                      <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
+                           tooltip-placement="top">
+                        <i class="action fa fa-external-link-square isOpenImplicitly" style="font-size:18px">&nbsp;</i>
                       </div>
                       <!-- Globe icon -->
 <!--                      <div ng-if="dc.isPublished(resource)" style="display:inline; float:right;"-->
