@@ -126,6 +126,7 @@ define([
           vm.openMessaging = openMessaging;
           vm.isPublished = isPublished;
           vm.isOpen = isOpen;
+          vm.isOpenJustImplicitly = isOpenJustImplicitly;
           vm.getTrustedBy = getTrustedBy;
 
           vm.showFilters = true;
@@ -1373,11 +1374,26 @@ define([
           }
 
           function makeOpen(resource) {
-            console.log("here");
+            if (isFolder(resource)) {
+              return makeFolderOpen(resource);
+            } else {
+              return makeArtifactOpen(resource);
+            }
+          }
+
+          function makeNotOpen(resource) {
+            if (isFolder(resource)) {
+              return makeFolderNotOpen(resource);
+            } else {
+              return makeArtifactNotOpen(resource);
+            }
+          }
+
+          function makeArtifactOpen(resource) {
             if (!resource) {
               resource = getSelected();
             }
-            resourceService.makeOpen(
+            resourceService.makeArtifactOpen(
                 resource,
                 function (response) {
                   const title = vm.getTitle(resource);
@@ -1391,11 +1407,11 @@ define([
             );
           }
 
-          function makeNotOpen(resource) {
+          function makeArtifactNotOpen(resource) {
             if (!resource) {
               resource = getSelected();
             }
-            resourceService.makeNotOpen(
+            resourceService.makeArtifactNotOpen(
                 resource,
                 function (response) {
                   const title = vm.getTitle(resource);
@@ -1405,6 +1421,42 @@ define([
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.makeNotOpenArtifact.error', response);
+                }
+            );
+          }
+
+          function makeFolderOpen(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makeFolderOpen(
+                resource,
+                function (response) {
+                  const title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeOpenFolder.success', {"title": title},
+                      'GENERIC.MadeOpen');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeOpenFolder.error', response);
+                }
+            );
+          }
+
+          function makeFolderNotOpen(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            resourceService.makeFolderNotOpen(
+                resource,
+                function (response) {
+                  const title = vm.getTitle(resource);
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.makeNotOpenFolder.success', {"title": title},
+                      'GENERIC.MadeNotOpen');
+                  vm.refreshWorkspace(resource);
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.makeNotOpenFolder.error', response);
                 }
             );
           }
@@ -1422,6 +1474,8 @@ define([
               url = FrontendUrlService.openTemplate(resource['@id']);
             } else if (isMeta(resource)) {
               url = FrontendUrlService.openInstance(resource['@id']);
+            } else if (isFolder(resource)) {
+              url = FrontendUrlService.openFolder(resource['@id']);
             }
             //console.log("OpenView:" + url);
             $window.open(url, '_blank');
@@ -1751,6 +1805,16 @@ define([
               result = resource['isOpen'];
             } else {
               result = (hasSelected() && (getSelected()['isOpen']));
+            }
+            return result;
+          }
+
+          function isOpenJustImplicitly(resource) {
+            let result = false;
+            if (resource) {
+              result = !resource['isOpen'] && resource['isOpenImplicitly'];
+            } else {
+              result = (hasSelected() && !getSelected()['isOpen'] && getSelected()['isOpenImplicitly']);
             }
             return result;
           }

@@ -85,6 +85,10 @@ define([
       return openViewBase + '/template-instances/' + encodeURIComponent(id);
     };
 
+    service.openFolder = function (id) {
+      return openViewBase + '/folders/' + encodeURIComponent(id);
+    };
+
     return service;
   }
 

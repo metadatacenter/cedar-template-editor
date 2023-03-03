@@ -199,6 +199,7 @@
     "PublishedVersion": "Published Version",
     "DraftVersion": "Draft Version",
     "IsOpen": "OpenView Enabled",
+    "IsOpenImplicitly": "OpenView Enabled by inheritance",
     "TrustedBy": "Trusted by",
     "Header": "Header Information",
     "Footer": "Footer Information",
@@ -377,6 +378,14 @@
       "makeNotOpenArtifact": {
         "success": "The artifact '{{title}}' was made NOT open!",
         "error": "There was an error while making the artifact NOT open!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makeOpenFolder": {
+        "success": "The folder '{{title}}' was made open!",
+        "error": "There was an error while making the folder open!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "makeNotOpenFolder": {
+        "success": "The folder '{{title}}' was made NOT open!",
+        "error": "There was an error while making the folder NOT open!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {

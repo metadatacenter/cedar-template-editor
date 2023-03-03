@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.6.20",
+  "version": "2.6.21",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -9,9 +9,9 @@
   "scripts": {
     "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Chrome --single-run",
     "protractor": "node_modules/protractor/bin/protractor protractor.config.js",
-    "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=105.0.5195.125",
+    "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=110.0.5481.77",
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
-    "install": "npm run webdrivermanager:clean && npm run webdrivermanager:update"
+    "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
   "author": "Metadatacenter.org",
   "license": "GNU 2-clause",
