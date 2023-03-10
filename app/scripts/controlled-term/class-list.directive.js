@@ -96,8 +96,7 @@ define([
             // get any missing responses
             myMap.forEach(function (value, key) {
               if (myMap.get(key) == "") {
-                setResponse(key, DataManipulationService.parseOntologyName(key),
-                    DataManipulationService.parseClassLabel(key));
+                setResponse(key, DataManipulationService.parseOntologyName(key), key);
               }
             }, myMap);
 

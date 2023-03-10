@@ -82,6 +82,7 @@ define([
           }
 
           selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
+          // selfUrl = resource["@id"];
         }
       }
       return selfUrl;

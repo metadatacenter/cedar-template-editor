@@ -179,8 +179,8 @@ define([
          * Add ontology type to JSON.
          */
         var properties = $rootScope.propertiesOf(vm.field);
-        var selfUrl = controlledTermService.getSelfUrl(selection);
-        //var selfUrl = selection['@id'];
+        // var selfUrl = controlledTermService.getSelfUrl(selection);
+        var selfUrl = selection['@id'];
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
           properties['@type'].oneOf[0].enum.push(selfUrl);
           properties['@type'].oneOf[1].items.enum.push(selfUrl);
@@ -197,7 +197,6 @@ define([
 
       var id = DataManipulationService.getId(vm.field);
       $rootScope.$broadcast('field:controlledTermAdded', ['', id, '', '']);
-
     }
 
     /**
