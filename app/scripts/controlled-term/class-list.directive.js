@@ -93,12 +93,15 @@ define([
             }, myMap);
 
 
+            // Marc 2023: Started to write correct IRI to schema which doesn't have the ontology name.
+            // Following can not be queried until schema is extended to store the ontology
+
             // get any missing responses
-            myMap.forEach(function (value, key) {
-              if (myMap.get(key) == "") {
-                setResponse(key, DataManipulationService.parseOntologyName(key), key);
-              }
-            }, myMap);
+            // myMap.forEach(function (value, key) {
+            //   if (myMap.get(key) == "") {
+            //     setResponse(key, DataManipulationService.parseOntologyName(key), key);
+            //   }
+            // }, myMap);
 
 
             // fill up the key array
