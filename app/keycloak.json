@@ -1,6 +1,6 @@
 {
  "realm": "CEDAR",
- "auth-server-url": "https://auth.metadatacenter.orgx/auth/",
+ "auth-server-url": "https://auth.metadatacenter.orgx/",
  "ssl-required": "all",
  "resource": "cedar-angular-app",
  "public-client": true,
