@@ -9,15 +9,14 @@ define([
   LogoutController.$inject = ["UserService"];
 
   function LogoutController(UserService) {
-    var redirectUri = location.href;
-    var hashPos = redirectUri.indexOf("/logout");
+    let redirectUri = location.href;
+    const hashPos = redirectUri.indexOf("/logout");
     if (hashPos >= 0) {
-      redirectUri = redirectUri.substr(0, hashPos);
+      redirectUri = redirectUri.substring(0, hashPos + 1);
     }
-    //console.log(redirectUri);
     UserService.doLogout({
       "redirectUri": redirectUri
     });
-  };
+  }
 
 });
