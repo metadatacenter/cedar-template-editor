@@ -12,6 +12,7 @@ define([
   function FrontendUrlService() {
 
     var openViewBase = null;
+    var embeddableEditorBase = null;
 
     var service = {
       serviceId: "FrontendUrlService"
@@ -19,6 +20,7 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
+      embeddableEditorBase = config.embeddableEditorBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -87,6 +89,16 @@ define([
 
     service.openFolder = function (id) {
       return openViewBase + '/folders/' + encodeURIComponent(id);
+    };
+
+    service.eeCreateInstance = function (id) {
+      console.log("Create instance url",  embeddableEditorBase + '/instances/create/' + encodeURIComponent(id));
+      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id);
+    };
+
+    service.eeEditInstance = function (id) {
+      console.log("Edit instance url is",  embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id));
+      return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
     };
 
     return service;
