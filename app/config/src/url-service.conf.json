@@ -10,5 +10,5 @@
   "messagingRestAPI": "messagingServerUrl",
   "openViewBase": "openViewBaseUrl",
   "impexRestAPI": "impexServerUrl",
-  "embeddableEditorBase": "https://artifacts.metadatacenter.orgx"
+  "artifactsFrontend": "artifactsFrontendUrl"
 }

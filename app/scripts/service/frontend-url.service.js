@@ -20,7 +20,7 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
-      embeddableEditorBase = config.embeddableEditorBase;
+      embeddableEditorBase = config.artifactsFrontend;
     };
 
     service.getTemplateEdit = function (id) {
