@@ -91,9 +91,9 @@ define([
       return openViewBase + '/folders/' + encodeURIComponent(id);
     };
 
-    service.eeCreateInstance = function (id) {
-      console.log("Create instance url",  embeddableEditorBase + '/instances/create/' + encodeURIComponent(id));
-      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id);
+    service.eeCreateInstance = function (id, folderId) {
+      console.log("Create instance url",  embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId));
+      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
     };
 
     service.eeEditInstance = function (id) {

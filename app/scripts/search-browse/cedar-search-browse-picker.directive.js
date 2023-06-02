@@ -1483,13 +1483,12 @@ define([
           }
 
           function openEmbeddableEditor(resource) {
-            console.log("Opening embeddable editor");
             if (!resource) {
               resource = getSelected();
             }
             let url = null;
             if (isTemplate(resource)) {
-              url = FrontendUrlService.eeCreateInstance(resource['@id']);
+              url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
             } else if (isMeta(resource)) {
               url = FrontendUrlService.eeEditInstance(resource['@id']);
             }
