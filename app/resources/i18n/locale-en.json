@@ -37,6 +37,9 @@
       "numeric": {
         "NAME": "Numeric"
       },
+      "boolean": {
+        "NAME": "Boolean"
+      },
       "phone-number": {
         "NAME": "Phone"
       },

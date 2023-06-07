@@ -294,6 +294,10 @@ define([
         return schemaService.getLiterals($scope.field);
       };
 
+      $scope.getLabels = function () {
+        return schemaService.getLabels($scope.field);
+      };
+
       // default the cardinality to 1..N
       $scope.defaultMinMax = function () {
         schemaService.defaultMinMax($scope.field);
