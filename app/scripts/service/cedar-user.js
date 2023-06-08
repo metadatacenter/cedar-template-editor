@@ -235,6 +235,15 @@ define([
       return service.getUIPreferences().resourceVersionFilter.version;
     };
 
+    service.useNewUI = function () {
+      return service.getUIPreferences().metadataEditor.useNewUI;
+    }
+
+    service.toggleNewUI = function () {
+      service.saveUIPreference('metadataEditor', 'useNewUI', !service.useNewUI());
+      return service.useNewUI();
+    }
+
     return service;
   };
 });

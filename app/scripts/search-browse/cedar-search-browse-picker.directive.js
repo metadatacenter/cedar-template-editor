@@ -1483,6 +1483,7 @@ define([
           }
 
           function openEmbeddableEditor(resource) {
+            console.log('SCOPEEE', $rootScope);
             if (!resource) {
               resource = getSelected();
             }

@@ -10,13 +10,18 @@ define([
 
   function BetaUiController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
 
-    $rootScope.pageTitle = 'Privacy';
+    $rootScope.pageTitle = 'BetaUI';
 
     // Inject constants
     $scope.CONST = CONST;
 
     var pageId = CONST.pageId.PRIVACY;
     HeaderService.configure(pageId);
+
+    $scope.toggleBetaUI = function () {
+      CedarUser.toggleNewUI();
+      console.log('Cedar User', CedarUser.getUIPreferences());
+    }
 
     $scope.goToDashboardOrBack = function () {
       //vm.searchTerm = null;
