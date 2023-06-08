@@ -7,31 +7,62 @@
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
       <div ng-init="initializeSelectionField()" class="multiple-container">
-        <div class="">Labels</div>
+        <div class="">{{'FIELDS.FIELD_TYPE.boolean.Labels' | translate}}</div>
         <table style="border-spacing: 3px; border-collapse: separate; border:0px">
           <tr>
-            <td>True:</td>
+            <td>{{'FIELDS.FIELD_TYPE.boolean.True' | translate}}:</td>
             <td>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
-                       id="label-true-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="True"
+                       id="label-true-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="{{'FIELDS.FIELD_TYPE.boolean.True' | translate}}"
                        aria-label="Boolean" ng-model="getLabels()['true']" with-floating-label>
               </div>
             </td>
           </tr>
           <tr>
-            <td>False:</td>
+            <td>{{'FIELDS.FIELD_TYPE.boolean.False' | translate}}:</td>
             <td>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
-                       id="label-false-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="False"
+                       id="label-false-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="{{'FIELDS.FIELD_TYPE.boolean.False' | translate}}"
                        aria-label="Boolean" ng-model="getLabels()['false']" with-floating-label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>{{'FIELDS.FIELD_TYPE.boolean.Null' | translate}}:</td>
+            <td>
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control"
+                       id="label-null-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="{{'FIELDS.FIELD_TYPE.boolean.Null' | translate}}"
+                       aria-label="Boolean" ng-model="getLabels()['null']" with-floating-label>
               </div>
             </td>
           </tr>
         </table>
       </div>
-      <p class="instructions">Click choice to set as default</p>
+      <p class="instructions">{{'FIELDS.FIELD_TYPE.boolean.SelectDefaultLabel' | translate}}:</p>
+<!--      <p class="instructions">-->
+<!--        <select ng-model="getValueConstraints()['defaultValue']" class="col-sm-4 select-picker group-permission">-->
+<!--          <option value="true" translate>FIELDS.FIELD_TYPE.boolean.True</option>-->
+<!--          <option value="false" translate>FIELDS.FIELD_TYPE.boolean.False</option>-->
+<!--          <option value="null" translate>FIELDS.FIELD_TYPE.boolean.Null</option>-->
+<!--        </select>-->
+<!--      </p>-->
+
+      <ui-select
+          class="form-control"
+          theme="bootstrap"
+          close-on-select="true"
+          ng-model="getValueConstraints()['defaultValue']"
+          ng-disabled="false">
+        <ui-select-match placeholder="{{'CREATOR.enterNumberType' | translate}}">{{selectedNumberType.label}}
+        </ui-select-match>
+        <ui-select-choices repeat="option in getBooleanFieldDefaultValueOptions()">
+          {{option.label}}
+        </ui-select-choices>
+      </ui-select>
+
     </div>
   </div>
 

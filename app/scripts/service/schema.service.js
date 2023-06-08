@@ -698,6 +698,11 @@ define([
       if (node && service.hasValueConstraints(node)) return service.getValueConstraints(node).labels;
     };
 
+    // get the default value
+    service.getDefaultValue = function (node) {
+      if (node && service.hasValueConstraints(node)) return service.getValueConstraints(node).defaultValue;
+    };
+
     // is this a required field or element?
     service.isRequired = function (node) {
       if (node && service.getValueConstraints(node)) return service.getValueConstraints(node).requiredValue;

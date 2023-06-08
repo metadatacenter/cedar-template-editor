@@ -9,13 +9,13 @@ define([
 
   StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService",
                             "DataManipulationService",'schemaService',
-                            "UIUtilService",
+                            "UIUtilService", "$translate",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
                             "AuthorizedBackendService", "DataTemplateService",
                             "CONST"];
 
   function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService,
-                          DataManipulationService,schemaService, UIUtilService,
+                          DataManipulationService,schemaService, UIUtilService, $translate,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
                           AuthorizedBackendService, DataTemplateService, CONST) {
 
@@ -143,9 +143,11 @@ define([
       } else if (fieldType === 'boolean') {
         field._valueConstraints.multipleChoice = false;
         field._valueConstraints.labels = {
-          'true': 'True',
-          'false': 'False'
+          'true': $translate.instant('FIELDS.FIELD_TYPE.boolean.True'),
+          'false': $translate.instant('FIELDS.FIELD_TYPE.boolean.False'),
+          'null': $translate.instant('FIELDS.FIELD_TYPE.boolean.Null')
         };
+        field._valueConstraints.defaultValue = 'false';
       }
 
       // Converting title for irregular character handling
