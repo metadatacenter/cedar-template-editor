@@ -1500,23 +1500,27 @@ define([
           function launchInstance(value) {
             const resource = value || getSelected();
             if (resource) {
-              const url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-
-              // TODO exceptionally painful for users if we turn this on
-              // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
-              //   UIMessageService.confirmedExecution(
-              //       function () {
-              //         $location.url(url);
-              //       },
-              //       'GENERIC.AreYouSure',
-              //       'This template is a draft.',
-              //       'YES'
-              //   );
-              // } else {
-              //   $location.url(url);
-              // }
-
-              $location.url(url);
+              let url = null;
+              if(CedarUser.useNewUI()) {
+                url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
+                $window.open(url, '_blank');
+              }else {
+                url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
+                // TODO exceptionally painful for users if we turn this on
+                // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
+                //   UIMessageService.confirmedExecution(
+                //       function () {
+                //         $location.url(url);
+                //       },
+                //       'GENERIC.AreYouSure',
+                //       'This template is a draft.',
+                //       'YES'
+                //   );
+                // } else {
+                //   $location.url(url);
+                // }
+                $location.url(url);
+              }
             }
           }
 
@@ -1556,7 +1560,12 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  $location.path(FrontendUrlService.getInstanceEdit(id));
+                  if(CedarUser.useNewUI()){
+                    const url = FrontendUrlService.eeEditInstance(resource['@id']);
+                    $window.open(url, '_blank');
+                  } else {
+                    $location.path(FrontendUrlService.getInstanceEdit(id));
+                  }
                   break;
                 case CONST.resourceType.FIELD:
                   $location.path(FrontendUrlService.getFieldEdit(id));

@@ -92,12 +92,10 @@ define([
     };
 
     service.eeCreateInstance = function (id, folderId) {
-      console.log("Create instance url",  embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId));
       return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
     };
 
     service.eeEditInstance = function (id) {
-      console.log("Edit instance url is",  embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id));
       return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
     };
 

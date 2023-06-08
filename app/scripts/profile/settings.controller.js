@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.profile.beta-uiController', [])
-      .controller('BetaUiController', BetaUiController);
+  angular.module('cedar.templateEditor.profile.settingsController', [])
+      .controller('SettingsController', SettingsController);
 
-  BetaUiController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService"];
+  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService"];
 
-  function BetaUiController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
+  function SettingsController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
 
     $rootScope.pageTitle = 'BetaUI';
 
@@ -18,7 +18,7 @@ define([
     var pageId = CONST.pageId.PRIVACY;
     HeaderService.configure(pageId);
 
-    $scope.toggleBetaUI = function () {
+    $scope.toggleNewUI = function () {
       CedarUser.toggleNewUI();
       console.log('Cedar User', CedarUser.getUIPreferences());
     }

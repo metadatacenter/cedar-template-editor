@@ -22,7 +22,7 @@ define([
           "PRIVACY"  : "PRIVACY",
           "METADATA" : "METADATA",
           "MESSAGING": "MESSAGING",
-          "BETAUI"   : "BETA-UI"
+          "SETTINGS" : "SETTINGS"
         },
         "stagingObject": {
           "NONE"   : null,

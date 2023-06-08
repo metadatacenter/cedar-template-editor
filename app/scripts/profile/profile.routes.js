@@ -20,9 +20,9 @@ define([
           templateUrl: 'scripts/profile/privacy.html',
           controller : 'PrivacyController'
         })
-        .when('/beta-ui', {
-          templateUrl: 'scripts/profile/beta-ui.html',
-          controller : 'BetaUiController'
+        .when('/settings', {
+          templateUrl: 'scripts/profile/settings.html',
+          controller : 'SettingsController'
         });
   }
 
