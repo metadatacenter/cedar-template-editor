@@ -235,13 +235,13 @@ define([
       return service.getUIPreferences().resourceVersionFilter.version;
     };
 
-    service.useNewUI = function () {
-      return service.getUIPreferences().metadataEditor.useNewUI;
+    service.useMetadataEditorV2 = function () {
+      return service.getUIPreferences().useMetadataEditorV2;
     }
 
-    service.toggleNewUI = function () {
-      service.saveUIPreference('metadataEditor', 'useNewUI', !service.useNewUI());
-      return service.useNewUI();
+    service.toggleMetadataEditorV2 = function () {
+      getAppData().cedarUserProfile.uiPreferences['useMetadataEditorV2'] = !service.useMetadataEditorV2();
+      return service.useMetadataEditorV2();
     }
 
     return service;

@@ -12,10 +12,10 @@ define([
 
     $rootScope.pageTitle = 'Settings';
 
-    $scope.useNew = CedarUser.useNewUI() || false;
+    $scope.useMetadataEditorV2 = CedarUser.useMetadataEditorV2() || false;
 
-    $scope.toggleNewUI = function () {
-      CedarUser.toggleNewUI();
+    $scope.toggleMetadataEditorV2 = function () {
+      CedarUser.toggleMetadataEditorV2();
     }
 
     $scope.goToDashboardOrBack = function () {
@@ -35,9 +35,6 @@ define([
         if (folderId) {
           queryParams['folderId'] = folderId;
         }
-        /*if (params.search) {
-         queryParams['search'] = params.search;
-         }*/
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       if (hash) {

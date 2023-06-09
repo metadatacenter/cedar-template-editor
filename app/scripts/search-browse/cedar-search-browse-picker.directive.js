@@ -1485,7 +1485,7 @@ define([
             const resource = value || getSelected();
             if (resource) {
               let url = null;
-              if(CedarUser.useNewUI()) {
+              if(CedarUser.useMetadataEditorV2()) {
                 url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
                 $window.open(url, '_blank');
               }else {
@@ -1544,7 +1544,7 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  if(CedarUser.useNewUI()){
+                  if(CedarUser.useMetadataEditorV2()){
                     const url = FrontendUrlService.eeEditInstance(resource['@id']);
                     $window.open(url, '_blank');
                   } else {
