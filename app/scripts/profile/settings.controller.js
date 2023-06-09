@@ -6,21 +6,16 @@ define([
   angular.module('cedar.templateEditor.profile.settingsController', [])
       .controller('SettingsController', SettingsController);
 
-  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService"];
+  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService","UIUtilService", "CedarUser", "QueryParamUtilsService"];
 
-  function SettingsController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
+  function SettingsController($rootScope, $scope, $location,$window, HeaderService, UIUtilService, CedarUser, QueryParamUtilsService) {
 
-    $rootScope.pageTitle = 'BetaUI';
+    $rootScope.pageTitle = 'Settings';
 
-    // Inject constants
-    $scope.CONST = CONST;
-
-    var pageId = CONST.pageId.PRIVACY;
-    HeaderService.configure(pageId);
+    $scope.useNew = CedarUser.useNewUI() || false;
 
     $scope.toggleNewUI = function () {
       CedarUser.toggleNewUI();
-      console.log('Cedar User', CedarUser.getUIPreferences());
     }
 
     $scope.goToDashboardOrBack = function () {

@@ -95,7 +95,6 @@ define([
           vm.makeOpen = makeOpen;
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
-          vm.openEmbeddableEditor = openEmbeddableEditor;
           vm.isSelected = isSelected;
           vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
@@ -1479,21 +1478,6 @@ define([
               url = FrontendUrlService.openFolder(resource['@id']);
             }
             //console.log("OpenView:" + url);
-            $window.open(url, '_blank');
-          }
-
-          function openEmbeddableEditor(resource) {
-            console.log('SCOPEEE', $rootScope);
-            if (!resource) {
-              resource = getSelected();
-            }
-            let url = null;
-            if (isTemplate(resource)) {
-              url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
-            } else if (isMeta(resource)) {
-              url = FrontendUrlService.eeEditInstance(resource['@id']);
-            }
-            console.log('URL IS is:', url);
             $window.open(url, '_blank');
           }
 
