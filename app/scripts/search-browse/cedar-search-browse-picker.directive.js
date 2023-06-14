@@ -1487,7 +1487,13 @@ define([
               let url = null;
               if(CedarUser.useMetadataEditorV2()) {
                 url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
-                $window.open(url, '_blank');
+                let win = $window.open(url, '_blank');
+                win.addEventListener("close", (event) => {
+                  console.log("Closed");
+                })
+                // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
+                win.window['settingsChangedCallback'] = 'deneme';
+                console.log('Neler oluyo', win);
               }else {
                 url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
                 // TODO exceptionally painful for users if we turn this on

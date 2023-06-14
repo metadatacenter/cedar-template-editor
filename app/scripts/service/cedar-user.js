@@ -244,6 +244,15 @@ define([
       return service.useMetadataEditorV2();
     }
 
+    service.getMetadataEditorV2Settings = function () {
+      return getAppData().cedarUserProfile.uiPreferences.metadataEditorV2;
+    }
+
+    service.setMetadataEditorV2Settings = function (settings) {
+      console.log('Im called setMetadata');
+      getAppData().cedarUserProfile.uiPreferences['metadataEditorV2'] = settings;
+    }
+
     return service;
   };
 });

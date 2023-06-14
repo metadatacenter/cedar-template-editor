@@ -11,6 +11,7 @@ define([
   function SettingsController($rootScope, $scope, $location,$window, HeaderService, UIUtilService, CedarUser, QueryParamUtilsService) {
 
     $rootScope.pageTitle = 'Settings';
+    console.log("Cedar user", CedarUser.getUIPreferences());
 
     $scope.useMetadataEditorV2 = CedarUser.useMetadataEditorV2() || false;
 
@@ -44,7 +45,6 @@ define([
       $window.scrollTo(0, 0);
 
     };
-
 
   }
 
