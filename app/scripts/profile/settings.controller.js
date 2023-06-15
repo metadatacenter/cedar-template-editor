@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.profile.settingsController', [])
       .controller('SettingsController', SettingsController);
 
-  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "UISettingsService", "CedarUser", "QueryParamUtilsService"];
+  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "UIUtilService", "UISettingsService", "CedarUser", "QueryParamUtilsService"];
 
-  function SettingsController($rootScope, $scope, $location,$window, HeaderService, UISettingsService, CedarUser, QueryParamUtilsService) {
+  function SettingsController($rootScope, $scope, $location,$window, HeaderService, UIUtilService, UISettingsService, CedarUser, QueryParamUtilsService) {
 
     $rootScope.pageTitle = 'Settings';
 

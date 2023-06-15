@@ -41,7 +41,7 @@
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header ">
 
-      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging()">
+      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging() || hc.isSettings()">
         <div class="row">
           <div class="col-xs-2" ng-click="hc.goToDashboardOrBack()">
             <a class="navbar-brand " alt="Cedar" href="javascript:">Cedar</a>
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging()">
+      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging() && !hc.isSettings()">
         <div class="navbar-back flex">
           <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
