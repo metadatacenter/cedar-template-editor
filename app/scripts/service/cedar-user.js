@@ -249,7 +249,6 @@ define([
     }
 
     service.setMetadataEditorV2Settings = function (settings) {
-      console.log('Im called setMetadata');
       getAppData().cedarUserProfile.uiPreferences['metadataEditorV2'] = settings;
     }
 

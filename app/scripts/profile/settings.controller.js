@@ -6,17 +6,16 @@ define([
   angular.module('cedar.templateEditor.profile.settingsController', [])
       .controller('SettingsController', SettingsController);
 
-  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService","UIUtilService", "CedarUser", "QueryParamUtilsService"];
+  SettingsController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "UISettingsService", "CedarUser", "QueryParamUtilsService"];
 
-  function SettingsController($rootScope, $scope, $location,$window, HeaderService, UIUtilService, CedarUser, QueryParamUtilsService) {
+  function SettingsController($rootScope, $scope, $location,$window, HeaderService, UISettingsService, CedarUser, QueryParamUtilsService) {
 
     $rootScope.pageTitle = 'Settings';
-    console.log("Cedar user", CedarUser.getUIPreferences());
 
     $scope.useMetadataEditorV2 = CedarUser.useMetadataEditorV2() || false;
 
     $scope.toggleMetadataEditorV2 = function () {
-      CedarUser.toggleMetadataEditorV2();
+      UISettingsService.saveUseMetadataEditorV2(CedarUser.toggleMetadataEditorV2());
     }
 
     $scope.goToDashboardOrBack = function () {
