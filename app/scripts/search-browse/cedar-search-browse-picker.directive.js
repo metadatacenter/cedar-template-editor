@@ -1488,12 +1488,10 @@ define([
               if(CedarUser.useMetadataEditorV2()) {
                 url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
                 let win = $window.open(url, '_blank');
-                win.addEventListener("close", (event) => {
-                  console.log("Closed");
-                })
+                // TODO: Can't pass the callback function to artifacts
                 // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
-                win.window['settingsChangedCallback'] = 'deneme';
-                console.log('Neler oluyo', win);
+                win['settingsChangedCallback'] = 'assigned';
+                console.log('Win after assignment', win);
               }else {
                 url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
                 // TODO exceptionally painful for users if we turn this on
@@ -1552,7 +1550,11 @@ define([
                 case CONST.resourceType.INSTANCE:
                   if(CedarUser.useMetadataEditorV2()){
                     const url = FrontendUrlService.eeEditInstance(resource['@id']);
-                    $window.open(url, '_blank');
+                    let win = $window.open(url, '_blank');
+                    // TODO: Can't pass the callback function to artifacts
+                    // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
+                    win['settingsChangedCallback'] = 'deneme';
+                    console.log('Win after assignment', win);
                   } else {
                     $location.path(FrontendUrlService.getInstanceEdit(id));
                   }
