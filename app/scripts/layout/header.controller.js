@@ -290,6 +290,10 @@ define([
       return (vm.path === "/privacy");
     };
 
+    vm.isSettings = function () {
+      return (vm.path === "/settings");
+    };
+
     vm.isRuntime = function() {
       return UIUtilService.isRuntime();
     };
@@ -308,6 +312,10 @@ define([
 
     vm.isPrivacy = function () {
       return ($location.path() === "/privacy");
+    };
+
+    vm.isSettings = function () {
+      return ($location.path() === "/settings");
     };
 
     $rootScope.$on('$routeChangeStart', function (event, next, current) {

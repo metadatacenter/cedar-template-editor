@@ -1484,23 +1484,31 @@ define([
           function launchInstance(value) {
             const resource = value || getSelected();
             if (resource) {
-              const url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-
-              // TODO exceptionally painful for users if we turn this on
-              // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
-              //   UIMessageService.confirmedExecution(
-              //       function () {
-              //         $location.url(url);
-              //       },
-              //       'GENERIC.AreYouSure',
-              //       'This template is a draft.',
-              //       'YES'
-              //   );
-              // } else {
-              //   $location.url(url);
-              // }
-
-              $location.url(url);
+              let url = null;
+              if(CedarUser.useMetadataEditorV2()) {
+                url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
+                let win = $window.open(url, '_blank');
+                // TODO: Can't pass the callback function to artifacts
+                // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
+                win['settingsChangedCallback'] = 'assigned';
+                console.log('Win after assignment', win);
+              }else {
+                url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
+                // TODO exceptionally painful for users if we turn this on
+                // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
+                //   UIMessageService.confirmedExecution(
+                //       function () {
+                //         $location.url(url);
+                //       },
+                //       'GENERIC.AreYouSure',
+                //       'This template is a draft.',
+                //       'YES'
+                //   );
+                // } else {
+                //   $location.url(url);
+                // }
+                $location.url(url);
+              }
             }
           }
 
@@ -1540,7 +1548,16 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  $location.path(FrontendUrlService.getInstanceEdit(id));
+                  if(CedarUser.useMetadataEditorV2()){
+                    const url = FrontendUrlService.eeEditInstance(resource['@id']);
+                    let win = $window.open(url, '_blank');
+                    // TODO: Can't pass the callback function to artifacts
+                    // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
+                    win['settingsChangedCallback'] = 'deneme';
+                    console.log('Win after assignment', win);
+                  } else {
+                    $location.path(FrontendUrlService.getInstanceEdit(id));
+                  }
                   break;
                 case CONST.resourceType.FIELD:
                   $location.path(FrontendUrlService.getFieldEdit(id));

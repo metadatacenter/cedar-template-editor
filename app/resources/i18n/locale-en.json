@@ -466,7 +466,8 @@
       "submit": "Submit...",
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
-      "openopen": "Visit OpenView"
+      "openopen": "Visit OpenView",
+      "populateEE": "Populate with new editor"
     },
     "delete": {
       "confirm": {

@@ -12,6 +12,7 @@ define([
   function FrontendUrlService() {
 
     var openViewBase = null;
+    var embeddableEditorBase = null;
 
     var service = {
       serviceId: "FrontendUrlService"
@@ -19,6 +20,7 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
+      embeddableEditorBase = config.artifactsFrontend;
     };
 
     service.getTemplateEdit = function (id) {
@@ -87,6 +89,14 @@ define([
 
     service.openFolder = function (id) {
       return openViewBase + '/folders/' + encodeURIComponent(id);
+    };
+
+    service.eeCreateInstance = function (id, folderId) {
+      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
+    };
+
+    service.eeEditInstance = function (id) {
+      return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
     };
 
     return service;
