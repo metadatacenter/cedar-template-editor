@@ -9,7 +9,7 @@ define([
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
       cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService', 'schemaService', 'UIUtilService',
-                                                  'CategoryService', '$sce'];
+        'CategoryService', '$sce'];
 
       function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, schemaService, UIUtilService,
                                                 CategoryService, $sce) {
@@ -95,6 +95,7 @@ define([
           vm.makeOpen = makeOpen;
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
+          vm.openDatacite = openDatacite;
           vm.isSelected = isSelected;
           vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
@@ -588,6 +589,7 @@ define([
             vm.canNotMakeOpen = !vm.canMakeOpen();
             vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
             vm.canNotOpenOpen = !vm.canOpenOpen();
+            vm.canNotOpenDatacite = !vm.canOpenDatacite();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -694,6 +696,10 @@ define([
 
           vm.canOpenOpen = function () {
             return window.makeOpenEnabled && resourceService.canOpenOpen(vm.getSelectedNode());
+          };
+
+          vm.canOpenDatacite = function () {
+            return window.dataciteEnabled && resourceService.canOpenDatacite(vm.getSelectedNode());
           };
 
           vm.doShowCategoryTree = function () {
@@ -1481,18 +1487,50 @@ define([
             $window.open(url, '_blank');
           }
 
+          function openDatacite(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            let url = null;
+            let errorTextKeyNotOpen = null;
+            let errorTextKeyNotPublished = null;
+            let checkPublished = false;
+            if (isTemplate(resource)) {
+              url = FrontendUrlService.dataciteTemplate(resource['@id']);
+              errorTextKeyNotOpen = 'DOI.DataCite.NOT-OPEN.text.template';
+              errorTextKeyNotPublished = 'DOI.DataCite.NOT-PUBLISHED.text.template';
+              checkPublished = true;
+            } else if (isMeta(resource)) {
+              url = FrontendUrlService.dataciteInstance(resource['@id']);
+              errorTextKeyNotOpen = 'DOI.DataCite.NOT-OPEN.text.template-instance';
+            }
+            if (url !== null) {
+              if (!resource.hasOwnProperty('isOpen') || !resource['isOpen']) {
+                UIMessageService.showWarning('DOI.DataCite.NOT-OPEN.title', errorTextKeyNotOpen, 'GENERIC.Ok')
+                return;
+              }
+              if (checkPublished && !isPublished(resource)) {
+                UIMessageService.showWarning('DOI.DataCite.NOT-PUBLISHED.title', errorTextKeyNotPublished, 'GENERIC.Ok')
+                return;
+              }
+              $window.open(url, '_blank');
+            } else {
+              console.log("DataCite wizard not available for:" + resource);
+            }
+          }
+
           function launchInstance(value) {
             const resource = value || getSelected();
             if (resource) {
               let url = null;
-              if(CedarUser.useMetadataEditorV2()) {
+              if (CedarUser.useMetadataEditorV2()) {
                 url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
                 let win = $window.open(url, '_blank');
                 // TODO: Can't pass the callback function to artifacts
                 // win['settingsChangedCallback'] = CedarUser.setMetadataEditorV2Settings;
                 win['settingsChangedCallback'] = 'assigned';
                 console.log('Win after assignment', win);
-              }else {
+              } else {
                 url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
                 // TODO exceptionally painful for users if we turn this on
                 // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
@@ -1548,7 +1586,7 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  if(CedarUser.useMetadataEditorV2()){
+                  if (CedarUser.useMetadataEditorV2()) {
                     const url = FrontendUrlService.eeEditInstance(resource['@id']);
                     let win = $window.open(url, '_blank');
                     // TODO: Can't pass the callback function to artifacts
@@ -1852,7 +1890,7 @@ define([
 
           function isElement(resource) {
             let result = false;
-            if(resource){
+            if (resource) {
               result = (resource.resourceType === CONST.resourceType.ELEMENT);
             } else {
               result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.ELEMENT));
@@ -1865,7 +1903,7 @@ define([
             if (resource) {
               result = (resource.resourceType === CONST.resourceType.FIELD);
             } else {
-              result =  (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
+              result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.FIELD));
             }
             return result;
           }
@@ -1893,7 +1931,7 @@ define([
             if (!pathInfo?.length)
               return;
             // parent folder is the second item from last
-            const parentFolderId = pathInfo[pathInfo.length-2]['@id'];
+            const parentFolderId = pathInfo[pathInfo.length - 2]['@id'];
             return parentFolderId;
           }
 
@@ -1911,9 +1949,9 @@ define([
 
           function isMeta(resource) {
             let result = false;
-            if(resource){
+            if (resource) {
               result = (resource.resourceType === CONST.resourceType.INSTANCE)
-            }else {
+            } else {
               result = (hasSelected() && (getSelected().resourceType === CONST.resourceType.INSTANCE));
             }
             return result;
@@ -2196,8 +2234,7 @@ define([
           function sortField(searchParams) {
             if (searchParams && searchParams.fromSearchBox) {
               return null;
-            }
-            else {
+            } else {
               return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
             }
           }
@@ -2205,8 +2242,7 @@ define([
           function sortName() {
             if (vm.params.fromSearchBox || !CedarUser.isSortByName()) {
               return 'invisible';
-            }
-            else {
+            } else {
               return "";
             }
           }
@@ -2214,8 +2250,7 @@ define([
           function sortCreated() {
             if (vm.params.fromSearchBox || !CedarUser.isSortByCreated()) {
               return 'invisible';
-            }
-            else {
+            } else {
               return "";
             }
           }
@@ -2223,8 +2258,7 @@ define([
           function sortUpdated() {
             if (vm.params.fromSearchBox || !CedarUser.isSortByUpdated()) {
               return 'invisible';
-            }
-            else {
+            } else {
               return "";
             }
           }
@@ -2318,8 +2352,8 @@ define([
               const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, homeFolderId,
-                   vm.resourceTypes,
-                   CedarUser.getSort()]);
+                    vm.resourceTypes,
+                    CedarUser.getSort()]);
             }
           }
 

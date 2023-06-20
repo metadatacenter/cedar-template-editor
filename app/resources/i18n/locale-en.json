@@ -467,6 +467,7 @@
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
+      "opendatacite": "Create DOI using DataCite",
       "populateEE": "Populate with new editor"
     },
     "delete": {
@@ -755,5 +756,22 @@
     "null": "",
     "bibo:draft": "Draft",
     "bibo:published": "Published"
+  },
+  "DOI": {
+    "DataCite": {
+      "NOT-OPEN": {
+        "title": "Can not start DOI process Datacite wizard",
+        "text" : {
+          "template": "You need to make the template open in order to get a DOI",
+          "template-instance": "You need to make the metadata instance open in order to get a DOI"
+        }
+      },
+      "NOT-PUBLISHED": {
+        "title": "Can not start DOI process Datacite wizard",
+        "text" : {
+          "template": "You need to publish the template open in order to get a DOI"
+        }
+      }
+    }
   }
 }

@@ -10,5 +10,6 @@
   "messagingRestAPI": "messagingServerUrl",
   "openViewBase": "openViewBaseUrl",
   "impexRestAPI": "impexServerUrl",
-  "artifactsFrontend": "artifactsFrontendUrl"
+  "artifactsFrontend": "artifactsFrontendUrl",
+  "dataciteDOIBase": "dataciteDOIBaseUrl"
 }
