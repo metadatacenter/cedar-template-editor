@@ -102,11 +102,11 @@ define([
     };
 
     service.dataciteTemplate = function (id) {
-      return dataciteDOIBase + '?sourceArtifactId=' + encodeURIComponent(id);
+      return dataciteDOIBase + '/' + encodeURIComponent(id);
     };
 
     service.dataciteInstance = function (id) {
-      return dataciteDOIBase + '?sourceArtifactId=' + encodeURIComponent(id);
+      return dataciteDOIBase + '/' + encodeURIComponent(id);
     };
 
     return service;
