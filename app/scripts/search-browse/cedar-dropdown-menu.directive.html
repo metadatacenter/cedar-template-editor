@@ -17,6 +17,8 @@
   <li role="separator" class="divider"></li>
   <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotDelete}" href="#"  ng-click="delete(resource)" translate>DASHBOARD.menu.delete</a></li>
   <li role="separator" class="divider"></li>
+  <li><a ng-cloak class="opendatacite" ng-class="{'link-disabled': canNotOpenDatacite}"  href="#" ng-click="openDatacite(resource)" translate>DASHBOARD.menu.opendatacite</a></li>
+  <li role="separator" class="divider"></li>
   <li><a ng-cloak class="makeopen" ng-class="{'link-disabled': canNotMakeOpen}"  href="#" ng-click="makeOpen(resource)"  translate>DASHBOARD.menu.makeopen</a></li>
   <li><a ng-cloak class="makenotopen" ng-class="{'link-disabled': canNotMakeNotOpen}" href="#" ng-click="makeNotOpen(resource)"  translate>DASHBOARD.menu.makenotopen</a></li>
   <li><a ng-cloak class="openopen" ng-class="{'link-disabled': canNotOpenOpen}" href="#" ng-click="openOpen(resource)"  translate>DASHBOARD.menu.openopen</a></li>
