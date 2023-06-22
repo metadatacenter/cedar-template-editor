@@ -96,7 +96,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
       .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
       .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
-      .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite/'))
+      .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
