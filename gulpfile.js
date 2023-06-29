@@ -95,6 +95,8 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
       .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
       .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
+      .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
+      .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
@@ -112,6 +114,7 @@ gulp.task('replace-version', function (done) {
   gulp.src(['app/config/src/version.js'])
       .pipe(replace('cedarVersionValue', cedarVersion))
       .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(replace('dataciteEnabledValue', dataciteEnabled))
       .pipe(gulp.dest('app/config/'));
   done();
 });
@@ -395,12 +398,13 @@ function getFrontendEnvVar(varNameSuffix) {
 }
 
 // Get environment variables
-var envConfig = {
+let envConfig = {
   'CEDAR_ANALYTICS_KEY'       : null,
   'CEDAR_FRONTEND_BEHAVIOR'   : null,
   'CEDAR_FRONTEND_TARGET'     : null,
   'CEDAR_VERSION'             : null,
-  'CEDAR_VERSION_MODIFIER'    : null
+  'CEDAR_VERSION_MODIFIER'    : null,
+  'CEDAR_DATACITE_ENABLED'    : null
 };
 console.log();
 console.log();
@@ -408,11 +412,12 @@ console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
-var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
-var cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
-var cedarVersion = envConfig['CEDAR_VERSION'];
-var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
+const cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
+const cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
+const cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
+const cedarVersion = envConfig['CEDAR_VERSION'];
+const cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
+const dataciteEnabled = envConfig['CEDAR_DATACITE_ENABLED'];
 
 var cedarUIHostVarName = getFrontendEnvVar('UI_HOST');
 envConfig[cedarUIHostVarName] = null;

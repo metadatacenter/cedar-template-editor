@@ -11,14 +11,18 @@ define([
 
   function FrontendUrlService() {
 
-    var openViewBase = null;
+    let openViewBase = null;
+    let embeddableEditorBase = null;
+    let dataciteDOIBase = null
 
-    var service = {
+    let service = {
       serviceId: "FrontendUrlService"
     };
 
     service.init = function () {
       openViewBase = config.openViewBase;
+      embeddableEditorBase = config.artifactsFrontend;
+      dataciteDOIBase = config.dataciteDOIBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -87,6 +91,22 @@ define([
 
     service.openFolder = function (id) {
       return openViewBase + '/folders/' + encodeURIComponent(id);
+    };
+
+    service.eeCreateInstance = function (id, folderId) {
+      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
+    };
+
+    service.eeEditInstance = function (id) {
+      return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
+    };
+
+    service.dataciteTemplate = function (id) {
+      return dataciteDOIBase + '/' + encodeURIComponent(id);
+    };
+
+    service.dataciteInstance = function (id) {
+      return dataciteDOIBase + '/' + encodeURIComponent(id);
     };
 
     return service;

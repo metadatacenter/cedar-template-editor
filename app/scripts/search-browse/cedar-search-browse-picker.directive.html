@@ -303,6 +303,7 @@
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                                open-open="dc.openOpen"
+                                               open-datacite="dc.openDatacite"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -310,6 +311,7 @@
                                                can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen" can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="true"
+                                               can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
                                                get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId">
@@ -344,7 +346,6 @@
                           <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -394,6 +395,7 @@
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                                open-open="dc.openOpen"
+                                               open-datacite="dc.openDatacite"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -402,6 +404,7 @@
                                                can-not-make-open="dc.canNotMakeOpen"
                                                can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="dc.canNotOpenOpen"
+                                               can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
                                                get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
@@ -553,6 +556,7 @@
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                            open-open="dc.openOpen"
+                                           open-datacite="dc.openDatacite"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -561,7 +565,9 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           can-not-open-open="dc.canNotOpenOpen"
+                                           can-not-open-datacite="dc.canNotOpenDatacite"
+                                           copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
                                            get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
                       </cedar-dropdown-menu>
@@ -630,6 +636,12 @@
                       <div ng-if="dc.getTrustedBy(resource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
                         <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
+                      </div>
+                      <!-- Embeddable editor  icon -->
+                      <div ng-if="dc.isTemplate(resource) || dc.isMeta(resource)" ng-click="dc.embeddableEditor(resource)" style="display:inline; float:right;"
+                           uib-tooltip="{{'DASHBOARD.menu.populateEE' | translate}}"
+                           tooltip-placement="top">
+                        <i class="action fa fa-plus-square" style="font-size:18px; padding-left: 8px"> </i>
                       </div>
                       <!-- OpenView icon -->
                       <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
@@ -704,6 +716,7 @@
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                            open-open="dc.openOpen"
+                                           open-datacite="dc.openDatacite"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
@@ -712,7 +725,9 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           can-not-open-open="dc.canNotOpenOpen"
+                                           can-not-open-datacite="dc.canNotOpenDatacite"
+                                           copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
                                            get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
                       </cedar-dropdown-menu>
