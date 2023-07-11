@@ -935,13 +935,13 @@ define([
             case CONST.resourceType.FOLDER:
               return false;
             case CONST.resourceType.TEMPLATE:
-              break;
+              return true;
             case CONST.resourceType.ELEMENT:
               return false;
             case CONST.resourceType.INSTANCE:
-              break;
+              return true;
           }
-          return true;
+          return false;
         }
 
         function canSubmit(resource) {
