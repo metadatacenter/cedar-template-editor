@@ -15,6 +15,7 @@
 @field-color: #79A99E;
 @metadata-color: #0F7686;
 @folder-color: lighten(@top-nav-color, 10%);
+@deselected-icon-color: gray;
 
 @info-icon: cadetblue;
 
@@ -8909,25 +8910,25 @@ div.resource-icon {
         &.field {
           background-color: @white;
           i {
-            color: @field-color;
+            color: @deselected-icon-color; //@field-color;
           }
         }
         &.element {
           background-color: @white;
           i {
-            color: @element-color;
+            color: @deselected-icon-color; //@element-color;
           }
         }
         &.template {
           background-color: @white;
           i {
-            color: @template-color;
+            color: @deselected-icon-color; //@template-color;
           }
         }
         &.metadata, &.instance {
           background-color: @white;
           i {
-            color: @template-color;
+            color: @deselected-icon-color; //@template-color;
           }
         }
         &.folder {
