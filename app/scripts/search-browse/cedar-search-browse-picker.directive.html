@@ -637,12 +637,6 @@
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
                         <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
                       </div>
-                      <!-- Embeddable editor  icon -->
-                      <div ng-if="dc.isTemplate(resource) || dc.isMeta(resource)" ng-click="dc.embeddableEditor(resource)" style="display:inline; float:right;"
-                           uib-tooltip="{{'DASHBOARD.menu.populateEE' | translate}}"
-                           tooltip-placement="top">
-                        <i class="action fa fa-plus-square" style="font-size:18px; padding-left: 8px"> </i>
-                      </div>
                       <!-- OpenView icon -->
                       <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
