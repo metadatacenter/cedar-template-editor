@@ -138,6 +138,17 @@
             ng-disabled="isPublished()"
             with-floating-label>
       </div>
+
+      <!-- regex constraint -->
+      <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
+        <input type="text" auto-focus
+               class="form-control field-regex-definition"
+               placeholder="{{'CREATOR.enterRegex' | translate}}"
+               aria-label="{{'CREATOR.enterRegex' | translate}}"
+               ng-model="$root.schemaOf(field)._valueConstraints.regex"
+               ng-disabled="isPublished()"
+               with-floating-label>
+      </div>
     </div>
 
     <div ng-if="isTemporalField()">
