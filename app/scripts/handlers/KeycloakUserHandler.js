@@ -1,6 +1,10 @@
 function KeycloakUserHandler() {
 
-  const keycloak = Keycloak();
+  const keycloak = Keycloak({
+    "realm"   : "CEDAR",
+    "url"     : window.location.origin.replaceAll('/cedar.', '/auth.'),
+    "clientId": "cedar-angular-app"
+  });
 
   this.doLogin = function () {
     keycloak.login();

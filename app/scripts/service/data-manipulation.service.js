@@ -286,6 +286,14 @@ define([
           return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
         };
 
+        service.hasRegex = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('regex');
+        };
+
+        service.getRegex = function (node) {
+          return service.hasRegex(node) && service.getValueConstraint(node).regex;
+        };
+
         // min/max numeric value
         service.hasMinValue = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('minValue');

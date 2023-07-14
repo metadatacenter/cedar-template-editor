@@ -675,6 +675,7 @@
     "enterDate": "Enter Date",
     "enterMinLength": "Enter Minimum String Length",
     "enterMaxLength": "Enter Maximum String Length",
+    "enterRegex": "Enter Regex",
     "enterUnitOfMeasure": "Enter Unit of Measure",
     "enterMinValue": "Enter Minimum Value",
     "enterMaxValue": "Enter Maximum Value",

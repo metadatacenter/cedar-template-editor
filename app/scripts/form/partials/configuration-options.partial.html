@@ -13,15 +13,15 @@
           ng-click="setTab('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
       </div>
-      <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab"
-          ng-class="{active: isTabActive('cardinality')}"
-          ng-click="setTab('cardinality');  $event.stopPropagation();">
-        <span>Multiple</span>
-      </div>
       <div ng-if="allowsRequired()" class="element-toggle table-cell-style required-tab"
           ng-class="{active: isTabActive('required')}"
           ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
+      </div>
+      <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab"
+           ng-class="{active: isTabActive('cardinality')}"
+           ng-click="setTab('cardinality');  $event.stopPropagation();">
+        <span>Multiple</span>
       </div>
       <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
           ng-class="{active: isTabActive('value-recommendation')}"
@@ -137,6 +137,17 @@
             ng-model="$root.schemaOf(field)._valueConstraints.maxLength"
             ng-disabled="isPublished()"
             with-floating-label>
+      </div>
+
+      <!-- regex constraint -->
+      <div ng-if="!isConstrained()" class="form-group floating-label-wrapper">
+        <input type="text" auto-focus
+               class="form-control field-regex-definition"
+               placeholder="{{'CREATOR.enterRegex' | translate}}"
+               aria-label="{{'CREATOR.enterRegex' | translate}}"
+               ng-model="$root.schemaOf(field)._valueConstraints.regex"
+               ng-disabled="isPublished()"
+               with-floating-label>
       </div>
     </div>
 

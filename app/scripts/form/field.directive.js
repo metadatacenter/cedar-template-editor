@@ -9,12 +9,12 @@ define([
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
     "SpreadsheetService", "CONST", "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
-    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService"];
+    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService", "$location"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService, schemaService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService,
-                          ValidationService, TemporalEditorFieldService, QuestionTextService) {
+                          ValidationService, TemporalEditorFieldService, QuestionTextService, $location) {
 
 
     let linker = function ($scope, $element, attrs) {
@@ -308,6 +308,12 @@ define([
       $scope.isStatic = function () {
         return FieldTypeService.isStaticField(schemaService.getInputType($scope.field));
       };
+
+      $scope.isSoleField = function (field) {
+        if($location.absUrl().includes('fields'))
+          return true;
+        return false;
+      }
 
       $scope.getContent = function (field) {
         return dms.getContent(field || $scope.field);

@@ -70,42 +70,22 @@
                 <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
-                                       uib-tooltip="{{'GENERIC.Template' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('template')"
                                        class="template"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('template'), selected: dc.isResourceTypeActive('template'), 'template-deselected': !dc.isResourceTypeActive('template'), 'template-selected': dc.isResourceTypeActive('template')}">
                   </cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
-                                       uib-tooltip="{{'GENERIC.Element' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('element')"
                                        class="element"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('element'), selected: dc.isResourceTypeActive('element'), 'element-deselected': !dc.isResourceTypeActive('element'), 'element-selected': dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
-                                       uib-tooltip="{{'GENERIC.Field' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('field')"
                                        class="field"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('field'), selected: dc.isResourceTypeActive('field'), 'field-deselected': !dc.isResourceTypeActive('field'), 'field-selected': dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
-                                       uib-tooltip="{{'GENERIC.Metadata' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('instance')"
                                        class="metadata"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('instance'), selected: dc.isResourceTypeActive('instance'), 'instance-deselected': !dc.isResourceTypeActive('instance'), 'instance-selected': dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
@@ -636,12 +616,6 @@
                       <div ng-if="dc.getTrustedBy(resource)" style="display:inline; float:right;"
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
                         <i class="fa fa-shield" style="font-size:18px">&nbsp;</i>
-                      </div>
-                      <!-- Embeddable editor  icon -->
-                      <div ng-if="dc.isTemplate(resource) || dc.isMeta(resource)" ng-click="dc.embeddableEditor(resource)" style="display:inline; float:right;"
-                           uib-tooltip="{{'DASHBOARD.menu.populateEE' | translate}}"
-                           tooltip-placement="top">
-                        <i class="action fa fa-plus-square" style="font-size:18px; padding-left: 8px"> </i>
                       </div>
                       <!-- OpenView icon -->
                       <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
