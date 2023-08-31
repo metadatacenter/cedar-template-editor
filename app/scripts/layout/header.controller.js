@@ -357,7 +357,9 @@ define([
 
     });
 
-
+    vm.getCedarVersion = function(){
+      return window.cedarVersion;
+    }
 
   }
 });
