@@ -986,21 +986,25 @@
             </div>
 
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.isFolder()">
-              <button ng-click="dc.copyFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy folder Id</button>
             </div>
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
-              <button ng-click="dc.copyParentFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyParentFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedParentFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy parent folder Id</button>
             </div>
 
