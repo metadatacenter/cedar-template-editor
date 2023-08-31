@@ -50,7 +50,8 @@ define([
         getSelectedFolderId         : "=",
         getSelectedParentFolderId   : "=",
         copyFolderId2Clipboard      : "=",
-        copyParentFolderId2Clipboard: "="
+        copyParentFolderId2Clipboard: "=",
+        isMeta                      : "=",
       },
       controller : function ($scope, $element) {
       },

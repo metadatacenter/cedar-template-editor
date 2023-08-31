@@ -9,11 +9,9 @@
   <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)" translate>DASHBOARD.menu.rename</a></li>
   <li><a href="#" class="copyFolderId2Clipboard" ng-class="{'link-disabled': !isFolder}" ng-click="copyFolderId2Clipboard()" translate>DASHBOARD.menu.copyFolderId</a></li>
   <li><a href="#" class="copyParentFolderId2Clipboard" ng-click="copyParentFolderId2Clipboard()" translate>DASHBOARD.menu.copyParentFolderId</a></li>
-  <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
-  <li><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>
-  <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="submit" ng-class="{'link-disabled': canNotSubmit}"  href="#"  ng-click="submit(resource)" translate>DASHBOARD.menu.submit</a></li>
+  <li ng-if="!isMeta" role="separator" class="divider"></li>
+  <li ng-if="!isMeta"><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
+  <li ng-if="!isMeta"><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>
   <li role="separator" class="divider"></li>
   <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotDelete}" href="#"  ng-click="delete(resource)" translate>DASHBOARD.menu.delete</a></li>
   <li role="separator" class="divider"></li>
