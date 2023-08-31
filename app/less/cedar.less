@@ -554,7 +554,24 @@ body.modal-open {
     margin-right: 0px;
   }
 }
+.menu-icons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "Icons Icons"
+    ". Version";
+  height: 4em;
+}
 
+.Icons { grid-area: Icons; }
+
+.Version {
+  justify-self: end;
+  grid-area: Version;
+  font-size: 10px;
+}
 
 /*
 ================================================

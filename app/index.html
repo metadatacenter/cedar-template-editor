@@ -60,29 +60,28 @@
             </form>
           </div>
 
-          <div class="col-xs-3">
-            <ul class="list-inline pull-right" style="margin-top:10px;margin-right:-10px;white-space: nowrap;">
-
-
-              <li id="messaging">
-                <button  class="inline" uib-tooltip='{{"Messages" | translate}}' tooltip-placement="bottom"
+          <div class="col-xs-3 menu-icons-container">
+            <div class="Icons">
+              <ul class="list-inline pull-right" style="margin-top:10px;margin-right:-10px; margin-bottom: 0px; white-space: nowrap;">
+                <li id="messaging">
+                  <button  class="inline" uib-tooltip='{{"Messages" | translate}}' tooltip-placement="bottom"
+                      type="button"
+                      ng-click="hc.openMessaging()"><i class="fa fa-bell inline"></i></button>
+                  <div id="messaging-number" ng-show="hc.hasUnreadMessages()">
+                    <button type="button"
+                        uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
+                        tooltip-placement="bottom"
+                        ng-click="hc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
+                    </button>
+                  </div>
+                </li>
+                <li id="user-menu"><button  id="user-menu-dropdown-trigger" class="inline"
                     type="button"
-                    ng-click="hc.openMessaging()"><i class="fa fa-bell inline"></i></button>
-                <div id="messaging-number" ng-show="hc.hasUnreadMessages()">
-                  <button type="button"
-                      uib-tooltip='{{"HELP.unreadMessageCount" | translate}}'
-                      tooltip-placement="bottom"
-                      ng-click="hc.openMessaging()">{{hc.getUnreadMessageCount()}}<span class="plus">+</span>
-                  </button>
-                </div>
-              </li>
-
-              <li id="user-menu"><button  id="user-menu-dropdown-trigger" class="inline"
-                  type="button"
-                  ng-click="hc.toggleUserMenuDropdown()"><i   class="fa fa-user inline"></i></button>
-               </li>
-
-            </ul>
+                    ng-click="hc.toggleUserMenuDropdown()"><i   class="fa fa-user inline"></i></button>
+                 </li>
+              </ul>
+            </div>
+            <div class="Version">{{'V ' + hc.getCedarVersion()}}</div>
           </div>
 
         </div>
