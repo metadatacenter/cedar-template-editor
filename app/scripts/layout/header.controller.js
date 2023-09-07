@@ -19,16 +19,18 @@ define([
     'UIUtilService',
     'CedarUser',
     'FrontendUrlService',
-    'MessagingService'
+    'MessagingService',
+    '$scope'
   ];
 
   function HeaderController($rootScope, $location, $window, $timeout, $document, $translate,QueryParamUtilsService,
-                            UIMessageService, UIProgressService, UIUtilService,CedarUser, FrontendUrlService,MessagingService) {
+                            UIMessageService, UIProgressService, UIUtilService, CedarUser, FrontendUrlService, MessagingService, $scope) {
 
     var vm = this;
     vm.path = $location.path();
     vm.searchTerm = $location.search().search;
     vm.confirmedBack = true;
+
 
     $window.onbeforeunload = function (event) {
       if (vm.isDirty() && !vm.confirmedBack) {
@@ -63,6 +65,10 @@ define([
 
     vm.lockUnlockTip = function() {
       return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
+    };
+
+    vm.shareTip = function() {
+      return $translate.instant("Share");
     };
 
     // vm.windowHistoryBack = function() {
@@ -359,6 +365,21 @@ define([
 
     vm.getCedarVersion = function(){
       return window.cedarVersion;
+    }
+
+    vm.showShareModal = function(){
+      console.log("In share modal visible", $rootScope);
+      const obj = {'@id':$rootScope.jsonToSave['@id'], resourceType:vm.resourceType};
+      console.log("New obj is", obj);
+      vm.resource = obj;
+      vm.shareModalVisible = true;
+
+      $scope.$emit('shareModalVisible', [true, {'@id':$rootScope.jsonToSave['@id'], resourceType:vm.resourceType}]);
+    }
+
+    vm.canShare = function() {
+      console.log("In disabled", $rootScope);
+      return($rootScope.canShare);
     }
 
   }

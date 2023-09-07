@@ -482,7 +482,7 @@ define([
 
 
           vm.selectResource = function (resource, force) {
-
+            $rootScope.canShare = !vm.canNotShare;
             if (force || !Object.is(resource, getSelected())) {
 
               vm.editingDescription = false;

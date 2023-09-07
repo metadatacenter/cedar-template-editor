@@ -102,8 +102,9 @@
                 class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
             <div   uib-tooltip="{{hc.validTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom">
               <i  class="fa " ng-class="hc.validIcon()"></i></div>
-            </div>
-
+            <div uib-tooltip="{{hc.shareTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
+                class="fa fa-share" ng-click="hc.showShareModal()"></i></div>
+          </div>
 
         </div>
       </div>
@@ -156,3 +157,10 @@
 
 </body>
 </html>
+<section>
+  <cedar-share-modal cedar-modal-show modal-visible="true" class="modal fade" id="share-modal"
+                     tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
+                     style="padding: 10px;list-style: none"
+                     data-keyboard="true" data-backdrop="static" share-resource="hc.resource">
+  </cedar-share-modal>
+</section>
