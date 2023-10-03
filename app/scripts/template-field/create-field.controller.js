@@ -120,10 +120,13 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
+      console.log("Here", $scope.field);
 
       var title = schemaService.getTitle($scope.field);
       var description = schemaService.getDescription($scope.field);
       var identifier = schemaService.getIdentifier($scope.field);
+
+      console.log("Title", title, "Desc", description, "ident", identifier);
 
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -148,7 +151,8 @@ define([
         }
 
         UIUtilService.setDirty(true);
-        ValidationService.checkValidation();
+        console.log("before if");
+        // ValidationService.checkValidation();
 
         dms.createDomIds($scope.field);
         $rootScope.$broadcast('field:reset');

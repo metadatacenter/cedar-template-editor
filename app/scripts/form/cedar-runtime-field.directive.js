@@ -1185,7 +1185,6 @@ define([
 
 // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
-
         var location = dms.getValueLocation($scope.field);
         var min = schemaService.getMinItems($scope.field) || 0;
         var valueConstraint = schemaService.getValueConstraints($scope.field);
