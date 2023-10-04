@@ -206,18 +206,5 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
-  },
-  {
-    "cedarType": "language",
-    "iconClass": "fa fa-language",
-    "allowedInElement": true,
-    "label": "Language",
-    "primaryField": true,
-    "hasControlledTerms": false,
-    "staticField": true,
-    "allowsMultiple": false,
-    "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
-    "allowsRequired": true
   }
 ]
