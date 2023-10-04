@@ -120,6 +120,7 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
+
       var title = schemaService.getTitle($scope.field);
       var description = schemaService.getDescription($scope.field);
       var identifier = schemaService.getIdentifier($scope.field);
