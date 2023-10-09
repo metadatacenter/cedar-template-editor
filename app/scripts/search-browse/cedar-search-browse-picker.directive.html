@@ -294,7 +294,8 @@
                                                can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                               get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId">
+                                               get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId"
+                                               is-meta="dc.isMeta()">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -387,7 +388,8 @@
                                                can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                               get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                               get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                               is-meta="dc.isMeta()">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -549,7 +551,8 @@
                                            can-not-open-datacite="dc.canNotOpenDatacite"
                                            copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                           is-meta="dc.isMeta()">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -703,7 +706,8 @@
                                            can-not-open-datacite="dc.canNotOpenDatacite"
                                            copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                           is-meta="dc.isMeta()">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -844,7 +848,14 @@
           <div class="info" ng-if="dc.getSelectedNode()">
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Location</div>
-              <div class="parent-path">{{ dc.getSelectedNode().parentPath }}</div>
+              <div class="parent-path">
+                <span class="folder-path" ng-repeat="folder in dc.getSelectedNode().pathInfo | limitTo : (dc.getSelectedNode().pathInfo.length-1) track by $index">
+                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs" ng-if="dc.isFolder(folder) && dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <span class="breadcrumbs" ng-if="!dc.isFolder(folder) || !dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  <span ng-if="folder['isOpen']"><i class="action fa fa-external-link-square">&nbsp;</i></span>
+                  <span ng-if="$index < dc.getSelectedNode().pathInfo.length - 2 ">/</span>
+                </span>
+              </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
@@ -982,21 +993,25 @@
             </div>
 
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.isFolder()">
-              <button ng-click="dc.copyFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy folder Id</button>
             </div>
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
-              <button ng-click="dc.copyParentFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyParentFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedParentFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy parent folder Id</button>
             </div>
 

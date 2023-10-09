@@ -124,7 +124,7 @@ define([
       var title = schemaService.getTitle($scope.field);
       var description = schemaService.getDescription($scope.field);
       var identifier = schemaService.getIdentifier($scope.field);
-
+      
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 

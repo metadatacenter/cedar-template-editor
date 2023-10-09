@@ -46,6 +46,10 @@ define([
       return getAppData().authUserProfile['@id'];
     };
 
+    service.getUserFullId = function () {
+      return getAppData().cedarUserProfile['@id'];
+    };
+
     service.getEmail = function () {
       return getAppData().authUserProfile.email;
     };

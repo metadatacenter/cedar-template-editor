@@ -127,8 +127,12 @@ define([
               property = property.substr(1);
             }
             return function (a, b) {
-              var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
-              return result * sortOrder;
+              if (a.hasOwnProperty(property) && b.hasOwnProperty(property) && a[property] !== null && b[property] !== null) {
+                var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
+                return result * sortOrder;
+              } else {
+                return 0;
+              }
             }
           }
 

@@ -554,8 +554,35 @@ body.modal-open {
     margin-right: 0px;
   }
 }
+.menu-icons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "Icons Icons"
+    ". Version";
+  height: 4em;
+}
 
+.Icons { grid-area: Icons; }
 
+.Version {
+  justify-self: end;
+  grid-area: Version;
+  font-size: 10px;
+}
+
+.btn-folder-id:hover{
+  background-color: rgba(21, 53, 53, 0.98);
+  color: white;
+}
+
+.btn-folder-id:active {
+  box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+  transform: translateY(4px);
+  /* Moving button 4px to y-axis */
+}
 /*
 ================================================
 === CEDAR Customization END
