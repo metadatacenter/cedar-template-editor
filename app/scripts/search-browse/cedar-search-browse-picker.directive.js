@@ -918,32 +918,37 @@ define([
                       }
                   );
                 } else {
-                  return resourceService.searchResources(vm.searchTerm,
-                      {
-                        resourceTypes: activeResourceTypes(),
-                        sort         : sortField(vm.params),
-                        limit        : vm.requestLimit,
-                        offset       : vm.offset
-                      },
-                      function (response) {
-
-
-                        for (let i = 0; i < response.resources.length; i++) {
-                          vm.resources[i + vm.offset] = response.resources[i];
-                        }
-                        vm.totalCount = response.totalCount;
-                        vm.nextOffset = getNextOffset(response.paging.next);
-                        vm.loading = false;
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                        vm.loading = false;
-                      }
-                  );
+                  const options = {
+                    resourceTypes: activeResourceTypes(),
+                    sort         : sortField(vm.params),
+                    limit        : vm.requestLimit,
+                    offset       : vm.offset
+                  };
+                  const successCallback = function (response) {
+                    for (let i = 0; i < response.resources.length; i++) {
+                      vm.resources[i + vm.offset] = response.resources[i];
+                    }
+                    vm.totalCount = response.totalCount;
+                    vm.nextOffset = getNextOffset(response.paging.next);
+                    vm.loading = false;
+                  };
+                  const errorCallback = function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                    vm.loading = false;
+                  }
+                  if (vm.nodeListQueryType === 'view-shared-with-me') {
+                    return resourceService.sharedWithMeResources(options, successCallback, errorCallback);
+                  } else if (vm.nodeListQueryType === 'view-shared-with-everybody') {
+                      return resourceService.sharedWithEverybodyResources(options, successCallback, errorCallback);
+                  } else if (vm.nodeListQueryType === 'view-special-folders') {
+                    return resourceService.specialFolders(options, successCallback, errorCallback);
+                  } else {
+                    return resourceService.searchResources(vm.searchTerm, options, successCallback, errorCallback);
+                  }
                 }
               }
             }
-          };
+          }
 
           //*********** ENTRY POINT
 
