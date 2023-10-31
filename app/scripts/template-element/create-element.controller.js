@@ -596,5 +596,16 @@ define([
       }
     };
 
+    $scope.copyJson2Clipboard = function () {
+      navigator.clipboard.writeText($filter('json')(this.stripTmpFields())).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.JsonSchemaCopied', {"title": "METADATAEDITOR.JsonSchemaCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.JsonSchemaCopyFail', {"title": "METADATAEDITOR.JsonSchemaCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
+    };
+
   }
 });
