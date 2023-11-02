@@ -191,8 +191,12 @@
               ]
             }
           }
+        },
+        "@language": {
+          "type": [ "string", "null"],
+          "minLength": 1
         }
-      },
+    },
       "required": [
         "xsd",
         "pav",
