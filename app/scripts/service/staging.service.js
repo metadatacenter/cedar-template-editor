@@ -9,13 +9,13 @@ define([
 
   StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "TemplateFieldService",
                             "DataManipulationService",'schemaService',
-                            "UIUtilService",
+                            "UIUtilService", "$translate",
                             "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout",
                             "AuthorizedBackendService", "DataTemplateService",
                             "CONST"];
 
   function StagingService($rootScope, $document, TemplateElementService, TemplateFieldService,
-                          DataManipulationService,schemaService, UIUtilService,
+                          DataManipulationService,schemaService, UIUtilService, $translate,
                           ClientSideValidationService, UIMessageService, FieldTypeService, $timeout,
                           AuthorizedBackendService, DataTemplateService, CONST) {
 
@@ -119,13 +119,12 @@ define([
     // };
 
     service.addFieldToForm = function (form, fieldType, firstClassField, divId, callback) {
-
-      var field = DataManipulationService.generateField(fieldType, firstClassField);
+      let field = DataManipulationService.generateField(fieldType, firstClassField);
       UIUtilService.setSelected(field);
 
       // is it a checkbox, list, or radio field?
       if (schemaService.isCheckboxListRadioType(fieldType)) {
-        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+        if (fieldType === 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
             {
@@ -141,10 +140,18 @@ define([
             }
           ];
         }
+      } else if (fieldType === 'boolean') {
+        field._valueConstraints.multipleChoice = false;
+        field._valueConstraints.labels = {
+          'true': $translate.instant('FIELDS.FIELD_TYPE.boolean.True'),
+          'false': $translate.instant('FIELDS.FIELD_TYPE.boolean.False'),
+          'null': $translate.instant('FIELDS.FIELD_TYPE.boolean.Null')
+        };
+        field._valueConstraints.defaultValue = 'false';
       }
 
       // Converting title for irregular character handling
-      var fieldName = DataManipulationService.generateGUID(); //field['@id'];
+      let fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
       if (!FieldTypeService.isStaticField(fieldType)) {
