@@ -1897,7 +1897,7 @@ define([
 
         // parse the ontology code from the selfUrl
         service.parseOntologyName = function (itemData) {
-          var re = new RegExp('\/ontologies\/(.+)\/classes\/');
+          var re = new RegExp('\/ontology\/(.+)\/');
           var m;
           var result;
           if ((m = re.exec(itemData)) !== null) {

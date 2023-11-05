@@ -5,12 +5,15 @@
         <div class="class-list-container">
           <div class="class-list-table">
             <table  class="table table-hover table-striped ">
+              <!-- Will need te below commented out parts of the table after schema will be extended to store ontology name,
+              so these fields can be queried and displayed -->
               <thead>
               <tr>
-                <th>Name</th>
-                <th width="250px">Description</th>
-                <th>Source</th>
-                <th>Identifier</th>
+                <th colspan=5 >IRI</th>
+<!--                <th>Name</th>-->
+<!--                <th width="250px">Description</th>-->
+<!--                <th>Source</th>-->
+<!--                <th>Identifier</th>-->
                 <th><button class="close" style="left:0;color:#000" type="button" ng-click="dialogOpen = false"
                     tooltip-append-to-body="true"
                     uib-tooltip="{{'GENERIC.Close' | translate}}"
@@ -20,18 +23,21 @@
               </thead>
               <tbody>
               <tr ng-if="addedFieldKeys.length > 0" ng-repeat="key in addedFieldKeys">
-                <td>
-                  {{getPrefLabel(key)}}
-                </td>
-                <td style="font-size:0.9em">
-                  {{getShortText(getClassDescription(key), 120, '...', '-')}}
-                </td>
-                <td>
-                  {{parseOntologyName(key)}}
-                </td>
-                <td uib-tooltip="{{getShortId(getClassId(key))}}" tooltip-append-to-body="true">
-                  {{getShortId(getClassId(key), 16)}}
-                </td>
+                    <td colspan="5">
+                      {{key}}
+                    </td>
+<!--                <td>-->
+<!--                  {{getPrefLabel(key)}}-->
+<!--                </td>-->
+<!--                <td style="font-size:0.9em">-->
+<!--                  {{getShortText(getClassDescription(key), 120, '...', '-')}}-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                  {{parseOntologyName(key)}}-->
+<!--                </td>-->
+<!--                <td uib-tooltip="{{getShortId(getClassId(key))}}" tooltip-append-to-body="true">-->
+<!--                  {{getShortId(getClassId(key), 16)}}-->
+<!--                </td>-->
                 <td>
                   <div class="class-delete" ng-click="deleteFieldAddedItem(key);$event.stopPropagation();"
                       tooltip-append-to-body="true"
