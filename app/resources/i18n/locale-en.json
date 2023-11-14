@@ -563,6 +563,8 @@
     "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date.",
     "JsonLDCopied" : "JSON-LD copied to clipboard",
     "JsonLDCopyFail" : "JSON-LD can not be copied to clipboard",
+    "JsonSchemaCopied" : "JSON Schema copied to clipboard",
+    "JsonSchemaCopyFail" : "JSON Schema can not be copied to clipboard",
     "RdfCopied" : "RDF copied to clipboard",
     "RdfCopyFail" : "RDF can not be copied to clipboard"
   },
