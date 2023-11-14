@@ -64,6 +64,10 @@
     "@value": {
       "type" : ["string", "null"]
     },
+    "@language": {
+      "type": [ "string", "null" ],
+      "minLength": 1
+    },
     "rdfs:label": {
       "type" : ["string", "null"]
     }
