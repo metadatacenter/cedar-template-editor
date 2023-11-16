@@ -331,7 +331,11 @@ define([
 
         // dateTime type
         service.hasNumberType = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('numberType');
+          if (service.getValueConstraint(node) !== undefined) {
+            return service.getValueConstraint(node).hasOwnProperty('numberType');
+          } else {
+            return false;
+          }
         };
 
         service.getNumberType = function (node) {
