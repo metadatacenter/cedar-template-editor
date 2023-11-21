@@ -54,7 +54,7 @@
       <div class="container-fluid">
         <div class="row">
           <!-- Left panel (shortcuts and category tree)-->
-          <div class="col-sm-3 filters-panel">
+          <div class="col-sm-2 filters-panel">
             <!-- Shortcuts -->
             <div class="shares">
               <a class="share workspace" ng-class="{active: finder.isHomeMode()}" href="#"
@@ -92,7 +92,7 @@
             </ul>
           </div>
           <!-- Center panel (resources list)-->
-          <div class="col-sm-6">
+          <div ng-class="(finder.selectedItems.length>0 ? 'col-sm-4' : 'col-sm-7')">
             <div class="results-panel" id="results-panel-id">
               <!-- Breadcrumb -->
               <div class="breadcrumbs-sb">
@@ -186,7 +186,77 @@
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{finder.getTrustedBy(resource)}}">
                         <i class="fa fa-shield">&nbsp;</i>
                       </div>
+                      <span class="badge" ng-if="finder.getClickOrder(resource)>-1">{{ finder.getClickOrder(resource) }}</span>
                     </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Offset and total count -->
+              <div class="results-count">
+                <div ng-if="finder.resourceListIsLoadingMore()">
+                  <span><i class="fa fa-spinner" aria-hidden="true"></i> {{'GENERIC.LoadingMoreResources' | translate}}</span>
+                </div>
+                <div ng-if="!finder.resourceListIsLoadingMore() && finder.totalCount > 1">
+                  <span translate>GENERIC.Displaying</span> 1-{{finder.getVisibleCount() | number}}
+                  <span translate>GENERIC.Of</span> {{finder.totalCount | number}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Center panel (selected artifacts list)-->
+          <div ng-if="finder.selectedItems.length" class="col-sm-3">
+            <div class="results-panel">
+              <div class="breadcrumbs-sb">
+                <p>
+                <span class="folder-path">
+                  <span class="breadcrumbs">Selected Resources</span>
+                </span>
+                </p>
+              </div>
+              <!-- List of resources -->
+              <div class="results" cedar-infinite-scroll load-more="finder.loadMore()">
+                <!-- If resources are loading -->
+
+                <!-- If nothing found -->
+
+                <!-- If some resources were found -->
+                <div ng-if="!finder.resourceListIsLoading()">
+                  <!-- Display Folders first -->
+
+                  <!-- Then, display Elements and Fields -->
+                  <div ui-sortable>
+                  <div
+                      ng-model="finder.selectedItems"
+                      ng-if="!finder.isFolder(resource)" class="box-row"
+                      ng-class="{ selected: finder.isResourceSelected(resource) }"
+                      ng-click="finder.selectResource(resource)"
+                      ng-dblclick="finder.openResource(resource)"
+                      ng-repeat="(index, resource) in finder.selectedItems">
+                    <div
+                        class="outer flex resource-instance"
+                        ng-class="finder.getResourceTypeClass(resource)">
+                      <div class="flex ellipsis" style="justify-content:space-between">
+                        <cedar-resource-icon resource-type="resource.resourceType"></cedar-resource-icon>
+                        <div id="{{finder.getId(resource, 'row')}}" class="ellipsis" style="width:100%"
+                             uib-tooltip='{{finder.getTitle(resource)}}'
+                             tooltip-append-to-body="true"
+                             tooltip-trigger="mouseenter"
+                             tooltip-animation="false"
+                             tooltip-placement="bottom"
+                             data-toggle="tooltip"
+                             tooltip-enable="finder.isOverflow(resource, 'row')"
+                        >{{ finder.getTitle(resource)}}
+                        </div>
+                      </div>
+                      <!-- Trusted badge -->
+                      <div ng-if="finder.getTrustedBy(resource)"
+                           style="display:inline; float:right;font-size: 16px;padding-right:20px"
+                           uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{finder.getTrustedBy(resource)}}">
+                        <i class="fa fa-shield">&nbsp;</i>
+                      </div>
+                      <i class="fa fa-trash" style="margin-right: 5px; color: gray" onclick="finder.removeFromSelectedItems()"></i>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>

@@ -219,6 +219,7 @@ define([
             });
             $rootScope.$broadcast("form:update", element);
           }
+          console.log("Created element", element['schema:name']);
         };
 
         $scope.addStandAloneFieldToTemplate = function (node) {
@@ -518,12 +519,13 @@ define([
         // };
 
         $scope.pickElementFromPicker = function (resource) {
+
           if (resource.resourceType == 'element') {
             $scope.addElementToTemplate(resource);
           } else if (resource.resourceType == 'field') {
             $scope.addStandAloneFieldToTemplate(resource);
           }
-
+          console.log("have added ", resource['schema:name']);
           $scope.hideSearchBrowsePicker();
         };
 

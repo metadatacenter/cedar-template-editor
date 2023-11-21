@@ -64,6 +64,9 @@ define([
           vm.categoryTree = null;
           vm.loadingCategoryTree = false;
 
+          vm.selectedItems = [];
+          vm.clickOrder = [];
+
           /*
            * Public function declarations
            */
@@ -128,6 +131,8 @@ define([
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.getTrustedBy = getTrustedBy;
+          vm.toggleSelection = toggleSelection;
+          vm.getClickOrder = getClickOrder;
 
           //------
 
@@ -585,7 +590,7 @@ define([
             }
           };
 
-          function openResource(resource) {
+          async function openResource (resource) {
             let r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -594,9 +599,28 @@ define([
             if (r.resourceType == 'folder') {
               goToFolder(r['@id']);
             } else {
-              if (typeof vm.pickResourceCallback === 'function') {
-                vm.pickResourceCallback(r);
+              // vm.clickOrder.forEach(i => {
+              //   console.log("I", i, vm.selectedItems);
+              //   if (typeof vm.pickResourceCallback === 'function') {
+              //     vm.pickResourceCallback(vm.selectedItems.find(y => y['@id'] === i));
+              //   }
+              // })
+              for(let i=0; i<vm.clickOrder.length; i++){
+                if (typeof vm.pickResourceCallback === 'function') {
+                  let toBeAdded = vm.selectedItems.find(y => y['@id'] === vm.clickOrder[i]);
+                  console.log("Adding", toBeAdded['schema:name']);
+                  $scope.$on("form:update", (resource)=>console.log("Watcch ettim", resource));
+                  await vm.pickResourceCallback(toBeAdded);
+                }
               }
+              // vm.selectedItems.forEach(i => {
+              //   // console.log("I", i, vm.selectedItems);
+              //   if (typeof vm.pickResourceCallback === 'function') {
+              //     vm.pickResourceCallback(i);
+              //   }
+              // })
+              vm.selectedItems = [];
+              vm.clickOrder = [];
               $scope.hideModal(vm.id);
             }
           };
@@ -679,6 +703,11 @@ define([
 
           function selectResource(resource) {
 
+            // if resource is a folder no need to add it to selectedItems
+            if(resource.resourceType !== CONST.resourceType.FOLDER){
+              vm.toggleSelection(resource);
+            }
+
             if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
               vm.getResourceDetails(resource);
             }
@@ -694,6 +723,27 @@ define([
               return vm.selectedResource['@id'] == resource['@id'];
             }
           };
+
+          function toggleSelection(resource) {
+            let index = vm.selectedItems.findIndex(i => i['@id'] === resource['@id']);
+
+            if (index === -1) {
+              vm.selectedItems.push(resource);
+              vm.clickOrder.push(resource['@id']);
+            } else {
+              vm.selectedItems.splice(index, 1);
+              vm.clickOrder.splice(index, 1);
+            }
+          };
+
+          function getClickOrder(resource) {
+            let index = vm.clickOrder.indexOf(resource['@id']);
+            return index !== -1 ? index + 1 : -1;
+          };
+
+          function removeFromSelectedItems(resource): void {
+
+          }
 
           function getResourceDetails(resource) {
             if (!resource && vm.hasSelection()) {
