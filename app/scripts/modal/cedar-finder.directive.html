@@ -92,7 +92,7 @@
             </ul>
           </div>
           <!-- Center panel (resources list)-->
-          <div ng-class="(finder.selectedItems.length>0 ? 'col-sm-4' : 'col-sm-7')">
+          <div ng-class="(finder.selectedResources.length>0 ? 'col-sm-3' : 'col-sm-7')">
             <div class="results-panel" id="results-panel-id">
               <!-- Breadcrumb -->
               <div class="breadcrumbs-sb">
@@ -163,7 +163,7 @@
                       ng-class="{ selected: finder.isResourceSelected(resource) }"
                       ng-click="finder.selectResource(resource)"
                       ng-dblclick="finder.openResource(resource)"
-                      ng-repeat="(index, resource) in finder.getElementsAndFields()">
+                      ng-repeat="(index, resource) in finder.getElementsAndFields() track by $index">
                     <div
                         class="outer flex resource-instance"
                         ng-class="finder.getResourceTypeClass(resource)">
@@ -186,7 +186,11 @@
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{finder.getTrustedBy(resource)}}">
                         <i class="fa fa-shield">&nbsp;</i>
                       </div>
-                      <span class="badge" ng-if="finder.getClickOrder(resource)>-1">{{ finder.getClickOrder(resource) }}</span>
+                      <button class="badge-button"
+                            ng-click="finder.addToSelectedResources(resource)"
+                            uib-tooltip="{{'GENERIC.AddToSelectionList' | translate}}">
+                        <i class="fa fa-plus"></i>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -204,34 +208,28 @@
             </div>
           </div>
           <!-- Center panel (selected artifacts list)-->
-          <div ng-if="finder.selectedItems.length" class="col-sm-3">
-            <div class="results-panel">
+          <div ng-if="finder.selectedResources.length" class="col-sm-4" style="display: flex; flex-orientation: column">
+            <div class="col-sm-2" style="grow: 1 ;background: linear-gradient(#0F7686, #0F7686) no-repeat center/2px 80%"></div>
+            <div class="col-sm-10 results-panel">
               <div class="breadcrumbs-sb">
                 <p>
                 <span class="folder-path">
-                  <span class="breadcrumbs">Selected Resources</span>
+                  <p class="breadcrumbs">Selected Resources</p>
+                  <p style="font-size: 11px; padding-top: 0px; margin-top: -10px">* Drag and drop to reorder</p>
                 </span>
                 </p>
               </div>
               <!-- List of resources -->
               <div class="results" cedar-infinite-scroll load-more="finder.loadMore()">
-                <!-- If resources are loading -->
-
-                <!-- If nothing found -->
-
-                <!-- If some resources were found -->
                 <div ng-if="!finder.resourceListIsLoading()">
-                  <!-- Display Folders first -->
-
-                  <!-- Then, display Elements and Fields -->
-                  <div ui-sortable>
-                  <div
-                      ng-model="finder.selectedItems"
+                  <div ui-sortable ng-model="finder.selectedResources" ui-sortable-update="sorted">
+                    <div
+                      ng-model="finder.selectedResources"
                       ng-if="!finder.isFolder(resource)" class="box-row"
                       ng-class="{ selected: finder.isResourceSelected(resource) }"
-                      ng-click="finder.selectResource(resource)"
+                      ng-click="finder.logla()"
                       ng-dblclick="finder.openResource(resource)"
-                      ng-repeat="(index, resource) in finder.selectedItems">
+                      ng-repeat="(index, resource) in finder.selectedResources">
                     <div
                         class="outer flex resource-instance"
                         ng-class="finder.getResourceTypeClass(resource)">
@@ -254,7 +252,11 @@
                            uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{finder.getTrustedBy(resource)}}">
                         <i class="fa fa-shield">&nbsp;</i>
                       </div>
-                      <i class="fa fa-trash" style="margin-right: 5px; color: gray" onclick="finder.removeFromSelectedItems()"></i>
+                      <button class="badge-button"
+                            ng-click="finder.removeFromSelectedResources($index, resource)"
+                            uib-tooltip="{{'GENERIC.RemoveFromList' | translate}}">
+                        <i class="fa fa-times"></i>
+                      </button>
                     </div>
                   </div>
                   </div>
@@ -266,8 +268,7 @@
                   <span><i class="fa fa-spinner" aria-hidden="true"></i> {{'GENERIC.LoadingMoreResources' | translate}}</span>
                 </div>
                 <div ng-if="!finder.resourceListIsLoadingMore() && finder.totalCount > 1">
-                  <span translate>GENERIC.Displaying</span> 1-{{finder.getVisibleCount() | number}}
-                  <span translate>GENERIC.Of</span> {{finder.totalCount | number}}
+                  <span translate>GENERIC.TotalSelected</span> {{finder.selectedResources.length}}
                 </div>
               </div>
             </div>
@@ -386,9 +387,9 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="clear-save">
-            <button data-dismiss="modal" type="cancel" class="btn btn-clear canc">{{'GENERIC.Cancel' | translate}}
+            <button data-dismiss="modal" type="cancel" class="btn btn-clear canc" ng-click="finder.reset()">{{'GENERIC.Cancel' | translate}}
             </button>
-            <button ng-disabled="!finder.hasSelection()" class="btn btn-save subm" ng-click="finder.openResource()">
+            <button ng-disabled="!finder.hasSelection() || !finder.selectedResources.length" class="btn btn-save subm" ng-click="finder.openResource()">
               {{'GENERIC.Select' | translate}}
             </button>
           </div>

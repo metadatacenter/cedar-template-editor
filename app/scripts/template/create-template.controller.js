@@ -215,11 +215,11 @@ define([
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
+              $rootScope.$broadcast("form:update", element);
 
             });
-            $rootScope.$broadcast("form:update", element);
           }
-          console.log("Created element", element['schema:name']);
+          // console.log("Created element", element['schema:name']);
         };
 
         $scope.addStandAloneFieldToTemplate = function (node) {
@@ -235,9 +235,9 @@ define([
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
+              $rootScope.$broadcast("form:update", node);
 
             });
-            $rootScope.$broadcast("form:update", node);
           }
         };
 
