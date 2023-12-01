@@ -1,25 +1,25 @@
 
 <ul  class="dropdown" on-toggle="toggled(open)" >
-  <li><a  class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')" translate>DASHBOARD.menu.populate</a></li>
+  <li><a  class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="canNotPopulate? preventDefault : goTo(resource, 'populate')" translate>DASHBOARD.menu.populate</a></li>
   <li><a  class="open" href="#"  ng-click="goTo(resource)" translate>DASHBOARD.menu.open</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="share(resource)" translate>DASHBOARD.menu.share</a></li>
-  <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="copy(resource)" translate>DASHBOARD.menu.copy</a></li>
-  <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)" translate>DASHBOARD.menu.move</a></li>
-  <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)" translate>DASHBOARD.menu.rename</a></li>
-  <li><a href="#" class="copyFolderId2Clipboard" ng-class="{'link-disabled': !isFolder}" ng-click="copyFolderId2Clipboard()" translate>DASHBOARD.menu.copyFolderId</a></li>
+  <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="canNotShare? preventDefault : share(resource)" translate>DASHBOARD.menu.share</a></li>
+  <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="isFolder? preventDefault : copy(resource)" translate>DASHBOARD.menu.copy</a></li>
+  <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="canNotWrite? preventDefault: move(resource)" translate>DASHBOARD.menu.move</a></li>
+  <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="canNotWrite? preventDefault : rename(resource)" translate>DASHBOARD.menu.rename</a></li>
+  <li><a href="#" class="copyFolderId2Clipboard" ng-class="{'link-disabled': !isFolder}" ng-click="isFolder? copyFolderId2Clipboard() : preventDefault" translate>DASHBOARD.menu.copyFolderId</a></li>
   <li><a href="#" class="copyParentFolderId2Clipboard" ng-click="copyParentFolderId2Clipboard()" translate>DASHBOARD.menu.copyParentFolderId</a></li>
   <li ng-if="!isMeta" role="separator" class="divider"></li>
-  <li ng-if="!isMeta"><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
-  <li ng-if="!isMeta"><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>
+  <li ng-if="!isMeta"><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="canNotPublish? preventDefault : publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
+  <li ng-if="!isMeta"><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="canNotCreateDraft? preventDefault : publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotDelete}" href="#"  ng-click="delete(resource)" translate>DASHBOARD.menu.delete</a></li>
+  <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotDelete}" href="#"  ng-click="canNotDelete? preventDefault : delete(resource)" translate>DASHBOARD.menu.delete</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="opendatacite" ng-class="{'link-disabled': canNotOpenDatacite}"  href="#" ng-click="openDatacite(resource)" translate>DASHBOARD.menu.opendatacite</a></li>
+  <li><a ng-cloak class="opendatacite" ng-class="{'link-disabled': canNotOpenDatacite}"  href="#" ng-click="canNotOpenDatacite? preventDefault : openDatacite(resource)" translate>DASHBOARD.menu.opendatacite</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="makeopen" ng-class="{'link-disabled': canNotMakeOpen}"  href="#" ng-click="makeOpen(resource)"  translate>DASHBOARD.menu.makeopen</a></li>
-  <li><a ng-cloak class="makenotopen" ng-class="{'link-disabled': canNotMakeNotOpen}" href="#" ng-click="makeNotOpen(resource)"  translate>DASHBOARD.menu.makenotopen</a></li>
-  <li><a ng-cloak class="openopen" ng-class="{'link-disabled': canNotOpenOpen}" href="#" ng-click="openOpen(resource)"  translate>DASHBOARD.menu.openopen</a></li>
+  <li><a ng-cloak class="makeopen" ng-class="{'link-disabled': canNotMakeOpen}"  href="#" ng-click="canNotMakeOpen? preventDefault : makeOpen(resource)"  translate>DASHBOARD.menu.makeopen</a></li>
+  <li><a ng-cloak class="makenotopen" ng-class="{'link-disabled': canNotMakeNotOpen}" href="#" ng-click="canNotMakeNotOpen? preventDefault : makeNotOpen(resource)"  translate>DASHBOARD.menu.makenotopen</a></li>
+  <li><a ng-cloak class="openopen" ng-class="{'link-disabled': canNotOpenOpen}" href="#" ng-click="canNotOpenOpen? preventDefault : openOpen(resource)" translate>DASHBOARD.menu.openopen</a></li>
 </ul>
 
 
