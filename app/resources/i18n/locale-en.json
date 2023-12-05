@@ -470,7 +470,7 @@
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
-      "opendatacite": "Create DOI using DataCite",
+      "opendatacite": "Create DOI using DataCite...",
       "populateEE": "Populate with new editor"
     },
     "delete": {
