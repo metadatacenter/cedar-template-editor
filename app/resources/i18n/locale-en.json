@@ -206,8 +206,7 @@
     "NothingFound": "Nothing found",
     "CopyToClipboard" : "Copy to clipboard",
     "AddToSelectionList": "Add to Selection List",
-    "RemoveFromList": "Remove from list",
-    "TotalSelected" : "Total Selected"
+    "RemoveFromList": "Remove from list"
   },
   "HELP": {
     "createFolder": "Create folder",

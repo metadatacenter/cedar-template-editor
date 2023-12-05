@@ -22,7 +22,6 @@ define([
           'resourceService',
           'UIMessageService',
           'UISettingsService',
-          'UIUtilService',
           'DataManipulationService',
           'QueryParamUtilsService',
           'FrontendUrlService',
@@ -33,7 +32,7 @@ define([
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
-                                       UIMessageService, UISettingsService, UIUtilService, DataManipulationService,
+                                       UIMessageService, UISettingsService, DataManipulationService,
                                        QueryParamUtilsService, FrontendUrlService, CategoryService, schemaService, CONST,
                                        $sce) {
 
@@ -591,7 +590,7 @@ define([
             }
           };
 
-          async function openResource (resource) {
+          function openResource (resource) {
             let r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -709,8 +708,8 @@ define([
           };
 
           function removeFromSelectedResources(index, resource) {
-            const _toBeDeleted =  vm.selectedResources[index];
-            if(resource['@id'] !== _toBeDeleted['@id'])
+            const _toBeRemoved =  vm.selectedResources[index];
+            if(resource['@id'] !== _toBeRemoved['@id'])
               return
 
             vm.selectedResources.splice(index, 1);
