@@ -982,7 +982,6 @@ define([
               vm.pickResourceCallback(_resource);
             }
           });
-
         };
 
         /**
