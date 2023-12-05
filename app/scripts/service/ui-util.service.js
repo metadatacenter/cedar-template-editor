@@ -460,7 +460,7 @@ define([
     };
 
     service.clearEditState = function (node) {
-      return dms.clearTmpState(node);
+      return dms.clearEditState(node);
     };
 
     // set edit mode
@@ -471,6 +471,9 @@ define([
 
     // set as selected
     service.setSelected = function (node) {
+      const _prev=  service.selectedFieldOrElement;
+      if(_prev)
+        service.clearEditState(_prev);
       var schema = dms.schemaOf(node);
       schema._tmp = schema._tmp || {};
       schema._tmp.state = "creating";
@@ -491,7 +494,6 @@ define([
 
     // When user clicks Save button, switch field or element from creating state to completed state
     service.canDeselect = function (node, renameChildKey) {
-
       if (!node) {
         return;
       }

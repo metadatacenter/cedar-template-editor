@@ -215,9 +215,8 @@ define([
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
-
+              $rootScope.$broadcast("form:update", element);
             });
-            $rootScope.$broadcast("form:update", element);
           }
         };
 
@@ -234,9 +233,8 @@ define([
               UIUtilService.scrollToDomId(domId);
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
-
+              $rootScope.$broadcast("form:update", node);
             });
-            $rootScope.$broadcast("form:update", node);
           }
         };
 
@@ -518,12 +516,12 @@ define([
         // };
 
         $scope.pickElementFromPicker = function (resource) {
+
           if (resource.resourceType == 'element') {
             $scope.addElementToTemplate(resource);
           } else if (resource.resourceType == 'field') {
             $scope.addStandAloneFieldToTemplate(resource);
           }
-
           $scope.hideSearchBrowsePicker();
         };
 
