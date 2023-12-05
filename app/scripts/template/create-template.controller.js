@@ -216,10 +216,8 @@ define([
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
               $rootScope.$broadcast("form:update", element);
-
             });
           }
-          // console.log("Created element", element['schema:name']);
         };
 
         $scope.addStandAloneFieldToTemplate = function (node) {
@@ -236,7 +234,6 @@ define([
               UIUtilService.setDirty(true);
               ValidationService.checkValidation($scope.form);
               $rootScope.$broadcast("form:update", node);
-
             });
           }
         };
@@ -525,7 +522,6 @@ define([
           } else if (resource.resourceType == 'field') {
             $scope.addStandAloneFieldToTemplate(resource);
           }
-          console.log("have added ", resource['schema:name']);
           $scope.hideSearchBrowsePicker();
         };
 

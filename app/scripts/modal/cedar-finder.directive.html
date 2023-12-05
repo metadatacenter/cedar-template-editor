@@ -209,7 +209,7 @@
           </div>
           <!-- Center panel (selected artifacts list)-->
           <div ng-if="finder.selectedResources.length" class="col-sm-4" style="display: flex; flex-orientation: column">
-            <div class="col-sm-2" style="grow: 1 ;background: linear-gradient(#0F7686, #0F7686) no-repeat center/2px 80%"></div>
+            <div class="col-sm-2 vl"></div>
             <div class="col-sm-10 results-panel">
               <div class="breadcrumbs-sb">
                 <p>
@@ -222,14 +222,13 @@
               <!-- List of resources -->
               <div class="results" cedar-infinite-scroll load-more="finder.loadMore()">
                 <div ng-if="!finder.resourceListIsLoading()">
-                  <div ui-sortable ng-model="finder.selectedResources" ui-sortable-update="sorted">
+                  <div ui-sortable ng-model="finder.selectedResources">
                     <div
                       ng-model="finder.selectedResources"
                       ng-if="!finder.isFolder(resource)" class="box-row"
                       ng-class="{ selected: finder.isResourceSelected(resource) }"
-                      ng-click="finder.logla()"
-                      ng-dblclick="finder.openResource(resource)"
-                      ng-repeat="(index, resource) in finder.selectedResources">
+                      ng-click="finder.selectResource(resource)"
+                      ng-repeat="resource in finder.selectedResources track by $index">
                     <div
                         class="outer flex resource-instance"
                         ng-class="finder.getResourceTypeClass(resource)">

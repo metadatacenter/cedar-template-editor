@@ -22,6 +22,7 @@ define([
           'resourceService',
           'UIMessageService',
           'UISettingsService',
+          'UIUtilService',
           'DataManipulationService',
           'QueryParamUtilsService',
           'FrontendUrlService',
@@ -32,7 +33,7 @@ define([
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
-                                       UIMessageService, UISettingsService, DataManipulationService,
+                                       UIMessageService, UISettingsService, UIUtilService, DataManipulationService,
                                        QueryParamUtilsService, FrontendUrlService, CategoryService, schemaService, CONST,
                                        $sce) {
 
@@ -142,10 +143,6 @@ define([
           /**
            * Private functions
            */
-
-          function logla(){
-            console.log("Basiyorum", vm.selectedResources);
-          }
 
           function init() {
             vm.resourceTypes = {
@@ -603,25 +600,10 @@ define([
             if (r.resourceType == 'folder') {
               goToFolder(r['@id']);
             } else {
-              // vm.clickOrder.forEach(i => {
-              //   console.log("I", i, vm.selectedItems);
-              //   if (typeof vm.pickResourceCallback === 'function') {
-              //     vm.pickResourceCallback(vm.selectedItems.find(y => y['@id'] === i));
-              //   }
-              // })
-
-                const _resource = vm.selectedResources.shift();
-                if (typeof vm.pickResourceCallback === 'function') {
-                  console.log("Adding", _resource['schema:name']);
+              const _resource = vm.selectedResources.shift();
+              if (typeof vm.pickResourceCallback === 'function') {
                   vm.pickResourceCallback(_resource);
-                }
-              // vm.selectedItems.forEach(i => {
-              //   // console.log("I", i, vm.selectedItems);
-              //   if (typeof vm.pickResourceCallback === 'function') {
-              //     vm.pickResourceCallback(i);
-              //   }
-              // })
-              // vm.selectedResources = [];
+              }
               $scope.hideModal(vm.id);
             }
           };
@@ -727,7 +709,6 @@ define([
           };
 
           function removeFromSelectedResources(index, resource) {
-            console.log("index, resource", index, resource);
             const _toBeDeleted =  vm.selectedResources[index];
             if(resource['@id'] !== _toBeDeleted['@id'])
               return
