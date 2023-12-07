@@ -83,7 +83,8 @@ define([
     'cedar.templateEditor.templateInstance',
     'cedar.templateEditor.profile',
     'cedar.templateEditor.messaging',
-    'cedar.templateEditor.profile'
+    'cedar.templateEditor.profile',
+
   ])
       .config(['flowFactoryProvider', function (flowFactoryProvider) {
         flowFactoryProvider.defaults = {
@@ -100,5 +101,6 @@ define([
         });
         // Can be used with different implementations of Flow.js
         // flowFactoryProvider.factory = fustyFlowFactory;
+        angular.lowercase = text => text.toLowerCase();
       }]);
 });
