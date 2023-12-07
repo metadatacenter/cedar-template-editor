@@ -2,13 +2,13 @@
   "name": "angularjsFormBuilder",
   "version": "0.2.1",
   "dependencies": {
-    "angular": "1.5.8",
-    "angular-animate": "1.5.0",
+    "angular": "1.6.9",
+    "angular-animate": "1.6.9",
     "angular-md5": "0.1.10",
-    "angular-mocks": "1.5.0",
-    "angular-resource": "1.5.0",
-    "angular-route": "1.5.0",
-    "angular-sanitize": "1.5.0",
+    "angular-mocks": "1.6.9",
+    "angular-resource": "1.6.9",
+    "angular-route": "1.6.9",
+    "angular-sanitize": "1.6.9",
     "angular-toasty": "1.0.4",
     "angular-translate": "2.8.1",
     "angular-translate-loader-static-files": "2.8.1",
@@ -31,7 +31,7 @@
     "angular-ui-keypress": "angular-ui-utils#bower-keypress"
   },
   "resolutions": {
-    "angular": "1.5.8",
+    "angular": "1.6.9",
     "angular-bootstrap": "2.5.0",
     "bootstrap": "3.3.6"
   }
