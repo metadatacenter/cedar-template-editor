@@ -204,7 +204,10 @@
     "Header": "Header Information",
     "Footer": "Footer Information",
     "NothingFound": "Nothing found",
-    "CopyToClipboard" : "Copy to clipboard"
+    "CopyToClipboard" : "Copy to clipboard",
+    "AddToSelectionList": "Add to Selection List",
+    "RemoveFromList": "Remove from list",
+    "TotalSelected": "Total Selected"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -467,7 +470,7 @@
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
-      "opendatacite": "Create DOI using DataCite",
+      "opendatacite": "Create DOI using DataCite...",
       "populateEE": "Populate with new editor"
     },
     "delete": {

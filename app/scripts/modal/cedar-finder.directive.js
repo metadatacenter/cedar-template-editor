@@ -64,6 +64,8 @@ define([
           vm.categoryTree = null;
           vm.loadingCategoryTree = false;
 
+          vm.selectedResources = []; //resource list to be added to template
+
           /*
            * Public function declarations
            */
@@ -128,6 +130,9 @@ define([
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.getTrustedBy = getTrustedBy;
+          vm.addToSelectedResources = addToSelectedResources;
+          vm.removeFromSelectedResources = removeFromSelectedResources;
+          vm.reset = reset;
 
           //------
 
@@ -585,7 +590,7 @@ define([
             }
           };
 
-          function openResource(resource) {
+          function openResource (resource) {
             let r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -594,8 +599,9 @@ define([
             if (r.resourceType == 'folder') {
               goToFolder(r['@id']);
             } else {
+              const _resource = vm.selectedResources.shift();
               if (typeof vm.pickResourceCallback === 'function') {
-                vm.pickResourceCallback(r);
+                  vm.pickResourceCallback(_resource);
               }
               $scope.hideModal(vm.id);
             }
@@ -678,7 +684,6 @@ define([
           };
 
           function selectResource(resource) {
-
             if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
               vm.getResourceDetails(resource);
             }
@@ -694,6 +699,21 @@ define([
               return vm.selectedResource['@id'] == resource['@id'];
             }
           };
+
+          function addToSelectedResources(resource) {
+            if (!resource['@id'])
+              return;
+
+            vm.selectedResources.push(resource);
+          };
+
+          function removeFromSelectedResources(index, resource) {
+            const _toBeRemoved =  vm.selectedResources[index];
+            if(resource['@id'] !== _toBeRemoved['@id'])
+              return
+
+            vm.selectedResources.splice(index, 1);
+          }
 
           function getResourceDetails(resource) {
             if (!resource && vm.hasSelection()) {
@@ -931,6 +951,10 @@ define([
             return resource['trustedBy'];
           }
 
+          function reset() {
+            vm.selectedResources = [];
+          }
+
           /**
            * Event listeners
            */
@@ -948,6 +972,15 @@ define([
             vm.selectedResource = null;
           });
 
+          // When bulk adding artifacts, pick the next one in queue once the previous is added and signaled form:update
+          $scope.$on("form:update", (resource)=> {
+            const _resource = vm.selectedResources.shift();
+            if(!_resource)
+              return;
+            if (typeof vm.pickResourceCallback === 'function') {
+              vm.pickResourceCallback(_resource);
+            }
+          });
         };
 
         /**
