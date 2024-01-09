@@ -1015,6 +1015,18 @@
               >Copy parent folder Id</button>
             </div>
 
+            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.hasDOI()">
+              <button class="btn-folder-id"
+                      ng-click="dc.copyDOIToClipboard()"
+                      uib-tooltip='{{dc.getDOI()}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      tooltip-append-to-body="true"
+              >Copy DOI</button>
+            </div>
+
 
             <hr/>
           </div>

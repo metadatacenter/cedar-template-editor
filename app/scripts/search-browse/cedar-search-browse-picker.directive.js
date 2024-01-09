@@ -101,6 +101,9 @@ define([
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
           vm.getSelectedFolderId = getSelectedFolderId;
           vm.getSelectedParentFolderId = getSelectedParentFolderId;
+          vm.hasDOI = hasDOI;
+          vm.getDOI = getDOI;
+          vm.copyDOIToClipboard = copyDOIToClipboard;
 
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -1942,6 +1945,23 @@ define([
           function copyParentFolderId2Clipboard() {
             const parentFolderId = getSelectedParentFolderId();
             navigator.clipboard.writeText(parentFolderId);
+          }
+
+          function hasDOI() {
+            return getDOI() !== null ;
+          }
+
+          function getDOI() {
+            const resource = getSelected();
+            if (!resource || !resource['@id'])
+              return;
+            const doi = resource['doi'];
+            return doi;
+          }
+
+          function copyDOIToClipboard() {
+            const doi = getDOI();
+            navigator.clipboard.writeText(doi);
           }
 
           function isMeta(resource) {
