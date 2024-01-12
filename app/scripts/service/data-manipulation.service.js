@@ -1933,7 +1933,8 @@ define([
               delete properties["@type"].oneOf[1].items.enum;
             }
           }
-          service.initializeSchema(node);
+          // Following call is breaking the validation so commented out at January 11, 2024
+          // service.initializeSchema(node);
         };
 
         // delete the branch in valueConstraints

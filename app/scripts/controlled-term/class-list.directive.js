@@ -50,6 +50,10 @@ define([
 
         });
 
+        scope.getTerms = function () {
+          return DataManipulationService.getFieldControlledTerms(scope.field);
+        };
+
         var setResponse = function (item, ontologyName, className) {
           // Get selected class details from the links.self endpoint provided.
           controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
@@ -67,56 +71,62 @@ define([
 
           scope.terms = DataManipulationService.getFieldControlledTerms(scope.field);
 
-          if (scope.terms) {
+          /*
+          // We are now storing the correct Type IRI so BioPortal url is no longer stored.
+          // Since there isn't BioPortal URL stored following data can not be extracted.
+          // Commenting out, January 11, 2024
+          */
 
-            // create a new map to avoid any duplicates coming from the modal
-            var myMap = new Map();
-
-            // move the keys into the new map
-            for (var i = 0; i < scope.terms.length; i++) {
-              var key = scope.terms[i];
-              if (myMap.has(key)) {
-
-                // here is a duplicate, so delete it
-                DataManipulationService.deleteFieldControlledTerm(key, scope.field);
-              } else {
-                myMap.set(key, "");
-              }
-            }
-
-            // copy over any responses from the old map
-            myMap.forEach(function (value, key) {
-
-              if (scope.addedFields.has(key)) {
-                myMap.set(key, scope.addedFields.get(key));
-              }
-            }, myMap);
-
-
-            // get any missing responses
-            myMap.forEach(function (value, key) {
-              if (myMap.get(key) == "") {
-                setResponse(key, DataManipulationService.parseOntologyName(key),
-                    DataManipulationService.parseClassLabel(key));
-              }
-            }, myMap);
-
-
-            // fill up the key array
-            scope.addedFieldKeys = [];
-            myMap.forEach(function (value, key) {
-              scope.addedFieldKeys.push(key);
-            }, myMap);
-
-            // hang on to the new map
-            scope.addedFields = myMap;
-
-          }
-          else {
-            // If there are no controlled terms for the field type defined in the model, the map will be empty
-            scope.addedFields = new Map();
-            scope.addedFieldKeys = [];
-          }
+          // if (scope.terms) {
+          //
+          //   // create a new map to avoid any duplicates coming from the modal
+          //   var myMap = new Map();
+          //
+          //   // move the keys into the new map
+          //   for (var i = 0; i < scope.terms.length; i++) {
+          //     var key = scope.terms[i];
+          //     if (myMap.has(key)) {
+          //
+          //       // here is a duplicate, so delete it
+          //       DataManipulationService.deleteFieldControlledTerm(key, scope.field);
+          //     } else {
+          //       myMap.set(key, "");
+          //     }
+          //   }
+          //
+          //   // copy over any responses from the old map
+          //   myMap.forEach(function (value, key) {
+          //
+          //     if (scope.addedFields.has(key)) {
+          //       myMap.set(key, scope.addedFields.get(key));
+          //     }
+          //   }, myMap);
+          //
+          //
+          //   // get any missing responses
+          //   myMap.forEach(function (value, key) {
+          //     if (myMap.get(key) == "") {
+          //       setResponse(key, DataManipulationService.parseOntologyName(key),
+          //           DataManipulationService.parseClassLabel(key));
+          //     }
+          //   }, myMap);
+          //
+          //
+          //   // fill up the key array
+          //   scope.addedFieldKeys = [];
+          //   myMap.forEach(function (value, key) {
+          //     scope.addedFieldKeys.push(key);
+          //   }, myMap);
+          //
+          //   // hang on to the new map
+          //   scope.addedFields = myMap;
+          //
+          // }
+          // else {
+          //   // If there are no controlled terms for the field type defined in the model, the map will be empty
+          //   scope.addedFields = new Map();
+          //   scope.addedFieldKeys = [];
+          // }
         };
 
         scope.getShortText = function (text, maxLength, finalString, emptyString) {

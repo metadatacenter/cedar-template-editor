@@ -178,15 +178,14 @@ define([
         /**
          * Add ontology type to JSON.
          */
-        var properties = $rootScope.propertiesOf(vm.field);
-        var selfUrl = controlledTermService.getSelfUrl(selection);
-        //var selfUrl = selection['@id'];
+        let properties = $rootScope.propertiesOf(vm.field);
+        // var selfUrl = controlledTermService.getSelfUrl(selection);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
-          properties['@type'].oneOf[0].enum.push(selfUrl);
-          properties['@type'].oneOf[1].items.enum.push(selfUrl);
+          properties['@type'].oneOf[0].enum.push(selection["@id"]);
+          properties['@type'].oneOf[1].items.enum.push(selection["@id"]);
         } else {
-          properties['@type'].oneOf[0].enum = [selfUrl];
-          properties['@type'].oneOf[1].items.enum = [selfUrl];
+          properties['@type'].oneOf[0].enum = [selection["@id"]];
+          properties['@type'].oneOf[1].items.enum = [selection["@id"]];
         }
       }
       vm.startOver();
