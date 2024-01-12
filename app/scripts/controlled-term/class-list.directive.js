@@ -50,10 +50,6 @@ define([
 
         });
 
-        scope.getTerms = function () {
-          return DataManipulationService.getFieldControlledTerms(scope.field);
-        };
-
         var setResponse = function (item, ontologyName, className) {
           // Get selected class details from the links.self endpoint provided.
           controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
