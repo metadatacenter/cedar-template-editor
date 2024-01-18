@@ -10,7 +10,7 @@ define([
                                    "$filter", "HeaderService", "StagingService", "DataTemplateService", "schemaService",
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
-                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
+                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -18,7 +18,7 @@ define([
                                  TemplateFieldService, resourceService, ValidationService,UIMessageService,
                                  DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
-                                 CONST,CedarUser) {
+                                 CONST,CedarUser, InclusionService) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -327,6 +327,21 @@ define([
         // Update field
         else {
           var id = schemaService.getId($scope.field);
+
+          // UPDATE RELATED PARTS JAN 16, 2024 //
+
+          const inclusionGraph = {"@id":id};
+          console.log("inclusionGraph", inclusionGraph);
+          AuthorizedBackendService.doCall(
+              InclusionService.getInclusions(inclusionGraph),
+              function (response) {
+                console.log("Response", response);
+              },
+              function (err) {
+                UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
+                owner.enableSaveButton();
+              }
+          );
 
           $rootScope.jsonToSave = $scope.field;
 

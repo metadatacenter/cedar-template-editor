@@ -48,5 +48,6 @@ define([
     'cedar.templateEditor.categoryTree.categoryTreeDirective',
     'cedar.templateEditor.categoryTree.categoryTreeNodeDirective',
     'cedar.templateEditor.categoryTree.categoryTreeHelper',
+    'cedar.templateEditor.modal.cedarInclusionModalDirective',
   ]);
 });

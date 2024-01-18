@@ -528,6 +528,14 @@ define([
       return s;
     }
 
+    service.getInclusions = function () {
+      return this.resourceBase() + '/command/inclusions-subgraph-preview';
+    };
+
+    service.updateInclusions = function () {
+      return this.resourceBase() + '/command/inclusions-subgraph-update';
+    };
+
     return service;
   }
 

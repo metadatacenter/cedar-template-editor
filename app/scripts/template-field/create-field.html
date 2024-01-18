@@ -132,7 +132,7 @@
                   translate>GENERIC.Cancel
               </button>
               <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
-                  class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
+                  class="btn btn-save field" ng-click="ced" translate>GENERIC.SaveField
               </button>
             </div>
           </div>
@@ -184,6 +184,14 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <section>
+        <cedar-inclusion-modal id="inclusion-modal" cedar-modal-show modal-visible="inclusionModalVisible" class="modal fade"
+                               tabindex="-1" role="dialog" aria-labelledby="inclusionModalHeader"
+                               data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
+                               pick-resource-callback="pickElementFromPicker">
+        </cedar-inclusion-modal>
       </section>
 
 

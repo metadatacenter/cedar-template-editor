@@ -26,7 +26,8 @@ define([
     'cedar.templateEditor.modal.cedarFinder',
     'cedar.templateEditor.modal.cedarTermsModal',
     'cedar.templateEditor.modal.cedarTestModal',
-    'cedar.templateEditor.modal.cedarImportModal'
+    'cedar.templateEditor.modal.cedarImportModal',
+    'cedar.templateEditor.modal.cedarInclusionModal'
 
   ]);
 });
