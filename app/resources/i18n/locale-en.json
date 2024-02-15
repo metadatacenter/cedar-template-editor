@@ -240,7 +240,9 @@
     "removeProperty": "Remove property",
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
-    "repoSubmission": "Submit to repository"
+    "repoSubmission": "Submit to repository",
+    "copyDOI": "Copy DOI",
+    "copyParentFolderId": "Copy parent folder id"
   },
   "resourceType": {
     "folder": "Folder",
