@@ -1014,17 +1014,53 @@
                       tooltip-append-to-body="true"
               >Copy parent folder Id</button>
             </div>
+          </div>
 
-            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.hasDOI()">
+          <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && !dc.isFolder()">
+            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
               <button class="btn-folder-id"
-                      ng-click="dc.copyDOIToClipboard()"
-                      uib-tooltip='{{dc.getDOI()}}'
+                      ng-click="dc.copyOwnId2Clipboard()"
+                      uib-tooltip='{{dc.getSelectedId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
                       tooltip-append-to-body="true"
-              >Copy DOI</button>
+              >Copy resource Id</button>
+            </div>
+
+            <div class="info" ng-if="dc.getSelectedNode()">
+              <!--<div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+                <div class="field-label ng-cloak" translate>Parent folder id</div>
+                <div class="owner-name"> {{dc.getSelectedParentFolderId()}}</div>
+                <div>
+                  <button
+                      style="background:transparent;"
+                      type="button"
+                      uib-tooltip='{{"HELP.copyParentFolderId" | translate}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="auto"
+                      data-toggle="tooltip"
+                      ng-click="dc.copyParentFolderId2Clipboard()"><i class="fa fa-copy graytext"></i></button>
+                </div>
+              </div>-->
+
+              <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.hasDOI()">
+                <div class="field-label ng-cloak" translate>DOI</div>
+                <div class="owner-name"> <a href="{{dc.getDOI()}}" target="_blank">{{dc.getDOI()}}</a></div>
+                <div>
+                  <button
+                      style="background:transparent"
+                      type="button"
+                      uib-tooltip='{{"HELP.copyDOI" | translate}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="auto"
+                      data-toggle="tooltip"
+                      ng-click="dc.copyDOIToClipboard()"><i class="fa fa-copy graytext"></i></button>
+                </div>
+              </div>
             </div>
 
 
