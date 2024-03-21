@@ -69,7 +69,8 @@ gulp.task('server-development', function (done) {
     root      : 'app',
     port      : 4200,
     livereload: true,
-    fallback  : 'app/index.html'
+    fallback  : 'app/index.html',
+    host: '0.0.0.0' // Listen on all interfaces
   });
   done();
 });
