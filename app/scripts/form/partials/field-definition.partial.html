@@ -15,7 +15,7 @@
     </div>
     <!-- property button -->
     <div class="property" ng-if="!isStatic()">
-      <div class="flex">
+      <div class="flex" ng-if="!isSoleField()">
         <i uib-tooltip-placement="left" tooltip-append-to-body="true"
             uib-tooltip="{{getPropertyId() || 'HELP.addProperty' | translate}}"
             ng-click="showModal('properties','properties')"

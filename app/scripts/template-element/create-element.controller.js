@@ -237,9 +237,8 @@ define([
           UIUtilService.scrollToDomId(domId);
           UIUtilService.setDirty(true);
           ValidationService.checkValidation($scope.element);
-
+          $rootScope.$broadcast("form:update", element);
         });
-        $rootScope.$broadcast("form:update", element);
       }
     };
 
@@ -255,9 +254,8 @@ define([
           UIUtilService.scrollToDomId(domId);
           UIUtilService.setDirty(true);
           ValidationService.checkValidation($scope.element);
-
+          $rootScope.$broadcast("form:update", node);
         });
-        $rootScope.$broadcast("form:update", node);
       }
     };
 
@@ -594,6 +592,17 @@ define([
       else {
         return $translate.instant("CREATOR.hideAdditionalFields");
       }
+    };
+
+    $scope.copyJson2Clipboard = function () {
+      navigator.clipboard.writeText($filter('json')(this.stripTmpFields())).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.JsonSchemaCopied', {"title": "METADATAEDITOR.JsonSchemaCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.JsonSchemaCopyFail', {"title": "METADATAEDITOR.JsonSchemaCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
     };
 
   }

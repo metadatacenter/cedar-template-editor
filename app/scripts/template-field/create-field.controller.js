@@ -124,7 +124,7 @@ define([
       var title = schemaService.getTitle($scope.field);
       var description = schemaService.getDescription($scope.field);
       var identifier = schemaService.getIdentifier($scope.field);
-
+      
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 
@@ -458,6 +458,17 @@ define([
         UIUtilService.setDirty(true);
       }
     });
+
+    $scope.copyJson2Clipboard = function () {
+      navigator.clipboard.writeText($filter('json')(this.stripTmpFields())).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.JsonSchemaCopied', {"title": "METADATAEDITOR.JsonSchemaCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.JsonSchemaCopyFail', {"title": "METADATAEDITOR.JsonSchemaCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
+    };
 
     // init
 

@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.6.32-SNAPSHOT",
+  "version": "2.6.57-SNAPSHOT",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -16,13 +16,13 @@
   "author": "Metadatacenter.org",
   "license": "GNU 2-clause",
   "devDependencies": {
-    "bower": "1.8.0",
+    "bower": "1.8.14",
     "chai": "4.1.1",
     "colors": "1.1.2",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "4.0.0",
     "gulp-autoprefixer": "2.3.1",
-    "gulp-connect": "2.3.1",
+    "gulp-connect": "5.7.0",
     "gulp-connect-proxy": "0.3.1",
     "gulp-html-replace": "1.6.2",
     "gulp-jshint": "1.12.0",
@@ -60,11 +60,11 @@
     "angular-touch": "1.6.3",
     "angular-ui-bootstrap": "2.5.0",
     "popper.js": "1.14.3",
-    "jquery": "1.9.1",
+    "jquery": "1.11.3",
     "bootstrap": "4.1.2",
     "handsontable": "^0.32.0",
     "install": "0.8.7",
     "less": "2.7.2",
-    "npm": "4.4.1"
+    "npm": "9.6.4"
   }
 }

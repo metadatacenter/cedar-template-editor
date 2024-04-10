@@ -46,6 +46,10 @@ define([
       return getAppData().authUserProfile['@id'];
     };
 
+    service.getUserFullId = function () {
+      return getAppData().cedarUserProfile['@id'];
+    };
+
     service.getEmail = function () {
       return getAppData().authUserProfile.email;
     };
@@ -234,6 +238,23 @@ define([
     service.getVersion = function (version) {
       return service.getUIPreferences().resourceVersionFilter.version;
     };
+
+    service.useMetadataEditorV2 = function () {
+      return service.getUIPreferences().useMetadataEditorV2;
+    }
+
+    service.toggleMetadataEditorV2 = function () {
+      getAppData().cedarUserProfile.uiPreferences['useMetadataEditorV2'] = !service.useMetadataEditorV2();
+      return service.useMetadataEditorV2();
+    }
+
+    service.getMetadataEditorV2Settings = function () {
+      return getAppData().cedarUserProfile.uiPreferences.metadataEditorV2;
+    }
+
+    service.setMetadataEditorV2Settings = function (settings) {
+      getAppData().cedarUserProfile.uiPreferences['metadataEditorV2'] = settings;
+    }
 
     return service;
   };

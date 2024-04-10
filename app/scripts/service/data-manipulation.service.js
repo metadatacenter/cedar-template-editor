@@ -286,6 +286,14 @@ define([
           return service.hasMaxLength(node) && service.getValueConstraint(node).maxLength;
         };
 
+        service.hasRegex = function (node) {
+          return service.getValueConstraint(node).hasOwnProperty('regex');
+        };
+
+        service.getRegex = function (node) {
+          return service.hasRegex(node) && service.getValueConstraint(node).regex;
+        };
+
         // min/max numeric value
         service.hasMinValue = function (node) {
           return service.getValueConstraint(node).hasOwnProperty('minValue');
@@ -323,7 +331,11 @@ define([
 
         // dateTime type
         service.hasNumberType = function (node) {
-          return service.getValueConstraint(node).hasOwnProperty('numberType');
+          if (service.getValueConstraint(node) !== undefined) {
+            return service.getValueConstraint(node).hasOwnProperty('numberType');
+          } else {
+            return false;
+          }
         };
 
         service.getNumberType = function (node) {
@@ -1921,7 +1933,8 @@ define([
               delete properties["@type"].oneOf[1].items.enum;
             }
           }
-          service.initializeSchema(node);
+          // Following call is breaking the validation so commented out at January 11, 2024
+          // service.initializeSchema(node);
         };
 
         // delete the branch in valueConstraints

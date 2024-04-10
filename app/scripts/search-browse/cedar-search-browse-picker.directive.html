@@ -70,42 +70,22 @@
                 <div ng-if="dc.isFilterSection('type')" class="filter-type">
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'template'"
-                                       uib-tooltip="{{'GENERIC.Template' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('template')"
                                        class="template"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('template'), selected: dc.isResourceTypeActive('template'), 'template-deselected': !dc.isResourceTypeActive('template'), 'template-selected': dc.isResourceTypeActive('template')}">
                   </cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'element'"
-                                       uib-tooltip="{{'GENERIC.Element' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('element')"
                                        class="element"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('element'), selected: dc.isResourceTypeActive('element'), 'element-deselected': !dc.isResourceTypeActive('element'), 'element-selected': dc.isResourceTypeActive('element') }"></cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'field'"
-                                       uib-tooltip="{{'GENERIC.Field' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('field')"
                                        class="field"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('field'), selected: dc.isResourceTypeActive('field'), 'field-deselected': !dc.isResourceTypeActive('field'), 'field-selected': dc.isResourceTypeActive('field') }"></cedar-resource-icon>
 
                   <cedar-resource-icon style="display:inline-block;margin:2px;" resource-type="'metadata'"
-                                       uib-tooltip="{{'GENERIC.Metadata' | translate}}"
-                                       tooltip-trigger
-                                       tooltip-animation="false"
-                                       tooltip-placement="top"
-                                       data-toggle="tooltip"
                                        ng-click="dc.toggleResourceType('instance')"
                                        class="metadata"
                                        ng-class="{ deselected: !dc.isResourceTypeActive('instance'), selected: dc.isResourceTypeActive('instance'), 'instance-deselected': !dc.isResourceTypeActive('instance'), 'instance-selected': dc.isResourceTypeActive('instance') }"></cedar-resource-icon>
@@ -303,6 +283,7 @@
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                                open-open="dc.openOpen"
+                                               open-datacite="dc.openDatacite"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -310,9 +291,11 @@
                                                can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen" can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="true"
+                                               can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                               get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId">
+                                               get-folder-id="dc.getFolderId" get-parent-folder-id="dc.getParentFolderId"
+                                               is-meta="dc.isMeta()">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -344,7 +327,6 @@
                           <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -394,6 +376,7 @@
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                                open-open="dc.openOpen"
+                                               open-datacite="dc.openDatacite"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -402,9 +385,11 @@
                                                can-not-make-open="dc.canNotMakeOpen"
                                                can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="dc.canNotOpenOpen"
+                                               can-not-open-datacite="dc.canNotOpenDatacite"
                                                is-folder="dc.isFolder()" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                                copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                               get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                               get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                               is-meta="dc.isMeta()">
                           </cedar-dropdown-menu>
 
                         </div>
@@ -553,6 +538,7 @@
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                            open-open="dc.openOpen"
+                                           open-datacite="dc.openDatacite"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
@@ -561,9 +547,12 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           can-not-open-open="dc.canNotOpenOpen"
+                                           can-not-open-datacite="dc.canNotOpenDatacite"
+                                           copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                           is-meta="dc.isMeta()">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -704,6 +693,7 @@
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
                                            open-open="dc.openOpen"
+                                           open-datacite="dc.openDatacite"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
@@ -712,9 +702,12 @@
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
-                                           can-not-open-open="dc.canNotOpenOpen" copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
+                                           can-not-open-open="dc.canNotOpenOpen"
+                                           can-not-open-datacite="dc.canNotOpenDatacite"
+                                           copy-folder-id-2-clipboard="dc.copyFolderId2Clipboard"
                                            copy-parent-folder-id-2-clipboard="dc.copyParentFolderId2Clipboard"
-                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId">
+                                           get-selected-folder-id="dc.getSelectedFolderId" get-selected-parent-folder-id="dc.getSelectedParentFolderId"
+                                           is-meta="dc.isMeta()">
                       </cedar-dropdown-menu>
 
                     </div>
@@ -855,7 +848,14 @@
           <div class="info" ng-if="dc.getSelectedNode()">
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Location</div>
-              <div class="parent-path">{{ dc.getSelectedNode().parentPath }}</div>
+              <div class="parent-path">
+                <span class="folder-path" ng-repeat="folder in dc.getSelectedNode().pathInfo | limitTo : (dc.getSelectedNode().pathInfo.length-1) track by $index">
+                  <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs" ng-if="dc.isFolder(folder) && dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</a>
+                  <span class="breadcrumbs" ng-if="!dc.isFolder(folder) || !dc.linkFolder(folder)">{{dc.breadcrumbName(dc.getTitle(folder))}}</span>
+                  <span ng-if="folder['isOpen']"><i class="action fa fa-external-link-square">&nbsp;</i></span>
+                  <span ng-if="$index < dc.getSelectedNode().pathInfo.length - 2 ">/</span>
+                </span>
+              </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
@@ -993,22 +993,74 @@
             </div>
 
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.isFolder()">
-              <button ng-click="dc.copyFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy folder Id</button>
             </div>
             <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
-              <button ng-click="dc.copyParentFolderId2Clipboard()"
+              <button class="btn-folder-id"
+                      ng-click="dc.copyParentFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedParentFolderId()}}'
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      tooltip-append-to-body="true"
               >Copy parent folder Id</button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && !dc.isFolder()">
+            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+              <button class="btn-folder-id"
+                      ng-click="dc.copyOwnId2Clipboard()"
+                      uib-tooltip='{{dc.getSelectedId()}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      tooltip-append-to-body="true"
+              >Copy resource Id</button>
+            </div>
+
+            <div class="info" ng-if="dc.getSelectedNode()">
+              <!--<div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+                <div class="field-label ng-cloak" translate>Parent folder id</div>
+                <div class="owner-name"> {{dc.getSelectedParentFolderId()}}</div>
+                <div>
+                  <button
+                      style="background:transparent;"
+                      type="button"
+                      uib-tooltip='{{"HELP.copyParentFolderId" | translate}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="auto"
+                      data-toggle="tooltip"
+                      ng-click="dc.copyParentFolderId2Clipboard()"><i class="fa fa-copy graytext"></i></button>
+                </div>
+              </div>-->
+
+              <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.hasDOI()">
+                <div class="field-label ng-cloak" translate>DOI</div>
+                <div class="owner-name"> <a href="{{dc.getDOI()}}" target="_blank">{{dc.getDOI()}}</a></div>
+                <div>
+                  <button
+                      style="background:transparent"
+                      type="button"
+                      uib-tooltip='{{"HELP.copyDOI" | translate}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="auto"
+                      data-toggle="tooltip"
+                      ng-click="dc.copyDOIToClipboard()"><i class="fa fa-copy graytext"></i></button>
+                </div>
+              </div>
             </div>
 
 

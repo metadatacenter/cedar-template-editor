@@ -210,7 +210,10 @@
     "Header": "Header Information",
     "Footer": "Footer Information",
     "NothingFound": "Nothing found",
-    "CopyToClipboard" : "Copy to clipboard"
+    "CopyToClipboard" : "Copy to clipboard",
+    "AddToSelectionList": "Add to Selection List",
+    "RemoveFromList": "Remove from list",
+    "TotalSelected": "Total Selected"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -243,7 +246,9 @@
     "removeProperty": "Remove property",
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
-    "repoSubmission": "Submit to repository"
+    "repoSubmission": "Submit to repository",
+    "copyDOI": "Copy DOI",
+    "copyParentFolderId": "Copy parent folder id"
   },
   "resourceType": {
     "folder": "Folder",
@@ -472,7 +477,9 @@
       "submit": "Submit...",
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
-      "openopen": "Visit OpenView"
+      "openopen": "Visit OpenView",
+      "opendatacite": "Create DOI using DataCite...",
+      "populateEE": "Populate with new editor"
     },
     "delete": {
       "confirm": {
@@ -567,6 +574,8 @@
     "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date.",
     "JsonLDCopied" : "JSON-LD copied to clipboard",
     "JsonLDCopyFail" : "JSON-LD can not be copied to clipboard",
+    "JsonSchemaCopied" : "JSON Schema copied to clipboard",
+    "JsonSchemaCopyFail" : "JSON Schema can not be copied to clipboard",
     "RdfCopied" : "RDF copied to clipboard",
     "RdfCopyFail" : "RDF can not be copied to clipboard"
   },
@@ -679,6 +688,7 @@
     "enterDate": "Enter Date",
     "enterMinLength": "Enter Minimum String Length",
     "enterMaxLength": "Enter Maximum String Length",
+    "enterRegex": "Enter Regex",
     "enterUnitOfMeasure": "Enter Unit of Measure",
     "enterMinValue": "Enter Minimum Value",
     "enterMaxValue": "Enter Maximum Value",
@@ -760,5 +770,22 @@
     "null": "",
     "bibo:draft": "Draft",
     "bibo:published": "Published"
+  },
+  "DOI": {
+    "DataCite": {
+      "NOT-OPEN": {
+        "title": "Can not start DOI process Datacite wizard",
+        "text" : {
+          "template": "You need to make the template open in order to get a DOI",
+          "template-instance": "You need to make the metadata instance open in order to get a DOI"
+        }
+      },
+      "NOT-PUBLISHED": {
+        "title": "Can not start DOI process Datacite wizard",
+        "text" : {
+          "template": "You need to publish the template open in order to get a DOI"
+        }
+      }
+    }
   }
 }

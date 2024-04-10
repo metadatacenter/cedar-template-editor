@@ -30,7 +30,7 @@ var applicationData = {
         },
         templateEditor     : {
           templateViewer: false
-        }
+        },
       }
     }
   }

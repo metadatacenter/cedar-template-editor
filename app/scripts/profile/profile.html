@@ -14,6 +14,8 @@
     <div class="field-value">{{$root.cedarUser.getUserId()}}</div>
     <div class="field-label">Email</div>
     <div class="field-value">{{$root.cedarUser.getEmail()}}</div>
+    <div class="field-label">@id</div>
+    <div class="field-value">{{$root.cedarUser.getUserFullId()}}</div>
 
     <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
       <div class="field-label">First name</div>

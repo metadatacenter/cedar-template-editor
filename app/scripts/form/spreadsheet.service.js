@@ -204,7 +204,7 @@ define([
                 }
               }
 
-              // get the types and thge node for a nested field in an element
+              // get the types and the node for a nested field in an element
               var inputType = sds.columnDescriptors[col].type;
               var cedarType = sds.columnDescriptors[col].cedarType;
 
@@ -232,10 +232,20 @@ define([
               //   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
               //   sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForTimeField($element);
               } else if (cedarType === 'numeric') {
+                const elementName = $scope.config.colHeaderNames[col];
+                let insideElement = $element;
+                // element with multiplicity
+                if ($element.hasOwnProperty('items')) {
+                  insideElement = $element['items']['properties'][elementName];
+                  // single field with multiplicity
+                  if (insideElement === undefined) {
+                    insideElement = $element;
+                  }
+                }
                 if (sds.tableData[row][col]) {
                   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
                 }
-                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField($element);
+                sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField(insideElement);
               } else if (cedarType === 'link') {
                 if (sds.tableData[row][col] && sds.tableData[row][col].length > 0) {
                   sds.tableDataSource[row][col]['@id'] = sds.tableData[row][col];
@@ -540,6 +550,31 @@ define([
           return colHeaders;
         };
 
+        var getColHeaderNames = function (node, columnHeaderOrder, scope, isField) {
+          var colHeaders = [];
+          var title = dms.getTitle(node);
+          var description = dms.getDescription(node);
+          var model = scope.model;
+
+          if (isField) {
+            colHeaders.push(title);
+          } else {
+            for (var i in columnHeaderOrder) {
+              var key = columnHeaderOrder[i];
+
+              var innerNode = dms.propertiesOf(node)[key];
+              if (innerNode) {
+                title = dms.getTitle(innerNode);
+                description = dms.getDescription(innerNode);
+              } else {
+                title = key;
+                description = "key"
+              }
+              colHeaders.push(title);
+            }
+          }
+          return colHeaders;
+        };
 
         var applyVisibility = function ($scope) {
           var context = $scope.spreadsheetContext;
@@ -715,6 +750,7 @@ define([
             var tableData = getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
             var colHeaders = getColHeaders($element, columnHeaderOrder, $scope, isField());
+            var colHeaderNames = getColHeaderNames($element, columnHeaderOrder, $scope, isField());
             var minRows = dms.getMinItems($element) || 0;
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
@@ -731,6 +767,7 @@ define([
               manualColumnResize: true,
               columns           : columnDescriptors,
               colHeaders        : colHeaders,
+              colHeaderNames    : colHeaderNames,
               colWidths         : 247,
               autoColumnSize    : {syncLimit: 300},
               headerTooltips    : true

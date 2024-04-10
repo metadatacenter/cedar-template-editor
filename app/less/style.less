@@ -15,6 +15,7 @@
 @field-color: #79A99E;
 @metadata-color: #0F7686;
 @folder-color: lighten(@top-nav-color, 10%);
+@deselected-icon-color: gray;
 
 @info-icon: cadetblue;
 
@@ -577,6 +578,7 @@ button {
 .link-disabled, .link-disabled:hover {
   color: @very-lt-gray !important;
   background: #f8f8f8 !important;
+  cursor: default !important;
 }
 
 .controls-bar {
@@ -8909,25 +8911,25 @@ div.resource-icon {
         &.field {
           background-color: @white;
           i {
-            color: @field-color;
+            color: @deselected-icon-color; //@field-color;
           }
         }
         &.element {
           background-color: @white;
           i {
-            color: @element-color;
+            color: @deselected-icon-color; //@element-color;
           }
         }
         &.template {
           background-color: @white;
           i {
-            color: @template-color;
+            color: @deselected-icon-color; //@template-color;
           }
         }
         &.metadata, &.instance {
           background-color: @white;
           i {
-            color: @template-color;
+            color: @deselected-icon-color; //@template-color;
           }
         }
         &.folder {
@@ -8953,8 +8955,6 @@ div.resource-icon {
   }
 
 }
-
-
 
 #move-modal, #copy-modal {
   .modal-content {
@@ -8987,4 +8987,18 @@ div.resource-icon {
   .copyToModalLeftPanel ul {
     margin-left:-20px;
   }
+
+  .selected-badge {
+    background-color: #007bff;
+    color: #fff;
+    padding: 3px 6px;
+    border-radius: 3px;
+    margin-left: 5px;
+  }
+
+  .finder-selected {
+    background-color: #f0f0f0;
+  }
+
+
 }

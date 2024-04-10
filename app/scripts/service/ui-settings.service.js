@@ -141,6 +141,10 @@ define([
       service.saveUIPreference('resourceVersionFilter.version', prefValue);
     };
 
+    service.saveUseMetadataEditorV2= function(prefValue) {
+      service.saveUIPreference('useMetadataEditorV2', prefValue);
+    };
+
     return service;
 
   };

@@ -62,6 +62,7 @@ define([
           canMakeOpen              : canMakeOpen,
           canMakeNotOpen           : canMakeNotOpen,
           canOpenOpen              : canOpenOpen,
+          canOpenDatacite          : canOpenDatacite,
           canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
@@ -925,6 +926,22 @@ define([
 
         function canOpenOpen(resource) {
           return resource.hasOwnProperty('isOpen') && resource['isOpen'];
+        }
+
+        function canOpenDatacite(resource) {
+          switch (resource.resourceType) {
+            case CONST.resourceType.FIELD:
+              return false;
+            case CONST.resourceType.FOLDER:
+              return false;
+            case CONST.resourceType.TEMPLATE:
+              return true;
+            case CONST.resourceType.ELEMENT:
+              return false;
+            case CONST.resourceType.INSTANCE:
+              return true;
+          }
+          return false;
         }
 
         function canSubmit(resource) {
