@@ -37,11 +37,16 @@
       "numeric": {
         "NAME": "Numeric"
       },
+      "boolean": {
+        "NAME": "Boolean",
+        "Labels": "Labels",
+        "SelectDefaultLabel": "Select default value",
+        "True": "True",
+        "False": "False",
+        "Null": "Not set"
+      },
       "phone-number": {
         "NAME": "Phone"
-      },
-      "boolean": {
-        "NAME": "Boolean"
       },
       "section-break": {
         "NAME": "Section Break"

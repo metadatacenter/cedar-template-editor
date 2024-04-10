@@ -79,6 +79,13 @@ define([
         return schemaService.getValueConstraints($scope.field);
       };
 
+      $scope.getBooleanFieldDefaultValueOptions = function () {
+        return [
+          {id: true, label: "True"},
+          {id: false, label: "False"},
+          {id: null, label: "Null"}
+        ];
+      };
       // has value constraints?
       $scope.isConstrained = function () {
         return schemaService.isConstrained($scope.field);
