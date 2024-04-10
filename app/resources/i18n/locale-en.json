@@ -40,6 +40,9 @@
       "phone-number": {
         "NAME": "Phone"
       },
+      "boolean": {
+        "NAME": "Boolean"
+      },
       "section-break": {
         "NAME": "Section Break"
       },
