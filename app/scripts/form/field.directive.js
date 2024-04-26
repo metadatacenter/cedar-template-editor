@@ -337,6 +337,7 @@ define([
 
           } else {
             dms.removeChild($scope.parentElement, $scope.field, $scope.fieldKey);
+            dms.updateAdditionalProperties($scope.parentElement);
             ValidationService.checkValidation();
             $scope.$emit("invalidElementState", ["remove", dms.getTitle($scope.field), dms.getId($scope.field)]);
           }
