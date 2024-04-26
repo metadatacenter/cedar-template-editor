@@ -76,9 +76,9 @@
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
+  "oslc:modifiedBy": null,
   "pav:version"         : "0.0.1",
   "bibo:status"         : "bibo:draft",
-  "oslc:modifiedBy": null,
   "schema:schemaVersion": "1.6.0",
   "additionalProperties": false
 
