@@ -350,6 +350,7 @@ define([
       // remove the element from the form
       scope.ckDelete = function () {
         dms.removeChild(scope.parentElement, scope.element, scope.key);
+        dms.updateAdditionalProperties(scope.parentElement);
         scope.$emit("invalidElementState",
             ["remove", scope.getTitle(), scope.getId()]);
       };

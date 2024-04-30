@@ -101,6 +101,8 @@ define([
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
           vm.getSelectedFolderId = getSelectedFolderId;
           vm.getSelectedParentFolderId = getSelectedParentFolderId;
+          vm.copyOwnId2Clipboard = copyOwnId2Clipboard;
+          vm.getSelectedId = getSelectedId;
           vm.hasDOI = hasDOI;
           vm.getDOI = getDOI;
           vm.copyDOIToClipboard = copyDOIToClipboard;
@@ -1926,6 +1928,15 @@ define([
             return folderId;
           }
 
+          function getSelectedId() {
+            const resource = getSelected();
+            if (!resource || !resource['@id']) {
+              return;
+            }
+            const selectedId = resource['@id'];
+            return selectedId;
+          }
+
           function getSelectedParentFolderId() {
             const {pathInfo} = getSelected();
             if (!pathInfo?.length)
@@ -1945,6 +1956,11 @@ define([
           function copyParentFolderId2Clipboard() {
             const parentFolderId = getSelectedParentFolderId();
             navigator.clipboard.writeText(parentFolderId);
+          }
+
+          function copyOwnId2Clipboard() {
+            const selectedId = getSelectedId();
+            navigator.clipboard.writeText(selectedId);
           }
 
           function hasDOI() {

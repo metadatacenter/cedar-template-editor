@@ -292,6 +292,7 @@ define([
 
       scope.removeChild = function (node) {
         dms.removeChild(scope.parentElement, node);
+        dms.updateAdditionalProperties(scope.parentElement);
         scope.$emit("invalidEFieldState",
             ["remove", scope.getTitle(), scope.getId()]);
 
@@ -300,6 +301,7 @@ define([
       // remove the field from the form
       scope.ckDelete = function () {
         dms.removeChild(scope.parentElement, scope.field);
+        dms.updateAdditionalProperties(scope.parentElement);
         scope.$emit("invalidFieldState",
             ["remove", scope.getTitle(), scope.getId()]);
       };

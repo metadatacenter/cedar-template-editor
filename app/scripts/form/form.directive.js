@@ -140,6 +140,7 @@ define([
             $scope.form = {};
           } else {
             dms.removeChild($scope.form, node);
+            dms.updateAdditionalProperties($scope.form);
             var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
             $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
           }
@@ -588,7 +589,7 @@ define([
         };
 
         $scope.getFormTitle = function (item) {
-          return dms.getPreferredLabel($scope.form.properties[item]) || dms.getTitle($scope.form.properties[item]); 
+          return dms.getPreferredLabel($scope.form.properties[item]) || dms.getTitle($scope.form.properties[item]);
         };
 
 

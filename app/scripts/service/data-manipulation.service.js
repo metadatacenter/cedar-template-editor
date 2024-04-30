@@ -1613,6 +1613,30 @@ define([
           return order;
         };
 
+        service.hasAttributeValueField = function (templateOrElement) {
+          let properties = service.propertiesOf(templateOrElement);
+          let found = false;
+          angular.forEach(properties, function (value, key) {
+            if (!DataUtilService.isSpecialKey(key)) {
+              const child = service.getChildNode(templateOrElement, key);
+              if (service.isAttributeValueType(child)) {
+                found = true;
+              }
+            }
+          });
+          return found;
+        }
+
+        service.updateAdditionalProperties = function (templateOrElement) {
+          if (service.hasAttributeValueField(templateOrElement)) {
+            templateOrElement.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
+            templateOrElement.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
+          } else {
+            templateOrElement.properties["@context"].additionalProperties = false;
+            templateOrElement.additionalProperties = false;
+          }
+        }
+
         // Add a field or element name to the top-level 'required' array in a template or element
         service.addKeyToRequired = function (templateOrElement, key) {
           // Initialize schema.required if it's undefined

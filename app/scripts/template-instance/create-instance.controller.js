@@ -83,8 +83,8 @@ define([
       UIUtilService.setLocked($scope.cannotWrite);
     });
 
-    $scope.copyJson2Clipboard = function () {
-        navigator.clipboard.writeText(JSON.stringify($rootScope.jsonToSave)).then(function(){
+    $scope.copyJson2Clipboard = function (json) {
+        navigator.clipboard.writeText(json).then(function(){
             UIMessageService.flashSuccess('METADATAEDITOR.JsonLDCopied', {"title": "METADATAEDITOR.JsonLDCopied"}, 'GENERIC.Copied');
             $scope.$apply();
         }).catch((err)=>{
