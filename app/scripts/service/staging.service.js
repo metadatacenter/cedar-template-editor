@@ -380,6 +380,10 @@ define([
         ];
       }
 
+      if (schemaService.isCheckboxType(field)) {
+        field._valueConstraints.multipleChoice = true;
+      }
+
       return field;
     };
 
