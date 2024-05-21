@@ -53,6 +53,8 @@ define([
     $scope.cannotWrite;
     $scope.lockReason = '';
 
+    $scope.inclusionModalVisible = false;
+
 
     $scope.canWrite = function () {
       if (!$scope.details) {
@@ -240,6 +242,7 @@ define([
     };
 
     $scope.saveField = function () {
+
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
@@ -328,21 +331,6 @@ define([
         else {
           var id = schemaService.getId($scope.field);
 
-          // UPDATE RELATED PARTS JAN 16, 2024 //
-
-          const inclusionGraph = {"@id":id};
-          console.log("inclusionGraph", inclusionGraph);
-          AuthorizedBackendService.doCall(
-              InclusionService.getInclusions(inclusionGraph),
-              function (response) {
-                console.log("Response", response);
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
-                owner.enableSaveButton();
-              }
-          );
-
           $rootScope.jsonToSave = $scope.field;
 
           var copiedForm = jQuery.extend(true, {}, $scope.field);
@@ -360,6 +348,7 @@ define([
 
                   owner.enableSaveButton();
                   $scope.setClean();
+                  $scope.handleInclusion(id);
 
                 },
                 function (err) {
@@ -371,6 +360,23 @@ define([
         }
       }
     };
+
+    $scope.handleInclusion = function(id){
+      const inclusionGraph = {"@id":id};
+      console.log("inclusionGraph", inclusionGraph);
+      AuthorizedBackendService.doCall(
+          InclusionService.getInclusions(inclusionGraph),
+          function ({data:includingArtifacts}) {
+            const {elements, templates} = includingArtifacts;
+            if (Object.keys(elements).length || Object.keys(templates).length) {
+              $scope.showInclusionModal(includingArtifacts);
+            }
+          },
+          function (err) {
+            UIMessageService.showBackendError('Can not get inclusion graph', err);
+          }
+      );
+    }
 
     $scope.invalidFieldStates = {};
     $scope.invalidFieldStates = {};
@@ -484,6 +490,12 @@ define([
         $scope.$apply();
       });
     };
+
+    // open the 'inclusion' modal
+    $scope.showInclusionModal = function(response) {
+      $scope.inclusionModalVisible = true;
+      $scope.$broadcast('inclusionModalVisible', response);
+    }
 
     // init
 

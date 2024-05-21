@@ -15,7 +15,6 @@ define([
     };
 
     service.getInclusions = function (inclusionsGraph) {
-      console.log("Yahu bu ne", angular.toJson(inclusionsGraph));
       return HttpBuilderService.post(UrlService.getInclusions(), angular.toJson(inclusionsGraph));
     };
 

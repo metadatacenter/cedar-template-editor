@@ -781,5 +781,10 @@
         }
       }
     }
+  },
+  "INCLUSION": {
+    "title": "Update Bubbling",
+    "instructions": "Following artifacts contain the recently updated field. Select the artifacts that you want this update to be reflected to and click save.",
+    "update": "Update"
   }
 }

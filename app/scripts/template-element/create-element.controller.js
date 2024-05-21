@@ -10,7 +10,7 @@ define([
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "resourceService", "ValidationService","UIMessageService",
                                      "DataManipulationService", "schemaService","DataUtilService", "UIUtilService", "AuthorizedBackendService",
-                                     "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser"];
+                                     "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser", "InclusionService"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -18,7 +18,7 @@ define([
                                    TemplateElementService, resourceService, ValidationService,UIMessageService,
                                    DataManipulationService,schemaService,
                                    DataUtilService,UIUtilService,
-                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser) {
+                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser, InclusionService) {
 
     var dms = DataManipulationService;
 
@@ -387,6 +387,7 @@ define([
         }
         // Update element
         else {
+          console.log('UPDATE');
           var id = $scope.element['@id'];
           dms.updateKeys($scope.element);
           $rootScope.jsonToSave = $scope.element;
@@ -400,6 +401,7 @@ define([
                 TemplateElementService.updateTemplateElement(id, copiedForm),
                 function (response) {
                   doUpdate(response);
+                  $scope.handleInclusion(id);
                 },
                 function (err) {
                     UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
@@ -410,6 +412,23 @@ define([
         }
       }
     };
+
+    $scope.handleInclusion = function(id){
+      const inclusionGraph = {"@id":id};
+      console.log("inclusionGraph", inclusionGraph);
+      AuthorizedBackendService.doCall(
+          InclusionService.getInclusions(inclusionGraph),
+          function ({data:includingArtifacts}) {
+            const {elements, templates} = includingArtifacts;
+            if ((Object.keys(elements).length) || Object.keys(templates).length) {
+              $scope.showInclusionModal(includingArtifacts);
+            }
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+          }
+      );
+    }
 
     $scope.invalidFieldStates = {};
     $scope.invalidElementStates = {};
@@ -604,6 +623,12 @@ define([
         $scope.$apply();
       });
     };
+
+    // open the 'inclusion' modal
+    $scope.showInclusionModal = function(response) {
+      $scope.inclusionModalVisible = true;
+      $scope.$broadcast('inclusionModalVisible', response);
+    }
 
   }
 });

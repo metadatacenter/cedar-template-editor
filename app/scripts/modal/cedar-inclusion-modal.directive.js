@@ -8,9 +8,9 @@ define([
         'cedar.templateEditor.service.cedarUser'
       ]).directive('cedarInclusionModal', cedarInclusionModalDirective);
 
-      cedarInclusionModalDirective.$inject = ['CedarUser'];
+      cedarInclusionModalDirective.$inject = ['CedarUser', 'AuthorizedBackendService', 'InclusionService'];
 
-      function cedarInclusionModalDirective(CedarUser) {
+      function cedarInclusionModalDirective(CedarUser, AuthorizedBackendService, InclusionService) {
 
         cedarInclusionModalController.$inject = [
           '$scope'
@@ -22,12 +22,10 @@ define([
           vm.modalVisible = false;
           vm.parts;
           vm.min;
+          vm.saveUpdatedArtifacts = saveUpdatedArtifacts;
+          vm.handleChange = handleChange;
+          vm.cancel = cancel;
 
-
-          // on modal close, scroll to the top the cheap way
-          function hideModal() {
-            vm.modalVisible = false;
-          }
 
           // on modal close, scroll to the top the cheap way
           function hideModal() {
@@ -121,9 +119,54 @@ define([
             }
           };
 
+          function saveUpdatedArtifacts() {
+            let as = document.querySelector('artifact-selector');
+            const data = as.artifactsToUpdate;
+
+            AuthorizedBackendService.doCall(
+                InclusionService.updateInclusions(data),
+                function (response) {
+                  console.log("Updated", response);
+                  vm.modalVisible = false;
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
+
+                }
+            )
+          }
+
+          function cancel() {
+            vm.modalVisible = false;
+          }
+
+          function handleChange(data) {
+            const newData = data.detail;
+
+            AuthorizedBackendService.doCall(
+                InclusionService.getInclusions(newData),
+                function ({data:includingArtifacts}) {
+                  if(includingArtifacts) {
+                    let as = document.querySelector('artifact-selector');
+                    as.treeData = includingArtifacts;
+                  }
+                  // console.log("Response", JSON.stringify(includingArtifacts));
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
+
+                }
+            );
+          }
+
 
           // on modal open
           $scope.$on('inclusionModalVisible', function (event, params) {
+
+            let as = document.querySelector('artifact-selector');
+            as.treeData = params;
+
+            as.addEventListener('selectedChange', vm.handleChange);
 
             var visible = params[0];
             var resource = params[1];

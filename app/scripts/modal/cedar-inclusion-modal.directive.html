@@ -1,73 +1,36 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header" id="publishModalHeader">
-      <button type="button" class="close" ng-click="dc.inclusionModalVisible=false" aria-label="Close"><span
+      <button type="button" class="close" ng-click="inclusionModalVisible=false" aria-label="Close"><span
           aria-hidden="true">&times;</span></button>
       <h4 class="modal-title" >
-        <span  ng-if="inclusion.titleText == 'Draft'" translate>DASHBOARD.version.titleDraft</span>
-        <span ng-if="inclusion.titleText == 'Publish'" translate>DASHBOARD.version.titlePublish</span>
-        <i class="fa fa-globe"></i></h4>
+        <span translate>INCLUSION.title</span>
+      </h4>
     </div>
     <div class="modal-body">
+      <div style="padding:20px 0"><span translate>INCLUSION.instructions</span></div>
 
-      <form  ng-submit="inclusion.updateResource();dc.inclusionModalVisible=false">
-        <div class="publish"  >
-
-          <div class="version-part" >
-            <input name="major" id="version-major" ng-model="inclusion.parts[0]"
-                ng-change="inclusion.change(0, inclusion.parts[0], '{{inclusion.parts[0]}}')">
-            <div class="flex incrementor" >
-              <i  class="fa fa-caret-up" ng-class="{'disabled':!inclusion.canIncrement(0)}" ng-disabled="!inclusion.canIncrement(0)" ng-click="inclusion.increment(0)"></i>
-              <i  class="fa fa-caret-down" ng-class="{'disabled':!inclusion.canDecrement(0)}" ng-disabled="!inclusion.canDecrement(0)" ng-click="inclusion.decrement(0)"></i>
-            </div>
-          </div>
-
-
-          <div class="version-part">
-            <input name="minor" id="version-minor" ng-model="inclusion.parts[1]"
-                ng-change="inclusion.change(1, inclusion.parts[1], '{{inclusion.parts[1]}}')">
-            <div class="flex incrementor" >
-              <i  class="fa fa-caret-up" ng-class="{'disabled':!inclusion.canIncrement(1)}" ng-disabled="!inclusion.canIncrement(1)" ng-click="inclusion.increment(1)"></i>
-              <i  class="fa fa-caret-down" ng-class="{'disabled':!inclusion.canDecrement(1)}" ng-disabled="!inclusion.canDecrement(1)" ng-click="inclusion.decrement(1)"></i>
-            </div>
-          </div>
-
-          <div class="version-part">
-            <input name="build" id="version-build" ng-model="inclusion.parts[2]"
-                ng-change="inclusion.change(2, inclusion.parts[2], '{{publish.parts[2]}}')">
-            <div class="flex incrementor" >
-              <i class="fa fa-caret-up" ng-class="{'disabled':!inclusion.canIncrement(2)}" ng-disabled="!inclusion.canIncrement(2)" ng-click="inclusion.increment(2)"></i>
-              <i class="fa fa-caret-down" ng-class="{'disabled':!inclusion.canDecrement(2)}" ng-disabled="!inclusion.canDecrement(2)" ng-click="inclusion.decrement(2)"></i>
-            </div>
-          </div>
-
-        </div>
-      </form>
-
-      <div style="padding:20px 0"><span translate>DASHBOARD.version.instructions</span>
-        <span ng-if="!inclusion.openMore" class="more-info" ng-click="inclusion.openMore = true">...read more</span>
-        <span ng-if="inclusion.openMore" class="more-info" ng-click="inclusion.openMore = false">...read less</span>
-      </div>
-
-      <div ng-if="inclusion.openMore">
-        <span  ng-if="inclusion.titleText == 'Draft'" translate>DASHBOARD.version.moreDraft</span>
-        <span ng-if="inclusion.titleText == 'Publish'" translate>DASHBOARD.version.morePublish</span>
-      </div>
+      <artifact-selector ng-on="selectedChange($event) = inclusion.changed($event)" ></artifact-selector>
 
     </div>
-    <div class="modal-footer actions">
-      <div class="clear-save">
+    <div class="modal-footer actions inclusion-footer-container">
+      <div class="clear-save inclusion-cancel">
+        <button type="button"
+                class="btn btn-clear"
+                ng-click="inclusion.cancel()"
+                translate>
+          GENERIC.Cancel
+        </button>
+      </div>
+      <div class="clear-save inclusion-update">
         <button
-            ng-click="inclusion.callback(inclusion.resource, inclusion.getVersionString(), inclusion.buttonText);dc.inclusionModalVisible=false;"
+            ng-click="inclusion.saveUpdatedArtifacts()"
             type="button"
             class="btn btn-save confirm" translate>
-          GENERIC.Ok
+          INCLUSION.update
         </button>
       </div>
-      <div class="clear-save">
-        <button type="button" class="btn btn-clear" ng-click="dc.inclusionModalVisible=false;" translate="">Cancel
-        </button>
-      </div>
+
     </div>
   </div>
 </div>

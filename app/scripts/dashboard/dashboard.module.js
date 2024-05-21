@@ -23,7 +23,8 @@ define([
   'cedar/template-editor/category-tree/category-tree.controller',
   'cedar/template-editor/category-tree/category-tree.directive',
   'cedar/template-editor/category-tree/category-tree-node.directive',
-  'cedar/template-editor/category-tree/category-tree-helper'
+  'cedar/template-editor/category-tree/category-tree-helper',
+  'cedar/template-editor/modal/cedar-inclusion-modal.directive'
 ], function (angular) {
   angular.module('cedar.templateEditor.dashboard', [
     'cedar.templateEditor.dashboard.routes',
