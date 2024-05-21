@@ -19,7 +19,7 @@ define([
     };
 
     service.updateInclusions = function (inclusionsGraph) {
-      return HttpBuilderService.post(UrlService.getInclusions(), angular.toJson(inclusionsGraph));
+      return HttpBuilderService.post(UrlService.updateInclusions(), angular.toJson(inclusionsGraph));
     };
 
     return service;
