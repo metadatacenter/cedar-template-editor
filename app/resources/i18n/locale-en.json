@@ -788,6 +788,7 @@
     "update": "Update",
     "update-error": "There was an error while updating the selected artifacts.",
     "preview-error": "There was an error while getting the artifacts.",
-    "artifact-details-error": "There was an error while getting the artifact details"
+    "artifact-details-error": "There was an error while getting the artifact details",
+    "bubbling-success" : "Selected artifacts updates successfully"
   }
 }

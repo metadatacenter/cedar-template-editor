@@ -38,7 +38,7 @@ define([
             AuthorizedBackendService.doCall(
                 InclusionService.updateInclusions(data),
                 function (response) {
-                  console.log("Updated", response);
+                  UIMessageService.flashSuccess('INCLUSION.bubbling-success');
                   vm.modalVisible = false;
                 },
                 function (err) {
