@@ -325,6 +325,9 @@ define([
         if (field['skos:prefLabel']) {
           field.items['skos:prefLabel'] = field['skos:prefLabel'];
         }
+        if (field['skos:altLabel']) {
+          field.items['skos:altLabel'] = field['skos:altLabel'];
+        }
 
         field.type = 'array';
 
@@ -347,6 +350,7 @@ define([
         delete field['schema:name'];
         delete field['schema:description'];
         delete field['skos:prefLabel'];
+        delete field['skos:altLabel'];
         delete field['pav:version'];
         delete field['bibo:status'];
 
@@ -386,6 +390,9 @@ define([
         }
         if (field.items['skos:prefLabel']) {
           field['skos:prefLabel'] = field.items['skos:prefLabel'];
+        }
+        if (field.items['skos:altLabel']) {
+          field['skos:altLabel'] = field.items['skos:altLabel'];
         }
 
         delete field.items;

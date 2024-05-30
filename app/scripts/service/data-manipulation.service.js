@@ -1363,6 +1363,7 @@ define([
             const fieldValue = service.getValueLocation(field);
             // Checkbox or multi-choice  list
             if (service.isMultipleChoiceField(field)) {
+              model.length = 0;
               for (i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   var newValue = {};

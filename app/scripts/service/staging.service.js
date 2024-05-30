@@ -330,7 +330,7 @@ define([
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType) && !schemaService.isAttributeValueType(field)) {
+      if (!FieldTypeService.isStaticField(fieldType)) {
         var randomPropertyName = DataManipulationService.generateGUID();
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
@@ -346,7 +346,7 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
 
-      // Add field to the element.required array it it's not static
+      // Add field to the element.required array if it's not static
       if (!DataManipulationService.isStaticField(field) && !schemaService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
@@ -378,6 +378,10 @@ define([
             "label": ""
           }
         ];
+      }
+
+      if (schemaService.isCheckboxType(field)) {
+        field._valueConstraints.multipleChoice = true;
       }
 
       return field;
