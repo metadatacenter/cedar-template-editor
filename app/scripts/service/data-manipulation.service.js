@@ -394,13 +394,6 @@ define([
           service.schemaOf(node)._ui.inputType = value;
         };
 
-        // Function that generates a basic field definition
-        service.isStaticField = function (node) {
-          if (node) {
-            return FieldTypeService.isStaticField(service.getInputType(node));
-          }
-        };
-
         // is this a numeric field?
         service.isNumericField = function (node) {
           return (service.getInputType(node) === 'numeric');
