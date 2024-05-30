@@ -1684,6 +1684,7 @@ define([
 
 
           function getFolderContentsById(folderId, resourceId) {
+            console.log('Here', folderId, resourceId, activeResourceTypes());
 
             if (activeResourceTypes().length > 0) {
 
@@ -2174,6 +2175,7 @@ define([
            */
 
           function activeResourceTypes() {
+            console.log('On dashboard', vm.onDashboard());
             const activeResourceTypes = [];
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {

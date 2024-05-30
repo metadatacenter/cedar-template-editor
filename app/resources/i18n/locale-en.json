@@ -785,6 +785,9 @@
   "INCLUSION": {
     "title": "Update Bubbling",
     "instructions": "Following artifacts contain the recently updated field. Select the artifacts that you want this update to be reflected to and click save.",
-    "update": "Update"
+    "update": "Update",
+    "update-error": "There was an error while updating the selected artifacts.",
+    "preview-error": "There was an error while getting the artifacts.",
+    "artifact-details-error": "There was an error while getting the artifact details"
   }
 }
