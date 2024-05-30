@@ -1095,18 +1095,24 @@ define([
 
           var field;
 
-          if (container) {
-            field = DataTemplateService.getContainerField(null);
-            field._ui.inputType = inputType;
-          } else if (FieldTypeService.isStaticField(inputType)) {
-            field = DataTemplateService.getStaticField(this.generateTempGUID());
+          if (FieldTypeService.isStaticField(inputType)) {
+            if (container) {
+              field = DataTemplateService.getStaticStandaloneField();
+            } else {
+              field = DataTemplateService.getStaticField(this.generateTempGUID());
+            }
             field._ui.inputType = inputType;
           } else if (FieldTypeService.isAttributeValueField(inputType)) {
             field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
           } else {
-            field = DataTemplateService.getField(this.generateTempGUID());
-            field.properties['@value'].type = valueType;
-            field._ui.inputType = inputType;
+            if (container) {
+              field = DataTemplateService.getContainerField(null);
+              field._ui.inputType = inputType;
+            } else {
+              field = DataTemplateService.getField(this.generateTempGUID());
+              field.properties['@value'].type = valueType;
+              field._ui.inputType = inputType;
+            }
           }
           //field._ui.inputType = inputType;
 

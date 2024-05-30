@@ -498,11 +498,11 @@ define([
         };
 
         $scope.isField = function (item) {
-          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField') || ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
         };
 
         $scope.isFirstClassField = function(node) {
-          return node && (dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField');
+          return node && ((dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField') || (dms.getType(node) === 'https://schema.metadatacenter.org/core/StaticTemplateField'));
         };
 
         $scope.isSectionBreak = function (item) {

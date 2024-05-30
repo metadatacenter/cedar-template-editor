@@ -21,5 +21,7 @@
   "oslc:modifiedBy": null,
   "schema:schemaVersion": "1.6.0",
   "schema:description": "",
-  "additionalProperties": false
+  "additionalProperties": false,
+  "pav:version"         : "0.0.1",
+  "bibo:status"         : "bibo:draft"
 }

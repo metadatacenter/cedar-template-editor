@@ -1,6 +1,5 @@
 'use strict';
 
-
 define([
   'angular',
   'json!config/validation-service.conf.json'
@@ -9,19 +8,20 @@ define([
       .service('ValidationService', ValidationService);
 
   ValidationService.$inject = ["$rootScope", "$timeout", "DataManipulationService", "resourceService",
-                               "UIMessageService", "CONST"];
+    "UIMessageService", "CONST"];
 
   function ValidationService($rootScope, $timeout, DataManipulationService, resourceService, UIMessageService, CONST) {
 
-    var dms = DataManipulationService;
-    var validationTypes = [];
-    var resourceType = {
-      'https://schema.metadatacenter.org/core/Template'       : 'template',
-      'https://schema.metadatacenter.org/core/TemplateField'  : 'field',
-      'https://schema.metadatacenter.org/core/TemplateElement': 'element',
+    const dms = DataManipulationService;
+    let validationTypes = [];
+    const resourceType = {
+      'https://schema.metadatacenter.org/core/Template'           : 'template',
+      'https://schema.metadatacenter.org/core/TemplateField'      : 'field',
+      'https://schema.metadatacenter.org/core/StaticTemplateField': 'field',
+      'https://schema.metadatacenter.org/core/TemplateElement'    : 'element',
     };
 
-    var service = {
+    let service = {
       serviceId: "ValidationService"
     };
 
@@ -34,7 +34,7 @@ define([
     };
 
     service.isValidationTemplate = function (value, action) {
-      var result;
+      let result;
       if (value) {
         var template = value.toLowerCase();
         validationTypes.forEach(function (item, index, array) {
@@ -48,21 +48,10 @@ define([
       return result;
     };
 
-    // service.getUrl = function (type) {
-    //   var result = validationTypes.filter(function (e) {
-    //     console.log(e.type + ' ' + type);
-    //     if (e.type == type) {
-    //       console.log(e.url);
-    //       return e.url;
-    //     }
-    //   });
-    //   return result;
-    // };
-
     // validate the json that will be saved
     service.checkValidation = function () {
 
-      var node = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      let node = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (node) {
         dms.stripTmps(node);
         dms.updateKeys(node);
@@ -89,7 +78,7 @@ define([
 
       // try to parse the report
       if (report) {
-        var r;
+        let r;
 
         try {
           r = JSON.parse(report);
@@ -100,14 +89,14 @@ define([
 
         if (r) {
           if (r.warnings) {
-            for (var i = 0; i < r.warnings.length; i++) {
+            for (let wi = 0; wi < r.warnings.length; wi++) {
               console.log(
-                  'Validation Warning: ' + r.warnings[i].message + ' at location ' + r.warnings[i].location);
+                  'Validation Warning: ' + r.warnings[wi].message + ' at location ' + r.warnings[wi].location);
             }
           }
           if (r.errors) {
-            for (var i = 0; i < r.errors.length; i++) {
-              console.log('Validation Error: ' + r.errors[i].message + ' at location ' + r.errors[i].location);
+            for (let ei = 0; ei < r.errors.length; ei++) {
+              console.log('Validation Error: ' + r.errors[ei].message + ' at location ' + r.errors[ei].location);
             }
           }
         }
@@ -118,6 +107,6 @@ define([
     service.init();
 
     return service;
-  };
+  }
 
 });
