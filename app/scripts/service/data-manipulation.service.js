@@ -394,13 +394,6 @@ define([
           service.schemaOf(node)._ui.inputType = value;
         };
 
-        // Function that generates a basic field definition
-        service.isStaticField = function (node) {
-          if (node) {
-            return FieldTypeService.isStaticField(service.getInputType(node));
-          }
-        };
-
         // is this a numeric field?
         service.isNumericField = function (node) {
           return (service.getInputType(node) === 'numeric');
@@ -1095,18 +1088,24 @@ define([
 
           var field;
 
-          if (container) {
-            field = DataTemplateService.getContainerField(null);
-            field._ui.inputType = inputType;
-          } else if (FieldTypeService.isStaticField(inputType)) {
-            field = DataTemplateService.getStaticField(this.generateTempGUID());
+          if (FieldTypeService.isStaticField(inputType)) {
+            if (container) {
+              field = DataTemplateService.getStaticStandaloneField();
+            } else {
+              field = DataTemplateService.getStaticField(this.generateTempGUID());
+            }
             field._ui.inputType = inputType;
           } else if (FieldTypeService.isAttributeValueField(inputType)) {
             field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
           } else {
-            field = DataTemplateService.getField(this.generateTempGUID());
-            field.properties['@value'].type = valueType;
-            field._ui.inputType = inputType;
+            if (container) {
+              field = DataTemplateService.getContainerField(null);
+              field._ui.inputType = inputType;
+            } else {
+              field = DataTemplateService.getField(this.generateTempGUID());
+              field.properties['@value'].type = valueType;
+              field._ui.inputType = inputType;
+            }
           }
           //field._ui.inputType = inputType;
 
