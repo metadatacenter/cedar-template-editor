@@ -30,7 +30,7 @@ define([
       },
       controller : function ($scope) {
 
-        var dms = DataManipulationService;
+        let dms = DataManipulationService;
 
         $scope.directiveName = 'form';
         $scope.forms = {};
@@ -40,9 +40,9 @@ define([
         $scope.pageMin = 0;
         $scope.pageMax = 0;
 
-        $scope.currentPage = [],
-            $scope.pageIndex = 0,
-            $scope.pagesArray = [];
+        $scope.currentPage = [];
+        $scope.pageIndex = 0;
+        $scope.pagesArray = [];
 
         $scope.expanded = true;
 
@@ -96,6 +96,10 @@ define([
             var dimension = 0;
 
             $scope.form._ui = $scope.form._ui || {};
+
+            if (dms.isStaticField($scope.form)) {
+              return;
+            }
             $scope.form._ui.order = $scope.form._ui.order || [];
 
             // This code is to allow render previous templates (Before inline_edit). We can remove this later
@@ -111,8 +115,8 @@ define([
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
               if ($scope.form.properties[field] && $scope.form.properties[field]._ui &&
-                  $scope.form.properties[field]._ui.inputType == 'page-break') {
-                if (index == 0) {
+                  $scope.form.properties[field]._ui.inputType === 'page-break') {
+                if (index === 0) {
                   titles.push($scope.getTitle());
                 } else {
                   dimension++;
@@ -124,7 +128,7 @@ define([
               orderArray[dimension].push(field);
             });
 
-            if (titles.length == 0) {
+            if (titles.length === 0) {
               titles.push($scope.getTitle());
             }
 
@@ -140,6 +144,7 @@ define([
             $scope.form = {};
           } else {
             dms.removeChild($scope.form, node);
+            dms.updateAdditionalProperties($scope.form);
             var state = DataUtilService.isElement(node) ? 'invalidElementState' : 'invalidFieldState';
             $scope.$emit(state, ["remove", dms.getTitle(node), dms.getId(node)]);
           }
@@ -218,7 +223,7 @@ define([
               DataManipulationService.findChildren($scope.form.properties, model);
             }
 
-            if (dms.getType($scope.form) != dms.cedarFieldType()) { // only if it is not a template field
+            if (dms.getType($scope.form) !== dms.cedarFieldType()) { // only if it is not a template field
               paginate();
             }
 
@@ -233,11 +238,11 @@ define([
 
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
-            if (name == '@context') {
+            if (name === '@context') {
               parentModel['@context'] = dms.generateInstanceContext(value);
             }
             // Add @type information to template/element instance
-            else if (name == '@type') {
+            else if (name === '@type') {
               var type = dms.generateInstanceType(value);
               if (type) {
                 parentModel['@type'] = type;
@@ -245,7 +250,7 @@ define([
             }
 
             if (!DataUtilService.isSpecialKey(name)) {
-              if (dms.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+              if (dms.schemaOf(value)['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement') {
                 // Template Element
                 var min = value.minItems || 0;
 
@@ -276,7 +281,7 @@ define([
                   var min = value.minItems || 0;
 
                   // Assign empty field instance model to $scope.model only if it does not exist
-                  if (parentModel[name] == undefined) {
+                  if (parentModel[name] === undefined) {
                     // Not multiple instance
                     if (!schemaService.isCardinalElement(value)) {
                       // Multiple choice fields (checkbox and multi-choice list) store an array of values
@@ -332,7 +337,7 @@ define([
 
                 var data = response.data;
 
-                if (data.isValid == false) {
+                if (data.isValid === false) {
 
                   $scope.$emit('validationError', ['remove', '', type]);
 
@@ -497,11 +502,11 @@ define([
         };
 
         $scope.isField = function (item) {
-          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField') || ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
         };
 
         $scope.isFirstClassField = function(node) {
-          return node && (dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField');
+          return node && ((dms.getType(node) === 'https://schema.metadatacenter.org/core/TemplateField') || (dms.getType(node) === 'https://schema.metadatacenter.org/core/StaticTemplateField'));
         };
 
         $scope.isSectionBreak = function (item) {
@@ -588,7 +593,7 @@ define([
         };
 
         $scope.getFormTitle = function (item) {
-          return dms.getPreferredLabel($scope.form.properties[item]) || dms.getTitle($scope.form.properties[item]); 
+          return dms.getPreferredLabel($scope.form.properties[item]) || dms.getTitle($scope.form.properties[item]);
         };
 
 
@@ -668,6 +673,6 @@ define([
 
       }
     };
-  };
+  }
 
 });

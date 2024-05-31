@@ -394,13 +394,6 @@ define([
           service.schemaOf(node)._ui.inputType = value;
         };
 
-        // Function that generates a basic field definition
-        service.isStaticField = function (node) {
-          if (node) {
-            return FieldTypeService.isStaticField(service.getInputType(node));
-          }
-        };
-
         // is this a numeric field?
         service.isNumericField = function (node) {
           return (service.getInputType(node) === 'numeric');
@@ -1095,18 +1088,24 @@ define([
 
           var field;
 
-          if (container) {
-            field = DataTemplateService.getContainerField(null);
-            field._ui.inputType = inputType;
-          } else if (FieldTypeService.isStaticField(inputType)) {
-            field = DataTemplateService.getStaticField(this.generateTempGUID());
+          if (FieldTypeService.isStaticField(inputType)) {
+            if (container) {
+              field = DataTemplateService.getStaticStandaloneField();
+            } else {
+              field = DataTemplateService.getStaticField(this.generateTempGUID());
+            }
             field._ui.inputType = inputType;
           } else if (FieldTypeService.isAttributeValueField(inputType)) {
             field = DataTemplateService.getAttributeValueField(this.generateTempGUID());
           } else {
-            field = DataTemplateService.getField(this.generateTempGUID());
-            field.properties['@value'].type = valueType;
-            field._ui.inputType = inputType;
+            if (container) {
+              field = DataTemplateService.getContainerField(null);
+              field._ui.inputType = inputType;
+            } else {
+              field = DataTemplateService.getField(this.generateTempGUID());
+              field.properties['@value'].type = valueType;
+              field._ui.inputType = inputType;
+            }
           }
           //field._ui.inputType = inputType;
 
@@ -1363,6 +1362,7 @@ define([
             const fieldValue = service.getValueLocation(field);
             // Checkbox or multi-choice  list
             if (service.isMultipleChoiceField(field)) {
+              model.length = 0;
               for (i = 0; i < literals.length; i++) {
                 if (literals[i].selectedByDefault) {
                   var newValue = {};
@@ -1612,6 +1612,30 @@ define([
           });
           return order;
         };
+
+        service.hasAttributeValueField = function (templateOrElement) {
+          let properties = service.propertiesOf(templateOrElement);
+          let found = false;
+          angular.forEach(properties, function (value, key) {
+            if (!DataUtilService.isSpecialKey(key)) {
+              const child = service.getChildNode(templateOrElement, key);
+              if (service.isAttributeValueType(child)) {
+                found = true;
+              }
+            }
+          });
+          return found;
+        }
+
+        service.updateAdditionalProperties = function (templateOrElement) {
+          if (service.hasAttributeValueField(templateOrElement)) {
+            templateOrElement.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
+            templateOrElement.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
+          } else {
+            templateOrElement.properties["@context"].additionalProperties = false;
+            templateOrElement.additionalProperties = false;
+          }
+        }
 
         // Add a field or element name to the top-level 'required' array in a template or element
         service.addKeyToRequired = function (templateOrElement, key) {

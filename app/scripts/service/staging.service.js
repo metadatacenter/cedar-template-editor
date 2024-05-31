@@ -58,11 +58,11 @@ define([
     };
 
     service.isEmpty = function () {
-      return this.stagingObjectType == CONST.stagingObject.NONE;
+      return this.stagingObjectType === CONST.stagingObject.NONE;
     };
 
     service.updateStatus = function () {
-      $rootScope.stagingVisible = (this.stagingObjectType != CONST.stagingObject.NONE);
+      $rootScope.stagingVisible = (this.stagingObjectType !== CONST.stagingObject.NONE);
     };
 
     service.addElementWithId = function ($scope, elementId) {
@@ -89,35 +89,6 @@ define([
       );
     };
 
-    // Add new field into $scope.staging object
-    // service.addFieldToStaging = function ($scope, fieldType) {
-    //   this.addField();
-    //   var field = DataManipulationService.generateField(fieldType);
-    //   field.minItems = 0;
-    //   field.maxItems = 1;
-    //
-    //   // If fieldtype can have multiple options, additional parameters on field object are necessary
-    //   var optionInputs = ["radio", "checkbox", "list"];
-    //
-    //   if (optionInputs.indexOf(fieldType) > -1) {
-    //     field._valueConstraints.literals = [
-    //       {
-    //         "label": ""
-    //       }
-    //     ];
-    //     if (fieldType == 'radio') {
-    //       field._valueConstraints.multipleChoice = false;
-    //     }
-    //     else if (fieldType == 'checkbox') {
-    //       field._valueConstraints.multipleChoice = true;
-    //     }
-    //   }
-    //   // empty staging object (only one field should be configurable at a time)
-    //   $scope.staging = {};
-    //   // put field into fields staging object
-    //   $scope.staging[field['@id']] = field;
-    // };
-
     service.addFieldToForm = function (form, fieldType, firstClassField, divId, callback) {
 
       var field = DataManipulationService.generateField(fieldType, firstClassField);
@@ -125,7 +96,7 @@ define([
 
       // is it a checkbox, list, or radio field?
       if (schemaService.isCheckboxListRadioType(fieldType)) {
-        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+        if (fieldType === 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
             {
@@ -153,11 +124,6 @@ define([
             randomPropertyName);
       }
 
-      if (FieldTypeService.isAttributeValueField(fieldType)) {
-        form.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
-        form.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
-      }
-
       // Evaluate cardinality
       if (!DataManipulationService.firstClassField(form, field)) {
         schemaService.cardinalizeField(field);
@@ -181,6 +147,8 @@ define([
 
       DataManipulationService.addDomIdIfNotPresent(field, divId);
       callback(field);
+
+      DataManipulationService.updateAdditionalProperties(form);
 
       return field;
     };
@@ -340,7 +308,7 @@ define([
 
       // is it a checkbox, list, or radio field?
       if (schemaService.isCheckboxListRadioType(fieldType)) {
-        if (fieldType == 'checkbox') { // multiple choice field (checkbox)
+        if (fieldType === 'checkbox') { // multiple choice field (checkbox)
           field.items._valueConstraints.multipleChoice = true;
           field.items._valueConstraints.literals = [
             {
@@ -362,7 +330,7 @@ define([
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType) && !schemaService.isAttributeValueType(field)) {
+      if (!FieldTypeService.isStaticField(fieldType)) {
         var randomPropertyName = DataManipulationService.generateGUID();
         element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             randomPropertyName);
@@ -372,18 +340,13 @@ define([
         element.properties["@context"].required.push(fieldName);
       }
 
-      if (FieldTypeService.isAttributeValueField(fieldType)) {
-        element.properties["@context"].additionalProperties = DataTemplateService.getAdditionalPropertiesForContextOfAttributeValueField();
-        element.additionalProperties = DataTemplateService.getAdditionalPropertiesForAttributeValueField();
-      }
-
       // Evaluate cardinality
       schemaService.cardinalizeField(field);
 
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
 
-      // Add field to the element.required array it it's not static
+      // Add field to the element.required array if it's not static
       if (!DataManipulationService.isStaticField(field) && !schemaService.isAttributeValueType(field)) {
         element = DataManipulationService.addKeyToRequired(element, fieldName);
       }
@@ -394,6 +357,8 @@ define([
       element._ui.propertyLabels[fieldName] = "Untitled";
       element._ui.propertyDescriptions = element._ui.propertyDescriptions || {};
       element._ui.propertyDescriptions[fieldName] = "Help Text";
+
+      DataManipulationService.updateAdditionalProperties(element);
 
       return field;
     };
@@ -415,10 +380,14 @@ define([
         ];
       }
 
+      if (schemaService.isCheckboxType(field)) {
+        field._valueConstraints.multipleChoice = true;
+      }
+
       return field;
     };
 
     return service;
-  };
+  }
 
 });

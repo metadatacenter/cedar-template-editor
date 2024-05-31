@@ -47,6 +47,12 @@ define([
       return clonedField;
     };
 
+    service.getStaticStandaloneField = function () {
+      var clonedField = angular.copy(dataTemplate.staticField);
+      delete clonedField['@id'];
+      return clonedField;
+    };
+
     service.getContainerField = function (tempId) {
       var clonedField = angular.copy(dataTemplate.containerField);
       clonedField['@id'] = tempId;
