@@ -9,12 +9,12 @@ define([
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
     "SpreadsheetService", "CONST", "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
-    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService", "$location"];
+    "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService", "DataUtilService", "$location"];
 
   function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
                           DataManipulationService, schemaService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService,
-                          ValidationService, TemporalEditorFieldService, QuestionTextService, $location) {
+                          ValidationService, TemporalEditorFieldService, QuestionTextService, DataUtilService, $location) {
 
 
     let linker = function ($scope, $element, attrs) {
@@ -310,9 +310,7 @@ define([
       };
 
       $scope.isSoleField = function (field) {
-        if($location.absUrl().includes('fields'))
-          return true;
-        return false;
+        return ($location.absUrl().includes('fields'));
       }
 
       $scope.getContent = function (field) {
@@ -518,6 +516,7 @@ define([
 
       // Used to update schema:name when the field label (stored in propertyLabels) changes
       $scope.$watch("fieldLabel[fieldLabelKey]", function () {
+        console.log('CHANGED fieldLabel[fieldLabelKey]', $scope.fieldLabel);
         if (!angular.isUndefined($scope.fieldLabelKey) && !angular.isUndefined(
             $scope.fieldLabel[$scope.fieldLabelKey])) {
           if ($scope.isEditable()) {
@@ -534,6 +533,20 @@ define([
             dms.setDescription($scope.field, $scope.fieldDescription[$scope.fieldDescriptionKey]);
           }
         }
+      }, true);
+
+      $scope.$watch("fieldKeyContainer[fieldKeyKey]", function (newVal,oldVal,scope) {
+        console.log('KEY CHANGED from:', oldVal, ' to:', newVal);
+        var keys = Object.keys(scope.parentElement.properties);
+        for (let i = 0; i < keys.length; i++) {
+          const key = keys[i];
+          if (!DataUtilService.isSpecialKey(key)) {
+            console.log('KEY:' + key);
+          }
+        }
+        console.log('CHANGED fieldKeyContainer[fieldKeyValue]', $scope.fieldKeyContainer[$scope.fieldKeyKey]);
+        console.log('PRINT   fieldLabel', $scope.fieldLabel);
+        console.log('PRINT   fieldDescription', $scope.fieldDescription);
       }, true);
 
       $scope.isFirstLevel = function () {
@@ -1273,9 +1286,10 @@ define([
           $scope.fieldLabel = dms.getPropertyLabels($scope.parentElement);
           $scope.fieldDescription = dms.getPropertyDescriptions($scope.parentElement);
         }
-
+        $scope.fieldKeyKey = 'fieldKeyKey';
+        $scope.fieldKeyContainer = {};
+        $scope.fieldKeyContainer[$scope.fieldKeyKey] = 'ABC';
       };
-
       $scope.init();
     };
 
@@ -1285,6 +1299,7 @@ define([
       restrict   : 'EA',
       scope      : {
         fieldKey      : '=',
+        fieldKeyContainer : '=?',
         field         : '=',
         parentElement : '=',
         model         : '=',

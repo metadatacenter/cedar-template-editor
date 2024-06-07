@@ -5,8 +5,8 @@
       <input type="text" auto-focus
           class="form-control select field-title-definition"
           id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}"
-          placeholder="{{'CREATOR.enterFieldKey' | translate}}"
-          aria-label="{{'CREATOR.enterFieldKey' | translate}}"
+          placeholder="{{'CREATOR.enterFieldSchemaName' | translate}}"
+          aria-label="{{'CREATOR.enterFieldSchemaName' | translate}}"
           ng-model="fieldLabel[fieldLabelKey]"
           ng-model-options="{ debounce: 1000, allowInvalid:true }"
           ng-disabled="isPublished()"
@@ -34,6 +34,21 @@
     </div>
   </div>
 
+  <div class="flex field-title">
+    <!-- field title -->
+    <div class="form-group floating-label-wrapper">
+      <input type="text" auto-focus
+             class="form-control select field-title-definition"
+             id="placeholder-{{getId().substring(getId().lastIndexOf('/')+1)}}-key"
+             placeholder="{{'CREATOR.enterFieldKey' | translate}}"
+             aria-label="{{'CREATOR.enterFieldKey' | translate}}"
+             ng-model="fieldKeyContainer[fieldKeyKey]"
+             ng-model-options="{ debounce: 1000, allowInvalid:true }"
+             ng-disabled="isPublished()"
+             autocomplete="off"
+             with-floating-label>
+    </div>
+  </div>
   <!-- Question text -->
   <div class="form-group floating-label-wrapper">
     <!-- If the field does not contain any alternate question texts (skos:altLabel), we render it using a text field -->

@@ -671,7 +671,8 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldKey": "Enter Field Name",
+    "enterFieldSchemaName": "Enter Field Display Name",
+    "enterFieldKey": "Enter Field Name (Name of the node in the resulting document)",
     "enterFieldLabel": "Enter Field Label",
     "enterPropertyLabel": "Enter Property Label",
     "enterFieldDescription": "Enter Field Help Text",
