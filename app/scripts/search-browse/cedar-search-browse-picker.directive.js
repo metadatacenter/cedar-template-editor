@@ -2175,9 +2175,10 @@ define([
 
           function activeResourceTypes() {
             const activeResourceTypes = [];
+            const _onDashboard = vm.onDashboard();
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
-                if (!vm.onDashboard()) {
+                if (_onDashboard && _onDashboard === false) {
                   // just elements can be selected
                   if (value === 'element') {
                     activeResourceTypes.push(value);

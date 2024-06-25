@@ -48,6 +48,10 @@ define([
       return resourceService;
     };
 
+    service.getBase = function () {
+      return this.base();
+    }
+
     service.templates = function () {
       return this.base() + '/templates';
     };
@@ -527,6 +531,14 @@ define([
       }
       return s;
     }
+
+    service.getInclusions = function () {
+      return this.resourceBase() + '/command/inclusions-subgraph-preview';
+    };
+
+    service.updateInclusions = function () {
+      return this.resourceBase() + '/command/inclusions-subgraph-update';
+    };
 
     return service;
   }
