@@ -8,7 +8,18 @@
       </h4>
     </div>
     <div class="modal-body">
-      <div style="padding:20px 0"><span translate>INCLUSION.instructions</span></div>
+      <div>
+        <h5>
+          <span ng-if="inclusion.artifactType === 'field'" translate>INCLUSION.field-updated</span>
+          <span ng-if="inclusion.artifactType === 'element'" translate>INCLUSION.element-updated</span>
+          <span>{{' '  + inclusion.artifactName + ' '}}</span>
+          <span translate>INCLUSION.event</span>
+        </h5>
+      </div>
+      <div style="padding:20px 0">
+        <span ng-if="inclusion.artifactType === 'field'" translate>INCLUSION.instructions-field</span>
+        <span ng-if="inclusion.artifactType === 'element'" translate>INCLUSION.instructions-element</span>
+      </div>
 
       <artifact-selector ng-on="selectedChange($event) = inclusion.changed($event)" ></artifact-selector>
 

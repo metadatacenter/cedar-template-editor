@@ -363,7 +363,6 @@ define([
 
     $scope.handleInclusion = function(id){
       const inclusionGraph = {"@id":id};
-      console.log("inclusionGraph", inclusionGraph);
       AuthorizedBackendService.doCall(
           InclusionService.getInclusions(inclusionGraph),
           function ({data:includingArtifacts}) {
@@ -494,7 +493,7 @@ define([
     // open the 'inclusion' modal
     $scope.showInclusionModal = function(response) {
       $scope.inclusionModalVisible = true;
-      $scope.$broadcast('inclusionModalVisible', response);
+      $scope.$broadcast('inclusionModalVisible', response, 'field', schemaService.getTitle($scope.field));
     }
 
     // init

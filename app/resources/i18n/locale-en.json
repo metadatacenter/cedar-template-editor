@@ -784,11 +784,15 @@
   },
   "INCLUSION": {
     "title": "Update Bubbling",
-    "instructions": "Following artifacts contain the recently updated field. Select the artifacts that you want this update to be reflected to and click save.",
+    "instructions-field": "Following artifacts contain the recently updated field. Select the artifacts that you want this update to be reflected to and click save.",
+    "instructions-element": "Following artifacts contain the recently updated element. Select the artifacts that you want this update to be reflected to and click save.",
     "update": "Update",
     "update-error": "There was an error while updating the selected artifacts.",
     "preview-error": "There was an error while getting the artifacts.",
     "artifact-details-error": "There was an error while getting the artifact details",
-    "bubbling-success" : "Selected artifacts updates successfully"
+    "bubbling-success" : "Selected artifacts updates successfully",
+    "field-updated" : "Origin : Field",
+    "element-updated" : "Origin : Element",
+    "event" : "updated"
   }
 }

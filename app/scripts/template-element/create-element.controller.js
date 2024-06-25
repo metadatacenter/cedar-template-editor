@@ -387,7 +387,6 @@ define([
         }
         // Update element
         else {
-          console.log('UPDATE');
           var id = $scope.element['@id'];
           dms.updateKeys($scope.element);
           $rootScope.jsonToSave = $scope.element;
@@ -415,7 +414,6 @@ define([
 
     $scope.handleInclusion = function(id){
       const inclusionGraph = {"@id":id};
-      console.log("inclusionGraph", inclusionGraph);
       AuthorizedBackendService.doCall(
           InclusionService.getInclusions(inclusionGraph),
           function ({data:includingArtifacts}) {
@@ -627,7 +625,7 @@ define([
     // open the 'inclusion' modal
     $scope.showInclusionModal = function(response) {
       $scope.inclusionModalVisible = true;
-      $scope.$broadcast('inclusionModalVisible', response);
+      $scope.$broadcast('inclusionModalVisible', response, 'element', schemaService.getTitle($scope.element));
     }
 
   }

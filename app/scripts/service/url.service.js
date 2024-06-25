@@ -48,6 +48,10 @@ define([
       return resourceService;
     };
 
+    service.getBase = function () {
+      return this.base();
+    }
+
     service.templates = function () {
       return this.base() + '/templates';
     };

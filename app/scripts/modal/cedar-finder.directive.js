@@ -680,7 +680,6 @@ define([
           };
 
           function isResourceTypeActive(type) {
-            console.log('Is active', type, vm.resourceTypes[type]);
             return vm.resourceTypes[type];
           };
 
