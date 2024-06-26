@@ -10,7 +10,7 @@ define([
                                    "$filter", "HeaderService", "StagingService", "DataTemplateService", "schemaService",
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
-                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
+                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -18,7 +18,7 @@ define([
                                  TemplateFieldService, resourceService, ValidationService,UIMessageService,
                                  DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
-                                 CONST,CedarUser) {
+                                 CONST,CedarUser, InclusionService) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -52,6 +52,8 @@ define([
     $scope.details;
     $scope.cannotWrite;
     $scope.lockReason = '';
+
+    $scope.inclusionModalVisible = false;
 
 
     $scope.canWrite = function () {
@@ -240,6 +242,7 @@ define([
     };
 
     $scope.saveField = function () {
+
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
@@ -345,6 +348,7 @@ define([
 
                   owner.enableSaveButton();
                   $scope.setClean();
+                  $scope.handleInclusion(id);
 
                 },
                 function (err) {
@@ -356,6 +360,22 @@ define([
         }
       }
     };
+
+    $scope.handleInclusion = function(id){
+      const inclusionGraph = {"@id":id};
+      AuthorizedBackendService.doCall(
+          InclusionService.getInclusions(inclusionGraph),
+          function ({data:includingArtifacts}) {
+            const {elements, templates} = includingArtifacts;
+            if (Object.keys(elements).length || Object.keys(templates).length) {
+              $scope.showInclusionModal(includingArtifacts);
+            }
+          },
+          function (err) {
+            UIMessageService.showBackendError('Can not get inclusion graph', err);
+          }
+      );
+    }
 
     $scope.invalidFieldStates = {};
     $scope.invalidFieldStates = {};
@@ -469,6 +489,12 @@ define([
         $scope.$apply();
       });
     };
+
+    // open the 'inclusion' modal
+    $scope.showInclusionModal = function(response) {
+      $scope.inclusionModalVisible = true;
+      $scope.$broadcast('inclusionModalVisible', response, 'field', schemaService.getTitle($scope.field));
+    }
 
     // init
 

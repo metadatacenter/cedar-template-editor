@@ -1,0 +1,47 @@
+<div class="modal-dialog inclusion-modal">
+  <div class="modal-content">
+    <div class="modal-header" id="publishModalHeader">
+      <button type="button" class="close" ng-click="inclusionModalVisible=false" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" >
+        <span translate>INCLUSION.title</span>
+      </h4>
+    </div>
+    <div class="modal-body">
+      <div>
+        <h5>
+          <span ng-if="inclusion.artifactType === 'field'" translate>INCLUSION.field-updated</span>
+          <span ng-if="inclusion.artifactType === 'element'" translate>INCLUSION.element-updated</span>
+          <span>{{' '  + inclusion.artifactName + ' '}}</span>
+          <span translate>INCLUSION.event</span>
+        </h5>
+      </div>
+      <div style="padding:20px 0">
+        <span ng-if="inclusion.artifactType === 'field'" translate>INCLUSION.instructions-field</span>
+        <span ng-if="inclusion.artifactType === 'element'" translate>INCLUSION.instructions-element</span>
+      </div>
+
+      <artifact-selector ng-on="selectedChange($event) = inclusion.changed($event)" ></artifact-selector>
+
+    </div>
+    <div class="modal-footer actions inclusion-footer-container">
+      <div class="clear-save inclusion-cancel">
+        <button type="button"
+                class="btn btn-clear"
+                ng-click="inclusion.cancel()"
+                translate>
+          GENERIC.Cancel
+        </button>
+      </div>
+      <div class="clear-save inclusion-update">
+        <button
+            ng-click="inclusion.saveUpdatedArtifacts()"
+            type="button"
+            class="btn btn-save confirm" translate>
+          INCLUSION.update
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
