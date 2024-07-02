@@ -10,7 +10,9 @@ define([
   DashboardController.$inject = [];
 
   function DashboardController() {
+    console.log('In db controller');
     var vm = this;
+    vm.goTo
 
   };
 

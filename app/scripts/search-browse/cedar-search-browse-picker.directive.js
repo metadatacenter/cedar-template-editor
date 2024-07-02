@@ -1043,13 +1043,16 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
+              console.log('1');
               resetSelected();
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
               getFolderContentsById(currentFolderId, vm.hash);
               getCurrentFolderSummary(currentFolderId);
             } else {
+              console.log('2');
               //goToFolder(CedarUser.getHomeFolderId());
+              console.log('hash', vm.hash);
               goToHomeFolder(vm.hash);
             }
             if (vm.showFavorites) {
@@ -1998,8 +2001,10 @@ define([
           function goToFolder(folderId) {
             vm.currentFolderId = folderId;
             if (vm.onDashboard()) {
+              console.log('if');
               $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
+              console.log('else');
               vm.params.folderId = folderId;
               resetSelected();
               init();
@@ -2454,6 +2459,7 @@ define([
 
           vm.goToMyWorkspace = function () {
             const url = FrontendUrlService.getMyWorkspace();
+            console.log('Url is', url);
             $location.url(url);
           };
 
