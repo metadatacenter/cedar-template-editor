@@ -220,7 +220,7 @@ define([
     };
 
     vm.isDashboard = function () {
-      return (vm.path === "/dashboard");
+      return ((vm.path === "/dashboard" || vm.path === "/"));
     };
 
     vm.isMessaging = function () {
