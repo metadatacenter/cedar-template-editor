@@ -7,13 +7,15 @@ define([
   angular.module('cedar.templateEditor.dashboard.dashboardController', [])
       .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = [];
+  DashboardController.$inject = ['$location', 'FrontendUrlService'];
 
-  function DashboardController() {
-    console.log('In db controller');
+  function DashboardController($location, FrontendUrlService) {
     var vm = this;
-    vm.goTo
-
+    const path = $location.path();
+    if(path === '/'){
+      const url = FrontendUrlService.getMyWorkspace();
+      $location.url(url);
+    }
   };
 
 });
