@@ -99,7 +99,7 @@ define([
       var path = $location.path();
       var hash = $location.hash();
       var baseUrl = '/dashboard';
-      if (path != baseUrl) {
+      if (path !== baseUrl) {
         var queryParams = {};
         var sharing = QueryParamUtilsService.getSharing();
         if (sharing) {
