@@ -16,6 +16,5 @@ define([
       const url = FrontendUrlService.getMyWorkspace();
       $location.url(url);
     }
-  };
-
+  }
 });
