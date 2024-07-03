@@ -11,10 +11,5 @@ define([
 
   function DashboardController($location, FrontendUrlService) {
     var vm = this;
-    const path = $location.path();
-    if(path === '/'){
-      const url = FrontendUrlService.getMyWorkspace();
-      $location.url(url);
-    }
   }
 });
