@@ -29,6 +29,7 @@ define([
     vm.path = $location.path();
     vm.searchTerm = $location.search().search;
     vm.confirmedBack = true;
+    vm.path = '/settings';
 
     $window.onbeforeunload = function (event) {
       if (vm.isDirty() && !vm.confirmedBack) {
@@ -359,6 +360,37 @@ define([
 
     vm.getCedarVersion = function(){
       return window.cedarVersion;
+    }
+
+    vm.goToMete = function (path) {
+      console.log('In mete', path);
+      vm.searchTerm = null;
+      UIUtilService.activeLocator = null;
+      UIUtilService.activeZeroLocator = null;
+      // var path = $location.path();
+      var hash = $location.hash();
+      var baseUrl = '/dashboard';
+      if (path !== baseUrl) {
+        var queryParams = {};
+        var sharing = QueryParamUtilsService.getSharing();
+        if (sharing) {
+          queryParams['sharing'] = sharing;
+        }
+        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
+        if (folderId) {
+          queryParams['folderId'] = folderId;
+        }
+        /*if (params.search) {
+         queryParams['search'] = params.search;
+         }*/
+      }
+      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      console.log('Url is', url);
+      if (hash) {
+        url += '#' + hash;
+      }
+      // return url;
+      $location.url(url);
     }
 
   }
