@@ -98,6 +98,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
       .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
       .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
+      .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
       .pipe(gulp.dest('app/config/'));
   done();
 });

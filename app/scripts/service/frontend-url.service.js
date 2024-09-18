@@ -14,6 +14,7 @@ define([
     let openViewBase = null;
     let embeddableEditorBase = null;
     let dataciteDOIBase = null
+    let downloadBase = null
 
     let service = {
       serviceId: "FrontendUrlService"
@@ -23,6 +24,7 @@ define([
       openViewBase = config.openViewBase;
       embeddableEditorBase = config.artifactsFrontend;
       dataciteDOIBase = config.dataciteDOIBase;
+      downloadBase = config.downloadBase;
     };
 
     service.getTemplateEdit = function (id) {
@@ -107,6 +109,10 @@ define([
 
     service.dataciteInstance = function (id) {
       return dataciteDOIBase + '/' + encodeURIComponent(id);
+    };
+
+    service.downloadResource = function (id) {
+      return downloadBase + '/' + encodeURIComponent(id);
     };
 
     return service;

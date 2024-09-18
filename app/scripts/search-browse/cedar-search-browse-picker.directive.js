@@ -96,6 +96,7 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.openDatacite = openDatacite;
+          vm.openDownload = openDownload;
           vm.isSelected = isSelected;
           vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
@@ -595,6 +596,7 @@ define([
             vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
             vm.canNotOpenOpen = !vm.canOpenOpen();
             vm.canNotOpenDatacite = !vm.canOpenDatacite();
+            vm.canNotOpenDownload = !vm.canOpenDownload();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -705,6 +707,10 @@ define([
 
           vm.canOpenDatacite = function () {
             return window.dataciteEnabled && resourceService.canOpenDatacite(vm.getSelectedNode());
+          };
+
+          vm.canOpenDownload = function () {
+            return true;
           };
 
           vm.doShowCategoryTree = function () {
@@ -1526,6 +1532,21 @@ define([
               $window.open(url, '_blank');
             } else {
               console.log("DataCite wizard not available for:" + resource);
+            }
+          }
+
+          function openDownload(resource) {
+            if (!resource) {
+              resource = getSelected();
+            }
+            let url = null;
+            if (isTemplate(resource) || isElement(resource) || isField(resource) || isMeta(resource)) {
+              url = FrontendUrlService.downloadResource(resource['@id']);
+            }
+            if (url !== null) {
+              $window.open(url, '_blank');
+            } else {
+              console.log("Download not available for:" + resource);
             }
           }
 

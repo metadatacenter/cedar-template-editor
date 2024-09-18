@@ -473,7 +473,8 @@
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
       "opendatacite": "Create DOI using DataCite...",
-      "populateEE": "Populate with new editor"
+      "populateEE": "Populate with new editor",
+      "openDownload": "Download..."
     },
     "delete": {
       "confirm": {
