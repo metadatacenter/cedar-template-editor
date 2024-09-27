@@ -98,6 +98,7 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
       .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
       .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
+      .pipe(replace('authServerUrl', 'https://auth.' + cedarRestHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });
@@ -116,6 +117,7 @@ gulp.task('replace-version', function (done) {
       .pipe(replace('cedarVersionValue', cedarVersion))
       .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
       .pipe(replace('dataciteEnabledValue', dataciteEnabled))
+      .pipe(replace('authBaseValue', 'https://auth.' + cedarRestHost))
       .pipe(gulp.dest('app/config/'));
   done();
 });
