@@ -104,6 +104,8 @@ define([
 
         //migrating from angular v1.5.8 to 1.7.0 angular.lowercase is not supported anymore
         //following redefinition is used as a workaround
-        angular.lowercase = text => text.toLowerCase();
+        angular.lowercase = function(text) {
+          return text.toLowerCase();
+        };
       }]);
 });

@@ -474,7 +474,9 @@
       "openopen": "Visit OpenView",
       "opendatacite": "Create DOI using DataCite...",
       "populateEE": "Populate with new editor",
-      "openDownload": "Download..."
+      "openDownloadJson": "Download JSON",
+      "openDownloadYaml": "Download YAML",
+      "openDownloadYamlc": "Download Compact YAML"
     },
     "delete": {
       "confirm": {

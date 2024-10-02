@@ -10,7 +10,9 @@
   <li><a href="#" class="copyFolderId2Clipboard" ng-class="{'link-disabled': !isFolder}" ng-click="isFolder? copyFolderId2Clipboard() : preventDefault" translate>DASHBOARD.menu.copyFolderId</a></li>
   <li><a href="#" class="copyParentFolderId2Clipboard" ng-click="copyParentFolderId2Clipboard()" translate>DASHBOARD.menu.copyParentFolderId</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="openDownload" ng-class="{'link-disabled': canNotOpenDownload}"  href="#" ng-click="canNotOpenDownload? preventDefault : openDownload(resource)" translate>DASHBOARD.menu.openDownload</a></li>
+  <li><a ng-cloak class="openDownload" ng-class="{'link-disabled': canNotOpenDownload}"  href="#" ng-click="canNotOpenDownload? preventDefault : openDownload(resource, 'json')" translate>DASHBOARD.menu.openDownloadJson</a></li>
+  <li><a ng-cloak class="openDownload" ng-class="{'link-disabled': canNotOpenDownload}"  href="#" ng-click="canNotOpenDownload? preventDefault : openDownload(resource, 'yaml')" translate>DASHBOARD.menu.openDownloadYaml</a></li>
+  <li><a ng-cloak class="openDownload" ng-class="{'link-disabled': canNotOpenDownload}"  href="#" ng-click="canNotOpenDownload? preventDefault : openDownload(resource, 'yamlc')" translate>DASHBOARD.menu.openDownloadYamlc</a></li>
   <li ng-if="!isMeta" role="separator" class="divider"></li>
   <li ng-if="!isMeta"><a ng-cloak class="publish" ng-class="{'link-disabled': canNotPublish}"  href="#" ng-click="canNotPublish? preventDefault : publishModal(publishCallback, 'Publish')"  translate>DASHBOARD.menu.publish</a></li>
   <li ng-if="!isMeta"><a ng-cloak class="createDraft"  ng-class="{'link-disabled': canNotCreateDraft}" href="#" ng-click="canNotCreateDraft? preventDefault : publishModal(draftCallback, 'Draft')"  translate>DASHBOARD.menu.draft</a></li>

@@ -540,6 +540,22 @@ define([
       return this.resourceBase() + '/command/inclusions-subgraph-update';
     };
 
+    service.downloadTemplateField = function(templateFieldId, compact) {
+      return this.resourceBase() + '/template-fields/' + this.encodeURIComponent(templateFieldId) + '/download?compact=' + compact;
+    }
+
+    service.downloadTemplateElement = function(templateElementId, compact) {
+      return this.resourceBase() + '/template-elements/' + this.encodeURIComponent(templateElementId) + '/download?compact=' + compact;
+    }
+
+    service.downloadTemplate = function(templateId, compact) {
+      return this.resourceBase() + '/templates/' + this.encodeURIComponent(templateId) + '/download?compact=' + compact;
+    }
+
+    service.downloadTemplateInstance = function(templateInstanceId, compact) {
+      return this.resourceBase() + '/template-instances/' + this.encodeURIComponent(templateInstanceId) + '/download?compact=' + compact;
+    }
+
     return service;
   }
 
