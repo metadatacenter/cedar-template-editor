@@ -9,10 +9,10 @@ define([
       ]).directive('cedarSearchBrowsePicker', cedarSearchBrowsePickerDirective);
 
       cedarSearchBrowsePickerDirective.$inject = ['CedarUser', 'DataManipulationService', 'schemaService', 'UIUtilService',
-        'CategoryService', '$sce'];
+        'UrlService', 'CategoryService', 'UserService', '$http', '$sce'];
 
       function cedarSearchBrowsePickerDirective(CedarUser, DataManipulationService, schemaService, UIUtilService,
-                                                CategoryService, $sce) {
+                                                UrlService, CategoryService, UserService, $http, $sce) {
 
         cedarSearchBrowsePickerController.$inject = [
           '$location',
@@ -96,6 +96,7 @@ define([
           vm.makeNotOpen = makeNotOpen;
           vm.openOpen = openOpen;
           vm.openDatacite = openDatacite;
+          vm.openDownload = openDownload;
           vm.isSelected = isSelected;
           vm.copyFolderId2Clipboard = copyFolderId2Clipboard;
           vm.copyParentFolderId2Clipboard = copyParentFolderId2Clipboard;
@@ -595,6 +596,7 @@ define([
             vm.canNotMakeNotOpen = !vm.canMakeNotOpen();
             vm.canNotOpenOpen = !vm.canOpenOpen();
             vm.canNotOpenDatacite = !vm.canOpenDatacite();
+            vm.canNotOpenDownload = !vm.canOpenDownload();
             vm.getNumberOfInstances();
             vm.getResourcePublicationStatus();
           };
@@ -705,6 +707,10 @@ define([
 
           vm.canOpenDatacite = function () {
             return window.dataciteEnabled && resourceService.canOpenDatacite(vm.getSelectedNode());
+          };
+
+          vm.canOpenDownload = function () {
+            return true;
           };
 
           vm.doShowCategoryTree = function () {
@@ -1527,6 +1533,68 @@ define([
             } else {
               console.log("DataCite wizard not available for:" + resource);
             }
+          }
+
+          function openDownload(resource, format) {
+            if (!resource) {
+              resource = getSelected();
+            }
+
+            let sourceArtifactId = resource['@id'];
+            let downloadUrl = null;
+
+            if (sourceArtifactId) {
+              if (sourceArtifactId.indexOf('template-fields') !== -1) {
+                downloadUrl = UrlService.downloadTemplateField(sourceArtifactId, format === 'yamlc');
+              } else if (sourceArtifactId.indexOf('template-elements') !== -1) {
+                downloadUrl = UrlService.downloadTemplateElement(sourceArtifactId, format === 'yamlc');
+              } else if (sourceArtifactId.indexOf('template-instances') !== -1) {
+                downloadUrl = UrlService.downloadTemplateInstance(sourceArtifactId, format === 'yamlc');
+              } else if (sourceArtifactId.indexOf('templates') !== -1) {
+                downloadUrl = UrlService.downloadTemplate(sourceArtifactId, format === 'yamlc');
+              }
+            }
+
+            var accept = '*/*';
+            if (format === 'json') {
+              accept = 'application/json';
+            } else if (format === 'yaml' || format === 'yamlc') {
+              accept = 'application/x-yaml';
+            }
+
+            var token = UserService.getToken();
+
+            var config = {
+              headers: {
+                'Accept'                 : accept,
+                "Authorization"          : token == null ? "" : "Bearer " + token,
+                "CEDAR-Client-Session-Id": $window.cedarClientSessionId,
+                "CEDAR-Debug"            : true
+              },
+              responseType: 'blob'
+            };
+
+            $http.post(downloadUrl || '', {}, config).then(function(response) {
+              var blob = new Blob([response.data], { type: response.headers('Content-Type') });
+              var downloadUrl = URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = downloadUrl;
+
+              var contentDisposition = response.headers('Content-Disposition');
+              var fileName = 'downloaded_file.yaml'; // Default filename
+              if (contentDisposition) {
+                var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+                if (matches && matches[1]) {
+                  fileName = matches[1].replace(/['"]/g, '');
+                }
+              }
+
+              a.download = fileName;
+              a.click();
+              URL.revokeObjectURL(downloadUrl); // Cleanup blob URL
+            }, function(error) {
+              console.error('Download failed', error);
+            });
           }
 
           function launchInstance(value) {

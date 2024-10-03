@@ -473,7 +473,10 @@
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
       "opendatacite": "Create DOI using DataCite...",
-      "populateEE": "Populate with new editor"
+      "populateEE": "Populate with new editor",
+      "openDownloadJson": "Download JSON",
+      "openDownloadYaml": "Download YAML",
+      "openDownloadYamlc": "Download Compact YAML"
     },
     "delete": {
       "confirm": {

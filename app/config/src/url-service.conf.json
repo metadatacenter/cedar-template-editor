@@ -11,5 +11,6 @@
   "openViewBase": "openViewBaseUrl",
   "impexRestAPI": "impexServerUrl",
   "artifactsFrontend": "artifactsFrontendUrl",
-  "dataciteDOIBase": "dataciteDOIBaseUrl"
+  "dataciteDOIBase": "dataciteDOIBaseUrl",
+  "downloadBase": "downloadBaseUrl"
 }
