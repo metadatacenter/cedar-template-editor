@@ -1,16 +1,21 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'CedarModelTypescriptLibrary',
+], function (angular, CedarModelTypescriptLibrary) {
   angular.module('cedar.templateEditor.templateField.createFieldController', [])
+      .factory('CedarModelTypescriptLibrary', function() {
+        return CedarModelTypescriptLibrary;  // Return the UMD bundle object
+      })
       .controller('CreateFieldController', CreateFieldController);
 
   CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                    "$filter", "HeaderService", "StagingService", "DataTemplateService", "schemaService",
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
-                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService"];
+                                   "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService",
+                                   "CedarModelTypescriptLibrary"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -18,7 +23,8 @@ define([
                                  TemplateFieldService, resourceService, ValidationService,UIMessageService,
                                  DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
-                                 CONST,CedarUser, InclusionService) {
+                                 CONST,CedarUser, InclusionService,
+                                 CedarModelTypescriptLibrary) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -54,6 +60,11 @@ define([
     $scope.lockReason = '';
 
     $scope.inclusionModalVisible = false;
+
+    let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
+    $scope.fieldReader = jsonReaders.getTemplateFieldReader();
+    $scope.yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
+
 
 
     $scope.canWrite = function () {
@@ -443,8 +454,9 @@ define([
       if (copiedForm) {
         dms.stripTmps(copiedForm);
       }
-      copiedForm = "YAML comes here"
-      return copiedForm;
+      let jsonTemplateFieldReaderResult = $scope.fieldReader.readFromObject(copiedForm);
+      let fieldWriter = $scope.yamlWriters.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
+      return fieldWriter.getAsYamlString(jsonTemplateFieldReaderResult.field);
     };
 
     $scope.cancelField = function () {
@@ -500,7 +512,14 @@ define([
     };
 
     $scope.copyYaml2Clipboard = function () {
-      console.log("Copy Field Yaml to Clipboard")
+      navigator.clipboard.writeText(this.getYamlRepresentation()).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.YamlCopyFail', {"title": "METADATAEDITOR.YamlCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
     };
 
     // open the 'inclusion' modal
