@@ -1,0 +1,19 @@
+<div id="document-preview-yaml">
+  <uib-accordion id="templateYAML" close-others="true" style="">
+
+    <div id="accordion-heading-json-schema" uib-accordion-group is-open="openStatus" class="panel-default">
+      <uib-accordion-heading>
+        <i class="cedar-svg-json-schema"></i> YAML <i class="pull-right glyphicon"
+          ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
+        <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyYaml2Clipboard()" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
+      </uib-accordion-heading>
+      <div >
+      <pre id='form-yaml-preview' ng-show="openStatus" ng-class="{'preview-open': openStatus, 'preview-closed': !openStatus}"
+          style="background:white;border:0px;border-radius: 0px;">{{ getYamlRepresentation() }}</pre>
+      </div>
+    </div>
+
+  </uib-accordion>
+</div>
+
+

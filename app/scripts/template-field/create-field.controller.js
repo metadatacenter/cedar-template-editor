@@ -126,7 +126,7 @@ define([
       var title = schemaService.getTitle($scope.field);
       var description = schemaService.getDescription($scope.field);
       var identifier = schemaService.getIdentifier($scope.field);
-      
+
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 
@@ -438,6 +438,15 @@ define([
       return copiedForm;
     };
 
+    $scope.getYamlRepresentation = function () {
+      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      if (copiedForm) {
+        dms.stripTmps(copiedForm);
+      }
+      copiedForm = "YAML comes here"
+      return copiedForm;
+    };
+
     $scope.cancelField = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
@@ -488,6 +497,10 @@ define([
         console.error(err);
         $scope.$apply();
       });
+    };
+
+    $scope.copyYaml2Clipboard = function () {
+      console.log("Copy Field Yaml to Clipboard")
     };
 
     // open the 'inclusion' modal
