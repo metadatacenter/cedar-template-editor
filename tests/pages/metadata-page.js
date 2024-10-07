@@ -20,7 +20,7 @@ var MetadataPage = function () {
   var dirtyIcon = element(by.css('#top-navigation .feedback-form i.fa-circle'));
   var validIcon = element(by.css('#top-navigation .feedback-form i.fa-check'));
 
-  var showJsonLink = element(by.css('#document-preview  a.accordion-toggle'));
+  var showJsonLink = element(by.css('#document-preview-json  a.accordion-toggle'));
   var jsonPreview = element(by.id('form-json-preview'));
 
   var documentTitle = element(by.css('.document-title'));

@@ -1,7 +1,8 @@
 'use strict';
 
 define([
-      'angular'
+  'angular',
+  'CedarModelTypescriptLibrary',
     ], function (angular) {
       angular.module('cedar.templateEditor.template.createTemplateController', [])
           .controller('CreateTemplateController', CreateTemplateController);
@@ -13,7 +14,8 @@ define([
                                           "DataManipulationService", "schemaService", "ValidationService",
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
-                                          "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser"];
+                                          "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser",
+                                          "CedarModelTypescriptLibrary"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
@@ -21,7 +23,8 @@ define([
                                         UIUtilService, DataManipulationService, schemaService, ValidationService,
                                         controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
-                                        FrontendUrlService, QueryParamUtilsService, CONST, CedarUser) {
+                                        FrontendUrlService, QueryParamUtilsService, CONST, CedarUser,
+                                        CedarModelTypescriptLibrary) {
 
         $rootScope.showSearch = false;
 
@@ -46,6 +49,11 @@ define([
         $scope.cannotWrite;
 
         $scope.isTemplate = true;
+
+        let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
+        $scope.templateReader = jsonReaders.getTemplateReader();
+        let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
+        $scope.templateWriter = yamlWriters.getTemplateWriter();
 
 
         $scope.checkLocking = function () {
@@ -480,6 +488,15 @@ define([
           return copiedForm;
         };
 
+        $scope.getYamlRepresentation = function () {
+          let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+          if (copiedForm) {
+            DataManipulationService.stripTmps(copiedForm);
+            DataManipulationService.updateKeys(copiedForm);
+          }
+          let jsonTemplateReaderResult = $scope.templateReader.readFromObject(copiedForm);
+          return $scope.templateWriter.getAsYamlString(jsonTemplateReaderResult.template);
+        };
 
         $scope.toRDF = function () {
           var jsonld = require('jsonld');
@@ -611,6 +628,17 @@ define([
             $scope.$apply();
           }).catch((err)=>{
             UIMessageService.flashWarning('METADATAEDITOR.JsonSchemaCopyFail', {"title": "METADATAEDITOR.JsonSchemaCopyFail"}, 'GENERIC.Error');
+            console.error(err);
+            $scope.$apply();
+          });
+        };
+
+        $scope.copyYaml2Clipboard = function () {
+          navigator.clipboard.writeText(this.getYamlRepresentation()).then(function(){
+            UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
+            $scope.$apply();
+          }).catch((err)=>{
+            UIMessageService.flashWarning('METADATAEDITOR.YamlCopyFail', {"title": "METADATAEDITOR.YamlCopyFail"}, 'GENERIC.Error');
             console.error(err);
             $scope.$apply();
           });

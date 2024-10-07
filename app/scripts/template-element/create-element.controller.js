@@ -1,7 +1,8 @@
 'use strict';
 
 define([
-  'angular'
+  'angular',
+  'CedarModelTypescriptLibrary',
 ], function (angular) {
   angular.module('cedar.templateEditor.templateElement.createElementController', [])
       .controller('CreateElementController', CreateElementController);
@@ -10,7 +11,8 @@ define([
                                      "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "resourceService", "ValidationService","UIMessageService",
                                      "DataManipulationService", "schemaService","DataUtilService", "UIUtilService", "AuthorizedBackendService",
-                                     "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser", "InclusionService"];
+                                     "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser", "InclusionService",
+                                     "CedarModelTypescriptLibrary"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -18,7 +20,8 @@ define([
                                    TemplateElementService, resourceService, ValidationService,UIMessageService,
                                    DataManipulationService,schemaService,
                                    DataUtilService,UIUtilService,
-                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser, InclusionService) {
+                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser, InclusionService,
+                                   CedarModelTypescriptLibrary) {
 
     var dms = DataManipulationService;
 
@@ -65,6 +68,11 @@ define([
       $rootScope.$broadcast('form:clean');
       UIUtilService.setDirty(false);
     };
+
+    let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
+    $scope.elementReader = jsonReaders.getTemplateElementReader();
+    let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
+    $scope.elementWriter = yamlWriters.getTemplateElementWriter();
 
     $scope.canWrite = function () {
       if (!$scope.details) {
@@ -510,6 +518,16 @@ define([
       return copiedForm;
     };
 
+    $scope.getYamlRepresentation = function () {
+      let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      if (copiedForm) {
+        dms.stripTmps(copiedForm);
+        dms.updateKeys(copiedForm);
+      }
+      let jsonTemplateElementReaderResult = $scope.elementReader.readFromObject(copiedForm);
+      return $scope.elementWriter.getAsYamlString(jsonTemplateElementReaderResult.element);
+    };
+
     $scope.cancelElement = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
@@ -617,6 +635,17 @@ define([
         $scope.$apply();
       }).catch((err)=>{
         UIMessageService.flashWarning('METADATAEDITOR.JsonSchemaCopyFail', {"title": "METADATAEDITOR.JsonSchemaCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
+    };
+
+    $scope.copyYaml2Clipboard = function () {
+      navigator.clipboard.writeText(this.getYamlRepresentation()).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.YamlCopyFail', {"title": "METADATAEDITOR.YamlCopyFail"}, 'GENERIC.Error');
         console.error(err);
         $scope.$apply();
       });
