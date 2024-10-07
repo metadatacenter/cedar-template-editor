@@ -524,9 +524,7 @@ define([
         dms.stripTmps(copiedForm);
         dms.updateKeys(copiedForm);
       }
-      let jsonTemplateElementReaderResult = $scope.elementReader.readFromObject(copiedForm,
-          CedarModelTypescriptLibrary.ChildDeploymentInfo.empty(),
-          new CedarModelTypescriptLibrary.JsonPath());
+      let jsonTemplateElementReaderResult = $scope.elementReader.readFromObject(copiedForm);
       return $scope.elementWriter.getAsYamlString(jsonTemplateElementReaderResult.element);
     };
 
