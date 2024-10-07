@@ -65,8 +65,6 @@ define([
     $scope.fieldReader = jsonReaders.getTemplateFieldReader();
     $scope.yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
 
-
-
     $scope.canWrite = function () {
       if (!$scope.details) {
         return true;
@@ -450,7 +448,7 @@ define([
     };
 
     $scope.getYamlRepresentation = function () {
-      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
       }
