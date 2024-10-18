@@ -120,6 +120,17 @@ define([
       return $scope.instanceWriter.getAsYamlString(jsonTemplateInstanceReaderResult.instance);
     };
 
+    $scope.copyYaml2Clipboard = function () {
+      navigator.clipboard.writeText(this.getYamlRepresentation()).then(function(){
+        UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
+        $scope.$apply();
+      }).catch((err)=>{
+        UIMessageService.flashWarning('METADATAEDITOR.YamlCopyFail', {"title": "METADATAEDITOR.YamlCopyFail"}, 'GENERIC.Error');
+        console.error(err);
+        $scope.$apply();
+      });
+    };
+
     const getDetails = function (id) {
       if (id) {
         resourceService.getResourceDetailFromId(
