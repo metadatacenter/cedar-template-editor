@@ -19,7 +19,7 @@
 <!--</div>-->
 
 
-<div id="document-preview">
+<div id="document-preview-json">
   <uib-accordion id="templateJSON" close-others="true" style="margin-top:40px">
 
     <div id="accordion-heading-json-schema" uib-accordion-group is-open="openStatus" class="panel-default">
@@ -29,7 +29,7 @@
         <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyJson2Clipboard()" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
       </uib-accordion-heading>
       <div >
-      <pre id='form-json-preview' ng-show="openStatus" ng-class="{'preview-open': openStatus, 'preview-closed': !openStatus}"
+      <pre id='form-json-preview' ng-if="openStatus" ng-class="{'preview-open': openStatus, 'preview-closed': !openStatus}"
           style="background:white;border:0px;border-radius: 0px;">{{ stripTmpFields() | json }}</pre>
         <!--<pre id='form-json-preview'-->
             <!--style="background:white;border:0px;border-radius: 0px;">{{ $root.jsonToSave | json }}</pre>-->

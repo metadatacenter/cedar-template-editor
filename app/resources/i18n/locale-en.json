@@ -574,7 +574,9 @@
     "JsonSchemaCopied" : "JSON Schema copied to clipboard",
     "JsonSchemaCopyFail" : "JSON Schema can not be copied to clipboard",
     "RdfCopied" : "RDF copied to clipboard",
-    "RdfCopyFail" : "RDF can not be copied to clipboard"
+    "RdfCopyFail" : "RDF can not be copied to clipboard",
+    "YamlCopied" : "YAML copied to clipboard",
+    "YamlCopyFail" : "YAML can not be copied to clipboard"
   },
   "TEMPLATEEDITOR": {
     "clear": {
