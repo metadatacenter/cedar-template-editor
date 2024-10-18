@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-  'angular', 'flow'
+  'angular', 'flow', 'CedarModelTypescriptLibrary'
 ], function (angular, flow) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
@@ -11,13 +11,14 @@ define([
     "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
     "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
     "ValueRecommenderService", "UIUtilService", "DataManipulationService",
-    "CedarUser", "UrlService"];
+    "CedarUser", "UrlService", "CedarModelTypescriptLibrary"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
-                                    ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService) {
+                                    ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService,
+                                    CedarModelTypescriptLibrary) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -56,6 +57,11 @@ define([
 
     $scope.details;
     $scope.cannotWrite;
+
+    let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
+    $scope.instanceReader = jsonReaders.getTemplateInstanceReader();
+    let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
+    $scope.instanceWriter = yamlWriters.getTemplateInstanceWriter();
 
 
 // create a copy of the form with the _tmp fields stripped out
@@ -104,6 +110,15 @@ define([
               $scope.$apply();
           });
       };
+
+    $scope.getYamlRepresentation = function () {
+      const copiedForm = jQuery.extend(true, {}, $scope.instance);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+      let jsonTemplateInstanceReaderResult = $scope.instanceReader.readFromObject(copiedForm);
+      return $scope.instanceWriter.getAsYamlString(jsonTemplateInstanceReaderResult.instance);
+    };
 
     const getDetails = function (id) {
       if (id) {
