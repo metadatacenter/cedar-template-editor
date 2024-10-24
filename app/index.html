@@ -159,5 +159,28 @@
   })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 </script>
 
+<!-- Google tag with dynamic Tracking Id -->
+<script>
+  (function() {
+    if (window.cedarGA4TrackingId && window.cedarGA4TrackingId !== "false") {
+      let script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.cedarGA4TrackingId;
+      document.head.appendChild(script);
+      // Original gtag code:
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      // When the script is loaded, configure gtag
+      script.onload = function() {
+        gtag('js', new Date());
+        gtag('config', window.cedarGA4TrackingId);
+      };
+    } else {
+      console.log("GA4 tracking setup skipped. No valid Tracking ID.");
+    }
+  })();
+</script>
+
+
 </body>
 </html>

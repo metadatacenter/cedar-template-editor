@@ -45,6 +45,7 @@ jobs:
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
+  - CEDAR_GA4_TRACKING_ID=false
   - CEDAR_FRONTEND_BEHAVIOR=server
   - CEDAR_FRONTEND_TARGET=staging
   - CEDAR_VERSION="2.7.2-SNAPSHOT"

@@ -5,3 +5,4 @@ window.versioningEnabled = true;
 window.makeOpenEnabled = true;
 window.categoryTreeEnabled = true;
 window.dataciteEnabled = dataciteEnabledValue;
+window.cedarGA4TrackingId = "cedarGA4TrackingIdValue";
