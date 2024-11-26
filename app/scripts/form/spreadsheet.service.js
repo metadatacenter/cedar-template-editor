@@ -544,7 +544,8 @@ define([
                 title = key;
                 description = "key"
               }
-              colHeaders.push('<span  title="' + description + '">' + title + ' </span>');
+              var required = innerNode._valueConstraints?.requiredValue === true? 'class="required-text"' : '';
+              colHeaders.push('<span  title="' + description + '" ' + required + '>' + title + ' </span>');
             }
           }
           return colHeaders;
