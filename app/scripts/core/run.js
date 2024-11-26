@@ -59,7 +59,9 @@ define([
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
-    MessagingService.init();
+    // MessagingService.init();
+
+    $location.url('/instances/create/template.json');
 
     // Make objects available through rootScope
     //$rootScope.cts = ControlledTermService;

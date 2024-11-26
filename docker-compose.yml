@@ -1,0 +1,16 @@
+services:
+  frontend-main:
+    ports:
+      - 4200:4200
+    build:
+      target: prod
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - log_frontend_main:/log
+    environment:
+      - NODE_ENV=production
+
+volumes:
+  log_frontend_main:
+    name: log_frontend_main

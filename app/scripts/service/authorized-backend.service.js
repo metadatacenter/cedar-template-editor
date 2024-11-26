@@ -18,7 +18,7 @@ define([
       var token = UserService.getToken();
       var config = {
         "headers": {
-          "Authorization"          : token == null ? "" : "Bearer " + token,
+          "Authorization"          : token == null ? "" : "apiKey " + token,
           "CEDAR-Client-Session-Id": $window.cedarClientSessionId,
           "CEDAR-Debug"            : true
         }

@@ -1,8 +1,12 @@
 <section class="template-container scrollable-content">
+  <div class="tophead"></div>
   <div class="template-body metadata">
     <div class="container">
       <div class="row">
         <div class="right-body col-sm-10 col-sm-offset-1 c ">
+
+          <!-- Sending indicator component -->
+          <app-sending is-sending="isSending"></app-sending>
 
           <!-- build the form -->
           <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"
@@ -24,11 +28,15 @@
                 </li>
               </ul>
             </div>
-
+            <div ng-if="responseData">
+              <p></p>
+              <div ng-bind-html="responseData"></div>
+              <p></p>
+            </div>
             <div ng-if="canWrite()" class="flex-right">
-              <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
+              <!--button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
                   ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
-              </button>
+              </button-->
               <button type="button" ng-if="isValidationTemplate('validation')" id="button-validation-metadata"
                   ng-disabled="saveButtonDisabled" class="btn btn-clear metadata " style="outline:none;"
                   ng-click="resetValidationErrors(); doValidation()" translate>GENERIC.Validate
@@ -39,7 +47,7 @@
             </div>
           </div>
 
-          <!-- document preview -->
+          <!-- document preview >
           <div id="document-preview-json">
             <uib-accordion id="outputJSON" close-others="true">
               <div uib-accordion-group is-open="openStatusJSONLD" class="panel-default">
@@ -68,13 +76,60 @@
             </uib-accordion>
           </div>
 
-          <ng-include src="'scripts/layout/template-yaml-preview.html'"></ng-include>
+          <ng-include src="'scripts/layout/template-yaml-preview.html'"></ng-include-->
 
 
         </div>
       </div>
     </div>
   </div>
+  <footer>
+    <div class="container-fluid container-lg px-4 px-md-3">
+        <div class="row">
+            <div class="hb-footer-site-info col mb-2 text-center">
+                <div class="h5">IJC Bioinformatics</div>
+                <ul class="list-unstyled small mb-2">
+                    <li class="mt-2">Josep Carreras Leukaemia Research Institute - Bioinformatics Unit</li>
+                    <li class="mt-2">Copyright © 2024 ijcBIT. All Rights Reserved.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-flex-col small">
+        <p>
+            <a href="https://www.carrerasresearch.org/" target="_blank" >
+            <img width="200" alt="Logo Insitut de Recerca Contra la Leucèmia" src="/img/logo-ijc.svg" >    
+            </a>    
+        </p>
+    </div>
+  
+    <div class="footer-flex-col small">
+        <div class="location-wrap">
+            <div>
+                <p><i class="bi bi-geo-alt-fill"></i> Carretera de Can Ruti,<br>
+                Camí de les Escoles, s/n, 08916<br>
+                Badalona, Barcelona. Spain</p>
+            </div>
+            <div>
+                <p><i class="bi bi-telephone"></i> Tel: (+34) 93 557 2800</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-flex-col small">
+        <div class="location-wrap">
+            
+        </div>
+    </div>
+  
+    <!-- Col 4 -->
+    <div class="footer-flex-col small">
+        We are <br>
+        <a target="blank" href="https://cerca.cat"><img width="135" alt="Logo Centres de Recerca de Catalunya" src="/img/logo-centres-recerca-catalunya.svg"></a>
+    </div>        
+  
+    </div>
+    
+  </footer>
+  
 </section>
 
 <section>

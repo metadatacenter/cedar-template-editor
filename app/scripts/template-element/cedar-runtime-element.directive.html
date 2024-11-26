@@ -62,7 +62,7 @@
           expand-all="expandAll" is-field="false" select="selectPage" get-locator="getLocator">
       </field-toolbar>
 
-      <ul style="padding-left:0;list-style-type: none;" ng-if="isExpanded(index) && index === i"
+      <ul style="display:flex; flex-wrap: wrap; padding-left:0;list-style-type: none;" ng-if="isExpanded(index) && index === i"
           ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
 

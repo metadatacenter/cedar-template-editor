@@ -1,0 +1,4 @@
+{
+    "watch": ["api/src/*"],
+    "ignore": ["api/responses_json/*"]
+}

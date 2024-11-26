@@ -699,8 +699,9 @@ define([
 
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData ? tableData.length : 0;
-            var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 30 + 20);
-            var spreadsheetContainerWidth = detectorElement.width();
+            var spreadsheetColCount = spreadsheetRowCount > 0 ? tableData[0].length : 0;
+            var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 23);
+            var spreadsheetContainerWidth = spreadsheetColCount > 0 ? '100%' :detectorElement.width();
 
             $scope.spreadsheetDataScope.container.style.width = spreadsheetContainerWidth;
             $scope.spreadsheetDataScope.container.style.height = spreadsheetContainerHeight;
@@ -768,7 +769,7 @@ define([
               columns           : columnDescriptors,
               colHeaders        : colHeaders,
               colHeaderNames    : colHeaderNames,
-              colWidths         : 247,
+              colWidths         : 150,
               autoColumnSize    : {syncLimit: 300},
               headerTooltips    : true
             };
@@ -820,6 +821,7 @@ define([
             $document[0].addEventListener('msfullscreenchange', fullScreenHandler);
             $document[0].addEventListener('fullscreenchange', fullScreenHandler);
 
+            hot.render();
           }
 
         };

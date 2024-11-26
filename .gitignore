@@ -18,6 +18,8 @@ app/config/url-service.conf.json
 app/config/controlled-term-data-service.conf.json
 app/config/tracking-service.conf.json
 app/config/version.js
-app/css/style-creator.css
+app/css/*
 tests/env.js
 tests/config/test-env.js
+api/responses_json/*
+.env

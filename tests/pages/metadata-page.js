@@ -43,7 +43,7 @@ var MetadataPage = function () {
 
   var createPageName = element(by.css('.navbar.metadata'));
 
-  var metadataPageTitle = 'Metadata Editor';
+  var metadataPageTitle = 'BioForms';
   var createSaveMetadataButton = element(by.id('button-save-metadata'));
   var createCancelMetadataButton = element(by.id('button-cancel-metadata'));
 

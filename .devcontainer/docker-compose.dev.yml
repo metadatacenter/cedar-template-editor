@@ -1,0 +1,23 @@
+services:
+  frontend-main:
+    build:
+      target: dev
+      context: .
+      args:
+        - "UID=${UID}" # to use you own UID !! It requires to add "export "UID=$(id -u) && export GID=$(id -g)" to your .bashrc!!"
+        - "GID=${GID}"
+        - "USER=${USER}"
+      dockerfile: Dockerfile
+      #    container_name: senaite_genomics
+    user: "${UID}:${GID}"
+    volumes:
+      # Mounts the project folder to '/srv/cedar/cedar-template-editor'. While this file is in .devcontainer,
+      # mounts are relative to the first file in the list, which is a level up.
+      - .:/srv/cedar/cedar-template-editor:cached      
+        #    ports:
+        #       - 5678:5678 
+        #       - 8081:8080  
+    environment:
+      - NODE_ENV=development
+    # Overrides default command so things don't shut down after the process ends.
+    #command: /bin/sh -c "while sleep 1000; do :; done"

@@ -1,0 +1,26 @@
+<div class="sending-overlay" ng-if="$ctrl.isSending">
+    <div class="sending-spinner">
+        <!-- You can replace this with a spinner component if desired -->
+        <p>Sending...</p>
+    </div>
+</div>
+
+<style scoped>
+    .sending-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        color: white;
+    }
+    
+    .sending-spinner {
+        font-size: 1.5rem;
+    }
+</style>

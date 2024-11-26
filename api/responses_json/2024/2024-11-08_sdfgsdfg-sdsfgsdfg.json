@@ -1,0 +1,2480 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "pav": "http://purl.org/pav/",
+    "schema": "http://schema.org/",
+    "oslc": "http://open-services.net/ns/core#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "rdfs:label": {
+      "@type": "xsd:string"
+    },
+    "schema:isBasedOn": {
+      "@type": "@id"
+    },
+    "schema:name": {
+      "@type": "xsd:string"
+    },
+    "schema:description": {
+      "@type": "xsd:string"
+    },
+    "pav:derivedFrom": {
+      "@type": "@id"
+    },
+    "pav:createdOn": {
+      "@type": "xsd:dateTime"
+    },
+    "pav:createdBy": {
+      "@type": "@id"
+    },
+    "pav:lastUpdatedOn": {
+      "@type": "xsd:dateTime"
+    },
+    "oslc:modifiedBy": {
+      "@type": "@id"
+    },
+    "skos:notation": {
+      "@type": "xsd:string"
+    },
+    "Collaborator": "https://schema.metadatacenter.org/properties/786c72ac-6dea-446f-b005-5647a8578410",
+    "Project Name": "https://schema.metadatacenter.org/properties/0eeb3fa2-33d0-4b2c-8e95-f13760fca85a",
+    "Consortium": "https://schema.metadatacenter.org/properties/7bd33b9b-9954-4a31-9205-3938dbeface4",
+    "IJC_sample_metadata": "https://schema.metadatacenter.org/properties/edb45673-3c98-42f4-8624-05332fe67e14",
+    "Principal Investigator": "https://schema.metadatacenter.org/properties/44ea3ec8-175f-46c4-80c2-b27e818ed9cf"
+  },
+  "Project Name": {
+    "@value": "sdfgsdfg"
+  },
+  "Consortium": {
+    "@value": "sdfgdsfgsd"
+  },
+  "Principal Investigator": {
+    "@context": {
+      "Name": "https://schema.metadatacenter.org/properties/882d1bc2-e9ad-4d26-86d2-47dbd5c32fcf",
+      "Email": "https://schema.metadatacenter.org/properties/623bee44-e4f2-459a-85db-abd32a638e9f",
+      "ORCID": "https://schema.metadatacenter.org/properties/7469493b-5033-4c1d-a53a-cff9fe78a5a2",
+      "Institution / Company": "https://schema.metadatacenter.org/properties/45c8aeac-6b90-4862-a27e-aeaf21df935e"
+    },
+    "Name": {
+      "@value": "sdsfgsdfg"
+    },
+    "Email": {
+      "@value": "dsfgds@dsfg"
+    },
+    "ORCID": {
+      "@value": "sdfg"
+    },
+    "Institution / Company": {
+      "@context": {
+        "Country": "https://schema.metadatacenter.org/properties/a39768dc-6e98-4681-b9a2-ae3090679b33",
+        "Name": "https://schema.metadatacenter.org/properties/d0398a63-37af-44bb-a1b6-ee37f7ddfc64",
+        "Address": "https://schema.metadatacenter.org/properties/ee59a0c3-50e4-436a-b543-c760f4fd3261"
+      },
+      "Name": {
+        "@value": "sdfg"
+      },
+      "Address": {
+        "@value": "dsfg"
+      },
+      "Country": {
+        "@id": "https://cadsr.nci.nih.gov/metadata/CADSR-VS/4a856612f941f5da3e110d050a09b3ef47b9fd03",
+        "rdfs:label": "Spain"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/6f03a6a0-77b1-4cca-8350-22f06fa57749"
+    },
+    "@id": "https://repo.metadatacenter.orgx/template-element-instances/b7a696d0-4520-449c-b2ed-754b6eed4418"
+  },
+  "Collaborator": {
+    "@context": {
+      "Name": "https://schema.metadatacenter.org/properties/882d1bc2-e9ad-4d26-86d2-47dbd5c32fcf",
+      "Email": "https://schema.metadatacenter.org/properties/623bee44-e4f2-459a-85db-abd32a638e9f",
+      "ORCID": "https://schema.metadatacenter.org/properties/7469493b-5033-4c1d-a53a-cff9fe78a5a2",
+      "Institution / Company": "https://schema.metadatacenter.org/properties/45c8aeac-6b90-4862-a27e-aeaf21df935e"
+    },
+    "Name": {
+      "@value": "asdfsadf"
+    },
+    "Email": {
+      "@value": null
+    },
+    "ORCID": {
+      "@value": "asdfs"
+    },
+    "Institution / Company": {
+      "@context": {
+        "Country": "https://schema.metadatacenter.org/properties/a39768dc-6e98-4681-b9a2-ae3090679b33",
+        "Name": "https://schema.metadatacenter.org/properties/d0398a63-37af-44bb-a1b6-ee37f7ddfc64",
+        "Address": "https://schema.metadatacenter.org/properties/ee59a0c3-50e4-436a-b543-c760f4fd3261"
+      },
+      "Name": {
+        "@value": "asdf"
+      },
+      "Address": {
+        "@value": "sadf"
+      },
+      "Country": {
+        "@id": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C16359",
+        "rdfs:label": "Bolivia"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/1b43346f-2c08-48c4-b938-cd0c939c847d"
+    },
+    "@id": "https://repo.metadatacenter.orgx/template-element-instances/7983a4bd-c561-438c-8503-42a262bdc83a"
+  },
+  "IJC_sample_metadata": [
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/a16b6dd7-6a67-4d6d-9b7a-78bd559c89ce"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/08bf7cb0-c9a1-4134-9eef-eaa4d4973384"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/df314c6b-1ab5-465d-95c3-070ee461d2da"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/807c3b0e-2e00-4cd3-9706-80679d5f914e"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/faa8edd9-3ec0-4a2e-8e1f-f4b54e4a9393"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/dba111d1-c445-444e-a11b-6b36962da394"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/7aea8087-4050-4d34-9592-3a9b43761603"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/4bacda44-a71a-4563-a1d1-5bdfb72f0e08"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/7b73299f-38b8-471b-9263-eb60f4cd53de"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/7b18e98e-10cf-4c42-a84f-dfec521b0199"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/727b0033-2181-4cfe-b79f-74015cf93a4f"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/1ceeaab6-fdf5-4b3e-b76c-085e2001003f"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/36249cfa-d849-4ab9-8c8f-43bf142e968b"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/450dd838-aa9d-4dad-9b37-3ea560bb6ffc"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/84eb6400-d2c5-4926-bd9e-3a6e90a4e4ad"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/9b9feec1-b1a2-498b-93f3-a59180f7572a"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/e687b48f-c69e-4a32-9c43-6ca3849d4639"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/22e3d899-6c98-4a8b-87d5-f1f2331186ce"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/3fc660bb-c7dd-48cb-a91d-141ed65ef057"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/970c5798-4fa1-43bb-8830-21cf5035d427"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/626bf9a4-fad5-4d2a-8c03-c6bbc8848d0f"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/ffa8bde6-0d19-4954-a086-683189242488"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/d6c0ba93-a221-4cd9-8770-b6afbca677b8"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/feca3cf9-d35f-4f97-aa84-900512e69625"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/5f2afdb2-9b0e-4f71-bbfa-d5b0e6d07797"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/323d6a3b-849a-49e3-ba9f-1a42656fc40a"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/29d09b5f-a1a8-442b-a2e9-e5646a572640"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/8ad806a7-97f5-4057-856e-4a74832ee3b0"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/99aedd65-7193-4e7d-9c6a-7f1ef9eb099b"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/42014cb8-7bfe-49a4-ab73-54c50f131dfb"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/9156ebaa-57f5-4b61-b430-92e1da718c7a"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/2bb88340-c61b-48aa-9e76-3adf98800e13"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/b5161bec-fb95-417d-88d1-2082b52241d3"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/ce44d483-0870-4e7b-8130-897a0c25efc1"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/2252cc42-7c42-4b80-948f-72bf264e1c9c"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/2bef82df-f70b-4c54-8442-b4c43bf2452d"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/6b638280-2e70-41ae-8749-4bc4c1978fbe"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/19d292eb-5887-44e9-a85d-2bf8c8ecd647"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": "df"
+      },
+      "Cell Line Name": {
+        "@value": "sdfg"
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": "sdfg"
+      },
+      "Sex": {
+        "@value": "Female"
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": "45",
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": "Years"
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/60e83c4d-b37f-4479-8dbc-7affeb72aabc"
+      },
+      "Development stage": {
+        "@value": "Child/Juvenile"
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {
+        "@id": "http://purl.obolibrary.org/obo/BTO_0000019",
+        "rdfs:label": "A7r5 cell"
+      },
+      "Primary culture": {
+        "@value": "yes"
+      },
+      "Disease": {
+        "@id": "http://purl.obolibrary.org/obo/DOID_0040002",
+        "rdfs:label": "aspirin allergy"
+      },
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {
+        "@id": "http://purl.bioontology.org/ontology/SNOMEDCT/115215004",
+        "rdfs:label": "Adenoma AND/OR adenocarcinoma"
+      },
+      "Control": {
+        "@value": "Yes"
+      },
+      "Treatement": {
+        "@value": "Yes"
+      },
+      "Treatment specify": {
+        "@value": "sdfg"
+      },
+      "Patient clinical data available": {
+        "@value": "Yes"
+      },
+      "Patient survival data available": {
+        "@value": "Yes"
+      },
+      "Sample preservation": {
+        "@value": "FFPE"
+      },
+      "DNA concentration measure technology": {
+        "@value": "Pyrosequencing"
+      },
+      "Notes": {
+        "@value": "sdfg"
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/22fd0676-1b5f-4660-935b-82457863fcc2"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": null
+      },
+      "Cell Line Name": {
+        "@value": null
+      },
+      "Species": {
+        "@value": "Other. Specify in the \"Other species\" field"
+      },
+      "Other species": {
+        "@value": null
+      },
+      "Sex": {
+        "@value": null
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/330ae5de-c433-471d-bb3d-c4d4a568965b"
+      },
+      "Development stage": {
+        "@value": null
+      },
+      "Sample origin": {
+        "@id": "http://purl.obolibrary.org/obo/CL_0000059",
+        "rdfs:label": "ameloblast"
+      },
+      "Celltype": {},
+      "Primary culture": {
+        "@value": null
+      },
+      "Disease": {},
+      "Tumor": {
+        "@value": "No tumor"
+      },
+      "Tumor subtype": {},
+      "Control": {
+        "@value": null
+      },
+      "Treatement": {
+        "@value": null
+      },
+      "Treatment specify": {
+        "@value": null
+      },
+      "Patient clinical data available": {
+        "@value": null
+      },
+      "Patient survival data available": {
+        "@value": null
+      },
+      "Sample preservation": {
+        "@value": null
+      },
+      "DNA concentration measure technology": {
+        "@value": null
+      },
+      "Notes": {
+        "@value": null
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/e3c2d52e-15cb-4d92-9573-e52cb77c0c1e"
+    },
+    {
+      "@context": {
+        "Tumor": "https://schema.metadatacenter.org/properties/08afe47d-d9fc-4290-aff3-d2fcb3873f92",
+        "Control": "https://schema.metadatacenter.org/properties/4767ed7e-d048-4941-8e4e-8d945729a243",
+        "Disease": "https://schema.metadatacenter.org/properties/51bcb11f-e124-45fc-bcca-82899f4d68f3",
+        "Primary culture": "https://schema.metadatacenter.org/properties/5454767d-c051-4108-9930-3ff3955918f8",
+        "Sample Provider": "https://schema.metadatacenter.org/properties/88647f3a-d381-4f6c-bb42-ad82ed669760",
+        "Other species": "https://schema.metadatacenter.org/properties/70cc6996-0a8f-44c6-9d49-f935d221cd00",
+        "Sex": "https://schema.metadatacenter.org/properties/9da9f3d4-8067-4e70-a3f0-191bcf472101",
+        "Development stage": "https://schema.metadatacenter.org/properties/7291a2b8-46b5-40d2-b133-3c390eee524d",
+        "Sample origin": "https://schema.metadatacenter.org/properties/47a9e48a-489a-473b-a08a-211ca95cc71a",
+        "Celltype": "https://schema.metadatacenter.org/properties/6d2cd38e-5154-49d7-8c5d-b392cc2399a1",
+        "Treatment specify": "https://schema.metadatacenter.org/properties/4325e81c-52eb-4a5b-b976-f2ff76ebf8e0",
+        "Cell Line Name": "https://schema.metadatacenter.org/properties/5dc4dbdf-888d-444f-b81f-e2376bb4f256",
+        "Tumor subtype": "https://schema.metadatacenter.org/properties/11e5c598-dfa1-4683-a46b-0d729f9c6d50",
+        "Treatement": "https://schema.metadatacenter.org/properties/e1979247-df90-45f3-a69d-253d14c12500",
+        "Patient clinical data available": "https://schema.metadatacenter.org/properties/d5d85810-861d-4796-bcf6-be601cb8a054",
+        "Patient survival data available": "https://schema.metadatacenter.org/properties/bc6ea875-b1fc-4a57-ac3e-dab0158b22c7",
+        "Sample name": "https://schema.metadatacenter.org/properties/21be2752-1b07-48cb-8e57-3bcdf2b38071",
+        "Age": "https://schema.metadatacenter.org/properties/c1d85033-1a5b-4013-9363-e94ddd534432",
+        "Sample preservation": "https://schema.metadatacenter.org/properties/6c9337ac-bde5-4822-a6b5-f16da380f53d",
+        "DNA concentration measure technology": "https://schema.metadatacenter.org/properties/13744bf3-a684-4da7-be49-d6f9e1850c3a",
+        "Notes": "https://schema.metadatacenter.org/properties/23f5d351-7f22-45f3-883a-38f62c7d4b47",
+        "Species": "https://schema.metadatacenter.org/properties/d2e521c3-4a09-4837-a023-bb2f161a0afa"
+      },
+      "Sample name": {
+        "@value": "add"
+      },
+      "Sample Provider": {
+        "@value": null
+      },
+      "Cell Line Name": {
+        "@value": null
+      },
+      "Species": {
+        "@value": null
+      },
+      "Other species": {
+        "@value": null
+      },
+      "Sex": {
+        "@value": null
+      },
+      "Age": {
+        "@context": {
+          "Unit": "https://schema.metadatacenter.org/properties/2adbbcb2-f717-4228-9a39-a6df08152d88",
+          "Value": "https://schema.metadatacenter.org/properties/57f066b3-c6bc-431d-9acf-8c17d0b55dfe"
+        },
+        "Value": {
+          "@value": null,
+          "@type": "xsd:decimal"
+        },
+        "Unit": {
+          "@value": null
+        },
+        "@id": "https://repo.metadatacenter.orgx/template-element-instances/4a63cafb-2b83-4525-95dd-1742d4c3a30b"
+      },
+      "Development stage": {
+        "@value": null
+      },
+      "Sample origin": {},
+      "Celltype": {},
+      "Primary culture": {
+        "@value": null
+      },
+      "Disease": {},
+      "Tumor": {
+        "@value": null
+      },
+      "Tumor subtype": {},
+      "Control": {
+        "@value": null
+      },
+      "Treatement": {
+        "@value": null
+      },
+      "Treatment specify": {
+        "@value": null
+      },
+      "Patient clinical data available": {
+        "@value": null
+      },
+      "Patient survival data available": {
+        "@value": null
+      },
+      "Sample preservation": {
+        "@value": null
+      },
+      "DNA concentration measure technology": {
+        "@value": null
+      },
+      "Notes": {
+        "@value": null
+      },
+      "@id": "https://repo.metadatacenter.orgx/template-element-instances/86df85c1-bbb0-427e-823c-ba558aa18917"
+    }
+  ]
+}

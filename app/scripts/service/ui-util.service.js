@@ -262,7 +262,12 @@ define([
         viewState.views.push('spreadsheet');
         viewState.spreadsheetCallback = callback;
         viewState.cleanupCallback = cleanup;
-        viewState.selected = 'tab';
+        viewState.selected = 'spreadsheet';
+
+        // Default to Spreadsheet
+        setTimeout(function () {
+          viewState.spreadsheetCallback();
+        });
       }
       return viewState;
     };

@@ -200,7 +200,46 @@ define([
 
 // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+      $scope.setResponseData('')
+      $rootScope.$broadcast('submitForm');
 
+      if (Object.keys($scope.validationErrors).length > 0)
+        return;
+
+      $scope.disableSaveButton();      
+      $scope.startSending();
+      
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/api/formsave");
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          $scope.endSending();
+          if (xhr.status === 200) {
+            $scope.setResponseData(xhr.response);
+          } else {
+            $scope.setResponseData(`Error submitting form: ${xhr.statusText}`);
+            console.error("Error submitting form:", xhr.statusText);
+          }
+          $scope.enableSaveButton();
+        }
+      };
+      // Combine template and instance into an array
+      let data = {
+        instance: $scope.instance,
+        template: $rootScope.jsonToSave
+      };
+      xhr.send(JSON.stringify(data, null, 2));    
+    };
+
+    $scope.acknowledgeResponse = function () {
+        this.responseData = null;
+        // Additional logic after acknowledging, if needed
+        
+    };
+
+/*
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
@@ -287,19 +326,23 @@ define([
             }
         );
       }
-    };
+   };
+*/
 
 //*********** ENTRY POINT
 
     $rootScope.showSearch = false;
 
 // set Page Title variable when this controller is active
-    $rootScope.pageTitle = 'Metadata Editor';
+    $rootScope.pageTitle = 'BioForms';
 
 // Giving $scope access to window.location for checking active state
     $scope.$location = $location;
 
     $scope.saveButtonDisabled = false;
+
+    $scope.isSending = false;
+    $scope.responseData = '';
 
     const pageId = CONST.pageId.RUNTIME;
     HeaderService.configure(pageId);
@@ -380,6 +423,18 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
+    $scope.startSending = function () {
+      $scope.isSending = true;
+    };
+
+    $scope.endSending = function () {
+      $scope.isSending = false;
+    };
+
+    $scope.setResponseData = function (responseData) {
+      $scope.responseData = responseData;
+    };
+
 //
 // custom validation services
 //
@@ -409,5 +464,4 @@ define([
 
   }
 
-})
-;
+});

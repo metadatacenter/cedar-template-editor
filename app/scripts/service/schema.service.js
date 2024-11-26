@@ -606,13 +606,13 @@ define([
     };
 
     service.getHeader = function(node) {
-      if (service.schemaOf(node)._ui.header && service.schemaOf(node)._ui.header.length > 0) {
+      if (service.schemaOf(node)._ui && service.schemaOf(node)._ui.header && service.schemaOf(node)._ui.header.length > 0) {
         return service.schemaOf(node)._ui.header;
       }
     };
 
     service.getFooter = function(node) {
-      if (service.schemaOf(node)._ui.footer && service.schemaOf(node)._ui.footer.length > 0) {
+      if (service.schemaOf(node)._ui && service.schemaOf(node)._ui.footer && service.schemaOf(node)._ui.footer.length > 0) {
         return service.schemaOf(node)._ui.footer;
       }
     };

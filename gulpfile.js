@@ -1,5 +1,6 @@
 // Include gulp & gulp plugins
-var gulp = require('gulp'),
+var gulp = require('gulp'),    
+    sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     less = require('gulp-less'),
     stylish = require('jshint-stylish'),
@@ -18,10 +19,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
     wait = require('gulp-wait'),
     colors = require('colors'),
-    Proxy = require('gulp-connect-proxy',
-        request = require('sync-request'),
-        fs = require('fs')
-    );
+    { createProxyMiddleware } = require('http-proxy-middleware'),
+    run = require('gulp-run');
 
 /**
  * Create error handling exception using gulp-util.
@@ -31,12 +30,26 @@ var onError = function (err) {
   console.log(err.red);
   this.emit('end'); //added so that gulp will end the task on error, and won't hang.
 };
+// New task to start Node server
+gulp.task('start-node-server-dev', function(done) {
+  console.log("Starting Node server with nodemon for development...");
+  var cmd = 'npx nodemon --inspect=0.0.0.0:9229 api/src/index.js';
+
+  // Execute the Node.js command
+  run(cmd).exec()    // run "npm start". 
+    .pipe(gulp.dest('output'));
+  
+});
 
 // Lint task
 gulp.task('lint', function (done) {
   return gulp.src('app/scripts/*.js')
+      .pipe(sourcemaps.init()) // Initialize source map generation
       .pipe(jshint())
       .pipe(jshint.reporter(stylish))
+      .pipe(sourcemaps.write('.', {
+        sourceRoot: '/scripts'  // Adjust this to match the server's root
+      }))
       .pipe(connect.reload());
   done();
 });
@@ -47,11 +60,13 @@ gulp.task('less', function (done) {
       .pipe(plumber({
         errorHandler: onError
       }))
+      .pipe(sourcemaps.init()) // Initialize sourcemap generation
       .pipe(less().on('error', gutil.log))
       .pipe(autoprefixer({
         browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'IE 9'],
         cascade : true
       }))
+      .pipe(sourcemaps.write('.')) // Write sourcemaps to the same directory as the output file      
       .pipe(gulp.dest('app/css'))
       .pipe(connect.reload());
   done();
@@ -64,14 +79,49 @@ gulp.task('copy:resources', function () {
 
 
 gulp.task('server-development', function (done) {
-  console.log("Server development");
+  console.log("Starting development server...");
+
   connect.server({
-    root      : 'app',
-    port      : 4200,
-    livereload: true,
-    fallback  : 'app/index.html',
-    host: '0.0.0.0' // Listen on all interfaces
-  });
+    root: 'app', // Path to serve static files from
+    port: 4200, // Development server port
+    livereload: true, // Enable live reload
+    fallback: 'app/index.html', // SPA fallback for AngularJS routes
+    host: '0.0.0.0', // Listen on all interfaces
+    middleware: function (connect, opt) {
+      return [
+        // Proxy for /templates requests
+        createProxyMiddleware({
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          pathFilter: '/templates',
+        }),
+
+        // Proxy for /api requests
+        createProxyMiddleware({
+          target: 'http://localhost:3000',
+          changeOrigin: true, // Modify the `Host` header to match the target
+          pathFilter: '/api',
+        }),
+
+
+        // Proxy for /users requests
+        createProxyMiddleware({
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          pathFilter: '/users',
+        }),
+
+        // Fallback middleware for AngularJS routes
+        function (req, res, next) {
+          if (req.url.indexOf('.') === -1) {
+            req.url = '/index.html'; // Serve index.html for non-file requests
+          }
+          next();
+        }, 
+      ];
+    },
+  }); 
+
   done();
 });
 
@@ -85,9 +135,9 @@ gulp.task('html', function (done) {
 gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/url-service.conf.json'])
       .pipe(replace('templateServerUrl', 'https://template.' + cedarRestHost))
-      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
-      .pipe(replace('userServerUrl', 'https://user.' + cedarRestHost))
-      .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarRestHost))
+      .pipe(replace('resourceServerUrl', ''))
+      .pipe(replace('userServerUrl', ''))
+      .pipe(replace('terminologyServerUrl', 'https://terminology.metadatacenter.org'))
       .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
       .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarRestHost))
       .pipe(replace('groupServerUrl', 'https://group.' + cedarRestHost))
@@ -381,6 +431,7 @@ function exitWithError(msg) {
 function readAllEnvVarsOrFail() {
   console.log("- Environment variables used:".yellow);
   for (var key  in envConfig) {
+    console.log(key);
     if (!process.env.hasOwnProperty(key)) {
       exitWithError('You need to set the following environment variable: ' + key);
     } else {
@@ -460,7 +511,7 @@ console.log();
 // Prepare task list
 var taskNameList = [];
 if (cedarFrontendBehavior === 'develop') {
-  taskNameList.push('server-development');
+  taskNameList.push(gulp.parallel('start-node-server-dev','server-development'));
   taskNameList.push('watch');
 } else if (cedarFrontendBehavior === 'server') {
   console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");

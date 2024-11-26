@@ -193,7 +193,7 @@ define([
       };
 
       // watch for changes in the selection for spreadsheet view to get out of spreadsheet mode
-      scope.$watch(
+      /* scope.$watch(
           function () {
             return (UIUtilService.activeLocator);
           },
@@ -204,7 +204,7 @@ define([
               scope.toggleView();
             }
           }
-      );
+      ); */
 
 
       // make sure there are at least 10 entries in the spreadsheet
@@ -646,7 +646,6 @@ define([
 
       scope.viewState = UIUtilService.createViewState(scope.element, scope.switchToSpreadsheet,
           scope.cleanupSpreadsheet);
-
     }
   };
 });

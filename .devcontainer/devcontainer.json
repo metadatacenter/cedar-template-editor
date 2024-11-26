@@ -1,0 +1,17 @@
+{
+    "dockerComposeFile": ["../docker-compose.yml", "docker-compose.dev.yml"],
+    "service": "frontend-main",
+    "workspaceFolder": "/srv/cedar/cedar-template-editor/",
+    "shutdownAction": "stopCompose",
+    "customizations": { 
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } }
+            },
+            "extensions": [
+                "vitest.explorer"
+            ]
+        }
+    }
+}

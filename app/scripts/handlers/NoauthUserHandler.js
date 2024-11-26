@@ -9,7 +9,7 @@ function NoauthUserHandler() {
   };
 
   this.getToken = function () {
-    return null;
+    return '7641a1862ce01b63a455029ae713c8bd9289e49c52bdbf388f30a19d2007473a';
   };
 
   this.getRefreshToken = function () {

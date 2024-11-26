@@ -24,7 +24,7 @@ define([
     'cedar.templateEditor.modal.cedarShareModal',
     'cedar.templateEditor.modal.cedarRenameModal',
     'cedar.templateEditor.modal.cedarNewFolderModal',
-    'cedar.templateEditor.modal.cedarFinder',
+//    'cedar.templateEditor.modal.cedarFinder',
     'cedar.templateEditor.modal.cedarTermsModal',
     'cedar.templateEditor.modal.cedarTestModal',
     'cedar.templateEditor.modal.cedarImportModal',

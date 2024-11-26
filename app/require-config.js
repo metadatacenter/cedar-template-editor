@@ -129,7 +129,9 @@ require([
     }
 
     window.cedarClientSessionId = createUUID();
-    window.bootstrapUserHandler = new KeycloakUserHandler();
+    // Use APIKEY instead of a user authentification
+    window.bootstrapUserHandler = new NoauthUserHandler();
+    //window.bootstrapUserHandler = new KeycloakUserHandler();
     window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
   });
 
