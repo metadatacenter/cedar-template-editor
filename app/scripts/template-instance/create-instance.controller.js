@@ -35,7 +35,7 @@ define([
             $rootScope.documentTitle = $scope.form['schema:name'];
 
             // Initialize value recommender service
-            ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
+            // ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
 
           },
           function (err) {
@@ -169,7 +169,7 @@ define([
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
                   const templateId = instanceResponse.data['schema:isBasedOn'];
-                  ValueRecommenderService.init(templateId, $scope.form);
+                  // ValueRecommenderService.init(templateId, $scope.form);
                   UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
@@ -198,11 +198,8 @@ define([
     };
 
 
-// Stores the data (instance) into the databases
-    $scope.saveInstance = function () {
-      $scope.setResponseData('')
-      $rootScope.$broadcast('submitForm');
-
+    const submitForm = function (id) {
+      $scope.$apply();
       if (Object.keys($scope.validationErrors).length > 0)
         return;
 
@@ -233,10 +230,16 @@ define([
       xhr.send(JSON.stringify(data, null, 2));    
     };
 
-    $scope.acknowledgeResponse = function () {
-        this.responseData = null;
-        // Additional logic after acknowledging, if needed
-        
+
+    // Stores the data (instance) into the databases
+    $scope.saveInstance = async function () {
+
+      $scope.setResponseData('')
+      $rootScope.$broadcast('submitForm');
+
+      // wait for the validation to finish
+      
+      //}, 10);       
     };
 
 /*
@@ -367,7 +370,31 @@ define([
 // Initialize array for required fields left empty that fail required empty check
 
 
+    
+    $scope.validationCount = 0; 
+    // Listen for 'validating' messages from the children
+    $scope.$on('validating', function(event, args) {
+      $scope.validationCount++;
+    });
+
+    $scope.$on('validationFinished', function(event, args) {
+      $scope.validationCount--;
+
+      if ($scope.validationCount == 0)
+        submitForm();
+    });
+
     // keep track of validation errors on metadata
+    const deleteValidationError = function(error, key) {      
+      if ($scope.validationErrors[error] && $scope.validationErrors[error][key]) {
+        delete $scope.validationErrors[error][key];
+  
+        if (!$scope.hasKeys($scope.validationErrors[error])) {
+          delete $scope.validationErrors[error];
+        }
+      }
+    };
+
     $scope.validationErrors = {};
     $scope.$on('validationError', function (event, args) {
       const operation = args[0];
@@ -383,13 +410,12 @@ define([
       }
 
       if (operation === 'remove') {
-        if ($scope.validationErrors[error] && $scope.validationErrors[error][key]) {
-          delete $scope.validationErrors[error][key];
-
-          if (!$scope.hasKeys($scope.validationErrors[error])) {
-            delete $scope.validationErrors[error];
-          }
-        }
+        if (error === '') {// remove all errors for the given key
+          for (const error_n in $scope.validationErrors)
+            deleteValidationError(error_n, key);
+        } else {
+          deleteValidationError(error, key);
+        } 
       }
     });
 

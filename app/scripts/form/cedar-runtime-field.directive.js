@@ -619,7 +619,7 @@ define([
       };
 
       $scope.isRecommended = function () {
-        return ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
+        return false; //ValueRecommenderService.getIsValueRecommendationEnabled($scope.field);
       };
 
 // has value constraints?
@@ -1185,59 +1185,66 @@ define([
 
 // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
+        // tell the form that I'm validating
+        $scope.$emit('validating');
 
-        var location = dms.getValueLocation($scope.field);
-        var min = schemaService.getMinItems($scope.field) || 0;
-        var valueConstraint = schemaService.getValueConstraints($scope.field);
-        var id = $scope.getId();
-        var title = $scope.getPropertyLabel();
+        setTimeout(function () {
 
-        // If field is required and is empty, emit failed emptyRequiredField event
-        if ($scope.isRequired()) {
-          var allRequiredFieldsAreFilledIn = true;
-          for (let i = 0; i < $scope.valueArray.length; i++) {
-            var value = $scope.valueArray[i];
-            if (!value) {
-              allRequiredFieldsAreFilledIn = false;
-            } else {
-              if (Array.isArray(value)) {
-                for (let j = 0; j < value.length; j++) {
-                  if (!value[j][location]) {
+          var location = dms.getValueLocation($scope.field);
+          var min = schemaService.getMinItems($scope.field) || 0;
+          var valueConstraint = schemaService.getValueConstraints($scope.field);
+          var id = $scope.getId();
+          var title = $scope.getPropertyLabel();
+
+          // If field is required and is empty, emit failed emptyRequiredField event
+          if ($scope.isRequired()) {
+            var allRequiredFieldsAreFilledIn = true;
+            for (let i = 0; i < $scope.valueArray.length; i++) {
+              var value = $scope.valueArray[i];
+              if (!value) {
+                allRequiredFieldsAreFilledIn = false;
+              } else {
+                if (Array.isArray(value)) {
+                  for (let j = 0; j < value.length; j++) {
+                    if (!value[j][location]) {
+                      allRequiredFieldsAreFilledIn = false;
+                    }
+                  }
+                } else {
+                  if (!value[location]) {
                     allRequiredFieldsAreFilledIn = false;
                   }
                 }
-              } else {
-                if (!value[location]) {
-                  allRequiredFieldsAreFilledIn = false;
-                }
               }
             }
+            $scope.$emit('validationError',
+                [allRequiredFieldsAreFilledIn ? 'remove' : 'add', title, id, 'emptyRequiredField']);
           }
-          $scope.$emit('validationError',
-              [allRequiredFieldsAreFilledIn ? 'remove' : 'add', title, id, 'emptyRequiredField']);
-        }
 
-        if ($scope.hasValueConstraint()) {
-          var allValueFieldsAreValid = true;
+          if ($scope.hasValueConstraint()) {
+            var allValueFieldsAreValid = true;
 
-          angular.forEach($scope.valueArray, function (valueElement, index) {
-            if (angular.isArray(valueElement)) {
-              angular.forEach(valueElement, function (ve, index) {
-                if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
-                  allValueFieldsAreValid = false;
-                }
-              });
-            } else {
-              if (angular.isObject(valueElement)) {
-                if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint,
-                    index)) {
-                  allValueFieldsAreValid = false;
+            angular.forEach($scope.valueArray, function (valueElement, index) {
+              if (angular.isArray(valueElement)) {
+                angular.forEach(valueElement, function (ve, index) {
+                  if (!autocompleteService.isValueConformedToConstraint(ve, location, id, valueConstraint, index)) {
+                    allValueFieldsAreValid = false;
+                  }
+                });
+              } else {
+                if (angular.isObject(valueElement)) {
+                  if (!autocompleteService.isValueConformedToConstraint(valueElement, location, id, valueConstraint,
+                      index)) {
+                    allValueFieldsAreValid = false;
+                  }
                 }
               }
-            }
-          });
-          $scope.$emit('validationError', [allValueFieldsAreValid ? 'remove' : 'add', title, id, 'invalidFieldValues']);
-        }
+            });
+            $scope.$emit('validationError', [allValueFieldsAreValid ? 'remove' : 'add', title, id, 'invalidFieldValues']);
+          }
+
+          $scope.$emit('validationFinished');
+        }, 0);
       });
 
 // watch for a request to set this field active

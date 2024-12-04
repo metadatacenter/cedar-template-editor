@@ -396,12 +396,17 @@ define([
             case 'numeric':
               desc.type = 'numeric';
               desc.format = '0[.]0[0000]';
-              desc.allowInvalid = true;
+              desc.strict = true;
+              desc.allowInvalid = false;
+              desc.validator = Handsontable.NumericValidator
               desc.invalidCellClassName = 'myInvalidClass';
               break;
             case 'list':
             case 'radio':
               desc.type = 'dropdown';
+              desc.validator = Handsontable.AutocompleteValidator;
+              desc.strict = true;
+              desc.allowInvalid = false;
               desc.source = extractOptionsForList(dms.getLiterals(node));
               break;
             case 'textfield':
@@ -410,10 +415,31 @@ define([
                 desc.trimDropdown = true;
                 desc.nodeId = dms.getId(node);
                 desc.schema = dms.schemaOf(node);
-                //desc.validator = customValidator;
-                desc.allowInvalid = true;
-                desc.strict = false;
-                desc.source = function (query, process) {
+                desc.validator = function(value, callback) {
+                  var found = false;
+                  if (this.strict) {
+                    var originalVal = value;
+                    var lowercaseVal = typeof originalVal === 'string' ? originalVal.toLowerCase() : null;
+
+                    const hot = $scope.spreadsheetContext?.table;
+                    const labels = hot?.getCellMeta(this.row, this.col)?.labels;                    
+                    if (labels){
+                      for (var s = 0, slen = labels.length; s < slen; s++) {
+                        if (originalVal === labels[s]) {
+                          found = true;
+                          break;
+                        } else if (lowercaseVal === labels[s].toLowerCase()) {
+                          found = true;
+                          break;
+                        }
+                      }
+                    }                                       
+                  } 
+                  callback(found);
+                };
+                desc.strict = true;
+                desc.allowInvalid = false;
+                desc.source = function (query, process_callback) {
 
                   var query = query || '*';
                   var results = autocompleteService.initResults(desc.nodeId, query);
@@ -422,9 +448,15 @@ define([
                   $scope.$watchCollection(function () {
                     return results;
                   }, function () {
-                    process(order(results).map(function (a) {
+                    let labels = order(results).map(function (a) {
                       return a.label;
-                    }));
+                    });
+                    const hot = $scope.spreadsheetContext?.table;
+                    const activeEditor = hot?.getActiveEditor();
+                    if (activeEditor) {                      
+                      hot.setCellMeta(activeEditor.row, activeEditor.col, 'labels', labels);  
+                    }                    
+                    process_callback(labels);
                   });
                 };
               } else {
@@ -432,6 +464,12 @@ define([
               }
               break;
           }
+          // Apply custom validation to all cells without validator,to check for empty required values and numeric format
+          if(!desc.validator)
+            desc.validator = customValidator;
+
+          // Store whether the column is required or not.
+          desc.isRequired = node? schemaService.isRequired(node): false;
 
           return desc;
         };
@@ -544,7 +582,7 @@ define([
                 title = key;
                 description = "key"
               }
-              var required = innerNode._valueConstraints?.requiredValue === true? 'class="required-text"' : '';
+              var required = schemaService.isRequired(innerNode)? 'class="required-text"' : '';
               colHeaders.push('<span  title="' + description + '" ' + required + '>' + title + ' </span>');
             }
           }
@@ -701,19 +739,13 @@ define([
             // Compute size based on available width and number of rows
             var spreadsheetRowCount = tableData ? tableData.length : 0;
             var spreadsheetColCount = spreadsheetRowCount > 0 ? tableData[0].length : 0;
-            var spreadsheetContainerHeight = Math.min(300, 30 + spreadsheetRowCount * 23);
+            var spreadsheetContainerHeight = Math.min(1000, 30 + spreadsheetRowCount * 23);
             var spreadsheetContainerWidth = spreadsheetColCount > 0 ? '100%' :detectorElement.width();
 
             $scope.spreadsheetDataScope.container.style.width = spreadsheetContainerWidth;
             $scope.spreadsheetDataScope.container.style.height = spreadsheetContainerHeight;
 
-
-            $scope.spreadsheetContext.getTable().updateSettings({
-              height: spreadsheetContainerHeight,
-              width : spreadsheetContainerWidth
-            });
-
-
+            $scope.spreadsheetContext.getTable().render();
           }
         };
 
@@ -731,10 +763,55 @@ define([
           var container = angular.element(document.querySelector(id + '.spreadsheetViewContainer'),
               context.getPlaceholderContext())[0];
 
+          // var customValidator = function (query, callback) {
+          //   var desc = $scope.config.columns[this.col];
+          //   var id = DataManipulationService.getId(desc.schema);
+          //   callback(autocompleteService.isCached(id, query, desc.schema));
+          // };
+
           var customValidator = function (query, callback) {
-            var desc = $scope.config.columns[this.col];
-            var id = DataManipulationService.getId(desc.schema);
-            callback(autocompleteService.isCached(id, query, desc.schema));
+            callback(true);
+          };
+
+          // Custom Validation
+          var afterValidationValidator = function(isValid, value, row, col) {
+
+           // var validate = function (value, callback, col, row) {
+              const totalRows = hot.countRows(); // Total rows
+              const lastRowIndex = totalRows - 1;
+              var id = '#' + (col*totalRows + row);
+              var title = 'Sample ' + (row+1) + ': ' + $scope.config.colHeaderNames[col];
+
+              // Skip validation for the last row in case there is more than one row. We use this row to allow entering more samples
+              if (totalRows > 1 && row === lastRowIndex) {
+                $scope.$emit('validationError', ['remove', title, id, '']);
+                return true; 
+              }
+              
+              var desc = $scope.config.columns[col];            
+              const isEmpty = !value || value === '' || (isNaN(value) && value.trim() === '');
+              if (desc?.isRequired && isEmpty) {                
+                if (isEmpty) {
+                  $scope.$emit('validationError', ['add', title, id, 'emptyRequiredField']); // Fail if the cell is empty
+                  return false; 
+                } 
+              } else {
+                // Allow empty values when it is not required
+                if (isEmpty) { 
+                  // Pass validation if none of the conditions failed
+                  $scope.$emit('validationError', ['remove', title, id, '']); 
+                  return true; 
+                }
+              } 
+
+              if (!isValid) {
+                $scope.$emit('validationError', [ 'add', title, id, 'invalidFields']); 
+                return false;
+              }
+
+              // Pass validation if none of the conditions failed
+              $scope.$emit('validationError', ['remove', title, id, '']); 
+              return true; 
           };
 
 
@@ -757,7 +834,7 @@ define([
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
               data              : tableData,
-              minSpareRows      : 10,
+              minSpareRows      : 1,
               autoWrapRow       : true,
               contextMenu       : true,
               minRows           : minRows,
@@ -771,7 +848,7 @@ define([
               colHeaders        : colHeaders,
               colHeaderNames    : colHeaderNames,
               colWidths         : 150,
-              autoColumnSize    : {syncLimit: 300},
+              autoColumnSize    : {syncLimit: 3000},
               headerTooltips    : true
             };
 
@@ -801,6 +878,8 @@ define([
 
             // build the handsontable
             var hot = new Handsontable(container, config);
+
+            hot.addHook('afterValidate', afterValidationValidator);
 
             registerHooks(hot, $scope, $element, columnHeaderOrder);
             context.setTable(hot);
@@ -862,6 +941,24 @@ define([
                 context.switchVisibility();
               }
             }
+          }
+        };
+
+        // Call the validation for all the cells
+        service.validateSpreadsheet = async function (scope) {
+          if (scope.spreadsheetDataScope) {
+            // tell the form that I'm validating
+            scope.$emit('validating');
+          
+            var context = scope.spreadsheetContext;
+            var hot = context.getTable();
+
+            // To avoid crash when validating cells and the viwport is not at the begining
+            hot.selectCell(0, 0);
+
+            hot.validateCells((valid) => {
+                  scope.$emit('validationFinished');
+            });
           }
         };
 

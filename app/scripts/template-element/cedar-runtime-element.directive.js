@@ -585,6 +585,12 @@ define([
         return schemaService.getCardinalityAsString(element);
       }
 
+      scope.$on('submitForm', function (event) {
+        if (scope.isSpreadsheetView()) {
+          SpreadsheetService.validateSpreadsheet(scope); 
+        }
+      });
+
       // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
         var found = false;

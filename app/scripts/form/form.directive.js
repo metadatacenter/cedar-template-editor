@@ -330,6 +330,8 @@ define([
 
         // get the validation errors from the different validation services
         $scope.doValidation = function (instance, url, type) {
+          // tell the form that I'm validating
+          $scope.$emit('validating');
 
           AuthorizedBackendService.doCall(
               HttpBuilderService.post(url, angular.toJson(instance)),
@@ -356,6 +358,8 @@ define([
 
                   UIMessageService.flashSuccess('The metadata are valid', {"title": "title"}, 'Success');
                 }
+
+                $scope.$emit('validationFinished');
               },
               function (err) {
                 UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
