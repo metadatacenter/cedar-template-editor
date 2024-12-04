@@ -264,6 +264,8 @@ define([
       scope.toggleExpanded = function (idx) {
         //console.log('toggleExpanded', idx);
 
+        //Disable toggleExpanded
+        return;
         if (scope.model.length == 0) {
           scope.addElement()
           scope.expanded[0] = true;

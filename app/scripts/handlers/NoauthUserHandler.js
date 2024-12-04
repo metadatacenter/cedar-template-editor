@@ -41,7 +41,7 @@ function NoauthUserHandler() {
   };
 
   this.initUserHandler = function (successCallback, failureCallback) {
-    console.log("NoauthUserHandler:init()");
+    //console.log("NoauthUserHandler:init()");
     successCallback(true);
   };
 }

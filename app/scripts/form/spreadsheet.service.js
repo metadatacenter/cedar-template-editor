@@ -443,11 +443,8 @@ define([
 
                   var query = query || '*';
                   var results = autocompleteService.initResults(desc.nodeId, query);
-                  autocompleteService.updateFieldAutocomplete(desc.schema, query, false);
 
-                  $scope.$watchCollection(function () {
-                    return results;
-                  }, function () {
+                  const updateLabels = function() {
                     let labels = order(results).map(function (a) {
                       return a.label;
                     });
@@ -457,8 +454,26 @@ define([
                       hot.setCellMeta(activeEditor.row, activeEditor.col, 'labels', labels);  
                     }                    
                     process_callback(labels);
-                  });
+                  };  
+
+
+                  if (!results || Array.isArray(results) && results.length === 0) 
+                  {
+                    autocompleteService.updateFieldAutocomplete(desc.schema, query, false);
+
+                    $scope.$watchCollection(function () {
+                      return results;
+                    }, updateLabels);
+                  } else {
+                    updateLabels();
+                  }
                 };
+
+                // Preload the cache
+                const query = '*';
+                autocompleteService.initResults(desc.nodeId, query);
+                autocompleteService.updateFieldAutocomplete(desc.schema, query, false);
+
               } else {
                 desc.type = 'text';
               }
