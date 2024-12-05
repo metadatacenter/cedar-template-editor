@@ -483,7 +483,7 @@ define([
             var zeroedLocator = $scope.getLocator(zeroedIndex);
 
             // scroll it into the center of the screen and listen for shift-enter
-            $scope.scrollToLocator(zeroedLocator, ' .select');
+            $scope.scrollToLocator(zeroedLocator, ' .select, .dropdown');
             $document.unbind('keypress');
             $document.bind('keypress', function (e) {
               $scope.isSubmit(e, index);
@@ -523,9 +523,26 @@ define([
                 if (!e.is('select')) {
                   if (typeof e[0].select == 'function') {
                     e[0].select();
-                  }
-                  //e[0].select();
-                }
+                  } else {
+                    // Try in case it is a controlled term
+                    const searchInput = document.querySelector("#" + locator + ' .ui-select-search');
+
+                    if (searchInput) {
+                      // Access the AngularJS scope of the element
+                      const elementScope = angular.element(searchInput).scope();
+
+                      // Open the imput to make it selectable
+                      elementScope.$apply(() => {
+                        elementScope.$select.open = true; 
+                      });
+
+                      $timeout(function() {
+                        // Manually focus the input after it has been opened
+                        searchInput.focus();                        
+                      });
+                    }
+                  }                  
+                }                 
               }
             }
           }
