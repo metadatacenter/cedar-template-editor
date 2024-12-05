@@ -158,7 +158,7 @@ COPY . .
 # Install dependencies
 RUN \
 npm install --production && \
-npm install -g gulp
+npm install -g gulp-cli
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
@@ -173,9 +173,9 @@ ENV LOGDIR /log
 RUN mkdir -p "$LOGDIR"
 VOLUME $LOGDIR
 
-EXPOSE 4200
+EXPOSE 80
 
-CMD ["node", "src/index.js"] && ["nginx", "-g", "daemon off;"]
+CMD ["bash", "-c", "node api/src/index.js & nginx && wait"]
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
