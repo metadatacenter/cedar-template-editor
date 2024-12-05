@@ -1,5 +1,8 @@
 services:
   frontend-main:
+    ports:
+      - 4200:80
+      - 4243:443
     build:
       target: dev
       context: .
@@ -19,5 +22,6 @@ services:
         #       - 8081:8080  
     environment:
       - NODE_ENV=development
+      - GRAPH_API_CLIENT_SECRET=${GRAPH_API_CLIENT_SECRET}
     # Overrides default command so things don't shut down after the process ends.
     #command: /bin/sh -c "while sleep 1000; do :; done"
