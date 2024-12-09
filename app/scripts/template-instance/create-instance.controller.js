@@ -205,6 +205,7 @@ define([
 
       $scope.disableSaveButton();      
       $scope.startSending();
+      $scope.$apply();
       
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/api/formsave");
