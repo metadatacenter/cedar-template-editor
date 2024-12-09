@@ -3,15 +3,19 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   deploy:
     runs-on: self-hosted
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
 
-    - name: Deploy Application
-      run: ssh user@<server-ip> "docker pull my-app && docker run ..."
+    steps:
+      # Step 1: Checkout the Code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Build and uopdate the Docker Image Locally
+      - name: Build Docker Image
+        run: |
+          docker-compose up -d --build
+
+          
