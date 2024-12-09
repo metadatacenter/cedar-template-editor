@@ -13,9 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Build and uopdate the Docker Image Locally
-      - name: Build Docker Image
+      # Step 2: Write .env file from secret
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_FILE_CONTENTS }}" > .env
+
+      # Step 3: Build and Deploy Application
+      - name: Build and Deploy
         run: |
-          docker-compose up -d --build
+          docker-compose up -d --build --no-cache
 
           
