@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      # Step 1: Checkout the Code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Write .env file from secret
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_FILE_CONTENTS }}" > .env
+
+      # Step 3: Build and Deploy Application
+      - name: Build and Deploy
+        run: |
+          docker compose up -d --build
+
+          
