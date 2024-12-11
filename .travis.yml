@@ -48,7 +48,6 @@ env:
   - CEDAR_FRONTEND_BEHAVIOR=server
   - CEDAR_FRONTEND_TARGET=staging
   - CEDAR_VERSION="2.7.1"
-  - CEDAR_VERSION_MODIFIER=""
   - CEDAR_FRONTEND_staging_HOST=staging.metadatacenter.org
   - CEDAR_FRONTEND_staging_USER1_LOGIN="test1@test.com"
   - CEDAR_FRONTEND_staging_USER1_NAME="Test User 1"

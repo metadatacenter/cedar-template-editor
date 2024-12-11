@@ -11,7 +11,6 @@ services:
         - "GID=${GID}"
         - "USER=${USER}"
       dockerfile: Dockerfile
-      #    container_name: senaite_genomics
     user: "${UID}:${GID}"
     volumes:
       # Mounts the project folder to '/srv/cedar/cedar-template-editor'. While this file is in .devcontainer,
@@ -23,5 +22,3 @@ services:
     environment:
       - NODE_ENV=development
       - GRAPH_API_CLIENT_SECRET=${GRAPH_API_CLIENT_SECRET}
-    # Overrides default command so things don't shut down after the process ends.
-    #command: /bin/sh -c "while sleep 1000; do :; done"

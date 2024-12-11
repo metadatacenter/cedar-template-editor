@@ -20,7 +20,68 @@ var gulp = require('gulp'),
     wait = require('gulp-wait'),
     colors = require('colors'),
     { createProxyMiddleware } = require('http-proxy-middleware'),
-    run = require('gulp-run');
+    run = require('gulp-run'),
+    clean = require('gulp-clean'), 
+    rev = require('gulp-rev'), // Add versioning (hashing) plugin    
+    revReplace = require('gulp-rev-replace'); 
+
+
+const paths = {
+  src: './app/',                // The source folder for your AngularJS app
+  dist: './dist/',              // The output folder for the build
+  assets: [
+    './app/img/**/*.*', 
+    './app/media/**/*.*', 
+    './app/fonts/**/*.*',
+    './app/**/*.css', 
+    '!./app/bower_components/**/*.*',
+    '!./app/config/**/*.*',
+    '!./app/index.html'],      
+  html: './dist/**/*.html',      // Path to AngularJS templates and index.html
+  scripts: './dist/**/*.js',     // Path to AngularJS scripts
+  css: './dist/css/*.css',       // Path to css files
+};
+
+//Clean the dist folder
+gulp.task('cleanDist', () => {
+  return gulp.src(paths.dist, { read: false, allowEmpty: true })
+    .pipe(clean());
+});
+
+//Add hash revision to assets (CSS, JS, images)
+gulp.task('revision', () => {
+  return gulp.src(paths.assets,{ base: paths.src })
+    .pipe(rev())                         // Add hash to filenames
+    .pipe(gulp.dest(paths.dist))         // Save hashed assets in dist folder
+    .pipe(rev.manifest())                // Create manifest file
+    .pipe(gulp.dest(paths.dist));        // Save manifest in dist folder
+});
+
+// Replace references in HTML/JS files with hashed filenames
+gulp.task('revReplace', () => {
+  const manifest = gulp.src(paths.dist + 'rev-manifest.json');
+
+  return gulp.src([paths.html, paths.scripts, paths.css], { base: paths.dist })
+    .pipe(revReplace({ manifest: manifest }))
+    .pipe(gulp.dest(paths.dist)); // Save updated files in dist folder
+});
+
+// Replace references in HTML/JS files with hashed filenames
+gulp.task('revReplaceRaw', () => {
+  const manifest = gulp.src(paths.dist + 'rev-manifest.json');
+
+  return gulp.src(['./app/**/*.html', './app/**/*.js', './app/**/*.json','./app/favicon.ico','./app/bower_components/**/*.*'], { base: paths.src })
+    .pipe(revReplace({ manifest: manifest }))
+    .pipe(gulp.dest(paths.dist)); // Save updated files in dist folder
+});
+
+//Add a build task that includes the production steps
+gulp.task('build-production', gulp.series(
+   'cleanDist',
+   'revision',
+   'revReplace',
+   'revReplaceRaw'
+));
 
 /**
  * Create error handling exception using gulp-util.
@@ -39,6 +100,7 @@ gulp.task('start-node-server-dev', function(done) {
   run(cmd).exec()    // run "npm start". 
     .pipe(gulp.dest('output'));
   
+  done();
 });
 
 // Lint task
@@ -134,21 +196,21 @@ gulp.task('html', function (done) {
 // Task to replace service URLs
 gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.' + cedarRestHost))
+//      .pipe(replace('templateServerUrl', 'https://template.' + cedarRestHost))
       .pipe(replace('resourceServerUrl', ''))
       .pipe(replace('userServerUrl', ''))
       .pipe(replace('terminologyServerUrl', 'https://terminology.metadatacenter.org'))
-      .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
-      .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarRestHost))
-      .pipe(replace('groupServerUrl', 'https://group.' + cedarRestHost))
-      .pipe(replace('schemaServerUrl', 'https://schema.' + cedarRestHost))
-      .pipe(replace('submissionServerUrl', 'https://submission.' + cedarRestHost))
-      .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
-      .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
-      .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
-      .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
-      .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
-      .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
+      // .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
+      // .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarRestHost))
+      // .pipe(replace('groupServerUrl', 'https://group.' + cedarRestHost))
+      // .pipe(replace('schemaServerUrl', 'https://schema.' + cedarRestHost))
+      // .pipe(replace('submissionServerUrl', 'https://submission.' + cedarRestHost))
+      // .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
+      // .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
+      // .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
+      // .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
+      // .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
+      // .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
@@ -163,9 +225,10 @@ gulp.task('replace-tracking', function (done) {
 
 // Task to set up version numbers in included js file
 gulp.task('replace-version', function (done) {
+  const timestamp = Date.now(); // Generate a unique timestamp
   gulp.src(['app/config/src/version.js'])
       .pipe(replace('cedarVersionValue', cedarVersion))
-      .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(replace('cedarVersionModifierValue', `${timestamp}`))
       .pipe(replace('dataciteEnabledValue', dataciteEnabled))
       .pipe(gulp.dest('app/config/'));
   done();
@@ -196,7 +259,7 @@ gulp.task('karma-tests', function (done) {
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'], {allowEmpty:true})
-      .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarUIHost))
+      //.pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarUIHost))
       .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
       .pipe(replace('protractorTestUser1Password', cedarTestUser1Password))
       .pipe(replace('protractorTestUser1Name', cedarTestUser1Name))
@@ -456,7 +519,7 @@ let envConfig = {
   'CEDAR_FRONTEND_BEHAVIOR'   : null,
   'CEDAR_FRONTEND_TARGET'     : null,
   'CEDAR_VERSION'             : null,
-  'CEDAR_VERSION_MODIFIER'    : null,
+//  'CEDAR_VERSION_MODIFIER'    : null,
   'CEDAR_DATACITE_ENABLED'    : null
 };
 console.log();
@@ -469,13 +532,13 @@ const cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 const cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
 const cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 const cedarVersion = envConfig['CEDAR_VERSION'];
-const cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
+//const cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
 const dataciteEnabled = envConfig['CEDAR_DATACITE_ENABLED'];
 
-var cedarUIHostVarName = getFrontendEnvVar('UI_HOST');
-envConfig[cedarUIHostVarName] = null;
-var cedarRestHostVarName = getFrontendEnvVar('REST_HOST');
-envConfig[cedarRestHostVarName] = null;
+// var cedarUIHostVarName = getFrontendEnvVar('UI_HOST');
+// envConfig[cedarUIHostVarName] = null;
+// var cedarRestHostVarName = getFrontendEnvVar('REST_HOST');
+// envConfig[cedarRestHostVarName] = null;
 
 var cedarUser1LoginVarName = getFrontendEnvVar('USER1_LOGIN');
 envConfig[cedarUser1LoginVarName] = null;
@@ -493,8 +556,8 @@ envConfig[cedarUser2NameVarName] = null;
 
 readAllEnvVarsOrFail();
 
-var cedarUIHost = envConfig[cedarUIHostVarName];
-var cedarRestHost = envConfig[cedarRestHostVarName];
+// var cedarUIHost = envConfig[cedarUIHostVarName];
+// var cedarRestHost = envConfig[cedarRestHostVarName];
 
 var cedarTestUser1Login = envConfig[cedarUser1LoginVarName];
 var cedarTestUser1Password = envConfig[cedarUser1PasswordVarName];
@@ -510,16 +573,18 @@ console.log();
 
 // Prepare task list
 var taskNameList = [];
+taskNameList.push('lint', 'less' /*, 'copy:resources' */, 'replace-url', 'replace-tracking', 'replace-version'/*, 'test-env' */);
+
 if (cedarFrontendBehavior === 'develop') {
   taskNameList.push(gulp.parallel('start-node-server-dev','server-development'));
   taskNameList.push('watch');
 } else if (cedarFrontendBehavior === 'server') {
+  taskNameList.push('build-production');
   console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();

@@ -100,10 +100,6 @@ RUN set -x \
 # create a docker-entrypoint.d directory
     && mkdir /docker-entrypoint.d
 
-#COPY docker-entrypoint.sh /
-#COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d
-#COPY 20-envsubst-on-templates.sh /docker-entrypoint.d
-#COPY 30-tune-worker-processes.sh /docker-entrypoint.d
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
@@ -141,24 +137,14 @@ RUN mkdir -p ${CEDAR_TEMPLATE_EDITOR_HOME}
 # Make CEDAR home the default work directory
 WORKDIR ${CEDAR_TEMPLATE_EDITOR_HOME}
 
-ENV EDITOR_TARBALL cedar-template-editor-${CEDAR_VERSION}.tgz
-ENV EDITOR_URI ${CEDAR_NPM_NEXUS_REPO}/cedar-template-editor/-/${EDITOR_TARBALL}
-
-RUN echo ${EDITOR_URI}
-
-# Download and extract the frontend source
-# RUN \
-# curl --fail --show-error --location --remote-name ${EDITOR_URI} && \
-# tar --extract --file ${EDITOR_TARBALL} --directory ${CEDAR_TEMPLATE_EDITOR_HOME} --strip 1 && \
-# rm ${EDITOR_TARBALL}
-
-# Copy the entire application source code into the container
-COPY . .
-
 # Install dependencies
+COPY package.json .
 RUN \
 npm install --production && \
 npm install -g gulp-cli
+
+# Copy the entire application source code into the container
+COPY . .
 
 # Add the entry point
 ADD scripts/docker-entrypoint.sh /
@@ -166,7 +152,7 @@ ADD scripts/docker-entrypoint.sh /
 ADD config/default.conf /etc/nginx/conf.d/
 
 # Set env vars for the gulp task
-ENV CEDAR_ANALYTICS_KEY="false" CEDAR_DATACITE_ENABLED="false" CEDAR_FRONTEND_BEHAVIOR="server" CEDAR_FRONTEND_TARGET="local" CEDAR_VERSION_MODIFIER="" CEDAR_FRONTEND_local_USER1_LOGIN="" CEDAR_FRONTEND_local_USER1_PASSWORD="" CEDAR_FRONTEND_local_USER1_NAME="" CEDAR_FRONTEND_local_USER2_LOGIN="" CEDAR_FRONTEND_local_USER2_PASSWORD="" CEDAR_FRONTEND_local_USER2_NAME=""
+ENV CEDAR_ANALYTICS_KEY="false" CEDAR_DATACITE_ENABLED="false" CEDAR_FRONTEND_BEHAVIOR="server" CEDAR_FRONTEND_TARGET="local" CEDAR_FRONTEND_local_USER1_LOGIN="" CEDAR_FRONTEND_local_USER1_PASSWORD="" CEDAR_FRONTEND_local_USER1_NAME="" CEDAR_FRONTEND_local_USER2_LOGIN="" CEDAR_FRONTEND_local_USER2_PASSWORD="" CEDAR_FRONTEND_local_USER2_NAME=""
 
 # Set up log folder
 ENV LOGDIR /log
@@ -175,7 +161,7 @@ VOLUME $LOGDIR
 
 EXPOSE 80
 
-CMD ["bash", "-c", "node api/src/index.js & nginx && wait"]
+CMD ["bash", "-c", "node api/src/index.js & nginx -g 'daemon off;'"]
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
