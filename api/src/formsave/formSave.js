@@ -124,8 +124,9 @@ export async function formSave(req, res) {
         else
             res.status(500).send('Failed to process the form.');
     } catch (error) {
-        console.error('Error writing Excel file:', error);
-        res.status(500).send('Failed to process the form.');
+        console.error('Error writing Excel file:', error.message);
+        res.status(500).send(error.message);
+        res.status
     }
 }
 

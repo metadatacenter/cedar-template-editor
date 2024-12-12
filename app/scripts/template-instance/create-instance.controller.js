@@ -217,8 +217,8 @@ define([
           if (xhr.status === 200) {
             $scope.setResponseData(xhr.response);
           } else {
-            $scope.setResponseData(`Error submitting form: ${xhr.statusText}`);
-            console.error("Error submitting form:", xhr.statusText);
+            $scope.setResponseData(`<div style="color:red"> Error submitting form: ${xhr.response} </div>`);
+            console.error("Error submitting form:", xhr.response);
           }
           $scope.enableSaveButton();
         }
