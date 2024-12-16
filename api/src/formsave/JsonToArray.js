@@ -29,7 +29,8 @@ export function tidyfyTemplateInstance(template, instance) {
                         for (const header_value of nested_result.header) 
                             header.push(header_value);  
                     }
-                    arrayValues.push(...nested_result.values);
+                    if (!nested_result.values.every(row => row.every(element => element === ''))) // skip empty rows
+                        arrayValues.push(...nested_result.values);
                 }
                 values.push(arrayValues);
             } else {
@@ -93,6 +94,7 @@ function getValuefromJson(jsonObject, rows = []) {
 
         // Empty object
         if (Object.keys(jsonObject).length === 0 ) {
+            rows.push('');
             return rows;
         }
 
@@ -112,6 +114,8 @@ function getValuefromJson(jsonObject, rows = []) {
     } else if (jsonObject){
         // Add the object to the result
         rows.push(jsonObject);
+    } else {
+        rows.push('');
     }
 
     return rows;

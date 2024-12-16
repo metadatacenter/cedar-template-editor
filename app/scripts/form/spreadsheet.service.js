@@ -159,7 +159,7 @@ define([
                   if (foundResults[i].label == term) {
 
                     model['@id'] = foundResults[i]['@id'];
-                    model['rdfs:label'] = foundResults[i]['rdfs:label'];
+                    model['rdfs:label'] = foundResults[i].label;
                     found = true;
 
                     // update all the model entries with the same term
@@ -169,7 +169,7 @@ define([
                         if (sds.tableData[r][c] == term) {
                           var m = getModel($scope, id, r, c);
                           m['@id'] = foundResults[i]['@id'];
-                          m['rdfs:label'] = foundResults[i]['rdfs:label'];
+                          m['rdfs:label'] = foundResults[i].label;
                         }
                       }
                     }
@@ -244,6 +244,8 @@ define([
                 }
                 if (sds.tableData[row][col]) {
                   sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col].toString();
+                } else {
+                  sds.tableDataSource[row][col]['@value'] = '';
                 }
                 sds.tableDataSource[row][col]['@type'] = DataManipulationService.generateInstanceTypeForNumericField(insideElement);
               } else if (cedarType === 'link') {
@@ -263,9 +265,26 @@ define([
                     lazyUpdate($scope, schema, id, term, row, col);
 
                   }
+                } else {
+                  delete sds.tableDataSource[row][col]['@id'];
+                  delete sds.tableDataSource[row][col]['rdfs:label'];
                 }
               } else {
                 sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
+              }
+            }
+          }
+          
+          // Remove extra rows from tableDataSource in case multiple rows has been removed
+          for (var row = sds.tableData.length -1; row < sds.tableDataSource.length; row++){
+            for (var col in sds.tableDataSource[row]) {
+              if (sds.columnDescriptors[col].type == 'autocomplete') {
+                delete sds.tableDataSource[row][col]['@id'];
+                delete sds.tableDataSource[row][col]['rdfs:label'];
+              } else if (sds.columnDescriptors[col].cedarType === 'link') {
+                delete sds.tableDataSource[row][col]['@id'];
+              } else {
+                delete sds.tableDataSource[row][col]['@value'];
               }
             }
           }
@@ -433,7 +452,21 @@ define([
                           break;
                         }
                       }
-                    }                                       
+                    } else {
+                      desc.source(value, (labels) => {
+                        if (labels){
+                          for (var s = 0, slen = labels.length; s < slen; s++) {
+                            if (originalVal === labels[s]) {
+                              found = true;
+                              break;
+                            } else if (lowercaseVal === labels[s].toLowerCase()) {
+                              found = true;
+                              break;
+                            }
+                          }
+                        }
+                      });
+                    }                                      
                   } 
                   callback(found);
                 };
