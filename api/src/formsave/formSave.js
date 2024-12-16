@@ -86,7 +86,8 @@ export async function formSave(req, res) {
 
     // Save JSON data into the appropriate year folder
     const fileName = sanitize(`${getCurrentDateFilename()}_${findProjectAndInvestigator(jsonData.instance)}`).replaceAll(" ","_");
-    const jsonFilePath = path.join(jsonFolderPath, `${fileName}.json`);
+    const timestamp = Date.now(); // Generate timestamp to not override files from the same date
+    const jsonFilePath = path.join(jsonFolderPath, `${fileName}.${timestamp}.json`);
 
     try {
         const content = JSON.stringify(jsonData, null, 2);
