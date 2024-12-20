@@ -1,3 +1,7 @@
+html, body {
+  height: auto !important;
+}
+
 body{
     background-color:#f9f9fd;
 }
@@ -173,7 +177,7 @@ mat-radio-group {
 }
 
 .template-body form .runtime .field-root .answer  {
-    width: 300px;
+    width: 270px;
     background: white;
 }
 
@@ -188,11 +192,23 @@ mat-radio-group {
 
 .spreadsheetViewContainer {
   max-width: 95vw;
+  min-height: 100px !important;
 
   .ht_master.handsontable 
   .wtHolder {
-    min-height: 300px;
+    min-height: 100px;
   }
+}
+
+.spreadsheetViewContainer .fixed .wtHolder{
+  box-shadow: none !important;
+}
+
+.spreadsheetViewContainer .autocompleteEditor .wtHolder {
+  position: fixed !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  top: var(--dropdown-top, 0);
 }
 
 .element-bar .bar {
@@ -201,4 +217,8 @@ mat-radio-group {
       cursor: pointer;
       background-color: @brand-primary;
     }
+}
+
+.spreadsheetViewContainer .ht_clone_top {
+  z-index: 100;
 }
