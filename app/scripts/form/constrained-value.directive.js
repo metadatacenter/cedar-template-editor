@@ -61,6 +61,7 @@ define([
           instanceModelService.removeConstrainedValue($scope.model);
 
         }
+          $scope.$parent.onSubmit($scope.index, $scope.next);
       };
 
 
