@@ -519,8 +519,9 @@ define([
                           break;
                         }
                       }
+                      callback(found);
                     } else {
-                      desc.source(value, (labels) => {
+                      desc.source(originalVal, (labels) => {
                         if (labels){
                           for (var s = 0, slen = labels.length; s < slen; s++) {
                             if (originalVal === labels[s]) {
@@ -532,10 +533,11 @@ define([
                             }
                           }
                         }
+                        callback(found);
                       });
                     }                                      
-                  } 
-                  callback(found);
+                  } else 
+                    callback(found);
                 };
                 desc.strict = true;
                 desc.allowInvalid = false;
@@ -563,7 +565,10 @@ define([
 
                     $scope.$watchCollection(function () {
                       return results;
-                    }, updateLabels);
+                    }, function (newResults, oldResults) {
+                      if (newResults !== oldResults) // Skip initial call on initialization
+                        updateLabels();
+                    });
                   } else {
                     updateLabels();
                   }
@@ -797,6 +802,8 @@ define([
             }
           };
 
+          let pasteCounter = 0; // Counter to track the number of paste operations
+
           hooks.forEach(function (hook) {
             var checked = '';
             if (hook === 'beforeChange' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
@@ -814,6 +821,20 @@ define([
               }
 
               if (hook === 'beforeChange') {
+              }
+
+              if (hook === 'beforeValidate') {
+                // Set the cursor to working while data is being validated
+                $scope.spreadsheetDataScope.container.style.cursor = 'wait';
+                pasteCounter++;
+              }
+
+              if (hook === 'afterValidate') {                
+                pasteCounter--;
+                // Remove the working cursor after validation finishes for all the cells
+                if (pasteCounter <= 0) {
+                  $scope.spreadsheetDataScope.container.style.cursor = '';
+                }                  
               }
 
               if (hook === 'afterCreateRow') {
