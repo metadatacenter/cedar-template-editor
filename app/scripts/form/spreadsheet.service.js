@@ -6,11 +6,12 @@ define([
       angular.module('cedar.templateEditor.form.spreadsheetService', [])
           .service('SpreadsheetService', SpreadsheetService);
 
-      SpreadsheetService.$inject = ['$document', '$q','$translate', 'DataManipulationService','schemaService',
-                                    'DataUtilService',
-                                    'autocompleteService','UIMessageService'];
+      SpreadsheetService.$inject = [
+            '$document', '$q', '$translate', 'DataManipulationService', 'schemaService',
+            'DataUtilService', 'autocompleteService', 'UIMessageService', 'tooltipService', '$compile'
+    ];
 
-      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, autocompleteService,UIMessageService) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, autocompleteService,UIMessageService,tooltipService,$compile) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -811,7 +812,7 @@ define([
               checked = 'checked';
             }
 
-            hot.addHook(hook, function () {
+            hot.addHook(hook, function (index, TH) {
 
               if (hook === 'afterSelection') {
               }
@@ -821,6 +822,24 @@ define([
               }
 
               if (hook === 'beforeChange') {
+              }
+
+              if (hook === 'afterGetColHeader'){
+                // Wrap TH as an Angular element
+                var thElement = angular.element(TH);
+                // Remove any existing mouseover event listeners to avoid duplicates
+                thElement.off('mouseover');
+                var spanElement = thElement.find('span[title]');
+                var title = spanElement?.attr('title');
+                if (title) {      
+                  // Remove the title attribute to disable the default browser tooltip
+                  spanElement.removeAttr('title');      
+  
+                  // Bind the mouseover event and reuse the retrieved title
+                  thElement.on('mouseover', function(event) {
+                    tooltipService.showTooltip(event, title); // Use the existing title
+                  });
+                }
               }
 
               if (hook === 'beforeValidate') {

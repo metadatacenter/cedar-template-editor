@@ -38,6 +38,8 @@
   <script type="text/javascript" src="artifact-selector.js"></script>
 </head>
 <body cedar-switch-navbar="true" ng-cloak id="rootElement">
+
+<div ng-show="isTooltipVisible" class="tooltip" ng-bind-html="tooltipContent"></div>  
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
