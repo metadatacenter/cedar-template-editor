@@ -36,13 +36,13 @@
 
     <div class="flex" style="justify-content:flex-start;align-items:stretch">
 
-      <div class="element-bar">
+      <!--div class="element-bar">
         <div class='bar bar0'></div>
-      </div>
+      </div-->
 
-      <ul class="treeview tv" style="display:flex; flex-wrap: wrap; padding-left:0;list-style-type: none;">
+      <ul class="treeview tv" style="display:flex; flex-wrap: wrap; flex-direction: column; padding-left:0;list-style-type: none;">
 
-        <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv"
+        <li ng-repeat="item in pagesArray[pageIndex]" class="animate-fade tv card"
             ng-class="{'last':$last, 'first':$first, 'element':isElement(item), 'hidden': isHidden(item)}"
             ng-if="isExpanded() && (isField(item) || isElement(item)) || isExpanded() &&  isSectionBreak(item)">
 
