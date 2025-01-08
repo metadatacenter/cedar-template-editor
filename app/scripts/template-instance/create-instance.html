@@ -1,5 +1,10 @@
 <section class="template-container scrollable-content">
-  <div class="tophead"></div>
+  <div class="tophead">
+    <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
+      <div class="document-title" uib-tooltip="{{hc.formatDocumentTitleFull()}}">{{hc.formatDocumentTitle()}}</div>            
+      <div class="document-desciption" uib-tooltip="{{hc.formatDocumentDescription()}}">{{hc.formatDocumentDescription()}}</div>            
+    </div>
+  </div>
   <div class="template-body metadata">
     <div class="container">
       <div class="row">

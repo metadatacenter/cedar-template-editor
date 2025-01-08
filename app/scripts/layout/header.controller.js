@@ -235,6 +235,10 @@ define([
       return UIUtilService.formatTitleString($rootScope.documentTitle);
     };
 
+    vm.formatDocumentDescription = function () {
+      return UIUtilService.formatDescriptionString($rootScope.documentDescription);
+    };
+
     vm.formatDocumentTitleFull = function () {
       return UIUtilService.formatTitleStringFull($rootScope.documentTitle);
     };

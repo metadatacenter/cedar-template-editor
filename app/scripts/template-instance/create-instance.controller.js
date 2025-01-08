@@ -33,6 +33,7 @@ define([
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form['schema:name'];
+            $rootScope.documentDescription = $scope.form['schema:description'];
 
             // Initialize value recommender service
             // ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
@@ -158,6 +159,7 @@ define([
             UIUtilService.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            $rootScope.documentDescription = $scope.instance['schema:description'];
             getDetails($scope.instance['@id']);
 
 

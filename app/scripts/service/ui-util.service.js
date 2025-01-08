@@ -301,6 +301,12 @@ define([
       }
     };
 
+    service.formatDescriptionString = function (description) {
+      if (description) {
+        return description;
+      }
+    };
+
     // get the locator for the node's dom object
     service.getLocator = function (node, index, path, id) {
       var hashId = DataUtilService.getHashCode(id);
