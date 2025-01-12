@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - log_frontend_main:/log
-      - ./responses_json:/cedar-template-editor/api/responses_json
+      - ./responses_json:/srv/cedar/cedar-template-editor/api/responses_json
     environment:
       - NODE_ENV=production
       - GRAPH_API_CLIENT_SECRET=${GRAPH_API_CLIENT_SECRET}
