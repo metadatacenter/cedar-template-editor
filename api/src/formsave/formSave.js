@@ -111,11 +111,12 @@ export async function formSave(req, res) {
         // If everithing goes fine, send the email to notify the form submission
         if (response && response.webUrl)
         {
+// Disable mail as it is not working from outside the office
             // Create a new instance of the Mailer class
-            const mailer = new Mailer(response.webUrl, response.name);
+//            const mailer = new Mailer(response.webUrl, response.name);
             
             // Send the emails
-            await mailer.sendEmails();            
+//            await mailer.sendEmails();            
 
             if (response.downloadLink)
                 res.send(generateResponse(response.downloadLink, response.name));
