@@ -206,5 +206,31 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
+  },
+  {
+    "cedarType": "ext-orcid",
+    "iconClass": "fa fa-orcid",
+    "allowedInElement": true,
+    "label": "ORCID",
+    "primaryField": true,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false,
+    "allowsRequired": true
+  },
+  {
+    "cedarType": "ext-ror",
+    "iconClass": "fa fa-brands fa-orcid",
+    "allowedInElement": true,
+    "label": "ROR",
+    "primaryField": true,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false,
+    "allowsRequired": true
   }
 ]

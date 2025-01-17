@@ -226,7 +226,6 @@ define([
       $scope.showMenuPopover = false;
     };
 
-
     $scope.moreIsOpen = false;
     $scope.toggleMore = function() {
       $scope.moreIsOpen = !$scope.moreIsOpen;
