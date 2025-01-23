@@ -130,6 +130,7 @@ define([
             'type'          : response.collection[i].type,
             'source'        : controlledTermService.getLastFragmentOfUri(response.collection[i][sourceFieldName]),
             'sourceUri'     : source_uri,
+            'definitions'   : response.collection[i].definitions,
           };
           collection.push(result);
         }
@@ -145,6 +146,7 @@ define([
           'type'          : response.type,
           'source'        : controlledTermService.getLastFragmentOfUri(response[sourceFieldName]),
           'sourceUri'     : source_uri,
+          'definitions'   : response.definitions,
         };
         collection.push(result);
       }

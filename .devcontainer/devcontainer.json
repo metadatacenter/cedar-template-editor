@@ -10,7 +10,11 @@
                 "terminal.integrated.profiles.linux": { "bash": { "path": "/bin/bash" } }
             },
             "extensions": [
-                "vitest.explorer"
+                "vitest.explorer",
+                "waderyan.gitblame",
+                "donjayamanne.git-extension-pack",
+                "mhutchie.git-graph",
+                "mechatroner.rainbow-csv"
             ]
         }
     }

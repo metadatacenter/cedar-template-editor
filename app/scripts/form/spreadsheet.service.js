@@ -8,10 +8,12 @@ define([
 
       SpreadsheetService.$inject = [
             '$document', '$q', '$translate', 'DataManipulationService', 'schemaService',
-            'DataUtilService', 'autocompleteService', 'UIMessageService', 'tooltipService', '$compile'
+            'DataUtilService', 'autocompleteService', 'UIMessageService', 'tooltipService', 
+            '$compile', 'extendedAutocompleteEditor'
     ];
 
-      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, autocompleteService,UIMessageService,tooltipService,$compile) {
+      function SpreadsheetService($document, $q, $translate, DataManipulationService,schemaService, DataUtilService, 
+        autocompleteService, UIMessageService, tooltipService, $compile, extendedAutocompleteEditor) {
 
         var service = {
           serviceId     : "SpreadsheetService",
@@ -23,71 +25,6 @@ define([
 
         var dms = DataManipulationService;
 
-        var ExtendedAutocompleteEditor = Handsontable.editors.AutocompleteEditor.prototype.extend();
-
-        ExtendedAutocompleteEditor.prototype.open = function () {
-          Handsontable.editors.AutocompleteEditor.prototype.open.apply(this);
-        
-          const dropdownElement = this.htEditor.rootElement; // Dropdown container
-          const cell = this.getEditedCell(); // The cell being edited
-          
-
-          const recalculateDropdownPosition = () => {
-            const rect = cell.getBoundingClientRect();
-            const dropdownHeight = dropdownElement.offsetHeight;
-        
-            const spaceAbove = rect.top;
-            const spaceBelow = window.innerHeight - rect.bottom;
-            let dropdownTop = rect.bottom;
-          
-            if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
-              dropdownTop = rect.top - dropdownHeight;
-            }
-          
-            dropdownElement.style.setProperty('--dropdown-top', `${dropdownTop}px`);
-          };
-
-          recalculateDropdownPosition();
-        
-          let lastScrollTop = window.scrollY || document.documentElement.scrollTop;
-        
-          const adjustDropdownPosition = () => {
-            const currentScrollTop = window.scrollY || document.documentElement.scrollTop;
-        
-            const scrollDeltaY = lastScrollTop - currentScrollTop;
-        
-            // Get the value
-            const computedStyle = getComputedStyle(dropdownElement);
-            const currentTop = parseInt(computedStyle.getPropertyValue('--dropdown-top'), 10) || 0;
-            
-            dropdownElement.style.setProperty('--dropdown-top', `${currentTop + scrollDeltaY}px`);
-
-            lastScrollTop = currentScrollTop;
-          };
-               
-          // Add the scroll event listener
-          const $window = angular.element(window);
-          $window.bind('scroll', adjustDropdownPosition);
-        
-          // Observe content changes in the dropdown
-          const observer = new MutationObserver(() => {
-            recalculateDropdownPosition();
-          });
-        
-          observer.observe(dropdownElement, {
-            childList: true, // Detect added or removed child elements
-            subtree: true,   // Monitor all descendants
-            characterData: true, // Detect text content changes
-          });
-        
-          // Remove listeners and observer when the dropdown is closed
-          const originalClose = this.close.bind(this);
-          this.close = function () {
-            $window.unbind('scroll', adjustDropdownPosition);
-            observer.disconnect(); // Stop observing changes
-            originalClose();
-          };
-        };        
 
         service.customRendererCheckboxes = function (instance, td, row, col, prop, value, cellProperties) {
           var objValue = JSON.parse(value);
@@ -489,7 +426,7 @@ define([
             case 'list':
             case 'radio':
               desc.type = 'dropdown';
-              desc.editor = ExtendedAutocompleteEditor;
+              desc.editor = extendedAutocompleteEditor;
               desc.validator = Handsontable.AutocompleteValidator;
               desc.strict = true;
               desc.allowInvalid = false;
@@ -497,7 +434,7 @@ define([
               break;
             case 'textfield':
               if (isConstrained(node)) {
-                desc.editor = ExtendedAutocompleteEditor;
+                desc.editor = extendedAutocompleteEditor;
                 desc.type = 'autocomplete';
                 desc.trimDropdown = true;
                 desc.nodeId = dms.getId(node);
@@ -512,10 +449,7 @@ define([
                     const labels = hot?.getCellMeta(this.row, this.col)?.labels;                    
                     if (labels){
                       for (var s = 0, slen = labels.length; s < slen; s++) {
-                        if (originalVal === labels[s]) {
-                          found = true;
-                          break;
-                        } else if (lowercaseVal === labels[s].toLowerCase()) {
+                        if (lowercaseVal === labels[s].toLowerCase()) {
                           found = true;
                           break;
                         }
@@ -547,8 +481,9 @@ define([
                   var query = query || '*';
                   var results = autocompleteService.initResults(desc.nodeId, query);
 
-                  const updateLabels = function() {
-                    let labels = order(results).map(function (a) {
+                  const updateOptions = function() {
+                    results = order(results);
+                    let labels = results.map(function (a) {
                       return a.label;
                     });
                     const hot = $scope.spreadsheetContext?.table;
@@ -556,7 +491,7 @@ define([
                     if (activeEditor) {                      
                       hot.setCellMeta(activeEditor.row, activeEditor.col, 'labels', labels);  
                     }                    
-                    process_callback(labels);
+                    process_callback(results);
                   };  
 
 
@@ -568,10 +503,10 @@ define([
                       return results;
                     }, function (newResults, oldResults) {
                       if (newResults !== oldResults) // Skip initial call on initialization
-                        updateLabels();
+                        updateOptions();
                     });
                   } else {
-                    updateLabels();
+                    updateOptions();
                   }
                 };
 

@@ -1,7 +1,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.tooltipService', [])
+  angular.module('cedar.templateEditor.form.spreadsheet.tooltipService', [])
       .service('tooltipService', tooltipService);
 
   tooltipService.$inject = ['$sce', '$document'];
