@@ -456,15 +456,18 @@ define([
                       }
                       callback(found);
                     } else {
-                      desc.source(originalVal, (labels) => {
-                        if (labels){
-                          for (var s = 0, slen = labels.length; s < slen; s++) {
-                            if (originalVal === labels[s]) {
-                              found = true;
-                              break;
-                            } else if (lowercaseVal === labels[s].toLowerCase()) {
-                              found = true;
-                              break;
+                      desc.source(originalVal, (results) => {
+                        if (results){
+                          for (var s = 0, slen = results.length; s < slen; s++) {
+                            let label = results[s].label || results[s];
+                            if (label) {
+                              if (originalVal === label) {
+                                found = true;
+                                break;
+                              } else if (lowercaseVal === label.toLowerCase()) {
+                                found = true;
+                                break;
+                              }
                             }
                           }
                         }
@@ -921,7 +924,7 @@ define([
             var tableDataSource = getTableDataSource(context, $scope, columnHeaderOrder);
             var colHeaders = getColHeaders($element, columnHeaderOrder, $scope, isField());
             var colHeaderNames = getColHeaderNames($element, columnHeaderOrder, $scope, isField());
-            var minRows = dms.getMinItems($element) || 0;
+            var minRows = Math.max(10, dms.getMinItems($element));
             var maxRows = dms.getMaxItems($element) || Number.POSITIVE_INFINITY;
             var config = {
               data              : tableData,
@@ -1044,7 +1047,83 @@ define([
             var context = scope.spreadsheetContext;
             var hot = context.getTable();
 
-            // To avoid crash when validating cells and the viwport is not at the begining
+            // A utility class to manage a queue of validators
+            class ValidatorsQueue {
+              constructor() {
+                this.validatorsInQueue = 0; // Number of validators currently in the queue
+                this.valid = true;         // Overall validation state
+                this.resolved = false;     // Whether the queue has been resolved
+                this.onQueueEmpty = () => {}; // Callback to be executed when the queue is empty
+              }
+
+              // Adds a validator to the queue
+              addValidatorToQueue() {
+                this.validatorsInQueue++;
+                this.resolved = false;
+              }
+
+              // Removes a validator from the queue and checks if the queue is empty
+              removeValidatorFromQueue() {
+                this.validatorsInQueue = Math.max(0, this.validatorsInQueue - 1);
+                this.checkIfQueueIsEmpty();
+              }
+
+              // Checks if the queue is empty and triggers the callback if it is
+              checkIfQueueIsEmpty() {
+                if (this.validatorsInQueue === 0 && !this.resolved) {
+                  this.resolved = true;
+                  this.onQueueEmpty(this.valid);
+                }
+              }
+            }
+
+            // Function to validate all cells in the "hot" object
+            hot.validateCells = function(callback) {
+              // Initialize the validator queue and set the callback
+              const validatorQueue = new ValidatorsQueue();
+              validatorQueue.onQueueEmpty = callback;
+
+              // Iterate through each row in the data grid
+              for (let rowIndex = 0; rowIndex < hot.countRows(); rowIndex++) {
+                // Determine if the row contains only empty fields
+                let allFieldsEmpty = rowIndex > 0; // At least one sample is mandatory
+                for (let colIndex = 0; colIndex < hot.countCols() && allFieldsEmpty; colIndex++) {
+                  allFieldsEmpty = !hot.getDataAtCell(rowIndex, colIndex);
+                }
+
+                // If the row is not empty, validate its cells
+                if (!allFieldsEmpty) {
+                  for (let colIndex = 0; colIndex < hot.countCols(); colIndex++) {
+                    validatorQueue.addValidatorToQueue();
+
+                    // Perform validation for the current cell
+                    hot.validateCell(
+                      hot.getDataAtCell(rowIndex, colIndex), 
+                      hot.getCellMeta(rowIndex, colIndex), 
+                      (result) => {
+                        if (typeof result !== 'boolean') {
+                          throw new Error('Validation error: result is not boolean');
+                        }
+
+                        // Update the overall validation state if a cell is invalid
+                        if (!result) {
+                          validatorQueue.valid = false;
+                        }
+
+                        // Remove the validator from the queue
+                        validatorQueue.removeValidatorFromQueue();
+                      },
+                      'validateCells'
+                    );
+                  }
+                }
+              }
+
+              // Final check if the queue is empty
+              validatorQueue.checkIfQueueIsEmpty();
+            };
+
+            // To avoid the crash when validating cells and the viewport is not at the begining
             hot.selectCell(0, 0);
 
             hot.validateCells((valid) => {
