@@ -28,7 +28,7 @@ const writeFileAsync = promisify(fs.writeFile);
 function findProjectAndInvestigator(jsonData) {
 
     const projectName = jsonData['Project Name']?.['@value'] || '';
-    const principalInvestigator = jsonData['IJC_PI_contact_info']?.Name?.['@value'] || '';
+    const principalInvestigator = jsonData['PI']?.Name?.['@value'] || '';
    
     return `${projectName}-${principalInvestigator}`;
 }
