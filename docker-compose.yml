@@ -1,5 +1,6 @@
 services:
   frontend-main:
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
