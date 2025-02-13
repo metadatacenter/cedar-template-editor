@@ -159,7 +159,6 @@ ENV LOGDIR /log
 RUN mkdir -p "$LOGDIR"
 VOLUME $LOGDIR
 
-EXPOSE 80
 
 CMD ["bash", "-c", "node api/src/index.js & nginx -g 'daemon off;'"]
 

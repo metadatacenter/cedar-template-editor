@@ -141,8 +141,11 @@ define([
             }
             let link = ''; 
             if (value['@id'])
-              link = `<li class="material-icons md-48 md-dark">
-                        <a href="${value['@id']}" target="_blank">contact_support</a>
+              link = `<li class="material-icons md-48 md-dark ui-select-container">
+                        <a href="${value['@id']}" target="_blank">
+                          <span class="controlledTerm fa fa-share-alt-square fa-rotate-90"></span> 
+                        </a>
+                        &nbsp;
                       </li>`;
             TD.innerHTML = `${link}${label}`;
           }

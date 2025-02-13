@@ -56,7 +56,7 @@ define([
 
         // may need to add more rows to the model
         var addMoreRows = function ($scope, row) {
-          if ($scope.model.length <= row) {
+          while ($scope.model.length <= row) {
             if ($scope.spreadsheetContext.isField()) {
               // this is a field
               var maxItems = dms.getMaxItems($scope.field);
