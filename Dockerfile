@@ -6,6 +6,9 @@ ENV NGINX_VERSION   1.23.4
 ENV NJS_VERSION     0.7.11
 ENV PKG_RELEASE     1~bullseye 
 
+ENV CEDAR_FRONTEND_local_UI_HOST="localhost"
+ENV CEDAR_FRONTEND_local_REST_HOST="metadatacenter.org"
+
 RUN set -x \
 # create nginx user/group first, to be consistent throughout docker variants
     && addgroup --system --gid 101 nginx \
@@ -175,7 +178,6 @@ ARG UID
 ARG GID
 ARG USER
 
-ENV CEDAR_HOST $HOSTNAME
 ENV CEDAR_FRONTEND_BEHAVIOR="develop"
 
 # Install Vim, Git and other necessary packages

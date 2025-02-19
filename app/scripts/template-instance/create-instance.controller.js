@@ -36,7 +36,7 @@ define([
             $rootScope.documentDescription = $scope.form['schema:description'];
 
             // Initialize value recommender service
-            // ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
+            ValueRecommenderService.init(UrlService.fixSingleSlashHttps($routeParams.templateId), $scope.form);
 
           },
           function (err) {
@@ -171,7 +171,7 @@ define([
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
                   const templateId = instanceResponse.data['schema:isBasedOn'];
-                  // ValueRecommenderService.init(templateId, $scope.form);
+                  ValueRecommenderService.init(templateId, $scope.form);
                   UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
@@ -208,44 +208,32 @@ define([
       $scope.disableSaveButton();      
       $scope.startSending();
       $scope.$apply();
-      
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/api/formsave");
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          $scope.endSending();
-          if (xhr.status === 200) {
-            $scope.setResponseData(xhr.response);
-          } else {
-            $scope.setResponseData(`<div style="color:red"> Error submitting form: ${xhr.response} </div>`);
-            console.error("Error submitting form:", xhr.response);
+
+      const doSharepointUpdate = function() {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/api/formsave");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4) {
+            $scope.endSending();
+            if (xhr.status === 200) {
+              $scope.setResponseData(xhr.response);
+            } else {
+              $scope.setResponseData(`<div style="color:red"> Error submitting form: ${xhr.response} </div>`);
+              console.error("Error submitting form:", xhr.response);
+            }
+            $scope.enableSaveButton();
           }
-          $scope.enableSaveButton();
-        }
-      };
-      // Combine template and instance into an array
-      let data = {
-        instance: $scope.instance,
-        template: $rootScope.jsonToSave
-      };
-      xhr.send(JSON.stringify(data, null, 2));    
-    };
+        };
+        // Combine template and instance into an array
+        let data = {
+          instance: $scope.instance,
+          template: $rootScope.jsonToSave
+        };
+        xhr.send(JSON.stringify(data, null, 2));   
+      }
 
-
-    // Stores the data (instance) into the databases
-    $scope.saveInstance = async function () {
-
-      $scope.setResponseData('')
-      $rootScope.$broadcast('submitForm');
-
-      // wait for the validation to finish
-      
-      //}, 10);       
-    };
-
-/*
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
@@ -254,17 +242,18 @@ define([
         UIUtilService.setDirty(false);
         $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
 
-        $timeout(function () {
-          var newId = response.data['@id'];
-          $location.path(FrontendUrlService.getInstanceEdit(newId));
-        });
+        // $timeout(function () {
+        //   var newId = response.data['@id'];
+        //   $location.path(FrontendUrlService.getInstanceEdit(newId));
+        // });
 
-        $timeout(function () {
-          // don't show validation errors until after any redraws are done
-          // thus, call this within a timeout
-          $rootScope.$broadcast('submitForm');
-        }, 1000);
+        // $timeout(function () {
+        //   // don't show validation errors until after any redraws are done
+        //   // thus, call this within a timeout
+        //   $rootScope.$broadcast('submitForm');
+        // }, 1000);
 
+        doSharepointUpdate();
       };
 
       const doUpdate = function (response) {
@@ -272,11 +261,11 @@ define([
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
         $rootScope.$broadcast('submitForm');
-        owner.enableSaveButton();
+
+        doSharepointUpdate();
       };
 
-      this.disableSaveButton();
-      const owner = this;
+
 
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
@@ -308,13 +297,15 @@ define([
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
-                      owner.enableSaveButton();
+                      $scope.enableSaveButton();
+                      $scope.endSending();
                     }
                 );
 
               } else {
                 UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
-                owner.enableSaveButton();
+                $scope.enableSaveButton();
+                $scope.endSending();
               }
             }
         );
@@ -328,12 +319,22 @@ define([
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
-              owner.enableSaveButton();
+              $scope.enableSaveButton();
+              $scope.endSending();
             }
         );
       }
-   };
-*/
+       
+    };
+
+
+    // Stores the data (instance) into the databases
+    $scope.saveInstance = async function () {
+
+      $scope.setResponseData('')
+      $rootScope.$broadcast('submitForm');   
+    };
+
 
 //*********** ENTRY POINT
 
@@ -493,4 +494,5 @@ define([
 
   }
 
-});
+})
+;

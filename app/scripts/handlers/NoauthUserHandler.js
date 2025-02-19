@@ -9,7 +9,7 @@ function NoauthUserHandler() {
   };
 
   this.getToken = function () {
-    return '7641a1862ce01b63a455029ae713c8bd9289e49c52bdbf388f30a19d2007473a';
+    return 'c515e38268feb00dd6265cc2009877f59f5868838735eb0cd2eccb93340ea8c7';
   };
 
   this.getRefreshToken = function () {
@@ -17,18 +17,10 @@ function NoauthUserHandler() {
   };
 
   this.getParsedToken = function () {
-    //console.log('NoauthUserHandler:getParsedToken');
     return {
       "name": "Unauthenticated User",
-      "sub": "111-2222-33333",
-      "email": "user@domain.edu",
-      "realm_access": {
-        "roles": [
-          "virtual role 1",
-          "virtual role 2",
-          "virtual role 3"
-        ]
-      }
+      "sub": "a0914b48-1ea9-4e1b-a5b2-cf194530b1ba",
+      "email": "webmaster@carrerasresearch.org"
     }
   };
 
@@ -41,7 +33,6 @@ function NoauthUserHandler() {
   };
 
   this.initUserHandler = function (successCallback, failureCallback) {
-    //console.log("NoauthUserHandler:init()");
     successCallback(true);
   };
 }

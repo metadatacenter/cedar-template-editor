@@ -756,6 +756,10 @@ define([
               }
 
               if (hook === 'afterChange') {
+                // Add rows before updating the model if needed
+                let row = index[0][0];
+                addMoreRows($scope,row);
+                $scope.spreadsheetDataScope.tableDataSource = getTableDataSource($scope.spreadsheetContext, $scope, columnHeaderOrder);
                 updateDataModel($scope, $element);
               }
 

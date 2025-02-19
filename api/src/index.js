@@ -47,7 +47,6 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));  // for form 
 
 
 // Serve static files from the templates folder
-app.use('/templates', express.static(TEMPLATES_FOLDER));
 
 // API endpoint to save form data as an Excel file
 app.get('/users', async (req, res) => {

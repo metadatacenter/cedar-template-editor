@@ -334,21 +334,21 @@
     },
     "INSTANCE": {
       "create": {
-        "success": "The metadata have been created.",
-        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "success": "The form has been submitted.",
+        "error": "There was an error while submitting the form!<br /><br />VIEW TECHNICAL DETAILS!",
         "homeFolder": "Couldn't save to current location. Saved to your workspace."
       },
       "update": {
-        "success": "The metadata have been saved.",
-        "error": "There was an error while saving the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The form has been updated.",
+        "error": "There was an error while submitting the form!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!",
+        "error": "There was an error while loading the form!<br /><br />VIEW TECHNICAL DETAILS!",
         "readPermission": "You do not have permission to read the resource."
       },
       "delete": {
-        "success": "The metadata have been deleted.",
-        "error": "There was an error while deleting the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The form responses have been deleted.",
+        "error": "There was an error while deleting the form responses!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "RESOURCE": {
