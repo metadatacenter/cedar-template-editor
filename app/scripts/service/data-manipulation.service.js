@@ -1144,7 +1144,7 @@ define([
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType === "link") {
+          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror") {
             // Define the @id field
             var idField = {};
             idField.type = "string";
@@ -1473,7 +1473,7 @@ define([
           // usually it is in  @value
           let fieldValue = "@value";
           // but these three put it @id
-          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field)) {
+          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field) || service.isOrcid(field) || service.isRor(field)) {
             fieldValue = "@id";
           }
           return fieldValue;
@@ -1484,7 +1484,7 @@ define([
           // the printable value is usually in @value
           let location = "@value";
           // but a link puts it in @id
-          if (service.isLinkType(field)) {
+          if (service.isLinkType(field) || service.isOrcid(field) || service.isRor(field)) {
             location = "@id";
             // and the constraint puts it rdfs:label
           } else if (service.hasValueConstraint(field)) {

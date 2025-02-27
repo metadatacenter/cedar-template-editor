@@ -209,28 +209,28 @@
   },
   {
     "cedarType": "ext-orcid",
-    "iconClass": "fa fa-orcid",
+    "iconClass": "ai ai-orcid",
     "allowedInElement": true,
     "label": "ORCID",
     "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false,
-    "allowsMultiple": false,
+    "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
+    "hasInstanceTerm": true,
     "allowsRequired": true
   },
   {
     "cedarType": "ext-ror",
-    "iconClass": "fa fa-brands fa-orcid",
+    "iconClass": "ai ai-ror",
     "allowedInElement": true,
     "label": "ROR",
     "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false,
-    "allowsMultiple": false,
+    "allowsMultiple": true,
     "allowsValueRecommendation": false,
-    "hasInstanceTerm": false,
+    "hasInstanceTerm": true,
     "allowsRequired": true
   }
 ]

@@ -52,10 +52,10 @@
       "youtube": {
         "NAME": "YouTube"
       },
-      "orcid": {
+      "ext-orcid": {
         "NAME": "ORCID"
       },
-      "ror": {
+      "ext-ror": {
         "NAME": "ROR"
       }
     }
