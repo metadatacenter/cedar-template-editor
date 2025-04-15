@@ -2,11 +2,15 @@
   <div class="template-body metadata">
     <div class="container">
       <div class="row">
-        <div class="right-body col-sm-10 col-sm-offset-1 c ">
+        <div class="right-body col-sm-16 c ">
+<!--        <div class="right-body col-sm-16 col-sm-offset-1 c ">-->
 
-          <!-- build the form -->
-          <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"
-              path="0"></form-directive>
+<!--           build the form-->
+<!--          <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"-->
+<!--              path="0"></form-directive>-->
+          <section class="template-container scrollable-content" ng-controller="CreateInstanceController">
+            <cedar-embeddable-editor/>
+          </section>
 
           <!-- errors and edit actions -->
           <div class="edit-actions" ng-hide="$root.isEmpty(form)">
@@ -25,7 +29,7 @@
               </ul>
             </div>
 
-            <div ng-if="canWrite()" class="flex-right">
+            <div ng-if="canWrite()" class="flex-right" style="width:95%;">
               <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
                   ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
               </button>
@@ -40,35 +44,35 @@
           </div>
 
           <!-- document preview -->
-          <div id="document-preview-json">
-            <uib-accordion id="outputJSON" close-others="true">
-              <div uib-accordion-group is-open="openStatusJSONLD" class="panel-default">
-                <uib-accordion-heading>
-                  <i class="cedar-svg-rdf1"></i> JSON-LD <i class="pull-right glyphicon"
-                    ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>
-                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyJson2Clipboard(cleanForm() | json)" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
-                </uib-accordion-heading>
-                <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>
-              </div>
-              <div uib-accordion-group is-open="openStatusRDF" class="panel-default">
-                <uib-accordion-heading>
-                  <i class="cedar-svg-rdf"></i> RDF <i class="pull-right glyphicon"
-                    ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>
-                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyRdf2Clipboard(RDF)" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>
-                </uib-accordion-heading>
-                <div ng-if="RDF">
-                  <pre id='form-json-preview-rdf'>{{RDF}}</pre>
-                </div>
-                <div ng-if="!RDF && RDFError">
-                  <div class="center warning">
-                    {{RDFError}}
-                  </div>
-                </div>
-              </div>
-            </uib-accordion>
-          </div>
+<!--          <div id="document-preview-json">-->
+<!--            <uib-accordion id="outputJSON" close-others="true">-->
+<!--              <div uib-accordion-group is-open="openStatusJSONLD" class="panel-default">-->
+<!--                <uib-accordion-heading>-->
+<!--                  <i class="cedar-svg-rdf1"></i> JSON-LD <i class="pull-right glyphicon"-->
+<!--                    ng-class="{'glyphicon-chevron-down': openStatusJSONLD, 'glyphicon-chevron-right': !openStatusJSONLD}"></i>-->
+<!--                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyJson2Clipboard(cleanForm() | json)" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>-->
+<!--                </uib-accordion-heading>-->
+<!--                <pre id='form-json-preview'>{{ cleanForm() | json }}</pre>-->
+<!--              </div>-->
+<!--              <div uib-accordion-group is-open="openStatusRDF" class="panel-default">-->
+<!--                <uib-accordion-heading>-->
+<!--                  <i class="cedar-svg-rdf"></i> RDF <i class="pull-right glyphicon"-->
+<!--                    ng-class="{'glyphicon-chevron-down': openStatusRDF, 'glyphicon-chevron-right': !openStatusRDF}"></i>-->
+<!--                  <i class="fa fa-clipboard copy-to-clipboard" ng-click="$event.preventDefault(); $event.stopPropagation(); copyRdf2Clipboard(RDF)" uib-tooltip="{{'GENERIC.CopyToClipboard' | translate}}"/>-->
+<!--                </uib-accordion-heading>-->
+<!--                <div ng-if="RDF">-->
+<!--                  <pre id='form-json-preview-rdf'>{{RDF}}</pre>-->
+<!--                </div>-->
+<!--                <div ng-if="!RDF && RDFError">-->
+<!--                  <div class="center warning">-->
+<!--                    {{RDFError}}-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </uib-accordion>-->
+<!--          </div>-->
 
-          <ng-include src="'scripts/layout/template-yaml-preview.html'"></ng-include>
+<!--          <ng-include src="'scripts/layout/template-yaml-preview.html'"></ng-include>-->
 
 
         </div>
