@@ -51,6 +51,12 @@
       },
       "youtube": {
         "NAME": "YouTube"
+      },
+      "ext-orcid": {
+        "NAME": "ORCID"
+      },
+      "ext-ror": {
+        "NAME": "ROR"
       }
     }
   },

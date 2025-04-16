@@ -206,5 +206,31 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
+  },
+  {
+    "cedarType": "ext-orcid",
+    "iconClass": "ai ai-orcid",
+    "allowedInElement": true,
+    "label": "ORCID",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true,
+    "allowsRequired": true
+  },
+  {
+    "cedarType": "ext-ror",
+    "iconClass": "ai ai-ror",
+    "allowedInElement": true,
+    "label": "ROR",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true,
+    "allowsRequired": true
   }
 ]

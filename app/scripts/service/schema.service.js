@@ -591,6 +591,16 @@ define([
       return service.getInputType(node) === 'page-break';
     };
 
+    // is this an orcid field?
+    service.isOrcid = function (node) {
+      return (service.getInputType(node) === 'ext-orcid');
+    };
+
+    // is this a ror field?
+    service.isRor = function (node) {
+      return (service.getInputType(node) === 'ext-ror');
+    };
+
     // get order array
     service.getOrder = function (node) {
       if (node) return service.schemaOf(node)._ui.order;
