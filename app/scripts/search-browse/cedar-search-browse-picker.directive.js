@@ -1660,12 +1660,12 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  if (CedarUser.useMetadataEditorV2()) {
-                    const url = FrontendUrlService.eeEditInstance(resource['@id']);
-                    let win = $window.open(url, '_blank');
-                  } else {
-                    $location.path(FrontendUrlService.getInstanceEdit(id));
-                  }
+                  // if (CedarUser.useMetadataEditorV2()) {
+                  //   const url = FrontendUrlService.eeEditInstance(resource['@id']);
+                  //   let win = $window.open(url, '_blank');
+                  // } else {
+                  $location.path(FrontendUrlService.getInstanceEdit(id));
+                  // }
                   break;
                 case CONST.resourceType.FIELD:
                   $location.path(FrontendUrlService.getFieldEdit(id));
