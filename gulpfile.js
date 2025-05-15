@@ -101,6 +101,11 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
       .pipe(gulp.dest('app/config/'));
   done();
+  gulp.src(['app/config/src/embeddable-editor-config.json'])
+      .pipe(replace('terminologyServerIntegratedSearchUrl', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
+      .pipe(replace('ceeIRIPrefixUrl', 'https://repo.' + cedarRestHost + '/'))
+      .pipe(gulp.dest('app/config/'));
+  done();
 });
 
 // Task to set up tracking
