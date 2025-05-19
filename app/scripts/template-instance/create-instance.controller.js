@@ -228,6 +228,7 @@ define([
         UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
 
         //$rootScope.$broadcast("form:clean");
+
         UIUtilService.setDirty(false);
         $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
 
@@ -278,6 +279,7 @@ define([
                 (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
               doSave(response);
+              UIUtilService.setDirty(false);
             },
             function (err) {
 
@@ -309,6 +311,7 @@ define([
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               doUpdate(response);
+              UIUtilService.setDirty(false);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
@@ -430,9 +433,6 @@ define([
     $timeout(() => {
       const cee = document.querySelector('cedar-embeddable-editor');
       if (!cee) return;
-      cee.addEventListener('change', event => {
-        UIUtilService.setDirty(true);
-      });
       cee.addEventListener('change', event => {
         UIUtilService.setDirty(true);
       });
