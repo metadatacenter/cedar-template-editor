@@ -23,7 +23,6 @@ define([
     let vm = this;
     vm.useCee = CedarUser.useMetadataEditorV2();
 
-    console.log('Use CEE', vm.useCee);
     if(vm.useCee){
       $scope.ceeConfig = {};
       $scope.ceeConfig = CeeConfigService.getConfig();
@@ -31,7 +30,6 @@ define([
         let editorElement = document.querySelector('cedar-embeddable-editor');
         if (editorElement) {
           editorElement.config = $scope.ceeConfig;
-          console.log('Editor config set');
         }}, 0);
     }
 
@@ -187,7 +185,6 @@ define([
 
                   if(vm.useCee) {
                     const cee = document.querySelector('cedar-embeddable-editor');
-                    console.log('CEE in get Instance', cee);
                     cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
                   }
 
@@ -199,7 +196,6 @@ define([
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
                 function (err) {
-                  console.log('EROL', err);
                   // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
                   const message = (err.data.errorKey === 'noReadAccessToArtifact') ? $translate.instant(
                       'SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
