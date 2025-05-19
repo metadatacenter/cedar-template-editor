@@ -58,7 +58,6 @@ define([
     };
 
     $scope.ceeConfig = {};
-
     $scope.ceeConfig = CeeConfigService.getConfig();
     $timeout(function() {
       let editorElement = document.querySelector('cedar-embeddable-editor');
@@ -165,8 +164,8 @@ define([
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
-            ValidationService.checkValidation();
             UIUtilService.instanceToSave = $scope.instance;
+            ValidationService.checkValidation();
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
@@ -383,7 +382,6 @@ define([
       return Object.keys(value).length;
     };
 
-
 // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
       $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
@@ -418,6 +416,17 @@ define([
       }
     };
 
+    $timeout(() => {
+      const cee = document.querySelector('cedar-embeddable-editor');
+      if (!cee) return;
+      cee.addEventListener('change', event => {
+        UIUtilService.setDirty(true);
+      });
+      cee.addEventListener('change', event => {
+        UIUtilService.setDirty(true);
+      });
+    }, 0);
+
 
 // // open the airr submission modal
 // $scope.flowModalVisible = false;
@@ -427,5 +436,5 @@ define([
 // };
 
   }
-})
-;
+});
+
