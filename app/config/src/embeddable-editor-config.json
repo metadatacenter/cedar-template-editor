@@ -1,0 +1,29 @@
+{ "showTemplateRenderingRepresentation": false,
+  "showAllMultiInstanceValues": false,
+  "showDataQualityReport": true,
+  "showHeader": false,
+  "showFooter": false,
+  "showTemplateDescription": false,
+
+  "terminologyIntegratedSearchUrl": "terminologyServerIntegratedSearchUrl",
+  "expandedInstanceDataFull": false,
+  "showInstanceDataCore": false,
+  "expandedInstanceDataCore": false,
+
+  "showMultiInstanceInfo": false,
+  "expandedMultiInstanceInfo": false,
+  "expandedDataQualityReport": false,
+  "languageMapPathPrefix": "/assets/i18n-cee/",
+  "defaultLanguage": "en",
+  "fallbackLanguage": "en",
+
+  "iriPrefix": "ceeIRIPrefixUrl",
+  "bioPortalPrefix": "https://bioportal.bioontology.org/ontologies/",
+  "orcidPrefix": "https://orcid.org/",
+  "rorPrefix": "https://ror.org/",
+
+  "collapseStaticComponents": true,
+  "showStaticText": true,
+  "readOnlyMode": false,
+  "hideEmptyFields": false
+}

@@ -1,6 +1,6 @@
 define([
   'angular',
-  'json!third_party_components/cedar-embeddable-editor/embeddable-editor-config.json'
+  'json!config/embeddable-editor-config.json'
 ], function (angular, config) {
   angular.module('cedar.templateEditor.service.ceeConfigService', [])
       .service('CeeConfigService', CeeConfigService);
