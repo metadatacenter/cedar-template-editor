@@ -6,11 +6,22 @@
 <!--        <div class="right-body col-sm-16 col-sm-offset-1 c ">-->
 
 <!--           build the form-->
-<!--          <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"-->
-<!--              path="0"></form-directive>-->
-          <section class="template-container scrollable-content" ng-controller="CreateInstanceController">
-            <cedar-embeddable-editor/>
+         <div ng-controller="CreateInstanceController as vm">
+          <form-directive
+              ng-if="!vm.useCee"
+              form="form"
+              model="instance"
+              page-index="pageIndex"
+              is-edit-data="isEditData"
+              path="0">
+          </form-directive>
+
+          <section
+              ng-if="vm.useCee"
+              class="template-container scrollable-content">
+            <cedar-embeddable-editor ng-if="vm.useCee"></cedar-embeddable-editor>
           </section>
+        </div>
 
           <!-- errors and edit actions -->
           <div class="edit-actions" ng-hide="$root.isEmpty(form)">

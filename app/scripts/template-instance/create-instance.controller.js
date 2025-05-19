@@ -20,14 +20,31 @@ define([
                                     ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService,
                                     CedarModelTypescriptLibrary, CeeConfigService) {
 
+    let vm = this;
+    vm.useCee = CedarUser.useMetadataEditorV2();
+
+    console.log('Use CEE', vm.useCee);
+    if(vm.useCee){
+      $scope.ceeConfig = {};
+      $scope.ceeConfig = CeeConfigService.getConfig();
+      $timeout(function() {
+        let editorElement = document.querySelector('cedar-embeddable-editor');
+        if (editorElement) {
+          editorElement.config = $scope.ceeConfig;
+          console.log('Editor config set');
+        }}, 0);
+    }
+
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate(UrlService.fixSingleSlashHttps($routeParams.templateId)),
           function (response) {
-            let cee = document.querySelector('cedar-embeddable-editor');
-            if(response.data){
-              cee.templateObject = response.data;
+            if(vm.useCee){
+              let cee = document.querySelector('cedar-embeddable-editor');
+              if(response.data){
+                cee.templateObject = response.data;
+              }
             }
             $scope.form = response.data;
             UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
@@ -56,14 +73,6 @@ define([
                 'GENERIC.Ok');
           });
     };
-
-    $scope.ceeConfig = {};
-    $scope.ceeConfig = CeeConfigService.getConfig();
-    $timeout(function() {
-      let editorElement = document.querySelector('cedar-embeddable-editor');
-      if (editorElement) {
-        editorElement.config = $scope.ceeConfig;
-      }}, 0);
 
     $scope.details;
     $scope.cannotWrite;
@@ -170,15 +179,17 @@ define([
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
 
-            const cee = document.querySelector('cedar-embeddable-editor');
-
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
 
-                  cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
+                  if(vm.useCee) {
+                    const cee = document.querySelector('cedar-embeddable-editor');
+                    console.log('CEE in get Instance', cee);
+                    cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
+                  }
 
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
@@ -188,6 +199,7 @@ define([
                   UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
                 },
                 function (err) {
+                  console.log('EROL', err);
                   // UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
                   const message = (err.data.errorKey === 'noReadAccessToArtifact') ? $translate.instant(
                       'SERVER.TEMPLATE.load.error-template') : $translate.instant('SERVER.TEMPLATE.load.error');
@@ -250,21 +262,24 @@ define([
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
 
-      const cee = document.querySelector('cedar-embeddable-editor');
-      const instance = cee.currentMetadata;
+      if(vm.useCee){
+        const cee = document.querySelector('cedar-embeddable-editor');
+        $scope.instance = cee.currentMetadata;
+      }
 
-      if (instance['@id'] === undefined) {
+
+      if ($scope.instance['@id'] === undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-        instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
+        $scope.instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
         // Create fields that will store information used by the UI
-        instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
-        instance['schema:description'] = $scope.form['schema:description'] + $translate.instant("GENERATEDVALUE.instanceDescription");
+        $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant("GENERATEDVALUE.instanceDescription");
 
         // Make create instance call
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(
-                (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), instance),
+                (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
               doSave(response);
             },
@@ -272,7 +287,7 @@ define([
 
               if (err.data.errorKey === "noWriteAccessToFolder") {
                 AuthorizedBackendService.doCall(
-                    TemplateInstanceService.saveTemplateInstance(CedarUser.getHomeFolderId(), instance),
+                    TemplateInstanceService.saveTemplateInstance(CedarUser.getHomeFolderId(), $scope.instance),
                     function (response) {
 
                       doSave(response);
@@ -295,7 +310,7 @@ define([
       // Update instance
       else {
         AuthorizedBackendService.doCall(
-            TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], instance),
+            TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               doUpdate(response);
             },
