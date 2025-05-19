@@ -49,9 +49,10 @@ define([
     };
 
     // validate the json that will be saved
-    service.checkValidation = function () {
-
-      let node = jQuery.extend(true, {}, $rootScope.jsonToSave);
+    service.checkValidation = function (data) {
+      const cee = document.querySelector('cedar-embeddable-editor');
+      let node = jQuery.extend(true, {}, data);
+      // let node = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (node) {
         dms.stripTmps(node);
         dms.updateKeys(node);

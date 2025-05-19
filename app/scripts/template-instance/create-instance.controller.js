@@ -164,8 +164,8 @@ define([
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
-            ValidationService.checkValidation();
             UIUtilService.instanceToSave = $scope.instance;
+            ValidationService.checkValidation($scope.instance);
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             getDetails($scope.instance['@id']);
@@ -237,6 +237,7 @@ define([
       };
 
       const doUpdate = function (response) {
+        $scope.doValidation();
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
