@@ -1601,10 +1601,10 @@ define([
             const resource = value || getSelected();
             if (resource) {
               let url = null;
-              if (CedarUser.useMetadataEditorV2()) {
-                url = FrontendUrlService.eeCreateInstance(resource['@id'], vm.getFolderId());
-                let win = $window.open(url, '_blank');
-              } else {
+              // if (CedarUser.useMetadataEditorV2()) {
+              //   url = FrontendUrlService.ceeCreateInstance(resource['@id'], vm.getFolderId());
+              //   let win = $window.open(url, '_blank');
+              // } else {
                 url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
                 // TODO exceptionally painful for users if we turn this on
                 // if (vm.getResourcePublicationStatus(resource)  == CONST.publication.DRAFT) {
@@ -1620,7 +1620,7 @@ define([
                 //   $location.url(url);
                 // }
                 $location.url(url);
-              }
+              // }
             }
           }
 
@@ -1660,12 +1660,12 @@ define([
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  if (CedarUser.useMetadataEditorV2()) {
-                    const url = FrontendUrlService.eeEditInstance(resource['@id']);
-                    let win = $window.open(url, '_blank');
-                  } else {
-                    $location.path(FrontendUrlService.getInstanceEdit(id));
-                  }
+                  // if (CedarUser.useMetadataEditorV2()) {
+                  //   const url = FrontendUrlService.eeEditInstance(resource['@id']);
+                  //   let win = $window.open(url, '_blank');
+                  // } else {
+                  $location.path(FrontendUrlService.getInstanceEdit(id));
+                  // }
                   break;
                 case CONST.resourceType.FIELD:
                   $location.path(FrontendUrlService.getFieldEdit(id));

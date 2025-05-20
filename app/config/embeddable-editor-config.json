@@ -1,6 +1,6 @@
 { "showTemplateRenderingRepresentation": false,
   "showAllMultiInstanceValues": false,
-  "showDataQualityReport": true,
+  "showDataQualityReport": false,
   "showHeader": false,
   "showFooter": false,
   "showTemplateDescription": false,
@@ -9,6 +9,7 @@
   "expandedInstanceDataFull": false,
   "showInstanceDataCore": false,
   "expandedInstanceDataCore": false,
+
   "showMultiInstanceInfo": false,
   "expandedMultiInstanceInfo": false,
   "expandedDataQualityReport": false,
