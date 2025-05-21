@@ -102,8 +102,12 @@ gulp.task('replace-url', function (done) {
       .pipe(gulp.dest('app/config/'));
   done();
   gulp.src(['app/config/src/embeddable-editor-config.json'])
-      .pipe(replace('terminologyServerIntegratedSearchUrl', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
-      .pipe(replace('ceeIRIPrefixUrl', 'https://repo.' + cedarRestHost + '/'))
+      .pipe(replace('terminologyIntegratedSearchUrlValue', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
+      .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
+      .pipe(replace('orcidIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/orcid/search-by-name'))
+      .pipe(replace('orcidIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/orcid'))
+      .pipe(replace('rorIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror/search-by-name'))
+      .pipe(replace('rorIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror'))
       .pipe(gulp.dest('app/config/'));
   done();
 });

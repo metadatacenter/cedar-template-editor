@@ -5,7 +5,7 @@
   "showFooter": false,
   "showTemplateDescription": false,
 
-  "terminologyIntegratedSearchUrl": "terminologyServerIntegratedSearchUrl",
+  "terminologyIntegratedSearchUrl": "terminologyIntegratedSearchUrlValue",
   "expandedInstanceDataFull": false,
   "showInstanceDataCore": false,
   "expandedInstanceDataCore": false,
@@ -17,10 +17,15 @@
   "defaultLanguage": "en",
   "fallbackLanguage": "en",
 
-  "iriPrefix": "ceeIRIPrefixUrl",
+  "iriPrefix": "iriPrefixValue",
   "bioPortalPrefix": "https://bioportal.bioontology.org/ontologies/",
   "orcidPrefix": "https://orcid.org/",
   "rorPrefix": "https://ror.org/",
+
+  "orcidIntegratedExtAuthUrl": "orcidIntegratedExtAuthUrlValue",
+  "orcidIntegratedDetailsUrl": "orcidIntegratedDetailsUrlValue",
+  "rorIntegratedExtAuthUrl": "rorIntegratedExtAuthUrlValue",
+  "rorIntegratedDetailsUrl": "rorIntegratedDetailsUrlValue",
 
   "collapseStaticComponents": true,
   "showStaticText": true,

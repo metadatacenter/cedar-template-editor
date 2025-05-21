@@ -1,6 +1,6 @@
 { "showTemplateRenderingRepresentation": false,
   "showAllMultiInstanceValues": false,
-  "showDataQualityReport": false,
+  "showDataQualityReport": true,
   "showHeader": false,
   "showFooter": false,
   "showTemplateDescription": false,
@@ -21,6 +21,11 @@
   "bioPortalPrefix": "https://bioportal.bioontology.org/ontologies/",
   "orcidPrefix": "https://orcid.org/",
   "rorPrefix": "https://ror.org/",
+
+  "orcidIntegratedExtAuthUrl": "https://bridge.metadatacenter.orgx/ext-auth/orcid/search-by-name",
+  "orcidIntegratedDetailsUrl": "https://bridge.metadatacenter.orgx/ext-auth/orcid",
+  "rorIntegratedExtAuthUrl": "https://bridge.metadatacenter.orgx/ext-auth/ror/search-by-name",
+  "rorIntegratedDetailsUrl": "https://bridge.metadatacenter.orgx/ext-auth/ror",
 
   "collapseStaticComponents": true,
   "showStaticText": true,
