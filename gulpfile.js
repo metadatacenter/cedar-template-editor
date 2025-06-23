@@ -104,12 +104,7 @@ gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/embeddable-editor-config.json'])
       .pipe(replace('terminologyIntegratedSearchUrlValue', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
       .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
-      .pipe(replace('orcidIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/orcid/search-by-name'))
-      .pipe(replace('orcidIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/orcid'))
-      .pipe(replace('rorIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror/search-by-name'))
-      .pipe(replace('rorIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror'))
-      .pipe(replace('pfasIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/pfas/search-by-name'))
-      .pipe(replace('pfasIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/pfas'))
+      .pipe(replace('extAuthBaseUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
