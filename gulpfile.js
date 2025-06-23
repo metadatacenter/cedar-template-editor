@@ -108,6 +108,8 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('orcidIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/orcid'))
       .pipe(replace('rorIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror/search-by-name'))
       .pipe(replace('rorIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/ror'))
+      .pipe(replace('pfasIntegratedExtAuthUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/pfas/search-by-name'))
+      .pipe(replace('pfasIntegratedDetailsUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/pfas'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
