@@ -532,6 +532,11 @@ define([
           return (service.getInputType(node) === 'ext-ror');
         };
 
+        // is this a pfas field?
+        service.isPfas = function (node) {
+          return (service.getInputType(node) === 'ext-pfas');
+        };
+
         //
         //  cardinality
         //
@@ -1144,7 +1149,7 @@ define([
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror") {
+          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas") {
             // Define the @id field
             var idField = {};
             idField.type = "string";

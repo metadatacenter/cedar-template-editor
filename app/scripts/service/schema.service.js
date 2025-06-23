@@ -601,6 +601,11 @@ define([
       return (service.getInputType(node) === 'ext-ror');
     };
 
+    // is this a pfas field?
+    service.isPfas = function (node) {
+      return (service.getInputType(node) === 'ext-pfas');
+    };
+
     // get order array
     service.getOrder = function (node) {
       if (node) return service.schemaOf(node)._ui.order;

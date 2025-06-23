@@ -57,6 +57,9 @@
       },
       "ext-ror": {
         "NAME": "ROR"
+      },
+      "ext-pfas": {
+        "NAME": "PFAS"
       }
     }
   },

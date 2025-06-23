@@ -232,5 +232,18 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
+  },
+  {
+    "cedarType": "ext-pfas",
+    "iconClass": "ai ai-pfas",
+    "allowedInElement": true,
+    "label": "PFAS",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true,
+    "allowsRequired": true
   }
 ]
