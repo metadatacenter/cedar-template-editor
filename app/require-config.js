@@ -24,7 +24,9 @@ require.config({
     'ngFlow'  : 'bower_components/ng-flow/dist/ng-flow-standalone',
     'flow'    : 'bower_components/flow.js/dist/flow',
 
-    'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd'
+    'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd',
+    'artifact-selector': 'third_party_components/artifact-selector/artifact-selector',
+    'cedar-embeddable-editor': 'third_party_components/cedar-embeddable-editor/cedar-embeddable-editor'
 
   },
   shim    : {
@@ -70,6 +72,14 @@ require.config({
     'cedar/template-editor/handsontable/SpreadsheetContext' : ['lib/handsontable/dist/handsontable.full'],
     'cedar/template-editor/handsontable/MultiCheckboxEditor': ['lib/handsontable/dist/handsontable.full'],
     'lib/ngprogress/build/ngprogress.min'                   : ['angular'],
+    'cedar-embeddable-editor': {
+      deps: ['angular'],
+      exports: 'cedar-embeddable-editor'
+    },
+    'artifact-selector': {
+      deps: ['angular'],
+      exports: 'artifact-selector'
+    }
   },
   priority: [
     'jquery',
@@ -92,6 +102,8 @@ require([
     function continueWithAngularApp() {
       require([
         'angular',
+        'cedar-embeddable-editor',
+        'artifact-selector',
         'app',
         'ngFlow'
       ], function (angular, app, ngFlow) {
