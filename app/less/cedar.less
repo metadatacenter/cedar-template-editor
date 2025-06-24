@@ -642,6 +642,39 @@ body.modal-open {
 
 /* END Inclusion (Update Artifacts) related Customization */
 
+.ai.ai-pfas {
+  position: relative;
+  display: inline-block;
+  width: 1.9em;
+  height: 1.9em;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 240'>\
+      <!-- central node -->\
+      <circle cx='100' cy='80' r='30' fill='%23434343'/>\
+      <!-- bonds & outer nodes -->\
+      <line x1='100' y1='80' x2='160' y2='40' stroke='%23434343' stroke-width='12' stroke-linecap='round'/>\
+      <circle cx='160' cy='40' r='24' fill='%23CB2E31'/>\
+      <line x1='100' y1='80' x2='40'  y2='40' stroke='%23434343' stroke-width='12' stroke-linecap='round'/>\
+      <circle cx='40'  cy='40' r='24' fill='%2380B65F'/>\
+      <line x1='100' y1='80' x2='40'  y2='140' stroke='%23434343' stroke-width='12' stroke-linecap='round'/>\
+      <circle cx='40'  cy='140' r='24' fill='%2380B65F'/>\
+      <line x1='100' y1='80' x2='160' y2='140' stroke='%23434343' stroke-width='12' stroke-linecap='round'/>\
+      <circle cx='160' cy='140' r='24' fill='%2380B65F'/>\
+      <!-- PFAS text below -->\
+      <text x='50%' y='220' text-anchor='middle' \
+            font-family='Arial, sans-serif' \
+            font-weight='bold' font-size='60' fill='%23434343'>\
+        PFAS\
+      </text>\
+    </svg>");
+}
+.ai.ai-pfas:before {
+  content: "";
+}
+
 /*
 ================================================
 === CEDAR Customization END

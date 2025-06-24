@@ -22,10 +22,14 @@
   "orcidPrefix": "https://orcid.org/",
   "rorPrefix": "https://ror.org/",
 
+  "extAuthBaseUrl": "extAuthBaseUrlValue",
+
   "orcidIntegratedExtAuthUrl": "orcidIntegratedExtAuthUrlValue",
   "orcidIntegratedDetailsUrl": "orcidIntegratedDetailsUrlValue",
   "rorIntegratedExtAuthUrl": "rorIntegratedExtAuthUrlValue",
   "rorIntegratedDetailsUrl": "rorIntegratedDetailsUrlValue",
+  "pfasIntegratedExtAuthUrl": "pfasIntegratedExtAuthUrlValue",
+  "pfasIntegratedDetailsUrl": "pfasIntegratedDetailsUrlValue",
 
   "collapseStaticComponents": true,
   "showStaticText": true,
