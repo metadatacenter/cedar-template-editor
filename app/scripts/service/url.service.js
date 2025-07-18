@@ -204,6 +204,14 @@ define([
       return this.resourceBase() + "/command/rename-resource";
     };
 
+    service.checkUpdateTemplate = function (id) {
+      return this.resourceBase() + "/command/check-update-template/" + this.encodeURIComponent(id);
+    };
+
+    service.publishCreateDraftTemplate = function (id) {
+      return this.resourceBase() + "/command/publish-create-draft-template/" + this.encodeURIComponent(id);
+    };
+
     service.getUsers = function () {
       return this.resourceBase() + "/users";
     };
@@ -517,6 +525,8 @@ define([
     service.makeFolderNotOpen = function () {
       return this.resourceBase() + "/command/make-folder-not-open";
     };
+
+
 
     service.encodeURIComponent = function(s) {
       s = this.fixSingleSlashHttps(s);

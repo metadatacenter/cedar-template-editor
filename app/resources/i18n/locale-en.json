@@ -808,5 +808,14 @@
     "field-updated" : "Origin : Field",
     "element-updated" : "Origin : Element",
     "event" : "updated"
+  },
+  "DELTAFINDER": {
+    "DestructiveDetected":{
+      "title": "Destructive changes detected!",
+      "text" : "If you save your changes: 1) The current template (now in draft state) will be published. 2) A new draft version will be created with the new content. 3) The instances will reference to published template.",
+      "create": {
+        "success": "The template <b>{{title}}</b> version <b>{{version}}</b>  has been created."
+      }
+    }
   }
 }

@@ -30,6 +30,14 @@ define([
       return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template));
     };
 
+    service.checkUpdateTemplate = function (id, template) {
+      return HttpBuilderService.post(UrlService.checkUpdateTemplate(id), angular.toJson(template));
+    };
+
+    service.publishCreateDraftTemplate = function (id, template) {
+      return HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id), angular.toJson(template));
+    };
+
     return service;
 
   }
