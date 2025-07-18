@@ -816,6 +816,11 @@
       "create": {
         "success": "The template <b>{{title}}</b> version <b>{{version}}</b>  has been created."
       }
+    },
+    "DraftCreated": {
+      "workspace": {
+        "refreshed":"The workspace might need a new refresh to show all the instances that were cloned."
+      }
     }
   }
 }

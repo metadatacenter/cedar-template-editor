@@ -1387,7 +1387,11 @@ define([
                   const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},
                       'GENERIC.CreatedDraft');
-                  vm.refreshWorkspace(resource);
+                  $timeout(function () {
+                    vm.refreshWorkspace(resource);
+                    UIMessageService.flashWarning('DELTAFINDER.DraftCreated.workspace.refreshed', {},
+                        'GENERIC.Warning');
+                  }, 1000);
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.createDraftResource.error', response);
