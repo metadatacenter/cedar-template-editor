@@ -22,6 +22,8 @@ define([
           vm.modalVisible = false;
           vm.parts;
           vm.min;
+          vm.numberOfInstances = 0;
+          vm.newFolderName = '';
 
 
           // on modal close, scroll to the top the cheap way
@@ -121,6 +123,17 @@ define([
             }
           };
 
+          vm.getNumInstances = function (resource) {
+            if (resource != null) {
+              return resource['numberOfInstances'];
+            }
+          };
+
+          vm.getNewFolderName = function (resource) {
+            if (resource != null) {
+              return resource['schema:name'] + ' v ' + vm.getVersionString() + " cloned instances";
+            }
+          };
 
           // on modal open
           $scope.$on('publishModalVisible', function (event, params) {
@@ -140,6 +153,8 @@ define([
               vm.title = vm.getTitle(resource);
               vm.parts = vm.getNextVersion(resource);
               vm.min = getTotal(vm.parts);
+              vm.numberOfInstances = vm.getNumInstances(resource);
+              vm.newFolderName = vm.getNewFolderName(resource);
             }
           });
         }

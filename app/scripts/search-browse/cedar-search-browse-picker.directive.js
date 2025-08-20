@@ -1368,7 +1368,7 @@ define([
           }
 
           // set publication status as draft
-          function createDraftResource(resource, version) {
+          function createDraftResource(resource, version, buttonText, newFolderName) {
             if (!resource) {
               resource = getSelected();
             }
@@ -1383,6 +1383,7 @@ define([
                 folderId,
                 newVersion,
                 propagateSharing,
+                newFolderName,
                 function (response) {
                   const title = vm.getTitle(resource);
                   UIMessageService.flashSuccess('SERVER.RESOURCE.createDraftResource.success', {"title": title},

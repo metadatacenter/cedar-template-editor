@@ -564,7 +564,10 @@
       "titleDraft": "Create Version",
       "instructions": "Publishing allows you to add a version number to a resource. ",
       "morePublish": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
-      "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. "
+      "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
+      "instancesNewFolderName": "New folder name:",
+      "instancesNewFolderNameTitle": "Cloning of instances",
+      "instancesNewFolderDescription": "The current template has {{numInstances}} instances. Creating a draft version will create clones of these instances. Please provide a folder name for the clones above."
     }
   },
   "ELEMENTEDITOR": {
