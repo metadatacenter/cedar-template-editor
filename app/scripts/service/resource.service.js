@@ -666,12 +666,13 @@ define([
           );
         }
 
-        function createDraftResource(resource, folderId, newVersion, propagateSharing, successCallback, errorCallback) {
+        function createDraftResource(resource, folderId, newVersion, propagateSharing, newFolderName, successCallback, errorCallback) {
           var postData = {};
           postData['@id'] = resource['@id'];
           postData['newVersion'] = newVersion;
           postData['folderId'] = folderId;
           postData['propagateSharing'] = propagateSharing;
+          postData['newFolderName'] = newFolderName;
           var url = urlService.createDraftResource();
           authorizedBackendService.doCall(
               httpBuilderService.post(url, postData),

@@ -55,6 +55,7 @@ define([
         let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
         $scope.templateWriter = yamlWriters.getTemplateWriter();
 
+        $scope.updateTemplateWithInstancesModalVisible = false;
 
         $scope.checkLocking = function () {
           if ($scope.details) {
@@ -393,15 +394,54 @@ define([
               $rootScope.jsonToSave = $scope.form;
               var copiedForm = jQuery.extend(true, {}, $scope.form);
               if (copiedForm) {
-                // strip the temps from the copied form only, and save the copy
+                // strip the temps from the copied form only and save the copy
                 DataManipulationService.stripTmps(copiedForm);
                 AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, copiedForm),
+                    TemplateService.checkUpdateTemplate(id, copiedForm),
                     function (response) {
-                      doUpdate(response);
+                      var canBeUpdated = response.data['canBeUpdated'];
+                      if (canBeUpdated) {
+                        AuthorizedBackendService.doCall(
+                            TemplateService.updateTemplate(id, copiedForm),
+                            function (response) {
+                              doUpdate(response);
+                            },
+                            function (err) {
+                              UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                              owner.enableSaveButton();
+                            }
+                        );
+                      } else {
+                        $scope.updateTemplateWithInstancesModalVisible = true;
+                        $rootScope.$broadcast('updateTemplateWithInstancesModalVisible', [true, response, id, copiedForm]);
+                        // UIMessageService.confirmedExecution(
+                        //     function () {
+                        //       AuthorizedBackendService.doCall(
+                        //           TemplateService.publishCreateDraftTemplate(id, copiedForm),
+                        //           function (response) {
+                        //             var newTemplateId = response.data['@id'];
+                        //             var newVersion = response.data['pav:version'];
+                        //             var newTitle = response.data['schema:name'];
+                        //             var folderId = QueryParamUtilsService.getFolderId();
+                        //             $location.path(FrontendUrlService.getTemplateEdit(newTemplateId, folderId));
+                        //             UIMessageService.flashSuccess('DELTAFINDER.DestructiveDetected.create.success', {"title": newTitle, "version": newVersion},
+                        //                 'GENERIC.Created');
+                        //           },
+                        //           function (err) {
+                        //             UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                        //             owner.enableSaveButton();
+                        //           }
+                        //       );
+                        //     },
+                        //     'DELTAFINDER.DestructiveDetected.title',
+                        //     'DELTAFINDER.DestructiveDetected.text',
+                        //     'GENERIC.YesSaveIt'
+                        // );
+                        owner.enableSaveButton();
+                      }
                     },
                     function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.checkUpdate.error', err);
                       owner.enableSaveButton();
                     }
                 );

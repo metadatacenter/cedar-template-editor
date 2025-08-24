@@ -564,7 +564,10 @@
       "titleDraft": "Create Version",
       "instructions": "Publishing allows you to add a version number to a resource. ",
       "morePublish": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
-      "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. "
+      "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
+      "instancesNewFolderName": "New folder name:",
+      "instancesNewFolderNameTitle": "Cloning of instances",
+      "instancesNewFolderDescription": "The current template has {{numInstances}} instances. Creating a draft version will create clones of these instances. Please provide a folder name for the clones above."
     }
   },
   "ELEMENTEDITOR": {
@@ -808,5 +811,28 @@
     "field-updated" : "Origin : Field",
     "element-updated" : "Origin : Element",
     "event" : "updated"
+  },
+  "DELTAFINDER": {
+    "DestructiveDetected":{
+      "title": "Destructive changes detected!",
+      "text" : "If you save your changes: 1) The current template (now in draft state) will be published. 2) A new draft version will be created with the new content. 3) The instances will reference to published template.",
+      "create": {
+        "success": "The template <b>{{title}}</b> version <b>{{version}}</b>  has been created."
+      }
+    },
+    "ChangedTemplate":{
+      "title": "Template changes detected!",
+      "text1" : "The template has {{numInstances}} instances. If you save the template, the old version will be published, and the new version will be saved as draft.",
+      "text2" : "<br>You have the following options: <ol><li><b>New version with clones</b> - clone the old instances, link them to the new template.</li><li><b>New version no instances</b> - leave the old instances behind.</li><li><b>Cancel</b> - drop the changes, go back to the workspace.</li><li><b>Revert</b> - reload the old template</li></ol>",
+      "newVersionWithCones": "New version with clones",
+      "newVersionNoCones": "New version no instances",
+      "revert": "Revert",
+      "instancesNewFolderName": "Folder name for cloned instances:"
+    },
+    "DraftCreated": {
+      "workspace": {
+        "refreshed":"The workspace might need a new refresh to show all the instances that were cloned."
+      }
+    }
   }
 }

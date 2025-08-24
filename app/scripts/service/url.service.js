@@ -43,7 +43,6 @@ define([
     };
 
 
-
     service.base = function () {
       return resourceService;
     };
@@ -92,8 +91,8 @@ define([
       return this.base() + '/template-instances';
     };
 
-    service.templateInstancesBasedOn = function (query,  size) {
-      return this.base() + "/search?is_based_on=" + this.encodeURIComponent(query)+  "&page=1&page_size=" + size;
+    service.templateInstancesBasedOn = function (query, size) {
+      return this.base() + "/search?is_based_on=" + this.encodeURIComponent(query) + "&page=1&page_size=" + size;
     };
 
     service.getTemplateInstance = function (id) {
@@ -204,6 +203,18 @@ define([
       return this.resourceBase() + "/command/rename-resource";
     };
 
+    service.checkUpdateTemplate = function (id) {
+      return this.resourceBase() + "/command/check-update-template/" + this.encodeURIComponent(id);
+    };
+
+    service.publishCreateDraftTemplate = function (id, newFolderName) {
+      var url = this.resourceBase() + "/command/publish-create-draft-template/" + this.encodeURIComponent(id);
+      if (newFolderName !== null && newFolderName !== undefined) {
+        url += "?folder_name=" + this.encodeURIComponent(newFolderName);
+      }
+      return url;
+    };
+
     service.getUsers = function () {
       return this.resourceBase() + "/users";
     };
@@ -260,7 +271,7 @@ define([
       return this.messagingMessages() + "/" + this.encodeURIComponent(id);
     };
 
-    service.messagingMarkAllMessagesAsRead = function() {
+    service.messagingMarkAllMessagesAsRead = function () {
       return this.messagingBase() + '/command/mark-all-as-read';
     };
 
@@ -354,26 +365,27 @@ define([
     };
 
     service.getValueSetTree = function (valueId, vsCollection) {
-      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(valueId)
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(
+              valueId)
           + "/tree";
     };
 
     service.getAllValuesInValueSetByValue = function (valueId, vsCollection, page, size) {
       console.log('getAllValuesInValueSetByValue');
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + this.encodeURIComponent(valueId)
-          + "/all-values?" + paging(page,size,1,50,'page','page_size');
+          + "/all-values?" + paging(page, size, 1, 50, 'page', 'page_size');
     };
 
     service.getClassChildren = function (acronym, classId, page, size) {
-      console.log('getClassChildreen',acronym, classId);
+      console.log('getClassChildreen', acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
-          + "/children?" + paging(page,size,1,1000,'page','pageSize');
+          + "/children?" + paging(page, size, 1, 1000, 'page', 'pageSize');
     };
 
     service.getClassDescendants = function (acronym, classId, page, size) {
-      console.log('getClassDescendants',acronym, classId);
+      console.log('getClassDescendants', acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
-          + "/descendants?"  + paging(page,size,1,1000,'page','pageSize');
+          + "/descendants?" + paging(page, size, 1, 1000, 'page', 'pageSize');
     };
 
     service.getPropertyChildren = function (acronym, propertyId) {
@@ -386,11 +398,11 @@ define([
     };
 
     service.getValueTermById = function (acronym, valueSetId, valueId) {
-      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + this.encodeURIComponent(valueId);
+      return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + this.encodeURIComponent(valueId);
     };
 
-    service.getValueById = function (acronym,  valueId) {
-      return this.controlledTerm() + '/vs-collections/' + acronym  + '/values/' + this.encodeURIComponent(valueId);
+    service.getValueById = function (acronym, valueId) {
+      return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + this.encodeURIComponent(valueId);
     };
 
     service.getClassParents = function (acronym, classId) {
@@ -399,7 +411,8 @@ define([
     };
 
     service.getClassTree = function (acronym, classId) {
-      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId) + '/tree';
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(
+          classId) + '/tree';
     };
 
     service.getPropertyTree = function (acronym, propertyId) {
@@ -412,7 +425,7 @@ define([
     // See https://github.com/metadatacenter/cedar-project/issues/1110
     service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(vsId)
-          + "/values?"  + paging(page,size,1,1000,'page','pageSize');
+          + "/values?" + paging(page, size, 1, 1000, 'page', 'pageSize');
     };
 
     service.searchClasses = function (query, sources, size, page) {
@@ -472,10 +485,10 @@ define([
     service.autocompleteOntology = function (query, acronym, page, size) {
       let url = this.controlledTerm();
       if (query === '*') {
-        url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 1, 500,'page','page_size');
+        url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 1, 500, 'page', 'page_size');
       } else {
         url += "/search?q=" + this.encodeURIComponent(query) +
-            "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
+            "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 1, 500, 'page', 'page_size');
       }
       return url;
     };
@@ -485,11 +498,11 @@ define([
 
       if (query === '*') {
         url += '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(subtree_root_id)
-            + '/descendants?' + paging(page, size, 1, 500,'page','page_size');
+            + '/descendants?' + paging(page, size, 1, 500, 'page', 'page_size');
       } else {
         url += '/search?q=' + this.encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
             '&subtree_root_id=' + this.encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
-            "&suggest=true&" + paging(page, size, 1, 500,'page','page_size');
+            "&suggest=true&" + paging(page, size, 1, 500, 'page', 'page_size');
       }
       return url;
     };
@@ -518,12 +531,13 @@ define([
       return this.resourceBase() + "/command/make-folder-not-open";
     };
 
-    service.encodeURIComponent = function(s) {
+
+    service.encodeURIComponent = function (s) {
       s = this.fixSingleSlashHttps(s);
       return encodeURIComponent(s);
     }
 
-    service.fixSingleSlashHttps = function(s) {
+    service.fixSingleSlashHttps = function (s) {
       const HTTPS1 = 'https:/'
       const HTTPS2 = 'https://'
       if (s.startsWith(HTTPS1) && !s.startsWith(HTTPS2)) {
@@ -540,20 +554,23 @@ define([
       return this.resourceBase() + '/command/inclusions-subgraph-update';
     };
 
-    service.downloadTemplateField = function(templateFieldId, compact) {
-      return this.resourceBase() + '/template-fields/' + this.encodeURIComponent(templateFieldId) + '/download?compact=' + compact;
+    service.downloadTemplateField = function (templateFieldId, compact) {
+      return this.resourceBase() + '/template-fields/' + this.encodeURIComponent(
+          templateFieldId) + '/download?compact=' + compact;
     }
 
-    service.downloadTemplateElement = function(templateElementId, compact) {
-      return this.resourceBase() + '/template-elements/' + this.encodeURIComponent(templateElementId) + '/download?compact=' + compact;
+    service.downloadTemplateElement = function (templateElementId, compact) {
+      return this.resourceBase() + '/template-elements/' + this.encodeURIComponent(
+          templateElementId) + '/download?compact=' + compact;
     }
 
-    service.downloadTemplate = function(templateId, compact) {
+    service.downloadTemplate = function (templateId, compact) {
       return this.resourceBase() + '/templates/' + this.encodeURIComponent(templateId) + '/download?compact=' + compact;
     }
 
-    service.downloadTemplateInstance = function(templateInstanceId, compact) {
-      return this.resourceBase() + '/template-instances/' + this.encodeURIComponent(templateInstanceId) + '/download?compact=' + compact;
+    service.downloadTemplateInstance = function (templateInstanceId, compact) {
+      return this.resourceBase() + '/template-instances/' + this.encodeURIComponent(
+          templateInstanceId) + '/download?compact=' + compact;
     }
 
     return service;

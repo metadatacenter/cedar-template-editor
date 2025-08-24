@@ -24,10 +24,11 @@ define([
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
   'cedar/template-editor/form/field-create/cardinality-selector.directive',
-  'cedar/template-editor/form/date-validation.directive'
+  'cedar/template-editor/form/date-validation.directive',
+  'cedar/template-editor/modal/cedar-update-template-with-instances-modal.directive'
 
 
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlledTerm',
     'cedar.templateEditor.form.addedFieldItemDirective',
@@ -51,7 +52,8 @@ define([
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
     'cedar.templateEditor.form.fieldCreate.cardinalitySelector',
-    'cedar.templateEditor.form.dateValidation'
+    'cedar.templateEditor.form.dateValidation',
+    'cedar.templateEditor.modal.cedarUpdateTemplateWithInstancesModalDirective'
 
 
   ]);

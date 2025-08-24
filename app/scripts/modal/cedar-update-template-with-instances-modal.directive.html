@@ -1,0 +1,41 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" id="updateTemplateWithInstancesModalHeader">
+      <button type="button" class="close" ng-click="dc.updateTemplateWithInstancesModalVisible=false" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" >
+        <span translate>DELTAFINDER.ChangedTemplate.title</span>
+        </h4>
+    </div>
+    <div class="modal-body">
+
+      <form  ng-submit="publish.updateResource();dc.updateTemplateWithInstancesModalVisible=false">
+        <div class="publish">
+
+
+        </div>
+      </form>
+
+      <div style="padding:20px 0">
+        {{ 'DELTAFINDER.ChangedTemplate.text1' | translate: { numInstances: publish.numberOfInstances } }}
+        <span translate>DELTAFINDER.ChangedTemplate.text2</span>
+        <div style="padding:10px 0 10px 0">
+          <span style="padding:0 0 0 0" translate>DELTAFINDER.ChangedTemplate.instancesNewFolderName</span>
+          <span class="version-folder-name" style="padding: 10px 0;">
+              <input name="newFolderName" id="version-new-folder-name" ng-model="publish.newFolderName" style="width: 300px">
+            </span>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button type="button" class="btn btn-save confirm" translate ng-click="publish.doNewVersionWithClones()">DELTAFINDER.ChangedTemplate.newVersionWithCones</button>
+        <button type="button" class="btn btn-save confirm" translate ng-click="publish.doNewVersionNoClones()">DELTAFINDER.ChangedTemplate.newVersionNoCones</button>
+        <button type="button" class="btn btn-save confirm" translate ng-click="publish.doCancel()">GENERIC.Cancel</button>
+        <button type="button" class="btn btn-clear" translate ng-click="publish.doRevert()">DELTAFINDER.ChangedTemplate.revert</button>
+      </div>
+    </div>
+  </div>
+</div>

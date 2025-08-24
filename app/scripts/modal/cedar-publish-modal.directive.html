@@ -54,11 +54,24 @@
         <span ng-if="publish.titleText == 'Publish'" translate>DASHBOARD.version.morePublish</span>
       </div>
 
+      <div ng-if="publish.numberOfInstances > 0 && publish.titleText == 'Draft'">
+        <div style="padding:0 0 10px 0">
+          <h4 translate>DASHBOARD.version.instancesNewFolderNameTitle</h4>
+          <span style="padding:0 0 10px 0" translate>DASHBOARD.version.instancesNewFolderName</span>
+
+          <span class="version-folder-name" style="padding: 10px 0">
+            <input name="newFolderName" id="version-new-folder-name" ng-model="publish.newFolderName">
+          </span>
+        </div>
+
+        <div>{{ 'DASHBOARD.version.instancesNewFolderDescription' | translate: { numInstances: publish.numberOfInstances } }}</div>
+      </div>
+
     </div>
     <div class="modal-footer actions">
       <div class="clear-save">
         <button
-            ng-click="publish.callback(publish.resource, publish.getVersionString(), publish.buttonText);dc.publishModalVisible=false;"
+            ng-click="publish.callback(publish.resource, publish.getVersionString(), publish.buttonText, publish.newFolderName);dc.publishModalVisible=false;"
             type="button"
             class="btn btn-save confirm" translate>
           GENERIC.Ok
