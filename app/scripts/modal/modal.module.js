@@ -2,7 +2,6 @@
 
 define([
   'angular',
-  'cedar/template-editor/modal/modal.module',
   'cedar/template-editor/modal/cedar-copy-modal.directive',
   'cedar/template-editor/modal/cedar-move-modal.directive',
   'cedar/template-editor/modal/cedar-publish-modal.directive',
@@ -14,7 +13,8 @@ define([
   'cedar/template-editor/modal/cedar-terms-modal.directive',
   'cedar/template-editor/modal/cedar-test-modal.directive',
   'cedar/template-editor/modal/cedar-import-modal.directive',
-  'cedar/template-editor/modal/cedar-inclusion-modal.directive'
+  'cedar/template-editor/modal/cedar-inclusion-modal.directive',
+  'cedar/template-editor/modal/cedar-update-template-with-instances-modal.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.modal', [
     'cedar.templateEditor.modal.cedarCopyModal',
@@ -28,6 +28,7 @@ define([
     'cedar.templateEditor.modal.cedarTermsModal',
     'cedar.templateEditor.modal.cedarTestModal',
     'cedar.templateEditor.modal.cedarImportModal',
-    'cedar.templateEditor.modal.cedarInclusionModal'
+    'cedar.templateEditor.modal.cedarInclusionModal',
+    'cedar.templateEditor.modal.cedarUpdateTemplateWithInstancesModalDirective'
   ]);
 });

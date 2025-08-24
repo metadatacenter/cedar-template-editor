@@ -52,6 +52,9 @@ require.config({
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
     'ngFlow'                                                                             : ['angular'],
     'flow'                                                                               : ['angular'],
+    'moment'                                                                             : {
+      'exports': 'moment'
+    },
 
 
     '3rdparty/angular-fitvids/angular-fitvids': {

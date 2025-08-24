@@ -34,8 +34,8 @@ define([
       return HttpBuilderService.post(UrlService.checkUpdateTemplate(id), angular.toJson(template));
     };
 
-    service.publishCreateDraftTemplate = function (id, template) {
-      return HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id), angular.toJson(template));
+    service.publishCreateDraftTemplate = function (id, template, newFolderName) {
+      return HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id, newFolderName), angular.toJson(template));
     };
 
     return service;

@@ -820,6 +820,15 @@
         "success": "The template <b>{{title}}</b> version <b>{{version}}</b>  has been created."
       }
     },
+    "ChangedTemplate":{
+      "title": "Template changes detected!",
+      "text1" : "The template has {{numInstances}} instances. If you save the template, the old version will be published, and the new version will be saved as draft.",
+      "text2" : "<br>You have the following options: <ol><li><b>New version with clones</b> - clone the old instances, link them to the new template.</li><li><b>New version no instances</b> - leave the old instances behind.</li><li><b>Cancel</b> - drop the changes, go back to the workspace.</li><li><b>Revert</b> - reload the old template</li></ol>",
+      "newVersionWithCones": "New version with clones",
+      "newVersionNoCones": "New version no instances",
+      "revert": "Revert",
+      "instancesNewFolderName": "Folder name for cloned instances:"
+    },
     "DraftCreated": {
       "workspace": {
         "refreshed":"The workspace might need a new refresh to show all the instances that were cloned."
