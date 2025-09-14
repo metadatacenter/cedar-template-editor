@@ -36,6 +36,9 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
           vm.numberOfInstances = 0;
           vm.newFolderName = '';
           vm.updateResource = updateResource;
+          vm.selectedOption = 'clone'; // Default to clone option
+          vm.templateName = '';
+          vm.currentVersion = '';
 
           // on modal close, scroll to the top the cheap way
           function hideModal() {
@@ -62,8 +65,22 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
 
           vm.doCancel = function () {
             vm.modalVisible = false;
-            $rootScope.confirmedBack = true;
-            vm.goToDashboardOrBack();
+          }
+
+          vm.doAccept = function () {
+            if (vm.selectedOption === 'clone') {
+              if (vm.newFolderName && vm.newFolderName.trim()) {
+                UIMessageService.flashInfo('DELTAFINDER.ChangedTemplate.cloneNotification');
+                vm.doNewVersionWithClones();
+              } else {
+                UIMessageService.showError('Please enter a folder name for cloned instances.');
+                return;
+              }
+            } else if (vm.selectedOption === 'noClone') {
+              vm.doNewVersionNoClones();
+            } else if (vm.selectedOption === 'revert') {
+              vm.doRevert();
+            }
           }
 
           vm.doRevert = function () {
@@ -133,6 +150,9 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
               vm.title = vm.getTitle(resource);
               vm.numberOfInstances = vm.getNumInstances(resource);
               vm.newFolderName = vm.getNewFolderName(resource);
+              vm.templateName = resource['schema:name'] || 'Unknown Template';
+              vm.currentVersion = resource['oldVersion'] || '0.0.0';
+              vm.selectedOption = 'clone'; // Reset to default when opening
             }
           });
 
