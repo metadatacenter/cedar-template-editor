@@ -94,7 +94,6 @@
     "MoreTemplates": "More Templates",
     "Save": "Save",
     "Validate": "Validate",
-    "Next": "Next",
     "Previous": "Previous",
     "Name": "Name",
     "Identifier": "Identifier",
@@ -133,7 +132,6 @@
     "Elements": "Elements",
     "FilterBy": "Filter by",
     "Untitled": "Untitled",
-    "Description": "Description",
     "SelectToViewDetails": "Select a resource to view its details",
     "canRead": "can read",
     "canWrite": "can write",
@@ -567,7 +565,11 @@
       "moreDraft": "Published resources are not modifiable and cannot be deleted. Create a new version of a published resource by first creating a draft, and then modifying it.  When you are ready, publish the draft to disable further edits. ",
       "instancesNewFolderName": "New folder name:",
       "instancesNewFolderNameTitle": "Cloning of instances",
-      "instancesNewFolderDescription": "The current template has {{numInstances}} instances. Creating a draft version will create clones of these instances. Please provide a folder name for the clones above."
+      "instancesNewFolderDescription": "The current template has {{numInstances}} instances. Creating a draft version will create clones of these instances. Please provide a folder name for the clones above.",
+      "draftOptionsTitle": "You have the following options:",
+      "draftOption1": "Create draft and clone instances - clone the existing instances, link them to the new draft template.",
+      "draftOption2": "Create draft, do not clone instances - leave the existing instances with the published template.",
+      "acceptButton": "Accept"
     }
   },
   "ELEMENTEDITOR": {

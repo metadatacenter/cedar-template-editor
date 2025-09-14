@@ -24,6 +24,7 @@ define([
           vm.min;
           vm.numberOfInstances = 0;
           vm.newFolderName = '';
+          vm.selectedOption = 'clone'; // Default to clone option for draft versions
 
 
           // on modal close, scroll to the top the cheap way
@@ -31,8 +32,25 @@ define([
             vm.modalVisible = false;
           }
 
-          // on modal close, scroll to the top the cheap way
-          function hideModal() {
+          vm.doAccept = function() {
+            var folderName = null;
+            if (vm.selectedOption === 'clone') {
+              if (vm.newFolderName && vm.newFolderName.trim()) {
+                folderName = vm.newFolderName;
+              } else {
+                // For published to draft with instances, we still need a folder name
+                if (vm.numberOfInstances > 0) {
+                  // Show error or use default - but let's require it for now
+                  return; // Don't proceed without folder name
+                }
+              }
+            }
+            // Call the original callback with the appropriate folder name
+            vm.callback(vm.resource, vm.getVersionString(), vm.buttonText, folderName);
+            vm.modalVisible = false;
+          }
+
+          vm.doCancel = function() {
             vm.modalVisible = false;
           }
 
@@ -155,6 +173,7 @@ define([
               vm.min = getTotal(vm.parts);
               vm.numberOfInstances = vm.getNumInstances(resource);
               vm.newFolderName = vm.getNewFolderName(resource);
+              vm.selectedOption = 'clone'; // Reset to default when opening
             }
           });
         }
