@@ -21,7 +21,7 @@
                   ng-if="$index <= otherFieldTypes.length/2  && (isTemplate || isField || (isElement && fieldType.allowedInElement))">
                 <div id='button-add-field-{{fieldType.cedarType}}'
                     ng-click="addField(fieldType.cedarType);setDirty()"
-                    ><i class="fieldType.iconClass + ' fa-fw'"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></div>
+                    ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></div>
               </div>
             </div>
 
