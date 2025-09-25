@@ -60,6 +60,12 @@
       },
       "ext-pfas": {
         "NAME": "PFAS"
+      },
+      "ext-rrid": {
+        "NAME": "RRID"
+      },
+      "ext-pubmed": {
+        "NAME": "PubMed"
       }
     }
   },

@@ -30,6 +30,10 @@
   "rorIntegratedDetailsUrl": "ror",
   "pfasIntegratedExtAuthUrl": "comp-tox/search-by-name",
   "pfasIntegratedDetailsUrl": "comp-tox",
+  "pmidIntegratedExtAuthUrl": "pmid/search-by-name",
+  "pmidIntegratedDetailsUrl": "pmid",
+  "rridIntegratedExtAuthUrl": "rrid/search-by-name",
+  "rridIntegratedDetailsUrl": "rrid",
 
   "collapseStaticComponents": true,
   "showStaticText": true,

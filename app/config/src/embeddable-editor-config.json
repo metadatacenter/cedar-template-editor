@@ -30,6 +30,10 @@
   "rorIntegratedDetailsUrl": "rorIntegratedDetailsUrlValue",
   "pfasIntegratedExtAuthUrl": "pfasIntegratedExtAuthUrlValue",
   "pfasIntegratedDetailsUrl": "pfasIntegratedDetailsUrlValue",
+  "pmidIntegratedExtAuthUrl": "pmidIntegratedExtAuthUrlValue",
+  "pmidIntegratedDetailsUrl": "pmidIntegratedDetailsUrlValue",
+  "rridIntegratedExtAuthUrl": "rridIntegratedExtAuthUrlValue",
+  "rridIntegratedDetailsUrl": "rridIntegratedDetailsUrlValue",
 
   "collapseStaticComponents": true,
   "showStaticText": true,
