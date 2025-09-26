@@ -606,6 +606,16 @@ define([
       return (service.getInputType(node) === 'ext-pfas');
     };
 
+    // is this a pmid field?
+    service.isPmid = function (node) {
+      return (service.getInputType(node) === 'ext-pubmed');
+    };
+
+    // is this a rrid field?
+    service.isRrid = function (node) {
+      return (service.getInputType(node) === 'ext-rrid');
+    };
+
     // get order array
     service.getOrder = function (node) {
       if (node) return service.schemaOf(node)._ui.order;

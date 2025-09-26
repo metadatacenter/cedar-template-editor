@@ -55,31 +55,51 @@
       </div>
 
       <div ng-if="publish.numberOfInstances > 0 && publish.titleText == 'Draft'">
-        <div style="padding:0 0 10px 0">
-          <h4 translate>DASHBOARD.version.instancesNewFolderNameTitle</h4>
-          <span style="padding:0 0 10px 0" translate>DASHBOARD.version.instancesNewFolderName</span>
-
-          <span class="version-folder-name" style="padding: 10px 0">
-            <input name="newFolderName" id="version-new-folder-name" ng-model="publish.newFolderName">
-          </span>
+        <div style="padding:0 0 20px 0">
+          <span translate>DASHBOARD.version.draftOptionsTitle</span>
         </div>
 
-        <div>{{ 'DASHBOARD.version.instancesNewFolderDescription' | translate: { numInstances: publish.numberOfInstances } }}</div>
+        <div style="padding:0 0 20px 0">
+          <div style="margin-bottom: 15px;">
+            <label style="cursor: pointer;">
+              <input type="radio" ng-model="publish.selectedOption" value="clone" style="margin-right: 8px; vertical-align: top;">
+            </label>
+            <span translate style="font-weight: bold;">DASHBOARD.version.draftOption1</span>
+
+          </div>
+
+          <div style="margin-bottom: 15px; margin-left: 25px;" ng-show="publish.selectedOption === 'clone'">
+            <span style="display: block; margin-bottom: 5px;" translate>DASHBOARD.version.instancesNewFolderName</span>
+            <input name="newFolderName" id="version-new-folder-name" ng-model="publish.newFolderName" style="width: 300px">
+          </div>
+
+          <div style="margin-bottom: 15px;">
+            <label style="cursor: pointer;">
+              <input type="radio" ng-model="publish.selectedOption" value="noClone" style="margin-right: 8px; vertical-align: top;">
+            </label>
+            <span translate style="font-weight: bold;">DASHBOARD.version.draftOption2</span>
+          </div>
+        </div>
       </div>
 
     </div>
     <div class="modal-footer actions">
       <div class="clear-save">
         <button
+            ng-if="publish.titleText == 'Draft' && publish.numberOfInstances > 0"
+            ng-click="publish.doAccept()"
+            type="button"
+            class="btn btn-save confirm" translate>
+          DASHBOARD.version.acceptButton
+        </button>
+        <button
+            ng-if="!(publish.titleText == 'Draft' && publish.numberOfInstances > 0)"
             ng-click="publish.callback(publish.resource, publish.getVersionString(), publish.buttonText, publish.newFolderName);dc.publishModalVisible=false;"
             type="button"
             class="btn btn-save confirm" translate>
           GENERIC.Ok
         </button>
-      </div>
-      <div class="clear-save">
-        <button type="button" class="btn btn-clear" ng-click="dc.publishModalVisible=false;" translate="">Cancel
-        </button>
+        <button type="button" class="btn btn-clear" ng-click="publish.doCancel()" translate>GENERIC.Cancel</button>
       </div>
     </div>
   </div>

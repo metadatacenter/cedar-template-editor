@@ -351,12 +351,18 @@ div.errorTechnicalDetails {
       height: auto;
 
       a {
-        i {
-          width: 40px;
-          height: 40px;
-          padding-top: 10px;
-          font-size: 18px;
+        /* center the icon inside the square button */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
 
+        i {
+          /* removed: width, height, padding-top */
+          font-size: 18px;
+          line-height: 1;
+          vertical-align: middle;
         }
       }
 
@@ -366,7 +372,6 @@ div.errorTechnicalDetails {
         padding: 0;
         margin: 0;
       }
-
     }
   }
 }
@@ -375,33 +380,42 @@ div.errorTechnicalDetails {
   width: 465px;
   position: absolute;
   border: 1px solid #d2d2d2;
-  background: #fff;
-  border-radius: 0;
   background: @white;
+  border-radius: 0;
   padding: 10px;
 
   .pull-left, .pull-right {
     width: 50%;
     text-transform: uppercase;
+
     .item {
       div {
+        /* NEW: vertical centering for icon + label */
+        display: flex;
+        align-items: center;
+        gap: 8px;          /* (or keep your padding-right on i) */
         padding: 10px;
-        cursor:pointer;
-        width:100%;
+        cursor: pointer;
+        width: 100%;
         color: @graytxt;
         font-weight: 500;
+        line-height: 1;
+
         i {
           color: @brand-primary;
-          padding-right: 10px;
+          /* padding-right: 10px;  // keep if you remove gap */
+          line-height: 1;
+          vertical-align: middle;
+          width: 1.25em;   /* fixed icon box for nicer alignment */
+          text-align: center;
         }
-        &:hover {
-          background:#efefef;
-        }
+
+        &:hover { background: #efefef; }  /* <-- still here */
       }
 
       .tooltip {
         text-transform: none;
-        width:auto;
+        width: auto;
       }
     }
   }
@@ -642,7 +656,7 @@ body.modal-open {
 
 /* END Inclusion (Update Artifacts) related Customization */
 
-.ai.ai-pfas {
+.ai-pfas {
   position: relative;
   display: inline-block;
   width: 1.9em;
@@ -671,8 +685,15 @@ body.modal-open {
       </text>\
     </svg>");
 }
-.ai.ai-pfas:before {
-  content: "";
+
+.ai-rrid {
+  --icon-size: 1.6em;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: inline-block;
+  vertical-align: middle;
+  background: center / contain no-repeat url('../img/rrid-logo.png');
+  image-rendering: crisp-edges;
 }
 
 /*
