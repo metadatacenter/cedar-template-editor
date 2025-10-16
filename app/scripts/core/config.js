@@ -24,7 +24,7 @@ define([
     // configure translations
     $translateProvider.useStaticFilesLoader({
       prefix: 'resources/i18n/locale-',
-      suffix: '.json'
+        suffix: '.json?v=' + window.cedarCacheControl
     });
     $translateProvider.preferredLanguage('en');
     $translateProvider.useSanitizeValueStrategy('sanitize');
