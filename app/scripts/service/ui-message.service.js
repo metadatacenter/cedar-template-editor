@@ -18,6 +18,10 @@ define([
       this.flash('success', messageKey, messageParameters, title);
     };
 
+    service.flashInfo = function (messageKey, messageParameters, title) {
+      this.flash('success', messageKey, messageParameters, title);
+    };
+
     service.flashWarning = function (messageKey, messageParameters, title) {
       this.flash('warning', messageKey, messageParameters, title);
     };
