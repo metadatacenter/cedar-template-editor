@@ -271,5 +271,31 @@
     "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
+  },
+  {
+    "cedarType": "ext-doi",
+    "iconClass": "ai ai-doi",
+    "allowedInElement": true,
+    "label": "DOI",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true,
+    "allowsRequired": true
+  },
+  {
+    "cedarType": "ext-nih-grant-id",
+    "iconClass": "ai ai-nih",
+    "allowedInElement": true,
+    "label": "Nih Grant Id",
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": true,
+    "allowsRequired": true
   }
 ]

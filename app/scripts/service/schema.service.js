@@ -616,6 +616,16 @@ define([
       return (service.getInputType(node) === 'ext-rrid');
     };
 
+    // is this a doi field?
+    service.isDoi = function (node) {
+      return (service.getInputType(node) === 'ext-doi');
+    };
+
+    // is this a nih-grant-id field?
+    service.isNihGrantId = function (node) {
+      return (service.getInputType(node) === 'ext-nih-grant-id');
+    };
+
     // get order array
     service.getOrder = function (node) {
       if (node) return service.schemaOf(node)._ui.order;

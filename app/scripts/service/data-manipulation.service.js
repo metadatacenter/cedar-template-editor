@@ -544,6 +544,14 @@ define([
         service.isPmid = function (node) {
           return (service.getInputType(node) === 'ext-pmid');
         };
+        // is this a doi field?
+        service.isDoi = function (node) {
+          return (service.getInputType(node) === 'ext-doi');
+        };
+        // is this a nih-grant-id field?
+        service.isNihGrantId = function (node) {
+          return (service.getInputType(node) === 'ext-nih-grant-id');
+        };
 
         //
         //  cardinality
@@ -1157,7 +1165,7 @@ define([
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid") {
+          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid" || inputType === "ext-doi" || inputType === "ext-nih-grant-id") {
             // Define the @id field
             var idField = {};
             idField.type = "string";
@@ -1486,7 +1494,7 @@ define([
           // usually it is in  @value
           let fieldValue = "@value";
           // but these three put it @id
-          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field) || service.isOrcid(field) || service.isRor(field) || service.isPfas(field) || service.isPmid(field) || service.isRrid(field)) {
+          if (service.getFieldControlledTerms(field) || service.hasValueConstraint(field) || service.isLinkType(field) || service.isOrcid(field) || service.isRor(field) || service.isPfas(field) || service.isPmid(field) || service.isRrid(field) || service.isDoi(field) || service.isNihGrantId(field)) {
             fieldValue = "@id";
           }
           return fieldValue;
@@ -1497,7 +1505,7 @@ define([
           // the printable value is usually in @value
           let location = "@value";
           // but a link puts it in @id
-          if (service.isLinkType(field) || service.isOrcid(field) || service.isRor(field) || service.isRor(field) || service.isPfas(field) || service.isPmid(field) || service.isRrid(field)) {
+          if (service.isLinkType(field) || service.isOrcid(field) || service.isRor(field) || service.isRor(field) || service.isPfas(field) || service.isPmid(field) || service.isRrid(field) || service.isDoi(field) || service.isNihGrantId(field)) {
             location = "@id";
             // and the constraint puts it rdfs:label
           } else if (service.hasValueConstraint(field)) {
