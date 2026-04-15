@@ -86,6 +86,7 @@
 .spreadsheetViewContainer {
   display: none;
   overflow: auto;
+
   //width: 590px;
   //height: 130px;
   //border:1px solid red;
@@ -115,12 +116,15 @@ div.htCedarCheckboxContainer {
   font-weight: bold;
 }
 
-html, body {
+html,
+body {
   display: block;
 }
 
 .roleSelectorCreator {
-  &.cedar-svg, &.name {
+
+  &.cedar-svg,
+  &.name {
     color: #5795ba !important;
   }
 
@@ -130,7 +134,9 @@ html, body {
 }
 
 .roleSelectorInstantiator {
-  &.cedar-svg, &.name {
+
+  &.cedar-svg,
+  &.name {
     color: #71a69c !important;
   }
 
@@ -142,8 +148,10 @@ html, body {
 .visibilitySwitch {
   position: relative;
   left: -13px;
+
   i {
-    position: relative;;
+    position: relative;
+    ;
     color: @brand-primary;
     top: -2px;
   }
@@ -175,6 +183,7 @@ html, body {
       &.field {
         margin-bottom: 0px;
       }
+
       &.values {
         margin-bottom: 0px;
       }
@@ -205,6 +214,7 @@ html, body {
   0% {
     border-color: @brand-primary;
   }
+
   100% {
     border-color: @brand-secondary;
   }
@@ -214,6 +224,7 @@ html, body {
   0% {
     border-color: @brand-primary;
   }
+
   100% {
     border-color: @brand-secondary;
   }
@@ -228,6 +239,7 @@ html, body {
   0% {
     border-color: @brand-primary;
   }
+
   100% {
     border-color: @brand-secondary;
   }
@@ -237,6 +249,7 @@ html, body {
   0% {
     border-color: @brand-primary;
   }
+
   100% {
     border-color: @brand-secondary;
   }
@@ -249,7 +262,9 @@ html, body {
 
 .sweet-alert {
   .sa-icon.sa-warning {
-    .sa-body, .sa-dot {
+
+    .sa-body,
+    .sa-dot {
       background-color: @brand-primary;
     }
   }
@@ -258,6 +273,7 @@ html, body {
 .field-instance {
   padding-left: 14px;
   padding-right: 14px;
+
   &.multiple-instance-field {
     border: 1px solid #ddd;
     padding-top: 12px;
@@ -301,12 +317,15 @@ html, body {
   top: 0;
 }
 
-[ng\:cloak], [ng-cloak], .ng-cloak {
+[ng\:cloak],
+[ng-cloak],
+.ng-cloak {
   display: none;
 }
 
 div.errorTechnicalDetails {
   width: 1000px;
+
   textarea {
     width: 900px;
     height: 300px;
@@ -330,6 +349,7 @@ div.errorTechnicalDetails {
   .more {
     font-size: 20px;
   }
+
   .search {
     border-top: 1px solid #d2d2d2;
   }
@@ -384,7 +404,8 @@ div.errorTechnicalDetails {
   border-radius: 0;
   padding: 10px;
 
-  .pull-left, .pull-right {
+  .pull-left,
+  .pull-right {
     width: 50%;
     text-transform: uppercase;
 
@@ -393,7 +414,8 @@ div.errorTechnicalDetails {
         /* NEW: vertical centering for icon + label */
         display: flex;
         align-items: center;
-        gap: 8px;          /* (or keep your padding-right on i) */
+        gap: 8px;
+        /* (or keep your padding-right on i) */
         padding: 10px;
         cursor: pointer;
         width: 100%;
@@ -406,11 +428,16 @@ div.errorTechnicalDetails {
           /* padding-right: 10px;  // keep if you remove gap */
           line-height: 1;
           vertical-align: middle;
-          width: 1.25em;   /* fixed icon box for nicer alignment */
+          width: 1.25em;
+          /* fixed icon box for nicer alignment */
           text-align: center;
         }
 
-        &:hover { background: #efefef; }  /* <-- still here */
+        &:hover {
+          background: #efefef;
+        }
+
+        /* <-- still here */
       }
 
       .tooltip {
@@ -466,6 +493,7 @@ div.errorTechnicalDetails {
         background: #5A96B8;
         border: 2px solid #5A90B8;
       }
+
       &.canc {
         color: #375E71;
         background: transparent;
@@ -512,25 +540,29 @@ body.modal-open {
     margin-bottom: -1px;
     font-size: 13px;
     line-height: 20px;
+
     .category-link-wrapper {
-      border:0px solid green;
+      border: 0px solid green;
+
       .category-open-link {
         border: 0px solid red;
-        position:absolute;
-        top:0;
-        left:0;
+        position: absolute;
+        top: 0;
+        left: 0;
+
         .category-leaf {
-          font-size:0.5em;
-          position:relative;
-          top:-2px;
+          font-size: 0.5em;
+          position: relative;
+          top: -2px;
         }
       }
+
       .category-search-link {
         border: 0px solid blue;
-        padding-left:15px;
+        padding-left: 15px;
 
         a:hover {
-          text-decoration:underline;
+          text-decoration: underline;
         }
       }
     }
@@ -538,8 +570,8 @@ body.modal-open {
 }
 
 .category-tree-container {
-  width:290px;
-  border:0px solid red;
+  width: 290px;
+  border: 0px solid red;
   overflow: hidden;
 }
 
@@ -568,6 +600,7 @@ body.modal-open {
     margin-right: 0px;
   }
 }
+
 .menu-icons-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -579,7 +612,9 @@ body.modal-open {
   height: 4em;
 }
 
-.Icons { grid-area: Icons; }
+.Icons {
+  grid-area: Icons;
+}
 
 .Version {
   justify-self: end;
@@ -587,7 +622,7 @@ body.modal-open {
   font-size: 10px;
 }
 
-.btn-folder-id:hover{
+.btn-folder-id:hover {
   background-color: rgba(21, 53, 53, 0.98);
   color: white;
 }
@@ -608,7 +643,7 @@ body.modal-open {
   color: #0a4e58;
 }
 
-.badge-button{
+.badge-button {
   vertical-align: center;
   display: inline-block;
   min-width: 10px;
@@ -622,10 +657,10 @@ body.modal-open {
   text-align: center;
   background-color: #777777;
   border-radius: 10px;
-  margin-right:10px;
+  margin-right: 10px;
 }
 
-.badge-button:hover{
+.badge-button:hover {
   background-color: #0F7686;
 }
 
@@ -640,16 +675,16 @@ body.modal-open {
   justify-content: right;
 }
 
-.inclusion-update{
+.inclusion-update {
   padding-left: 5px;
   float: right;
 }
 
-.inclusion-cancel{
+.inclusion-cancel {
   float: right;
 }
 
-.inclusion-modal{
+.inclusion-modal {
   width: 60%;
 }
 
@@ -694,6 +729,25 @@ body.modal-open {
   vertical-align: middle;
   background: center / contain no-repeat url('../img/rrid-logo.png');
   image-rendering: crisp-edges;
+}
+
+.ai-nih {
+  position: relative;
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  transform: scale(1.3);
+  transform-origin: left center;
+  margin-left: 0.15em;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 370 200'>\
+      <path d='M20 0 L260 0 L320 100 L260 200 L20 200 A20 20 0 0 1 0 180 L0 20 A20 20 0 0 1 20 0 Z' fill='%23707070'/>\
+      <path d='M275 0 L305 0 L365 100 L305 200 L275 200 L335 100 Z' fill='%23326194'/>\
+      <text x='140' y='145' font-family='Arial, sans-serif' font-weight='bold' font-size='130' fill='%23FFFFFF' text-anchor='middle'>NIH</text>\
+    </svg>");
 }
 
 /*
