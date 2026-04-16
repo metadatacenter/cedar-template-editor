@@ -21,3 +21,5 @@ app/config/version.js
 app/css/style-creator.css
 tests/env.js
 tests/config/test-env.js
+
+app/third_party_components/cedar-embeddable-editor/
