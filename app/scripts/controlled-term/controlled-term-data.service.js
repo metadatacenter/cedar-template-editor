@@ -209,7 +209,9 @@ define([
 
     function getOntologyByLdId(ontologyLdId) {
       init();
-      var ontologyId = ontologyLdId.substr(ontologyLdId.lastIndexOf('/') + 1);
+      if (!ontologyLdId) return undefined;
+      var cleanLdId = ontologyLdId.replace(/\/$/, "");
+      var ontologyId = cleanLdId.substr(cleanLdId.lastIndexOf('/') + 1);
       return getOntologyById(ontologyId);
     }
 
@@ -231,7 +233,9 @@ define([
 
     function getVsCollectionByLdId(vscLdId) {
       init();
-      var vscId = vscLdId.substr(vscLdId.lastIndexOf('/') + 1);
+      if (!vscLdId) return undefined;
+      var cleanLdId = vscLdId.replace(/\/$/, "");
+      var vscId = cleanLdId.substr(cleanLdId.lastIndexOf('/') + 1);
       return getVsCollectionById(vscId);
     }
 

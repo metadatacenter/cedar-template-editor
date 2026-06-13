@@ -62,6 +62,11 @@ gulp.task('copy:resources', function () {
   return gulp.src(glyphiconsGlob).pipe(gulp.dest('app/fonts/'));
 });
 
+gulp.task('copy:cee', function () {
+  return gulp.src('node_modules/cedar-embeddable-editor/cedar-embeddable-editor.js')
+      .pipe(gulp.dest('app/third_party_components/cedar-embeddable-editor/'));
+});
+
 
 gulp.task('server-development', function (done) {
   console.log("Server development");
@@ -487,7 +492,7 @@ if (cedarFrontendBehavior === 'develop') {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
+taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();

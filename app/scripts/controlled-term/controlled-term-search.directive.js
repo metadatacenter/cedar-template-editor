@@ -139,7 +139,19 @@ define([
                     else if (isTypeValue(response.collection[i].type) || isTypeValueSet(response.collection[i].type)) {
                       source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
                     }
-                    // Ignore results for which the ontology or value set collection was not found in the cache
+                    // Fallback to a mock source object if it's not found in the cache
+                    if (!source) {
+                      var sourceId = "";
+                      var sourceLdId = response.collection[i].source || response.collection[i].ontology || response.collection[i].vsCollection;
+                      if (sourceLdId) {
+                        var cleanLdId = sourceLdId.replace(/\/$/, "");
+                        sourceId = cleanLdId.substr(cleanLdId.lastIndexOf('/') + 1);
+                      }
+                      source = {
+                        id: sourceId,
+                        name: sourceId
+                      };
+                    }
                     if (source) {
                       var j = tArry.length;
                       tArry.push({
