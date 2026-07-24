@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.profile.privacyController', [])
       .controller('PrivacyController', PrivacyController);
 
-  PrivacyController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService"];
+  PrivacyController.$inject = ["$rootScope", "$scope", "$location", "$window", "HeaderService", "CONST","UIUtilService", "CedarUser", "QueryParamUtilsService", "PreviousRouteService"];
 
-  function PrivacyController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService) {
+  function PrivacyController($rootScope, $scope, $location,$window, HeaderService, CONST, UIUtilService, CedarUser, QueryParamUtilsService, PreviousRouteService) {
 
     $rootScope.pageTitle = 'Privacy';
 
@@ -19,33 +19,9 @@ define([
     HeaderService.configure(pageId);
 
     $scope.goToDashboardOrBack = function () {
-      //vm.searchTerm = null;
       UIUtilService.activeLocator = null;
       UIUtilService.activeZeroLocator = null;
-      var path = $location.path();
-      var hash = $location.hash();
-      var baseUrl = '/dashboard';
-      if (path != baseUrl) {
-        var queryParams = {};
-        var sharing = QueryParamUtilsService.getSharing();
-        if (sharing) {
-          queryParams['sharing'] = sharing;
-        }
-        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
-        if (folderId) {
-          queryParams['folderId'] = folderId;
-        }
-        /*if (params.search) {
-         queryParams['search'] = params.search;
-         }*/
-      }
-      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
-      if (hash) {
-        url += '#' + hash;
-      }
-      $location.url(url);
-      $window.scrollTo(0, 0);
-
+      PreviousRouteService.goBack();
     };
 
 

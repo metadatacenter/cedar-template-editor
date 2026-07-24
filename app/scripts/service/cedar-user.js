@@ -74,6 +74,10 @@ define([
       return getAppData().cedarUserProfile.apiKeys;
     };
 
+    service.setApiKeys = function (apiKeys) {
+      getAppData().cedarUserProfile.apiKeys = apiKeys;
+    };
+
     service.getRoles = function () {
       return getAppData().cedarUserProfile.roles;
     };

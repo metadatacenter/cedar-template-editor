@@ -68,7 +68,9 @@
           <div class="col-xs-3 menu-icons-container">
             <div class="Icons">
               <ul class="list-inline pull-right" style="margin-top:10px;margin-right:-10px; margin-bottom: 0px; white-space: nowrap;">
-                <li id="messaging">
+                <!-- Messaging bell hidden per request. The /messaging feature (MessagingController,
+                     MessagingService, route) is left intact; restore this <li> to bring the bell back. -->
+                <li id="messaging" ng-if="false">
                   <button  class="inline" uib-tooltip='{{"Messages" | translate}}' tooltip-placement="bottom"
                       type="button"
                       ng-click="hc.openMessaging()"><i class="fa fa-bell inline"></i></button>

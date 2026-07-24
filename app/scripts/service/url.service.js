@@ -111,6 +111,26 @@ define([
       return this.users() + '/' + this.encodeURIComponent(id);
     };
 
+    service.getUserSummary = function (id) {
+      return this.getUser(id) + '/summary';
+    };
+
+    service.apiKeys = function (id) {
+      return this.getUser(id) + '/api-keys';
+    };
+
+    service.createApiKey = function (id) {
+      return this.apiKeys(id);
+    };
+
+    service.regenerateApiKey = function (id, key) {
+      return this.apiKeys(id) + '/' + this.encodeURIComponent(key) + '/regenerate';
+    };
+
+    service.deleteApiKey = function (id, key) {
+      return this.apiKeys(id) + '/' + this.encodeURIComponent(key);
+    };
+
     service.terminology = function () {
       return terminologyService;
     };

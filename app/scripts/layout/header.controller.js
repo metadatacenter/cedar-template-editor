@@ -19,11 +19,13 @@ define([
     'UIUtilService',
     'CedarUser',
     'FrontendUrlService',
-    'MessagingService'
+    'MessagingService',
+    'PreviousRouteService'
   ];
 
   function HeaderController($rootScope, $location, $window, $timeout, $document, $translate,QueryParamUtilsService,
-                            UIMessageService, UIProgressService, UIUtilService,CedarUser, FrontendUrlService,MessagingService) {
+                            UIMessageService, UIProgressService, UIUtilService,CedarUser, FrontendUrlService,MessagingService,
+                            PreviousRouteService) {
 
     var vm = this;
     vm.path = $location.path();
@@ -96,30 +98,9 @@ define([
       vm.searchTerm = null;
       UIUtilService.activeLocator = null;
       UIUtilService.activeZeroLocator = null;
-      var path = $location.path();
-      var hash = $location.hash();
-      var baseUrl = '/dashboard';
-      if (path != baseUrl) {
-        var queryParams = {};
-        var sharing = QueryParamUtilsService.getSharing();
-        if (sharing) {
-          queryParams['sharing'] = sharing;
-        }
-        var folderId = QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId();
-        if (folderId) {
-          queryParams['folderId'] = folderId;
-        }
-        /*if (params.search) {
-         queryParams['search'] = params.search;
-         }*/
-      }
-      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
-      if (hash) {
-        url += '#' + hash;
-      }
-      $location.url(url);
-      $window.scrollTo(0, 0);
-
+      // Return the user to wherever they came from (folder + search + sharing preserved), falling
+      // back to the dashboard when there is no in-app history.
+      PreviousRouteService.goBack();
     };
 
     vm.goToHome = function () {

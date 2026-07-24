@@ -10,64 +10,274 @@
 
   <div class="content">
 
-    <div class="field-label">UUID</div>
-    <div class="field-value">{{$root.cedarUser.getUserId()}}</div>
-    <div class="field-label">Email</div>
-    <div class="field-value">{{$root.cedarUser.getEmail()}}</div>
-    <div class="field-label">@id</div>
-    <div class="field-value">{{$root.cedarUser.getUserFullId()}}</div>
+    <!-- ============================ Account ============================ -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-user-circle"></i> Account</h3>
+      </div>
 
-    <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
-      <div class="field-label">First name</div>
-      <div class="field-value"> {{$root.cedarUser.getFirstName()}}</div>
-      <div class="field-label">Last name</div>
-      <div class="field-value">{{$root.cedarUser.getLastName()}}</div>
-      <div class="field-label">Home folder id</div>
-      <div class="field-value">{{$root.cedarUser.getHomeFolderId()}}</div>
-      <div class="field-label">Encoded home folder id</div>
-      <div class="field-value">{{$root.cedarUser.getHomeFolderIdEncoded()}}</div>
+      <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
+        <div class="pf-field">
+          <div class="pf-field__label">First name</div>
+          <div class="pf-field__value"><span>{{$root.cedarUser.getFirstName()}}</span></div>
+        </div>
+        <div class="pf-field">
+          <div class="pf-field__label">Last name</div>
+          <div class="pf-field__value"><span>{{$root.cedarUser.getLastName()}}</span></div>
+        </div>
+      </div>
+
+      <div class="pf-field">
+        <div class="pf-field__label">Email</div>
+        <div class="pf-field__value">
+          <span>{{$root.cedarUser.getEmail()}}</span>
+          <button class="pf-copy" copy-to-clipboard copy-text="$root.cedarUser.getEmail()"
+              title="Copy email"><i class="fa fa-clone"></i></button>
+        </div>
+      </div>
+
+      <div class="pf-field">
+        <div class="pf-field__label">UUID</div>
+        <div class="pf-field__value">
+          <span class="pf-mono">{{$root.cedarUser.getUserId()}}</span>
+          <button class="pf-copy" copy-to-clipboard copy-text="$root.cedarUser.getUserId()"
+              title="Copy UUID"><i class="fa fa-clone"></i></button>
+        </div>
+      </div>
+
+      <div class="pf-field">
+        <div class="pf-field__label">@id</div>
+        <div class="pf-field__value">
+          <span class="pf-mono">{{$root.cedarUser.getUserFullId()}}</span>
+          <button class="pf-copy" copy-to-clipboard copy-text="$root.cedarUser.getUserFullId()"
+              title="Copy @id"><i class="fa fa-clone"></i></button>
+        </div>
+      </div>
+
+      <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
+        <div class="pf-field">
+          <div class="pf-field__label">Home folder id</div>
+          <div class="pf-field__value">
+            <span class="pf-mono">{{$root.cedarUser.getHomeFolderId()}}</span>
+            <button class="pf-copy" copy-to-clipboard copy-text="$root.cedarUser.getHomeFolderId()"
+                title="Copy home folder id"><i class="fa fa-clone"></i></button>
+          </div>
+        </div>
+        <div class="pf-field">
+          <div class="pf-field__label">Encoded home folder id</div>
+          <div class="pf-field__value">
+            <span class="pf-mono">{{$root.cedarUser.getHomeFolderIdEncoded()}}</span>
+            <button class="pf-copy" copy-to-clipboard copy-text="$root.cedarUser.getHomeFolderIdEncoded()"
+                title="Copy encoded home folder id"><i class="fa fa-clone"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pf-field" ng-if="memberSince">
+        <div class="pf-field__label">Member since</div>
+        <div class="pf-field__value"><span>{{formatDate(memberSince)}}</span></div>
+      </div>
     </div>
 
-    <hr/>
-    <h4>API Keys</h4>
-    <div ng-if="$root.cedarUser.isCedarProfileAvailable()" ng-repeat="apiKey in $root.cedarUser.getApiKeys()"
-        style="border:1px solid #ccc;padding:20px;margin-bottom:20px">
+    <!-- ============================ API Keys ============================ -->
+    <div class="pf-card" ng-if="$root.cedarUser.isCedarProfileAvailable()">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-key"></i> API Keys</h3>
+        <span class="pf-count">{{apiKeyCount()}} / {{maxApiKeys}}</span>
+      </div>
 
-      <div class="field-label">Service name</div>
-      <div class="field-value">{{apiKey.serviceName}}</div>
+      <p class="pf-card__intro">
+        Use an API key to authenticate REST API requests. Keep your keys secret &mdash; each grants full
+        access to your CEDAR account. You always keep at least one active key.
+      </p>
 
+      <!-- Create a new key -->
+      <div class="pf-newkey">
+        <input type="text" class="pf-newkey__input" ng-model="apiKeyForm.description"
+            ng-disabled="busy || atKeyLimit()"
+            placeholder="Optional description for a new key (e.g. “Import script”)"
+            ng-keydown="$event.keyCode === 13 && createApiKey()"/>
+        <button class="pf-btn pf-btn--primary" ng-click="createApiKey()" ng-disabled="busy || atKeyLimit()">
+          <i class="fa fa-plus"></i> New key
+        </button>
+      </div>
+      <p class="pf-newkey__hint" ng-if="atKeyLimit()">
+        You have reached the maximum of {{maxApiKeys}} keys. Delete one to create another.
+      </p>
 
-      <div class="field-label">Description</div>
-      <div class="field-value">{{apiKey.description}}</div>
+      <!-- Existing keys -->
+      <div class="pf-key" ng-repeat="apiKey in $root.cedarUser.getApiKeys()">
+        <div class="pf-key__top">
+          <div class="pf-key__desc">
+            <span class="pf-pill" ng-class="apiKey.enabled ? 'pf-pill--active' : 'pf-pill--off'">
+              <i class="fa" ng-class="apiKey.enabled ? 'fa-check-circle' : 'fa-ban'"></i>
+              {{apiKey.enabled ? 'Active' : 'Disabled'}}
+            </span>
+            <span class="pf-key__descText">{{apiKey.description}}</span>
+          </div>
+          <div class="pf-key__actions">
+            <button class="pf-btn pf-btn--ghost" ng-click="regenerateApiKey(apiKey)" ng-disabled="busy"
+                title="Replace this key with a new value">
+              <i class="fa fa-refresh"></i> Regenerate
+            </button>
+            <button class="pf-btn pf-btn--danger" ng-click="deleteApiKey(apiKey)"
+                ng-disabled="busy" ng-if="canDeleteKey()" title="Delete this key">
+              <i class="fa fa-trash-o"></i> Delete
+            </button>
+          </div>
+        </div>
 
+        <div class="pf-keybar">
+          <code class="pf-keybar__value pf-mono">{{apiKey.revealed ? apiKey.key : maskKey(apiKey.key)}}</code>
+          <button class="pf-keybar__btn" ng-click="toggleKeyVisibility(apiKey)"
+              title="{{apiKey.revealed ? 'Hide key' : 'Reveal key'}}">
+            <i class="fa" ng-class="apiKey.revealed ? 'fa-eye-slash' : 'fa-eye'"></i>
+            <span>{{apiKey.revealed ? 'Hide' : 'Reveal'}}</span>
+          </button>
+          <button class="pf-keybar__btn pf-keybar__btn--primary" copy-to-clipboard copy-text="apiKey.key"
+              title="Copy key to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+        </div>
 
-      <div class="field-label">Enabled</div>
-      <div class="field-value">{{apiKey.enabled}}</div>
+        <div class="pf-keymeta">
+          <span ng-if="apiKey.serviceName"><strong>Service</strong> {{apiKey.serviceName}}</span>
+          <span ng-if="apiKey.creationDate"><strong>Created</strong> {{formatDate(apiKey.creationDate)}}</span>
+        </div>
+      </div>
+    </div>
 
+    <!-- ==================== Using the CEDAR REST API ==================== -->
+    <div class="pf-card pf-rest" ng-if="$root.cedarUser.isCedarProfileAvailable()">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-code"></i> Using the CEDAR REST API</h3>
+      </div>
 
-      <div class="field-label">Key</div>
-      <div class="field-value">{{apiKey.key}}</div>
+      <p class="pf-rest__lead">
+        Every request includes an <code>Authorization</code> header built from one of your API keys.
+        The examples below use your active key.
+      </p>
 
-      <h4>Usage from REST client</h4>
-      <div>Set the <b>Authorization</b> header in the REST calls to:</div>
+      <div class="pf-header-grid">
+        <div class="pf-header-cell copy-block">
+          <div class="pf-header-cell__label">Header name</div>
+          <div class="pf-header-cell__row">
+            <code class="copy-source pf-mono">Authorization</code>
+            <button class="code-copy code-copy--light" copy-to-clipboard title="Copy header name">
+              <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+            </button>
+          </div>
+        </div>
+        <div class="pf-header-cell copy-block">
+          <div class="pf-header-cell__label">Header value</div>
+          <div class="pf-header-cell__row">
+            <code class="copy-source pf-mono">apiKey {{activeApiKey()}}</code>
+            <button class="code-copy code-copy--light" copy-to-clipboard title="Copy header value">
+              <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <textarea class="curlSample" readonly="readonly"
-          select-on-click>apiKey {{apiKey.key}}</textarea>
+      <p class="pf-rest__note">
+        The examples use <a href="https://curl.se" target="_blank" rel="noopener">cURL</a>. Resource IDs
+        (a template's or folder's <code>@id</code>) are full URLs and must be URL-encoded when placed in a
+        path or query string &mdash; replace <code>{TEMPLATE_ID}</code> below with your encoded template id.
+      </p>
 
+      <!-- 1. Home folder contents -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">List your home folder contents</span>
+          <span class="api-sample__desc">Everything at the top level of your workspace.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} "{{urlService.base()}}/folders/{{$root.cedarUser.getHomeFolderIdEncoded()}}/contents?resource_types=instance,template,folder,element" \
+  -H "Authorization: apiKey {{activeApiKey()}}"</pre>
+        </div>
+      </div>
 
-      <h5>Sample usage with cURL - Home folder contents</h5>
-      <textarea class="curlSample" readonly="readonly" select-on-click>
-curl -H "Content-Type: application/json" \
--H "Authorization: apiKey {{apiKey.key}}" \
--X GET "{{urlService.base()}}/folders/\
-{{$root.cedarUser.getHomeFolderIdEncoded()}}\
-/contents?resource_types=instance,template,folder,element"</textarea>
+      <!-- 2. Shared with me -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">List resources shared with you</span>
+          <span class="api-sample__desc">Templates and instances other users have shared.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} "{{urlService.base()}}/search?sharing=shared-with-me" \
+  -H "Authorization: apiKey {{activeApiKey()}}"</pre>
+        </div>
+      </div>
 
-      <h5>Sample usage with cURL - Shared with me</h5>
-      <textarea class="curlSample" readonly="readonly" select-on-click>
-curl -H "Content-Type: application/json" \
--H "Authorization: apiKey {{apiKey.key}}" \
--X GET "{{urlService.base()}}/search?sharing=shared-with-me"</textarea>
+      <!-- 3. Retrieve a template -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">Retrieve a template</span>
+          <span class="api-sample__desc">Fetch a single template by its URL-encoded <code>@id</code>.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} "{{urlService.base()}}/templates/{TEMPLATE_ID}" \
+  -H "Authorization: apiKey {{activeApiKey()}}"</pre>
+        </div>
+      </div>
+
+      <!-- 4. Create a template (server-assigned id) -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">Create a template</span>
+          <span class="api-sample__desc">POST a template JSON; the server assigns the <code>@id</code>. Omit <code>folder_id</code> to use your home folder.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} -X POST "{{urlService.base()}}/templates?folder_id={{$root.cedarUser.getHomeFolderIdEncoded()}}" \
+  -H "Authorization: apiKey {{activeApiKey()}}" \
+  -H "Content-Type: application/json" \
+  -d @template.json</pre>
+        </div>
+      </div>
+
+      <!-- 5. Create with a specific id / update -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">Create or update a template with a specific <code>@id</code></span>
+          <span class="api-sample__desc">PUT to the id: creates the template with that id, or updates it if it already exists. The body's <code>@id</code> must match the URL.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} -X PUT "{{urlService.base()}}/templates/{TEMPLATE_ID}" \
+  -H "Authorization: apiKey {{activeApiKey()}}" \
+  -H "Content-Type: application/json" \
+  -d @template.json</pre>
+        </div>
+      </div>
+
+      <!-- 6. All instances of a template -->
+      <div class="api-sample">
+        <div class="api-sample__head">
+          <span class="api-sample__title">Get all instances of a template</span>
+          <span class="api-sample__desc">Search for every instance based on a given template.</span>
+        </div>
+        <div class="api-sample__code copy-block">
+          <button class="code-copy" copy-to-clipboard title="Copy to clipboard">
+            <i class="fa fa-clone"></i><span class="copy-to-clipboard__label">Copy</span>
+          </button>
+<pre class="copy-source">curl{{curlOpts()}} "{{urlService.base()}}/search?is_based_on={TEMPLATE_ID}&resource_types=instance" \
+  -H "Authorization: apiKey {{activeApiKey()}}"</pre>
+        </div>
+      </div>
     </div>
 
   </div>
