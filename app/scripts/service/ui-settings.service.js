@@ -145,6 +145,10 @@ define([
       service.saveUIPreference('useMetadataEditorV2', prefValue);
     };
 
+    service.savePreferredDateFormat = function(prefValue) {
+      service.saveUIPreference('preferredDateFormat', prefValue);
+    };
+
     return service;
 
   };

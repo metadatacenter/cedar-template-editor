@@ -8,11 +8,30 @@
   </div>
 
   <div class="content">
+
+    <!-- About CEDAR -->
     <div class="pf-card">
       <div class="pf-card__head">
-        <h3 class="pf-card__title"><i class="fa fa-sliders"></i> Settings</h3>
+        <h3 class="pf-card__title"><i class="fa fa-info-circle"></i> About CEDAR</h3>
       </div>
+      <div class="pf-field">
+        <div class="pf-field__label">Version</div>
+        <div class="pf-field__value"><span class="pf-version">{{cedarVersion}}</span></div>
+      </div>
+      <div class="pf-field" ng-if="cedarVersionModifier">
+        <div class="pf-field__label">Version modifier</div>
+        <div class="pf-field__value">
+          <span class="pf-mono">{{cedarVersionModifier}}</span>
+          <span style="color:#9E9E9E;margin-left:8px">— UI only (cache-busting), not part of the released version</span>
+        </div>
+      </div>
+    </div>
 
+    <!-- New Metadata Editor UI -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-sliders"></i> Interface</h3>
+      </div>
       <div class="pf-toggle-row">
         <div class="pf-toggle-row__text">
           <div class="pf-toggle-row__title">Test the new Metadata Editor UI</div>
@@ -27,6 +46,25 @@
         </label>
       </div>
     </div>
+
+    <!-- Preferred date format -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-calendar"></i> Preferred date format</h3>
+      </div>
+      <div class="pf-toggle-row">
+        <div class="pf-toggle-row__text">
+          <div class="pf-toggle-row__title">Date format</div>
+          <div class="pf-toggle-row__desc">
+            How dates are shown for your account. Saved to your preferences and available to CEDAR tools.
+          </div>
+        </div>
+        <select class="pf-select" ng-model="preferredDateFormat" ng-change="savePreferredDateFormat()"
+            ng-options="fmt.value as fmt.label for fmt in dateFormats">
+        </select>
+      </div>
+    </div>
+
   </div>
 
 </div>

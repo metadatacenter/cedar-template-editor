@@ -85,6 +85,12 @@ define([
       apiKey.revealed = !apiKey.revealed;
     };
 
+    // A live example of today's date rendered in the user's preferred format (moment.js token).
+    $scope.dateFormatExample = function () {
+      var fmt = CedarUser.getPreferredDateFormat();
+      return (fmt && window.moment) ? window.moment().format(fmt) : '';
+    };
+
     // Jackson may serialize a LocalDateTime either as an ISO string or as a numeric array
     // [year, month, day, hour, minute, second, nano]. Render both defensively.
     $scope.formatDate = function (value) {

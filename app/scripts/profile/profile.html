@@ -77,6 +77,14 @@
         <div class="pf-field__label">Member since</div>
         <div class="pf-field__value"><span>{{formatDate(memberSince)}}</span></div>
       </div>
+
+      <div class="pf-field" ng-if="$root.cedarUser.isCedarProfileAvailable()">
+        <div class="pf-field__label">Preferred date format</div>
+        <div class="pf-field__value">
+          <span class="pf-mono">{{$root.cedarUser.getPreferredDateFormat()}}</span>
+          <span ng-if="dateFormatExample()" style="color:#9E9E9E;margin-left:6px">— e.g. {{dateFormatExample()}}</span>
+        </div>
+      </div>
     </div>
 
     <!-- ============================ API Keys ============================ -->

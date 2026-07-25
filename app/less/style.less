@@ -212,26 +212,45 @@ button {
   position: fixed;
   top: 0;
   left: 0;
+  margin-top: 6px; // small gap below the header, matches the app's card feel
   background-color: @white;
-  margin: 0;
-  padding: 0;
+  margin-left: 0;
+  padding: 6px;
   width: 150px;
-  box-shadow: 0px 0px 12px 1px #DDD;
+  box-sizing: border-box;
+  // Card styling that matches the profile/settings/privacy pages - no all-around glow.
+  border: 1px solid #e2e8e8;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(16, 34, 31, 0.14);
   ul {
-    padding: 10px;
     list-style: none;
     width: 100%;
-    text-align: center;
+    text-align: left;
     margin: 0;
     padding: 0;
+    a {
+      display: block;
+      text-decoration: none;
+    }
     li {
-      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
       width: 100%;
+      box-sizing: border-box;
       &:hover {
         background-color: @very-lt-gray;
       }
+      // Marker for links that open outside the app (in a new tab).
+      .external-icon {
+        color: @med-gray;
+        font-size: 11px;
+        flex: 0 0 auto;
+      }
     }
-
   }
 }
 
@@ -9045,6 +9064,28 @@ table.apiKey {
     &__text { min-width: 0; }
     &__title { font-size: 15px; font-weight: 600; color: #223; margin-bottom: 4px; }
     &__desc { font-size: 13px; color: @secondary-text; line-height: 1.55; }
+  }
+
+  // Styled dropdown used in settings (e.g. preferred date format).
+  .pf-select {
+    flex: 0 0 auto;
+    min-width: 230px;
+    max-width: 100%;
+    border: 1px solid @pf-border;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    color: #2b3b3b;
+    background: @white;
+    cursor: pointer;
+    &:focus { outline: none; border-color: @pf-accent; box-shadow: 0 0 0 3px fade(@pf-accent, 12%); }
+  }
+
+  .pf-version {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: @pf-accent;
   }
 
   // Self-consistent switch. High specificity (#profile/#settings + .switch) beats the global

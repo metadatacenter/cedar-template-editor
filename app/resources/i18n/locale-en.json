@@ -448,6 +448,11 @@
         "error": "There was an error reading the current user details!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
+    "UIPREFERENCES": {
+      "update": {
+        "error": "There was an error while saving your preferences!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
     "SEARCH": {
       "error": "There was an error while executing the search!<br /><br />VIEW TECHNICAL DETAILS!"
     },

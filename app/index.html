@@ -88,7 +88,7 @@
                  </li>
               </ul>
             </div>
-            <div class="Version">{{'V ' + hc.getCedarVersion()}}</div>
+            <!-- Version moved to Settings > About CEDAR; no longer shown in the top bar. -->
           </div>
 
         </div>
@@ -125,12 +125,12 @@
 <section>
   <div id="user-menu-dropdown">
     <ul>
-      <a href="/profile"><li id="user-profile-tool" >Profile</li></a>
-      <a target="_blank" href="https://metadatacenter.org/help/#subscribe"><li id="user-help">Help</li></a>
-      <a target="_blank" href="https://metadatacenter.org/#about"><li id="user-about" >About</li></a>
-      <a href="/privacy"><li id="user-privacy" >Privacy</li></a>
-      <a href="/settings"><li>Settings</li></a>
-      <a href="/logout"><li id="user-logout-tool" >Logout</li></a>
+      <a href="/profile"><li id="user-profile-tool" ><span>Profile</span></li></a>
+      <a href="/settings"><li id="user-settings-tool"><span>Settings</span></li></a>
+      <a href="/privacy"><li id="user-privacy" ><span>Privacy</span></li></a>
+      <a target="_blank" rel="noopener" href="https://metadatacenter.org/help/#subscribe"><li id="user-help"><span>Help</span><i class="fa fa-external-link external-icon" aria-hidden="true"></i></li></a>
+      <a target="_blank" rel="noopener" href="https://metadatacenter.org/#about"><li id="user-about" ><span>About</span><i class="fa fa-external-link external-icon" aria-hidden="true"></i></li></a>
+      <a href="/logout"><li id="user-logout-tool" ><span>Logout</span></li></a>
     </ul>
   </div>
 </section>

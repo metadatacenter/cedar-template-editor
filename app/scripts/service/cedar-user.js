@@ -110,6 +110,16 @@ define([
       return getAppData().cedarUserProfile.uiPreferences;
     };
 
+    service.getPreferredDateFormat = function () {
+      var prefs = service.getUIPreferences();
+      // Default to the US style used throughout the UI.
+      return (prefs && prefs.preferredDateFormat) ? prefs.preferredDateFormat : 'MM/DD/YYYY';
+    };
+
+    service.setPreferredDateFormat = function (value) {
+      getAppData().cedarUserProfile.uiPreferences['preferredDateFormat'] = value;
+    };
+
     service.saveUIPreference = function (name, property ,value) {
       getAppData().cedarUserProfile.uiPreferences[name][property] = value;
     };
