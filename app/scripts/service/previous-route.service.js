@@ -39,7 +39,12 @@ define([
     // The most recent non-utility location we navigated away from.
     var lastWorkspaceUrl = null;
 
-    $rootScope.$on('$routeChangeSuccess', function () {
+    // Listen on $locationChangeSuccess (not $routeChangeSuccess): folder-to-folder navigation on the
+    // dashboard only changes the folderId query param (reloadOnSearch:false) and fires $routeUpdate,
+    // NOT $routeChangeSuccess - so with the latter, currentUrl only refreshed on a full route change
+    // or a browser reload, and "back" from a utility page returned to the folder at last reload.
+    // $locationChangeSuccess fires on every URL change, so currentUrl always reflects the real spot.
+    $rootScope.$on('$locationChangeSuccess', function () {
       var newUrl = $location.url();
       if (newUrl === currentUrl) {
         return;

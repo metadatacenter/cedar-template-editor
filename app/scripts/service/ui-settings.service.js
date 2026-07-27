@@ -133,6 +133,10 @@ define([
       service.saveUIPreference('folderView.sortBy', 'lastUpdatedOnTS');
     };
 
+    service.saveSortDirection = function(prefValue) {
+      service.saveUIPreference('folderView.sortDirection', prefValue);
+    };
+
     service.saveStatus = function(prefValue) {
       service.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', prefValue);
     };

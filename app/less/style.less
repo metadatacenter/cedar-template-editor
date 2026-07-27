@@ -254,6 +254,105 @@ button {
   }
 }
 
+// "New" create button — soften the boxy button. Use the id so we beat Bootstrap's
+// high-specificity .btn-group corner rules that would otherwise square off the right side.
+.add-new #button-create.template {
+  border-radius: 6px;
+}
+
+// Card-style dropdown menus that mirror the top-right user-menu popup (white card,
+// subtle border, rounded corners, rounded hover rows). Shared by the "New" create
+// menu and the grid-view Sort menu so every popup feels the same.
+.add-new .dropdown-menu,
+#workspace-sort-tool .dropdown-menu {
+  min-width: 170px;
+  margin-top: 6px;
+  padding: 6px;
+  background-color: @white;
+  border: 1px solid #e2e8e8;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(16, 34, 31, 0.14);
+
+  > li > a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #333;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: @very-lt-gray;
+      color: #333;
+    }
+
+    // Give the sort menu's checkmark breathing room so it doesn't hug the label.
+    // It keeps its width when hidden (.invisible) so unchecked rows stay aligned.
+    .fa-check {
+      margin-right: 8px;
+    }
+  }
+
+  .divider {
+    margin: 6px 4px;
+  }
+}
+
+// Left-nav "share" links (Workspace / Shared with Me / ...) are <a href="#">, so
+// clicking them draws the browser's default blue focus box, which looks bad. Drop
+// it on pointer focus; keep a subtle ring for keyboard users only (accessibility).
+a.share {
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: 2px solid fade(@brand-primary, 45%);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// Direction arrow shown next to the active sort column/menu item.
+.sort-arrow {
+  margin-left: 6px;
+  font-size: 0.9em;
+}
+
+// Grid card footer: a light divided strip carrying the resource type + version.
+// Only rendered when there's something to show (see the directive template), so
+// folders and plain items get no footer.
+.all-items-view .populate-form-boxes .form-box .box-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid #f0f2f2;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: @med-gray;
+  min-height: 14px;
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #5a6a6a;
+  }
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .type-badge {
+    text-transform: capitalize;
+    letter-spacing: 0.03em;
+    color: #aab4b4;
+  }
+  .fa-globe {
+    color: @brand-primary;
+  }
+}
+
 #messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
   position: relative;
 
@@ -351,6 +450,22 @@ button {
     background-color: @search-input;
   }
 
+  // The .search-input class sits on BOTH the wrapper div and the input, so the
+  // wrapper paints its own square background behind the input. Clear it so only
+  // the rounded input shows.
+  .floating-label-wrapper.search-input {
+    background-color: transparent;
+  }
+
+  // Give the search box a soft, modern pill shape instead of the boxy Bootstrap default.
+  input.search-input {
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding-left: 18px;
+    padding-right: 40px;
+    box-shadow: none;
+  }
+
   .do-search {
     position: absolute;
     top: -20px;
@@ -379,7 +494,7 @@ button {
   }
 
   .navbar-brand {
-    background-image: url(../img/cedar-logo-main.png);
+    background-image: url(../img/cedar-logo-main.svg);
     background-repeat: no-repeat;
     width: 50px;
     background-size: 140px;
@@ -1005,10 +1120,11 @@ button {
   .populate-form-boxes {
 
     .form-box {
-      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+      box-shadow: 0 1px 3px rgba(16, 34, 31, 0.08);
     }
     .selected > .form-box {
-      box-shadow: 0 6px 6px 0 #ccc;
+      border-color: @brand-primary;
+      box-shadow: 0 0 0 2px rgba(15, 118, 134, 0.35), 0 8px 22px rgba(16, 34, 31, 0.14);
     }
 
     .selected .title {
@@ -1036,11 +1152,13 @@ button {
 
     .form-box {
       width: 160px;
-      border: 1px solid #ebebeb;
+      border: 1px solid #e6ebeb;
+      border-radius: 10px;
       background: #ffffff;
       margin: 5px auto;
       cursor: default;
       overflow: hidden;
+      transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
 
       .box-content {
 
@@ -1053,6 +1171,7 @@ button {
           margin: 0 5px 5px 5px;
           .title-text {
             font-size: 14px;
+            color: #333;
             white-space: nowrap;
             padding: 0;
             margin: 0
@@ -1209,6 +1328,9 @@ button {
 
     }
     .form-box:hover {
+      box-shadow: 0 8px 22px rgba(16, 34, 31, 0.14);
+      transform: translateY(-2px);
+      border-color: #d5dede;
 
       .quick-details-box {
         padding: 5px;

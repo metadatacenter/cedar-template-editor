@@ -237,6 +237,22 @@ define([
       return service.getSort();
     };
 
+    // Sort direction ('asc' | 'desc'). The preferences model already carries
+    // folderView.sortDirection. When it is absent, fall back to the ordering the
+    // UI used before this was clickable: Title ascending, dates descending.
+    service.getSortDirection = function () {
+      var dir = service.getUIPreferences().folderView.sortDirection;
+      if (dir === 'asc' || dir === 'desc') {
+        return dir;
+      }
+      return service.getSort() === 'name' ? 'asc' : 'desc';
+    };
+
+    service.setSortDirection = function (dir) {
+      service.saveUIPreference('folderView', 'sortDirection', dir);
+      return service.getSortDirection();
+    };
+
     service.setStatus = function (status) {
       service.saveUIPreference('resourcePublicationStatusFilter', 'publicationStatus', status);
     };
