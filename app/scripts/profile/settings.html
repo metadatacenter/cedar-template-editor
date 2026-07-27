@@ -1,25 +1,70 @@
-<div id="privacy-policy" class="container-fluid" >
+<div id="settings">
 
+  <div class="navbar-back flex" style="font-size: 16px;cursor: pointer;">
+    <div class="back-arrow-click flex-left" style="margin-right: 10px;font-weight: 100;font-size: 18px;" ng-click="goToDashboardOrBack()">
+      <i class="back-arrow fa fa-arrow-left"></i>
+      <div class="document-title" style="margin-left: 10px;font-weight:normal">Settings</div>
+    </div>
+  </div>
 
-      <div class="navbar-back flex" style="font-size: 16px;cursor: pointer;">
-        <div class="back-arrow-click flex-left" style="margin-right: 10px;font-weight: 100;font-size: 18px;" ng-click="goToDashboardOrBack()">
-          <i class="back-arrow fa fa-arrow-left"></i>
-          <div class="document-title" style="margin-left: 10px;font-weight:normal">Settings</div>
+  <div class="content">
+
+    <!-- About CEDAR -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-info-circle"></i> About CEDAR</h3>
+      </div>
+      <div class="pf-field">
+        <div class="pf-field__label">Version</div>
+        <div class="pf-field__value"><span class="pf-version">{{cedarVersion}}</span></div>
+      </div>
+      <div class="pf-field" ng-if="cedarVersionModifier">
+        <div class="pf-field__label">Version modifier</div>
+        <div class="pf-field__value">
+          <span class="pf-mono">{{cedarVersionModifier}}</span>
+          <span style="color:#9E9E9E;margin-left:8px">— UI only (cache-busting), not part of the released version</span>
         </div>
       </div>
+    </div>
 
-      <div class="content" >
-        <p class="new-ui-toggle">
-          <label> Test New Metadata Editor UI </label>
-          <label class="switch">
-            <input type="checkbox" ng-click="toggleMetadataEditorV2()" ng-model="useMetadataEditorV2" >
-            <span class="slider round"></span>
-          </label>
-        </p>
-        <p>We are currently testing a beta UI for creating and editing of instances. You can switch and test this new UI
-           with the toggle above. You can always switch back to legacy UI during this test phase.
-        </p>
+    <!-- New Metadata Editor UI -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-sliders"></i> Interface</h3>
       </div>
+      <div class="pf-toggle-row">
+        <div class="pf-toggle-row__text">
+          <div class="pf-toggle-row__title">Test the new Metadata Editor UI</div>
+          <div class="pf-toggle-row__desc">
+            We are currently testing a beta UI for creating and editing instances. Switch it on to try it &mdash;
+            you can switch back to the legacy UI at any time during this test phase.
+          </div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" ng-click="toggleMetadataEditorV2()" ng-model="useMetadataEditorV2">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Preferred date format -->
+    <div class="pf-card">
+      <div class="pf-card__head">
+        <h3 class="pf-card__title"><i class="fa fa-calendar"></i> Preferred date format</h3>
+      </div>
+      <div class="pf-toggle-row">
+        <div class="pf-toggle-row__text">
+          <div class="pf-toggle-row__title">Date format</div>
+          <div class="pf-toggle-row__desc">
+            How dates are shown for your account. Saved to your preferences and available to CEDAR tools.
+          </div>
+        </div>
+        <select class="pf-select" ng-model="preferredDateFormat" ng-change="savePreferredDateFormat()"
+            ng-options="fmt.value as fmt.label for fmt in dateFormats">
+        </select>
+      </div>
+    </div>
 
   </div>
 
+</div>

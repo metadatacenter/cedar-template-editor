@@ -190,7 +190,7 @@
                         ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
               </li>
 
-              <li ng-if="dc.onDashboard()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
+              <li ng-if="dc.onDashboard() && !dc.isListView()" id="workspace-sort-tool" uib-tooltip="{{ 'Sort' | translate  }}"
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"
@@ -200,15 +200,21 @@
                     <i class="fa fa-sort-amount-asc"></i>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a class="sortName" ng-click="dc.setSortByName()"><i class="fa fa-check"
+                    <li><a class="sortName" ng-click="dc.updateSort('name')"><i class="fa fa-check"
                                                                              ng-class="dc.sortName()"></i><span
-                        translate="DASHBOARD.sort.name"></span></a></li>
-                    <li><a class="sortCreated" ng-click="dc.setSortByCreated()"><i class="fa fa-check"
+                        translate="DASHBOARD.sort.name"></span><i class="fa sort-arrow" aria-hidden="true"
+                        ng-if="dc.isSort('name')"
+                        ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a></li>
+                    <li><a class="sortCreated" ng-click="dc.updateSort('createdOnTS')"><i class="fa fa-check"
                                                                                    ng-class="dc.sortCreated()"></i><span
-                        translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                    <li><a class="sortUpdated" ng-click="dc.setSortByUpdated()"><i class="fa fa-check"
+                        translate="DASHBOARD.sort.createdOnTS"></span><i class="fa sort-arrow" aria-hidden="true"
+                        ng-if="dc.isSort('createdOnTS')"
+                        ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a></li>
+                    <li><a class="sortUpdated" ng-click="dc.updateSort('lastUpdatedOnTS')"><i class="fa fa-check"
                                                                                    ng-class="dc.sortUpdated()"></i><span
-                        translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
+                        translate="DASHBOARD.sort.lastUpdatedOnTS"></span><i class="fa sort-arrow" aria-hidden="true"
+                        ng-if="dc.isSort('lastUpdatedOnTS')"
+                        ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a>
                     </li>
                   </ul>
                 </div>
@@ -314,20 +320,17 @@
                         </div>
                       </div>
 
-                      <hr style="margin:0;padding:0"/>
-
-                      <div style="min-height:2em;padding:2px 4px">
-                        <!-- OpenView icon -->
-                        <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
-                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
-                             tooltip-placement="top">
-                          <i class="action fa fa-external-link-square">&nbsp;</i>
-                        </div>
-                        <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
-                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
-                             tooltip-placement="top">
-                          <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
-                        </div>
+                      <div class="box-footer" ng-if="dc.isOpen(resource) || dc.isOpenJustImplicitly(resource)">
+                        <span class="footer-left"></span>
+                        <span class="footer-right">
+                          <!-- OpenView icon -->
+                          <i ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)"
+                             class="action fa fa-external-link-square"
+                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}" tooltip-placement="top"></i>
+                          <i ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)"
+                             class="action fa fa-external-link-square isOpenImplicitly"
+                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}" tooltip-placement="top"></i>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -410,39 +413,32 @@
                         </div>
                       </div>
 
-                      <hr style="margin:0;padding:0"/>
-
-                      <div style="min-height:2em;padding:2px 4px">
-                        <!-- Version number -->
-                        <div ng-if="!dc.isPublished(resource)" style="display: inline">
-                          <i class="fa fa-globe" style="visibility:hidden"></i><span
-                            ng-show="dc.getResourceVersion(resource) != '0.0.1'"
-                            uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
-                            tooltip-placement="left"> {{dc.getResourceVersion(resource)}}</span>
-                        </div>
-                        <!-- Globe icon and version number (for published version) -->
-                        <div ng-if="dc.isPublished(resource)" style="display: inline"
-                             uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
-                             tooltip-placement="left">
-                          <i class="fa fa-globe"></i>
-                          {{dc.getResourceVersion(resource)}}
-                        </div>
-                        <!-- Trusted badge -->
-                        <div ng-if="dc.getTrustedBy(resource)" style="display:inline; float:right;"
-                             uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}">
-                          <i class="fa fa-shield">&nbsp;</i>
-                        </div>
-                        <!-- OpenView icon -->
-                        <div ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
-                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}"
-                             tooltip-placement="top">
-                          <i class="action fa fa-external-link-square">&nbsp;</i>
-                        </div>
-                        <div ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)" style="display:inline; float:right;"
-                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}"
-                             tooltip-placement="top">
-                          <i class="action fa fa-external-link-square isOpenImplicitly">&nbsp;</i>
-                        </div>
+                      <div class="box-footer">
+                        <span class="footer-left">
+                          <!-- Draft version (hidden for the default 0.0.1) -->
+                          <span ng-if="!dc.isPublished(resource)"
+                                ng-show="dc.getResourceVersion(resource) != '0.0.1'"
+                                uib-tooltip="{{'GENERIC.DraftVersion' | translate}}"
+                                tooltip-placement="left">{{dc.getResourceVersion(resource)}}</span>
+                          <!-- Globe icon and version number (for published version) -->
+                          <span ng-if="dc.isPublished(resource)"
+                                uib-tooltip="{{'GENERIC.PublishedVersion' | translate}}"
+                                tooltip-placement="left"><i class="fa fa-globe"></i> {{dc.getResourceVersion(resource)}}</span>
+                        </span>
+                        <span class="footer-right">
+                          <!-- Trusted badge -->
+                          <i ng-if="dc.getTrustedBy(resource)" class="fa fa-shield"
+                             uib-tooltip="{{'GENERIC.TrustedBy' | translate}} {{dc.getTrustedBy(resource)}}"></i>
+                          <!-- OpenView icon -->
+                          <i ng-if="dc.isOpen(resource)" ng-click="dc.openOpen(resource)"
+                             class="action fa fa-external-link-square"
+                             uib-tooltip="{{'GENERIC.IsOpen' | translate}}" tooltip-placement="top"></i>
+                          <i ng-if="dc.isOpenJustImplicitly(resource)" ng-click="dc.openOpen(resource)"
+                             class="action fa fa-external-link-square isOpenImplicitly"
+                             uib-tooltip="{{'GENERIC.IsOpenImplicitly' | translate}}" tooltip-placement="top"></i>
+                          <!-- Resource type -->
+                          <span class="type-badge">{{dc.getResourceTypeClass(resource)}}</span>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -457,15 +453,21 @@
                     <cedar-resource-icon style="visibility:hidden"
                                          resource-type="resource.resourceType"></cedar-resource-icon>
                     <a style="width:100%;" ng-class="{'bold': dc.isSort('name')}" href="#"
-                       ng-click="dc.updateSort('name')">Title</a>
+                       ng-click="dc.updateSort('name')">Title<i class="fa sort-arrow" aria-hidden="true"
+                       ng-if="dc.isSort('name')"
+                       ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a>
                   </div>
 
-                  <a class="ellipsis" style="width:100px;padding-right:10px;"
+                  <a class="ellipsis" style="width:130px;padding-right:10px;"
                      ng-class="{'bold': dc.isSort('createdOnTS')}" href="#"
-                     ng-click="dc.updateSort('createdOnTS')">Created</a>
-                  <a class="ellipsis" style="width:100px;padding-right:10px;"
+                     ng-click="dc.updateSort('createdOnTS')">Created<i class="fa sort-arrow" aria-hidden="true"
+                     ng-if="dc.isSort('createdOnTS')"
+                     ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a>
+                  <a class="ellipsis" style="width:130px;padding-right:10px;"
                      ng-class="{'bold': dc.isSort('lastUpdatedOnTS')}" href="#"
-                     ng-click="dc.updateSort('lastUpdatedOnTS')">Modified</a>
+                     ng-click="dc.updateSort('lastUpdatedOnTS')">Modified<i class="fa sort-arrow" aria-hidden="true"
+                     ng-if="dc.isSort('lastUpdatedOnTS')"
+                     ng-class="dc.getSortDirection() === 'asc' ? 'fa-caret-up' : 'fa-caret-down'"></i></a>
                   <div ng-if="dc.filterPublished() && dc.filterLatest()" style="width:150px;"></div>
                   <div ng-if="dc.filterPublished() && !dc.filterLatest()" style="width:150px;"></div>
                   <div style="width:80px"></div>
@@ -497,10 +499,10 @@
 
 
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{resource['pav:createdOn'] |
+                    <div class="ellipsis" style="width:130px;padding-right:10px;">{{resource['pav:createdOn'] |
                     prettyDate}}
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
+                    <div class="ellipsis" style="width:130px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                     prettyDate}}
                     </div>
                     <div style="width:150px;">
@@ -585,10 +587,10 @@
                            tooltip-enable="dc.isOverflow(resource, 'row')">{{ dc.getTitle(resource) }}
                       </div>
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:createdOn'] |
+                    <div class="ellipsis" style="width:130px;padding-right:10px;">{{ resource['pav:createdOn'] |
                     prettyDate }}
                     </div>
-                    <div class="ellipsis" style="width:100px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
+                    <div class="ellipsis" style="width:130px;padding-right:10px;">{{ resource['pav:lastUpdatedOn'] |
                     prettyDate }}
                     </div>
 
@@ -746,7 +748,13 @@
         <div class="flex">
           <cedar-resource-icon resource-type="dc.getSelectedNode().resourceType"></cedar-resource-icon>
           <div class="title full-width" ng-class="dc.getSelectedNode().resourceType">
-            <span class="ellipsis" ng-bind="dc.getSelectedNode()[dc.titleLocation()]"></span>
+            <span class="resource-title ellipsis" ng-bind="dc.getSelectedNode()[dc.titleLocation()]"></span>
+            <!-- Type + version chips always on their own line, so the header height is
+                 stable whether the title is short or truncated (no jumping). -->
+            <div class="resource-chips">
+              <span class="resource-type-badge" ng-if="dc.getSelectedNode().resourceType">{{ dc.getSelectedNode().resourceType }}</span>
+              <span class="resource-version-badge" ng-if="dc.getSelectedNode()['pav:version']">v {{ dc.getSelectedNode()['pav:version'] }}</span>
+            </div>
           </div>
           <div class="goaway">
             <button
@@ -766,84 +774,71 @@
                ng-click="dc.setTab('resource-info');">
             <span>Info</span>
           </div>
+          <!-- Version / Category have no meaning for folders -->
           <div class="element-toggle table-cell-style "
+               ng-if="!dc.isFolder()"
                ng-class="{active: dc.isVersionTab()}"
                ng-click="dc.setTab('resource-version');">
             <span>{{'GENERIC.Version' | translate}}</span>
           </div>
           <div class="element-toggle table-cell-style "
+               ng-if="!dc.isFolder()"
                ng-class="{active: dc.isCategoryTab()}"
                ng-click="dc.setTab('resource-category');">
             <span>{{'GENERIC.Category' | translate}}</span>
           </div>
         </div>
 
-        <div class="half-padding-top" id="resource-category" ng-show="dc.isCategoryTab()">
+        <div class="half-padding-top" id="resource-category" ng-if="!dc.isFolder()" ng-show="dc.isCategoryTab()">
           <div class="info" ng-if="dc.hasSelected() && dc.getSelectedCategories()">
-            <div ng-repeat="(pathIndex, categoryPath) in dc.getSelectedCategories() track by $index">
-              <div ng-class="{'selected-version':dc.isSelected(dc.getSelected())}"
-                   style="padding:5px;border: 1px solid #ccc">
-                <div>
-                  <span ng-repeat="(categoryIndex, category) in categoryPath track by $index"><span
-                      ng-if="categoryIndex > 0"><span ng-if="categoryIndex > 1"> &raquo; </span>
-                      {{category['schema:name']}}</span></span>
-                </div>
+            <div class="category-card" ng-repeat="(pathIndex, categoryPath) in dc.getSelectedCategories() track by $index">
+              <div class="category-path">
+                <span class="category-crumb" ng-repeat="(categoryIndex, category) in categoryPath track by $index">
+                  <span ng-if="categoryIndex > 0">
+                    <span ng-if="categoryIndex > 1" class="category-sep">&rsaquo;</span>
+                    <span class="category-seg" ng-class="{'is-leaf': $last}">{{category['schema:name']}}</span>
+                  </span>
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="half-padding-top" id="resource-version" ng-show="dc.isVersionTab()">
+        <div class="half-padding-top" id="resource-version" ng-if="!dc.isFolder()" ng-show="dc.isVersionTab()">
           <div class="info " ng-if="dc.hasSelected() && !dc.getSelectedVersions()">
-            <div ng-class="{'selected-version':dc.isSelected(dc.getSelected())}"
-                 style="padding:5px;border: 1px solid #ccc">
-              <div class="flex">
-                <div class="ellipsis clickable" ng-click="dc.goToResource(dc.getSelected())">
-                  {{dc.getTitle(dc.getSelected())}}
-                </div>
+            <div class="version-card" ng-class="{'is-current':dc.isSelected(dc.getSelected())}">
+              <div class="version-card-head">
+                <span class="version-num">{{ dc.getSelected()['pav:version'] || '—' }}</span>
+                <span class="version-title ellipsis clickable" ng-click="dc.goToResource(dc.getSelected())">{{dc.getTitle(dc.getSelected())}}</span>
               </div>
-              <div ng-if="dc.hasIdentifier(dc.getSelectedNode())" class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Identifier</div>
-                <div class="created-date">{{ dc.getIdentifier(dc.getSelectedNode()) }}</div>
+              <div class="version-when">
+                <span translate>Created</span> {{ dc.getSelected()['pav:createdOn'] | prettyDate }}
+                &middot;
+                <span translate>Modified</span> {{ dc.getSelected()['pav:lastUpdatedOn'] | prettyDate }}
               </div>
-              <div class="flex flex-wrap">
-                <div class="field-label">Created</div>
-                <div>{{ dc.getSelected()['pav:createdOn'] | prettyDate }}</div>
-              </div>
-              <div class="flex flex-wrap">
-                <div class="field-label" translate>Modified</div>
-                <div>{{ dc.getSelected()['pav:lastUpdatedOn'] | prettyDate }}</div>
-              </div>
+              <div class="version-id" ng-if="dc.hasIdentifier(dc.getSelectedNode())">{{ dc.getIdentifier(dc.getSelectedNode()) }}</div>
             </div>
           </div>
           <div class="info " ng-if="dc.hasSelected() && dc.getSelectedVersions()"
                ng-repeat="(index, resource) in dc.getSelected().versions track by $index">
-            <div ng-class="{'selected-version':dc.isSelected(resource)}" style="padding:5px;border: 1px solid #ccc">
-              <div class="flex">
-                <i ng-if="dc.isPublished(resource)" class="padding-right action fa"
-                   ng-class="dc.getPublishedIcon()"></i>
-                <div class="padding-right" ng-class="{'latest-version': resource.isLatestVersion}">
-                  {{resource['pav:version']}}
-                </div>
-                <div class="ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</div>
+            <div class="version-card" ng-class="{'is-current':dc.isSelected(resource)}">
+              <div class="version-card-head">
+                <i ng-if="dc.isPublished(resource)" class="version-pub fa" ng-class="dc.getPublishedIcon()"></i>
+                <span class="version-num" ng-class="{'is-latest': resource.isLatestVersion}">{{resource['pav:version']}}</span>
+                <span class="version-title ellipsis clickable" ng-click="dc.goToResource(resource)">{{dc.getTitle(resource)}}</span>
+                <span class="version-latest-tag" ng-if="resource.isLatestVersion" translate>Latest</span>
               </div>
-              <div ng-if="dc.hasIdentifier(resource)" class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Identifier</div>
-                <div class="created-date">{{ dc.getIdentifier(resource) }}</div>
+              <div class="version-when">
+                <span translate>Created</span> {{ resource['pav:createdOn'] | prettyDate }}
+                &middot;
+                <span translate>Modified</span> {{ resource['pav:lastUpdatedOn'] | prettyDate }}
               </div>
-              <div class="flex flex-wrap">
-                <div class="field-label">Created</div>
-                <div>{{ resource['pav:createdOn'] | prettyDate }}</div>
-              </div>
-              <div class="flex flex-wrap">
-                <div class="field-label" translate>Modified</div>
-                <div>{{ resource['pav:lastUpdatedOn'] | prettyDate }}</div>
-              </div>
+              <div class="version-id" ng-if="dc.hasIdentifier(resource)">{{ dc.getIdentifier(resource) }}</div>
             </div>
           </div>
         </div>
 
-        <div id="resource-info" ng-if="dc.isInfoTab('resource-info')">
+        <div id="resource-info" ng-if="dc.isInfoTab('resource-info') || dc.isFolder()">
           <div class="info no-selection" ng-if="!dc.getSelectedNode()">
             <div class="row no-file">
               <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
@@ -878,68 +873,52 @@
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Created</div>
-              <div class="created-date">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }} by {{
-                dc.getSelectedNode().createdByUserName }}
+              <div class="created-date">{{ dc.getSelectedNode()['pav:createdOn'] | prettyDate }}
+                <div class="by-user" ng-if="dc.getSelectedNode().createdByUserName">by {{ dc.getSelectedNode().createdByUserName }}</div>
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak" translate>Modified</div>
-              <div class="updated-date">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }} by
-                {{ dc.getSelectedNode().lastUpdatedByUserName }}
+              <div class="updated-date">{{ dc.getSelectedNode()['pav:lastUpdatedOn'] | prettyDate }}
+                <div class="by-user" ng-if="dc.getSelectedNode().lastUpdatedByUserName">by {{ dc.getSelectedNode().lastUpdatedByUserName }}</div>
               </div>
             </div>
 
             <div class="flex flex-wrap padding-top">
-              <div class="field-label ng-cloak" translate>Permissions</div>
-              <div>
-                <span ng-if="dc.canRead()" class="can-read ellipsis"><i class="fa fa-check"></i>read </span>
-                <span ng-if="dc.canWrite()" class="can-write ellipsis"><i class="fa fa-check"></i>write </span>
-                <span ng-if="dc.canChangeOwner()" class="can-change-owner ellipsis"><i
-                    class="fa fa-check"></i>owner</span>
+              <div class="field-label ng-cloak">Access</div>
+              <div class="perm-chips">
+                <span ng-if="dc.canRead()" class="perm-chip">read</span>
+                <span ng-if="dc.canWrite()" class="perm-chip">write</span>
+                <span ng-if="dc.canChangeOwner()" class="perm-chip">owner</span>
               </div>
             </div>
 
-            <!-- derived from a copy -->
-            <div ng-if="dc.getDerivedFrom()">
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Derived From</div>
-                <div class="field-value" style="cursor:pointer" ng-click="dc.goToResource(dc.getDerivedFrom(),'open')">
+            <!-- provenance: derived-from (a copy) and/or based-on (a template) -->
+            <div class="provenance" ng-if="dc.getDerivedFrom() || dc.getBasedOn()">
+              <div class="provenance-header ng-cloak" translate>Provenance</div>
+
+              <div class="provenance-item" ng-if="dc.getDerivedFrom()">
+                <div class="provenance-rel ng-cloak"><span translate>Derived From</span> <span ng-if="dc.getDerivedFrom().resourceType">{{ dc.getDerivedFrom().resourceType }}</span></div>
+                <div class="provenance-link" style="cursor:pointer" ng-click="dc.goToResource(dc.getDerivedFrom(),'open')">
                   {{ dc.getTitle(dc.getDerivedFrom()) }}
                 </div>
-              </div>
-
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Created</div>
-                <div>{{ dc.getDerivedFrom()['pav:createdOn'] | prettyDate }}
+                <div class="provenance-when">
+                  <span class="ng-cloak" translate>Created</span> {{ dc.getDerivedFrom()['pav:createdOn'] | prettyDate }}
+                  &middot;
+                  <span class="ng-cloak" translate>Modified</span> {{ dc.getDerivedFrom()['pav:lastUpdatedOn'] | prettyDate }}
                 </div>
               </div>
 
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Modified</div>
-                <div>{{ dc.getDerivedFrom()['pav:lastUpdatedOn'] | prettyDate }}
-                </div>
-              </div>
-            </div>
-
-            <!-- instance is based on a template -->
-            <div ng-if="dc.getBasedOn()">
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Based On</div>
-                <div class="field-value" style="cursor:pointer" ng-click="dc.goToResource(dc.getBasedOn(),'open')">
+              <div class="provenance-item" ng-if="dc.getBasedOn()">
+                <div class="provenance-rel ng-cloak" translate>Based On Template</div>
+                <div class="provenance-link" style="cursor:pointer" ng-click="dc.goToResource(dc.getBasedOn(),'open')">
                   {{ dc.getTitle(dc.getBasedOn()) }}
                 </div>
-              </div>
-
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Created</div>
-                <div>{{ dc.getBasedOn()['pav:createdOn'] | prettyDate }}
-                </div>
-              </div>
-
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label" translate>Modified</div>
-                <div>{{ dc.getBasedOn()['pav:lastUpdatedOn'] | prettyDate }}
+                <div class="provenance-when">
+                  <span class="ng-cloak" translate>Created</span> {{ dc.getBasedOn()['pav:createdOn'] | prettyDate }}
+                  &middot;
+                  <span class="ng-cloak" translate>Modified</span> {{ dc.getBasedOn()['pav:lastUpdatedOn'] | prettyDate }}
                 </div>
               </div>
             </div>
@@ -951,44 +930,35 @@
             </div>
 
             <!-- templates have instances -->
-            <div ng-if="dc.getTotalMetadata()" class="instance-list">
-              <div class="flex flex-wrap padding-top">
-                <div class="field-label ng-cloak" translate>Instances</div>
-                <div class="field-value">{{ dc.getTotalMetadata() }} ({{ dc.getVisibleMetadata() }} <span translate>accessible</span>)
-                </div>
-              </div>
-
-              <div ng-if="dc.getVisibleMetadata()" cedar-infinite-scroll load-more="" class="scrollable-content"
-                   style="margin-top:10px;overflow-y:scroll;border:1px solid #ccc;height:100px">
-                <div ng-repeat="(index, resource) in dc.getInstances() track by $index" class="instance-item"
-                     style="padding:2px;"
-                     ng-click="dc.goToResource(resource,'open')">
-                  {{resource['schema:name']}}
-                </div>
+            <div ng-if="dc.getTotalMetadata()" class="flex flex-wrap padding-top">
+              <div class="field-label ng-cloak" translate>Instances</div>
+              <div class="field-value">{{ dc.getTotalMetadata() }} <span class="instance-count-sub">({{ dc.getVisibleMetadata() }} <span translate>accessible</span>)</span>
               </div>
             </div>
 
-            <div class="description flex-top " style="padding: 20px 0 0 0;" ng-if="dc.getSelectedNode()">
-              <div style="width:100%;">
-                <div ng-if="dc.editingDescription">
-                  <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
-                    <fieldset>
-                <textarea style="width:100%;resize:both" id="edit-description" type="text"
-                          ng-model="dc.getSelected()[dc.descriptionLocation()]"
-                          ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
-                      <button type="submit" style=" display:none">Add</button>
-                    </fieldset>
-                  </form>
-
-                </div>
-                <div ng-if="!dc.editingDescription" class="title">
-                  {{ dc.getDescription(dc.getSelected()) }}
+            <div ng-if="dc.getTotalMetadata() && dc.getVisibleMetadata()" class="instance-list">
+              <div class="instance-scroll scrollable-content">
+                <div ng-repeat="(index, resource) in dc.getInstances() track by $index" class="instance-item"
+                     ng-click="dc.goToResource(resource,'open')"
+                     uib-tooltip="{{resource['schema:name']}}"
+                     tooltip-append-to-body="true"
+                     tooltip-animation="false"
+                     tooltip-placement="top">
+                  <i class="fa fa-file-text-o instance-icon"></i>
+                  <span class="instance-name ellipsis">{{resource['schema:name']}}</span>
+                  <i class="fa fa-angle-right instance-go"></i>
                 </div>
               </div>
+              <div class="instance-more" ng-if="dc.getInstances().length < dc.getVisibleMetadata()">
+                Showing first {{ dc.getInstances().length }} of {{ dc.getVisibleMetadata() }}. Open the template to see all.
+              </div>
+            </div>
 
-              <div>
+            <div class="description-block" ng-if="dc.getSelectedNode()">
+              <div class="description-head">
+                <div class="field-label ng-cloak" translate>Description</div>
                 <button
-                    style="background:transparent"
+                    class="description-edit"
                     ng-show="!dc.editingDescription && dc.canWrite()"
                     type="button"
                     uib-tooltip='{{"HELP.editDescription" | translate}}'
@@ -996,11 +966,31 @@
                     tooltip-animation="false"
                     tooltip-placement="left"
                     data-toggle="tooltip"
-                    ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+                    ng-click="dc.toggleDescriptionEditing()"><i class="fa fa-pencil"></i></button>
+              </div>
+
+              <div ng-if="dc.editingDescription">
+                <form name="forms.descriptionForm" class="form-inline" ng-submit="dc.updateDescription()">
+                  <fieldset>
+                    <textarea class="desc-textarea" id="edit-description" type="text"
+                              placeholder="Describe this resource…"
+                              ng-model="dc.getSelectedNode()[dc.descriptionLocation()]"
+                              ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}"></textarea>
+                    <button type="submit" style="display:none">Add</button>
+                  </fieldset>
+                </form>
+              </div>
+
+              <div ng-if="!dc.editingDescription"
+                   class="desc-display"
+                   ng-class="{'is-empty': !dc.getDescription(dc.getSelectedNode())}"
+                   ng-click="dc.canWrite() && dc.toggleDescriptionEditing()">
+                <span ng-if="dc.getDescription(dc.getSelectedNode())">{{ dc.getDescription(dc.getSelectedNode()).trim() }}</span>
+                <span ng-if="!dc.getDescription(dc.getSelectedNode())" class="desc-placeholder">{{ dc.canWrite() ? 'Add a description…' : 'No description' }}</span>
               </div>
             </div>
 
-            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && dc.isFolder()">
+            <div class="copy-actions" ng-if="dc.getSelected() && dc.isFolder()">
               <button class="btn-folder-id"
                       ng-click="dc.copyFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedFolderId()}}'
@@ -1009,9 +999,7 @@
                       tooltip-placement="top"
                       data-toggle="tooltip"
                       tooltip-append-to-body="true"
-              >Copy folder Id</button>
-            </div>
-            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+              ><i class="fa fa-copy"></i> Folder Id</button>
               <button class="btn-folder-id"
                       ng-click="dc.copyParentFolderId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedParentFolderId()}}'
@@ -1020,12 +1008,12 @@
                       tooltip-placement="top"
                       data-toggle="tooltip"
                       tooltip-append-to-body="true"
-              >Copy parent folder Id</button>
+              ><i class="fa fa-copy"></i> Parent folder Id</button>
             </div>
           </div>
 
           <div class="flex flex-wrap padding-top" ng-if="dc.getSelected() && !dc.isFolder()">
-            <div class="flex flex-wrap padding-top" ng-if="dc.getSelected()">
+            <div class="copy-actions" ng-if="dc.getSelected()">
               <button class="btn-folder-id"
                       ng-click="dc.copyOwnId2Clipboard()"
                       uib-tooltip='{{dc.getSelectedId()}}'
@@ -1034,7 +1022,16 @@
                       tooltip-placement="top"
                       data-toggle="tooltip"
                       tooltip-append-to-body="true"
-              >Copy resource Id</button>
+              ><i class="fa fa-copy"></i> Resource Id</button>
+              <button class="btn-folder-id"
+                      ng-click="dc.copyParentFolderId2Clipboard()"
+                      uib-tooltip='{{dc.getSelectedParentFolderId()}}'
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      tooltip-append-to-body="true"
+              ><i class="fa fa-copy"></i> Parent folder Id</button>
             </div>
 
             <div class="info" ng-if="dc.getSelectedNode()">

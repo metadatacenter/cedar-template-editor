@@ -161,6 +161,7 @@ define([
           vm.setSortByUpdated = setSortByUpdated;
           vm.updateSort = updateSort;
           vm.isSort = isSort;
+          vm.getSortDirection = getSortDirection;
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
@@ -431,12 +432,15 @@ define([
           };
 
           vm.toggleDescriptionEditing = function () {
-            if (vm.getSelected()) {
+            // Use getSelectedNode() (the current folder when nothing is selected, or the
+            // selected child otherwise) so the description is editable for the folder you
+            // are currently inside, not only for a selected child resource.
+            if (vm.getSelectedNode()) {
               vm.editingDescription = !vm.editingDescription;
 
               if (vm.editingDescription) {
-                vm.editingDescriptionSelection = vm.getSelected();
-                vm.editingDescriptionInitialValue = getSelected()[CONST.model.DESCRIPTION];
+                vm.editingDescriptionSelection = vm.getSelectedNode();
+                vm.editingDescriptionInitialValue = getSelectedNode()[CONST.model.DESCRIPTION];
 
                 $timeout(function () {
                   var jqDescriptionField = $('#edit-description');
@@ -808,7 +812,7 @@ define([
                 AuthorizedBackendService.doCall(
                     resourceService.renameNode(id, null, description),
                     function (response) {
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": getSelected().name},
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": resource.name},
                           'GENERIC.Updated');
                     },
                     function (response) {
@@ -2324,25 +2328,30 @@ define([
             return result;
           }
 
+          // Clicking a column: first click selects it (with a sensible default
+          // direction), a repeat click on the same column flips asc/desc.
           function updateSort(value) {
-            switch (value) {
-              case 'name':
-                setSortByName();
-                break;
-              case 'createdOnTS':
-                setSortByCreated();
-                break;
-              case 'lastUpdatedOnTS':
-                setSortByUpdated();
-                break;
+            if (isSort(value)) {
+              CedarUser.setSortDirection(CedarUser.getSortDirection() === 'asc' ? 'desc' : 'asc');
+            } else {
+              CedarUser.setSort(value);
+              CedarUser.setSortDirection(value === 'name' ? 'asc' : 'desc');
             }
+            delete vm.params.fromSearchBox;
+            UISettingsService.saveSort(CedarUser.getSort());
+            UISettingsService.saveSortDirection(CedarUser.getSortDirection());
+            init();
+          }
+
+          function getSortDirection() {
+            return CedarUser.getSortDirection();
           }
 
           function sortField(searchParams) {
             if (searchParams && searchParams.fromSearchBox) {
               return null;
             } else {
-              return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
+              return (CedarUser.getSortDirection() === 'desc' ? '-' : '') + CedarUser.getSort();
             }
           }
 

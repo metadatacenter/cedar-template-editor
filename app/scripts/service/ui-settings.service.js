@@ -133,6 +133,10 @@ define([
       service.saveUIPreference('folderView.sortBy', 'lastUpdatedOnTS');
     };
 
+    service.saveSortDirection = function(prefValue) {
+      service.saveUIPreference('folderView.sortDirection', prefValue);
+    };
+
     service.saveStatus = function(prefValue) {
       service.saveUIPreference('resourcePublicationStatusFilter.publicationStatus', prefValue);
     };
@@ -143,6 +147,10 @@ define([
 
     service.saveUseMetadataEditorV2= function(prefValue) {
       service.saveUIPreference('useMetadataEditorV2', prefValue);
+    };
+
+    service.savePreferredDateFormat = function(prefValue) {
+      service.saveUIPreference('preferredDateFormat', prefValue);
     };
 
     return service;

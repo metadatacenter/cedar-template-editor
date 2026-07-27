@@ -13,6 +13,7 @@ define([
   'cedar/template-editor/core/props.filter',
   'cedar/template-editor/core/encode-uri-component.filter',
   'cedar/template-editor/core/select-on-click.directive',
+  'cedar/template-editor/core/copy-to-clipboard.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.core', [
     'cedar.templateEditor.core.config',
@@ -26,5 +27,6 @@ define([
     'cedar.templateEditor.core.propsFilter',
     'cedar.templateEditor.core.encodeURIComponentFilter',
     'cedar.templateEditor.core.selectOnClickDirective',
+    'cedar.templateEditor.core.copyToClipboardDirective',
   ]);
 });

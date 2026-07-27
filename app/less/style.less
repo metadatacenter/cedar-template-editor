@@ -212,26 +212,144 @@ button {
   position: fixed;
   top: 0;
   left: 0;
+  margin-top: 6px; // small gap below the header, matches the app's card feel
   background-color: @white;
-  margin: 0;
-  padding: 0;
+  margin-left: 0;
+  padding: 6px;
   width: 150px;
-  box-shadow: 0px 0px 12px 1px #DDD;
+  box-sizing: border-box;
+  // Card styling that matches the profile/settings/privacy pages - no all-around glow.
+  border: 1px solid #e2e8e8;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(16, 34, 31, 0.14);
   ul {
-    padding: 10px;
     list-style: none;
     width: 100%;
-    text-align: center;
+    text-align: left;
     margin: 0;
     padding: 0;
+    a {
+      display: block;
+      text-decoration: none;
+    }
     li {
-      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
       width: 100%;
+      box-sizing: border-box;
       &:hover {
         background-color: @very-lt-gray;
       }
+      // Marker for links that open outside the app (in a new tab).
+      .external-icon {
+        color: @med-gray;
+        font-size: 11px;
+        flex: 0 0 auto;
+      }
+    }
+  }
+}
+
+// "New" create button — soften the boxy button. Use the id so we beat Bootstrap's
+// high-specificity .btn-group corner rules that would otherwise square off the right side.
+.add-new #button-create.template {
+  border-radius: 6px;
+}
+
+// Card-style dropdown menus that mirror the top-right user-menu popup (white card,
+// subtle border, rounded corners, rounded hover rows). Shared by the "New" create
+// menu and the grid-view Sort menu so every popup feels the same.
+.add-new .dropdown-menu,
+#workspace-sort-tool .dropdown-menu {
+  min-width: 170px;
+  margin-top: 6px;
+  padding: 6px;
+  background-color: @white;
+  border: 1px solid #e2e8e8;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(16, 34, 31, 0.14);
+
+  > li > a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #333;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: @very-lt-gray;
+      color: #333;
     }
 
+    // Give the sort menu's checkmark breathing room so it doesn't hug the label.
+    // It keeps its width when hidden (.invisible) so unchecked rows stay aligned.
+    .fa-check {
+      margin-right: 8px;
+    }
+  }
+
+  .divider {
+    margin: 6px 4px;
+  }
+}
+
+// Left-nav "share" links (Workspace / Shared with Me / ...) are <a href="#">, so
+// clicking them draws the browser's default blue focus box, which looks bad. Drop
+// it on pointer focus; keep a subtle ring for keyboard users only (accessibility).
+a.share {
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: 2px solid fade(@brand-primary, 45%);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+// Direction arrow shown next to the active sort column/menu item.
+.sort-arrow {
+  margin-left: 6px;
+  font-size: 0.9em;
+}
+
+// Grid card footer: a light divided strip carrying the resource type + version.
+// Only rendered when there's something to show (see the directive template), so
+// folders and plain items get no footer.
+.all-items-view .populate-form-boxes .form-box .box-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid #f0f2f2;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: @med-gray;
+  min-height: 14px;
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #5a6a6a;
+  }
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .type-badge {
+    text-transform: capitalize;
+    letter-spacing: 0.03em;
+    color: #aab4b4;
+  }
+  .fa-globe {
+    color: @brand-primary;
   }
 }
 
@@ -332,6 +450,22 @@ button {
     background-color: @search-input;
   }
 
+  // The .search-input class sits on BOTH the wrapper div and the input, so the
+  // wrapper paints its own square background behind the input. Clear it so only
+  // the rounded input shows.
+  .floating-label-wrapper.search-input {
+    background-color: transparent;
+  }
+
+  // Give the search box a soft, modern pill shape instead of the boxy Bootstrap default.
+  input.search-input {
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding-left: 18px;
+    padding-right: 40px;
+    box-shadow: none;
+  }
+
   .do-search {
     position: absolute;
     top: -20px;
@@ -360,7 +494,7 @@ button {
   }
 
   .navbar-brand {
-    background-image: url(../img/cedar-logo-main.png);
+    background-image: url(../img/cedar-logo-main.svg);
     background-repeat: no-repeat;
     width: 50px;
     background-size: 140px;
@@ -986,10 +1120,11 @@ button {
   .populate-form-boxes {
 
     .form-box {
-      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+      box-shadow: 0 1px 3px rgba(16, 34, 31, 0.08);
     }
     .selected > .form-box {
-      box-shadow: 0 6px 6px 0 #ccc;
+      border-color: @brand-primary;
+      box-shadow: 0 0 0 2px rgba(15, 118, 134, 0.35), 0 8px 22px rgba(16, 34, 31, 0.14);
     }
 
     .selected .title {
@@ -1017,11 +1152,13 @@ button {
 
     .form-box {
       width: 160px;
-      border: 1px solid #ebebeb;
+      border: 1px solid #e6ebeb;
+      border-radius: 10px;
       background: #ffffff;
       margin: 5px auto;
       cursor: default;
       overflow: hidden;
+      transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
 
       .box-content {
 
@@ -1034,6 +1171,7 @@ button {
           margin: 0 5px 5px 5px;
           .title-text {
             font-size: 14px;
+            color: #333;
             white-space: nowrap;
             padding: 0;
             margin: 0
@@ -1190,6 +1328,9 @@ button {
 
     }
     .form-box:hover {
+      box-shadow: 0 8px 22px rgba(16, 34, 31, 0.14);
+      transform: translateY(-2px);
+      border-color: #d5dede;
 
       .quick-details-box {
         padding: 5px;
@@ -8483,6 +8624,384 @@ table.apiKey {
   }
 }
 
+/* ---- Resource info panel: quick-win polish ---- */
+#sidebar-right {
+
+  /* Header: keep the icon pinned to the first line so it never jumps
+     when the title wraps or the badges move to a second row */
+  > .flex:first-child {
+    align-items: flex-start;
+  }
+  > .flex:first-child > cedar-resource-icon,
+  > .flex:first-child > .resource-icon {
+    margin-top: 16px;
+  }
+
+  /* Title reads as a title, not a disabled label (was opacity:.5).
+     min-width:0 + overflow lets the long title truncate instead of pushing width. */
+  .flex > .title {
+    opacity: 1;
+    padding: 16px 0 2px;
+    font-weight: 600;
+    color: @text-color;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Title: single line, ellipsis when too long — reserves exactly one line. */
+  .resource-title {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Chips always sit on their own line below the title, so the header height is
+     the same for a folder, a template, or a long truncated name (no jumping). */
+  .resource-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    min-height: 20px;
+  }
+
+  .resource-type-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: @brand-primary;
+    background: fade(@brand-primary, 10%);
+    border-radius: 999px;
+    padding: 2px 7px;
+    vertical-align: middle;
+  }
+
+  .resource-version-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #6b7f7e;
+    background: #eef2f2;
+    border-radius: 999px;
+    padding: 2px 7px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Breathing room between the header and the tabs */
+  .element-toggles {
+    margin-top: 18px;
+  }
+
+  /* Created / Modified: date on its own line, author muted below */
+  .created-date, .updated-date {
+    color: @text-color;
+    .by-user {
+      color: #8a8a8a;
+      font-size: 11.5px;
+      margin-top: 1px;
+    }
+  }
+
+  /* Permissions as chips */
+  .perm-chips {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    .perm-chip {
+      font-size: 11px;
+      text-transform: capitalize;
+      background: #eef4f3;
+      color: #35706b;
+      border-radius: 999px;
+      padding: 1px 9px;
+    }
+  }
+
+  /* Copy buttons: one compact row, icon + short label */
+  .copy-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    .btn-folder-id {
+      flex: 0 0 auto;
+      i.fa {
+        margin-right: 2px;
+      }
+    }
+  }
+
+  /* Instances: compact, scrollable list that scales to hundreds */
+  .instance-count-sub {
+    color: #8a8a8a;
+  }
+  .instance-list {
+    margin-top: 8px;
+
+    .instance-scroll {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #e6e6e6;
+      border-radius: 7px;
+    }
+
+    .instance-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      cursor: pointer;
+      color: @text-color;
+      border-top: 1px solid #f0f0f0;
+      transition: background-color 0.12s ease;
+
+      &:first-child {
+        border-top: 0;
+      }
+      &:hover {
+        background-color: #f4f8f7;
+        color: @brand-primary;
+      }
+
+      .instance-icon {
+        color: @metadata-color;
+        flex: 0 0 auto;
+        font-size: 12px;
+      }
+      .instance-name {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .instance-go {
+        flex: 0 0 auto;
+        color: #c0c0c0;
+        opacity: 0;
+        transition: opacity 0.12s ease;
+      }
+      &:hover .instance-go {
+        opacity: 1;
+      }
+    }
+  }
+
+  /* Description: labelled, with a placeholder when empty, tidy edit box */
+  .description-block {
+    padding-top: 14px;
+    margin-top: 6px;
+    border-top: 1px solid #e6e6e6;
+
+    .description-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .description-edit {
+      background: transparent;
+      border: 0;
+      color: #b0b0b0;
+      cursor: pointer;
+      padding: 0 2px;
+      &:hover { color: @brand-primary; }
+    }
+
+    .desc-display {
+      margin-top: 6px;
+      min-height: 62px;               // reserve space so switching to edit doesn't shove the buttons
+      font-size: 13px;
+      color: #555;
+      text-align: left;
+      white-space: pre-line;          // collapse stray leading/trailing whitespace, keep real line breaks
+      word-break: break-word;
+
+      &.is-empty { cursor: pointer; }
+      .desc-placeholder {
+        color: #a8a8a8;
+        font-style: italic;
+      }
+    }
+
+    .desc-textarea {
+      width: 100%;
+      min-height: 62px;               // matches the read-only height → no vertical jump on edit
+      margin-top: 6px;
+      padding: 8px 10px;
+      font-size: 13px;
+      border: 1px solid @brand-primary;
+      border-radius: 7px;
+      outline: none;
+      resize: vertical;
+      box-shadow: 0 0 0 3px fade(@brand-primary, 12%);
+    }
+  }
+
+  /* Instances: truncation notice when more exist than were loaded */
+  .instance-more {
+    margin-top: 6px;
+    font-size: 11px;
+    font-style: italic;
+    color: #8a8a8a;
+  }
+
+  /* Version tab: one card per version */
+  #resource-version .version-card {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    transition: border-color 0.12s ease, background-color 0.12s ease;
+
+    &.is-current {
+      border-color: @brand-primary;
+      background: fade(@brand-primary, 5%);
+    }
+
+    .version-card-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .version-pub {
+      color: @published;
+      flex: 0 0 auto;
+    }
+    .version-num {
+      flex: 0 0 auto;
+      font-weight: 700;
+      font-size: 12px;
+      color: @text-color;
+      background: #eef2f2;
+      border-radius: 5px;
+      padding: 1px 7px;
+      font-variant-numeric: tabular-nums;
+
+      &.is-latest {
+        color: #fff;
+        background: @brand-primary;
+      }
+    }
+    .version-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      color: @brand-primary;
+      cursor: pointer;
+    }
+    .version-latest-tag {
+      flex: 0 0 auto;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: @brand-primary;
+      border: 1px solid fade(@brand-primary, 40%);
+      border-radius: 999px;
+      padding: 1px 6px;
+    }
+    .version-when {
+      margin-top: 6px;
+      font-size: 11.5px;
+      color: #8a8a8a;
+    }
+    .version-id {
+      margin-top: 2px;
+      font-size: 11px;
+      color: #a0a0a0;
+      word-break: break-all;
+    }
+  }
+
+  /* Category tab: one card per path, breadcrumb with emphasized leaf */
+  #resource-category .category-card {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+
+    .category-path {
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #8a8a8a;
+    }
+    .category-sep {
+      color: #c4c4c4;
+      padding: 0 3px;
+    }
+    .category-seg {
+      &.is-leaf {
+        color: @text-color;
+        font-weight: 600;
+      }
+    }
+  }
+
+  /* Two-column alignment + hairline dividers for the Info-tab rows */
+  #resource-info .info > .flex {
+    padding: 9px 0;
+    border-top: 1px solid #e6e6e6;
+    align-items: flex-start;
+  }
+  #resource-info .info > .flex:first-child {
+    border-top: 0;
+  }
+  #resource-info .info > .flex > .field-label {
+    flex: 0 0 38%;
+    max-width: 38%;
+    padding-top: 2px;
+  }
+  #resource-info .info > .flex > *:not(.field-label) {
+    flex: 1 1 0;
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  /* Grouped provenance card: one created·modified line each */
+  .provenance {
+    margin-top: 14px;
+    border: 1px solid #e6e6e6;
+    border-radius: 7px;
+    overflow: hidden;
+
+    .provenance-header {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: #9E9E9E;
+      background: #f7f9f9;
+      padding: 6px 10px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    .provenance-item {
+      padding: 8px 10px;
+
+      & + .provenance-item {
+        border-top: 1px solid #e6e6e6;
+      }
+    }
+    .provenance-rel {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: @gray;
+    }
+    .provenance-link {
+      color: @brand-primary;
+      font-weight: 500;
+    }
+    .provenance-when {
+      color: @gray;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   body {
     height: 100%;
@@ -8516,7 +9035,7 @@ table.apiKey {
   }
 }
 
-#privacy-policy, #profile, #messaging-report {
+#privacy-policy, #messaging-report {
   padding: 30px 0;
   height: 100%;
   overflow: auto;
@@ -8625,6 +9144,503 @@ table.apiKey {
       }
     }
 
+  }
+}
+
+// ------------------------------------------------------------------
+// Modernized Profile page (Account + API Key + REST API usage)
+// ------------------------------------------------------------------
+@pf-accent: @metadata-color;        // #0F7686
+@pf-border: #e2e8e8;
+@pf-label: #7b8a8a;
+@pf-code-bg: #10221f;
+@pf-code-fg: #e7f0ee;
+@pf-danger: #c0392b;
+
+#profile, #settings, #privacy {
+  background: @background-gray;
+  // Horizontal padding gives small screens a gutter; the fixed max-width box below keeps ALL three
+  // pages exactly the same width and stops the scrollbar-induced "jump" a percentage width caused.
+  padding: 30px 20px;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  // Reserve the scrollbar gutter on both sides so the box is the EXACT same width and stays
+  // centered whether or not the page is long enough to scroll (settings is short, profile/privacy
+  // scroll). Without this, a percentage/100% width differs by one scrollbar between pages.
+  scrollbar-gutter: stable both-edges;
+
+  .navbar-back {
+    padding: 10px 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 880px;
+  }
+
+  // The profile/settings/privacy pages use their own cards on a transparent canvas.
+  .content {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 880px;
+  }
+
+  .pf-mono {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    word-break: break-all;
+  }
+
+  .pf-card {
+    background: @white;
+    border: 1px solid @pf-border;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(16, 34, 31, 0.06);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+
+    &__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    &__title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #223;
+      i { color: @pf-accent; margin-right: 8px; }
+    }
+    &__intro {
+      color: @secondary-text;
+      font-size: 13.5px;
+      margin: -6px 0 18px;
+      line-height: 1.5;
+    }
+  }
+
+  // ---- Account field rows ----
+  .pf-field {
+    padding: 10px 0;
+    border-top: 1px solid #f0f3f3;
+    &:first-of-type { border-top: none; }
+
+    &__label {
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: @pf-label;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    &__value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #2b3b3b;
+      span { overflow-wrap: anywhere; }
+    }
+  }
+
+  .pf-copy {
+    flex: 0 0 auto;
+    border: 1px solid @pf-border;
+    background: @white;
+    color: @med-gray;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .12s, color .12s, border-color .12s;
+    &:hover { color: @pf-accent; border-color: @pf-accent; }
+    &.is-copied { color: @button-ok; border-color: @button-ok; opacity: 1; }
+    &.is-copied i:before { content: "\f00c"; } // fa-check
+  }
+  .pf-field:hover .pf-copy,
+  .pf-header-cell:hover .pf-copy { opacity: 1; }
+
+  // ---- API key bar ----
+  .pf-pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    i { margin-right: 5px; }
+    &--active { background: #e6f6ec; color: #1f8a4c; }
+    &--off { background: #f1f1f1; color: @med-gray; }
+  }
+
+  .pf-keybar {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    background: @lt-gray-1;
+    border: 1px solid @pf-border;
+    border-radius: 10px;
+    padding: 8px 8px 8px 14px;
+
+    &__value {
+      flex: 1 1 auto;
+      min-width: 0; // allow the flex child to shrink so long keys scroll instead of overflowing
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      color: #223;
+      background: transparent;
+      border: none;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    &__btn {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid @pf-border;
+      background: @white;
+      color: @secondary-text;
+      border-radius: 8px;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .12s;
+      &:hover { border-color: @pf-accent; color: @pf-accent; }
+      &--primary {
+        background: @pf-accent;
+        border-color: @pf-accent;
+        color: @white;
+        &:hover { background: darken(@pf-accent, 6%); color: @white; }
+        &.is-copied { background: @button-ok; border-color: @button-ok; }
+      }
+    }
+  }
+
+  .pf-keymeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    margin: 16px 2px 0;
+    font-size: 12.5px;
+    color: @secondary-text;
+    span strong {
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: @pf-label;
+      margin-bottom: 1px;
+    }
+  }
+
+  .pf-regenerate {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #f0f3f3;
+    &__hint { font-size: 12px; color: @med-gray; }
+  }
+
+  .pf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all .12s;
+    &[disabled] { opacity: .6; cursor: default; }
+    &--danger {
+      background: @white;
+      border-color: lighten(@pf-danger, 30%);
+      color: @pf-danger;
+      &:hover:not([disabled]) { background: @pf-danger; color: @white; border-color: @pf-danger; }
+    }
+  }
+
+  // ---- REST API usage ----
+  .pf-rest {
+    &__lead { font-size: 13.5px; color: @secondary-text; margin: 0 0 18px; line-height: 1.55; }
+    &__note {
+      font-size: 12.5px;
+      color: @secondary-text;
+      margin: 6px 0 26px;
+      line-height: 1.6;
+      // overflow-wrap (not break-all) so long encoded ids wrap at sensible points, never one char per line
+      overflow-wrap: anywhere;
+      code {
+        background: @lt-gray;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 11.5px;
+        color: #2b3b3b;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+    }
+    code { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; }
+  }
+
+  .pf-header-grid {
+    display: grid;
+    // minmax(0,...) rather than 1fr/2fr so long header values scroll inside the cell
+    // instead of blowing the grid track wider than the card.
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 12px;
+    margin-bottom: 8px;
+    @media (max-width: @screen-sm-max) { grid-template-columns: minmax(0, 1fr); }
+  }
+  .pf-header-cell {
+    background: @lt-gray-1;
+    border: 1px solid @pf-border;
+    border-radius: 8px;
+    padding: 10px 12px;
+    &__label {
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 10px;
+      font-weight: 600;
+      color: @pf-label;
+      margin-bottom: 4px;
+    }
+    &__row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      code { flex: 1 1 auto; min-width: 0; font-size: 13px; color: #223; overflow-x: auto; white-space: nowrap; }
+    }
+  }
+
+  // ---- Code samples (airy) ----
+  .api-sample {
+    margin: 26px 0;
+    &:last-child { margin-bottom: 6px; }
+    &__head { margin-bottom: 10px; }
+    &__title { font-weight: 600; font-size: 13.5px; color: #2b3b3b; margin-right: 8px;
+      code { background: @lt-gray; padding: 0 4px; border-radius: 3px; font-size: 12px; } }
+    &__desc { font-size: 12.5px; color: @med-gray; line-height: 1.5;
+      code { background: @lt-gray; padding: 0 4px; border-radius: 3px; font-size: 11px; } }
+    &__code {
+      position: relative;
+      background: @pf-code-bg;
+      border-radius: 10px;
+      overflow: hidden;
+
+      pre {
+        margin: 0;
+        padding: 20px 22px;
+        padding-right: 92px;
+        background: transparent;
+        border: none;
+        color: @pf-code-fg;
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+        font-size: 12.5px;
+        line-height: 1.85;
+        white-space: pre;
+        overflow-x: auto;
+      }
+    }
+  }
+
+  .code-copy {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #24403b; // solid so horizontally-scrolled code passes cleanly behind it
+    color: #dfeae8;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .12s;
+    z-index: 2;
+    &:hover { background: #2f544d; color: @white; }
+    &.is-copied { background: @button-ok; border-color: @button-ok; color: @white; }
+    &.is-copied i:before { content: "\f00c"; } // fa-check
+  }
+
+  // Light variant for the header name/value cells (light background, inline not absolute).
+  .code-copy--light {
+    position: static;
+    background: @white;
+    color: @secondary-text;
+    border: 1px solid @pf-border;
+    flex: 0 0 auto;
+    &:hover { background: @white; border-color: @pf-accent; color: @pf-accent; }
+    &.is-copied { background: @button-ok; border-color: @button-ok; color: @white; }
+  }
+
+  // ---- API Keys card extras ----
+  .pf-count {
+    font-size: 12px;
+    font-weight: 600;
+    color: @pf-label;
+    background: @lt-gray;
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  .pf-newkey {
+    display: flex;
+    gap: 10px;
+    margin: 4px 0 6px;
+    &__input {
+      flex: 1 1 auto;
+      min-width: 0;
+      border: 1px solid @pf-border;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 13.5px;
+      color: #2b3b3b;
+      &:focus { outline: none; border-color: @pf-accent; box-shadow: 0 0 0 3px fade(@pf-accent, 12%); }
+      &[disabled] { background: @lt-gray; }
+    }
+    &__hint { font-size: 12px; color: @med-gray; margin: 0 0 6px; }
+  }
+
+  // Each existing key is its own bordered sub-panel inside the API Keys card.
+  .pf-key {
+    border: 1px solid @pf-border;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-top: 16px;
+
+    &__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    &__desc {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+    &__descText { font-size: 13.5px; color: #2b3b3b; font-weight: 500; overflow-wrap: anywhere; }
+    &__actions { display: flex; gap: 8px; flex: 0 0 auto; }
+  }
+
+  // Button variants (base .pf-btn already defined above).
+  .pf-btn--primary {
+    background: @pf-accent;
+    border-color: @pf-accent;
+    color: @white;
+    &:hover:not([disabled]) { background: darken(@pf-accent, 6%); color: @white; }
+  }
+  .pf-btn--ghost {
+    background: @white;
+    border-color: @pf-border;
+    color: @secondary-text;
+    &:hover:not([disabled]) { border-color: @pf-accent; color: @pf-accent; }
+  }
+
+  // ---- Settings toggle row + modern switch ----
+  .pf-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    &__text { min-width: 0; }
+    &__title { font-size: 15px; font-weight: 600; color: #223; margin-bottom: 4px; }
+    &__desc { font-size: 13px; color: @secondary-text; line-height: 1.55; }
+  }
+
+  // Styled dropdown used in settings (e.g. preferred date format).
+  .pf-select {
+    flex: 0 0 auto;
+    min-width: 230px;
+    max-width: 100%;
+    border: 1px solid @pf-border;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    color: #2b3b3b;
+    background: @white;
+    cursor: pointer;
+    &:focus { outline: none; border-color: @pf-accent; box-shadow: 0 0 0 3px fade(@pf-accent, 12%); }
+  }
+
+  .pf-version {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: @pf-accent;
+  }
+
+  // Self-consistent switch. High specificity (#profile/#settings + .switch) beats the global
+  // bower `.switch` rule that otherwise forces a 52px track and pushes the knob past the border.
+  .switch {
+    position: relative;
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 48px;
+    height: 26px;
+    box-sizing: border-box;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+
+    input { opacity: 0; width: 0; height: 0; position: absolute; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cfd8d8;
+      border: none;
+      transition: .25s;
+      &.round { border-radius: 999px; }
+      &:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 3px;
+        bottom: 3px;
+        background-color: @white;
+        border-radius: 50%;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+        transition: .25s;
+      }
+    }
+    input:checked + .slider { background-color: @pf-accent; }
+    input:focus + .slider { box-shadow: 0 0 0 3px fade(@pf-accent, 20%); }
+    // Track inner width = 48 - 3 - 3 = 42; knob 20 → shift 22 lands flush inside the right edge.
+    input:checked + .slider:before { transform: translateX(22px); }
+  }
+
+  // ---- Long-form prose (e.g. the privacy policy) inside a card ----
+  .pf-prose {
+    color: #33424a;
+    font-size: 14px;
+    line-height: 1.65;
+    > :first-child { margin-top: 0; }
+    h4 { font-size: 15px; font-weight: 600; color: #223; margin: 24px 0 8px; }
+    p { margin: 0 0 14px; }
+    ul { margin: 0 0 16px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
   }
 }
 

@@ -74,6 +74,10 @@ define([
       return getAppData().cedarUserProfile.apiKeys;
     };
 
+    service.setApiKeys = function (apiKeys) {
+      getAppData().cedarUserProfile.apiKeys = apiKeys;
+    };
+
     service.getRoles = function () {
       return getAppData().cedarUserProfile.roles;
     };
@@ -104,6 +108,16 @@ define([
 
     service.getUIPreferences = function () {
       return getAppData().cedarUserProfile.uiPreferences;
+    };
+
+    service.getPreferredDateFormat = function () {
+      var prefs = service.getUIPreferences();
+      // Default to the US style used throughout the UI.
+      return (prefs && prefs.preferredDateFormat) ? prefs.preferredDateFormat : 'MM/DD/YYYY';
+    };
+
+    service.setPreferredDateFormat = function (value) {
+      getAppData().cedarUserProfile.uiPreferences['preferredDateFormat'] = value;
     };
 
     service.saveUIPreference = function (name, property ,value) {
@@ -221,6 +235,22 @@ define([
     service.setSortByUpdated = function () {
       service.saveUIPreference('folderView', 'sortBy', 'lastUpdatedOnTS');
       return service.getSort();
+    };
+
+    // Sort direction ('asc' | 'desc'). The preferences model already carries
+    // folderView.sortDirection. When it is absent, fall back to the ordering the
+    // UI used before this was clickable: Title ascending, dates descending.
+    service.getSortDirection = function () {
+      var dir = service.getUIPreferences().folderView.sortDirection;
+      if (dir === 'asc' || dir === 'desc') {
+        return dir;
+      }
+      return service.getSort() === 'name' ? 'asc' : 'desc';
+    };
+
+    service.setSortDirection = function (dir) {
+      service.saveUIPreference('folderView', 'sortDirection', dir);
+      return service.getSortDirection();
     };
 
     service.setStatus = function (status) {
