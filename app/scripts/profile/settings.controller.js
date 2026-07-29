@@ -16,6 +16,9 @@ define([
     $scope.cedarVersion = $window.cedarVersion;
     // UI-only build/cache-busting modifier (not part of the released version number).
     $scope.cedarVersionModifier = $window.cedarVersionModifier;
+    // CEE (embeddable editor) version — set as a global by the CEE bundle at load time.
+    // Shows the ACTUALLY loaded bundle; 'unknown' means a CEE older than this exposure.
+    $scope.ceeVersion = $window.cedarEmbeddableEditorVersion || 'unknown';
 
     // ---- New Metadata Editor UI toggle ----
     $scope.useMetadataEditorV2 = CedarUser.useMetadataEditorV2() || false;

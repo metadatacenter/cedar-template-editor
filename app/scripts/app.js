@@ -107,5 +107,25 @@ define([
         angular.lowercase = function(text) {
           return text.toLowerCase();
         };
+      }])
+      .config(['$httpProvider', function ($httpProvider) {
+        // Cache-bust our own .html template partials the same way the JS and
+        // JSON resources already are (window.cedarCacheControl comes from
+        // config/version.js, which nginx serves no-store). Without this, a new
+        // release could still serve a stale template from the browser cache.
+        // Scoped to scripts/*.html on purpose: 3rd-party libs (ui-bootstrap,
+        // ui-switch, ...) pre-populate $templateCache under bare keys, so
+        // appending ?v= to those would miss the cache and 404.
+        $httpProvider.interceptors.push(function () {
+          return {
+            request: function (config) {
+              if (config.url && /^scripts\/.*\.html$/.test(config.url)) {
+                config.url += (config.url.indexOf('?') === -1 ? '?' : '&') +
+                  'v=' + window.cedarCacheControl;
+              }
+              return config;
+            }
+          };
+        });
       }]);
 });
