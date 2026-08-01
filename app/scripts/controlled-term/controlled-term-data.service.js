@@ -6,14 +6,25 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.controlledTermDataService', [])
       .service('controlledTermDataService', controlledTermDataService);
 
-  controlledTermDataService.$inject = ['UIMessageService', 'ControlledTermHttpService', 'AuthorizedBackendService', '$translate'];
+  controlledTermDataService.$inject = ['UIMessageService', 'ControlledTermHttpService', 'AuthorizedBackendService', '$translate', '$q'];
 
-  function controlledTermDataService(UIMessageService, ControlledTermHttpService, AuthorizedBackendService, $translate) {
+  function controlledTermDataService(UIMessageService, ControlledTermHttpService, AuthorizedBackendService, $translate, $q) {
 
     var ontologiesCache = {};
     var valueSetsCollectionsCache = {};
     var valueSetsCache = {};
-    var initialized = false;
+
+    // The ontology and value-set caches load once per page. The load can fail — most often just
+    // after a redeploy, while the terminology server is cold and BioPortal adds seconds — and when
+    // it does the empty cache must not be latched for the life of the page. These three fields
+    // replace the old boolean `initialized`, which was set as soon as loading *began* and so
+    // recorded that an attempt had started rather than that it had produced anything: once a failed
+    // attempt set it, every later init() returned immediately and the picker stayed empty until a
+    // full page reload.
+    var loaded = false;             // true only once the caches actually populated (see init())
+    var initPromise = null;         // the in-flight load, so concurrent callers share one attempt
+    var lastFailedAttempt = 0;      // epoch ms of the last failed load, for the retry floor
+    var RETRY_INTERVAL_MS = 30000;  // do not re-attempt a failed load more often than this
 
     var service = {
       initValueSetsCache             : initValueSetsCache,
@@ -66,12 +77,48 @@ define([
      * Initialize service.
      */
     function init() {
-      if (!initialized) {
-        initOntologiesCache();
-        initValueSetsCollectionsCache();
-        initValueSetsCache();
-        initialized = true;
+      // Already populated: nothing to do.
+      if (loaded) {
+        return $q.when(true);
       }
+      // A load is already running: share it instead of starting a second. init() is called from
+      // all ten getters, so without this guard a first paint would fire several parallel loads.
+      if (initPromise) {
+        return initPromise;
+      }
+      // A recent attempt failed: degrade to the (empty) cache until the retry floor passes, so the
+      // getters cannot turn a persistent failure into a request storm.
+      if (lastFailedAttempt && (Date.now() - lastFailedAttempt) < RETRY_INTERVAL_MS) {
+        return $q.when(false);
+      }
+
+      initPromise = $q.all([
+        initOntologiesCache(),
+        initValueSetsCollectionsCache(),
+        initValueSetsCache()
+      ]).finally(function () {
+        // Success cannot be read from the promises: AuthorizedBackendService.doCall routes failures
+        // to its error callback and resolves, and handleServerError returns the error rather than
+        // rethrowing, so $q.all resolves even on a total failure. The usable signal is whether the
+        // ontologies cache ended up with entries — the same condition that otherwise produces the
+        // empty "Add ontologies" box. Keying on the ontologies cache means a partial load (ontologies
+        // succeed, value sets fail) counts as loaded and is not retried; that matches the symptom
+        // this addresses and keeps the retry narrow.
+        loaded = !isEmptyObject(ontologiesCache);
+        lastFailedAttempt = loaded ? 0 : Date.now();
+        initPromise = null;
+      });
+
+      return initPromise;
+    }
+
+    function isEmptyObject(obj) {
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          return false;
+        }
+      }
+      return true;
     }
 
     /**
