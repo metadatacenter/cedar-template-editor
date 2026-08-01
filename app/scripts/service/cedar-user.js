@@ -87,7 +87,10 @@ define([
     };
 
     service.hasPermission = function (permissionName) {
-      return getAppData().cedarUserProfile.permissions.indexOf(permissionName) !== -1;
+      // Null-safe: this is called from templates that render before the CEDAR profile is loaded.
+      var profile = getAppData().cedarUserProfile;
+      return !!profile && angular.isArray(profile.permissions)
+          && profile.permissions.indexOf(permissionName) !== -1;
     };
 
     service.getHomeFolderId = function () {

@@ -66,6 +66,10 @@ define([
     //$rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
+    // Monitoring dashboard link in the user menu. The menu markup lives outside any controller
+    // (bottom of index.html), so the environment-specific URL is published on the root scope.
+    $rootScope.monitoringUrl = FrontendUrlService.getMonitoring();
+
     $rootScope.util = {
       buildUrl: function (url, params) {
         var serializedParams = $httpParamSerializer(params);

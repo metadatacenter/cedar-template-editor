@@ -15,6 +15,7 @@ define([
     let embeddableEditorBase = null;
     let dataciteDOIBase = null
     let downloadBase = null
+    let monitoringBase = null
 
     let service = {
       serviceId: "FrontendUrlService"
@@ -25,6 +26,7 @@ define([
       embeddableEditorBase = config.artifactsFrontend;
       dataciteDOIBase = config.dataciteDOIBase;
       downloadBase = config.downloadBase;
+      monitoringBase = config.monitoringFrontend;
     };
 
     service.getTemplateEdit = function (id) {
@@ -113,6 +115,12 @@ define([
 
     service.downloadResource = function (id) {
       return downloadBase + '/' + encodeURIComponent(id);
+    };
+
+    // The CEDAR monitoring dashboard: a separate CEDAR frontend on the same Keycloak realm,
+    // so it opens in a new tab but the user stays signed in.
+    service.getMonitoring = function () {
+      return monitoringBase;
     };
 
     return service;

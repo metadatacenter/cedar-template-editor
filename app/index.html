@@ -128,6 +128,14 @@
       <a href="/profile"><li id="user-profile-tool" ><span>Profile</span></li></a>
       <a href="/settings"><li id="user-settings-tool"><span>Settings</span></li></a>
       <a href="/privacy"><li id="user-privacy" ><span>Privacy</span></li></a>
+      <!-- Monitoring dashboard: another CEDAR frontend (same Keycloak session), so it opens in a new
+           tab but is marked with the cedar tree rather than the "external link" arrow. Only shown to
+           users who hold permission_monitor_read - the monitor server rejects everyone else. -->
+      <a ng-if="cedarUser.hasPermission('permission_monitor_read')"
+          target="_blank" rel="noopener" ng-href="{{monitoringUrl}}"
+          title="Open the CEDAR monitoring dashboard in a new tab"><li id="user-monitoring"><span>Monitoring</span><svg
+          class="cedar-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false"><path
+          fill="currentColor" d="M8 1 L11 5 H9.6 L12 8.6 H10.2 L13 12.4 H9 V15 H7 V12.4 H3 L5.8 8.6 H4 L6.4 5 H5 Z"/></svg></li></a>
       <a target="_blank" rel="noopener" href="https://metadatacenter.org/help/#subscribe"><li id="user-help"><span>Help</span><i class="fa fa-external-link external-icon" aria-hidden="true"></i></li></a>
       <a target="_blank" rel="noopener" href="https://metadatacenter.org/#about"><li id="user-about" ><span>About</span><i class="fa fa-external-link external-icon" aria-hidden="true"></i></li></a>
       <a href="/logout"><li id="user-logout-tool" ><span>Logout</span></li></a>
