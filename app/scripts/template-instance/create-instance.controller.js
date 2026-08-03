@@ -265,7 +265,11 @@ define([
       }
 
 
-      if ($scope.instance['@id'] === undefined) {
+      // A not-yet-created instance carries no IRI. The embeddable editor (metadata editor V2)
+      // now emits an explicit `@id: null` rather than omitting the key, so test for both null and
+      // undefined here — otherwise a brand-new instance takes the update path below and calls
+      // getTemplateInstance(null), which crashes in fixSingleSlashHttps. Create accepts a null @id.
+      if ($scope.instance['@id'] == null) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
