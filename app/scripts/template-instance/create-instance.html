@@ -21,7 +21,7 @@
           </section>
 
           <!-- errors and edit actions -->
-          <div class="edit-actions" ng-hide="$root.isEmpty(form)">
+          <div class="edit-actions" ng-class="{'cee-edit-actions': vm.useCee}" ng-hide="$root.isEmpty(form)">
 
             <!-- validation errors -->
             <div ng-if="hasKeys(validationErrors)" class="alert alert-danger" role="alert">
