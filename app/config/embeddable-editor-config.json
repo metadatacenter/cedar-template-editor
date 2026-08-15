@@ -1,11 +1,11 @@
 {
   "showTemplateDescription": false,
-  "terminologyIntegratedSearchUrl": "https://terminology.metadatacenter.orgx/bioportal/integrated-search",
+  "terminologyBaseUrl": "https://terminology.metadatacenter.orgx/",
   "languageMapPathPrefix": "/assets/i18n-cee/",
   "defaultLanguage": "en",
   "fallbackLanguage": "en",
   "iriPrefix": "https://repo.metadatacenter.orgx/",
-  "extAuthBaseUrl": "https://bridge.metadatacenter.orgx/ext-auth/",
+  "bridgeBaseUrl": "https://bridge.metadatacenter.orgx/",
   "readOnlyMode": false,
   "showDownloadMenu": true
 }

@@ -109,9 +109,9 @@ gulp.task('replace-url', function (done) {
       .pipe(gulp.dest('app/config/'));
   done();
   gulp.src(['app/config/src/embeddable-editor-config.json'])
-      .pipe(replace('terminologyIntegratedSearchUrlValue', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
+      .pipe(replace('terminologyBaseUrlValue', 'https://terminology.' + cedarRestHost + '/'))
       .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
-      .pipe(replace('extAuthBaseUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/'))
+      .pipe(replace('bridgeBaseUrlValue', 'https://bridge.' + cedarRestHost + '/'))
       .pipe(gulp.dest('app/config/'));
   done();
 });
