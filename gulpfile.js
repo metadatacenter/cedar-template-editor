@@ -112,11 +112,6 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('terminologyIntegratedSearchUrlValue', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
       .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
       .pipe(replace('extAuthBaseUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/'))
-      .pipe(replace('orcidIntegratedExtAuthUrlValue', 'orcid/search-by-name'))
-      .pipe(replace('rorIntegratedExtAuthUrlValue', 'ror/search-by-name'))
-      .pipe(replace('pfasIntegratedExtAuthUrlValue', 'comp-tox/search-by-name'))
-      .pipe(replace('pmidIntegratedExtAuthUrlValue', 'pmid/search-by-name'))
-      .pipe(replace('rridIntegratedExtAuthUrlValue', 'rrid/search-by-name'))
       .pipe(gulp.dest('app/config/'));
   done();
 });

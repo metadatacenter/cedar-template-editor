@@ -6,11 +6,6 @@
   "fallbackLanguage": "en",
   "iriPrefix": "iriPrefixValue",
   "extAuthBaseUrl": "extAuthBaseUrlValue",
-  "orcidIntegratedExtAuthUrl": "orcidIntegratedExtAuthUrlValue",
-  "rorIntegratedExtAuthUrl": "rorIntegratedExtAuthUrlValue",
-  "pfasIntegratedExtAuthUrl": "pfasIntegratedExtAuthUrlValue",
-  "pmidIntegratedExtAuthUrl": "pmidIntegratedExtAuthUrlValue",
-  "rridIntegratedExtAuthUrl": "rridIntegratedExtAuthUrlValue",
   "readOnlyMode": false,
   "showDownloadMenu": true
 }

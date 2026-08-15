@@ -6,11 +6,6 @@
   "fallbackLanguage": "en",
   "iriPrefix": "https://repo.metadatacenter.orgx/",
   "extAuthBaseUrl": "https://bridge.metadatacenter.orgx/ext-auth/",
-  "orcidIntegratedExtAuthUrl": "orcid/search-by-name",
-  "rorIntegratedExtAuthUrl": "ror/search-by-name",
-  "pfasIntegratedExtAuthUrl": "comp-tox/search-by-name",
-  "pmidIntegratedExtAuthUrl": "pmid/search-by-name",
-  "rridIntegratedExtAuthUrl": "rrid/search-by-name",
   "readOnlyMode": false,
   "showDownloadMenu": true
 }
