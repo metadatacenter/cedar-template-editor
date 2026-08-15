@@ -113,15 +113,10 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
       .pipe(replace('extAuthBaseUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/'))
       .pipe(replace('orcidIntegratedExtAuthUrlValue', 'orcid/search-by-name'))
-      .pipe(replace('orcidIntegratedDetailsUrlValue', 'orcid'))
       .pipe(replace('rorIntegratedExtAuthUrlValue', 'ror/search-by-name'))
-      .pipe(replace('rorIntegratedDetailsUrlValue', 'ror'))
       .pipe(replace('pfasIntegratedExtAuthUrlValue', 'comp-tox/search-by-name'))
-      .pipe(replace('pfasIntegratedDetailsUrlValue', 'comp-tox'))
       .pipe(replace('pmidIntegratedExtAuthUrlValue', 'pmid/search-by-name'))
-      .pipe(replace('pmidIntegratedDetailsUrlValue', 'pmid'))
       .pipe(replace('rridIntegratedExtAuthUrlValue', 'rrid/search-by-name'))
-      .pipe(replace('rridIntegratedDetailsUrlValue', 'rrid'))
       .pipe(gulp.dest('app/config/'));
   done();
 });

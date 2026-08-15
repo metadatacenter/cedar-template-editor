@@ -7,15 +7,10 @@
   "iriPrefix": "iriPrefixValue",
   "extAuthBaseUrl": "extAuthBaseUrlValue",
   "orcidIntegratedExtAuthUrl": "orcidIntegratedExtAuthUrlValue",
-  "orcidIntegratedDetailsUrl": "orcidIntegratedDetailsUrlValue",
   "rorIntegratedExtAuthUrl": "rorIntegratedExtAuthUrlValue",
-  "rorIntegratedDetailsUrl": "rorIntegratedDetailsUrlValue",
   "pfasIntegratedExtAuthUrl": "pfasIntegratedExtAuthUrlValue",
-  "pfasIntegratedDetailsUrl": "pfasIntegratedDetailsUrlValue",
   "pmidIntegratedExtAuthUrl": "pmidIntegratedExtAuthUrlValue",
-  "pmidIntegratedDetailsUrl": "pmidIntegratedDetailsUrlValue",
   "rridIntegratedExtAuthUrl": "rridIntegratedExtAuthUrlValue",
-  "rridIntegratedDetailsUrl": "rridIntegratedDetailsUrlValue",
   "readOnlyMode": false,
   "showDownloadMenu": true
 }
