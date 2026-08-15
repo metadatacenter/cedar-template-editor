@@ -5,7 +5,6 @@
   "defaultLanguage": "en",
   "fallbackLanguage": "en",
   "iriPrefix": "https://repo.metadatacenter.orgx/",
-  "bioPortalPrefix": "https://bioportal.bioontology.org/ontologies/",
   "extAuthBaseUrl": "https://bridge.metadatacenter.orgx/ext-auth/",
   "orcidIntegratedExtAuthUrl": "orcid/search-by-name",
   "orcidIntegratedDetailsUrl": "orcid",

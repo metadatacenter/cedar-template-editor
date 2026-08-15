@@ -5,7 +5,6 @@
   "defaultLanguage": "en",
   "fallbackLanguage": "en",
   "iriPrefix": "iriPrefixValue",
-  "bioPortalPrefix": "https://bioportal.bioontology.org/ontologies/",
   "extAuthBaseUrl": "extAuthBaseUrlValue",
   "orcidIntegratedExtAuthUrl": "orcidIntegratedExtAuthUrlValue",
   "orcidIntegratedDetailsUrl": "orcidIntegratedDetailsUrlValue",
