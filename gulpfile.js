@@ -110,7 +110,6 @@ gulp.task('replace-url', function (done) {
   done();
   gulp.src(['app/config/src/embeddable-editor-config.json'])
       .pipe(replace('terminologyBaseUrlValue', 'https://terminology.' + cedarRestHost + '/'))
-      .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
       .pipe(replace('bridgeBaseUrlValue', 'https://bridge.' + cedarRestHost + '/'))
       .pipe(gulp.dest('app/config/'));
   done();
