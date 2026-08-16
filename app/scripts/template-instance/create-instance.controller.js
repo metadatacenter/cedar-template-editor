@@ -225,7 +225,11 @@ define([
 
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
-        UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+        // Raised on the page this save is about to navigate to, not on this one. A toast is a node
+        // in the document that made it, and the `window.location.assign` below discards this
+        // document a digest later — so a plain flash here was created and thrown away before it
+        // painted, and the confirmation was never seen.
+        UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
 
         //$rootScope.$broadcast("form:clean");
 

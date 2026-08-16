@@ -13,7 +13,7 @@ define([
                                         'UserService', 'RichTextConfigService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService', 'FrontendUrlService',
                                         'TrackingService', 'MessagingService',
-                                        '$httpParamSerializer', '$location'];
+                                        '$httpParamSerializer', '$location', 'UIMessageService'];
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, DataTemplateService,
@@ -21,7 +21,10 @@ define([
                                       UserService, RichTextConfigService,
                                       provisionalClassService, CedarUser, UISettingsService, FrontendUrlService,
                                       TrackingService, MessagingService,
-                                      $httpParamSerializer, $location) {
+                                      $httpParamSerializer, $location, UIMessageService) {
+
+    // A confirmation the previous page could not show, because it navigated away from itself.
+    UIMessageService.flashPending();
 
     $rootScope.isArray = angular.isArray;
 
