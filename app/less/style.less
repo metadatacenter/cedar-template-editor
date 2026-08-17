@@ -7141,6 +7141,17 @@ table.apiKey {
   overflow-x: hidden;
   overflow-y: auto;
   background: transparent;
+  /*
+   * The wheel stops here rather than passing to the document behind it.
+   *
+   * Without this, reaching the end of a long form hands the rest of the gesture to
+   * the page, which is itself scrollable, and the whole application slides off the
+   * top — the fixed navbar stays and everything below it goes blank. Measured on a
+   * 39-field form: the section sat at its own end, 3636 of 3636, while the window
+   * had scrolled 3525 and the editor's box was 7061px above the viewport. It reads
+   * as a rendering failure and is an ordinary scroll chain.
+   */
+  overscroll-behavior: contain;
 }
 
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #terms-modal, #import-modal {
