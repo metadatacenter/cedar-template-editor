@@ -11,6 +11,7 @@ define(['app', 'angular'], function (app) {
     var $templateCache;
     var $fieldDirectiveScope;
     var DataManipulationService;
+    var schemaService;
     var StagingService;
     var $timeout;
     var UrlService;
@@ -67,6 +68,7 @@ define(['app', 'angular'], function (app) {
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _DataManipulationService_,
+                  _schemaService_,
                   _StagingService_,
                   _UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
@@ -76,6 +78,7 @@ define(['app', 'angular'], function (app) {
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
           DataManipulationService = _DataManipulationService_;
+          schemaService = _schemaService_;
           StagingService = _StagingService_;
           UrlService = _UrlService_;
         }));
@@ -96,6 +99,32 @@ define(['app', 'angular'], function (app) {
           addFieldToTemplate('textfield');
         });
         textfieldTests();
+
+        it("should leave a new field's property IRI for the server to assign", function () {
+          var fieldName = createdTemplate._ui.order[0];
+
+          expect(createdTemplate.properties['@context'].properties[fieldName]).toBeUndefined();
+        });
+
+        it("should preserve an author-selected property IRI through rename and clear it explicitly", function () {
+          var oldName = createdTemplate._ui.order[0];
+          var selectedIri = 'http://example.org/selected-property';
+
+          DataManipulationService.updateProperty(selectedIri, oldName, '', fieldId, createdTemplate);
+          DataManipulationService.updateProperty(selectedIri, oldName, '', fieldId, createdTemplate);
+          expect(createdTemplate.properties['@context'].required.filter(function (name) {
+            return name === oldName;
+          }).length).toBe(1);
+
+          DataManipulationService.renameChildKey(createdTemplate, $fieldDirectiveScope.field, 'Renamed Field');
+          expect(createdTemplate.properties['@context'].properties['Renamed Field'].enum[0]).toBe(selectedIri);
+          expect(createdTemplate.properties['@context'].required.indexOf(oldName)).toBe(-1);
+          expect(createdTemplate.properties['@context'].required.indexOf('Renamed Field')).not.toBe(-1);
+
+          DataManipulationService.updateProperty('', 'Renamed Field', '', fieldId, createdTemplate);
+          expect(createdTemplate.properties['@context'].properties['Renamed Field']).toBeUndefined();
+          expect(createdTemplate.properties['@context'].required.indexOf('Renamed Field')).toBe(-1);
+        });
       });
 
 
@@ -116,6 +145,23 @@ define(['app', 'angular'], function (app) {
 
     });
 
+    describe('schema cleanup before save', function () {
+      it('removes sentinel maxItems recursively from nested elements', function () {
+        var properties = {
+          Outer: {
+            type: 'array', minItems: 1, maxItems: 1,
+            items: {properties: {Inner: {type: 'array', minItems: 0, maxItems: 0, items: {}}}}
+          }
+        };
+
+        schemaService.removeUnnecessaryMaxItems(properties);
+
+        expect(properties.Outer.minItems).toBeUndefined();
+        expect(properties.Outer.maxItems).toBeUndefined();
+        expect(properties.Outer.items.properties.Inner.maxItems).toBeUndefined();
+      });
+    });
+
 
     /* TESTS FOR FIELDS ADDED TO A TEMPLATE ELEMENT */
     describe('In a template element,', function () {
@@ -125,6 +171,12 @@ define(['app', 'angular'], function (app) {
           addFieldToTemplateElement('textfield');
         });
         textfieldTests();
+
+        it("should leave a new nested field's property IRI for the server to assign", function () {
+          var fieldName = createdTemplateElement._ui.order[0];
+
+          expect(createdTemplateElement.properties['@context'].properties[fieldName]).toBeUndefined();
+        });
       });
 
 

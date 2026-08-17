@@ -416,6 +416,10 @@ define([
           if (value.maxItems === 0) {
             delete value.maxItems;
           }
+          var child = value.items && value.items.properties ? value.items : value;
+          if (child.properties) {
+            service.removeUnnecessaryMaxItems(child.properties);
+          }
         }
       });
     };

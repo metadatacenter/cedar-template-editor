@@ -1042,7 +1042,9 @@ define([
           return result;
         };
 
-        // delete the non-CEDAR propertyId by using a CEDAR property
+        // Remove an author-selected property. A missing mapping is the draft
+        // shape that asks the repository to assign one; inventing a replacement
+        // here would make the browser the identity authority again.
         service.deletePropertyId = function (parent, node) {
           if (parent && node && (service.getId(node) !== service.getId(parent))) {
             const id = service.getId(node);
@@ -1050,9 +1052,8 @@ define([
             const schema = service.schemaOf(parent);
             for (let prop in props) {
               if (service.getId(props[prop]) === id) {
-                const randomPropertyName = service.generateGUID();
                 if (schema.properties['@context'].properties[prop]) {
-                  schema.properties['@context'].properties[prop]['enum'][0] = service.getEnumOf(randomPropertyName);
+                  service.removeKeyFromContext(schema, prop);
                   break;
                 }
               }
@@ -1742,15 +1743,12 @@ define([
                 service.renameKeyOfObject(p, key, newKey);
                 if (p["@context"] && p["@context"].properties) {
                   service.renameKeyOfObject(p["@context"].properties, key, newKey);
-                  if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                    var propertyId = service.generateGUID();
-                    p["@context"].properties[newKey].enum[0] = service.getPropertyOf(propertyId,
-                        p["@context"].properties[newKey].enum[0]);
-                  }
                 }
                 if (p["@context"].required) {
                   var idx = p["@context"].required.indexOf(key);
-                  p["@context"].required[idx] = newKey;
+                  if (idx > -1) {
+                    p["@context"].required[idx] = newKey;
+                  }
                 }
                 // Rename key in the 'order' array
                 parentSchema._ui.order = service.renameItemInArray(parentSchema._ui.order, key, newKey);
@@ -1797,7 +1795,11 @@ define([
             if (!propertyId || propertyId.length < 1) {
               service.deletePropertyId(parent, field);
             } else {
-              props['@context'].properties[fieldProp]['enum'][0] = propertyId;
+              props['@context'].properties[fieldProp] = {enum: [propertyId]};
+              props['@context'].required = props['@context'].required || [];
+              if (props['@context'].required.indexOf(fieldProp) === -1) {
+                props['@context'].required.push(fieldProp);
+              }
             }
           }
         };
@@ -2138,7 +2140,9 @@ define([
 
               // Remove it from the order array
               var idx = service.getOrder(parent).indexOf(childKey);
-              service.getOrder(parent).splice(idx, 1);
+              if (idx > -1) {
+                service.getOrder(parent).splice(idx, 1);
+              }
 
               // Remove the property label (for elements)
               if (service.getPropertyLabels(parent)[childKey]) {

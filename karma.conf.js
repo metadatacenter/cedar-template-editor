@@ -12,9 +12,6 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // bower
-      {pattern: 'bower_components/**/*.js', included: false},
-
       // This line is required to load html templates using the html2js preprocessor, but it generates a 'WARNING: Tried
       // to load angular more than once.' message
       'bower_components/angular/angular.js',
@@ -23,6 +20,20 @@ module.exports = function (config) {
       // 'bower_components/angular-ui/build/angular-ui.js',
       // 'bower_components/angular-ui-bootstrap/angular-ui-bootstrap.js',
 
+      // flow
+      'bower_components/flow.js/dist/flow.js',
+      'bower_components/ng-flow/dist/ng-flow-standalone.js',
+
+      'scripts/keycloak/keycloak.min.js',
+      'scripts/handlers/*.js',
+      'scripts/unit/httpData.js',
+      'scripts/unit/applicationData.js',
+      'scripts/unit/cedarUserData.js',
+
+      // bower. Keep this catch-all after the explicitly included bootstrap
+      // scripts: Karma 6 uses the first matching pattern for each file.
+      {pattern: 'bower_components/**/*.js', included: false},
+
       {pattern: 'config/**/*.json', included: false},
       {pattern: 'resources/**/*.json', included: false},
       {pattern: 'third_party_components/**/*.js', included: false},
@@ -30,9 +41,6 @@ module.exports = function (config) {
       {pattern: 'scripts/app.js', included: false},
       {pattern: 'scripts/**/*.html', included: true},
       {pattern: 'img/**/*.png', included: false},
-
-      'scripts/keycloak/keycloak.min.js',
-      'scripts/handlers/*.js',
 
       // RequireJS config for Karma tests
       'test-require-config.js',
@@ -48,13 +56,7 @@ module.exports = function (config) {
       'scripts/controlled-term/controlled-term.directive.html',
       'scripts/controlled-term/property-list.directive.html',
       'scripts/dashboard/dashboard.html',
-      'scripts/unit/httpData.js',
-      'scripts/unit/applicationData.js',
-      'scripts/unit/cedarUserData.js',
 
-      // flow
-      'bower_components/flow.js/dist/flow.js',
-      'bower_components/ng-flow/dist/ng-flow-standalone.js'
 
     ],
 
@@ -71,7 +73,10 @@ module.exports = function (config) {
 
     ngHtml2JsPreprocessor: {
       // the name of the Angular module to create
-      moduleName: "my.templates"
+      moduleName: "my.templates",
+      cacheIdFromPath: function (filepath) {
+        return filepath.replace(/^.*\/app\//, '') + '?v=karma';
+      }
     },
 
     // Available reporters: https://npmjs.org/browse/keyword/karma-reporter

@@ -117,12 +117,9 @@ define([
       // Converting title for irregular character handling
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
-      // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType)) {
-        var randomPropertyName = DataManipulationService.generateGUID();
-        form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-            randomPropertyName);
-      }
+      // A new child has no property identity yet. The repository assigns its
+      // @context mapping when the schema is stored; the Designer only supplies
+      // one when the author explicitly chooses a vocabulary property.
 
       // Evaluate cardinality
       if (!DataManipulationService.firstClassField(form, field)) {
@@ -165,12 +162,6 @@ define([
             var description = DataManipulationService.getDescription(clonedElement);
             var elName = DataManipulationService.getFieldName(title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
-
-            // Adding corresponding property type to @context
-            var randomPropertyName = DataManipulationService.generateGUID();
-            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(randomPropertyName);
-            form.properties["@context"].required = form.properties["@context"].required || [];
-            form.properties["@context"].required.push(elName);
 
             // Evaluate cardinality
             schemaService.cardinalizeField(clonedElement);
@@ -219,15 +210,6 @@ define([
 
 
 
-            // Adding corresponding property type to @context
-            var randomPropertyName = DataManipulationService.generateGUID();
-            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
-                randomPropertyName);
-
-            form.properties["@context"].required = form.properties["@context"].required || [];
-            form.properties["@context"].required.push(elName);
-
-
             // Evaluate cardinality
             if (dms.isCheckboxType(clonedElement) || dms.isListMultiAnswerType(clonedElement) ) {
               clonedElement.minItems = 1;
@@ -270,12 +252,6 @@ define([
       var description = DataManipulationService.getDescription(clonedElement);
       var elName = DataManipulationService.getFieldName(title);
       elName = DataManipulationService.getAcceptableKey(form.properties, elName);
-
-      // Adding corresponding property type to @context
-      var randomPropertyName = DataManipulationService.generateGUID();
-      form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(
-          randomPropertyName);
-      form.properties["@context"].required.push(elName);
 
       // Evaluate cardinality
       schemaService.cardinalizeField(clonedElement);
@@ -328,17 +304,6 @@ define([
 
       // Converting title for irregular character handling
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
-
-      // Adding corresponding property type to @context (only if the field is not static)
-      if (!FieldTypeService.isStaticField(fieldType)) {
-        var randomPropertyName = DataManipulationService.generateGUID();
-        element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-            randomPropertyName);
-        if (!element.properties["@context"].required) {
-          element.properties["@context"].required = []
-        }
-        element.properties["@context"].required.push(fieldName);
-      }
 
       // Evaluate cardinality
       schemaService.cardinalizeField(field);
