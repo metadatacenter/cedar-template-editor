@@ -142,6 +142,23 @@ body {
   //overflow-y: hidden;
   &.metadata {
     background-color: @white;
+    /*
+     * Instance pages own a viewport-height `.scrollable-content` section. Keep
+     * the document itself still and pin the Angular view to the viewport so a
+     * long embedded editor cannot also make the browser window a scroll target.
+     * Two active vertical scrollers let the entire editor move above the
+     * viewport, leaving its bottom blank even though the instance form is still
+     * present in the inner scroller.
+     */
+    overflow-y: hidden;
+
+    #angular-views-entry {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: auto;
+    }
   }
 }
 
