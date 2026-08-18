@@ -106,6 +106,17 @@ define(['app', 'angular'], function (app) {
           expect(createdTemplate.properties['@context'].properties[fieldName]).toBeUndefined();
         });
 
+        it("should leave a new field's artifact ID for the server to assign", function () {
+          expect($fieldDirectiveScope.field['@id']).toBeNull();
+          expect(fieldId).toMatch(/^id/);
+
+          var request = angular.copy(createdTemplate);
+          DataManipulationService.stripTmps(request);
+          var fieldName = request._ui.order[0];
+          expect(request.properties[fieldName]['@id']).toBeNull();
+          expect(request.properties[fieldName]._tmp).toBeUndefined();
+        });
+
         it("should preserve an author-selected property IRI through rename and clear it explicitly", function () {
           var oldName = createdTemplate._ui.order[0];
           var selectedIri = 'http://example.org/selected-property';
@@ -176,6 +187,11 @@ define(['app', 'angular'], function (app) {
           var fieldName = createdTemplateElement._ui.order[0];
 
           expect(createdTemplateElement.properties['@context'].properties[fieldName]).toBeUndefined();
+        });
+
+        it("should leave a new nested field's artifact ID for the server to assign", function () {
+          expect($fieldDirectiveScope.field['@id']).toBeNull();
+          expect(fieldId).toMatch(/^id/);
         });
       });
 
@@ -409,7 +425,7 @@ define(['app', 'angular'], function (app) {
 
       // Create field and add it to the template
       $fieldDirectiveScope.field = StagingService.addFieldToForm(createdTemplate, fieldType, false, domId, callback);
-      fieldId = $fieldDirectiveScope.field['@id'];
+      fieldId = DataManipulationService.getUiId($fieldDirectiveScope.field);
       // Compile field directive
       var fieldDirective = "<field-directive parent-element='createdTemplate' nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);
@@ -435,7 +451,7 @@ define(['app', 'angular'], function (app) {
       // Create field and add it to the template
       $fieldDirectiveScope.field = StagingService.addFieldToElement(createdTemplateElement, fieldType, domId,
           callback);
-      fieldId = $fieldDirectiveScope.field['@id'];
+      fieldId = DataManipulationService.getUiId($fieldDirectiveScope.field);
       // Compile field directive
       var fieldDirective = "<field-directive nested='false' field='field' model='model'></field-directive>";
       compiledDirective = $compile(fieldDirective)($fieldDirectiveScope);

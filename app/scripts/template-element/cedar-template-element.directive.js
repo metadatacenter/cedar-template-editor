@@ -47,7 +47,7 @@ define([
 
 
       scope.isRoot = function () {
-        return !schemaService.getId(scope.element) || (schemaService.getId(scope.element) === $rootScope.keyOfRootElement);
+        return scope.key != null && scope.key === $rootScope.keyOfRootElement;
       };
 
       scope.getIdentifier = function () {
@@ -79,7 +79,7 @@ define([
       };
 
       scope.getId = function () {
-        return schemaService.getId(scope.element);
+        return dms.getUiId(scope.element);
       };
 
       scope.isFirstLevel = function () {
@@ -154,7 +154,7 @@ define([
         return result;
       };
 
-      scope.elementId = dms.idOf(scope.element) || dms.generateGUID();
+      scope.elementId = dms.getUiId(scope.element);
 
       var resetElement = function (el, settings) {
         angular.forEach(el, function (model, key) {

@@ -48,7 +48,7 @@ define([
       };
 
       scope.isRoot = function () {
-        return !dms.getId(scope.field) || (dms.getId(scope.field) === $rootScope.keyOfRootElement);
+        return scope.field === scope.parentElement;
       };
 
       scope.getTitle = function () {
@@ -64,7 +64,7 @@ define([
       };
 
       scope.getId = function () {
-        return schemaService.getId(scope.field);
+        return dms.getUiId(scope.field);
       };
 
       scope.getDomId = function (node) {
@@ -105,7 +105,7 @@ define([
         return result;
       };
 
-      scope.fieldId = dms.idOf(scope.field) || dms.generateGUID();
+      scope.fieldId = dms.getUiId(scope.field);
 
       var resetField = function (el, settings) {
         angular.forEach(el, function (model, key) {

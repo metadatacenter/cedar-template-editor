@@ -129,6 +129,19 @@ define([
           return node && service.schemaOf(node)['@id'];
         };
 
+        // Artifact identity and editor identity are deliberately separate. A
+        // new child has no @id until the repository stores it, but controls,
+        // modal events and property editing still need a stable local handle.
+        // `_tmp` is the Designer's existing transient namespace and is removed
+        // recursively from the request body before save.
+        service.getUiId = function (node) {
+          var schema = service.schemaOf(node);
+          if (!schema || typeof schema !== 'object' || !schema['@type']) {
+            return null;
+          }
+          return schema['@id'] || service.getDomId(node);
+        };
+
         // is this a required field or element?
         service.isRequired = function (node) {
 
@@ -1011,22 +1024,32 @@ define([
         };
 
         service.isRootNode = function (parent, child) {
-          return parent && child && service.getId(child) === service.getId(parent);
+          if (!parent || !child) {
+            return false;
+          }
+          if (service.schemaOf(parent) === service.schemaOf(child)) {
+            return true;
+          }
+          var parentId = service.getId(parent);
+          return !!parentId && service.getId(child) === parentId;
         };
 
 
         // get the non-CEDAR propertyId for this node
         service.getPropertyId = function (parent, node) {
           let result = '';
-          if (parent && node && (service.getId(node) !== service.getId(parent))) {
+          if (parent && node && !service.isRootNode(parent, node)) {
 
             var property;
             var prop;
             var schema = service.schemaOf(parent);
             var props = service.propertiesOf(parent);
-            var id = service.getId(node);
+            var id = service.getUiId(node);
             for (prop in props) {
-              if (service.schemaOf(props[prop])['@id'] === id) {
+              if (DataUtilService.isSpecialKey(prop)) {
+                continue;
+              }
+              if (props[prop] === node || service.getUiId(props[prop]) === id) {
                 // only return non-cedar property values
                 if (schema.properties['@context'].properties[prop]) {
                   property = schema.properties['@context'].properties[prop]['enum'][0];
@@ -1046,12 +1069,15 @@ define([
         // shape that asks the repository to assign one; inventing a replacement
         // here would make the browser the identity authority again.
         service.deletePropertyId = function (parent, node) {
-          if (parent && node && (service.getId(node) !== service.getId(parent))) {
-            const id = service.getId(node);
+          if (parent && node && !service.isRootNode(parent, node)) {
+            const id = service.getUiId(node);
             const props = service.propertiesOf(parent);
             const schema = service.schemaOf(parent);
             for (let prop in props) {
-              if (service.getId(props[prop]) === id) {
+              if (DataUtilService.isSpecialKey(prop)) {
+                continue;
+              }
+              if (props[prop] === node || service.getUiId(props[prop]) === id) {
                 if (schema.properties['@context'].properties[prop]) {
                   service.removeKeyFromContext(schema, prop);
                   break;
@@ -1726,19 +1752,20 @@ define([
             return;
           }
           var parentSchema = service.schemaOf(parent);
-          var childId = service.idOf(child);
-          if (!childId || /^tmp\-/.test(childId)) {
+          var artifactId = service.idOf(child);
+          var childId = service.getUiId(child);
+          if (!artifactId || /^tmp\-/.test(artifactId)) {
             var p = service.propertiesOf(parent);
             if (p[newKey] && p[newKey] === child) {
               return;
             }
             newKey = service.getAcceptableKey(p, newKey);
             angular.forEach(p, function (value, key) {
-              if (!value) {
+              if (!value || DataUtilService.isSpecialKey(key)) {
                 return;
               }
-              var idOfValue = service.idOf(value);
-              if (idOfValue && idOfValue === childId) {
+              var idOfValue = service.getUiId(value);
+              if (value === child || idOfValue === childId) {
 
                 service.renameKeyOfObject(p, key, newKey);
                 if (p["@context"] && p["@context"].properties) {
@@ -1773,7 +1800,10 @@ define([
           const schema = service.schemaOf(parent);
           let fieldProp;
           for (let prop in props) {
-            if (service.getId(props[prop]) === fieldId) {
+            if (DataUtilService.isSpecialKey(prop)) {
+              continue;
+            }
+            if (service.getUiId(props[prop]) === fieldId) {
               fieldProp = prop;
               break;
             }
