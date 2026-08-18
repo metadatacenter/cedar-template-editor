@@ -30,6 +30,35 @@ define([
       }
     };
 
+    // Wrap a field without enumerating its schema keys. The older cardinalizer
+    // copied a fixed allow-list and therefore dropped newer metadata such as
+    // identifiers and annotations when changing cardinality.
+    var wrapFieldAsArray = function (field, minItems) {
+      var inner = angular.copy(field);
+      delete inner.minItems;
+      delete inner.maxItems;
+      Object.keys(field).forEach(function (key) {
+        delete field[key];
+      });
+      field.type = 'array';
+      field.minItems = minItems;
+      field.items = inner;
+    };
+
+    var unwrapArrayField = function (field) {
+      if (!field || !field.items) {
+        return false;
+      }
+      var inner = angular.copy(field.items);
+      Object.keys(field).forEach(function (key) {
+        delete field[key];
+      });
+      Object.keys(inner).forEach(function (key) {
+        field[key] = inner[key];
+      });
+      return true;
+    };
+
     //
     // id, title, description ....
     //
@@ -426,25 +455,20 @@ define([
 
     // sets the multiple choice option to true or false
     service.setMultipleChoice = function (node, newMultipleChoiceValue) {
-      if (newMultipleChoiceValue === true) { // set multipleChoice to true
-        if (node.items) {
-          node.items._valueConstraints.multipleChoice = true;
+      var fieldSchema = service.schemaOf(node);
+      fieldSchema._valueConstraints.multipleChoice = newMultipleChoiceValue === true;
+
+      if (newMultipleChoiceValue === true) {
+        var minItems = fieldSchema._valueConstraints.requiredValue === true ? 1 : 0;
+        if (node.type === 'array' && node.items) {
+          if (typeof node.minItems === 'undefined') {
+            node.minItems = minItems;
+          }
+        } else {
+          wrapFieldAsArray(node, minItems);
         }
-        else {
-          node.minItems = 1;
-          node._valueConstraints.multipleChoice = true;
-          service.cardinalizeField(node);
-        }
-      }
-      else { // set multipleChoice to false
-        if (node.items) {
-          delete node.minItems;
-          node.items._valueConstraints.multipleChoice = false;
-          service.uncardinalizeField(node);
-        }
-        else {
-          node._valueConstraints.multipleChoice = false;
-        }
+      } else if (node.type === 'array' && node.items) {
+        unwrapArrayField(node);
       }
     };
 
