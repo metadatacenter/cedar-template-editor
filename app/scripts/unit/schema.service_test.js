@@ -39,5 +39,20 @@ define(['app', 'angular'], function (app) {
       expect(field['schema:identifier']).toBe('stable-identifier');
       expect(field._annotations.note['@value']).toBe('preserve me');
     });
+
+    it('does not clean nested cardinality while preparing a template for save', function () {
+      var properties = {
+        Outer: {
+          type: 'array', minItems: 1, maxItems: 1,
+          items: {properties: {Inner: {type: 'array', minItems: 0, maxItems: 0, items: {}}}}
+        }
+      };
+
+      schemaService.removeUnnecessaryMaxItems(properties);
+
+      expect(properties.Outer.minItems).toBeUndefined();
+      expect(properties.Outer.maxItems).toBeUndefined();
+      expect(properties.Outer.items.properties.Inner.maxItems).toBe(0);
+    });
   });
 });

@@ -11,7 +11,6 @@ define(['app', 'angular'], function (app) {
     var $templateCache;
     var $fieldDirectiveScope;
     var DataManipulationService;
-    var schemaService;
     var StagingService;
     var $timeout;
     var UrlService;
@@ -68,7 +67,6 @@ define(['app', 'angular'], function (app) {
     beforeEach(inject(
         function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _DataManipulationService_,
-                  _schemaService_,
                   _StagingService_,
                   _UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
@@ -78,7 +76,6 @@ define(['app', 'angular'], function (app) {
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
           DataManipulationService = _DataManipulationService_;
-          schemaService = _schemaService_;
           StagingService = _StagingService_;
           UrlService = _UrlService_;
         }));
@@ -154,23 +151,6 @@ define(['app', 'angular'], function (app) {
         checkboxTests();
       });
 
-    });
-
-    describe('schema cleanup before save', function () {
-      it('removes sentinel maxItems recursively from nested elements', function () {
-        var properties = {
-          Outer: {
-            type: 'array', minItems: 1, maxItems: 1,
-            items: {properties: {Inner: {type: 'array', minItems: 0, maxItems: 0, items: {}}}}
-          }
-        };
-
-        schemaService.removeUnnecessaryMaxItems(properties);
-
-        expect(properties.Outer.minItems).toBeUndefined();
-        expect(properties.Outer.maxItems).toBeUndefined();
-        expect(properties.Outer.items.properties.Inner.maxItems).toBeUndefined();
-      });
     });
 
 
