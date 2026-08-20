@@ -60,7 +60,7 @@
     "angular-touch": "1.6.3",
     "angular-ui-bootstrap": "2.5.0",
     "bootstrap": "4.1.2",
-    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@^2.0.0-dev.20260820.9eb2001",
+    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@^2.0.0-dev.20260820.ffe2e39",
     "handsontable": "^0.32.0",
     "install": "0.8.7",
     "jquery": "1.11.3",
