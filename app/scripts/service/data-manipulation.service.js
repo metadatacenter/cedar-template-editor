@@ -1821,8 +1821,14 @@ define([
             // property label
             service.getPropertyLabels(parent)[fieldProp] = propertyLabel;
 
-            // property id
-            if (!propertyId || propertyId.length < 1) {
+            // property id. A static field is given none, whatever it carries:
+            // the block records the IRI each of a container's children is
+            // addressed by in an instance, and a static field is not one of
+            // them. This asked only whether a property id was present, so a
+            // static field that had been given one was named in both
+            // `@context.properties` and `@context.required`, demanding of every
+            // instance a key no editor writes.
+            if (!propertyId || propertyId.length < 1 || service.isStaticField(props[fieldProp])) {
               service.deletePropertyId(parent, field);
             } else {
               props['@context'].properties[fieldProp] = {enum: [propertyId]};

@@ -219,8 +219,17 @@ define([
             // Add field to the element.properties object
             form.properties[elName] = clonedElement;
 
-            // Add element to the form.required array
-            form = DataManipulationService.addKeyToRequired(form, elName);
+            // Add field to the form.required array if it's not static. This is a
+            // field, whatever the parameter is called, and the same rule applies
+            // to it as to one created here rather than picked: a static field
+            // renders and holds nothing, so it is not a property of an instance
+            // and no instance can supply it. The two paths that create a field
+            // inline have always checked; this one, added later, never did, and
+            // a template that named a static field here could not accept an
+            // instance from any editor.
+            if (!schemaService.isStaticField(clonedElement) && !schemaService.isAttributeValueType(clonedElement)) {
+              form = DataManipulationService.addKeyToRequired(form, elName);
+            }
 
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
