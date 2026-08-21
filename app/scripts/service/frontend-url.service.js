@@ -12,7 +12,6 @@ define([
   function FrontendUrlService() {
 
     let openViewBase = null;
-    let embeddableEditorBase = null;
     let dataciteDOIBase = null
     let downloadBase = null
     let monitoringBase = null
@@ -23,7 +22,6 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
-      embeddableEditorBase = config.artifactsFrontend;
       dataciteDOIBase = config.dataciteDOIBase;
       downloadBase = config.downloadBase;
       monitoringBase = config.monitoringFrontend;
@@ -95,14 +93,6 @@ define([
 
     service.openFolder = function (id) {
       return openViewBase + '/folders/' + encodeURIComponent(id);
-    };
-
-    service.ceeCreateInstance = function (id, folderId) {
-      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
-    };
-
-    service.eeEditInstance = function (id) {
-      return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
     };
 
     service.dataciteTemplate = function (id) {
