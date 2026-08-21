@@ -11,19 +11,31 @@ define([
     "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
     "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
     "ValueRecommenderService", "UIUtilService", "DataManipulationService",
-    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService"];
+    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService", "CeeDirtyTrackerService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
                                     ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService,
-                                    CedarModelTypescriptLibrary, CeeConfigService) {
+                                    CedarModelTypescriptLibrary, CeeConfigService, CeeDirtyTrackerService) {
 
     let vm = this;
     vm.useCee = CedarUser.useMetadataEditorV2();
 
+    const ceeElement = function () {
+      return document.querySelector('cedar-embeddable-editor');
+    };
+
+    const rememberCeeCleanState = function () {
+      const cee = ceeElement();
+      if (cee) {
+        CeeDirtyTrackerService.markClean(cee.currentMetadata);
+      }
+    };
+
     if(vm.useCee){
+      CeeDirtyTrackerService.reset();
       $scope.ceeConfig = {};
       $scope.ceeConfig = CeeConfigService.getConfig();
       $timeout(function() {
@@ -39,9 +51,11 @@ define([
           TemplateService.getTemplate(UrlService.fixSingleSlashHttps($routeParams.templateId)),
           function (response) {
             if(vm.useCee){
-              let cee = document.querySelector('cedar-embeddable-editor');
+              let cee = ceeElement();
               if(response.data){
                 cee.templateObject = response.data;
+                rememberCeeCleanState();
+                UIUtilService.setDirty(false);
               }
             }
             $scope.form = response.data;
@@ -184,8 +198,10 @@ define([
                   $scope.form = templateResponse.data;
 
                   if(vm.useCee) {
-                    const cee = document.querySelector('cedar-embeddable-editor');
+                    const cee = ceeElement();
                     cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
+                    rememberCeeCleanState();
+                    UIUtilService.setDirty(false);
                   }
 
                   $rootScope.jsonToSave = $scope.form;
@@ -295,6 +311,7 @@ define([
                 (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
               doSave(response);
+              rememberCeeCleanState();
               UIUtilService.setDirty(false);
             },
             function (err) {
@@ -327,6 +344,7 @@ define([
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               doUpdate(response);
+              rememberCeeCleanState();
               UIUtilService.setDirty(false);
             },
             function (err) {
@@ -447,10 +465,17 @@ define([
     };
 
     $timeout(() => {
-      const cee = document.querySelector('cedar-embeddable-editor');
+      const cee = ceeElement();
       if (!cee) return;
-      cee.addEventListener('change', event => {
-        UIUtilService.setDirty(true);
+      cee.addEventListener('change', () => {
+        // Older CEE bundles still emit unstructured control events. Preserve
+        // their conservative behaviour until the explicit mutation contract is
+        // present, but use the saved baseline whenever this page established one.
+        const dirty = CeeDirtyTrackerService.hasBaseline()
+            ? CeeDirtyTrackerService.isDirty(cee.currentMetadata)
+            : true;
+        UIUtilService.setDirty(dirty);
+        $scope.$evalAsync();
       });
     }, 0);
 
@@ -464,4 +489,3 @@ define([
 
   }
 });
-
