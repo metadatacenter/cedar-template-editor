@@ -9,7 +9,13 @@
       </div>
     </div>
 
-    <div class="modal-body"  cedar-infinite-scroll load-more="terms.loadMore()" class="scrollable-content" style="padding-top:0;overflow-y:scroll">
+    <!--
+      One `class` attribute. It was written twice, and a parser keeps the first and discards the
+      second, so `scrollable-content` never applied here — the body scrolls on its own inline
+      `overflow-y` and the class was decoration nothing read. Merged, so the dialog's body contains
+      the wheel the way the copy and move dialogs' bodies do.
+    -->
+    <div class="modal-body scrollable-content" cedar-infinite-scroll load-more="terms.loadMore()" style="padding-top:0;overflow-y:scroll">
         <div class="flex flex-left term-row">
           <div class="index header invisible" >0</div>
           <div class="title header" >Label</div>

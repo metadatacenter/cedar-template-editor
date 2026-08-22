@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.uIMessageService', [])
       .service('UIMessageService', UIMessageService);
 
-  UIMessageService.$inject = ['toasty', '$translate', '$timeout'];
+  UIMessageService.$inject = ['toasty', '$translate', '$timeout', '$window'];
 
-  function UIMessageService(toasty, $translate, $timeout) {
+  function UIMessageService(toasty, $translate, $timeout, $window) {
 
     var service = {
       serviceId: "UIMessageService"
@@ -37,6 +37,65 @@ define([
       toasty[type]({
         title: $translate.instant(titleKey),
         msg  : $translate.instant(messageKey, messageParameters)
+      });
+    };
+
+    // Where a message waits out a full page load.
+    var PENDING_KEY = 'cedar.pendingFlash';
+
+    /**
+     * Flash a message on the page the user is about to land on, not this one.
+     *
+     * A toast is a DOM node in the page that raised it, so anything that flashes and
+     * then navigates with `window.location` shows nothing: the node is created and
+     * the document carrying it is discarded a moment later, before it paints. Saving
+     * a new instance did exactly that, and the confirmation had never been seen.
+     *
+     * Storing it rather than delaying the navigation, because the message belongs
+     * where the user ends up. `sessionStorage` and not a service field, since nothing
+     * in this application outlives the load.
+     */
+    service.flashAfterReload = function (type, messageKey, titleKey) {
+      try {
+        $window.sessionStorage.setItem(PENDING_KEY, angular.toJson({
+          type      : type,
+          messageKey: messageKey,
+          titleKey  : titleKey
+        }));
+      } catch (e) {
+        // A browser refusing storage is not a reason to fail a save. The user loses
+        // the confirmation, which is what happened before this existed.
+      }
+    };
+
+    /** Show whatever the previous page left, once. Called on startup. */
+    service.flashPending = function () {
+      var raw;
+      try {
+        raw = $window.sessionStorage.getItem(PENDING_KEY);
+        if (raw) {
+          $window.sessionStorage.removeItem(PENDING_KEY);
+        }
+      } catch (e) {
+        return;
+      }
+      if (!raw) {
+        return;
+      }
+      var pending = angular.fromJson(raw);
+      /*
+       * `$translate(...)` rather than `$translate.instant(...)`, because this runs
+       * during startup and the language tables are fetched over HTTP: `instant`
+       * answers with the key itself until they arrive, and the first version of this
+       * raised a toast reading "GENERIC.Created SERVER.INSTANCE.create.success". The
+       * promise form resolves once the language is loaded, which is also late enough
+       * for the container in `index.html` to have been compiled.
+       */
+      $translate([pending.messageKey, pending.titleKey]).then(function (translations) {
+        toasty[pending.type]({
+          title: translations[pending.titleKey],
+          msg  : translations[pending.messageKey]
+        });
       });
     };
 

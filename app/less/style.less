@@ -142,6 +142,23 @@ body {
   //overflow-y: hidden;
   &.metadata {
     background-color: @white;
+    /*
+     * Instance pages own a viewport-height `.scrollable-content` section. Keep
+     * the document itself still and pin the Angular view to the viewport so a
+     * long embedded editor cannot also make the browser window a scroll target.
+     * Two active vertical scrollers let the entire editor move above the
+     * viewport, leaving its bottom blank even though the instance form is still
+     * present in the inner scroller.
+     */
+    overflow-y: hidden;
+
+    #angular-views-entry {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: auto;
+    }
   }
 }
 
@@ -248,6 +265,12 @@ button {
       .external-icon {
         color: @med-gray;
         font-size: 11px;
+        flex: 0 0 auto;
+      }
+      // Marker for links to another CEDAR frontend: a new tab, but still inside CEDAR.
+      // The cedar tree, in the CEDAR green, sets it apart from the gray external-link arrow.
+      .cedar-icon {
+        color: darken(@field-color, 12%);
         flex: 0 0 auto;
       }
     }
@@ -4117,6 +4140,10 @@ section.dashboard-elements {
   padding: 10px 0;
   text-align: center;
 
+  &.cee-edit-actions {
+    border-bottom: 1px solid #d7e0df;
+  }
+
   .btn {
     display: inline-block;
     border-radius: 0;
@@ -7131,6 +7158,17 @@ table.apiKey {
   overflow-x: hidden;
   overflow-y: auto;
   background: transparent;
+  /*
+   * The wheel stops here rather than passing to the document behind it.
+   *
+   * Without this, reaching the end of a long form hands the rest of the gesture to
+   * the page, which is itself scrollable, and the whole application slides off the
+   * top — the fixed navbar stays and everything below it goes blank. Measured on a
+   * 39-field form: the section sat at its own end, 3636 of 3636, while the window
+   * had scrolled 3525 and the editor's box was 7061px above the viewport. It reads
+   * as a rendering failure and is an ordinary scroll chain.
+   */
+  overscroll-behavior: contain;
 }
 
 #rename-modal, #publish-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal, #flow-modal, #terms-modal, #import-modal {

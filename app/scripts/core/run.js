@@ -13,7 +13,7 @@ define([
                                         'UserService', 'RichTextConfigService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService', 'FrontendUrlService',
                                         'TrackingService', 'MessagingService',
-                                        '$httpParamSerializer', '$location'];
+                                        '$httpParamSerializer', '$location', 'UIMessageService'];
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, DataTemplateService,
@@ -21,7 +21,10 @@ define([
                                       UserService, RichTextConfigService,
                                       provisionalClassService, CedarUser, UISettingsService, FrontendUrlService,
                                       TrackingService, MessagingService,
-                                      $httpParamSerializer, $location) {
+                                      $httpParamSerializer, $location, UIMessageService) {
+
+    // A confirmation the previous page could not show, because it navigated away from itself.
+    UIMessageService.flashPending();
 
     $rootScope.isArray = angular.isArray;
 
@@ -65,6 +68,10 @@ define([
     //$rootScope.cts = ControlledTermService;
     //$rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
+
+    // Monitoring dashboard link in the user menu. The menu markup lives outside any controller
+    // (bottom of index.html), so the environment-specific URL is published on the root scope.
+    $rootScope.monitoringUrl = FrontendUrlService.getMonitoring();
 
     $rootScope.util = {
       buildUrl: function (url, params) {

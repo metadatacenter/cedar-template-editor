@@ -35,15 +35,17 @@ define([
       dataTemplate.additionalPropertiesContextAttValueField = additionalPropertiesContextAttValueField;
     };
 
-    service.getField = function (tempId) {
+    service.getField = function () {
       var clonedField = angular.copy(dataTemplate.field);
-      clonedField['@id'] = tempId;
+      // A field being authored has no artifact identity yet. UI identity lives
+      // under `_tmp` and is stripped before save; the repository assigns @id.
+      clonedField['@id'] = null;
       return clonedField;
     };
 
-    service.getStaticField = function (tempId) {
+    service.getStaticField = function () {
       var clonedField = angular.copy(dataTemplate.staticField);
-      clonedField['@id'] = tempId;
+      clonedField['@id'] = null;
       return clonedField;
     };
 
@@ -53,15 +55,15 @@ define([
       return clonedField;
     };
 
-    service.getContainerField = function (tempId) {
+    service.getContainerField = function () {
       var clonedField = angular.copy(dataTemplate.containerField);
-      clonedField['@id'] = tempId;
+      clonedField['@id'] = null;
       return clonedField;
     };
 
-    service.getAttributeValueField = function (tempId) {
+    service.getAttributeValueField = function () {
       var clonedField = angular.copy(dataTemplate.attributeValueField);
-      clonedField['items']['@id'] = tempId;
+      clonedField['items']['@id'] = null;
       return clonedField;
     };
 

@@ -1,7 +1,5 @@
 # cedar-template-editor
 
-[![Build Status](https://travis-ci.com/metadatacenter/cedar-template-editor.svg?branch=master)](https://travis-ci.com/metadatacenter/cedar-template-editor)
-
 This is an AngularJS web application to create and fill in Metadata Templates. It is part of the CEDAR application.
 
 To access the documentation, [click here](https://github.com/metadatacenter/cedar-docs/wiki).

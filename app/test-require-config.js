@@ -2,6 +2,8 @@
  * Karma-RequireJS configuration file - Used for unit testing
  */
 
+window.cedarCacheControl = 'karma';
+
 if (window.__karma__) {
   var allTestFiles = [];
   var TEST_REGEXP = /_test\.js$/;
@@ -34,6 +36,7 @@ require.config({
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
     'jsonld'  : 'bower_components/jsonld/js/jsonld',
+    'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd',
   },
   shim    : {
     'angular'     : {

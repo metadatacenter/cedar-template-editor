@@ -10,7 +10,9 @@ var httpData = {
 
       getFile: function (dest) {
         // returns the appropriate file content when requested
-        this.httpBackend.whenGET(dest).respond(function (method, url, data) {
+        var escapedDest = dest.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        var cacheBustedDest = new RegExp('^' + escapedDest + '(?:\\?v=[^&]*)?$');
+        this.httpBackend.whenGET(cacheBustedDest).respond(function (method, url, data) {
           var request = new XMLHttpRequest();
           request.open('GET', dest, false);
           request.send(null);
@@ -1810,5 +1812,4 @@ var httpData = {
       }
     }
 ;
-
 

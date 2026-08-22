@@ -101,25 +101,15 @@ gulp.task('replace-url', function (done) {
       .pipe(replace('messagingServerUrl', 'https://messaging.' + cedarRestHost))
       .pipe(replace('openViewBaseUrl', 'https://openview.' + cedarRestHost))
       .pipe(replace('impexServerUrl', 'https://impex.' + cedarRestHost))
-      .pipe(replace('artifactsFrontendUrl', 'https://artifacts.' + cedarRestHost))
+      // The monitoring dashboard is a sibling frontend (not a REST service), so it hangs off the UI host.
+      .pipe(replace('monitoringFrontendUrl', 'https://monitoring.' + cedarUIHost))
       .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
       .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
       .pipe(gulp.dest('app/config/'));
   done();
   gulp.src(['app/config/src/embeddable-editor-config.json'])
-      .pipe(replace('terminologyIntegratedSearchUrlValue', 'https://terminology.' + cedarRestHost + '/bioportal/integrated-search'))
-      .pipe(replace('iriPrefixValue', 'https://repo.' + cedarRestHost + '/'))
-      .pipe(replace('extAuthBaseUrlValue', 'https://bridge.' + cedarRestHost + '/ext-auth/'))
-      .pipe(replace('orcidIntegratedExtAuthUrlValue', 'orcid/search-by-name'))
-      .pipe(replace('orcidIntegratedDetailsUrlValue', 'orcid'))
-      .pipe(replace('rorIntegratedExtAuthUrlValue', 'ror/search-by-name'))
-      .pipe(replace('rorIntegratedDetailsUrlValue', 'ror'))
-      .pipe(replace('pfasIntegratedExtAuthUrlValue', 'comp-tox/search-by-name'))
-      .pipe(replace('pfasIntegratedDetailsUrlValue', 'comp-tox'))
-      .pipe(replace('pmidIntegratedExtAuthUrlValue', 'pmid/search-by-name'))
-      .pipe(replace('pmidIntegratedDetailsUrlValue', 'pmid'))
-      .pipe(replace('rridIntegratedExtAuthUrlValue', 'rrid/search-by-name'))
-      .pipe(replace('rridIntegratedDetailsUrlValue', 'rrid'))
+      .pipe(replace('terminologyBaseUrlValue', 'https://terminology.' + cedarRestHost + '/'))
+      .pipe(replace('bridgeBaseUrlValue', 'https://bridge.' + cedarRestHost + '/'))
       .pipe(gulp.dest('app/config/'));
   done();
 });

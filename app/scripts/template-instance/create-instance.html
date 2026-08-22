@@ -14,14 +14,25 @@
               is-edit-data="isEditData"
               path="0">
           </form-directive>
+          <!--
+            `template-container` without `scrollable-content`: the page's own section above is the
+            scroller, and this one only wraps the editor.
+
+            Both carried both classes, so both declared `overflow-y: auto` — and this one is as tall
+            as its content, so it cannot scroll. That was harmless while the wheel could chain past
+            it; `overscroll-behavior: contain` on `.scrollable-content` stops the chaining, so a
+            wheel over the editor was claimed by a box that could not move and never reached the
+            scroller behind it. The scrollbar still worked, because that one belongs to the section
+            that can.
+          -->
           <section
               ng-if="vm.useCee"
-              class="template-container scrollable-content">
+              class="template-container">
             <cedar-embeddable-editor ng-if="vm.useCee"></cedar-embeddable-editor>
           </section>
 
           <!-- errors and edit actions -->
-          <div class="edit-actions" ng-hide="$root.isEmpty(form)">
+          <div class="edit-actions" ng-class="{'cee-edit-actions': vm.useCee}" ng-hide="$root.isEmpty(form)">
 
             <!-- validation errors -->
             <div ng-if="hasKeys(validationErrors)" class="alert alert-danger" role="alert">

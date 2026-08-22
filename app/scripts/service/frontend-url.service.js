@@ -12,9 +12,9 @@ define([
   function FrontendUrlService() {
 
     let openViewBase = null;
-    let embeddableEditorBase = null;
     let dataciteDOIBase = null
     let downloadBase = null
+    let monitoringBase = null
 
     let service = {
       serviceId: "FrontendUrlService"
@@ -22,9 +22,9 @@ define([
 
     service.init = function () {
       openViewBase = config.openViewBase;
-      embeddableEditorBase = config.artifactsFrontend;
       dataciteDOIBase = config.dataciteDOIBase;
       downloadBase = config.downloadBase;
+      monitoringBase = config.monitoringFrontend;
     };
 
     service.getTemplateEdit = function (id) {
@@ -95,14 +95,6 @@ define([
       return openViewBase + '/folders/' + encodeURIComponent(id);
     };
 
-    service.ceeCreateInstance = function (id, folderId) {
-      return embeddableEditorBase + '/instances/create/' + encodeURIComponent(id) + '?folderId=' + encodeURIComponent(folderId);
-    };
-
-    service.eeEditInstance = function (id) {
-      return embeddableEditorBase + '/instances/edit/' + encodeURIComponent(id);
-    };
-
     service.dataciteTemplate = function (id) {
       return dataciteDOIBase + '/' + encodeURIComponent(id);
     };
@@ -113,6 +105,12 @@ define([
 
     service.downloadResource = function (id) {
       return downloadBase + '/' + encodeURIComponent(id);
+    };
+
+    // The CEDAR monitoring dashboard: a separate CEDAR frontend on the same Keycloak realm,
+    // so it opens in a new tab but the user stays signed in.
+    service.getMonitoring = function () {
+      return monitoringBase;
     };
 
     return service;

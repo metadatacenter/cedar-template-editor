@@ -937,7 +937,13 @@
             </div>
 
             <div ng-if="dc.getTotalMetadata() && dc.getVisibleMetadata()" class="instance-list">
-              <div class="instance-scroll scrollable-content">
+              <!--
+                `instance-scroll` alone: its own rule caps this list at 200px and scrolls it, and
+                `scrollable-content` would add `overscroll-behavior: contain` on top. A short list
+                cannot scroll, and containment there stops a wheel over it from reaching the panel
+                behind instead of letting it through.
+              -->
+              <div class="instance-scroll">
                 <div ng-repeat="(index, resource) in dc.getInstances() track by $index" class="instance-item"
                      ng-click="dc.goToResource(resource,'open')"
                      uib-tooltip="{{resource['schema:name']}}"

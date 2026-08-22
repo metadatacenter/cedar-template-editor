@@ -11,19 +11,31 @@ define([
     "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
     "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
     "ValueRecommenderService", "UIUtilService", "DataManipulationService",
-    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService"];
+    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService", "CeeDirtyTrackerService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
                                     ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService,
-                                    CedarModelTypescriptLibrary, CeeConfigService) {
+                                    CedarModelTypescriptLibrary, CeeConfigService, CeeDirtyTrackerService) {
 
     let vm = this;
     vm.useCee = CedarUser.useMetadataEditorV2();
 
+    const ceeElement = function () {
+      return document.querySelector('cedar-embeddable-editor');
+    };
+
+    const rememberCeeCleanState = function () {
+      const cee = ceeElement();
+      if (cee) {
+        CeeDirtyTrackerService.markClean(cee.currentMetadata);
+      }
+    };
+
     if(vm.useCee){
+      CeeDirtyTrackerService.reset();
       $scope.ceeConfig = {};
       $scope.ceeConfig = CeeConfigService.getConfig();
       $timeout(function() {
@@ -39,9 +51,11 @@ define([
           TemplateService.getTemplate(UrlService.fixSingleSlashHttps($routeParams.templateId)),
           function (response) {
             if(vm.useCee){
-              let cee = document.querySelector('cedar-embeddable-editor');
+              let cee = ceeElement();
               if(response.data){
                 cee.templateObject = response.data;
+                rememberCeeCleanState();
+                UIUtilService.setDirty(false);
               }
             }
             $scope.form = response.data;
@@ -184,8 +198,10 @@ define([
                   $scope.form = templateResponse.data;
 
                   if(vm.useCee) {
-                    const cee = document.querySelector('cedar-embeddable-editor');
+                    const cee = ceeElement();
                     cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
+                    rememberCeeCleanState();
+                    UIUtilService.setDirty(false);
                   }
 
                   $rootScope.jsonToSave = $scope.form;
@@ -225,7 +241,11 @@ define([
 
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
-        UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+        // Raised on the page this save is about to navigate to, not on this one. A toast is a node
+        // in the document that made it, and the `window.location.assign` below discards this
+        // document a digest later — so a plain flash here was created and thrown away before it
+        // painted, and the confirmation was never seen.
+        UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
 
         //$rootScope.$broadcast("form:clean");
 
@@ -234,7 +254,15 @@ define([
 
         $timeout(function () {
           var newId = response.data['@id'];
-          $location.path(FrontendUrlService.getInstanceEdit(newId));
+          if (vm.useCee) {
+            // The embeddable editor does not re-initialize across a client-side route change — set on
+            // the element mid-teardown, it is left stuck "CEDAR Embeddable Editor initializing…". Load
+            // the edit view with a full navigation so the editor boots once, cleanly, with the saved
+            // instance (same path a fresh open takes).
+            window.location.assign(FrontendUrlService.getInstanceEdit(newId));
+          } else {
+            $location.path(FrontendUrlService.getInstanceEdit(newId));
+          }
         });
 
         $timeout(function () {
@@ -265,7 +293,11 @@ define([
       }
 
 
-      if ($scope.instance['@id'] === undefined) {
+      // A not-yet-created instance carries no IRI. The embeddable editor (metadata editor V2)
+      // now emits an explicit `@id: null` rather than omitting the key, so test for both null and
+      // undefined here — otherwise a brand-new instance takes the update path below and calls
+      // getTemplateInstance(null), which crashes in fixSingleSlashHttps. Create accepts a null @id.
+      if ($scope.instance['@id'] == null) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
@@ -279,6 +311,7 @@ define([
                 (QueryParamUtilsService.getFolderId() || CedarUser.getHomeFolderId()), $scope.instance),
             function (response) {
               doSave(response);
+              rememberCeeCleanState();
               UIUtilService.setDirty(false);
             },
             function (err) {
@@ -311,6 +344,7 @@ define([
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               doUpdate(response);
+              rememberCeeCleanState();
               UIUtilService.setDirty(false);
             },
             function (err) {
@@ -431,10 +465,17 @@ define([
     };
 
     $timeout(() => {
-      const cee = document.querySelector('cedar-embeddable-editor');
+      const cee = ceeElement();
       if (!cee) return;
-      cee.addEventListener('change', event => {
-        UIUtilService.setDirty(true);
+      cee.addEventListener('change', () => {
+        // Older CEE bundles still emit unstructured control events. Preserve
+        // their conservative behaviour until the explicit mutation contract is
+        // present, but use the saved baseline whenever this page established one.
+        const dirty = CeeDirtyTrackerService.hasBaseline()
+            ? CeeDirtyTrackerService.isDirty(cee.currentMetadata)
+            : true;
+        UIUtilService.setDirty(dirty);
+        $scope.$evalAsync();
       });
     }, 0);
 
@@ -448,4 +489,3 @@ define([
 
   }
 });
-
