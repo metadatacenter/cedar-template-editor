@@ -1,8 +1,9 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "0.8.0",
+  "version": "1.0.2",
   "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
   "main": "index.js",
+  "module": "index.esm.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
@@ -10,7 +11,7 @@
   },
   "keywords": ["CEDAR", "Model", "TypeScript", "Library"],
   "author": "Metadatacenter.org - Attila L. Egyedi",
-  "license": "ISC",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/metadatacenter/cedar-model-typescript-library/issues"
   },
