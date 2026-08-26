@@ -27,7 +27,7 @@ define([
     };
 
     service.updateTemplate = function (id, template) {
-      return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template));
+      return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template), template);
     };
 
     service.checkUpdateTemplate = function (id, template) {

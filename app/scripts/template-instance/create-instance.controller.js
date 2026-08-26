@@ -289,7 +289,15 @@ define([
 
       if(vm.useCee){
         const cee = document.querySelector('cedar-embeddable-editor');
+        // CEE returns a serialized copy, so representation-local metadata such as the validator
+        // from the instance GET is deliberately absent. Carry that validator onto the copy used
+        // for this save; AuthorizedBackendService consumes it as If-Match and angular.toJson omits
+        // the $$ property from the stored artifact body.
+        const cedarEtag = $scope.instance && $scope.instance.$$cedarEtag;
         $scope.instance = cee.currentMetadata;
+        if (cedarEtag != null) {
+          $scope.instance.$$cedarEtag = cedarEtag;
+        }
       }
 
 
