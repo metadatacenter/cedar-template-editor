@@ -35,8 +35,10 @@ define([
       return this.method("POST", url, data);
     };
 
-    service.put = function (url, data) {
-      return this.method("PUT", url, data);
+    service.put = function (url, data, cedarArtifact) {
+      var request = this.method("PUT", url, data);
+      request.cedarArtifact = cedarArtifact;
+      return request;
     };
 
     service.patch = function (url, data) {

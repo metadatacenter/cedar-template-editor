@@ -27,7 +27,7 @@ define([
     };
 
     service.updateTemplateInstance = function (id, instance) {
-      return HttpBuilderService.put(UrlService.getTemplateInstance(id), angular.toJson(instance));
+      return HttpBuilderService.put(UrlService.getTemplateInstance(id), angular.toJson(instance), instance);
     };
 
     return service;

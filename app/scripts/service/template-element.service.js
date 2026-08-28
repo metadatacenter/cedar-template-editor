@@ -27,7 +27,7 @@ define([
     };
 
     service.updateTemplateElement = function (id, element) {
-      return HttpBuilderService.put(UrlService.getTemplateElement(id), angular.toJson(element));
+      return HttpBuilderService.put(UrlService.getTemplateElement(id), angular.toJson(element), element);
     };
 
     return service;

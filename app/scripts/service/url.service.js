@@ -123,12 +123,12 @@ define([
       return this.apiKeys(id);
     };
 
-    service.regenerateApiKey = function (id, key) {
-      return this.apiKeys(id) + '/' + this.encodeURIComponent(key) + '/regenerate';
+    service.regenerateApiKey = function (id, keyId) {
+      return this.apiKeys(id) + '/' + this.encodeURIComponent(keyId) + '/regenerate';
     };
 
-    service.deleteApiKey = function (id, key) {
-      return this.apiKeys(id) + '/' + this.encodeURIComponent(key);
+    service.deleteApiKey = function (id, keyId) {
+      return this.apiKeys(id) + '/' + this.encodeURIComponent(keyId);
     };
 
     service.terminology = function () {

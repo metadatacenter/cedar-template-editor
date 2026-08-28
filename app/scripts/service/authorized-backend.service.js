@@ -10,6 +10,15 @@ define([
 
   function AuthorizedBackendService($http, $timeout, UIMessageService, UserService, $window) {
 
+    function hasHeader(headers, name) {
+      for (var key in headers) {
+        if (headers.hasOwnProperty(key) && key.toLowerCase() === name.toLowerCase()) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     var service = {
       serviceId: "AuthorizedBackendService"
     };
@@ -35,7 +44,27 @@ define([
 
     service.getHttpPromise = function (httpConfigObject) {
       var hco = angular.extend({}, httpConfigObject, this.getConfig(httpConfigObject));
-      return $http(hco);
+      // Keep the validator on the representation that produced the edit. A URL-global "latest"
+      // cache would let a second in-page editor silently borrow the first editor's newer ETag.
+      var artifact = hco.cedarArtifact;
+      delete hco.cedarArtifact;
+      if (hco.method != null && hco.method.toUpperCase() === 'PUT' && artifact != null &&
+          artifact.$$cedarEtag != null &&
+          !hasHeader(hco.headers, 'If-Match')) {
+        hco.headers['If-Match'] = artifact.$$cedarEtag;
+      }
+      return $http(hco).then(function (response) {
+        var etag = response.headers('ETag');
+        if (etag != null) {
+          if (response.data != null && angular.isObject(response.data)) {
+            response.data.$$cedarEtag = etag;
+          }
+          if (artifact != null) {
+            artifact.$$cedarEtag = etag;
+          }
+        }
+        return response;
+      });
     };
 
     service.notifyAndLogout = function () {

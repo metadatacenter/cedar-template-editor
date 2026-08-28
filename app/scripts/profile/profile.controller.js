@@ -147,7 +147,7 @@ define([
           function () {
             $scope.busy = true;
             AuthorizedBackendService.doCall(
-                HttpBuilderService.post(UrlService.regenerateApiKey(CedarUser.getUserId(), apiKey.key), {}),
+                HttpBuilderService.post(UrlService.regenerateApiKey(CedarUser.getUserId(), apiKey.id), {}),
                 function (response) {
                   refreshKeys(response);
                   UIMessageService.flashSuccess('The API key was regenerated. The previous value no longer works.',
@@ -172,7 +172,7 @@ define([
           function () {
             $scope.busy = true;
             AuthorizedBackendService.doCall(
-                HttpBuilderService.delete(UrlService.deleteApiKey(CedarUser.getUserId(), apiKey.key)),
+                HttpBuilderService.delete(UrlService.deleteApiKey(CedarUser.getUserId(), apiKey.id)),
                 function (response) {
                   refreshKeys(response);
                   UIMessageService.flashSuccess('The API key was deleted.', {}, 'Success');

@@ -22,6 +22,7 @@ var gulp = require('gulp'),
         request = require('sync-request'),
         fs = require('fs')
     );
+var execFileSync = require('child_process').execFileSync;
 
 /**
  * Create error handling exception using gulp-util.
@@ -127,6 +128,8 @@ gulp.task('replace-version', function (done) {
   gulp.src(['app/config/src/version.js'])
       .pipe(replace('cedarVersionValue', cedarVersion))
       .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(replace('cedarSourceCommitValue', cedarSourceCommit))
+      .pipe(replace('cedarDevelopmentModeValue', cedarFrontendBehavior === 'develop'))
       .pipe(replace('dataciteEnabledValue', dataciteEnabled))
       .pipe(replace('cedarGA4TrackingIdValue', cedarGA4TrackingId))
       .pipe(gulp.dest('app/config/'));
@@ -411,6 +414,22 @@ function getFrontendEnvVar(varNameSuffix) {
   return 'CEDAR_FRONTEND_' + cedarFrontendTarget + '_' + varNameSuffix;
 }
 
+function resolveSourceCommit() {
+  var supplied = process.env.CEDAR_SOURCE_COMMIT;
+  if (supplied && /^[0-9a-f]{40}$/.test(supplied)) {
+    return supplied;
+  }
+  try {
+    var commit = execFileSync('git', ['rev-parse', '--verify', 'HEAD'], {
+      cwd: __dirname,
+      encoding: 'utf8'
+    }).trim();
+    return /^[0-9a-f]{40}$/.test(commit) ? commit : '';
+  } catch (error) {
+    return '';
+  }
+}
+
 // Get environment variables
 let envConfig = {
   'CEDAR_ANALYTICS_KEY'       : null,
@@ -434,6 +453,10 @@ const cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 const cedarVersion = envConfig['CEDAR_VERSION'];
 const cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
 const dataciteEnabled = envConfig['CEDAR_DATACITE_ENABLED'];
+const cedarSourceCommit = resolveSourceCommit();
+if (cedarFrontendBehavior === 'server' && !cedarSourceCommit) {
+  exitWithError('Server payload generation requires a Git source commit');
+}
 
 var cedarUIHostVarName = getFrontendEnvVar('UI_HOST');
 envConfig[cedarUIHostVarName] = null;

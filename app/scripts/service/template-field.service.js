@@ -27,7 +27,7 @@ define([
     };
 
     service.updateTemplateField = function (id, field) {
-      return HttpBuilderService.put(UrlService.getTemplateField(id), angular.toJson(field));
+      return HttpBuilderService.put(UrlService.getTemplateField(id), angular.toJson(field), field);
     };
 
     return service;
