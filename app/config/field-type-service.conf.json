@@ -117,6 +117,19 @@
     "allowsRequired": true
   },
   {
+    "cedarType": "boolean",
+    "iconClass": "fa fa-check-circle",
+    "allowedInElement": true,
+    "primaryField": true,
+    "Label": "Boolean",
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false,
+    "hasInstanceTerm": false,
+    "allowsRequired": true
+  },
+  {
     "cedarType": "phone-number",
     "iconClass": "fa fa-th",
     "allowedInElement": true,

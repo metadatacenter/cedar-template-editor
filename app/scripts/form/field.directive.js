@@ -79,6 +79,13 @@ define([
         return schemaService.getValueConstraints($scope.field);
       };
 
+      $scope.getBooleanFieldDefaultValueOptions = function () {
+        return [
+          {id: '12h', label: "Use AM/PM Input"},
+          {id: '24h', label: "Use 24H Input"}
+        ];
+      };
+
       // has value constraints?
       $scope.isConstrained = function () {
         return schemaService.isConstrained($scope.field);
@@ -292,6 +299,10 @@ define([
 
       $scope.getLiterals = function () {
         return schemaService.getLiterals($scope.field);
+      };
+
+      $scope.getLabels = function () {
+        return schemaService.getLabels($scope.field);
       };
 
       // default the cardinality to 1..N
