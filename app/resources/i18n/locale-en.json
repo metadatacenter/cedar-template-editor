@@ -66,6 +66,12 @@
       },
       "ext-pubmed": {
         "NAME": "PubMed"
+      },
+      "ext-doi": {
+        "NAME": "DOI"
+      },
+      "ext-nih-grant-id": {
+        "NAME": "NIH Grant ID"
       }
     }
   },

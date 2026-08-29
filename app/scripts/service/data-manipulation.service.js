@@ -1184,7 +1184,7 @@ define([
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid") {
+          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid" || inputType === "ext-nih-grant-id" || inputType === "ext-doi") {
             // Define the @id field
             var idField = {};
             idField.type = "string";
