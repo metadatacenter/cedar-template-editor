@@ -1618,7 +1618,8 @@ define([
           function launchInstance(value) {
             const resource = value || getSelected();
             if (resource) {
-              const url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
+              const url = FrontendUrlService.getInstanceCreate(
+                  resource['@id'], vm.getFolderId(), $window.location.href);
               $location.url(url);
             }
           }

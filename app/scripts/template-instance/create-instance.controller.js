@@ -254,14 +254,16 @@ define([
 
         $timeout(function () {
           var newId = response.data['@id'];
+          var editUrl = FrontendUrlService.getInstanceEdit(
+              newId, QueryParamUtilsService.getFolderId(), QueryParamUtilsService.getReturnTo());
           if (vm.useCee) {
             // The embeddable editor does not re-initialize across a client-side route change — set on
             // the element mid-teardown, it is left stuck "CEDAR Embeddable Editor initializing…". Load
             // the edit view with a full navigation so the editor boots once, cleanly, with the saved
             // instance (same path a fresh open takes).
-            window.location.assign(FrontendUrlService.getInstanceEdit(newId));
+            window.location.assign(editUrl);
           } else {
-            $location.path(FrontendUrlService.getInstanceEdit(newId));
+            $location.url(editUrl);
           }
         });
 

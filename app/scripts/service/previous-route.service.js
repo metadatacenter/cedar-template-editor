@@ -77,6 +77,22 @@ define([
         return;
       }
 
+      // Create-instance performs a full reload before showing the saved instance, so the in-memory
+      // route history above is intentionally empty. Carry the exact originating Workspace URL
+      // across that reload, but accept it only when it remains on this monolith's origin.
+      var returnTo = QueryParamUtilsService.getReturnTo();
+      if (returnTo) {
+        try {
+          var candidate = new $window.URL(returnTo, $window.location.href);
+          if (candidate.origin === $window.location.origin && !candidate.username && !candidate.password) {
+            $window.location.assign(candidate.href);
+            return;
+          }
+        } catch (error) {
+          // Invalid and cross-origin return URLs deliberately fall through to the safe dashboard.
+        }
+      }
+
       var hash = $location.hash();
       var queryParams = {};
       var sharing = QueryParamUtilsService.getSharing();
