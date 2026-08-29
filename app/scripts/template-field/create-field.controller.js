@@ -348,7 +348,7 @@ define([
             dms.stripTmps(copiedForm);
 
             AuthorizedBackendService.doCall(
-                TemplateFieldService.updateTemplateField(id, copiedForm),
+                TemplateFieldService.updateTemplateField(id, copiedForm, $scope.field),
                 function (response) {
 
                   ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));

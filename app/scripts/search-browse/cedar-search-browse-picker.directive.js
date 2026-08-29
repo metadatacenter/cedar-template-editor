@@ -439,36 +439,46 @@ define([
               vm.editingDescription = !vm.editingDescription;
 
               if (vm.editingDescription) {
-                vm.editingDescriptionSelection = vm.getSelectedNode();
-                vm.editingDescriptionInitialValue = getSelectedNode()[CONST.model.DESCRIPTION];
+                var selected = vm.getSelectedNode();
+                resourceService.getCurrentResource(selected,
+                    function (current) {
+                      selected.$$cedarEtag = current.$$cedarEtag;
+                      selected[CONST.model.DESCRIPTION] = current[CONST.model.DESCRIPTION];
+                      vm.editingDescriptionSelection = selected;
+                      vm.editingDescriptionInitialValue = current[CONST.model.DESCRIPTION];
 
-                $timeout(function () {
-                  var jqDescriptionField = $('#edit-description');
-                  if (jqDescriptionField) {
-                    jqDescriptionField.focus();
-                    if (jqDescriptionField.val()) {
-                      const l = jqDescriptionField.val().length;
-                      jqDescriptionField[0].setSelectionRange(0, l);
-                    }
-                  }
+                      $timeout(function () {
+                        var jqDescriptionField = $('#edit-description');
+                        if (jqDescriptionField) {
+                          jqDescriptionField.focus();
+                          if (jqDescriptionField.val()) {
+                            const l = jqDescriptionField.val().length;
+                            jqDescriptionField[0].setSelectionRange(0, l);
+                          }
+                        }
 
-                  $window.onclick = function (event) {
-                    // make sure we are hitting something else
-                    if (event.target.id !== 'edit-description') {
+                        $window.onclick = function (event) {
+                          if (event.target.id !== 'edit-description') {
+                            vm.editingDescription = false;
+                            var jqDescriptionField = $('#edit-description');
+                            if (jqDescriptionField) {
+                              jqDescriptionField.blur();
+                            }
+                            if (vm.editingDescriptionInitialValue !== vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
+                              vm.updateDescription();
+                            }
+                            $window.onclick = null;
+                            $scope.$apply();
+                          }
+                        };
+                      });
+                    },
+                    function (error) {
                       vm.editingDescription = false;
-
-                      var jqDescriptionField = $('#edit-description');
-                      if (jqDescriptionField) {
-                        jqDescriptionField.blur();
-                      }
-                      if (vm.editingDescriptionInitialValue !== vm.editingDescriptionSelection[CONST.model.DESCRIPTION]) {
-                        vm.updateDescription();
-                      }
-                      $window.onclick = null;
-                      $scope.$apply();
+                      UIMessageService.showBackendError(
+                          'SERVER.' + selected.resourceType.toUpperCase() + '.load.error', error);
                     }
-                  };
-                });
+                );
               } else {
                 $window.onclick = null;
                 $scope.$apply();
@@ -754,13 +764,12 @@ define([
             if (resource != null) {
 
               const postData = {};
-              const id = resource['@id'];
               const nodeType = resource.resourceType;
               const description = resource[CONST.model.DESCRIPTION];
 
               if (nodeType === 'instance') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, null, description),
+                    resourceService.renameNode(resource, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
                     },
@@ -770,7 +779,7 @@ define([
                 );
               } else if (nodeType === 'field') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, null, description),
+                    resourceService.renameNode(resource, null, description),
                     function (response) {
 
                       var title = vm.getTitle(response.data);
@@ -783,7 +792,7 @@ define([
                 );
               } else if (nodeType === 'element') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, null, description),
+                    resourceService.renameNode(resource, null, description),
                     function (response) {
 
                       var title = vm.getTitle(response.data);
@@ -796,7 +805,7 @@ define([
                 );
               } else if (nodeType === 'template') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, null, description),
+                    resourceService.renameNode(resource, null, description),
                     function (response) {
 
                       $scope.form = response.data;
@@ -810,7 +819,7 @@ define([
                 );
               } else if (nodeType === 'folder') {
                 AuthorizedBackendService.doCall(
-                    resourceService.renameNode(id, null, description),
+                    resourceService.renameNode(resource, null, description),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": resource.name},
                           'GENERIC.Updated');

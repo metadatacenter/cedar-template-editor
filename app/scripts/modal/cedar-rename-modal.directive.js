@@ -37,12 +37,11 @@ define([
           function updateResource() {
             var resource = vm.renameResource;
             if (resource != null) {
-              var id = resource['@id'];
               var type = resource.resourceType.toUpperCase();
               var name = resource['schema:name'];
 
               AuthorizedBackendService.doCall(
-                  resourceService.renameNode(id, name, null),
+                  resourceService.renameNode(resource, name, null),
                   function (response) {
                     var title = dms.getTitle(response.data);
                     UIMessageService.flashSuccess('SERVER.' + type + '.update.success', {"title": title},
@@ -67,12 +66,18 @@ define([
             var resource = params[1];
 
             if (visible && resource) {
-              vm.modalVisible = visible;
-              vm.renameResource = angular.copy(resource);
-
-              $timeout(function () {
-                jQuery('#rename-modal input').focus().select();
-              }, 500);
+              resourceService.getCurrentResource(resource,
+                  function (current) {
+                    vm.modalVisible = visible;
+                    vm.renameResource = angular.extend(angular.copy(resource), current);
+                    $timeout(function () {
+                      jQuery('#rename-modal input').focus().select();
+                    }, 500);
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+                  }
+              );
             }
           });
 

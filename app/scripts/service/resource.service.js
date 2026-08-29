@@ -32,6 +32,7 @@ define([
           getTemplateReport        : getTemplateReport,
           getResourceDetail        : getResourceDetail,
           getResourceDetailFromId  : getResourceDetailFromId,
+          getCurrentResource       : getCurrentResource,
           getResources             : getResources,
           searchResources          : searchResources,
           categorySearchResources  : categorySearchResources,
@@ -48,6 +49,7 @@ define([
           setResourceShare         : setResourceShare,
           getUsers                 : getUsers,
           getGroups                : getGroups,
+          getGroup                 : getGroup,
           createGroup              : createGroup,
           updateGroup              : updateGroup,
           deleteGroup              : deleteGroup,
@@ -140,6 +142,38 @@ define([
                     },
                     errorCallback
                 );
+              },
+              errorCallback
+          );
+        }
+
+        // Load the mutable representation when editing begins. Search and folder-content rows do
+        // not carry per-item response headers, so their summaries cannot safely seed If-Match.
+        function getCurrentResource(resource, successCallback, errorCallback) {
+          var url;
+          var id = resource['@id'];
+          switch (resource.resourceType) {
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id);
+              break;
+            case CONST.resourceType.FOLDER:
+              url = urlService.getFolder(id);
+              break;
+            case CONST.resourceType.TEMPLATE:
+              url = urlService.getTemplate(id);
+              break;
+            case CONST.resourceType.ELEMENT:
+              url = urlService.getTemplateElement(id);
+              break;
+            case CONST.resourceType.INSTANCE:
+              url = urlService.getTemplateInstance(id);
+              break;
+          }
+          authorizedBackendService.doCall(
+              httpBuilderService.get(url),
+              function (response) {
+                response.data.resourceType = resource.resourceType;
+                successCallback(response.data);
               },
               errorCallback
           );
@@ -606,7 +640,7 @@ define([
           var url = urlService.getFolder(folder['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(folder)),
+              httpBuilderService.put(url, angular.toJson(folder), folder),
               function (response) {
                 successCallback(response.data);
               },
@@ -792,7 +826,7 @@ define([
               break;
           }
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, permissions),
+              httpBuilderService.put(url, permissions, permissions),
               function (response) {
                 successCallback(response.data);
               },
@@ -822,6 +856,16 @@ define([
           );
         }
 
+        function getGroup(id, successCallback, errorCallback) {
+          authorizedBackendService.doCall(
+              httpBuilderService.get(urlService.getGroup(id)),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
         function createGroup(name, description, successCallback, errorCallback) {
           var url = urlService.getGroups();
           var payload = {
@@ -841,19 +885,20 @@ define([
           var url = urlService.getGroup(group['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(group)),
+              httpBuilderService.put(url, angular.toJson(group), group),
               function (response) {
+                group.$$cedarMembershipEtag = group.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
           );
         }
 
-        function deleteGroup(id, successCallback, errorCallback) {
-          var url = urlService.getGroup(id);
+        function deleteGroup(group, successCallback, errorCallback) {
+          var url = urlService.getGroup(group['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
+              httpBuilderService.delete(url, group),
               function (response) {
                 successCallback(response.data);
               },
@@ -861,12 +906,14 @@ define([
           );
         }
 
-        function getGroupMembers(id, successCallback, errorCallback) {
-          var url = urlService.getGroupMembers(id);
+        function getGroupMembers(group, successCallback, errorCallback) {
+          var url = urlService.getGroupMembers(group['@id']);
 
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
               function (response) {
+                group.$$cedarEtag = response.data.$$cedarEtag;
+                group.$$cedarMembershipEtag = response.data.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
@@ -878,10 +925,13 @@ define([
 
           var payload = {};
           payload.users = group.users;
+          payload.$$cedarEtag = group.$$cedarMembershipEtag;
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(payload)),
+              httpBuilderService.put(url, angular.toJson(payload), payload),
               function (response) {
+                group.$$cedarEtag = payload.$$cedarEtag;
+                group.$$cedarMembershipEtag = payload.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
@@ -964,9 +1014,9 @@ define([
           return this.canDo(resource, 'canPopulate');
         }
 
-        function renameNode(id, name, description) {
+        function renameNode(resource, name, description) {
           let command = {
-            "@id": id
+            "@id": resource['@id']
           };
           if (name != null) {
             command["schema:name"] = name;
@@ -974,7 +1024,11 @@ define([
           if (description != null) {
             command["schema:description"] = description;
           }
-          return httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
+          var request = httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
+          if (resource.$$cedarEtag != null) {
+            request.headers = {'If-Match': resource.$$cedarEtag};
+          }
+          return request;
         }
 
       }
