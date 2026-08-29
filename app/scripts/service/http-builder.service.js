@@ -27,8 +27,10 @@ define([
       return this.method("GET", url, null);
     };
 
-    service.delete = function (url) {
-      return this.method("DELETE", url, null);
+    service.delete = function (url, cedarArtifact) {
+      var request = this.method("DELETE", url, null);
+      request.cedarArtifact = cedarArtifact;
+      return request;
     };
 
     service.post = function (url, data) {

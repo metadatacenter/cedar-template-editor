@@ -118,21 +118,28 @@ define([
               url = urlService.getTemplateInstance(id);
               break;
           }
-          authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          deleteCurrent(url, successCallback, errorCallback);
         }
 
         function deleteFolder(folderId, successCallback, errorCallback) {
           var url = urlService.folders() + '/' + encodeURIComponent(folderId);
+          deleteCurrent(url, successCallback, errorCallback);
+        }
+
+        // Search and folder listings do not carry a single-resource validator. Read the current
+        // representation after the user confirms deletion, then condition the DELETE on exactly that
+        // revision so a concurrent change cannot be removed unnoticed.
+        function deleteCurrent(url, successCallback, errorCallback) {
           authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
+              httpBuilderService.get(url),
               function (response) {
-                successCallback(response.data);
+                authorizedBackendService.doCall(
+                    httpBuilderService.delete(url, response.data),
+                    function (deleteResponse) {
+                      successCallback(deleteResponse.data);
+                    },
+                    errorCallback
+                );
               },
               errorCallback
           );
