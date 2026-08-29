@@ -680,17 +680,19 @@ define([
         }
 
         function moveResource(resource, folderId, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          postData['resourceType'] = resource['resourceType'];
-          postData['targetFolderId'] = folderId;
-
-          var url = urlService.moveNodeToFolder();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              successCallback,
-              errorCallback
-          );
+          // Listing rows do not carry a resource validator. Read the graph representation immediately
+          // before moving, then condition the command on exactly what the user chose to move.
+          getResourceDetail(resource, function (current) {
+            var postData = {};
+            postData['@id'] = resource['@id'];
+            postData['resourceType'] = resource['resourceType'];
+            postData['targetFolderId'] = folderId;
+            var request = httpBuilderService.post(urlService.moveNodeToFolder(), postData);
+            if (current.$$cedarEtag != null) {
+              request.headers = {'If-Match': current.$$cedarEtag};
+            }
+            authorizedBackendService.doCall(request, successCallback, errorCallback);
+          }, errorCallback);
         }
 
         function publishResource(resource, newVersion, successCallback, errorCallback) {
