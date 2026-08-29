@@ -724,56 +724,40 @@ define([
           );
         }
 
+        function changeOpenState(resource, url, successCallback, errorCallback) {
+          // Folder/search rows are summaries and carry no trustworthy graph-record validator.
+          // Read /details immediately before the command, then condition the POST on that ETag.
+          getResourceDetail(resource, function (current) {
+            var postData = {};
+            postData['@id'] = resource['@id'];
+            var request = httpBuilderService.post(url, postData);
+            if (current.$$cedarEtag != null) {
+              request.headers = {'If-Match': current.$$cedarEtag};
+            }
+            authorizedBackendService.doCall(
+                request,
+                function (response) {
+                  successCallback(response.data);
+                },
+                errorCallback
+            );
+          }, errorCallback);
+        }
+
         function makeArtifactOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeArtifactOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeArtifactOpen(), successCallback, errorCallback);
         }
 
         function makeArtifactNotOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeArtifactNotOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeArtifactNotOpen(), successCallback, errorCallback);
         }
 
         function makeFolderOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeFolderOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeFolderOpen(), successCallback, errorCallback);
         }
 
         function makeFolderNotOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeFolderNotOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeFolderNotOpen(), successCallback, errorCallback);
         }
 
         function getResourceShare(resource, successCallback, errorCallback) {
