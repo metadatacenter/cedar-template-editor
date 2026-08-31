@@ -2,7 +2,9 @@
 
 This is an AngularJS web application to create and fill in Metadata Templates. It is part of the CEDAR application.
 
-To access the documentation, [click here](https://github.com/metadatacenter/cedar-docs/wiki).
+CEDAR documentation is at [metadatacenter.org](https://metadatacenter.org/); the build and
+run instructions for the whole stack are in the
+[CEDAR backend runbook](https://github.com/metadatacenter/cedar-development/blob/develop/ops/BACKEND-RUNBOOK.md).
 
 
 #### Running the End-to-End Tests
