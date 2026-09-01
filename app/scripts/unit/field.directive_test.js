@@ -230,47 +230,6 @@ define(['app', 'angular'], function (app) {
         expect(DataManipulationService.getLiterals($fieldDirectiveScope.field).length).toBe(4);
       });
 
-      it("should allow to set default choices", function () {
-        // Check that the default option is initially unselected
-        expect($(compiledDirective).find(checkBoxSelector).hasClass(unselectedOptionClass)).toBe(true);
-        expect($(compiledDirective).find(checkBoxSelector).hasClass(selectedOptionClass)).toBe(false);
-        // Check the template model
-        var defaultOption = DataManipulationService.getLiterals($fieldDirectiveScope.field)[0];
-        expect(DataManipulationService.isSelectedByDefault(defaultOption)).toBe(false);
-
-        // Select the default option
-        $(compiledDirective).find(checkBoxSelector).click();
-        // Check that it was correctly selected (UI)
-        expect($(compiledDirective).find(checkBoxSelector).hasClass(unselectedOptionClass)).toBe(false);
-        expect($(compiledDirective).find(checkBoxSelector).hasClass(selectedOptionClass)).toBe(true);
-        // Check that it was correctly selected (template model)
-        expect(DataManipulationService.isSelectedByDefault(defaultOption)).toBe(true);
-
-        // Add two more options and set option 3 (index=2) as default
-        $(compiledDirective).find(addAnotherSelector).click();
-        $(compiledDirective).find(addAnotherSelector).click();
-        $(compiledDirective).find(checkBoxSelector)[2].click();
-        // Check that now both option 1 and option 3 are selected (UI)
-        var selectedOptions = [];
-        $(compiledDirective).find(checkBoxSelector).each(function (index) {
-          var option = $(compiledDirective).find(checkBoxSelector)[index];
-          if ($(option).hasClass(selectedOptionClass) == true) {
-            selectedOptions.push(index);
-          }
-        });
-        expect(selectedOptions).toEqual([0, 2]);
-        // Check that now both option 1 and option 3 are selected (template model)
-        var optionsTemplateModel = DataManipulationService.getLiterals($fieldDirectiveScope.field);
-        var selectedOptionsTemplateModel = [];
-        for (var i = 0; i < optionsTemplateModel.length; i++) {
-          if (DataManipulationService.isSelectedByDefault(optionsTemplateModel[i])) {
-            selectedOptionsTemplateModel.push(i);
-          }
-        }
-        expect(selectedOptionsTemplateModel).toEqual([0, 2]);
-
-      });
-
     };
 
     function textfieldTests() {

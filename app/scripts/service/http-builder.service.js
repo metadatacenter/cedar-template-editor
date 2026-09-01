@@ -27,8 +27,10 @@ define([
       return this.method("GET", url, null);
     };
 
-    service.delete = function (url) {
-      return this.method("DELETE", url, null);
+    service.delete = function (url, cedarArtifact) {
+      var request = this.method("DELETE", url, null);
+      request.cedarArtifact = cedarArtifact;
+      return request;
     };
 
     service.post = function (url, data) {
@@ -41,13 +43,16 @@ define([
       return request;
     };
 
-    service.patch = function (url, data) {
-      return this.method("PATCH", url, data);
+    service.patch = function (url, data, cedarArtifact) {
+      var request = this.method("PATCH", url, data);
+      request.cedarArtifact = cedarArtifact;
+      return request;
     };
 
-    service.patchMerge = function (url, data) {
+    service.patchMerge = function (url, data, cedarArtifact) {
       var m = this.method("PATCH", url, data);
       m.headers = {"Content-Type": "application/merge-patch+json"};
+      m.cedarArtifact = cedarArtifact;
       return m;
     };
 

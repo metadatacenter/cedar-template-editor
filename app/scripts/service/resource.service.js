@@ -32,6 +32,7 @@ define([
           getTemplateReport        : getTemplateReport,
           getResourceDetail        : getResourceDetail,
           getResourceDetailFromId  : getResourceDetailFromId,
+          getCurrentResource       : getCurrentResource,
           getResources             : getResources,
           searchResources          : searchResources,
           categorySearchResources  : categorySearchResources,
@@ -48,6 +49,7 @@ define([
           setResourceShare         : setResourceShare,
           getUsers                 : getUsers,
           getGroups                : getGroups,
+          getGroup                 : getGroup,
           createGroup              : createGroup,
           updateGroup              : updateGroup,
           deleteGroup              : deleteGroup,
@@ -118,20 +120,59 @@ define([
               url = urlService.getTemplateInstance(id);
               break;
           }
+          deleteCurrent(url, successCallback, errorCallback);
+        }
+
+        function deleteFolder(folderId, successCallback, errorCallback) {
+          var url = urlService.folders() + '/' + encodeURIComponent(folderId);
+          deleteCurrent(url, successCallback, errorCallback);
+        }
+
+        // Search and folder listings do not carry a single-resource validator. Read the current
+        // representation after the user confirms deletion, then condition the DELETE on exactly that
+        // revision so a concurrent change cannot be removed unnoticed.
+        function deleteCurrent(url, successCallback, errorCallback) {
           authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
+              httpBuilderService.get(url),
               function (response) {
-                successCallback(response.data);
+                authorizedBackendService.doCall(
+                    httpBuilderService.delete(url, response.data),
+                    function (deleteResponse) {
+                      successCallback(deleteResponse.data);
+                    },
+                    errorCallback
+                );
               },
               errorCallback
           );
         }
 
-        function deleteFolder(folderId, successCallback, errorCallback) {
-          var url = urlService.folders() + '/' + encodeURIComponent(folderId);
+        // Load the mutable representation when editing begins. Search and folder-content rows do
+        // not carry per-item response headers, so their summaries cannot safely seed If-Match.
+        function getCurrentResource(resource, successCallback, errorCallback) {
+          var url;
+          var id = resource['@id'];
+          switch (resource.resourceType) {
+            case CONST.resourceType.FIELD:
+              url = urlService.getTemplateField(id);
+              break;
+            case CONST.resourceType.FOLDER:
+              url = urlService.getFolder(id);
+              break;
+            case CONST.resourceType.TEMPLATE:
+              url = urlService.getTemplate(id);
+              break;
+            case CONST.resourceType.ELEMENT:
+              url = urlService.getTemplateElement(id);
+              break;
+            case CONST.resourceType.INSTANCE:
+              url = urlService.getTemplateInstance(id);
+              break;
+          }
           authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
+              httpBuilderService.get(url),
               function (response) {
+                response.data.resourceType = resource.resourceType;
                 successCallback(response.data);
               },
               errorCallback
@@ -599,7 +640,7 @@ define([
           var url = urlService.getFolder(folder['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(folder)),
+              httpBuilderService.put(url, angular.toJson(folder), folder),
               function (response) {
                 successCallback(response.data);
               },
@@ -639,17 +680,19 @@ define([
         }
 
         function moveResource(resource, folderId, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          postData['resourceType'] = resource['resourceType'];
-          postData['targetFolderId'] = folderId;
-
-          var url = urlService.moveNodeToFolder();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              successCallback,
-              errorCallback
-          );
+          // Listing rows do not carry a resource validator. Read the graph representation immediately
+          // before moving, then condition the command on exactly what the user chose to move.
+          getResourceDetail(resource, function (current) {
+            var postData = {};
+            postData['@id'] = resource['@id'];
+            postData['resourceType'] = resource['resourceType'];
+            postData['targetFolderId'] = folderId;
+            var request = httpBuilderService.post(urlService.moveNodeToFolder(), postData);
+            if (current.$$cedarEtag != null) {
+              request.headers = {'If-Match': current.$$cedarEtag};
+            }
+            authorizedBackendService.doCall(request, successCallback, errorCallback);
+          }, errorCallback);
         }
 
         function publishResource(resource, newVersion, successCallback, errorCallback) {
@@ -683,56 +726,40 @@ define([
           );
         }
 
+        function changeOpenState(resource, url, successCallback, errorCallback) {
+          // Folder/search rows are summaries and carry no trustworthy graph-record validator.
+          // Read /details immediately before the command, then condition the POST on that ETag.
+          getResourceDetail(resource, function (current) {
+            var postData = {};
+            postData['@id'] = resource['@id'];
+            var request = httpBuilderService.post(url, postData);
+            if (current.$$cedarEtag != null) {
+              request.headers = {'If-Match': current.$$cedarEtag};
+            }
+            authorizedBackendService.doCall(
+                request,
+                function (response) {
+                  successCallback(response.data);
+                },
+                errorCallback
+            );
+          }, errorCallback);
+        }
+
         function makeArtifactOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeArtifactOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeArtifactOpen(), successCallback, errorCallback);
         }
 
         function makeArtifactNotOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeArtifactNotOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeArtifactNotOpen(), successCallback, errorCallback);
         }
 
         function makeFolderOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeFolderOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeFolderOpen(), successCallback, errorCallback);
         }
 
         function makeFolderNotOpen(resource, successCallback, errorCallback) {
-          var postData = {};
-          postData['@id'] = resource['@id'];
-          var url = urlService.makeFolderNotOpen();
-          authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
-              function (response) {
-                successCallback(response.data);
-              },
-              errorCallback
-          );
+          changeOpenState(resource, urlService.makeFolderNotOpen(), successCallback, errorCallback);
         }
 
         function getResourceShare(resource, successCallback, errorCallback) {
@@ -785,7 +812,7 @@ define([
               break;
           }
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, permissions),
+              httpBuilderService.put(url, permissions, permissions),
               function (response) {
                 successCallback(response.data);
               },
@@ -815,6 +842,16 @@ define([
           );
         }
 
+        function getGroup(id, successCallback, errorCallback) {
+          authorizedBackendService.doCall(
+              httpBuilderService.get(urlService.getGroup(id)),
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
         function createGroup(name, description, successCallback, errorCallback) {
           var url = urlService.getGroups();
           var payload = {
@@ -834,19 +871,20 @@ define([
           var url = urlService.getGroup(group['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(group)),
+              httpBuilderService.put(url, angular.toJson(group), group),
               function (response) {
+                group.$$cedarMembershipEtag = group.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
           );
         }
 
-        function deleteGroup(id, successCallback, errorCallback) {
-          var url = urlService.getGroup(id);
+        function deleteGroup(group, successCallback, errorCallback) {
+          var url = urlService.getGroup(group['@id']);
 
           authorizedBackendService.doCall(
-              httpBuilderService.delete(url),
+              httpBuilderService.delete(url, group),
               function (response) {
                 successCallback(response.data);
               },
@@ -854,12 +892,14 @@ define([
           );
         }
 
-        function getGroupMembers(id, successCallback, errorCallback) {
-          var url = urlService.getGroupMembers(id);
+        function getGroupMembers(group, successCallback, errorCallback) {
+          var url = urlService.getGroupMembers(group['@id']);
 
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
               function (response) {
+                group.$$cedarEtag = response.data.$$cedarEtag;
+                group.$$cedarMembershipEtag = response.data.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
@@ -871,10 +911,13 @@ define([
 
           var payload = {};
           payload.users = group.users;
+          payload.$$cedarEtag = group.$$cedarMembershipEtag;
 
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(payload)),
+              httpBuilderService.put(url, angular.toJson(payload), payload),
               function (response) {
+                group.$$cedarEtag = payload.$$cedarEtag;
+                group.$$cedarMembershipEtag = payload.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
@@ -957,9 +1000,9 @@ define([
           return this.canDo(resource, 'canPopulate');
         }
 
-        function renameNode(id, name, description) {
+        function renameNode(resource, name, description) {
           let command = {
-            "@id": id
+            "@id": resource['@id']
           };
           if (name != null) {
             command["schema:name"] = name;
@@ -967,7 +1010,11 @@ define([
           if (description != null) {
             command["schema:description"] = description;
           }
-          return httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
+          var request = httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
+          if (resource.$$cedarEtag != null) {
+            request.headers = {'If-Match': resource.$$cedarEtag};
+          }
+          return request;
         }
 
       }

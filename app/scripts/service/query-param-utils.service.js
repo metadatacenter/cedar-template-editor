@@ -22,6 +22,10 @@ define([
       return service.getQueryParameter("folderId");
     };
 
+    service.getReturnTo = function () {
+      return service.getQueryParameter("returnTo");
+    };
+
     service.getSharing = function() {
       return service.getQueryParameter("sharing");
     };

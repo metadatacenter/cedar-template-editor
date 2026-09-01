@@ -402,7 +402,7 @@ define([
                       var canBeUpdated = response.data['canBeUpdated'];
                       if (canBeUpdated) {
                         AuthorizedBackendService.doCall(
-                            TemplateService.updateTemplate(id, copiedForm),
+                            TemplateService.updateTemplate(id, copiedForm, $scope.form),
                             function (response) {
                               doUpdate(response);
                             },

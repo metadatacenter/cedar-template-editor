@@ -26,8 +26,8 @@ define([
       return HttpBuilderService.post(UrlService.postTemplateField(folderId), angular.toJson(field));
     };
 
-    service.updateTemplateField = function (id, field) {
-      return HttpBuilderService.put(UrlService.getTemplateField(id), angular.toJson(field), field);
+    service.updateTemplateField = function (id, field, validatorArtifact) {
+      return HttpBuilderService.put(UrlService.getTemplateField(id), angular.toJson(field), validatorArtifact || field);
     };
 
     return service;

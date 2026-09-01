@@ -20,6 +20,15 @@ define([
       serviceId: "FrontendUrlService"
     };
 
+    function withQuery(url, params) {
+      var query = Object.keys(params || {}).filter(function (key) {
+        return params[key] !== null && params[key] !== undefined && params[key] !== '';
+      }).map(function (key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+      }).join('&');
+      return query ? url + '?' + query : url;
+    }
+
     service.init = function () {
       openViewBase = config.openViewBase;
       dataciteDOIBase = config.dataciteDOIBase;
@@ -39,12 +48,12 @@ define([
       return "/fields/edit/" + id;
     };
 
-    service.getInstanceCreate = function (id, folderId) {
-      return '/instances/create/' + id + '?folderId=' + encodeURIComponent(folderId);
+    service.getInstanceCreate = function (id, folderId, returnTo) {
+      return withQuery('/instances/create/' + id, {folderId: folderId, returnTo: returnTo});
     };
 
-    service.getInstanceEdit = function (id) {
-      return "/instances/edit/" + id;
+    service.getInstanceEdit = function (id, folderId, returnTo) {
+      return withQuery('/instances/edit/' + id, {folderId: folderId, returnTo: returnTo});
     };
 
     service.getFolderContents = function (folderId) {

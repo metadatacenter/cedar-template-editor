@@ -48,7 +48,9 @@ define([
       // cache would let a second in-page editor silently borrow the first editor's newer ETag.
       var artifact = hco.cedarArtifact;
       delete hco.cedarArtifact;
-      if (hco.method != null && hco.method.toUpperCase() === 'PUT' && artifact != null &&
+      var conditionalMethod = hco.method != null &&
+          ['PUT', 'PATCH', 'DELETE'].indexOf(hco.method.toUpperCase()) !== -1;
+      if (conditionalMethod && artifact != null &&
           artifact.$$cedarEtag != null &&
           !hasHeader(hco.headers, 'If-Match')) {
         hco.headers['If-Match'] = artifact.$$cedarEtag;

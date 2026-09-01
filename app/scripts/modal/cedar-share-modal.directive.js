@@ -496,9 +496,18 @@ define([
           }
 
           function groupTypeaheadOnSelect(section, item, model, label) {
-            getGroupMembers(vm.model[section].group);
-            vm.newTitle = vm.model[section].group['schema:name'];
-            vm.newDescription = vm.model[section].group['schema:description'];
+            var selected = vm.model[section].group;
+            resourceService.getGroup(selected['@id'],
+                function (current) {
+                  angular.extend(selected, current);
+                  getGroupMembers(selected);
+                  vm.newTitle = selected['schema:name'];
+                  vm.newDescription = selected['schema:description'];
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error', error);
+                }
+            );
           }
 
           function addGroup(section, group) {
@@ -574,8 +583,9 @@ define([
 
           function deleteGroup(section,  resource) {
 
-            var id = vm.model[section].group['@id'];
-            resourceService.deleteGroup(id, function (response) {
+            var group = vm.model[section].group;
+            var id = group['@id'];
+            resourceService.deleteGroup(group, function (response) {
 
                   var i = vm.resourceGroups.indexOf(vm.model[section].group);
                   vm.resourceGroups.splice(i, 1);
@@ -605,7 +615,7 @@ define([
 
           function getGroupMembers(group, successCallback, errorCallback) {
 
-            resourceService.getGroupMembers(group['@id'],
+            resourceService.getGroupMembers(group,
                 function (response) {
 
                   group.users = response.users;

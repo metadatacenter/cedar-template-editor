@@ -26,8 +26,8 @@ define([
       return HttpBuilderService.post(UrlService.postTemplate(folderId), angular.toJson(template));
     };
 
-    service.updateTemplate = function (id, template) {
-      return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template), template);
+    service.updateTemplate = function (id, template, validatorArtifact) {
+      return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template), validatorArtifact || template);
     };
 
     service.checkUpdateTemplate = function (id, template) {

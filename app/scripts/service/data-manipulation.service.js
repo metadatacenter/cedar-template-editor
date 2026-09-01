@@ -549,6 +549,24 @@ define([
         service.isPfas = function (node) {
           return (service.getInputType(node) === 'ext-pfas');
         };
+        /**
+         * A term count, or nothing when nobody knows it.
+         *
+         * The terminology layer answers `n/a` for some ontologies — GAZ among
+         * them — and a value set's count is unknown until its tree is loaded.
+         * Both used to reach the artifact as `numTerms: 0`, which is not what
+         * either meant: the meta-schema reads zero as a quantity, so a whole
+         * ontology was recorded as holding no terms, and for a while that
+         * combination could not be saved at all.
+         *
+         * `numTerms` is optional in the meta-schema — only `uri` is required —
+         * so an unknown count is left out rather than guessed at.
+         */
+        service.termCountOrUnknown = function (count) {
+          var value = Number(count);
+          return Number.isInteger(value) && value > 0 ? value : undefined;
+        };
+
         // is this a rrid field?
         service.isRrid = function (node) {
           return (service.getInputType(node) === 'ext-rrid');
@@ -1184,7 +1202,7 @@ define([
           }
 
           // The value of the link field is a URI, and note that @id cannot be null
-          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid") {
+          if (inputType === "link" || inputType === "ext-orcid" || inputType === "ext-ror" || inputType === "ext-pfas" || inputType === "ext-pubmed" || inputType === "ext-rrid" || inputType === "ext-nih-grant-id" || inputType === "ext-doi") {
             // Define the @id field
             var idField = {};
             idField.type = "string";
