@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -12,6 +12,11 @@
     "webdrivermanager:update": "node node_modules/protractor/bin/webdriver-manager update --versions.chrome=110.0.5481.77",
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
     "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
+  },
+  "allowScripts": {
+    "es5-ext@0.10.62": false,
+    "fsevents@1.2.13 || 2.3.2": true,
+    "spawn-sync@1.0.15": true
   },
   "author": "Metadatacenter.org",
   "license": "BSD-2-Clause",
