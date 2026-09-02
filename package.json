@@ -13,6 +13,11 @@
     "webdrivermanager:clean": "node node_modules/protractor/bin/webdriver-manager clean",
     "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
+  "allowScripts": {
+    "es5-ext@0.10.62": false,
+    "fsevents@1.2.13 || 2.3.2": true,
+    "spawn-sync@1.0.15": true
+  },
   "author": "Metadatacenter.org",
   "license": "BSD-2-Clause",
   "devDependencies": {

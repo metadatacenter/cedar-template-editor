@@ -1,0 +1,39 @@
+name: Build and package
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NPM_CONFIG_STRICT_ALLOW_SCRIPTS: "true"
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the frontend
+        uses: actions/checkout@v7
+
+      - name: Use Node 24.19.0
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24.19.0
+          cache: npm
+
+      - name: Install the locked dependency graph
+        run: npm ci
+
+      - name: Prove the train package can be assembled
+        run: npm pack --dry-run
