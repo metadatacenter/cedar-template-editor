@@ -8,7 +8,7 @@ define([
           .controller('CreateTemplateController', CreateTemplateController);
 
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                          "$filter", "TrackingService", "HeaderService", "StagingService",
+                                          "$filter", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
                                           "TemplateService", "resourceService", "UIMessageService", "UIUtilService",
                                           "DataManipulationService", "schemaService", "ValidationService",
@@ -18,7 +18,7 @@ define([
                                           "CedarModelTypescriptLibrary"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                        TrackingService, HeaderService, StagingService, DataTemplateService,
+                                        HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, resourceService, UIMessageService,
                                         UIUtilService, DataManipulationService, schemaService, ValidationService,
                                         controlledTermDataService, StringUtilsService,
@@ -171,9 +171,6 @@ define([
           $scope.invalidFieldStates = {};
           $scope.invalidElementStates = {};
           $scope.$broadcast('saveForm');
-
-          TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
-          TrackingService.pageTrack();
 
           //DataManipulationService.updateKeys($scope.form);
         };
