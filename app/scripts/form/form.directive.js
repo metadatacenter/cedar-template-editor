@@ -471,6 +471,7 @@ define([
           var copiedForm = jQuery.extend(true, {}, $scope.model);
           if (copiedForm) {
             dms.stripTmps(copiedForm);
+            dms.stripClearedConstraints(copiedForm);
           }
           UIUtilService.toRDF();
 

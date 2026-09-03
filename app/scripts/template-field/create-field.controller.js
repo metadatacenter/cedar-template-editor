@@ -312,6 +312,7 @@ define([
         // Check if the field is already stored into the DB
         if ($routeParams.id == undefined) {
           dms.stripTmps($scope.field);
+          dms.stripClearedConstraints($scope.field);
           //dms.updateKeys($scope.field);
 
           AuthorizedBackendService.doCall(
@@ -349,6 +350,7 @@ define([
           if (copiedForm) {
             // strip the temps from the copied form only, and save the copy
             dms.stripTmps(copiedForm);
+            dms.stripClearedConstraints(copiedForm);
 
             AuthorizedBackendService.doCall(
                 TemplateFieldService.updateTemplateField(id, copiedForm, $scope.field),
@@ -445,6 +447,7 @@ define([
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
+        dms.stripClearedConstraints(copiedForm);
         //dms.updateKeys(copiedForm);
       }
       return copiedForm;
@@ -454,6 +457,7 @@ define([
       let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
+        dms.stripClearedConstraints(copiedForm);
       }
       let jsonTemplateFieldReaderResult = $scope.fieldReader.readFromObject(copiedForm);
       let fieldWriter = $scope.yamlWriters.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
