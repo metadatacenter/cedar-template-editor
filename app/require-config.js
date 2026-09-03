@@ -38,7 +38,7 @@ require.config({
       deps     : ['angular'],
       'exports': 'angular.mock'
     },
-    'lib/angucomplete-alt/angulcomplete-alt'                                             : ['angular'],
+    'lib/angucomplete-alt/angucomplete-alt'                                              : ['angular'],
     'lib/angular-animate/angular-animate.min'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap-tpls.min'                                        : ['angular'],
@@ -90,7 +90,13 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs : "v=" + window.cedarCacheControl
+  urlArgs : "v=" + window.cedarCacheControl,
+  // RequireJS restarts its timeout clock only when a module begins fetching, so the budget has to
+  // cover whatever resolution is left after the last fetch starts. Served from cache every module
+  // starts at once, and the default seven seconds then covers the entire graph; a cold load staggers
+  // its fetches and keeps resetting the clock, which is why a warm load timed out where a hard
+  // reload did not. A real hang should still be reported, so raise the budget rather than remove it.
+  waitSeconds: 60
 });
 
 // do not load the full app here.

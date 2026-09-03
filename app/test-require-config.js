@@ -48,7 +48,7 @@ require.config({
       exports: 'angular.mock'
     },
 
-    'lib/angucomplete-alt/angulcomplete-alt'                                             : ['angular'],
+    'lib/angucomplete-alt/angucomplete-alt'                                              : ['angular'],
     'lib/angular-animate/angular-animate.min'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap-tpls.min'                                        : ['angular'],
