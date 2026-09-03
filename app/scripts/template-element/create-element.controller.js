@@ -328,7 +328,8 @@ define([
         // Reload page with element id
         var newId = response.data['@id'];
         dms.createDomIds(response.data);
-        $location.path(FrontendUrlService.getElementEdit(newId));
+        // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+        $location.path(FrontendUrlService.getElementEdit(newId)).replace();
 
         $scope.setClean();
       };

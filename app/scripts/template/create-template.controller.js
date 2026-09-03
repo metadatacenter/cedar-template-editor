@@ -325,7 +325,8 @@ define([
             // Reload page with template id
             DataManipulationService.createDomIds(response.data);
             var newId = response.data['@id'];
-            $location.path(FrontendUrlService.getTemplateEdit(newId));
+            // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+            $location.path(FrontendUrlService.getTemplateEdit(newId)).replace();
 
             UIUtilService.setDirty(false);
           };

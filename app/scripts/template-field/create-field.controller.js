@@ -288,7 +288,8 @@ define([
         // Reload page with field id
         var newId = response.data['@id'];
         dms.createDomIds(response.data);
-        $location.path(FrontendUrlService.getFieldEdit(newId));
+        // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+        $location.path(FrontendUrlService.getFieldEdit(newId)).replace();
         $scope.setClean();
       };
 
