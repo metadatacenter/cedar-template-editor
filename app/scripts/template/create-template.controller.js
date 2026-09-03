@@ -47,6 +47,7 @@ define([
         // template details
         $scope.details;
         $scope.cannotWrite;
+        $scope.lockReason = null;
 
         $scope.isTemplate = true;
 
@@ -59,16 +60,24 @@ define([
 
         $scope.checkLocking = function () {
           if ($scope.details) {
-            $scope.cannotWrite = !resourceService.canWrite($scope.details) || schemaService.isPublished($scope.details)
+            var published = schemaService.isPublished($scope.details);
+            var noWritePermission = !resourceService.canWrite($scope.details);
+            $scope.cannotWrite = noWritePermission || published;
+            $scope.lockReason = published ? 'TEMPLATEEDITOR.lock.published'
+                : (noWritePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
             $scope.saveButtonDisabled = $scope.cannotWrite;
             return !$scope.cannotWrite;
           }
           return false;
         };
 
+        $scope.getLockReason = function () {
+          return $scope.lockReason;
+        };
+
         // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
         $scope.$watch('cannotWrite', function () {
-          UIUtilService.setLocked($scope.cannotWrite);
+          UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
         });
 
         var getReport = function (id) {

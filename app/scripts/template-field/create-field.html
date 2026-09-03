@@ -10,6 +10,7 @@
                 <input auto-focus type="text"
                     class="form-control"
                     id="field-name"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Name' | translate}}"
                     aria-label="{{'GENERIC.Name' | translate}}"
                     ng-model="form['schema:name']"
@@ -24,6 +25,7 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="field-identifier"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Identifier' | translate}}"
                     aria-label="{{'GENERIC.Identifier' | translate}}"
                     ng-model="form['schema:identifier']"
@@ -53,6 +55,7 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="field-description"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Description' | translate}}"
                     aria-label="{{'GENERIC.Description' | translate}}"
                     ng-model="form['schema:description']"
@@ -122,6 +125,11 @@
             <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
             <!--</div>-->
+            <!-- A locked artifact cannot be saved, so say so next to the save button rather than
+                 leaving the lock icon in the top bar as the only sign. -->
+            <div ng-if="cannotWrite" class="alert alert-warning locked-notice" role="alert">
+              <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
+            </div>
             <div class="clear-save">
               <button type="button" id="button-clear-field" class="btn btn-clear field" ng-click="reset()"
                   ng-hide="isPropertiesEmpty()"
@@ -131,9 +139,12 @@
               <button type="button" id="button-cancel-field" class="btn btn-clear field" ng-click="cancelField()"
                   translate>GENERIC.Cancel
               </button>
-              <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
-                  class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
-              </button>
+              <span class="save-lock-tip" uib-tooltip="{{lockReason | translate}}"
+                    tooltip-enable="cannotWrite" tooltip-append-to-body="true" tooltip-placement="top">
+                <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
+                    class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
+                </button>
+              </span>
             </div>
           </div>
 

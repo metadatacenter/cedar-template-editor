@@ -36,8 +36,7 @@ define([
 
     if(vm.useCee){
       CeeDirtyTrackerService.reset();
-      $scope.ceeConfig = {};
-      $scope.ceeConfig = CeeConfigService.getConfig();
+      $scope.ceeConfig = angular.copy(CeeConfigService.getConfig());
       $timeout(function() {
         let editorElement = document.querySelector('cedar-embeddable-editor');
         if (editorElement) {
@@ -88,6 +87,7 @@ define([
 
     $scope.details;
     $scope.cannotWrite;
+    $scope.lockReason = null;
 
     let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
     $scope.instanceReader = jsonReaders.getTemplateInstanceReader();
@@ -112,12 +112,28 @@ define([
     $scope.canWrite = function () {
       const result = !$scope.details || resourceService.canWrite($scope.details);
       $scope.cannotWrite = !result;
+      $scope.lockReason = result ? null : 'TEMPLATEEDITOR.lock.noWritePermission';
       return result;
+    };
+
+    // An instance the user cannot save must not accept edits either. CEE has a read-only mode; the
+    // permission is known only once the resource details arrive, so the configuration is pushed
+    // again rather than set once at startup.
+    const applyReadOnlyState = function () {
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+      if (!vm.useCee) {
+        return;
+      }
+      $scope.ceeConfig.readOnlyMode = $scope.cannotWrite;
+      const cee = ceeElement();
+      if (cee) {
+        cee.config = angular.copy($scope.ceeConfig);
+      }
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      UIUtilService.setLocked($scope.cannotWrite);
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
     $scope.copyJson2Clipboard = function (json) {
@@ -169,6 +185,7 @@ define([
             function (response) {
               $scope.details = response;
               $scope.canWrite();
+              applyReadOnlyState();
             },
             function (error) {
               UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);

@@ -617,7 +617,12 @@
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     },
     "hasMetadataWarning": "The template has metadata and should not be modified.",
-    "isLockedWarning": "Modifications cannot be saved without write permission."
+    "lock": {
+      "published": "This resource is published and cannot be modified. To change it, create a draft of a new version.",
+      "noWritePermission": "You do not have permission to modify this resource.",
+      "generic": "This resource is locked and cannot be modified.",
+      "unlocked": "This resource can be modified."
+    }
   },
   "TERMINOLOGY": {
     "errorBioPortal": "Error establishing a connection to BioPortal. Please try again later",

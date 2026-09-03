@@ -27,6 +27,7 @@ define([
         valid          : true,
         dirty          : false,
         locked         : false,
+        lockReason     : null,
         message        : true,
         totalMetadata  : 0,
         visibleMetadata: 0,
@@ -133,8 +134,16 @@ define([
       return service.documentState.locked;
     };
 
-    service.setLocked = function (value) {
+    // The reason is a translation key naming why the document is locked: it was published, or the
+    // user holds no write permission on it. Callers that know only that the document is locked may
+    // omit it, and the generic message is used instead.
+    service.setLocked = function (value, reason) {
       service.documentState.locked = value;
+      service.documentState.lockReason = value ? (reason || 'TEMPLATEEDITOR.lock.generic') : null;
+    };
+
+    service.getLockReason = function () {
+      return service.documentState.lockReason;
     };
 
 

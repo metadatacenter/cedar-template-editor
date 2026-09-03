@@ -5590,6 +5590,30 @@ p.instructions {
 
 /*
 ================================================
+=== Locked artifact: no save, and say why
+================================================
+*/
+.locked-notice {
+  clear: both;
+
+  i {
+    padding-right: 10px;
+  }
+}
+
+// A disabled button emits no mouse events, so the tooltip lives on the wrapper and the button is
+// made transparent to the pointer.
+.save-lock-tip {
+  display: inline-block;
+
+  .btn[disabled] {
+    pointer-events: none;
+  }
+}
+
+
+/*
+================================================
 === Bootstrap Select Picker
 ================================================
 */

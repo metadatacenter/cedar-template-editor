@@ -64,7 +64,10 @@ define([
     };
 
     vm.lockUnlockTip = function() {
-      return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
+      if (!UIUtilService.isLocked()) {
+        return $translate.instant('TEMPLATEEDITOR.lock.unlocked');
+      }
+      return $translate.instant(UIUtilService.getLockReason() || 'TEMPLATEEDITOR.lock.generic');
     };
 
     // vm.windowHistoryBack = function() {

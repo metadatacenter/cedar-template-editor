@@ -57,7 +57,7 @@ define([
     // field details - can read or write
     $scope.details;
     $scope.cannotWrite;
-    $scope.lockReason = '';
+    $scope.lockReason = null;
 
     $scope.inclusionModalVisible = false;
 
@@ -79,6 +79,8 @@ define([
         // Result
         var canWrite = writePermission && !isPublished;
         $scope.cannotWrite = !canWrite;
+        $scope.lockReason = isPublished ? 'TEMPLATEEDITOR.lock.published'
+            : (!writePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
         return canWrite;
       }
     };

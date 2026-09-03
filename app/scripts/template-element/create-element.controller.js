@@ -44,7 +44,7 @@ define([
     // template details
     $scope.details;
     $scope.cannotWrite;
-    $scope.lockReason = '';
+    $scope.lockReason = null;
 
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
@@ -88,6 +88,8 @@ define([
         // Result
         var canWrite = writePermission && !isPublished;
         $scope.cannotWrite = !canWrite;
+        $scope.lockReason = isPublished ? 'TEMPLATEEDITOR.lock.published'
+            : (!writePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
         return canWrite;
       }
     };

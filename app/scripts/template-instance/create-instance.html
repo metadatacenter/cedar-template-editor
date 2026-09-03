@@ -60,6 +60,10 @@
                   class="btn btn-save metadata" ng-click="resetValidationErrors(); saveInstance()" style="outline:none;" translate>GENERIC.Save
               </button>
             </div>
+            <!-- Without the buttons there is nothing left to explain the missing save, so say why. -->
+            <div ng-if="!canWrite()" class="alert alert-warning locked-notice" role="alert">
+              <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
+            </div>
           </div>
 
           <!-- document preview -->
