@@ -30,7 +30,6 @@
     "gulp-less": "3.3.2",
     "gulp-ng-annotate": "0.5.3",
     "gulp-plumber": "1.1.0",
-    "gulp-protractor": "4.1.1",
     "gulp-rename": "1.2.2",
     "gulp-replace": "0.5.4",
     "gulp-uglify": "1.5.4",
@@ -48,10 +47,7 @@
     "karma-notify-send-reporter": "0.0.3",
     "karma-requirejs": "0.2.6",
     "karma-spec-reporter": "0.0.31",
-    "protractor": "5.1.2",
     "requirejs": "2.1.22",
-    "selenium-standalone": "6.6.0",
-    "selenium-webdriver": "3.5.0",
     "sync-request": "2.2.0"
   },
   "dependencies": {
