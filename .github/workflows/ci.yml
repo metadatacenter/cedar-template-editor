@@ -37,3 +37,8 @@ jobs:
 
       - name: Prove the train package can be assembled
         run: npm pack --dry-run
+
+      - name: Run the unit suite
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: npm test

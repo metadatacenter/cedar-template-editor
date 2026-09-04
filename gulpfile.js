@@ -4,11 +4,9 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     stylish = require('jshint-stylish'),
     autoprefixer = require('gulp-autoprefixer'),
-    gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
-    minifyCSS = require('gulp-minify-css'),
     connect = require('gulp-connect'),
     htmlreplace = require('gulp-html-replace'),
     ngAnnotate = require('gulp-ng-annotate'),
@@ -25,10 +23,10 @@ var gulp = require('gulp'),
 var execFileSync = require('child_process').execFileSync;
 
 /**
- * Create error handling exception using gulp-util.
+ * Create error handling exception.
  */
 var onError = function (err) {
-  gutil.beep();
+  process.stdout.write('\x07');
   console.log(err.red);
   this.emit('end'); //added so that gulp will end the task on error, and won't hang.
 };
@@ -48,7 +46,7 @@ gulp.task('less', function (done) {
       .pipe(plumber({
         errorHandler: onError
       }))
-      .pipe(less().on('error', gutil.log))
+      .pipe(less().on('error', console.error))
       .pipe(autoprefixer({
         browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'IE 9'],
         cascade : true
