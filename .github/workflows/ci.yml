@@ -41,4 +41,14 @@ jobs:
       - name: Run the unit suite
         env:
           CHROME_BIN: /usr/bin/google-chrome
-        run: npm test
+          CEDAR_FRONTEND_BEHAVIOR: develop
+          CEDAR_FRONTEND_TARGET: local
+          CEDAR_FRONTEND_local_UI_HOST: metadatacenter.orgx
+          CEDAR_FRONTEND_local_REST_HOST: metadatacenter.orgx
+          CEDAR_VERSION: 0.0.0-ci
+          CEDAR_VERSION_MODIFIER: ''
+          CEDAR_DATACITE_ENABLED: 'false'
+          CEDAR_GA4_TRACKING_ID: ''
+        # The suite loads config/url-service.conf.json, which these tasks write from
+        # their templates. The hosts above only have to parse; nothing here calls them.
+        run: npx gulp replace-url replace-version && npm test
