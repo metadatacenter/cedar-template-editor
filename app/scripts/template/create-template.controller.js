@@ -502,10 +502,9 @@ define([
           if (!angular.isUndefined($scope.form)) {
             var title = schemaService.getTitle($scope.form);
             if (title && title.length > 0) {
-              var capitalizedTitle = $filter('capitalizeFirst')(title);
-              $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
+              $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: title});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
-                  {title: capitalizedTitle, version: window.cedarVersion});
+                  {title: title, version: window.cedarVersion});
             } else {
               schemaService.setTitle($scope.form, "");
               schemaService.setDescription($scope.form, "");

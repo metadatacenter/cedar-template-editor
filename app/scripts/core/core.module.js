@@ -6,7 +6,6 @@ define([
   'cedar/template-editor/core/constants',
   'cedar/template-editor/core/run',
 
-  'cedar/template-editor/core/capitalize-first.filter',
   'cedar/template-editor/core/key-to-title.filter',
   'cedar/template-editor/core/order-object-by.filter',
   'cedar/template-editor/core/pretty-date.filter',
@@ -20,7 +19,6 @@ define([
     'cedar.templateEditor.core.constants',
     'cedar.templateEditor.core.run',
 
-    'cedar.templateEditor.core.capitalizeFirstFilter',
     'cedar.templateEditor.core.keyToTitleFilter',
     'cedar.templateEditor.core.orderObjectByFilter',
     'cedar.templateEditor.core.prettyDateFilter',
