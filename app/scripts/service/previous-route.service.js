@@ -9,9 +9,11 @@ define([
   PreviousRouteService.$inject = ['$rootScope', '$location', '$window', 'QueryParamUtilsService', 'CedarUser'];
 
   /**
-   * Tracks the last "workspace" location so back/logo navigation returns the user to where they were
-   * in CEDAR - never to another utility page. The utility pages (profile, settings, privacy, logout)
-   * are skipped, so cycling among them still takes you back to the dashboard/editor you came from.
+   * Tracks the "workspace" locations the user has visited so back/logo navigation returns them to
+   * where they were in CEDAR - never to another utility page. The utility pages (profile, settings,
+   * privacy, logout) are skipped, so cycling among them still takes you back to the dashboard or
+   * editor you came from. Going back consumes its target, so repeated presses walk the stack
+   * instead of bouncing between the last two locations.
    */
   function PreviousRouteService($rootScope, $location, $window, QueryParamUtilsService, CedarUser) {
 
@@ -36,8 +38,12 @@ define([
 
     var currentUrl = $location.url();
     var currentPath = $location.path();
-    // The most recent non-utility location we navigated away from.
-    var lastWorkspaceUrl = null;
+    // Non-utility locations we can return to, oldest first. goBack() pops from the end.
+    var backStack = [];
+    // Set while goBack() navigates, so the location it leaves is not pushed straight back on.
+    var returning = false;
+    // Deep enough for any real session; older entries fall off the bottom.
+    var MAX_DEPTH = 50;
 
     // Listen on $locationChangeSuccess (not $routeChangeSuccess): folder-to-folder navigation on the
     // dashboard only changes the folderId query param (reloadOnSearch:false) and fires $routeUpdate,
@@ -49,20 +55,38 @@ define([
       if (newUrl === currentUrl) {
         return;
       }
-      // If the page we are leaving was a real (non-utility) location, remember it as the back target.
-      if (!isUtilityPath(currentPath)) {
-        lastWorkspaceUrl = currentUrl;
+      if (returning) {
+        // goBack() just consumed its target. Recording the page it left would rebuild the entry we
+        // popped, and send the next press straight back here.
+        returning = false;
+      } else if (!isUtilityPath(currentPath) && backStack[backStack.length - 1] !== currentUrl) {
+        // The page we are leaving was a real location, so remember it as a back target.
+        backStack.push(currentUrl);
+        if (backStack.length > MAX_DEPTH) {
+          backStack.shift();
+        }
       }
       currentUrl = newUrl;
       currentPath = $location.path();
     });
 
+    // Index of the nearest remembered location that is not the one we are already on.
+    function previousIndex() {
+      for (var i = backStack.length - 1; i >= 0; i--) {
+        if (backStack[i] !== $location.url()) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
     service.hasPrevious = function () {
-      return !!lastWorkspaceUrl && lastWorkspaceUrl !== $location.url();
+      return previousIndex() !== -1;
     };
 
     service.getPreviousUrl = function () {
-      return lastWorkspaceUrl;
+      var index = previousIndex();
+      return index === -1 ? null : backStack[index];
     };
 
     /**
@@ -71,8 +95,14 @@ define([
      * location yet (e.g. a cold deep-link), preserving whatever state is on the current URL.
      */
     service.goBack = function () {
-      if (service.hasPrevious()) {
-        $location.url(lastWorkspaceUrl);
+      var index = previousIndex();
+      if (index !== -1) {
+        var target = backStack[index];
+        // Consume the target and the stale entries above it, so a second press goes further back
+        // rather than returning to the page this one left.
+        backStack.length = index;
+        returning = true;
+        $location.url(target);
         $window.scrollTo(0, 0);
         return;
       }

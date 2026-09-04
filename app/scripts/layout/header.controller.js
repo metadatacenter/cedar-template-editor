@@ -64,7 +64,10 @@ define([
     };
 
     vm.lockUnlockTip = function() {
-      return $translate.instant('Document is ' + (UIUtilService.isLocked() ? "locked": "unlocked"));
+      if (!UIUtilService.isLocked()) {
+        return $translate.instant('TEMPLATEEDITOR.lock.unlocked');
+      }
+      return $translate.instant(UIUtilService.getLockReason() || 'TEMPLATEEDITOR.lock.generic');
     };
 
     // vm.windowHistoryBack = function() {
@@ -309,7 +312,7 @@ define([
     });
 
     // clear the modal fade on location change
-    $rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
+    $rootScope.$on('$locationChangeStart', function (event) {
 
       // Select open modal(s)
       var $openModalSelector = jQuery(".modal.fade.in");
@@ -320,10 +323,6 @@ define([
         event.preventDefault();
       }
 
-      if (vm.isDirty() && !vm.confirmedBack && newUrl.toString().startsWith('/dashboard')) {
-        event.preventDefault();
-        vm.confirmBack();
-      }
       vm.confirmedBack = true;
     });
 

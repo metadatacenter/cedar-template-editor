@@ -7,6 +7,7 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input auto-focus type="text" class="form-control" id="element-name"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Name' | translate}}"
                     aria-label="{{'GENERIC.Name' | translate}}"
                     ng-model="elementSchema['schema:name']" with-floating-label>
@@ -19,6 +20,7 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-identifier"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Identifier' | translate}}"
                     aria-label="{{'GENERIC.Identifier' | translate}}"
                     ng-model="elementSchema['schema:identifier']" with-floating-label>
@@ -45,6 +47,7 @@
             <form>
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="element-description"
+                    ng-readonly="cannotWrite"
                     placeholder="{{'GENERIC.Description' | translate}}"
                     aria-label="{{'GENERIC.Description' | translate}}"
                     ng-model="elementSchema['schema:description']"
@@ -76,6 +79,7 @@
                     <textarea rows="1" class="form-control" style="margin-top: 10px"
                               ng-change="schemaService.deleteStringFieldIfEmpty(elementSchema._ui, 'header')"
                               id="element-header-text"
+                              ng-readonly="cannotWrite"
                               placeholder="{{'GENERIC.Header' | translate}}"
                               aria-label="{{'GENERIC.Header' | translate}}"
                               ng-model="elementSchema._ui.header"
@@ -92,6 +96,7 @@
                     <textarea rows="1" class="form-control" style="margin-top: 10px"
                               ng-change="schemaService.deleteStringFieldIfEmpty(elementSchema._ui, 'footer')"
                               id="element-footer-text"
+                              ng-readonly="cannotWrite"
                               placeholder="{{'GENERIC.Footer' | translate}}"
                               aria-label="{{'GENERIC.Footer' | translate}}"
                               ng-model="elementSchema._ui.footer"
@@ -171,6 +176,11 @@
             <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
             <!--</div>-->
+            <!-- A locked artifact cannot be saved, so say so next to the save button rather than
+                 leaving the lock icon in the top bar as the only sign. -->
+            <div ng-if="cannotWrite" class="alert alert-warning locked-notice" role="alert">
+              <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
+            </div>
             <div class="clear-save" >
               <button type="button" id="button-clear-element" class="btn btn-clear element" ng-click="reset()"
                   ng-hide="isPropertiesEmpty()"
@@ -180,9 +190,12 @@
               <button type="button" id="button-cancel-element" class="btn btn-clear element" ng-click="cancelElement()"
                   translate>GENERIC.Cancel
               </button>
-              <button type="button" ng-disabled="saveButtonDisabled" id="button-save-element"
-                  class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
-              </button>
+              <span class="save-lock-tip" uib-tooltip="{{lockReason | translate}}"
+                    tooltip-enable="cannotWrite" tooltip-append-to-body="true" tooltip-placement="top">
+                <button type="button" ng-disabled="saveButtonDisabled" id="button-save-element"
+                    class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
+                </button>
+              </span>
             </div>
           </div>
 

@@ -48,7 +48,7 @@ require.config({
       exports: 'angular.mock'
     },
 
-    'lib/angucomplete-alt/angulcomplete-alt'                                             : ['angular'],
+    'lib/angucomplete-alt/angucomplete-alt'                                              : ['angular'],
     'lib/angular-animate/angular-animate.min'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap-tpls.min'                                        : ['angular'],
@@ -59,11 +59,9 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty.min'                                         : ['angular'],
     'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
-    'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
     'lib/angular-ui-switch/angular-ui-switch.min'                                        : ['angular'],
     'lib/ng-tags-input/ng-tags-input.min'                                                : ['angular'],
     'lib/angular-ui-keypress/keypress.min'                                               : ['angular'],
-    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'             : ['angular'],
     'lib/angular-ui-tree/dist/angular-ui-tree'                                           : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {

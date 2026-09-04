@@ -12,7 +12,7 @@ define([
                                         'DataManipulationService', 'FieldTypeService', 'UrlService',
                                         'UserService', 'RichTextConfigService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService', 'FrontendUrlService',
-                                        'TrackingService', 'MessagingService',
+                                        'MessagingService',
                                         '$httpParamSerializer', '$location', 'UIMessageService'];
 
 
@@ -20,7 +20,7 @@ define([
                                       DataManipulationService, FieldTypeService, UrlService,
                                       UserService, RichTextConfigService,
                                       provisionalClassService, CedarUser, UISettingsService, FrontendUrlService,
-                                      TrackingService, MessagingService,
+                                      MessagingService,
                                       $httpParamSerializer, $location, UIMessageService) {
 
     // A confirmation the previous page could not show, because it navigated away from itself.
@@ -61,7 +61,6 @@ define([
     provisionalClassService.init();
     DataManipulationService.init();
     UISettingsService.init();
-    TrackingService.init();
     MessagingService.init();
 
     // Make objects available through rootScope

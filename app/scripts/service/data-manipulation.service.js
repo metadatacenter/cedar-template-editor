@@ -880,6 +880,71 @@ define([
         };
 
         //
+        // cleared constraints
+        //
+
+        // Constraint keys whose absence is the only way the model says "unconstrained". There is no
+        // value that means the same thing: the meta-schema requires a number for minValue, maxValue,
+        // decimalPlace, minLength and maxLength, a string for regex and unitOfMeasure, and a number
+        // for a static field's width and height. Clearing one of these inputs leaves null behind for
+        // a number input and '' for a text input, so the key has to go before the artifact is sent
+        // or the server rejects an artifact it had accepted a moment earlier.
+        var clearableConstraints = ['minValue', 'maxValue', 'decimalPlace', 'minLength', 'maxLength',
+                                    'regex', 'unitOfMeasure'];
+
+        // strip cleared constraints from node and children
+        service.stripClearedConstraints = function (node) {
+
+          service.stripClearedConstraintsIfPresent(node);
+
+          if (node.type === 'array') {
+            node = node.items;
+          }
+
+          angular.forEach(node.properties, function (value, key) {
+            if (!DataUtilService.isSpecialKey(key)) {
+              service.stripClearedConstraints(value);
+            }
+          });
+        };
+
+        // remove the cleared constraints from one node
+        service.stripClearedConstraintsIfPresent = function (node) {
+
+          var schema = service.schemaOf(node);
+          if (!schema) {
+            return;
+          }
+
+          var constraints = schema._valueConstraints;
+          if (constraints) {
+            clearableConstraints.forEach(function (key) {
+              if (service.isClearedConstraint(constraints, key)) {
+                delete constraints[key];
+              }
+            });
+          }
+
+          var size = schema._ui && schema._ui._size;
+          if (size) {
+            ['width', 'height'].forEach(function (key) {
+              if (service.isClearedConstraint(size, key)) {
+                delete size[key];
+              }
+            });
+          }
+        };
+
+        // a key the user has emptied: present, but holding what an emptied input leaves behind
+        service.isClearedConstraint = function (holder, key) {
+          if (!holder.hasOwnProperty(key)) {
+            return false;
+          }
+          var value = holder[key];
+          return value === null || angular.isUndefined(value) || value === '';
+        };
+
+        //
         // _tmp fields
         //
 

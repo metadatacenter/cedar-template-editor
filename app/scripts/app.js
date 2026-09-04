@@ -31,8 +31,6 @@ define([
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
   '3rdparty/angular-fitvids/angular-fitvids',
-  'lib/angulartics/dist/angulartics.min',
-  'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
   'lib/ngprogress/build/ngprogress.min',
   'jsonld',
   'flow',
@@ -68,8 +66,6 @@ define([
     'angular-toasty',
     'ngCkeditor',
     'fitVids',
-    'angulartics',
-    'angulartics.google.analytics',
     'ngProgress',
     'flow',
 

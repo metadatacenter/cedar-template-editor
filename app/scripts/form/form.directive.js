@@ -417,7 +417,7 @@ define([
             if (UIUtilService.hasTotalMetadata()) {
               UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
             } else if (UIUtilService.isLocked()) {
-              UIMessageService.flashWarning("TEMPLATEEDITOR.isLockedWarning");
+              UIMessageService.flashWarning(UIUtilService.getLockReason() || "TEMPLATEEDITOR.lock.generic");
             }
           }
         });
@@ -471,6 +471,7 @@ define([
           var copiedForm = jQuery.extend(true, {}, $scope.model);
           if (copiedForm) {
             dms.stripTmps(copiedForm);
+            dms.stripClearedConstraints(copiedForm);
           }
           UIUtilService.toRDF();
 

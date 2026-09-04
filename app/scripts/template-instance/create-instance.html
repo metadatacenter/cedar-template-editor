@@ -1,4 +1,4 @@
-<section ng-controller="CreateInstanceController as vm" class="template-container scrollable-content">
+<section class="template-container scrollable-content">
   <div class="template-body metadata">
     <div class="container">
       <div class="row">
@@ -59,6 +59,10 @@
               <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled"
                   class="btn btn-save metadata" ng-click="resetValidationErrors(); saveInstance()" style="outline:none;" translate>GENERIC.Save
               </button>
+            </div>
+            <!-- Without the buttons there is nothing left to explain the missing save, so say why. -->
+            <div ng-if="!canWrite()" class="alert alert-warning locked-notice" role="alert">
+              <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
             </div>
           </div>
 

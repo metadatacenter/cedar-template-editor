@@ -44,7 +44,7 @@ define([
     // template details
     $scope.details;
     $scope.cannotWrite;
-    $scope.lockReason = '';
+    $scope.lockReason = null;
 
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
@@ -88,6 +88,8 @@ define([
         // Result
         var canWrite = writePermission && !isPublished;
         $scope.cannotWrite = !canWrite;
+        $scope.lockReason = isPublished ? 'TEMPLATEEDITOR.lock.published'
+            : (!writePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
         return canWrite;
       }
     };
@@ -326,7 +328,8 @@ define([
         // Reload page with element id
         var newId = response.data['@id'];
         dms.createDomIds(response.data);
-        $location.path(FrontendUrlService.getElementEdit(newId));
+        // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+        $location.path(FrontendUrlService.getElementEdit(newId)).replace();
 
         $scope.setClean();
       };
@@ -365,6 +368,7 @@ define([
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
           dms.stripTmps($scope.element);
+          dms.stripClearedConstraints($scope.element);
           dms.updateKeys($scope.element);
 
           AuthorizedBackendService.doCall(
@@ -402,6 +406,7 @@ define([
           if (copiedForm) {
             // strip the temps from the copied form only, and save the copy
             DataManipulationService.stripTmps(copiedForm);
+            DataManipulationService.stripClearedConstraints(copiedForm);
 
             AuthorizedBackendService.doCall(
                 TemplateElementService.updateTemplateElement(id, copiedForm, $scope.element),
@@ -512,6 +517,7 @@ define([
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
+        dms.stripClearedConstraints(copiedForm);
         dms.updateKeys(copiedForm);
       }
       return copiedForm;
@@ -521,6 +527,7 @@ define([
       let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
+        dms.stripClearedConstraints(copiedForm);
         dms.updateKeys(copiedForm);
       }
       let jsonTemplateElementReaderResult = $scope.elementReader.readFromObject(copiedForm);

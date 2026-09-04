@@ -36,27 +36,69 @@ define([
 
     if(vm.useCee){
       CeeDirtyTrackerService.reset();
-      $scope.ceeConfig = {};
-      $scope.ceeConfig = CeeConfigService.getConfig();
-      $timeout(function() {
-        let editorElement = document.querySelector('cedar-embeddable-editor');
-        if (editorElement) {
-          editorElement.config = $scope.ceeConfig;
-        }}, 0);
+      $scope.ceeConfig = angular.copy(CeeConfigService.getConfig());
     }
+
+    // The embeddable editor takes one configuration and reports every later assignment as
+    // ignored, so read-only mode has to be settled before the first one. It is known only once
+    // the resource details arrive, which is after this controller is constructed and can be
+    // after the artifact itself has loaded — so the artifact waits here until the editor is
+    // configured, rather than the configuration chasing it.
+    let ceeConfigured = false;
+    let pendingCeeArtifact = null;
+    let ceeWaitTicks = 20;
+
+    const configureCee = function () {
+      if (ceeConfigured || !vm.useCee) {
+        return;
+      }
+      const cee = ceeElement();
+      if (!cee) {
+        // The details can answer before the element has been rendered. Waiting for it beats
+        // configuring nothing, which would leave the artifact queued and the page blank.
+        if (ceeWaitTicks-- > 0) {
+          $timeout(configureCee, 0);
+        }
+        return;
+      }
+      $scope.ceeConfig.readOnlyMode = $scope.cannotWrite === true;
+      cee.config = angular.copy($scope.ceeConfig);
+      ceeConfigured = true;
+      if (pendingCeeArtifact) {
+        const artifact = pendingCeeArtifact;
+        pendingCeeArtifact = null;
+        presentInCee(artifact);
+      }
+    };
+
+    const presentInCee = function (artifact) {
+      if (!vm.useCee) {
+        return;
+      }
+      if (!ceeConfigured) {
+        pendingCeeArtifact = artifact;
+        return;
+      }
+      const cee = ceeElement();
+      if (!cee) {
+        return;
+      }
+      if (artifact.instanceObject) {
+        cee.templateAndInstanceObject = artifact;
+      } else {
+        cee.templateObject = artifact.templateObject;
+      }
+      rememberCeeCleanState();
+      UIUtilService.setDirty(false);
+    };
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate(UrlService.fixSingleSlashHttps($routeParams.templateId)),
           function (response) {
-            if(vm.useCee){
-              let cee = ceeElement();
-              if(response.data){
-                cee.templateObject = response.data;
-                rememberCeeCleanState();
-                UIUtilService.setDirty(false);
-              }
+            if(response.data){
+              presentInCee({templateObject: response.data});
             }
             $scope.form = response.data;
             UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
@@ -88,6 +130,7 @@ define([
 
     $scope.details;
     $scope.cannotWrite;
+    $scope.lockReason = null;
 
     let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
     $scope.instanceReader = jsonReaders.getTemplateInstanceReader();
@@ -112,12 +155,20 @@ define([
     $scope.canWrite = function () {
       const result = !$scope.details || resourceService.canWrite($scope.details);
       $scope.cannotWrite = !result;
+      $scope.lockReason = result ? null : 'TEMPLATEEDITOR.lock.noWritePermission';
       return result;
+    };
+
+    // An instance the user cannot save must not accept edits either, which is what read-only
+    // mode asks of the embeddable editor.
+    const applyReadOnlyState = function () {
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+      configureCee();
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('cannotWrite', function () {
-      UIUtilService.setLocked($scope.cannotWrite);
+      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
     });
 
     $scope.copyJson2Clipboard = function (json) {
@@ -169,8 +220,12 @@ define([
             function (response) {
               $scope.details = response;
               $scope.canWrite();
+              applyReadOnlyState();
             },
             function (error) {
+              $scope.cannotWrite = true;
+              $scope.lockReason = 'TEMPLATEEDITOR.lock.noWritePermission';
+              applyReadOnlyState();
               UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
             }
         );
@@ -197,12 +252,7 @@ define([
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
 
-                  if(vm.useCee) {
-                    const cee = ceeElement();
-                    cee.templateAndInstanceObject = {templateObject: $scope.form, instanceObject: $scope.instance};
-                    rememberCeeCleanState();
-                    UIUtilService.setDirty(false);
-                  }
+                  presentInCee({templateObject: $scope.form, instanceObject: $scope.instance});
 
                   $rootScope.jsonToSave = $scope.form;
                   // Initialize value recommender service
@@ -387,8 +437,9 @@ define([
     UIUtilService.instanceToSave = $scope.instance;
 
 
-// Create new instance
+// Create new instance. Nothing carries a permission yet, so the editor is configured here.
     if (!angular.isUndefined($routeParams.templateId)) {
+      $timeout(configureCee, 0);
       $scope.getTemplate();
     }
 

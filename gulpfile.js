@@ -115,14 +115,6 @@ gulp.task('replace-url', function (done) {
   done();
 });
 
-// Task to set up tracking
-gulp.task('replace-tracking', function (done) {
-  gulp.src(['app/config/src/tracking-service.conf.json'])
-      .pipe(replace('googleAnalyticsKey', cedarAnalyticsKey))
-      .pipe(gulp.dest('app/config/'));
-  done();
-});
-
 // Task to set up version numbers in included js file
 gulp.task('replace-version', function (done) {
   gulp.src(['app/config/src/version.js'])
@@ -145,7 +137,7 @@ gulp.task('watch', function (done) {
 });
 
 // Sets up the environment required to run the Karma tests in Travis
-gulp.task('karma-travis-env', gulp.series(['replace-url', 'replace-tracking', 'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
+gulp.task('karma-travis-env', gulp.series(['replace-url', 'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
   done();
 }));
 
@@ -432,7 +424,6 @@ function resolveSourceCommit() {
 
 // Get environment variables
 let envConfig = {
-  'CEDAR_ANALYTICS_KEY'       : null,
   'CEDAR_GA4_TRACKING_ID'     : null,
   'CEDAR_FRONTEND_BEHAVIOR'   : null,
   'CEDAR_FRONTEND_TARGET'     : null,
@@ -446,7 +437,6 @@ console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
-const cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 const cedarGA4TrackingId = envConfig['CEDAR_GA4_TRACKING_ID'];
 const cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
 const cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
@@ -505,7 +495,7 @@ if (cedarFrontendBehavior === 'develop') {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
+taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'replace-url', 'replace-version', 'test-env');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();
