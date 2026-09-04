@@ -71,6 +71,8 @@
 
 @button-ok: #0ab831;
 @button-warning: #dfbd00;
+// The header's dot while the document has unsaved changes: solid and bright, so it is seen.
+@unsaved-indicator: #ffe600;
 @button-error: #FF5722;
 @button-dirty: #5cb85c;
 @button-pause: #f0ad4e;
@@ -538,8 +540,11 @@ a.share {
       i {
         font-size: 18px;
       }
-      i.fa.fa-lock, i.fa.fa-exclamation-triangle, i.fa.fa-circle-o {
+      i.fa.fa-lock, i.fa.fa-exclamation-triangle {
         color: @button-warning;
+      }
+      i.fa.fa-circle.unsaved {
+        color: @unsaved-indicator;
       }
     }
   }
@@ -770,15 +775,24 @@ a.share {
     letter-spacing: 0.4375px;
     color: rgba(0, 0, 0, 0.87);
 
-    // The editor thickens the outline to 2px in its primary colour while the field has focus.
-    &:focus {
+    // Read-only, the editor draws every field at 36px, and this one follows.
+    &[readonly] {
+      height: 36px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    // The editor thickens the outline to 2px in its primary colour while the field has focus, and
+    // colours the label with it. A read-only field can be focused but not edited, so it keeps the
+    // resting look.
+    &:focus:not([readonly]) {
       border-color: #00897b;
       box-shadow: inset 0 0 0 1px #00897b;
-    }
-  }
 
-  &:focus-within label {
-    color: #00897b;
+      ~ label {
+        color: #00897b;
+      }
+    }
   }
 
   // The classic form indents its inputs differently from the embeddable editor.
