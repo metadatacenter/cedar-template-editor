@@ -5,6 +5,16 @@
         <div class="right-body col-sm-16 c ">
 <!--        <div class="right-body col-sm-16 col-sm-offset-1 c ">-->
 
+          <!-- The metadata's own name. It is stored beside the field values, and this is the only
+               place on the page that shows it. The form below holds the template's fields. -->
+          <div class="instance-name-container" ng-class="{'classic': !vm.useCee}" ng-if="!$root.isEmpty(form)">
+            <label for="instance-name" translate>METADATAEDITOR.instanceName</label>
+            <input type="text" class="form-control" id="instance-name"
+                   ng-readonly="cannotWrite"
+                   ng-model="vm.instanceName"
+                   ng-change="vm.instanceNameChanged()">
+          </div>
+
 <!--           build the form-->
           <form-directive
               ng-if="!vm.useCee"

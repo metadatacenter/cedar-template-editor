@@ -732,6 +732,62 @@ a.share {
 
 }
 
+// The instance name field above an instance form, drawn like the embeddable editor's outlined
+// text fields: the same 48px box, 1px black outline and 4px corners, the same type, the text 16px
+// in, and the label sitting in a notch on the top border. The editor renders in a shadow root, so
+// none of its styles reach this element, and the look is restated here from its computed values.
+// It sits 29px in from the column edges, where the editor places its own fields.
+.instance-name-container {
+  position: relative;
+  margin: 14px 29px 0;
+
+  label {
+    position: absolute;
+    top: -6px;
+    left: 12px;
+    margin: 0;
+    padding: 0 4px;
+    background: @white;
+    font-family: "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: 0.33px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .form-control {
+    height: 48px;
+    padding: 11px 16px;
+    background: @white;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: none;
+    font-family: "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.4375px;
+    color: rgba(0, 0, 0, 0.87);
+
+    // The editor thickens the outline to 2px in its primary colour while the field has focus.
+    &:focus {
+      border-color: #00897b;
+      box-shadow: inset 0 0 0 1px #00897b;
+    }
+  }
+
+  &:focus-within label {
+    color: #00897b;
+  }
+
+  // The classic form indents its inputs differently from the embeddable editor.
+  &.classic {
+    margin-left: 37px;
+    margin-right: 15px;
+  }
+}
+
 .link-disabled, .link-disabled:hover {
   color: @very-lt-gray !important;
   background: #f8f8f8 !important;
