@@ -4,17 +4,14 @@ var gulp = require('gulp'),
     less = require('gulp-less'),
     stylish = require('jshint-stylish'),
     autoprefixer = require('gulp-autoprefixer'),
-    gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
-    minifyCSS = require('gulp-minify-css'),
     connect = require('gulp-connect'),
     htmlreplace = require('gulp-html-replace'),
     ngAnnotate = require('gulp-ng-annotate'),
     historyApiFallback = require('connect-history-api-fallback'),
     Server = require('karma').Server,
-    protractor = require('gulp-protractor').protractor,
     replace = require('gulp-replace'),
     wait = require('gulp-wait'),
     colors = require('colors'),
@@ -25,10 +22,10 @@ var gulp = require('gulp'),
 var execFileSync = require('child_process').execFileSync;
 
 /**
- * Create error handling exception using gulp-util.
+ * Create error handling exception.
  */
 var onError = function (err) {
-  gutil.beep();
+  process.stdout.write('\x07');
   console.log(err.red);
   this.emit('end'); //added so that gulp will end the task on error, and won't hang.
 };
@@ -48,7 +45,7 @@ gulp.task('less', function (done) {
       .pipe(plumber({
         errorHandler: onError
       }))
-      .pipe(less().on('error', gutil.log))
+      .pipe(less().on('error', console.error))
       .pipe(autoprefixer({
         browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'IE 9'],
         cascade : true
@@ -151,227 +148,6 @@ gulp.task('karma-tests', function (done) {
   }).start();
 });
 
-gulp.task('test-env', function (done) {
-  gulp.src(['tests/config/src/test-env.js'], {allowEmpty:true})
-      .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarUIHost))
-      .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
-      .pipe(replace('protractorTestUser1Password', cedarTestUser1Password))
-      .pipe(replace('protractorTestUser1Name', cedarTestUser1Name))
-      .pipe(replace('protractorTestUser2Login', cedarTestUser2Login))
-      .pipe(replace('protractorTestUser2Password', cedarTestUser2Password))
-      .pipe(replace('protractorTestUser2Name', cedarTestUser2Name))
-      .pipe(replace('protractorCedarVersion', cedarVersion))
-      .pipe(gulp.dest('tests/config/'));
-  done();
-});
-
-// Protractor tests
-gulp.task('test-clean-up', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-work-space', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/workspace-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-staging', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/staging-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-sidebar', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/sidebar-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-all', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/sidebar-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
-    './tests/e2e/template-creator-spec.js',
-    './tests/e2e/copy-move-spec.js',
-    './tests/e2e/share-delete-spec.js',
-
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-folder-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/folder-permissions-spec.js',
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-resource-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/clean-up-spec.js',
-    './tests/e2e/resource-permissions-spec.js',
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-delete', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/create-folders-spec.js',
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-copy-move', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/copy-move-spec.js',
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-share-delete', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/share-delete-spec.js',
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/delete-resource-spec.js',
-    './tests/e2e/folder-permissions-spec.js',
-    './tests/e2e/resource-permissions-spec.js',
-    './tests/e2e/update-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-update-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/update-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-
-
-gulp.task('test--update-permissions', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/update-permissions-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-metadata', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/metadata-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-gulp.task('test-template', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/template-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
-
-gulp.task('test-form', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/metadata-creator-spec.js',
-    './tests/e2e/template-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
 
 
 
@@ -453,32 +229,10 @@ envConfig[cedarUIHostVarName] = null;
 var cedarRestHostVarName = getFrontendEnvVar('REST_HOST');
 envConfig[cedarRestHostVarName] = null;
 
-var cedarUser1LoginVarName = getFrontendEnvVar('USER1_LOGIN');
-envConfig[cedarUser1LoginVarName] = null;
-var cedarUser1PasswordVarName = getFrontendEnvVar('USER1_PASSWORD');
-envConfig[cedarUser1PasswordVarName] = null;
-var cedarUser1NameVarName = getFrontendEnvVar('USER1_NAME');
-envConfig[cedarUser1NameVarName] = null;
-
-var cedarUser2LoginVarName = getFrontendEnvVar('USER2_LOGIN');
-envConfig[cedarUser2LoginVarName] = null;
-var cedarUser2PasswordVarName = getFrontendEnvVar('USER2_PASSWORD');
-envConfig[cedarUser2PasswordVarName] = null;
-var cedarUser2NameVarName = getFrontendEnvVar('USER2_NAME');
-envConfig[cedarUser2NameVarName] = null;
-
 readAllEnvVarsOrFail();
 
 var cedarUIHost = envConfig[cedarUIHostVarName];
 var cedarRestHost = envConfig[cedarRestHostVarName];
-
-var cedarTestUser1Login = envConfig[cedarUser1LoginVarName];
-var cedarTestUser1Password = envConfig[cedarUser1PasswordVarName];
-var cedarTestUser1Name = envConfig[cedarUser1NameVarName];
-
-var cedarTestUser2Login = envConfig[cedarUser2LoginVarName];
-var cedarTestUser2Name = envConfig[cedarUser2NameVarName];
-var cedarTestUser2Password = envConfig[cedarUser2PasswordVarName];
 
 console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
@@ -495,7 +249,7 @@ if (cedarFrontendBehavior === 'develop') {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'replace-url', 'replace-version', 'test-env');
+taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'replace-url', 'replace-version');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();

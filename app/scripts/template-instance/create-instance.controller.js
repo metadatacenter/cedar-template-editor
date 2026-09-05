@@ -23,6 +23,33 @@ define([
     let vm = this;
     vm.useCee = CedarUser.useMetadataEditorV2();
 
+    // The metadata's own name, edited here rather than only through the Workbench's Rename. New
+    // metadata starts from the name this page has always generated, the template's name followed
+    // by "metadata", and keeps it unless the user types another. `savedInstanceName` is the name
+    // the stored artifact carries, so a change to the field can count towards the dirty state.
+    vm.instanceName = null;
+    let savedInstanceName = null;
+
+    const generatedInstanceName = function () {
+      return $scope.form['schema:name'] + $translate.instant('GENERATEDVALUE.instanceTitle');
+    };
+
+    // The name that is saved: the field's text, or the generated one when the field is blank.
+    const chosenInstanceName = function () {
+      const typed = (vm.instanceName || '').trim();
+      return typed.length > 0 ? typed : generatedInstanceName();
+    };
+
+    const instanceNameDirty = function () {
+      return savedInstanceName != null && chosenInstanceName() !== savedInstanceName;
+    };
+
+    vm.instanceNameChanged = function () {
+      if (instanceNameDirty()) {
+        UIUtilService.setDirty(true);
+      }
+    };
+
     const ceeElement = function () {
       return document.querySelector('cedar-embeddable-editor');
     };
@@ -101,6 +128,8 @@ define([
               presentInCee({templateObject: response.data});
             }
             $scope.form = response.data;
+            vm.instanceName = generatedInstanceName();
+            savedInstanceName = vm.instanceName;
             UIUtilService.setStatus($scope.form[CONST.publication.STATUS]);
             UIUtilService.setVersion($scope.form[CONST.publication.VERSION]);
             $rootScope.jsonToSave = $scope.form;
@@ -244,6 +273,8 @@ define([
             ValidationService.checkValidation();
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
+            vm.instanceName = $scope.instance['schema:name'];
+            savedInstanceName = vm.instanceName;
             getDetails($scope.instance['@id']);
 
             AuthorizedBackendService.doCall(
@@ -327,6 +358,9 @@ define([
 
       const doUpdate = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
+        savedInstanceName = $scope.instance['schema:name'];
+        vm.instanceName = savedInstanceName;
+        $rootScope.documentTitle = savedInstanceName;
         UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
         $rootScope.$broadcast("form:clean");
         $rootScope.$broadcast('submitForm');
@@ -362,7 +396,7 @@ define([
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = UrlService.fixSingleSlashHttps($routeParams.templateId);
         // Create fields that will store information used by the UI
-        $scope.instance['schema:name'] = $scope.form['schema:name'] + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:name'] = chosenInstanceName();
         $scope.instance['schema:description'] = $scope.form['schema:description'] + $translate.instant("GENERATEDVALUE.instanceDescription");
 
         // Make create instance call
@@ -400,6 +434,7 @@ define([
       }
       // Update instance
       else {
+        $scope.instance['schema:name'] = chosenInstanceName();
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
@@ -535,7 +570,7 @@ define([
         const dirty = CeeDirtyTrackerService.hasBaseline()
             ? CeeDirtyTrackerService.isDirty(cee.currentMetadata)
             : true;
-        UIUtilService.setDirty(dirty);
+        UIUtilService.setDirty(dirty || instanceNameDirty());
         $scope.$evalAsync();
       });
     }, 0);

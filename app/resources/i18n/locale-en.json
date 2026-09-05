@@ -598,6 +598,7 @@
     }
   },
   "METADATAEDITOR": {
+    "instanceName": "Instance name",
     "invalidTerm": "Invalid term",
     "draftTemplateWarning": "You are populating an unpublished template which may be modified at a later date.",
     "JsonLDCopied" : "JSON-LD copied to clipboard",

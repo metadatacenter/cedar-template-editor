@@ -472,14 +472,13 @@ define([
       if (!angular.isUndefined($scope.element)) {
         var title = dms.getTitle($scope.element);
         if (title && title.length > 0) {
-          var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.element.title = $translate.instant(
               "GENERATEDVALUE.elementTitle",
-              {title: capitalizedTitle}
+              {title: title}
           );
           $scope.element.description = $translate.instant(
               "GENERATEDVALUE.elementDescription",
-              {title: capitalizedTitle, version:window.cedarVersion}
+              {title: title, version:window.cedarVersion}
           );
         } else {
           $scope.element.title = "";

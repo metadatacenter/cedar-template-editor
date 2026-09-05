@@ -104,7 +104,7 @@
 
           <div  class="flex-right feedback-form">
             <div uib-tooltip="{{hc.dirtyCleanTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
-                class="fa " ng-class="{'fa-circle-o': hc.isDirty(), 'fa-circle': !hc.isDirty()}"></i></div>
+                class="fa fa-circle" ng-class="{'unsaved': hc.isDirty()}"></i></div>
             <div uib-tooltip="{{hc.lockUnlockTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom"><i
                 class="fa " ng-class="{'fa-lock': hc.isLocked(), 'fa-unlock': !hc.isLocked()}"></i></div>
             <div   uib-tooltip="{{hc.validTip()}}" tooltip-append-to-body="true" tooltip-placement="bottom">
