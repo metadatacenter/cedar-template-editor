@@ -13,6 +13,7 @@ define([
     var getGroupMembers;
     var showBackendError;
     var flashSuccess;
+    var confirmedExecution;
     var createGroup;
     var deleteGroup;
     var goBack;
@@ -38,6 +39,9 @@ define([
       });
       showBackendError = jasmine.createSpy('showBackendError');
       flashSuccess = jasmine.createSpy('flashSuccess');
+      confirmedExecution = jasmine.createSpy('confirmedExecution').and.callFake(function (operation) {
+        operation();
+      });
       deleteGroup = jasmine.createSpy('deleteGroup').and.callFake(function (group, success) {
         success();
       });
@@ -74,9 +78,7 @@ define([
         UIMessageService: {
           showBackendError: showBackendError,
           flashSuccess: flashSuccess,
-          confirmedExecution: function (operation) {
-            operation();
-          }
+          confirmedExecution: confirmedExecution
         },
         PreviousRouteService: {
           goBack: goBack
@@ -212,6 +214,58 @@ define([
       expect(updateGroupMembers).not.toHaveBeenCalled();
     });
 
+    it('keeps the previous administrator state when assignment is cancelled', function () {
+      var member = {user: anotherUser, administrator: false, member: true};
+      controller.selectedGroup = {
+        'schema:name': 'Researchers',
+        users: [
+          {user: currentUser, administrator: true, member: true},
+          member
+        ]
+      };
+      confirmedExecution.and.callFake(function () {});
+
+      member.administrator = true;
+      controller.updateGroupAdministrator(member);
+
+      expect(member.administrator).toBe(false);
+      expect(updateGroupMembers).not.toHaveBeenCalled();
+      expect(confirmedExecution).toHaveBeenCalledWith(jasmine.any(Function),
+          'DASHBOARD.groups.confirmAdministratorAssignTitle',
+          'DASHBOARD.groups.confirmAdministratorAssign', 'GENERIC.Ok', {
+            user: 'Grace Hopper',
+            group: 'Researchers'
+          });
+    });
+
+    it('confirms and saves removal of a Group Administrator', function () {
+      var member = {user: anotherUser, administrator: true, member: true};
+      controller.selectedGroup = {
+        'schema:name': 'Researchers',
+        users: [
+          {user: currentUser, administrator: true, member: true},
+          member
+        ]
+      };
+      updateGroupMembers.and.callFake(function (group, success) {
+        success({});
+      });
+
+      member.administrator = false;
+      controller.updateGroupAdministrator(member);
+
+      expect(member.administrator).toBe(false);
+      expect(confirmedExecution).toHaveBeenCalledWith(jasmine.any(Function),
+          'DASHBOARD.groups.confirmAdministratorRemoveTitle',
+          'DASHBOARD.groups.confirmAdministratorRemove', 'GENERIC.Ok', {
+            user: 'Grace Hopper',
+            group: 'Researchers'
+          });
+      expect(updateGroupMembers).toHaveBeenCalled();
+      expect(flashSuccess).toHaveBeenCalledWith(
+          'SERVER.GROUPS.update.success', {title: 'Researchers'}, 'GENERIC.Updated');
+    });
+
     it('uses the group-specific message after deleting a group', function () {
       var group = {
         'schema:name': 'Researchers',
@@ -247,6 +301,27 @@ define([
       expect(controller.selectedGroup.users[1].administrator).toBe(false);
       expect(updateGroupMembers).toHaveBeenCalled();
       expect(flashSuccess).toHaveBeenCalledWith('SERVER.GROUPS.update.success', {title: 'Researchers'}, 'GENERIC.Updated');
+    });
+
+    it('shows the updated toast after removing a member', function () {
+      var otherMember = {user: anotherUser, administrator: false, member: true};
+      controller.selectedGroup = {
+        'schema:name': 'Researchers',
+        users: [
+          {user: currentUser, administrator: true, member: true},
+          otherMember
+        ]
+      };
+      updateGroupMembers.and.callFake(function (group, success) {
+        success({});
+      });
+
+      controller.removeMember(otherMember);
+
+      expect(controller.selectedGroup.users.length).toBe(1);
+      expect(updateGroupMembers).toHaveBeenCalled();
+      expect(flashSuccess).toHaveBeenCalledWith(
+          'SERVER.GROUPS.update.success', {title: 'Researchers'}, 'GENERIC.Updated');
     });
 
     it('reloads membership when an optimistic member update fails', function () {

@@ -371,6 +371,14 @@
       }
     },
     "RESOURCE": {
+      "access": {
+        "update": {
+          "success": "Access to <b>{{resource}}</b> has been updated."
+        },
+        "ownership": {
+          "success": "<b>{{owner}}</b> is now the owner of <b>{{resource}}</b>."
+        }
+      },
       "copyToWorkspace": {
         "success": "The resource '{{title}}' was copied to your workspace!",
         "error": "There was an error while copying the resource to your workspace!<br /><br />VIEW TECHNICAL DETAILS!"
@@ -486,7 +494,7 @@
       "draft": "Create version...",
       "publish": "Publish version...",
       "delete": "Delete",
-      "share": "Share...",
+      "share": "Permissions...",
       "copy": "Copy to...",
       "copyFolderId": "Copy folder Id",
       "copyParentFolderId": "Copy parent folder Id",
@@ -547,7 +555,15 @@
       "people": "People",
       "admin": "admin",
       "addPeople": "Add people",
-      "confirmDeleteGroup": "Delete this group? Existing access granted to the group will no longer apply to its members."
+      "confirmDeleteGroup": "Delete this group? Existing access granted to the group will no longer apply to its members.",
+      "confirmOwnershipTitle": "Transfer ownership?",
+      "confirmOwnership": "Make {{owner}} the owner? You may lose access to this resource."
+    },
+    "groups": {
+      "confirmAdministratorAssignTitle": "Assign Group Administrator?",
+      "confirmAdministratorAssign": "Make {{user}} a Group Administrator of {{group}}?",
+      "confirmAdministratorRemoveTitle": "Remove Group Administrator?",
+      "confirmAdministratorRemove": "Remove the Group Administrator role from {{user}} in {{group}}?"
     },
     "filter": {
       "filterBy": "Filter",

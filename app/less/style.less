@@ -8650,7 +8650,7 @@ table.apiKey {
         input,
         select,
         select.select-picker {
-          height: 40px;
+          height: 34px;
           border-radius: 3px;
           color: @text-color;
 
@@ -8674,10 +8674,9 @@ table.apiKey {
   }
 
   .share-resource-context,
-  .share-owner-row,
+  .share-access-list-header,
   .share-access-row,
   .share-section-heading,
-  .share-transfer-controls,
   .share-add-controls {
     display: flex;
     align-items: center;
@@ -8746,29 +8745,14 @@ table.apiKey {
     }
   }
 
-  .share-transfer-link {
-    margin-top: 10px;
-    padding-left: 0;
-    color: @brand-primary;
-    font-weight: 600;
-  }
-
-  .share-owner-row,
   .share-access-row {
-    min-height: 58px;
-    padding: 8px 10px;
-    border: 1px solid @very-lt-gray;
+    min-height: 42px;
+    padding: 4px 10px;
     background: @white;
   }
 
-  .share-access-row {
-    min-height: 48px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
-
   .share-access-row + .share-access-row {
-    border-top: 0;
+    border-top: 1px solid @very-lt-gray;
   }
 
   .share-principal-avatar {
@@ -8798,39 +8782,17 @@ table.apiKey {
     overflow: hidden;
     color: @text-color;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .share-role-static {
     flex: 0 0 132px;
+    margin-left: 12px;
     color: @graytxt;
     font-weight: 600;
     text-align: left;
-  }
-
-  .share-transfer-panel {
-    margin-top: 12px;
-    padding: 14px;
-    border: 1px solid #c7dfe3;
-    background: #f7fbfc;
-  }
-
-  .share-transfer-controls {
-    gap: 8px;
-    flex-wrap: wrap;
-
-    input {
-      flex: 1 1 auto;
-    }
-  }
-
-  .share-transfer-warning {
-    width: 100%;
-    margin: 2px 0 0;
-    color: #765216;
-    font-size: 12px;
   }
 
   .share-add-controls {
@@ -8849,13 +8811,14 @@ table.apiKey {
 
   .share-add-button {
     flex: 0 0 72px;
-    height: 40px;
+    height: 34px;
   }
 
   .share-role-help {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 18px;
+    justify-content: space-between;
+    gap: 8px 24px;
     margin-top: 10px;
     color: @graytxt;
     font-size: 12px;
@@ -8863,7 +8826,61 @@ table.apiKey {
 
   .share-access-list {
     max-height: 280px;
+    border: 1px solid @very-lt-gray;
     overflow-y: auto;
+  }
+
+  .share-access-list-header {
+    min-height: 34px;
+    padding: 6px 10px;
+    border-bottom: 1px solid @very-lt-gray;
+    color: @graytxt;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .share-access-header-main {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .share-access-header-type {
+    flex: 0 0 70px;
+    margin-left: 12px;
+    text-align: center;
+  }
+
+  .share-access-header-role {
+    flex: 0 0 132px;
+    margin-left: 12px;
+    text-align: center;
+  }
+
+  .share-access-header-owner,
+  .share-owner-cell {
+    display: flex;
+    flex: 0 0 70px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 4px;
+  }
+
+  .share-owner-cell input {
+    width: auto;
+    height: auto;
+    margin: 0;
+    cursor: default;
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+  }
+
+  .share-access-header-action,
+  .share-access-action-spacer {
+    flex: 0 0 36px;
+    width: 36px;
+    margin-left: 4px;
   }
 
   .share-row-role {
@@ -8879,26 +8896,19 @@ table.apiKey {
   .share-principal-type {
     flex: 0 0 70px;
     margin-left: 12px;
+    text-align: center;
   }
 
   .share-remove-button {
     flex: 0 0 36px;
     width: 36px;
-    height: 36px;
+    height: 34px;
     margin-left: 4px;
-    color: @graytxt;
-
-    &:hover,
-    &:focus {
-      color: #b13a3a;
-    }
+    color: @text-color;
   }
 
-  .share-empty {
-    padding: 20px;
-    border: 1px dashed @very-lt-gray;
-    color: @graytxt;
-    text-align: center;
+  .share-remove-button[disabled] {
+    color: @very-lt-gray;
   }
 
   @media (max-width: @screen-sm-min) {
@@ -8923,10 +8933,13 @@ table.apiKey {
       }
     }
 
-    .share-add-controls,
-    .share-transfer-controls {
+    .share-add-controls {
       align-items: stretch;
       flex-direction: column;
+    }
+
+    .share-role-help {
+      justify-content: flex-start;
     }
 
     .share-role-picker,
@@ -8947,6 +8960,7 @@ table.apiKey {
     }
 
     .share-row-role,
+    .share-access-header-role,
     .share-role-static {
       flex-basis: 104px;
       width: 104px;
@@ -9230,8 +9244,8 @@ table.apiKey {
   }
 
   .groups-member-row {
-    min-height: 48px;
-    padding: 6px 12px;
+    min-height: 42px;
+    padding: 4px 12px;
   }
 
   .groups-member-row + .groups-member-row {
@@ -9257,7 +9271,7 @@ table.apiKey {
   }
 
   .groups-member-name {
-    font-weight: 600;
+    font-weight: 400;
   }
 
   .groups-member-row .groups-admin-control {

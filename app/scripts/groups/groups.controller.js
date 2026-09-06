@@ -249,15 +249,29 @@ define(['angular'], function (angular) {
     }
 
     function updateGroupAdministrator(member) {
-      if (vm.selectedGroup && !vm.selectedGroup.specialGroup) {
-        if (member && !member.administrator && !vm.selectedGroup.users.some(function (entry) {
-          return entry.administrator;
-        })) {
-          member.administrator = true;
-          return;
-        }
-        saveMembers();
+      if (!member || !vm.selectedGroup || vm.selectedGroup.specialGroup) {
+        return;
       }
+
+      // ng-change runs after Angular has changed the checkbox. Restore the saved state while the
+      // confirmation is open, then apply the requested state only when the user confirms it.
+      var makeAdministrator = !!member.administrator;
+      member.administrator = !makeAdministrator;
+      if (!canAdministerSelectedGroup() || (!makeAdministrator && isOnlyGroupAdministrator(member))) {
+        return;
+      }
+
+      UIMessageService.confirmedExecution(function () {
+        member.administrator = makeAdministrator;
+        saveMembers();
+      }, makeAdministrator ?
+          'DASHBOARD.groups.confirmAdministratorAssignTitle' :
+          'DASHBOARD.groups.confirmAdministratorRemoveTitle', makeAdministrator ?
+          'DASHBOARD.groups.confirmAdministratorAssign' :
+          'DASHBOARD.groups.confirmAdministratorRemove', 'GENERIC.Ok', {
+        user: getUserName(member.user),
+        group: groupName(vm.selectedGroup)
+      });
     }
 
     function saveMembers() {
