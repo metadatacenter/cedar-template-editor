@@ -1,469 +1,179 @@
 <div class="modal-dialog">
-  <div class="modal-content" ng-if="dc.shareModalVisible" ng-class="share.canManageGrants() ? '' : 'cannotWrite'">
+  <div class="modal-content" ng-if="dc.shareModalVisible">
     <div class="modal-header" id="shareModalHeader">
       <button type="button" class="close"
-          ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-      <div ng-if="!share.showGroups"><h4><span translate>DASHBOARD.share.share</span> <i class="fa fa-share"></i></h4>
-      </div>
-      <div ng-if="share.showGroups"><h4><span translate>DASHBOARD.share.groups</span> <i class="fa fa-users"></i></h4>
+          ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
+          aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4>Manage access</h4>
+      <div class="share-resource-context">
+        <cedar-resource-icon resource-type="share.getResourceType()"></cedar-resource-icon>
+        <div>
+          <div class="share-resource-name">{{share.getResourceName()}}</div>
+          <div class="share-resource-type">{{share.getResourceTypeLabel()}}</div>
+        </div>
       </div>
     </div>
 
     <div class="modal-body">
-      <!-- body  for share  -->
-      <div ng-if="share.model.show == 'users'" >
+      <div class="share-folder-notice" ng-if="share.isFolder()">
+        <i class="fa fa-sitemap" aria-hidden="true"></i>
+        <span>Access granted here also applies to the resources this folder contains.</span>
+      </div>
 
-        <div class="row">
-          <div ng-if="share.canManageGrants()" class="col-sm-6">
-
-            <div class="row">
-              <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.withUsers</h5></div>
-            </div>
-
-            <div class="half-padding-top" id="share-people" >
-              <div class="row">
-                <div class="col-sm-8 typeaheadDropDown">
-
-                  <input auto-focus placeholder="enter user name" type="text"
-                      ng-change="share.updateUserPermission(share.model.users.user['@id'])"
-                      ng-model="share.model.users.user"
-                      typeahead-editable="false"
-                      uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
-                      typeahead-select-on-exact="true"
-                      class="form-control user-name"></div>
-
-
-                <select ng-disabled="!share.model.users.user" ng-model="share.model.users.userRole"
-                    data-dropup-auto="false" class="dropdown col-sm-4 select-picker user-permission" select-picker
-                    select-model="share.model.users.user['@id']"
-                    cedar-live-search="true" block="'#share-people'">
-                  <option value="viewer">Viewer</option>
-                  <option value="editor">Editor</option>
-                  <option value="manager">Manager</option>
-                </select>
-
-              </div>
-              <div ng-show="share.canManageGrants() && share.model.users.user" class="confirmation first">
-                <div class="flex-left clear-save">
-                  <button type="button" class="btn btn-save" translate
-                      ng-click="share.addShare(share.model.users.user['@id'], share.model.users.userRole, 'shared-users', resource);share.model.users.user = null;">
-                    GENERIC.Ok
-                  </button>
-                  <button ng-if="share.canBeOwner(share.model.users.user['@id'])" type="button" class="btn btn-save"
-                      ng-click="share.addShare(share.model.users.user['@id'], 'owner', 'shared-users', resource);share.model.users.user = null;">
-                    Transfer ownership
-                  </button>
-                  <button type="button" class="btn btn-clear" ng-click="share.model.users.user = null;" translate>
-                    GENERIC.Cancel
-                  </button>
-
-                </div>
-              </div>
-            </div>
-
-
-            <div class="row">
-              <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.withGroups</h5></div>
-            </div>
-
-            <div class="half-padding-top" id="share-group" >
-              <!-- share with groups -->
-              <div class="row first">
-                <div class="col-sm-8">
-                  <input auto-focus placeholder="enter group name" type="text"
-                      ng-change="share.updateGroupPermission(share.model.users.group['@id'])"
-                      ng-model="share.model.users.group"
-                      typeahead-editable="false"
-                      uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "
-                      typeahead-on-select="share.groupTypeaheadOnSelect('users',$item, $model, $label)"
-                      typeahead-select-on-exact="true"
-                      class="form-control group-name share-with-group">
-                </div>
-
-                <select ng-disabled="!share.model.users.group" class="col-sm-4 select-picker group-permission"
-                    ng-model="share.model.users.groupRole"
-                    data-dropup-auto="false" class="dropdown group-permission" select-picker
-                    select-model="share.model.users.group['@id']"
-                    cedar-live-search="true"
-                    block="'#share-group'">
-                  <option value="viewer">Viewer</option>
-                  <option ng-if="!share.model.users.group.specialGroup" value="editor">Editor</option>
-                  <option ng-if="!share.model.users.group.specialGroup" value="manager">Manager</option>
-                </select>
-
-              </div>
-
-              <div ng-show="share.canManageGrants() && share.model.users.group" class="confirmation first">
-                <div class="flex-left clear-save">
-                  <button type="button" class="btn btn-save" translate
-                      ng-click="share.addShare(share.model.users.group['@id'], share.model.users.groupRole, 'shared-users', resource);share.model.users.group = null">
-                    GENERIC.Ok
-                  </button>
-                  <button type="button" class="btn btn-clear" ng-click="share.model.users.group = null"
-                      translate>
-                    GENERIC.Cancel
-                  </button>
-                </div>
-              </div>
-
-              <div class="row second">
-                <div class="col-sm-12">
-                  <form ng-submit="share.createGroup('users',share.model.users.name)">
-                    <input ng-model="share.model.users.name" type="text"
-                        placeholder="enter new group name" class="new-group"/>
-                  </form>
-                </div>
-              </div>
-
-              <div class="confirmation second" ng-if="share.canManageGrants() && share.model.users.name">
-                <div class="flex-left clear-save">
-
-                  <button type="button" class="btn btn-save " translate
-                      ng-click="share.createGroup('users', share.model.users.name);share.model.users.group = null">
-                    GENERIC.Ok
-                  </button>
-                  <button type="button" class="btn btn-clear" ng-click="share.model.users.name=''" translate>
-                    GENERIC.Cancel
-                  </button>
-
-                </div>
-              </div>
-            </div>
-
-
-            <!-- link to groups -->
-            <div class="row">
-              <div class="col-sm-12 center"><a href="#"
-                  ng-click="share.model.show = 'groups'"
-                  class="group-settings">
-                <h5><span translate>DASHBOARD.share.groupSettings</span> <i class="fa fa-users"></i></h5>
-              </a></div>
-            </div>
-
+      <div class="access-panel share-owner-section">
+        <div class="share-section-heading">
+          <div>
+            <h5>Owner</h5>
+            <p>The owner can manage access and transfer ownership.</p>
           </div>
-          <div ng-class="share.canManageGrants() ? 'col-sm-6' : 'col-sm-12'">
+          <button type="button" class="btn btn-link share-transfer-link"
+              ng-if="share.canTransferOwnership() && !share.model.transfer.active"
+              ng-click="share.beginOwnershipTransfer()">
+            Transfer ownership
+          </button>
+        </div>
 
-
-            <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container">
-              <div class="row">
-
-                <div class="col-sm-7 name">
-                  {{share.getName(share.resourcePermissions.owner)}}
-                </div>
-
-                <select class="col-sm-4 select-picker" select-picker disabled>
-                  <option value="owner">Owner</option>
-                </select>
-              </div>
-
-              <div class="row" ng-repeat="sh in share.shares">
-
-                <div class="col-sm-7 name">{{sh.node['schema:name']}}</div>
-
-                <select ng-model="sh.role" class="col-sm-4 select-picker" select-picker
-                    ng-change="share.addShare(sh.node['@id'], sh.role, 'shared-users', resource)"
-                    select-model="sh"
-                    cedar-live-search="true" ng-disabled="!share.canManageGrants()" block="share.role">
-
-
-                  <option value="viewer">Viewer</option>
-                  <option ng-if="!sh.node.specialGroup" value="editor">Editor</option>
-                  <option ng-if="!sh.node.specialGroup" value="manager">Manager</option>
-                </select>
-
-                <button ng-if="share.canBeOwner(sh.node['@id'])" type="button" class="btn btn-sm btn-info"
-                    ng-click="share.addShare(sh.node['@id'], 'owner', 'shared-users', resource)">
-                  Transfer ownership
-                </button>
-
-                <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canManageGrants()"
-                    ng-model="share.resourcePermissions"
-                    type="button"
-                    uib-tooltip="{{'HELP.removeShare' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="share.removeShare(sh.node, resource)"><i class="fa fa-times"
-                ></i></button>
-              </div>
-            </div>
-
-            <!-- select group -->
-            <div class="row">
-              <div class="col-sm-12">
-                <h5>&nbsp;</h5></div>
-            </div>
-
+        <div class="share-owner-row" ng-if="share.resourcePermissions">
+          <div class="share-principal-avatar share-principal-user" aria-hidden="true">
+            <i class="fa fa-user"></i>
           </div>
+          <div class="share-principal-summary">
+            <div class="share-principal-name">{{share.getName(share.resourcePermissions.owner)}}</div>
+            <div class="share-principal-kind">User</div>
+          </div>
+          <span class="share-role-static">Owner</span>
+        </div>
+
+        <div class="share-transfer-panel" ng-if="share.model.transfer.active">
+          <label for="share-new-owner">New owner</label>
+          <div class="share-transfer-controls">
+            <input id="share-new-owner" type="text" class="form-control"
+                placeholder="Search for a user"
+                ng-model="share.model.transfer.user"
+                typeahead-editable="false"
+                uib-typeahead="user as user.name for user in share.availableOwners() | filter:{name:$viewValue} | limitTo:8"
+                typeahead-select-on-exact="true">
+            <button type="button" class="btn btn-primary"
+                ng-disabled="!share.model.transfer.user"
+                ng-click="share.confirmOwnershipTransfer(share.shareResource)">
+              Transfer
+            </button>
+            <button type="button" class="btn btn-link"
+                ng-click="share.cancelOwnershipTransfer()">
+              Cancel
+            </button>
+          </div>
+          <p class="share-transfer-warning" ng-if="share.model.transfer.user">
+            {{share.model.transfer.user.name}} will become the owner. You will no longer own this resource.
+          </p>
         </div>
       </div>
 
-      <!-- body  for groups  -->
-      <div ng-show="share.model.show == 'groups'" class="groups">
-        <div class="row">
-          <div class="col-sm-6">
-
-            <!-- select group -->
-            <div class="row">
-              <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.selectGroup</h5></div>
-            </div>
-            <div class="row">
-              <div class="col-sm-11 ">
-                <input auto-focus placeholder="enter group name" type="text"
-                    ng-change="share.updateGroupPermission(share.model.groups.group['@id'])"
-                    ng-model="share.model.groups.group"
-                    typeahead-editable="false"
-                    uib-typeahead="group as group.name for group in share.resourceGroups | filter:{name:$viewValue} | limitTo:8 "
-                    typeahead-select-on-exact="true"
-                    typeahead-on-select="share.groupTypeaheadOnSelect('groups',$item, $model, $label)"
-                    class="form-control group-name">
-              </div>
-              <div class="col-sm-1 pull-right">
-                <button
-                    class="btn btn-sm btn-info btn-circle btn-delete delete-group" ng-if="share.canAdministerGroup()"
-                    ng-model="share.resourcePermissions"
-                    type="button"
-                    uib-tooltip="{{'HELP.removeGroup' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="share.model.groups.removeConfirm = true;"
-                    ng-disabled="!share.model.groups.group">
-                  <i class="fa fa-remove"></i>
-                </button>
-              </div>
-            </div>
-
-            <div class="confirmation" ng-show="share.model.groups.removeConfirm && share.canAdministerGroup() && share.model.groups.group">
-              <div class="flex-left clear-save">
-
-                <button type="button" class="btn btn-save confirm" translate
-                    ng-click="share.model.groups.removeConfirm=false;share.deleteGroup('groups', resource);share.model.groups.group = null"
-                    aria-label="Remove">
-                  GENERIC.Remove
-                </button>
-                <button type="button" class="btn btn-clear" ng-click="share.model.groups.removeConfirm=false;share.model.groups.group = null;" translate>
-                  GENERIC.Cancel
-                </button>
-
-
-              </div>
-            </div>
-
-            <div class="row" ng-if="!share.model.groups.group">
-              <div class="col-sm-12">
-                <form ng-submit="share.createGroup('groups',share.model.groups.name)">
-                  <input ng-model="share.model.groups.name" type="text"
-                      placeholder="enter new group name" class="new-group-name"/>
-                </form>
-              </div>
-            </div>
-
-            <div ng-if="share.model.groups.name" class="confirmation">
-              <div class="flex-left clear-save">
-                <button type="button" class="btn btn-save" translate
-                    ng-click="share.createGroup('groups',share.model.groups.name)">
-                  GENERIC.Ok
-                </button>
-                <button type="button" class="btn btn-clear" ng-click="share.model.groups.name = ''" translate>
-                  GENERIC.Cancel
-                </button>
-              </div>
-            </div>
-
-            <!-- add users to group -->
-            <div class="row">
-              <div class="col-sm-12" class="topMinus10">
-                <h5 translate>DASHBOARD.share.addPeople</h5></div>
-            </div>
-            <div class="row">
-
-              <div class="col-sm-12 typeaheadDropDown">
-                <input auto-focus placeholder="enter user name" type="text"
-                    ng-change="share.updateUserPermission(share.model.groups.user['@id'])"
-                    ng-model="share.model.groups.user"
-                    typeahead-editable="false"
-                    uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
-                    typeahead-select-on-exact="true"
-                    ng-disabled="!share.model.groups.group"
-                    class="form-control user-name"></div>
-            </div>
-
-            <div ng-if="share.canAdministerGroup() && share.model.groups.user && share.model.groups.user" class="confirmation">
-              <div class="flex-left clear-save">
-
-                <button type="button" class="btn btn-save " translate
-                    ng-click="share.addUserToGroup(share.model.groups.user,  share.model.groups.group, 'group-members');share.model.groups.user = null">
-                  GENERIC.Ok
-                </button>
-                <button type="button" class="btn btn-clear" ng-click="share.model.groups.user = null" translate>
-                  GENERIC.Cancel
-                </button>
-
-
-              </div>
-            </div>
-
-
-            <!-- link to share -->
-            <div class="row">
-              <div class="col-sm-12 center">
-                <a href="#" ng-click="share.model.show ='users';">
-                  <h5><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
-                </a>
-              </div>
-            </div>
-
+      <div class="access-panel" ng-if="share.canManageGrants()">
+        <div class="share-section-heading">
+          <div>
+            <h5>Add people or groups</h5>
+            <p>Choose one person or group and assign a role.</p>
           </div>
-          <div class="col-sm-6">
+        </div>
 
-            <!-- group members -->
-            <div ng-if="share.model.groups.show == 'people'">
-              <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container">
+        <div class="share-add-controls" id="share-principal-picker">
+          <div class="share-principal-picker">
+            <label for="share-principal">Person or group</label>
+            <input id="share-principal" type="text" class="form-control"
+                placeholder="Search by name"
+                ng-model="share.model.users.node"
+                typeahead-editable="false"
+                uib-typeahead="node as node.name for node in share.availablePrincipals() | filter:{name:$viewValue} | limitTo:8"
+                typeahead-on-select="share.principalSelected($item)"
+                typeahead-select-on-exact="true">
+          </div>
 
-                <div ng-if="!share.model.groups.group" class="row">
-                  <div class="center" style="margin-top:100px;">Select a group to display</div>
-                </div>
+          <div class="share-role-picker">
+            <label for="share-role">Role</label>
+            <select id="share-role" class="form-control"
+                ng-disabled="!share.model.users.node"
+                ng-model="share.model.users.role">
+              <option value="viewer">Viewer</option>
+              <option ng-if="!share.model.users.node.specialGroup" value="editor">Editor</option>
+              <option ng-if="!share.model.users.node.specialGroup" value="manager">Manager</option>
+            </select>
+          </div>
 
-                <div ng-if="share.model.groups.group" class="row" ng-repeat="member in share.model.groups.group.users">
+          <button type="button" class="btn btn-primary share-add-button"
+              ng-disabled="!share.model.users.node"
+              ng-click="share.addSelectedShare(share.shareResource)">
+            Add
+          </button>
+        </div>
 
-                  <div class="col-sm-8 name">{{member.user.firstName}} {{member.user.lastName}}</div>
+        <div class="share-role-help" aria-label="Role descriptions">
+          <span><strong>Viewer</strong> can view.</span>
+          <span><strong>Editor</strong> can view and change content.</span>
+          <span><strong>Manager</strong> can view, edit and manage access.</span>
+        </div>
+      </div>
 
-                  <div class="col-sm-3">
-                    <div class="checkbox checkbox-primary">
-                      <input type="checkbox"
-                          ng-change="share.updateGroupAdmin(member, share.model.groups.group, member.administrator)"
-                          ng-disabled="share.model.groups.group.specialGroup"
-                          id="{{member.user.id}}"
-                          ng-model='member.administrator'>
-                      <label for="{{member.user.id}}" translate>DASHBOARD.share.admin</label>
-                    </div>
-                  </div>
+      <div class="access-panel share-access-section">
+        <div class="share-section-heading">
+          <div>
+            <h5>People and groups with direct access</h5>
+            <p ng-if="share.canManageGrants()">Role changes are saved immediately.</p>
+            <p ng-if="!share.canManageGrants()">Only a Manager or the owner can change access.</p>
+          </div>
+        </div>
 
-                  <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canAdministerGroup()"
-                      ng-model="share.resourcePermissions"
-                      type="button"
-                      uib-tooltip="{{'HELP.removeFromGroup' | translate}}"
-                      tooltip-trigger
-                      tooltip-animation="false"
-                      tooltip-placement="top"
-                      data-toggle="tooltip"
-                      ng-disabled="share.model.groups.group.specialGroup"
-                      ng-click="share.removeFromGroup('groups',member)"><i class="fa fa-times"
-                  ></i></button>
-                </div>
-              </div>
+        <div class="share-empty" ng-if="share.shares && !share.shares.length">
+          No additional people or groups have direct access.
+        </div>
+
+        <div ng-model="share.resourcePermissions" id="shared-users" class="share-access-list">
+          <div class="share-access-row" ng-repeat="sh in share.shares track by sh.node['@id']">
+            <div class="share-principal-avatar"
+                ng-class="sh.node.resourceType === 'group' ? 'share-principal-group' : 'share-principal-user'"
+                aria-hidden="true">
+              <i class="fa" ng-class="sh.node.resourceType === 'group' ? 'fa-users' : 'fa-user'"></i>
+            </div>
+            <div class="share-principal-summary">
+              <div class="share-principal-name">{{share.getName(sh.node)}}</div>
+              <div class="share-principal-kind">{{share.getPrincipalTypeLabel(sh.node)}}</div>
             </div>
 
-            <!-- group details -->
-            <div ng-if="share.model.groups.show == 'details'" class="scroll-container"
-                style="padding-left:20px;height:250px;overflow:hidden">
-              <div ng-if="!share.model.groups.group" class="row">
-                <div class="center" style="margin-top:100px;">Select a group to display</div>
-              </div>
-              <div ng-if="share.model.groups.group">
-                <h5>
-                  <form ng-submit="share.updateGroupName('groups', share.model.groups.name)">
-                    <div class="row inline-editing">
-                      <div class="col-sm-9 ">
-                        <input class="borderless group-name" ng-click="share.editingTitle=true;"
-                            ng-disabled="share.model.groups.group.specialGroup" type="text"
-                            ng-model="share.model.groups.name" placeholder="enter group name"/></div>
-                      <div class="col-sm-3">
-                        <button ng-if="share.editingTitle" type="button"
-                            ng-click="share.editingTitle=false;"
-                            class="remove-group"><i class="fa fa-remove"></i></button>
-                        <button ng-if="share.editingTitle" type="button"
-                            ng-click="share.updateGroupName('groups', share.model.groups.name)" aria-label="ok"><i
-                            class="fa fa-check"></i></button>
-                      </div>
-                    </div>
-                  </form>
-                </h5>
+            <select ng-model="sh.role" class="form-control share-row-role"
+                ng-change="share.addShare(sh.node['@id'], sh.role, 'shared-users', share.shareResource)"
+                ng-disabled="!share.canManageGrants()"
+                aria-label="Role for {{sh.node['schema:name']}}">
+              <option value="viewer">Viewer</option>
+              <option ng-if="!sh.node.specialGroup" value="editor">Editor</option>
+              <option ng-if="!sh.node.specialGroup" value="manager">Manager</option>
+            </select>
 
-
-                <table class="table details">
-
-                  <tbody>
-
-                  <tr>
-                    <td class="left">Modified</td>
-                    <td>
-                      <span class="no-wrap">{{ share.model.groups.group['pav:lastUpdatedOn'] | prettyDate }}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="left">Created</td>
-                    <td>
-                      <span class="no-wrap">{{ share.model.groups.group['pav:createdOn'] | prettyDate }}</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="left">Members</td>
-                    <td>
-                      <span class="no-wrap">{{share.model.groups.group.users.length}}</span>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-
-                <h5>
-                  <form ng-submit="share.updateGroupDescription('groups', share.newDescription)">
-                    <div class="row inline-editing">
-                      <div class="col-sm-9">
-                        <input class="borderless" ng-disabled="share.model.groups.group.specialGroup" type="text"
-                            ng-click="share.editingDescription=true;"
-                            ng-model="share.newDescription" placeholder="enter group description"/>
-                      </div>
-                      <div class="col-sm-3">
-                        <button ng-if="share.editingDescription" type="button"
-                            ng-click="share.newDescription=false;share.newDescription=share.model.groups.group.description"
-                            aria-label="ok"><i class="fa fa-remove"></i></button>
-                        <button ng-if="share.editingDescription" type="button"
-                            ng-click="share.updateGroupDescription(share.model.groups.group, share.newDescription)"><i
-                            class="fa fa-check"></i></button>
-                      </div>
-                    </div>
-                  </form>
-                </h5>
-
-              </div>
-            </div>
-
-            <!-- members or details -->
-            <div class="row">
-              <div class="col-sm-6 center">
-                <a href="#" ng-click="share.model.groups.show = 'people'">
-                  <h5><span translate>DASHBOARD.share.people</span></h5>
-                </a>
-              </div>
-              <div class="col-sm-6 center">
-                <a href="#" ng-click="share.model.groups.show = 'details'">
-                  <h5><span translate>DASHBOARD.share.groupDetails</span></h5>
-                </a>
-              </div>
-            </div>
-
+            <button type="button" class="btn btn-link share-remove-button"
+                ng-if="share.canManageGrants()"
+                ng-click="share.removeShare(sh.node, share.shareResource)"
+                aria-label="Remove access for {{sh.node['schema:name']}}"
+                uib-tooltip="Remove access" tooltip-placement="top">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- footer closes the dialog -->
     <div class="modal-footer actions">
-      <div class="clear-save">
-        <button type="button" ng-disabled="share.incomplete()" ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
-            data-dismiss="modal" aria-label="Done"
-            class="btn btn-save confirm" translate>GENERIC.Done
-        </button>
-      </div>
+      <button type="button" class="btn btn-link share-manage-groups-link"
+          ng-click="share.openGroups()">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        Manage groups
+      </button>
+      <button type="button"
+          ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
+          data-dismiss="modal" aria-label="Close"
+          class="btn btn-primary">
+        Close
+      </button>
     </div>
-
   </div>
 </div>

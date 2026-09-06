@@ -22,7 +22,7 @@ define([
     };
 
     // Pages that should never be a "back" target.
-    var UTILITY_PATHS = ['/profile', '/settings', '/privacy', '/logout'];
+    var UTILITY_PATHS = ['/profile', '/settings', '/groups', '/privacy', '/logout'];
 
     function isUtilityPath(path) {
       if (!path) {

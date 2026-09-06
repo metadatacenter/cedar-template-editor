@@ -49,6 +49,7 @@ define([
   'cedar/template-editor/template-field/template-field.module',
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
+  'cedar/template-editor/groups/groups.module',
   'cedar/template-editor/messaging/messaging.module',
 
   // classic javascript, app data
@@ -78,6 +79,7 @@ define([
     'cedar.templateEditor.templateField',
     'cedar.templateEditor.templateInstance',
     'cedar.templateEditor.profile',
+    'cedar.templateEditor.groups',
     'cedar.templateEditor.messaging',
     'cedar.templateEditor.profile',
 

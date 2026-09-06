@@ -1,0 +1,137 @@
+<div id="groups-page">
+  <div class="navbar-back flex">
+    <div class="back-arrow-click flex-left" ng-click="goToDashboardOrBack()">
+      <i class="back-arrow fa fa-arrow-left" aria-hidden="true"></i>
+      <div class="document-title">Groups</div>
+    </div>
+  </div>
+
+  <main class="groups-content">
+    <header class="groups-page-header">
+      <h1>Groups</h1>
+      <p>A group is a named collection of users. Group Administrators can change its name, membership and administrators.</p>
+    </header>
+
+    <div class="groups-card groups-create-card">
+      <div>
+        <h2>Create a group</h2>
+        <p>Create a group before assigning it access to folders or artifacts.</p>
+      </div>
+      <form class="groups-create-form" ng-submit="groups.createGroup()">
+        <label for="new-group-name">Group name</label>
+        <div class="groups-inline-controls">
+          <input id="new-group-name" class="form-control" type="text"
+              ng-model="groups.newGroupName" placeholder="Enter a group name">
+          <button type="submit" class="btn btn-primary" ng-disabled="!groups.newGroupName">Create group</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="groups-card groups-manage-card">
+      <div class="groups-selector">
+        <label for="group-selector">Manage a group</label>
+        <input id="group-selector" class="form-control" type="text"
+            ng-model="groups.selectedGroup"
+            placeholder="Search for a group"
+            typeahead-editable="false"
+            uib-typeahead="group as group.name for group in groups.groups | filter:{name:$viewValue} | limitTo:10"
+            typeahead-on-select="groups.selectGroup($item)"
+            typeahead-select-on-exact="true">
+      </div>
+
+      <div class="groups-empty-state" ng-if="!groups.selectedGroup">
+        Select a group to view its details and members.
+      </div>
+
+      <div ng-if="groups.selectedGroup" class="groups-selected">
+        <div class="groups-selected-header">
+          <div>
+            <h2>{{groups.selectedGroup.name}}</h2>
+            <p ng-if="groups.selectedGroup.specialGroup">This built-in group contains every CEDAR user and cannot be changed.</p>
+            <p ng-if="!groups.selectedGroup.specialGroup && !groups.canAdministerSelectedGroup()">
+              You can view this group, but only a Group Administrator can change it.
+            </p>
+          </div>
+          <button type="button" class="btn btn-link groups-delete-button"
+              ng-if="groups.canAdministerSelectedGroup()"
+              ng-click="groups.deleteSelectedGroup()">
+            Delete group
+          </button>
+        </div>
+
+        <form class="groups-details-form" ng-submit="groups.saveGroupDetails()">
+          <div class="groups-field">
+            <label for="group-name">Name</label>
+            <input id="group-name" class="form-control" type="text"
+                ng-model="groups.editName"
+                ng-disabled="!groups.canAdministerSelectedGroup()">
+          </div>
+          <div class="groups-field">
+            <label for="group-description">Description</label>
+            <textarea id="group-description" class="form-control" rows="2"
+                ng-model="groups.editDescription"
+                ng-disabled="!groups.canAdministerSelectedGroup()"
+                placeholder="Optional description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary"
+              ng-if="groups.canAdministerSelectedGroup()"
+              ng-disabled="!groups.editName">
+            Save details
+          </button>
+        </form>
+
+        <div class="groups-members-section">
+          <div class="groups-members-heading">
+            <div>
+              <h3>Members</h3>
+              <p>The Group Administrator role allows a member to manage this group.</p>
+            </div>
+            <span class="groups-member-count">{{groups.selectedGroup.users.length || 0}}</span>
+          </div>
+
+          <div class="groups-add-member" ng-if="groups.canAdministerSelectedGroup()">
+            <div>
+              <label for="new-group-member">Add a member</label>
+              <input id="new-group-member" class="form-control" type="text"
+                  ng-model="groups.newMember"
+                  placeholder="Search for a user"
+                  typeahead-editable="false"
+                  uib-typeahead="user as user.name for user in groups.availableMembers() | filter:{name:$viewValue} | limitTo:10"
+                  typeahead-select-on-exact="true">
+            </div>
+            <button type="button" class="btn btn-primary"
+                ng-disabled="!groups.newMember"
+                ng-click="groups.addMember()">
+              Add member
+            </button>
+          </div>
+
+          <div class="groups-member-list">
+            <div class="groups-member-row" ng-repeat="member in groups.selectedGroup.users track by member.user['@id']">
+              <div class="groups-member-avatar" aria-hidden="true"><i class="fa fa-user"></i></div>
+              <div class="groups-member-summary">
+                <div class="groups-member-name">{{groups.getUserName(member.user)}}</div>
+                <div class="groups-member-email">{{member.user.email}}</div>
+              </div>
+              <label class="groups-admin-control">
+                <input type="checkbox" ng-model="member.administrator"
+                    ng-change="groups.updateGroupAdministrator(member)"
+                    ng-disabled="!groups.canAdministerSelectedGroup()">
+                <span>Group Administrator</span>
+              </label>
+              <button type="button" class="btn btn-link groups-remove-member"
+                  ng-if="groups.canAdministerSelectedGroup()"
+                  ng-click="groups.removeMember(member)"
+                  aria-label="Remove {{groups.getUserName(member.user)}} from the group">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="groups-empty-members" ng-if="groups.selectedGroup.users && !groups.selectedGroup.users.length">
+              This group has no members.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

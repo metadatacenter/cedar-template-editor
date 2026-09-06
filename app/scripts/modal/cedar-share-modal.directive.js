@@ -20,6 +20,7 @@ define([
         cedarShareModalController.$inject = [
           '$timeout',
           '$scope',
+          '$location',
           '$translate',
           '$uibModal',
           'CedarUser',
@@ -30,7 +31,7 @@ define([
           'CONST'
         ];
 
-        function cedarShareModalController($timeout, $scope,  $translate, $uibModal, CedarUser,
+        function cedarShareModalController($timeout, $scope, $location, $translate, $uibModal, CedarUser,
                                            resourceService,
                                            UIMessageService, UISettingsService,
                                            AuthorizedBackendService, CONST) {
@@ -64,6 +65,19 @@ define([
           vm.typeaheadUser = null;
           vm.autoCompleteUserId = null;
           vm.getName = getName;
+          vm.getResourceName = getResourceName;
+          vm.getResourceType = getResourceType;
+          vm.getResourceTypeLabel = getResourceTypeLabel;
+          vm.isFolder = isFolder;
+          vm.getPrincipalTypeLabel = getPrincipalTypeLabel;
+          vm.availablePrincipals = availablePrincipals;
+          vm.availableOwners = availableOwners;
+          vm.principalSelected = principalSelected;
+          vm.addSelectedShare = addSelectedShare;
+          vm.beginOwnershipTransfer = beginOwnershipTransfer;
+          vm.cancelOwnershipTransfer = cancelOwnershipTransfer;
+          vm.confirmOwnershipTransfer = confirmOwnershipTransfer;
+          vm.openGroups = openGroups;
           vm.incomplete = incomplete;
 
           // groups
@@ -91,10 +105,16 @@ define([
           vm.model = {
             "show" : "users",
             "users": {
+              "node" : null,
+              "role" : 'viewer',
               "user" : null,
               "group" : null,
               "userRole" : 'viewer',
               "groupRole" : 'viewer',
+            },
+            "transfer": {
+              "active": false,
+              "user": null
             },
             "groups": {
               "user" : null,
@@ -364,11 +384,126 @@ define([
             if (node) {
               if (isUser(node)) {
                 result = node.firstName + ' ' + node.lastName;
+              } else if (node.specialGroup) {
+                result = 'Everyone';
               } else {
                 result = node['schema:name'];
               }
             }
             return result;
+          }
+
+          function getResource() {
+            return vm.selectedResource || vm.shareResource;
+          }
+
+          function openGroups() {
+            var modal = jQuery('#share-modal');
+            modal.one('hidden.bs.modal', function () {
+              $scope.$evalAsync(function () {
+                $location.path('/groups');
+              });
+            });
+            modal.modal('hide');
+          }
+
+          function getResourceName() {
+            var resource = getResource();
+            if (!resource) {
+              return '';
+            }
+            return resource['schema:name'] || resource.name || resource.title || 'Untitled resource';
+          }
+
+          function getResourceType() {
+            var resource = getResource();
+            return resource && resource.resourceType ? resource.resourceType : 'resource';
+          }
+
+          function getResourceTypeLabel() {
+            var labels = {
+              folder: 'Folder',
+              template: 'Template',
+              element: 'Element',
+              field: 'Field',
+              instance: 'Metadata instance',
+              metadata: 'Metadata instance'
+            };
+            return labels[getResourceType()] || 'Resource';
+          }
+
+          function isFolder() {
+            return getResourceType() === 'folder';
+          }
+
+          function getPrincipalTypeLabel(node) {
+            if (node && node.specialGroup) {
+              return 'Built-in group';
+            }
+            return node && node.resourceType === 'group' ? 'Group' : 'User';
+          }
+
+          function isDirectlyShared(node) {
+            if (!node || !vm.shares) {
+              return false;
+            }
+            for (var i = 0; i < vm.shares.length; i++) {
+              if (vm.shares[i].node['@id'] === node['@id']) {
+                return true;
+              }
+            }
+            return false;
+          }
+
+          function availablePrincipals() {
+            if (!vm.resourceNodes) {
+              return [];
+            }
+            return vm.resourceNodes.filter(function (node) {
+              return !isOwner(node) && !isDirectlyShared(node);
+            });
+          }
+
+          function availableOwners() {
+            if (!vm.resourceUsers) {
+              return [];
+            }
+            return vm.resourceUsers.filter(function (user) {
+              return !isOwner(user);
+            });
+          }
+
+          function principalSelected(node) {
+            vm.model.users.role = 'viewer';
+          }
+
+          function addSelectedShare(resource) {
+            var node = vm.model.users.node;
+            if (!node) {
+              return;
+            }
+            addShare(node['@id'], vm.model.users.role, 'shared-users', resource);
+            vm.model.users.node = null;
+            vm.model.users.role = 'viewer';
+          }
+
+          function beginOwnershipTransfer() {
+            vm.model.transfer.active = true;
+            vm.model.transfer.user = null;
+          }
+
+          function cancelOwnershipTransfer() {
+            vm.model.transfer.active = false;
+            vm.model.transfer.user = null;
+          }
+
+          function confirmOwnershipTransfer(resource) {
+            var user = vm.model.transfer.user;
+            if (!user) {
+              return;
+            }
+            addShare(user['@id'], 'owner', 'shared-users', resource);
+            cancelOwnershipTransfer();
           }
 
           // when selected user changes, reset selected permission
@@ -669,6 +804,9 @@ define([
             vm.resourceGroups = null;
             vm.resourceNodes = null;
             vm.resourcePermissions = null;
+            vm.model.users.node = null;
+            vm.model.users.role = 'viewer';
+            cancelOwnershipTransfer();
             vm.editingTitle = false;
             vm.editingDescription = false;
             vm.newTitle = "";

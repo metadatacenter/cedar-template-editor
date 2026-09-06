@@ -46,7 +46,7 @@
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header ">
 
-      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging() || hc.isSettings()">
+      <div ng-if="hc.isDashboard() || hc.isProfile() || hc.isPrivacy() || hc.isMessaging() || hc.isSettings() || hc.isGroups()">
         <div class="row">
           <div class="col-xs-2" ng-click="hc.goToDashboardOrBack()">
             <a class="navbar-brand " alt="Cedar" href="javascript:">Cedar</a>
@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging() && !hc.isSettings()">
+      <div ng-if="!hc.isDashboard() && !hc.isProfile() && !hc.isPrivacy() && !hc.isMessaging() && !hc.isSettings() && !hc.isGroups()">
         <div class="navbar-back flex">
           <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
@@ -128,6 +128,7 @@
     <ul>
       <a href="/profile"><li id="user-profile-tool" ><span>Profile</span></li></a>
       <a href="/settings"><li id="user-settings-tool"><span>Settings</span></li></a>
+      <a href="/groups"><li id="user-groups-tool"><span>Groups</span></li></a>
       <a href="/privacy"><li id="user-privacy" ><span>Privacy</span></li></a>
       <!-- Monitoring dashboard: another CEDAR frontend (same Keycloak session), so it opens in a new
            tab but is marked with the cedar tree rather than the "external link" arrow. Only shown to

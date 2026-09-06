@@ -211,6 +211,10 @@ define([
       return (vm.path === "/messaging");
     };
 
+    vm.isGroups = function () {
+      return (vm.path === "/groups");
+    };
+
     vm.getDocumentTitle = function () {
       return $rootScope.documentTitle;
     };
