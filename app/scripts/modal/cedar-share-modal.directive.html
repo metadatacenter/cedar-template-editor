@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content" ng-if="dc.shareModalVisible">
+  <div class="modal-content">
     <div class="modal-header" id="shareModalHeader">
       <button type="button" class="close"
           ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
@@ -22,28 +22,7 @@
         <span>Access granted here also applies to the resources this folder contains.</span>
       </div>
 
-      <div class="access-panel share-owner-section">
-        <div class="share-section-heading">
-          <div>
-            <h5>Owner</h5>
-            <p>The owner can manage access and transfer ownership.</p>
-          </div>
-        </div>
-
-        <div class="share-owner-row" ng-if="share.resourcePermissions">
-          <div class="share-principal-avatar share-principal-user" aria-hidden="true">
-            <i class="fa fa-user"></i>
-          </div>
-          <div class="share-principal-summary">
-            <div class="share-principal-name">{{share.getName(share.resourcePermissions.owner)}}</div>
-            <div class="share-principal-kind">User</div>
-          </div>
-          <span class="share-role-static">Owner</span>
-        </div>
-
-      </div>
-
-      <div class="access-panel" ng-if="share.canManageGrants()">
+      <div class="access-panel share-add-section" ng-if="share.canManageGrants()">
         <div class="share-section-heading">
           <div>
             <h5>Add users or groups</h5>
@@ -87,6 +66,72 @@
           <span><strong>Manager</strong> can view, edit and manage access.</span>
         </div>
 
+      </div>
+
+      <div class="access-panel share-access-section">
+        <div class="share-section-heading">
+          <div>
+            <h5>Users and groups with direct access</h5>
+            <p ng-if="share.canManageGrants()">Role changes are saved immediately.</p>
+            <p ng-if="!share.canManageGrants()">Only a Manager or the owner can change access.</p>
+          </div>
+        </div>
+
+        <div class="share-empty" ng-if="share.shares && !share.shares.length">
+          No additional users or groups have direct access.
+        </div>
+
+        <div ng-model="share.resourcePermissions" id="shared-users" class="share-access-list">
+          <div class="share-access-row" ng-repeat="sh in share.shares track by sh.node['@id']">
+            <div class="share-principal-avatar"
+                ng-class="sh.node.resourceType === 'group' ? 'share-principal-group' : 'share-principal-user'"
+                aria-hidden="true">
+              <i class="fa" ng-class="sh.node.resourceType === 'group' ? 'fa-users' : 'fa-user'"></i>
+            </div>
+            <div class="share-principal-summary">
+              <div class="share-principal-name">{{share.getName(sh.node)}}</div>
+            </div>
+            <div class="share-principal-kind share-principal-type">{{share.getPrincipalTypeLabel(sh.node)}}</div>
+
+            <select ng-model="sh.role" class="form-control share-row-role"
+                ng-change="share.addShare(sh.node['@id'], sh.role, 'shared-users', share.shareResource)"
+                ng-disabled="!share.canManageGrants()"
+                aria-label="Role for {{sh.node['schema:name']}}">
+              <option value="viewer">Viewer</option>
+              <option ng-if="!sh.node.specialGroup" value="editor">Editor</option>
+              <option ng-if="!sh.node.specialGroup" value="manager">Manager</option>
+            </select>
+
+            <button type="button" class="btn btn-link share-remove-button"
+                ng-if="share.canManageGrants()"
+                ng-click="share.removeShare(sh.node, share.shareResource)"
+                aria-label="Remove access for {{sh.node['schema:name']}}"
+                uib-tooltip="Remove access" tooltip-placement="top">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="access-panel share-owner-section">
+        <div class="share-section-heading">
+          <div>
+            <h5>Owner</h5>
+            <p>The owner can manage access and transfer ownership.</p>
+          </div>
+        </div>
+
+        <div class="share-owner-row" ng-if="share.resourcePermissions">
+          <div class="share-principal-avatar share-principal-user" aria-hidden="true">
+            <i class="fa fa-user"></i>
+          </div>
+          <div class="share-principal-summary">
+            <div class="share-principal-name">{{share.getName(share.resourcePermissions.owner)}}</div>
+            <div class="share-principal-kind">User</div>
+          </div>
+          <span class="share-role-static">Owner</span>
+        </div>
+
         <button type="button" class="btn btn-link share-transfer-link"
             ng-if="share.canTransferOwnership() && !share.model.transfer.active"
             ng-click="share.beginOwnershipTransfer()">
@@ -115,51 +160,6 @@
           <p class="share-transfer-warning" ng-if="share.model.transfer.user">
             {{share.model.transfer.user.name}} will become the owner. You will no longer own this resource.
           </p>
-        </div>
-      </div>
-
-      <div class="access-panel share-access-section">
-        <div class="share-section-heading">
-          <div>
-            <h5>People and groups with direct access</h5>
-            <p ng-if="share.canManageGrants()">Role changes are saved immediately.</p>
-            <p ng-if="!share.canManageGrants()">Only a Manager or the owner can change access.</p>
-          </div>
-        </div>
-
-        <div class="share-empty" ng-if="share.shares && !share.shares.length">
-          No additional people or groups have direct access.
-        </div>
-
-        <div ng-model="share.resourcePermissions" id="shared-users" class="share-access-list">
-          <div class="share-access-row" ng-repeat="sh in share.shares track by sh.node['@id']">
-            <div class="share-principal-avatar"
-                ng-class="sh.node.resourceType === 'group' ? 'share-principal-group' : 'share-principal-user'"
-                aria-hidden="true">
-              <i class="fa" ng-class="sh.node.resourceType === 'group' ? 'fa-users' : 'fa-user'"></i>
-            </div>
-            <div class="share-principal-summary">
-              <div class="share-principal-name">{{share.getName(sh.node)}}</div>
-              <div class="share-principal-kind">{{share.getPrincipalTypeLabel(sh.node)}}</div>
-            </div>
-
-            <select ng-model="sh.role" class="form-control share-row-role"
-                ng-change="share.addShare(sh.node['@id'], sh.role, 'shared-users', share.shareResource)"
-                ng-disabled="!share.canManageGrants()"
-                aria-label="Role for {{sh.node['schema:name']}}">
-              <option value="viewer">Viewer</option>
-              <option ng-if="!sh.node.specialGroup" value="editor">Editor</option>
-              <option ng-if="!sh.node.specialGroup" value="manager">Manager</option>
-            </select>
-
-            <button type="button" class="btn btn-link share-remove-button"
-                ng-if="share.canManageGrants()"
-                ng-click="share.removeShare(sh.node, share.shareResource)"
-                aria-label="Remove access for {{sh.node['schema:name']}}"
-                uib-tooltip="Remove access" tooltip-placement="top">
-              <i class="fa fa-times" aria-hidden="true"></i>
-            </button>
-          </div>
         </div>
       </div>
     </div>

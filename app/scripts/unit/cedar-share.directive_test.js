@@ -10,16 +10,24 @@ define(['angular', 'angularMocks'], function () {
       template = $templateCache.get('scripts/modal/cedar-share-modal.directive.html?v=karma');
     }));
 
+    it('keeps the dialog content mounted while Bootstrap controls visibility', function () {
+      expect(template).toContain('<div class="modal-content">');
+      expect(template).not.toContain('ng-if="dc.shareModalVisible"');
+    });
+
     it('uses one flow for adding users and groups', function () {
       expect(template).toContain('Add users or groups');
       expect(template).toContain('User or group');
-      expect(template).toContain('People and groups with direct access');
+      expect(template).toContain('Users and groups with direct access');
+      expect(template).not.toContain('people');
+      expect(template).toContain('share-principal-kind share-principal-type');
     });
 
     it('keeps ownership separate from ordinary role grants', function () {
       expect(template).toContain('share-owner-section');
       expect(template).toContain('Transfer ownership');
-      expect(template.indexOf('Transfer ownership')).toBeGreaterThan(template.indexOf('Add users or groups'));
+      expect(template.indexOf('share-owner-section')).toBeGreaterThan(template.indexOf('share-access-section'));
+      expect(template.indexOf('Transfer ownership')).toBeGreaterThan(template.indexOf('share-owner-section'));
       expect(template).not.toContain("value=\"owner\"");
     });
 

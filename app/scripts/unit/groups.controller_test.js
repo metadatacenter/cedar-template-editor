@@ -92,6 +92,11 @@ define([
       expect(controller.groups[0].name).toBe('Everyone');
     });
 
+    it('does not expose email addresses in the group member list', function () {
+      expect(groupDetailsTemplate).not.toContain('member.user.email');
+      expect(controller.getUserName({email: 'private@example.org'})).toBe('Unnamed user');
+    });
+
     it('returns through the shared application back navigation', function () {
       expect(groupPageTemplate).toContain('ng-click="groups.goBack()"');
 

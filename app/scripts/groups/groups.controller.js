@@ -46,7 +46,7 @@ define(['angular'], function (angular) {
       if (!user) {
         return '';
       }
-      return ((user.firstName || '') + ' ' + (user.lastName || '')).trim() || user.email || 'Unnamed user';
+      return ((user.firstName || '') + ' ' + (user.lastName || '')).trim() || 'Unnamed user';
     }
 
     function selectTab(tab) {
