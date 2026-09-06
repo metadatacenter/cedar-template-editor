@@ -347,8 +347,8 @@
         "error": "Although the the metadata were loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
-        "success": "The group has been deleted.",
-        "error": "There was an error while deleting the group!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The template has been deleted.",
+        "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "INSTANCE": {
@@ -422,15 +422,15 @@
         "error": "There was an error while loading the groups!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
-        "success": "The template has been deleted.",
-        "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The group <b>{{title}}</b> has been deleted.",
+        "error": "There was an error while deleting the group!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "create": {
         "success": "The group <b>{{title}}</b> has been created.",
         "error": "There was an error while creating the group!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "update": {
-        "success": "The group <b>{{title}}</b> has been saved.",
+        "success": "The group <b>{{title}}</b> has been updated.",
         "error": "There was an error while saving the group!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },

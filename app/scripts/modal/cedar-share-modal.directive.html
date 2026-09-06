@@ -28,11 +28,6 @@
             <h5>Owner</h5>
             <p>The owner can manage access and transfer ownership.</p>
           </div>
-          <button type="button" class="btn btn-link share-transfer-link"
-              ng-if="share.canTransferOwnership() && !share.model.transfer.active"
-              ng-click="share.beginOwnershipTransfer()">
-            Transfer ownership
-          </button>
         </div>
 
         <div class="share-owner-row" ng-if="share.resourcePermissions">
@@ -46,42 +41,19 @@
           <span class="share-role-static">Owner</span>
         </div>
 
-        <div class="share-transfer-panel" ng-if="share.model.transfer.active">
-          <label for="share-new-owner">New owner</label>
-          <div class="share-transfer-controls">
-            <input id="share-new-owner" type="text" class="form-control"
-                placeholder="Search for a user"
-                ng-model="share.model.transfer.user"
-                typeahead-editable="false"
-                uib-typeahead="user as user.name for user in share.availableOwners() | filter:{name:$viewValue} | limitTo:8"
-                typeahead-select-on-exact="true">
-            <button type="button" class="btn btn-primary"
-                ng-disabled="!share.model.transfer.user"
-                ng-click="share.confirmOwnershipTransfer(share.shareResource)">
-              Transfer
-            </button>
-            <button type="button" class="btn btn-link"
-                ng-click="share.cancelOwnershipTransfer()">
-              Cancel
-            </button>
-          </div>
-          <p class="share-transfer-warning" ng-if="share.model.transfer.user">
-            {{share.model.transfer.user.name}} will become the owner. You will no longer own this resource.
-          </p>
-        </div>
       </div>
 
       <div class="access-panel" ng-if="share.canManageGrants()">
         <div class="share-section-heading">
           <div>
-            <h5>Add people or groups</h5>
-            <p>Choose one person or group and assign a role.</p>
+            <h5>Add users or groups</h5>
+            <p>Choose one user or group and assign a role.</p>
           </div>
         </div>
 
         <div class="share-add-controls" id="share-principal-picker">
           <div class="share-principal-picker">
-            <label for="share-principal">Person or group</label>
+            <label for="share-principal">User or group</label>
             <input id="share-principal" type="text" class="form-control"
                 placeholder="Search by name"
                 ng-model="share.model.users.node"
@@ -113,6 +85,36 @@
           <span><strong>Viewer</strong> can view.</span>
           <span><strong>Editor</strong> can view and change content.</span>
           <span><strong>Manager</strong> can view, edit and manage access.</span>
+        </div>
+
+        <button type="button" class="btn btn-link share-transfer-link"
+            ng-if="share.canTransferOwnership() && !share.model.transfer.active"
+            ng-click="share.beginOwnershipTransfer()">
+          Transfer ownership
+        </button>
+
+        <div class="share-transfer-panel" ng-if="share.model.transfer.active">
+          <label for="share-new-owner">New owner</label>
+          <div class="share-transfer-controls">
+            <input id="share-new-owner" type="text" class="form-control"
+                placeholder="Search for a user"
+                ng-model="share.model.transfer.user"
+                typeahead-editable="false"
+                uib-typeahead="user as user.name for user in share.availableOwners() | filter:{name:$viewValue} | limitTo:8"
+                typeahead-select-on-exact="true">
+            <button type="button" class="btn btn-primary"
+                ng-disabled="!share.model.transfer.user"
+                ng-click="share.confirmOwnershipTransfer(share.shareResource)">
+              Transfer
+            </button>
+            <button type="button" class="btn btn-link"
+                ng-click="share.cancelOwnershipTransfer()">
+              Cancel
+            </button>
+          </div>
+          <p class="share-transfer-warning" ng-if="share.model.transfer.user">
+            {{share.model.transfer.user.name}} will become the owner. You will no longer own this resource.
+          </p>
         </div>
       </div>
 
@@ -163,16 +165,11 @@
     </div>
 
     <div class="modal-footer actions">
-      <button type="button" class="btn btn-link share-manage-groups-link"
-          ng-click="share.openGroups()">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        Manage groups
-      </button>
       <button type="button"
           ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
-          data-dismiss="modal" aria-label="Close"
+          data-dismiss="modal" aria-label="Done"
           class="btn btn-primary">
-        Close
+        Done
       </button>
     </div>
   </div>

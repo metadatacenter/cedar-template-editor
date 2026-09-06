@@ -4,20 +4,26 @@ define(['angular'], function (angular) {
   angular.module('cedar.templateEditor.groups.controller', [])
       .controller('GroupsController', GroupsController);
 
-  GroupsController.$inject = ['$rootScope', 'CedarUser', 'resourceService', 'UIMessageService'];
+  GroupsController.$inject = ['$rootScope', 'CedarUser', 'resourceService', 'UIMessageService', 'PreviousRouteService'];
 
-  function GroupsController($rootScope, CedarUser, resourceService, UIMessageService) {
+  function GroupsController($rootScope, CedarUser, resourceService, UIMessageService, PreviousRouteService) {
     var vm = this;
 
     vm.groups = [];
     vm.users = [];
+    vm.activeTab = 'manage';
     vm.selectedGroup = null;
+    vm.groupSearch = '';
+    vm.createdGroup = null;
     vm.newGroupName = '';
     vm.newMember = null;
     vm.editName = '';
     vm.editDescription = '';
 
     vm.getUserName = getUserName;
+    vm.getGroupOptionLabel = getGroupOptionLabel;
+    vm.goBack = goBack;
+    vm.selectTab = selectTab;
     vm.selectGroup = selectGroup;
     vm.createGroup = createGroup;
     vm.saveGroupDetails = saveGroupDetails;
@@ -26,10 +32,15 @@ define(['angular'], function (angular) {
     vm.removeMember = removeMember;
     vm.updateGroupAdministrator = updateGroupAdministrator;
     vm.canAdministerSelectedGroup = canAdministerSelectedGroup;
+    vm.isOnlyGroupAdministrator = isOnlyGroupAdministrator;
     vm.availableMembers = availableMembers;
 
     $rootScope.pageTitle = 'Groups';
     loadGroups();
+
+    function goBack() {
+      PreviousRouteService.goBack();
+    }
 
     function getUserName(user) {
       if (!user) {
@@ -38,11 +49,33 @@ define(['angular'], function (angular) {
       return ((user.firstName || '') + ' ' + (user.lastName || '')).trim() || user.email || 'Unnamed user';
     }
 
+    function selectTab(tab) {
+      if (tab === 'manage' || tab === 'create') {
+        vm.activeTab = tab;
+        if (tab === 'manage' && vm.createdGroup && vm.selectedGroup &&
+            vm.selectedGroup['@id'] === vm.createdGroup['@id']) {
+          vm.selectedGroup = null;
+          vm.groupSearch = '';
+          vm.newMember = null;
+        }
+        if (tab === 'create' && vm.createdGroup &&
+            (!vm.selectedGroup || vm.selectedGroup['@id'] !== vm.createdGroup['@id'])) {
+          selectGroup(vm.createdGroup);
+        }
+      }
+    }
+
     function groupName(group) {
       if (!group) {
         return '';
       }
       return group.specialGroup ? 'Everyone' : group['schema:name'];
+    }
+
+    function getGroupOptionLabel(group) {
+      var name = groupName(group);
+      var description = group && (group['schema:description'] || '').trim();
+      return description ? name + ' - ' + description : name;
     }
 
     function sortByName(items, nameFunction) {
@@ -79,6 +112,7 @@ define(['angular'], function (angular) {
       }
       resourceService.getGroup(group['@id'], function (current) {
         vm.selectedGroup = current;
+        vm.groupSearch = '';
         vm.selectedGroup.name = groupName(current);
         vm.editName = groupName(current);
         vm.editDescription = current['schema:description'] || '';
@@ -106,6 +140,7 @@ define(['angular'], function (angular) {
       }
       resourceService.createGroup(name, '', function (created) {
         created.name = groupName(created);
+        vm.createdGroup = created;
         vm.groups.push(created);
         sortByName(vm.groups, groupName);
         vm.newGroupName = '';
@@ -118,13 +153,22 @@ define(['angular'], function (angular) {
 
     function canAdministerSelectedGroup() {
       var group = vm.selectedGroup;
-      var currentUserId = CedarUser.getUserId();
+      var currentUserId = CedarUser.getUserFullId();
       if (!group || group.specialGroup || !angular.isArray(group.users)) {
         return false;
       }
       return group.users.some(function (entry) {
         return entry.administrator && entry.user && entry.user['@id'] === currentUserId;
       });
+    }
+
+    function isOnlyGroupAdministrator(member) {
+      if (!member || !member.administrator || !vm.selectedGroup || !angular.isArray(vm.selectedGroup.users)) {
+        return false;
+      }
+      return vm.selectedGroup.users.filter(function (entry) {
+        return entry.administrator;
+      }).length === 1;
     }
 
     function saveGroupDetails() {
@@ -152,13 +196,17 @@ define(['angular'], function (angular) {
       }
       UIMessageService.confirmedExecution(function () {
         var group = vm.selectedGroup;
+        var name = groupName(group);
         resourceService.deleteGroup(group, function () {
           var index = vm.groups.indexOf(group);
           if (index !== -1) {
             vm.groups.splice(index, 1);
           }
+          if (vm.createdGroup && vm.createdGroup['@id'] === group['@id']) {
+            vm.createdGroup = null;
+          }
           vm.selectedGroup = null;
-          UIMessageService.flashSuccess('SERVER.GROUPS.delete.success', {}, 'GENERIC.Deleted');
+          UIMessageService.flashSuccess('SERVER.GROUPS.delete.success', {title: name}, 'GENERIC.Deleted');
         }, function (error) {
           UIMessageService.showBackendError('SERVER.GROUPS.delete.error', error);
         });
@@ -190,7 +238,7 @@ define(['angular'], function (angular) {
     }
 
     function removeMember(member) {
-      if (!canAdministerSelectedGroup()) {
+      if (!canAdministerSelectedGroup() || isOnlyGroupAdministrator(member)) {
         return;
       }
       var index = vm.selectedGroup.users.indexOf(member);
@@ -200,15 +248,28 @@ define(['angular'], function (angular) {
       }
     }
 
-    function updateGroupAdministrator() {
+    function updateGroupAdministrator(member) {
       if (vm.selectedGroup && !vm.selectedGroup.specialGroup) {
+        if (member && !member.administrator && !vm.selectedGroup.users.some(function (entry) {
+          return entry.administrator;
+        })) {
+          member.administrator = true;
+          return;
+        }
         saveMembers();
       }
     }
 
     function saveMembers() {
-      resourceService.updateGroupMembers(vm.selectedGroup, function () {
+      var group = vm.selectedGroup;
+      resourceService.updateGroupMembers(group, function () {
+        UIMessageService.flashSuccess('SERVER.GROUPS.update.success', {title: groupName(group)}, 'GENERIC.Updated');
       }, function (error) {
+        // Membership changes are optimistic in the UI. Reload the server representation on failure
+        // so an unsaved row or administrator change is not presented as current state.
+        if (vm.selectedGroup === group) {
+          loadMembers(group);
+        }
         UIMessageService.showBackendError('SERVER.GROUPS.update.error', error);
       });
     }
