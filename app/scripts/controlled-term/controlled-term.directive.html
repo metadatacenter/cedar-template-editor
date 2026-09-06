@@ -22,7 +22,7 @@
     </controlled-term-search>
 
     <div ng-if="ctdc.filterSelection == 'properties' || ctdc.filterSelection == 'field'">
-      <div class="class-actions" ng-if="ctdc.hasPermission('write');">
+      <div class="class-actions" ng-if="ctdc.hasCapability('updateResource');">
         <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
           <div class="action-msg">
           <span translate="GENERIC.clickOkToSelect"
@@ -181,7 +181,7 @@
         </div>
 
         <!--Class Actions-->
-        <div class="class-actions" ng-if="ctdc.hasPermission('write');">
+        <div class="class-actions" ng-if="ctdc.hasCapability('updateResource');">
           <div class="class-action" ng-if="ctdc.stagedOntologyClassValueConstraints.length > 0
         || ctdc.stagedOntologyValueConstraints.length > 0 || ctdc.stagedValueSetValueConstraints.length > 0">
             <div class="action-msg">
@@ -214,4 +214,3 @@
   <div style="height: 400px"></div>
 
 </div>
-

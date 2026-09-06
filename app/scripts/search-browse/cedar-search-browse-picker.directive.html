@@ -293,9 +293,9 @@
                                                open-download="dc.openDownload"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
-                                               can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                                               can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
                                                can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
-                                               can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
+                                               cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen" can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="true"
                                                can-not-open-datacite="dc.canNotOpenDatacite"
@@ -385,9 +385,9 @@
                                                open-download="dc.openDownload"
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
-                                               can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                                               can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
                                                can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
-                                               can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
+                                               cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen"
                                                can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="dc.canNotOpenOpen"
@@ -548,9 +548,9 @@
                                            open-download="dc.openDownload"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
-                                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                                           can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
                                            can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
-                                           can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
+                                           cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
@@ -706,8 +706,8 @@
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
-                                           can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
-                                           can-not-share="dc.canNotShare" can-not-delete="dc.canNotDelete"
+                                           can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
+                                           cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
                                            can-not-make-not-open="dc.canNotMakeNotOpen"
@@ -888,9 +888,10 @@
             <div class="flex flex-wrap padding-top">
               <div class="field-label ng-cloak">Access</div>
               <div class="perm-chips">
-                <span ng-if="dc.canRead()" class="perm-chip">read</span>
-                <span ng-if="dc.canWrite()" class="perm-chip">write</span>
-                <span ng-if="dc.canChangeOwner()" class="perm-chip">owner</span>
+                <span ng-if="dc.getSelectedNode().currentUserPermissions.role === 'viewer'" class="perm-chip">Viewer</span>
+                <span ng-if="dc.getSelectedNode().currentUserPermissions.role === 'editor'" class="perm-chip">Editor</span>
+                <span ng-if="dc.getSelectedNode().currentUserPermissions.role === 'manager'" class="perm-chip">Manager</span>
+                <span ng-if="dc.getSelectedNode().currentUserPermissions.owner" class="perm-chip">Owner</span>
               </div>
             </div>
 
@@ -965,7 +966,7 @@
                 <div class="field-label ng-cloak" translate>Description</div>
                 <button
                     class="description-edit"
-                    ng-show="!dc.editingDescription && dc.canWrite()"
+                    ng-show="!dc.editingDescription && dc.canEdit()"
                     type="button"
                     uib-tooltip='{{"HELP.editDescription" | translate}}'
                     tooltip-trigger
@@ -990,9 +991,9 @@
               <div ng-if="!dc.editingDescription"
                    class="desc-display"
                    ng-class="{'is-empty': !dc.getDescription(dc.getSelectedNode())}"
-                   ng-click="dc.canWrite() && dc.toggleDescriptionEditing()">
+                   ng-click="dc.canEdit() && dc.toggleDescriptionEditing()">
                 <span ng-if="dc.getDescription(dc.getSelectedNode())">{{ dc.getDescription(dc.getSelectedNode()).trim() }}</span>
-                <span ng-if="!dc.getDescription(dc.getSelectedNode())" class="desc-placeholder">{{ dc.canWrite() ? 'Add a description…' : 'No description' }}</span>
+                <span ng-if="!dc.getDescription(dc.getSelectedNode())" class="desc-placeholder">{{ dc.canEdit() ? 'Add a description…' : 'No description' }}</span>
               </div>
             </div>
 

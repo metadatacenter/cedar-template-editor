@@ -43,13 +43,13 @@ define([
 
     // template details
     $scope.details;
-    $scope.cannotWrite;
+    $scope.cannotEdit;
     $scope.lockReason = null;
 
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('cannotWrite', function () {
-      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+    $scope.$watch('cannotEdit', function () {
+      UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
     });
 
     $scope.showCreateEditForm = true;
@@ -74,28 +74,27 @@ define([
     let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
     $scope.elementWriter = yamlWriters.getTemplateElementWriter();
 
-    $scope.canWrite = function () {
+    $scope.canEdit = function () {
       if (!$scope.details) {
         return true;
       }
       else {
-        // Check write permission
-        var writePermission = resourceService.canWrite($scope.details);
+        var editCapability = resourceService.canEdit($scope.details);
 
         // Check publication status
         var isPublished = schemaService.isPublished($scope.details);
 
         // Result
-        var canWrite = writePermission && !isPublished;
-        $scope.cannotWrite = !canWrite;
+        var canEdit = editCapability && !isPublished;
+        $scope.cannotEdit = !canEdit;
         $scope.lockReason = isPublished ? 'TEMPLATEEDITOR.lock.published'
-            : (!writePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
-        return canWrite;
+            : (!editCapability ? 'TEMPLATEEDITOR.lock.noEditPermission' : null);
+        return canEdit;
       }
     };
 
     $scope.checkLocking = function () {
-      return $scope.canWrite();
+      return $scope.canEdit();
     };
 
     var getDetails = function (id) {
@@ -103,7 +102,7 @@ define([
           id, CONST.resourceType.ELEMENT,
           function (response) {
             $scope.details = response;
-            $scope.canWrite();
+            $scope.canEdit();
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);
@@ -607,7 +606,7 @@ define([
     //
 
     $scope.showModal = function (type, searchScope) {
-      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.element, "id":dms.getId($scope.element), "q": dms.getTitle($scope.element),'source': null,'termType': null, 'term': null, "advanced": false, "capabilities": ["readResource","updateResource"]};
       UIUtilService.showModal(options);
     };
 

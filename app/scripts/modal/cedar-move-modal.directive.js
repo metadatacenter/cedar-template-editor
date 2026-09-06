@@ -45,7 +45,7 @@ define([
           vm.openDestination = openDestination;
           vm.getResourceIconClass = getResourceIconClass;
           vm.isFolder = isFolder;
-          vm.canWrite = canWrite;
+          vm.canCreateIn = canCreateIn;
           vm.loadMore = loadMore;
           vm.hideModal = hideModal;
           vm.selectedDestination = null;
@@ -62,19 +62,8 @@ define([
           $scope.destinationResources = [];
 
 
-          function canWrite() {
-            return hasPermission('canWrite');
-          }
-
-          function hasPermission(permission, resource) {
-            const node = resource;
-            if (node != null) {
-              const perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms[permission];
-              }
-            }
-            return false;
+          function canCreateIn(resource) {
+            return resourceService.canMoveInto(resource);
           }
 
           function openHome() {
@@ -103,7 +92,8 @@ define([
 
 
           function moveEnabled() {
-            return vm.moveResource && vm.selectedDestination && vm.selectedDestination['@id'] !== vm.currentFolderId;
+            return vm.moveResource && vm.selectedDestination && canCreateIn(vm.selectedDestination)
+                && vm.selectedDestination['@id'] !== vm.currentFolderId;
           }
 
           function moveDisabled() {

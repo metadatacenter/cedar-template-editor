@@ -46,7 +46,7 @@ define([
           vm.getResourceIconClass = getResourceIconClass;
           vm.loadMore = loadMore;
           vm.isFolder = isFolder;
-          vm.canWrite = canWrite;
+          vm.canCopyInto = canCopyInto;
           vm.hideModal = hideModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
@@ -61,19 +61,8 @@ define([
           vm.isCommunity = false;
           $scope.destinationResources = [];
 
-          function canWrite() {
-            return hasPermission('canWrite');
-          }
-
-          function hasPermission(permission, resource) {
-            const node = resource;
-            if (node != null) {
-              const perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms[permission];
-              }
-            }
-            return false;
+          function canCopyInto(resource) {
+            return resourceService.canCopyInto(resource);
           }
 
           function openHome() {
@@ -164,7 +153,7 @@ define([
           }
 
           function copyDisabled() {
-            return vm.selectedDestination == null;
+            return vm.selectedDestination == null || !canCopyInto(vm.selectedDestination);
           }
 
           function isDestinationSelected(resource) {

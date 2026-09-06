@@ -88,7 +88,7 @@ define([
         }
         return;
       }
-      $scope.ceeConfig.readOnlyMode = $scope.cannotWrite === true;
+      $scope.ceeConfig.readOnlyMode = $scope.cannotEdit === true;
       cee.config = angular.copy($scope.ceeConfig);
       ceeConfigured = true;
       if (pendingCeeArtifact) {
@@ -158,7 +158,7 @@ define([
     };
 
     $scope.details;
-    $scope.cannotWrite;
+    $scope.cannotEdit;
     $scope.lockReason = null;
 
     let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
@@ -181,23 +181,23 @@ define([
     };
 
 
-    $scope.canWrite = function () {
-      const result = !$scope.details || resourceService.canWrite($scope.details);
-      $scope.cannotWrite = !result;
-      $scope.lockReason = result ? null : 'TEMPLATEEDITOR.lock.noWritePermission';
+    $scope.canEdit = function () {
+      const result = !$scope.details || resourceService.canEdit($scope.details);
+      $scope.cannotEdit = !result;
+      $scope.lockReason = result ? null : 'TEMPLATEEDITOR.lock.noEditPermission';
       return result;
     };
 
     // An instance the user cannot save must not accept edits either, which is what read-only
     // mode asks of the embeddable editor.
     const applyReadOnlyState = function () {
-      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+      UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
       configureCee();
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('cannotWrite', function () {
-      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+    $scope.$watch('cannotEdit', function () {
+      UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
     });
 
     $scope.copyJson2Clipboard = function (json) {
@@ -248,12 +248,12 @@ define([
             id, CONST.resourceType.INSTANCE,
             function (response) {
               $scope.details = response;
-              $scope.canWrite();
+              $scope.canEdit();
               applyReadOnlyState();
             },
             function (error) {
-              $scope.cannotWrite = true;
-              $scope.lockReason = 'TEMPLATEEDITOR.lock.noWritePermission';
+              $scope.cannotEdit = true;
+              $scope.lockReason = 'TEMPLATEEDITOR.lock.noEditPermission';
               applyReadOnlyState();
               UIMessageService.showBackendError('SERVER.INSTANCE.load.error', error);
             }

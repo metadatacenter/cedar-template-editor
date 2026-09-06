@@ -223,6 +223,10 @@ define([
       return this.resourceBase() + "/command/rename-resource";
     };
 
+    service.transferResourceOwnership = function () {
+      return this.resourceBase() + "/command/transfer-resource-ownership";
+    };
+
     service.checkUpdateTemplate = function (id) {
       return this.resourceBase() + "/command/check-update-template/" + this.encodeURIComponent(id);
     };

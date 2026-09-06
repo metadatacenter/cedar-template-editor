@@ -53,7 +53,7 @@ define([
         TemplateService: {getTemplate: function () { return {kind: 'template'}; }},
         resourceService: {
           getResourceDetailFromId: function (id, type, success) { success({}); },
-          canWrite: function () { return true; }
+          canEdit: function () { return true; }
         },
         TemplateInstanceService: templateInstanceService,
         UIMessageService: {
