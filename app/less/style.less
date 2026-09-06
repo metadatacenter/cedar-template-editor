@@ -744,7 +744,11 @@ a.share {
 // It sits 29px in from the column edges, where the editor places its own fields.
 .instance-name-container {
   position: relative;
-  margin: 14px 29px 0;
+  // The editor below insets its fields by `clamp(12px, 3cqi, 32px)`, and nothing in either
+  // application establishes a containment context, so `cqi` resolves against the viewport on
+  // both sides. Repeating the formula is what holds this box's edges on the fields' edges at
+  // every width; the fixed 29px it replaces agreed with them only near a 967px viewport.
+  margin: 14px clamp(12px, 3cqi, 32px) 0;
 
   label {
     position: absolute;

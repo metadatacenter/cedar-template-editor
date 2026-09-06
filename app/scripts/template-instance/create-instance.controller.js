@@ -44,7 +44,13 @@ define([
       return savedInstanceName != null && chosenInstanceName() !== savedInstanceName;
     };
 
+    // The bar above names the metadata being edited, and `doUpdate` already points it at the
+    // saved name. Following the field while it is typed is that same intent a moment earlier,
+    // so the bar stops naming the template while the field names the metadata. The chosen name
+    // rather than the raw text, so an emptied field shows the generated name that would be
+    // saved instead of showing nothing.
     vm.instanceNameChanged = function () {
+      $rootScope.documentTitle = chosenInstanceName();
       if (instanceNameDirty()) {
         UIUtilService.setDirty(true);
       }

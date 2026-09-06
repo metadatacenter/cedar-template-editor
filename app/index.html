@@ -99,7 +99,8 @@
           <div class="back-arrow-click flex-left" ng-click="hc.confirmBack()">
             <i class="back-arrow fa fa-arrow-left"></i>
             <cedar-resource-icon resource-type="hc.resourceType"></cedar-resource-icon>
-            <div class="document-title" uib-tooltip="{{hc.formatDocumentTitleFull()}}">{{hc.formatDocumentTitle()}}</div>
+            <div class="document-title" uib-tooltip="{{hc.formatDocumentTitleFull()}}"
+                 tooltip-append-to-body="true" tooltip-placement="bottom">{{hc.formatDocumentTitle()}}</div>
           </div>
 
           <div  class="flex-right feedback-form">
