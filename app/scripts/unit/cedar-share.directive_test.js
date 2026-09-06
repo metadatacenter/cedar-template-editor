@@ -1,6 +1,6 @@
 'use strict';
 
-define(['angular', 'angularMocks'], function () {
+define(['angular', 'angularMocks', 'text!resources/i18n/locale-en.json'], function (angular, angularMocks, localeText) {
   describe('resource access dialog:', function () {
     var template;
     var pickerTemplate;
@@ -27,6 +27,16 @@ define(['angular', 'angularMocks'], function () {
       expect(template).not.toContain('people');
       expect(template).toContain('<span class="share-access-header-type">Type</span>');
       expect(template).toContain('share-principal-kind share-principal-type');
+    });
+
+    it('uses role vocabulary everywhere permissions are presented', function () {
+      var locale = JSON.parse(localeText);
+
+      expect(template).toContain('value="viewer">Viewer</option>');
+      expect(template).toContain('value="editor">Editor</option>');
+      expect(template).toContain('value="manager">Manager</option>');
+      expect(locale.DASHBOARD.info.ReadPermission).toBe('Viewer');
+      expect(locale.DASHBOARD.info.WritePermission).toBe('Manager');
     });
 
     it('keeps ownership separate from ordinary role grants', function () {
