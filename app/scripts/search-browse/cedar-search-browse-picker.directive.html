@@ -112,7 +112,7 @@
                   class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('category'), 'fa-caret-left': !dc.isFilterSection('category') }"></i></a>
 
-                <ul id="filter-resource-category" class="list-inline">
+                <ul id="filter-resource-category" ng-if="dc.isFilterSection('category')" class="list-inline">
                   <li ng-if="!dc.categoryTreeAvailable">
                     <div class="latest no-select">
                       <i class="btn fa " ng-class="dc.getLatestIcon()"></i>{{'GENERIC.Loading' | translate}}
