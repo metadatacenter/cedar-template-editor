@@ -115,8 +115,10 @@ define([
           vm.hash = $location.hash();
           vm.resources = [];
           vm.canNotSubmit = true;
-          vm.canNotWrite = false;
-          vm.canNotShare = false;
+          vm.cannotEdit = false;
+          vm.cannotManageGrants = false;
+          vm.cannotMove = false;
+          vm.cannotCopy = false;
           vm.canNotPopulate = false;
           vm.canNotPublish = false;
           vm.canNotCreateDraft = false;
@@ -598,9 +600,11 @@ define([
           };
 
           vm.setPermissions = function () {
-            vm.canNotWrite = !vm.canWrite();
+            vm.cannotEdit = !vm.canEdit();
             vm.canNotSubmit = !vm.canSubmit();
-            vm.canNotShare = !vm.canShare();
+            vm.cannotManageGrants = !vm.canManageGrants();
+            vm.cannotMove = !vm.canMove();
+            vm.cannotCopy = !vm.canCopy();
             vm.canNotPublish = !vm.canPublish();
             vm.canNotDelete = !vm.canDelete();
             vm.canNotRename = !vm.canRename();
@@ -671,28 +675,36 @@ define([
             );
           };
 
-          vm.canRead = function () {
-            return resourceService.canRead(vm.getSelectedNode());
+          vm.canView = function () {
+            return resourceService.canView(vm.getSelectedNode());
           };
 
-          vm.canWrite = function () {
-            return resourceService.canWrite(vm.getSelectedNode());
+          vm.canEdit = function () {
+            return resourceService.canEdit(vm.getSelectedNode());
           };
 
           vm.canRename = function () {
-            return resourceService.canWrite(vm.getSelectedNode());
+            return resourceService.canEdit(vm.getSelectedNode());
           };
 
           vm.canDelete = function () {
             return resourceService.canDelete(vm.getSelectedNode());
           };
 
-          vm.canChangeOwner = function () {
-            return resourceService.canChangeOwner(vm.getSelectedNode());
+          vm.canTransferOwnership = function () {
+            return resourceService.canTransferOwnership(vm.getSelectedNode());
           };
 
-          vm.canShare = function () {
-            return resourceService.canShare(vm.getSelectedNode());
+          vm.canManageGrants = function () {
+            return resourceService.canManageGrants(vm.getSelectedNode());
+          };
+
+          vm.canMove = function () {
+            return resourceService.canMove(vm.getSelectedNode());
+          };
+
+          vm.canCopy = function () {
+            return resourceService.canCopy(vm.getSelectedNode());
           };
 
           vm.canPopulate = function () {
@@ -731,8 +743,8 @@ define([
             return window.categoryTreeEnabled;
           };
 
-          vm.canWriteToCurrentFolder = function () {
-            return resourceService.canWrite(vm.currentFolder);
+          vm.canCreateInCurrentFolder = function () {
+            return resourceService.canCreate(vm.currentFolder);
           };
 
           vm.getResourceVersion = function (resource) {
@@ -2437,7 +2449,7 @@ define([
           // open the 'copy' modal
           function showCopyModal(resource) {
             let r = resource || getSelected();
-            if (r && !vm.isFolder(r)) {
+            if (r && !vm.isFolder(r) && resourceService.canCopy(r)) {
               const homeFolderId = CedarUser.getHomeFolderId();
               const folderId = vm.currentFolderId || homeFolderId;
               vm.copyModalVisible = true;
@@ -2449,7 +2461,7 @@ define([
           // open the 'move' modal
           function showMoveModal() {
             let r = getSelected();
-            if (r && resourceService.canWrite(r)) {
+            if (r && resourceService.canMove(r)) {
               vm.moveModalVisible = true;
               const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('moveModalVisible',
@@ -2462,7 +2474,7 @@ define([
           // open the 'publish' modal
           function showPublishModal(callback, action) {
             let r = getSelected();
-            if (r && resourceService.canWrite(r)) {
+            if (r && resourceService.canEdit(r)) {
               vm.publishModalVisible = true;
               const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, action]);
@@ -2482,7 +2494,7 @@ define([
           // open the 'share' modal
           function showShareModal() {
             let r = getSelected();
-            if (r && resourceService.canShare(r)) {
+            if (r && resourceService.canManageGrants(r)) {
               vm.shareModalVisible = true;
               $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
             }
@@ -2491,7 +2503,7 @@ define([
           // open the 'rename' modal
           function showRenameModal() {
             let r = getSelected();
-            if (r && resourceService.canWrite(r)) {
+            if (r && resourceService.canEdit(r)) {
               vm.renameModalVisible = true;
               $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
             }

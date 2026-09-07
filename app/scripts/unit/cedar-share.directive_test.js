@@ -1,121 +1,68 @@
 'use strict';
 
-define(['app', 'angular'], function (app) {
+define(['angular', 'angularMocks', 'text!resources/i18n/locale-en.json'], function (angular, angularMocks, localeText) {
+  describe('resource access dialog:', function () {
+    var template;
+    var pickerTemplate;
 
-  describe('cedar-share-modal.directive_test.js:', function () {
-
-    var $rootScope;
-    var $compile;
-    var $controller;
-    var $httpBackend;
-    var $templateCache;
-    var $timeout;
-    var CedarUser;
-    var appData = applicationData.getConfig();
-    var cedarUser = cedarUserData.getConfig(appData);
-
-    var DataManipulationService;
-    var StagingService;
-    var TemplateElementService;
-    var DataUtilService;
-    var SpreadsheetService;
-    var UIUtilService;
-    var UrlService;
-    var UIMessageService;
-    var resourceService;
-    var UISettingsService;
-    var resourceService;
-    var QueryParamUtilsService;
-
-    // Load the module that contains the templates that were loaded with html2js
     beforeEach(module('my.templates'));
-    // Load other modules
-    beforeEach(module(app.name));
-    beforeEach(module('cedar.templateEditor.modal.cedarShareModalDirective'));
-    beforeEach(module('cedar.templateEditor.service.uIMessageService'));
-    beforeEach(module('cedar.templateEditor.service.resourceService'));
-    beforeEach(module('cedar.templateEditor.service.uISettingsService'));
-    beforeEach(module('cedar.templateEditor.service.queryParamUtilsService'));
-    beforeEach(angular.mock.module(function ($provide) {
-      $provide.service('UserService', function mockUserService() {
-        var userHandler = null;
-        var service = {serviceId: "UserService"};
-        service.getToken = function() {};
-        service.injectUserHandler = function (userHandler) {};
-        service.updateOwnUser = function (instance) {};
-        return service;
-      });
-    }));
-    // we need to register our alternative version of CedarUser, before we call inject.
-    beforeEach(angular.mock.module(function ($provide) {
-      $provide.service('CedarUser', function mockCedarUser() {
-        return cedarUser;
-      });
-    }));
-    beforeEach(module('cedar.templateEditor.modal.cedarShareModalDirective', function ($provide) {
-      $provide.factory('cedarInfiniteScrollDirective', function () {
-        return {};
-      });
+
+    beforeEach(inject(function ($templateCache) {
+      template = $templateCache.get('scripts/modal/cedar-share-modal.directive.html?v=karma');
+      pickerTemplate = $templateCache.get('scripts/search-browse/cedar-search-browse-picker.directive.html?v=karma');
     }));
 
-    beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_,_$timeout_,
-                  _UIMessageService_, _UrlService_, _resourceService_, _UISettingsService_, _QueryParamUtilsService_) {
-          $rootScope = _$rootScope_.$new(); // create new scope
-          $compile = _$compile_;
-          $controller = _$controller_;
-          $httpBackend = _$httpBackend_;
-          UIMessageService = _UIMessageService_;
-          UrlService = _UrlService_;
-          resourceService = _resourceService_;
-          UISettingsService = _UISettingsService_;
-          QueryParamUtilsService = _QueryParamUtilsService_;
-          $timeout = _$timeout_;
-        }));
-
-    beforeEach(function () {
-      httpData.init($httpBackend);
-      httpData.getFile('resources/i18n/locale-en.json');
-      httpData.getFile('config/url-service.conf.json?v=undefined');
-      httpData.getFile('img/plus.png');
-      // httpData.getFile('img/close_modal.png');
-      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+    it('keeps the dialog content mounted while Bootstrap controls visibility', function () {
+      expect(template).toContain('<div class="modal-content">');
+      expect(template).not.toContain('ng-if="dc.shareModalVisible"');
+      expect(pickerTemplate).toContain('cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal"');
+      expect(pickerTemplate).not.toContain('cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal fade"');
     });
 
-    describe('In a template,', function () {
-      describe('a copy modal ', function () {
-
-        var $shareScope;
-        var shareDirective;
-        var shareButton = "#share-modal .modal-footer .clear-save button";
-        var xGoAway = "#share-modal #share-modal-header.modal-header .button.close";
-        var shareTitle = "#share-modal #share-modal-header .modal-title";
-
-
-
-        beforeEach(function () {
-          // create a new, isolated scope and a new directive
-          $shareScope = $rootScope.$new();
-          shareDirective = '<cedar-share-modal  modal-visible="vModalVisible" ></cedar-share-modal>';
-          shareDirective = $compile(shareDirective)($shareScope);
-          $shareScope.$digest();
-        });
-
-        it("should have a move button and close x ", function () {
-          var elm = shareDirective[0];
-          expect(elm.querySelector(shareButton)).toBeDefined();
-          expect(elm.querySelector(xGoAway)).toBeDefined();
-        });
-
-        it("should have a header with the current folder name ", function () {
-          var elm = shareDirective[0];
-          expect(elm.querySelector(shareTitle)).toBeDefined();
-        });
-
-
-      });
+    it('uses one flow for adding users and groups', function () {
+      expect(template).toContain('<h4>Permissions</h4>');
+      expect(template).toContain('Add users or groups');
+      expect(template).toContain('User or group');
+      expect(template).toContain('Access on this resource');
+      expect(template).not.toContain('people');
+      expect(template).toContain('<span class="share-access-header-type">Type</span>');
+      expect(template).toContain('share-principal-kind share-principal-type');
     });
 
+    it('uses role vocabulary everywhere permissions are presented', function () {
+      var locale = JSON.parse(localeText);
 
+      expect(template).toContain('value="viewer">Viewer</option>');
+      expect(template).toContain('value="editor">Editor</option>');
+      expect(template).toContain('value="manager">Manager</option>');
+      expect(locale.DASHBOARD.info.ReadPermission).toBe('Viewer');
+      expect(locale.DASHBOARD.info.WritePermission).toBe('Manager');
+    });
+
+    it('keeps ownership separate from ordinary role grants', function () {
+      expect(template).toContain('share-access-header-owner');
+      expect(template).toContain('share-owner-access-row');
+      expect(template).toContain('type="checkbox" checked disabled');
+      expect(template).toContain('<span class="share-role-static" aria-label="Ownership is separate from roles"></span>');
+      expect(template).toContain('aria-label="The owner cannot be removed"');
+      expect(template).toContain('share.requestOwnershipTransfer(sh.node, share.shareResource, $event)');
+      expect(template).toContain("sh.node.resourceType === 'group'");
+      expect(template).not.toContain('share-transfer-link');
+      expect(template).not.toContain('share-transfer-panel');
+      expect(template).not.toContain("value=\"owner\"");
+    });
+
+    it('uses the same compact bin action as the group member list', function () {
+      expect((template.match(/class="fa fa-trash"/g) || []).length).toBe(2);
+      expect(template).not.toContain('class="fa fa-times"');
+    });
+
+    it('explains folder inheritance without embedding group administration', function () {
+      expect(template).toContain('Access granted here also applies to the resources this folder contains.');
+      expect(template).not.toContain('enter new group name');
+      expect(template).not.toContain("share.model.show == 'groups'");
+      expect(template).not.toContain('Manage groups');
+      expect(template).toContain('aria-label="Done"');
+    });
   });
 });

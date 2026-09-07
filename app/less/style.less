@@ -225,7 +225,7 @@ button {
   outline: none;
 }
 
-#user-menu-dropdown {
+.header-menu-dropdown {
   z-index: 99999;
   display: none;
   position: fixed;
@@ -299,7 +299,7 @@ button {
   box-shadow: 0 6px 20px rgba(16, 34, 31, 0.14);
 
   > li > a {
-    display: block;
+    display: block !important;
     padding: 8px 12px;
     border-radius: 6px;
     color: #333;
@@ -378,7 +378,7 @@ a.share {
   }
 }
 
-#messaging, #user-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
+#messaging, #user-menu, #more-menu, #grid-view-tool, #show-details, #workspace-sort-tool {
   position: relative;
 
   button {
@@ -399,7 +399,7 @@ a.share {
   }
 }
 
-#messaging, #user-menu {
+#messaging, #user-menu, #more-menu {
   button {
     color: @white;
   }
@@ -744,7 +744,11 @@ a.share {
 // It sits 29px in from the column edges, where the editor places its own fields.
 .instance-name-container {
   position: relative;
-  margin: 14px 29px 0;
+  // The editor below insets its fields by `clamp(12px, 3cqi, 32px)`, and nothing in either
+  // application establishes a containment context, so `cqi` resolves against the viewport on
+  // both sides. Repeating the formula is what holds this box's edges on the fields' edges at
+  // every width; the fixed 29px it replaces agreed with them only near a 967px viewport.
+  margin: 14px clamp(12px, 3cqi, 32px) 0;
 
   label {
     position: absolute;
@@ -8606,6 +8610,740 @@ table.apiKey {
     }
   }
 
+}
+
+// Resource access dialog. These rules intentionally override the older share-modal layout above.
+#share-modal {
+  .modal-dialog {
+    width: calc(~"100% - 32px");
+    max-width: 720px;
+
+    .modal-content {
+      width: 100%;
+      max-width: 720px;
+      border: 0;
+      border-radius: 4px;
+
+      .modal-header {
+        padding: 22px 28px 18px;
+
+        h4 {
+          margin: 0 40px 14px 0;
+          font-size: 24px;
+          font-weight: 500;
+        }
+      }
+
+      .modal-body {
+        max-height: calc(~"100vh - 230px");
+        padding: 0 28px;
+        overflow-y: auto;
+
+        label {
+          display: block;
+          margin-bottom: 6px;
+          color: @graytxt;
+          font-size: 13px;
+          font-weight: 600;
+        }
+
+        input,
+        select,
+        select.select-picker {
+          height: 34px;
+          border-radius: 3px;
+          color: @text-color;
+
+          &:disabled {
+            color: @graytxt;
+          }
+        }
+      }
+
+      .modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 28px;
+
+        .btn-primary {
+          min-width: 88px;
+        }
+      }
+    }
+  }
+
+  .share-resource-context,
+  .share-access-list-header,
+  .share-access-row,
+  .share-section-heading,
+  .share-add-controls {
+    display: flex;
+    align-items: center;
+  }
+
+  .share-resource-context {
+    gap: 10px;
+    color: @graytxt;
+
+    cedar-resource-icon {
+      font-size: 20px;
+    }
+  }
+
+  .share-resource-name {
+    max-width: 580px;
+    overflow: hidden;
+    color: @text-color;
+    font-size: 15px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .share-resource-type,
+  .share-principal-kind {
+    color: @graytxt;
+    font-size: 12px;
+  }
+
+  .share-folder-notice {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0 4px;
+    padding: 12px 14px;
+    border-left: 3px solid @brand-primary;
+    background: #f2f8f9;
+    color: #34545a;
+    line-height: 1.45;
+  }
+
+  .access-panel {
+    padding: 14px 0 16px;
+    border-bottom: 1px solid @very-lt-gray;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .share-section-heading {
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    h5 {
+      margin: 0 0 4px;
+      color: @text-color;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      color: @graytxt;
+      font-size: 13px;
+    }
+  }
+
+  .share-access-row {
+    min-height: 42px;
+    padding: 4px 10px;
+    background: @white;
+  }
+
+  .share-access-row + .share-access-row {
+    border-top: 1px solid @very-lt-gray;
+  }
+
+  .share-principal-avatar {
+    display: flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-right: 12px;
+    border-radius: 50%;
+    background: #eef1f2;
+    color: @graytxt;
+  }
+
+  .share-principal-group {
+    background: #e5f3f5;
+    color: @brand-primary;
+  }
+
+  .share-principal-summary {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .share-principal-name {
+    overflow: hidden;
+    color: @text-color;
+    font-size: 14px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .share-role-static {
+    flex: 0 0 132px;
+    margin-left: 12px;
+    color: @graytxt;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .share-add-controls {
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .share-principal-picker {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .share-role-picker {
+    flex: 0 0 142px;
+  }
+
+  .share-add-button {
+    flex: 0 0 72px;
+    height: 34px;
+  }
+
+  .share-role-help {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    margin-top: 10px;
+    color: @graytxt;
+    font-size: 12px;
+  }
+
+  .share-access-list {
+    max-height: 280px;
+    border: 1px solid @very-lt-gray;
+    overflow-y: auto;
+  }
+
+  .share-access-list-header {
+    min-height: 34px;
+    padding: 6px 10px;
+    border-bottom: 1px solid @very-lt-gray;
+    color: @graytxt;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .share-access-header-main {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .share-access-header-type {
+    flex: 0 0 70px;
+    margin-left: 12px;
+    text-align: center;
+  }
+
+  .share-access-header-role {
+    flex: 0 0 132px;
+    margin-left: 12px;
+    text-align: center;
+  }
+
+  .share-access-header-owner,
+  .share-owner-cell {
+    display: flex;
+    flex: 0 0 70px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 4px;
+  }
+
+  .share-owner-cell input {
+    width: auto;
+    height: auto;
+    margin: 0;
+    cursor: default;
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+  }
+
+  .share-access-header-action,
+  .share-access-action-spacer {
+    flex: 0 0 36px;
+    width: 36px;
+    margin-left: 4px;
+  }
+
+  .share-row-role {
+    flex: 0 0 132px;
+    width: 132px;
+    margin-left: 12px;
+
+    &:not(:disabled) {
+      color: @text-color;
+    }
+  }
+
+  .share-principal-type {
+    flex: 0 0 70px;
+    margin-left: 12px;
+    text-align: center;
+  }
+
+  .share-remove-button {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 34px;
+    margin-left: 4px;
+    color: @text-color;
+  }
+
+  .share-remove-button[disabled] {
+    color: @very-lt-gray;
+  }
+
+  @media (max-width: @screen-sm-min) {
+    .modal-dialog {
+      width: calc(~"100% - 16px");
+      margin: 8px;
+
+      .modal-content {
+        width: 100%;
+
+        .modal-header,
+        .modal-footer {
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+
+        .modal-body {
+          max-height: calc(~"100vh - 190px");
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+      }
+    }
+
+    .share-add-controls {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .share-role-help {
+      justify-content: flex-start;
+    }
+
+    .share-role-picker,
+    .share-add-button {
+      width: 100%;
+      flex-basis: auto;
+    }
+
+    .share-section-heading {
+      align-items: flex-start;
+      gap: 8px;
+      flex-direction: column;
+    }
+
+    .share-role-help {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .share-row-role,
+    .share-access-header-role,
+    .share-role-static {
+      flex-basis: 104px;
+      width: 104px;
+    }
+  }
+}
+
+#groups-page {
+  min-height: 100vh;
+  background: #f5f6f7;
+
+  .navbar-back {
+    padding: 16px 24px;
+    background: @white;
+    border-bottom: 1px solid @very-lt-gray;
+
+    .back-arrow-click {
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .document-title {
+      margin-left: 10px;
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+
+  .groups-content {
+    width: calc(~"100% - 32px");
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 0 64px;
+  }
+
+  .groups-page-header {
+    margin-bottom: 24px;
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0;
+      color: @graytxt;
+      line-height: 1.5;
+    }
+  }
+
+  .groups-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid @very-lt-gray;
+  }
+
+  .groups-tab {
+    margin: 0 22px -1px 0;
+    padding: 11px 2px 10px;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: @graytxt;
+    font-size: 15px;
+    font-weight: 600;
+
+    &:hover,
+    &:focus {
+      color: @brand-primary;
+      outline: 0;
+    }
+
+    &.active {
+      border-bottom-color: @brand-primary;
+      color: @brand-primary;
+    }
+  }
+
+  .groups-card {
+    margin-bottom: 20px;
+    padding: 24px;
+    border: 1px solid @very-lt-gray;
+    border-radius: 4px;
+    background: @white;
+
+    h2,
+    h3 {
+      margin-top: 0;
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    h3 {
+      font-size: 17px;
+    }
+
+    p {
+      color: @graytxt;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: @graytxt;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .form-control {
+      color: @text-color;
+
+      &[disabled] {
+        color: @graytxt;
+      }
+    }
+  }
+
+  .groups-create-card,
+  .groups-inline-controls,
+  .groups-members-heading,
+  .groups-add-member,
+  .groups-member-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .groups-create-card {
+    justify-content: space-between;
+    gap: 28px;
+  }
+
+  .groups-create-card > div,
+  .groups-create-form {
+    flex: 1 1 50%;
+  }
+
+  .groups-inline-controls {
+    gap: 10px;
+  }
+
+  .groups-inline-controls input {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .groups-primary-action {
+    width: 140px;
+    min-width: 140px;
+  }
+
+  .groups-created-group .groups-selected {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .groups-created-group {
+    padding-top: 14px;
+  }
+
+  .groups-selector {
+    width: 100%;
+  }
+
+  .groups-empty-state {
+    margin-top: 24px;
+    padding: 42px 20px;
+    border: 1px dashed @very-lt-gray;
+    color: @graytxt;
+    text-align: center;
+  }
+
+  .groups-selected {
+    position: relative;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid @very-lt-gray;
+  }
+
+  .groups-members-heading {
+    justify-content: space-between;
+
+    h3 {
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .groups-selected-message {
+    margin-bottom: 20px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .groups-delete-button,
+  .groups-remove-member {
+    color: @text-color;
+  }
+
+  .groups-delete-button {
+    height: 22px;
+    padding: 0;
+    line-height: 1;
+    font-size: 22px;
+    transform: translateY(-8px);
+  }
+
+  .groups-details-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 140px;
+    gap: 14px;
+    align-items: start;
+    margin: 0 0 18px;
+
+    textarea.form-control {
+      height: 34px;
+      min-height: 34px;
+      resize: none;
+    }
+  }
+
+  .groups-details-actions {
+    display: flex;
+    height: 59px;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .groups-members-section {
+    padding-top: 14px;
+    border-top: 1px solid @very-lt-gray;
+  }
+
+  .groups-member-count {
+    min-width: 32px;
+    padding: 5px 9px;
+    border-radius: 16px;
+    background: #eef1f2;
+    text-align: center;
+  }
+
+  .groups-add-member {
+    align-items: flex-end;
+    gap: 10px;
+    width: 100%;
+    margin: 6px 0 10px;
+  }
+
+  .groups-add-member > div {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .groups-member-list {
+    border: 1px solid @very-lt-gray;
+  }
+
+  .groups-member-list-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 55px 8px 12px;
+    border-bottom: 1px solid @very-lt-gray;
+    color: @graytxt;
+    font-size: 12px;
+    font-weight: 600;
+
+    span {
+      width: 160px;
+      text-align: center;
+    }
+  }
+
+  .groups-member-row {
+    min-height: 42px;
+    padding: 4px 12px;
+  }
+
+  .groups-member-row + .groups-member-row {
+    border-top: 1px solid @very-lt-gray;
+  }
+
+  .groups-member-avatar {
+    display: flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-right: 12px;
+    border-radius: 50%;
+    background: #eef1f2;
+    color: @graytxt;
+  }
+
+  .groups-member-summary {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .groups-member-name {
+    font-weight: 400;
+  }
+
+  .groups-member-row .groups-admin-control {
+    display: flex;
+    flex: 0 0 160px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 10px 0 16px;
+    color: @text-color;
+    font-weight: 400;
+  }
+
+  .groups-remove-member[disabled] {
+    color: @very-lt-gray;
+  }
+
+  .groups-remove-member-wrapper {
+    display: flex;
+    width: 34px;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .groups-remove-member {
+    padding: 5px 7px;
+    font-size: 15px;
+  }
+
+  .groups-empty-members {
+    padding: 28px;
+    color: @graytxt;
+    text-align: center;
+  }
+
+  @media (max-width: @screen-sm-min) {
+    .groups-create-card,
+    .groups-details-form,
+    .groups-add-member {
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .groups-create-card > div,
+    .groups-create-form {
+      width: 100%;
+      flex-basis: auto;
+    }
+
+    .groups-details-actions {
+      width: 100%;
+      height: auto;
+      align-items: center;
+      flex-direction: row-reverse;
+    }
+
+    .groups-delete-button {
+      transform: none;
+    }
+
+    .groups-member-row {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .groups-admin-control {
+      width: calc(~"100% - 46px");
+      margin: 10px 0 0 46px;
+    }
+  }
 }
 
 @media (min-width: 768px) {

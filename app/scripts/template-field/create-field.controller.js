@@ -54,9 +54,9 @@ define([
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.moreIsOpen = false;
 
-    // field details - can read or write
+    // Field details and the current user's edit capability.
     $scope.details;
-    $scope.cannotWrite;
+    $scope.cannotEdit;
     $scope.lockReason = null;
 
     $scope.inclusionModalVisible = false;
@@ -65,34 +65,33 @@ define([
     $scope.fieldReader = jsonReaders.getTemplateFieldReader();
     $scope.yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
 
-    $scope.canWrite = function () {
+    $scope.canEdit = function () {
       if (!$scope.details) {
         return true;
       }
       else {
-        // Check write permission
-        var writePermission = resourceService.canWrite($scope.details);
+        var editCapability = resourceService.canEdit($scope.details);
 
         // Check publication status
         var isPublished = schemaService.isPublished($scope.details);
 
         // Result
-        var canWrite = writePermission && !isPublished;
-        $scope.cannotWrite = !canWrite;
+        var canEdit = editCapability && !isPublished;
+        $scope.cannotEdit = !canEdit;
         $scope.lockReason = isPublished ? 'TEMPLATEEDITOR.lock.published'
-            : (!writePermission ? 'TEMPLATEEDITOR.lock.noWritePermission' : null);
-        return canWrite;
+            : (!editCapability ? 'TEMPLATEEDITOR.lock.noEditPermission' : null);
+        return canEdit;
       }
     };
 
     // is this field locked?
     $scope.checkLocking = function () {
-      return $scope.canWrite();
+      return $scope.canEdit();
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('cannotWrite', function () {
-      UIUtilService.setLocked($scope.cannotWrite, $scope.lockReason);
+    $scope.$watch('cannotEdit', function () {
+      UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
     });
 
     $scope.setClean = function () {
@@ -105,7 +104,7 @@ define([
           id, CONST.resourceType.FIELD,
           function (response) {
             $scope.details = response;
-            $scope.canWrite();
+            $scope.canEdit();
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'FIELD' + '.load.error', error);
@@ -494,7 +493,7 @@ define([
     //
 
     $scope.showModal = function (type, searchScope) {
-      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":schemaService.getId($scope.form), "q": schemaService.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+      var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": $scope.form, "id":schemaService.getId($scope.form), "q": schemaService.getTitle($scope.form),'source': null,'termType': null, 'term': null, "advanced": false, "capabilities": ["readResource","updateResource"]};
       UIUtilService.showModal(options);
     };
 

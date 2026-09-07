@@ -399,7 +399,7 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type, searchScope) {
-        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false, "permission": ["read","write"]};
+        var options = {"filterSelection":type, "searchScope": searchScope, "modalId":"controlled-term-modal", "model": scope.element, "id":scope.getId(), "q": scope.getTitle(),'source': null,'termType': null, 'term': null, "advanced": false, "capabilities": ["readResource","updateResource"]};
         UIUtilService.showModal(options);
       };
 

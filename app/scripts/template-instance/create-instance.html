@@ -10,7 +10,7 @@
           <div class="instance-name-container" ng-class="{'classic': !vm.useCee}" ng-if="!$root.isEmpty(form)">
             <!-- The label follows the input so the stylesheet can colour it from the input's state. -->
             <input type="text" class="form-control" id="instance-name"
-                   ng-readonly="cannotWrite"
+                   ng-readonly="cannotEdit"
                    ng-model="vm.instanceName"
                    ng-change="vm.instanceNameChanged()">
             <label for="instance-name" translate>METADATAEDITOR.instanceName</label>
@@ -59,7 +59,7 @@
               </ul>
             </div>
 
-            <div ng-if="canWrite()" class="flex-right" style="width:95%;">
+            <div ng-if="canEdit()" class="flex-right" style="width:95%;">
               <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
                   ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel
               </button>
@@ -72,7 +72,7 @@
               </button>
             </div>
             <!-- Without the buttons there is nothing left to explain the missing save, so say why. -->
-            <div ng-if="!canWrite()" class="alert alert-warning locked-notice" role="alert">
+            <div ng-if="!canEdit()" class="alert alert-warning locked-notice" role="alert">
               <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
             </div>
           </div>

@@ -165,38 +165,51 @@ define([
       return Math.min(MessagingService.unreadCount, 9);
     };
 
-    vm.toggleUserMenuDropdown = function() {
-
-      var menuDropdown = document.getElementById('user-menu-dropdown');
-      var menuUser = document.getElementById('user-menu-dropdown-trigger');
-
-      if (menuDropdown && menuUser ) {
-        if (menuDropdown.style.display == "block") {
-
-          menuDropdown.style.setProperty("display", "none");
-          $window.onclick = null;
-          //$scope.$apply();
-
-        } else {
-
-          menuDropdown.style.setProperty("display", "block");
-          var menuRect = menuUser.getBoundingClientRect();
-          var dropdownRect = menuDropdown.getBoundingClientRect();
-          menuDropdown.style.setProperty("left", (menuRect.x  - dropdownRect.width) + "px");
-          menuDropdown.style.setProperty("top", (menuRect.y + menuRect.height) + "px");
-
-          $window.onclick = function (event) {
-
-            // make sure we are hitting something else
-            if (event.target.id != 'user-menu-dropdown' && event.target.id != 'user-menu-dropdown-trigger' ) {
-
-              menuDropdown.style.setProperty("display", "none");
-              $window.onclick = null;
-              //$scope.$apply();
-            }
-          };
+    function hideHeaderMenus() {
+      ['user-menu-dropdown', 'more-menu-dropdown'].forEach(function(menuId) {
+        var menu = document.getElementById(menuId);
+        if (menu) {
+          menu.style.setProperty('display', 'none');
         }
+      });
+      $window.onclick = null;
+    }
+
+    function toggleHeaderMenu(menuId, triggerId) {
+      var menu = document.getElementById(menuId);
+      var trigger = document.getElementById(triggerId);
+
+      if (!menu || !trigger) {
+        return;
       }
+
+      var wasOpen = menu.style.display === 'block';
+      hideHeaderMenus();
+
+      if (wasOpen) {
+        return;
+      }
+
+      menu.style.setProperty('display', 'block');
+      var triggerRect = trigger.getBoundingClientRect();
+      var menuRect = menu.getBoundingClientRect();
+      var left = Math.max(6, triggerRect.right - menuRect.width);
+      menu.style.setProperty('left', left + 'px');
+      menu.style.setProperty('top', triggerRect.bottom + 'px');
+
+      $window.onclick = function(event) {
+        if (!menu.contains(event.target) && !trigger.contains(event.target)) {
+          hideHeaderMenus();
+        }
+      };
+    }
+
+    vm.toggleUserMenuDropdown = function() {
+      toggleHeaderMenu('user-menu-dropdown', 'user-menu-dropdown-trigger');
+    };
+
+    vm.toggleMoreMenuDropdown = function() {
+      toggleHeaderMenu('more-menu-dropdown', 'more-menu-dropdown-trigger');
     };
 
     vm.showSearch = function () {
@@ -209,6 +222,10 @@ define([
 
     vm.isMessaging = function () {
       return (vm.path === "/messaging");
+    };
+
+    vm.isGroups = function () {
+      return (vm.path === "/groups");
     };
 
     vm.getDocumentTitle = function () {

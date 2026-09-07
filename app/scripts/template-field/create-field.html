@@ -10,7 +10,7 @@
                 <input auto-focus type="text"
                     class="form-control"
                     id="field-name"
-                    ng-readonly="cannotWrite"
+                    ng-readonly="cannotEdit"
                     placeholder="{{'GENERIC.Name' | translate}}"
                     aria-label="{{'GENERIC.Name' | translate}}"
                     ng-model="form['schema:name']"
@@ -25,7 +25,7 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="field-identifier"
-                    ng-readonly="cannotWrite"
+                    ng-readonly="cannotEdit"
                     placeholder="{{'GENERIC.Identifier' | translate}}"
                     aria-label="{{'GENERIC.Identifier' | translate}}"
                     ng-model="form['schema:identifier']"
@@ -55,7 +55,7 @@
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="field-description"
-                    ng-readonly="cannotWrite"
+                    ng-readonly="cannotEdit"
                     placeholder="{{'GENERIC.Description' | translate}}"
                     aria-label="{{'GENERIC.Description' | translate}}"
                     ng-model="form['schema:description']"
@@ -115,7 +115,7 @@
           </div>
 
 
-          <div class="field-actions" ng-if="canWrite()" style="height:auto">
+          <div class="field-actions" ng-if="canEdit()" style="height:auto">
             <div ng-if="fieldErrorMessages.length" class="alert alert-danger" role="alert">
               <p ng-repeat="message in fieldErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
             </div>
@@ -127,7 +127,7 @@
             <!--</div>-->
             <!-- A locked artifact cannot be saved, so say so next to the save button rather than
                  leaving the lock icon in the top bar as the only sign. -->
-            <div ng-if="cannotWrite" class="alert alert-warning locked-notice" role="alert">
+            <div ng-if="cannotEdit" class="alert alert-warning locked-notice" role="alert">
               <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
             </div>
             <div class="clear-save">
@@ -140,7 +140,7 @@
                   translate>GENERIC.Cancel
               </button>
               <span class="save-lock-tip" uib-tooltip="{{lockReason | translate}}"
-                    tooltip-enable="cannotWrite" tooltip-append-to-body="true" tooltip-placement="top">
+                    tooltip-enable="cannotEdit" tooltip-append-to-body="true" tooltip-placement="top">
                 <button type="button" ng-disabled="saveButtonDisabled" id="button-save-field"
                     class="btn btn-save field" ng-click="saveField()" translate>GENERIC.SaveField
                 </button>
@@ -229,5 +229,3 @@
   </div>
 
 </div>
-
-

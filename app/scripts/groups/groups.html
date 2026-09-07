@@ -1,0 +1,76 @@
+<div id="groups-page">
+  <div class="navbar-back flex">
+    <div class="back-arrow-click flex-left" ng-click="groups.goBack()">
+      <i class="back-arrow fa fa-arrow-left" aria-hidden="true"></i>
+      <div class="document-title">Groups</div>
+    </div>
+  </div>
+
+  <main class="groups-content">
+    <header class="groups-page-header">
+      <h1>Groups</h1>
+      <p>A group is a named collection of users. Group Administrators can change its name, membership and administrators.</p>
+    </header>
+
+    <div class="groups-tabs" role="tablist" aria-label="Group tasks">
+      <button id="manage-groups-tab" type="button" class="groups-tab"
+          role="tab" aria-controls="manage-groups-panel"
+          ng-attr-aria-selected="{{groups.activeTab === 'manage'}}"
+          ng-class="{active: groups.activeTab === 'manage'}"
+          ng-click="groups.selectTab('manage')">
+        Manage groups
+      </button>
+      <button id="create-group-tab" type="button" class="groups-tab"
+          role="tab" aria-controls="create-group-panel"
+          ng-attr-aria-selected="{{groups.activeTab === 'create'}}"
+          ng-class="{active: groups.activeTab === 'create'}"
+          ng-click="groups.selectTab('create')">
+        Create group
+      </button>
+    </div>
+
+    <div id="create-group-panel" class="groups-card groups-create-card"
+        role="tabpanel" aria-labelledby="create-group-tab"
+        ng-if="groups.activeTab === 'create'">
+      <div>
+        <h2>Create a group</h2>
+        <p>Create a group before assigning it access to folders or artifacts.</p>
+      </div>
+      <form class="groups-create-form" ng-submit="groups.createGroup()">
+        <label for="new-group-name">Group name</label>
+        <div class="groups-inline-controls">
+          <input id="new-group-name" class="form-control" type="text"
+              ng-model="groups.newGroupName" placeholder="Enter a group name">
+          <button type="submit" class="btn btn-primary groups-primary-action"
+              ng-disabled="!groups.newGroupName">Create group</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="groups-card groups-created-group"
+        ng-if="groups.activeTab === 'create' && groups.createdGroup && groups.selectedGroup && groups.createdGroup['@id'] === groups.selectedGroup['@id']">
+      <ng-include src="'scripts/groups/group-details.html'"></ng-include>
+    </div>
+
+    <div id="manage-groups-panel" class="groups-card groups-manage-card"
+        role="tabpanel" aria-labelledby="manage-groups-tab"
+        ng-if="groups.activeTab === 'manage'">
+      <div class="groups-selector">
+        <label for="group-selector">Find a group</label>
+        <input id="group-selector" class="form-control" type="text"
+            ng-model="groups.groupSearch"
+            placeholder="Search for a group"
+            typeahead-editable="false"
+            uib-typeahead="group as groups.getGroupOptionLabel(group) for group in groups.groups | filter:{name:$viewValue} | limitTo:10"
+            typeahead-on-select="groups.selectGroup($item)"
+            typeahead-select-on-exact="true">
+      </div>
+
+      <div class="groups-empty-state" ng-if="!groups.selectedGroup">
+        Select a group to view its details and members.
+      </div>
+
+      <ng-include src="'scripts/groups/group-details.html'"></ng-include>
+    </div>
+  </main>
+</div>

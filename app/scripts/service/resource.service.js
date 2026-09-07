@@ -47,6 +47,7 @@ define([
           moveResource             : moveResource,
           getResourceShare         : getResourceShare,
           setResourceShare         : setResourceShare,
+          transferResourceOwnership: transferResourceOwnership,
           getUsers                 : getUsers,
           getGroups                : getGroups,
           getGroup                 : getGroup,
@@ -55,11 +56,16 @@ define([
           deleteGroup              : deleteGroup,
           getGroupMembers          : getGroupMembers,
           updateGroupMembers       : updateGroupMembers,
-          canRead                  : canRead,
-          canWrite                 : canWrite,
+          canView                  : canView,
+          canEdit                  : canEdit,
+          canCreate                : canCreate,
+          canCopyInto              : canCopyInto,
+          canMoveInto              : canMoveInto,
+          canCopy                  : canCopy,
           canDelete                : canDelete,
-          canChangeOwner           : canChangeOwner,
-          canShare                 : canShare,
+          canMove                  : canMove,
+          canTransferOwnership     : canTransferOwnership,
+          canManageGrants          : canManageGrants,
           canPublish               : canPublish,
           canMakeOpen              : canMakeOpen,
           canMakeNotOpen           : canMakeNotOpen,
@@ -76,6 +82,8 @@ define([
           makeFolderNotOpen        : makeFolderNotOpen,
           renameNode               : renameNode,
           validateResource         : validateResource,
+          hasCapability            : hasCapability,
+          hasAvailableAction       : hasAvailableAction,
           canDo                    : canDo
         };
         return service;
@@ -820,6 +828,21 @@ define([
           );
         }
 
+        function transferResourceOwnership(resource, newOwnerId, permissions, successCallback, errorCallback) {
+          var payload = {'@id': resource['@id'], newOwnerId: newOwnerId};
+          var request = httpBuilderService.post(urlService.transferResourceOwnership(), payload);
+          if (permissions.$$cedarEtag != null) {
+            request.headers = {'If-Match': permissions.$$cedarEtag};
+          }
+          authorizedBackendService.doCall(
+              request,
+              function (response) {
+                successCallback(response.data);
+              },
+              errorCallback
+          );
+        }
+
         function getUsers(successCallback, errorCallback) {
           var url = urlService.getUsers();
           authorizedBackendService.doCall(
@@ -873,7 +896,6 @@ define([
           authorizedBackendService.doCall(
               httpBuilderService.put(url, angular.toJson(group), group),
               function (response) {
-                group.$$cedarMembershipEtag = group.$$cedarEtag;
                 successCallback(response.data);
               },
               errorCallback
@@ -898,7 +920,6 @@ define([
           authorizedBackendService.doCall(
               httpBuilderService.get(url),
               function (response) {
-                group.$$cedarEtag = response.data.$$cedarEtag;
                 group.$$cedarMembershipEtag = response.data.$$cedarEtag;
                 successCallback(response.data);
               },
@@ -916,7 +937,6 @@ define([
           authorizedBackendService.doCall(
               httpBuilderService.put(url, angular.toJson(payload), payload),
               function (response) {
-                group.$$cedarEtag = payload.$$cedarEtag;
                 group.$$cedarMembershipEtag = payload.$$cedarEtag;
                 successCallback(response.data);
               },
@@ -936,36 +956,72 @@ define([
           return false;
         }
 
-        function canRead(resource) {
-          return this.canDo(resource, 'canRead');
+        function hasCapability(resource, capability) {
+          return hasPermissionValue(resource, 'capabilities', capability);
         }
 
-        function canWrite(resource) {
-          return this.canDo(resource, 'canWrite');
+        function hasAvailableAction(resource, action) {
+          return hasPermissionValue(resource, 'availableActions', action);
+        }
+
+        function hasPermissionValue(resource, property, value) {
+          if (resource != null && resource.currentUserPermissions != null) {
+            var values = resource.currentUserPermissions[property];
+            return Array.isArray(values) && values.indexOf(value) !== -1;
+          }
+          return false;
+        }
+
+        function canView(resource) {
+          return this.hasCapability(resource, 'readResource');
+        }
+
+        function canEdit(resource) {
+          return this.hasCapability(resource, 'updateResource');
+        }
+
+        function canCreate(resource) {
+          return this.hasCapability(resource, 'createInFolder');
+        }
+
+        function canCopyInto(resource) {
+          return this.hasCapability(resource, 'copyIntoFolder');
+        }
+
+        function canMoveInto(resource) {
+          return this.hasCapability(resource, 'moveIntoFolder');
+        }
+
+        function canCopy(resource) {
+          return this.hasAvailableAction(resource, 'copyFromResource');
         }
 
         function canDelete(resource) {
-          return this.canDo(resource, 'canDelete');
+          return this.hasCapability(resource, 'deleteResource');
         }
 
-        function canChangeOwner(resource) {
-          return this.canDo(resource, 'canChangeOwner');
+        function canMove(resource) {
+          return this.hasCapability(resource, 'moveResource');
         }
 
-        function canShare(resource) {
-          return this.canDo(resource, 'canShare');
+        function canTransferOwnership(resource) {
+          return this.hasCapability(resource, 'transferOwnership');
+        }
+
+        function canManageGrants(resource) {
+          return this.hasCapability(resource, 'manageGrants');
         }
 
         function canPublish(resource) {
-          return this.canDo(resource, 'canPublish');
+          return this.hasAvailableAction(resource, 'publish');
         }
 
         function canMakeOpen(resource) {
-          return this.canDo(resource, 'canWrite') && this.canDo(resource, 'canMakeOpen');
+          return this.hasAvailableAction(resource, 'enableOpenView');
         }
 
         function canMakeNotOpen(resource) {
-          return this.canDo(resource, 'canWrite') && this.canDo(resource, 'canMakeNotOpen');
+          return this.hasAvailableAction(resource, 'disableOpenView');
         }
 
         function canOpenOpen(resource) {
@@ -989,15 +1045,15 @@ define([
         }
 
         function canSubmit(resource) {
-          return this.canDo(resource, 'canSubmit');
+          return this.hasAvailableAction(resource, 'submit');
         }
 
         function canCreateDraft(resource) {
-          return this.canDo(resource, 'canCreateDraft');
+          return this.hasAvailableAction(resource, 'createDraft');
         }
 
         function canPopulate(resource) {
-          return this.canDo(resource, 'canPopulate');
+          return this.hasAvailableAction(resource, 'populate');
         }
 
         function renameNode(resource, name, description) {

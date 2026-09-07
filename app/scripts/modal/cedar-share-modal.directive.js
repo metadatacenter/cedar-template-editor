@@ -30,7 +30,7 @@ define([
           'CONST'
         ];
 
-        function cedarShareModalController($timeout, $scope,  $translate, $uibModal, CedarUser,
+        function cedarShareModalController($timeout, $scope, $translate, $uibModal, CedarUser,
                                            resourceService,
                                            UIMessageService, UISettingsService,
                                            AuthorizedBackendService, CONST) {
@@ -39,11 +39,10 @@ define([
           var vm = this;
 
           // shares
-          vm.canRead = canRead;
-          vm.canWrite = canWrite;
-          vm.canChangeOwner = canChangeOwner;
-          vm.canChangePermissions = canChangePermissions;
-          vm.canBeOwner = canBeOwner;
+          vm.canView = canView;
+          vm.canEdit = canEdit;
+          vm.canTransferOwnership = canTransferOwnership;
+          vm.canManageGrants = canManageGrants;
           vm.saveShare = saveShare;
           vm.getNode = getNode;
           vm.addShare = addShare;
@@ -55,7 +54,7 @@ define([
 
           vm.selectedGroupId = null;
           vm.selectedNodeId = null;
-          vm.giveNodePermission = 'read';
+          vm.giveNodeRole = 'viewer';
           vm.resourceUsers = null;
           vm.resourcePermissions = null;
           vm.shares = null;
@@ -64,6 +63,16 @@ define([
           vm.typeaheadUser = null;
           vm.autoCompleteUserId = null;
           vm.getName = getName;
+          vm.getResourceName = getResourceName;
+          vm.getResourceType = getResourceType;
+          vm.getResourceTypeLabel = getResourceTypeLabel;
+          vm.isFolder = isFolder;
+          vm.getPrincipalTypeLabel = getPrincipalTypeLabel;
+          vm.availablePrincipals = availablePrincipals;
+          vm.principalSelected = principalSelected;
+          vm.addSelectedShare = addSelectedShare;
+          vm.requestOwnershipTransfer = requestOwnershipTransfer;
+          vm.ownershipTransferPending = false;
           vm.incomplete = incomplete;
 
           // groups
@@ -78,7 +87,7 @@ define([
           vm.groupTypeaheadOnSelect = groupTypeaheadOnSelect;
           vm.addUserToGroup = addUserToGroup;
           vm.removeFromGroup = removeFromGroup;
-          vm.canWriteGroup = canWriteGroup;
+          vm.canAdministerGroup = canAdministerGroup;
           vm.getSelectedGroup = getSelectedGroup;
           vm.hasSelectedGroup = hasSelectedGroup;
           vm.updateGroupName = updateGroupName;
@@ -91,10 +100,12 @@ define([
           vm.model = {
             "show" : "users",
             "users": {
+              "node" : null,
+              "role" : 'viewer',
               "user" : null,
               "group" : null,
-              "userPermission" : 'read',
-              "groupPermission" : 'read',
+              "userRole" : 'viewer',
+              "groupRole" : 'viewer',
             },
             "groups": {
               "user" : null,
@@ -139,23 +150,23 @@ define([
           /* user permissions  */
 
           // can this user read the selected resource
-          function canRead() {
-            return resourceService.canRead(getSelectedNode());
+          function canView() {
+            return resourceService.canView(getSelectedNode());
           }
 
           // can this user write the selected resource
-          function canWrite() {
-            return resourceService.canWrite(getSelectedNode());
+          function canEdit() {
+            return resourceService.canEdit(getSelectedNode());
           }
 
           // can this user change the owner of the selected resource
-          function canChangeOwner() {
-            return resourceService.canChangeOwner(getSelectedNode());
+          function canTransferOwnership() {
+            return resourceService.canTransferOwnership(getSelectedNode());
           }
 
           // can this user change the permissions of the selected resource
-          function canChangePermissions() {
-            return resourceService.canChangePermissions(getSelectedNode());
+          function canManageGrants() {
+            return resourceService.canManageGrants(getSelectedNode());
           }
 
           // is this user the owner of the selected resource
@@ -165,13 +176,6 @@ define([
             }
             return false;
           }
-
-          // can this user be the owner of the selected resource
-          function canBeOwner(id) {
-            var node = getNode(id);
-            return id && node && node.resourceType === 'user' && vm.canChangeOwner();
-          }
-
 
           /*  resources */
 
@@ -201,7 +205,10 @@ define([
 
           // save the modified permissions to the server
           function saveShare(resource) {
-            setPermissions(resource);
+            setPermissions(resource, function () {
+              UIMessageService.flashSuccess('SERVER.RESOURCE.access.update.success',
+                  {resource: getResourceName()}, 'GENERIC.Updated');
+            });
           };
 
           function clearTypeAheadUser() {
@@ -239,14 +246,14 @@ define([
               //vm.resourcePermissions.shares = [];
               for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
                 var share = {};
-                share.permission = vm.resourcePermissions.groupPermissions[i].permission;
+                share.role = vm.resourcePermissions.groupPermissions[i].role;
                 share.node = vm.resourcePermissions.groupPermissions[i].group;
                 share.node.resourceType = 'group';
                 vm.shares.push(share);
               }
               for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
                 var share = {};
-                share.permission = vm.resourcePermissions.userPermissions[i].permission;
+                share.role = vm.resourcePermissions.userPermissions[i].role;
                 share.node = vm.resourcePermissions.userPermissions[i].user;
                 share.node.resourceType = 'user';
                 share.node['schema:name'] = getName(share.node);
@@ -256,7 +263,7 @@ define([
           }
 
           // write the permissions to the server
-          function setPermissions(resource) {
+          function setPermissions(resource, successCallback) {
             // rebuild permissions from shares
             vm.resourcePermissions.groupPermissions = [];
             vm.resourcePermissions.userPermissions = [];
@@ -278,9 +285,13 @@ define([
             resourceService.setResourceShare(
                 resource,
                 vm.resourcePermissions,
-                function (response) {
+                function () {
+                  if (successCallback) {
+                    successCallback();
+                  }
                 },
                 function (error) {
+                  getPermissions(resource);
                   UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
                 }
             );
@@ -340,18 +351,6 @@ define([
             for (var i = 0; i < vm.shares.length; i++) {
               if (node['@id'] === vm.shares[i].node['@id']) {
                 vm.shares.splice(i, 1);
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node['@id'] === vm.resourcePermissions.userPermissions[i].user['@id']) {
-                vm.resourcePermissions.userPermissions.splice(i, 1);
-                saveShare(resource);
-                return;
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-              if (node['@id'] === vm.resourcePermissions.groupPermissions[i].group['@id']) {
-                vm.resourcePermissions.groupPermissions.splice(i, 1);
                 saveShare(resource);
                 return;
               }
@@ -364,6 +363,8 @@ define([
             if (node) {
               if (isUser(node)) {
                 result = node.firstName + ' ' + node.lastName;
+              } else if (node.specialGroup) {
+                result = 'Everyone';
               } else {
                 result = node['schema:name'];
               }
@@ -371,12 +372,126 @@ define([
             return result;
           }
 
+          function getResource() {
+            return vm.selectedResource || vm.shareResource;
+          }
+
+          function getResourceName() {
+            var resource = getResource();
+            if (!resource) {
+              return '';
+            }
+            return resource['schema:name'] || resource.name || resource.title || 'Untitled resource';
+          }
+
+          function getResourceType() {
+            var resource = getResource();
+            return resource && resource.resourceType ? resource.resourceType : 'resource';
+          }
+
+          function getResourceTypeLabel() {
+            var labels = {
+              folder: 'Folder',
+              template: 'Template',
+              element: 'Element',
+              field: 'Field',
+              instance: 'Metadata instance',
+              metadata: 'Metadata instance'
+            };
+            return labels[getResourceType()] || 'Resource';
+          }
+
+          function isFolder() {
+            return getResourceType() === 'folder';
+          }
+
+          function getPrincipalTypeLabel(node) {
+            if (node && node.specialGroup) {
+              return 'Built-in group';
+            }
+            return node && node.resourceType === 'group' ? 'Group' : 'User';
+          }
+
+          function isDirectlyShared(node) {
+            if (!node || !vm.shares) {
+              return false;
+            }
+            for (var i = 0; i < vm.shares.length; i++) {
+              if (vm.shares[i].node['@id'] === node['@id']) {
+                return true;
+              }
+            }
+            return false;
+          }
+
+          function availablePrincipals() {
+            if (!vm.resourceNodes) {
+              return [];
+            }
+            return vm.resourceNodes.filter(function (node) {
+              return !isOwner(node) && !isDirectlyShared(node);
+            });
+          }
+
+          function principalSelected(node) {
+            vm.model.users.role = 'viewer';
+          }
+
+          function addSelectedShare(resource) {
+            var node = vm.model.users.node;
+            if (!node) {
+              return;
+            }
+            addShare(node['@id'], vm.model.users.role, 'shared-users', resource);
+            vm.model.users.node = null;
+            vm.model.users.role = 'viewer';
+          }
+
+          function requestOwnershipTransfer(user, resource, event) {
+            if (event) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            if (!user || user.resourceType === 'group' || isOwner(user) ||
+                !vm.canTransferOwnership() || vm.ownershipTransferPending) {
+              return;
+            }
+            UIMessageService.confirmedExecution(function () {
+              vm.ownershipTransferPending = true;
+              resourceService.transferResourceOwnership(resource, user['@id'], vm.resourcePermissions,
+                  function (response) {
+                    vm.ownershipTransferPending = false;
+                    if (response) {
+                      vm.resourcePermissions = response;
+                      vm.resourcePermissions.owner.name = getName(vm.resourcePermissions.owner);
+                      getShares();
+                    }
+                    UIMessageService.flashSuccess('SERVER.RESOURCE.access.ownership.success', {
+                      owner: getName(user),
+                      resource: getResourceName()
+                    }, 'GENERIC.Updated');
+                    // Ownership is the authority to transfer ownership. Once it moves, the
+                    // current user may have no remaining path to this resource. Close and
+                    // refresh instead of leaving a stale, apparently editable dialog open.
+                    vm.modalVisible = false;
+                    $scope.$emit('refreshWorkspace', [null]);
+                  },
+                  function (error) {
+                    vm.ownershipTransferPending = false;
+                    getPermissions(resource);
+                    UIMessageService.showBackendError(
+                        'SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+                  });
+            }, 'DASHBOARD.share.confirmOwnershipTitle', 'DASHBOARD.share.confirmOwnership',
+                'GENERIC.Ok', {owner: getName(user)});
+          }
+
           // when selected user changes, reset selected permission
           function updateUserPermission(id) {
             if (id) {
               var node = getNode(id);
-              if (node.resourceType === 'group' && vm.giveNodePermission === 'own') {
-                vm.giveNodePermission = 'read';
+              if (node.resourceType === 'group' && vm.giveNodeRole === 'owner') {
+                vm.giveNodeRole = 'viewer';
               }
             }
           }
@@ -411,18 +526,18 @@ define([
           function updateGroupPermission(id) {
             if (id) {
               var node = getNode(id);
-              if (node.resourceType === 'group' && vm.giveNodePermission === 'own') {
-                vm.giveNodePermission = 'read';
+              if (node.resourceType === 'group' && vm.giveNodeRole === 'owner') {
+                vm.giveNodeRole = 'viewer';
               }
             }
           }
 
           // update the permission for this node
-          function updateShare(node, permission, resource) {
+          function updateShare(node, role, resource) {
 
             for (var i = 0; i < vm.shares.length; i++) {
               if (node['@id'] === vm.shares[i].node['@id']) {
-                vm.shares[i].permission = permission;
+                vm.shares[i].role = role;
                 saveShare(resource);
                 return true;
               }
@@ -431,43 +546,21 @@ define([
           }
 
           // add this share to the server
-          function addShare(id, permission, domId, resource) {
+          function addShare(id, role, domId, resource) {
 
             var node = getNode(id);
             var share = {};
             if (node) {
 
-              if (permission === 'own') {
+              // can we just update it
+              if (!isOwner(node) && !updateShare(node, role, resource)) {
 
-                var owner = vm.resourcePermissions.owner;
-
-                if (owner['@id'] != id) {
-
-                  // make the node the owner
-                  removeShare(node, resource);
-
-                  vm.resourcePermissions.owner = node;
-
-                  share.permission = 'write';
-                  share.node = owner;
-                  share.node.resourceType = 'user';
-                  share.node.name = getName(share.node);
-                  vm.shares.push(share);
-                  saveShare(resource);
-                }
-
-              } else {
-
-                // can we just update it
-                if (!isOwner(node) && !updateShare(node, permission, resource)) {
-
-                  // create the new share for this group
-                  share.permission = permission;
-                  share.node = node;
-                  share.node.name = getName(node);
-                  vm.shares.push(share);
-                  saveShare(resource);
-                }
+                // create the new share for this group
+                share.role = role;
+                share.node = node;
+                share.node.name = getName(node);
+                vm.shares.push(share);
+                saveShare(resource);
               }
               // scroll to this node
               $timeout(function () {
@@ -490,9 +583,15 @@ define([
             }
           }
 
-          // can this user create and update groups
-          function canWriteGroup() {
-            return true;
+          function canAdministerGroup() {
+            var group = vm.model.groups.group;
+            var currentUserId = CedarUser.getUserFullId();
+            if (!group || group.specialGroup || !Array.isArray(group.users)) {
+              return false;
+            }
+            return group.users.some(function (entry) {
+              return entry.administrator && entry.user && entry.user['@id'] === currentUserId;
+            });
           }
 
           function groupTypeaheadOnSelect(section, item, model, label) {
@@ -664,11 +763,14 @@ define([
             vm.selectedNodeId = null;
             vm.selectedUserId = null;
             vm.selectedGroupId = null;
-            vm.giveNodePermission = 'read';
+            vm.giveNodeRole = 'viewer';
             vm.resourceUsers = null;
             vm.resourceGroups = null;
             vm.resourceNodes = null;
             vm.resourcePermissions = null;
+            vm.model.users.node = null;
+            vm.model.users.role = 'viewer';
+            vm.ownershipTransferPending = false;
             vm.editingTitle = false;
             vm.editingDescription = false;
             vm.newTitle = "";

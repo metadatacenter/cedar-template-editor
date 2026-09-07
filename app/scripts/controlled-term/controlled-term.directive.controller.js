@@ -63,7 +63,7 @@ define([
     vm.stageValueConstraintAction = null;
     vm.stageValueSetValueConstraint = stageValueSetValueConstraint;
     vm.startOver = startOver;
-    vm.hasPermission = hasPermission;
+    vm.hasCapability = hasCapability;
     vm.treeVisible = false;
     vm.valueConstraint = {
       'ontologies'    : [],
@@ -429,8 +429,8 @@ define([
       }, 500);
     }
 
-    function hasPermission(perm) {
-      return vm.permission.includes(perm);
+    function hasCapability(capability) {
+      return vm.capabilities.includes(capability);
     }
 
     /**
@@ -563,7 +563,7 @@ define([
       vm.filterSelection = vm.options.filterSelection;
       vm.q = vm.options.q;
       vm.modalId = vm.options.modalId;
-      vm.permission = vm.options.permission;
+      vm.capabilities = vm.options.capabilities;
       vm.advanced = vm.options.advanced;
       vm.selectedOntologies = [];
       vm.searchScope = vm.options.searchScope;

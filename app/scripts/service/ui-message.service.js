@@ -122,13 +122,14 @@ define([
       }
     };
 
-    service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey) {
+    service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey, messageParameters) {
       swal({
-            title             : $translate.instant(titleKey),
-            text              : $translate.instant(textKey),
+            title             : $translate.instant(titleKey, messageParameters),
+            text              : $translate.instant(textKey, messageParameters),
             type              : "warning",
             showCancelButton  : true,
             confirmButtonText : $translate.instant(confirmTextKey),
+            cancelButtonText  : $translate.instant('GENERIC.Cancel'),
             closeOnConfirm    : true,
             customClass       : 'cedarSWAL',
             confirmButtonColor: null

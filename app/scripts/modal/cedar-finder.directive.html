@@ -325,12 +325,14 @@
                 <tr>
                   <td class="label">{{'DASHBOARD.info.Permissions' | translate}}</td>
                   <td>
-                    <span ng-if="finder.canRead()" class="can-read ellipsis">
-                      <i class="fa fa-check"></i>{{'DASHBOARD.info.ReadPermission' | translate}} </span>
-                    <span ng-if="finder.canWrite()" class="can-write ellipsis">
-                      <i class="fa fa-check"></i>{{'DASHBOARD.info.WritePermission' | translate}} </span>
-                    <span ng-if="finder.canChangeOwner()" class="can-change-owner ellipsis">
-                      <i class="fa fa-check"></i>{{'DASHBOARD.info.OwnerPermission' | translate}}</span></td>
+                    <span ng-if="finder.selectedResource.currentUserPermissions.role === 'viewer'" class="can-read ellipsis">
+                      <i class="fa fa-check"></i>Viewer</span>
+                    <span ng-if="finder.selectedResource.currentUserPermissions.role === 'editor'" class="can-write ellipsis">
+                      <i class="fa fa-check"></i>Editor</span>
+                    <span ng-if="finder.selectedResource.currentUserPermissions.role === 'manager'" class="can-write ellipsis">
+                      <i class="fa fa-check"></i>Manager</span>
+                    <span ng-if="finder.selectedResource.currentUserPermissions.owner" class="can-change-owner ellipsis">
+                      <i class="fa fa-check"></i>Owner</span></td>
                 </tr>
                 <!-- Version -->
                 <tr ng-if="!finder.isFolder(finder.selectedResource)">
