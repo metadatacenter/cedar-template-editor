@@ -4,12 +4,14 @@ define(['angular', 'angularMocks', 'text!resources/i18n/locale-en.json'], functi
   describe('resource access dialog:', function () {
     var template;
     var pickerTemplate;
+    var dropdownTemplate;
 
     beforeEach(module('my.templates'));
 
     beforeEach(inject(function ($templateCache) {
       template = $templateCache.get('scripts/modal/cedar-share-modal.directive.html?v=karma');
       pickerTemplate = $templateCache.get('scripts/search-browse/cedar-search-browse-picker.directive.html?v=karma');
+      dropdownTemplate = $templateCache.get('scripts/search-browse/cedar-dropdown-menu.directive.html?v=karma');
     }));
 
     it('keeps the dialog content mounted while Bootstrap controls visibility', function () {
@@ -17,6 +19,10 @@ define(['angular', 'angularMocks', 'text!resources/i18n/locale-en.json'], functi
       expect(template).not.toContain('ng-if="dc.shareModalVisible"');
       expect(pickerTemplate).toContain('cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal"');
       expect(pickerTemplate).not.toContain('cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal fade"');
+    });
+
+    it('opens Permissions without navigating the dashboard anchor', function () {
+      expect(dropdownTemplate).toContain('$event.preventDefault(); cannotManageGrants ? preventDefault : share(resource)');
     });
 
     it('uses one flow for adding users and groups', function () {

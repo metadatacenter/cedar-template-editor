@@ -3,7 +3,7 @@
   <li><a  class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="canNotPopulate? preventDefault : goTo(resource, 'populate')" translate>DASHBOARD.menu.populate</a></li>
   <li><a  class="open" href="#"  ng-click="goTo(resource)" translate>DASHBOARD.menu.open</a></li>
   <li role="separator" class="divider"></li>
-  <li><a ng-cloak class="share" ng-class="{'link-disabled': cannotManageGrants}" href="#" ng-click="cannotManageGrants ? preventDefault : share(resource)" translate>DASHBOARD.menu.share</a></li>
+  <li><a ng-cloak class="share" ng-class="{'link-disabled': cannotManageGrants}" href="#" ng-click="$event.preventDefault(); cannotManageGrants ? preventDefault : share(resource)" translate>DASHBOARD.menu.share</a></li>
   <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder || cannotCopy}" ng-click="isFolder || cannotCopy ? preventDefault : copy(resource)" translate>DASHBOARD.menu.copy</a></li>
   <li><a ng-cloak class="move" ng-class="{'link-disabled': cannotMove}" href="#" ng-click="cannotMove ? preventDefault : move(resource)" translate>DASHBOARD.menu.move</a></li>
   <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotRename}" href="#" ng-click="canNotRename ? preventDefault : rename(resource)" translate>DASHBOARD.menu.rename</a></li>
@@ -25,6 +25,5 @@
   <li><a ng-cloak class="makenotopen" ng-class="{'link-disabled': canNotMakeNotOpen}" href="#" ng-click="canNotMakeNotOpen? preventDefault : makeNotOpen(resource)"  translate>DASHBOARD.menu.makenotopen</a></li>
   <li><a ng-cloak class="openopen" ng-class="{'link-disabled': canNotOpenOpen}" href="#" ng-click="canNotOpenOpen? preventDefault : openOpen(resource)" translate>DASHBOARD.menu.openopen</a></li>
 </ul>
-
 
 
