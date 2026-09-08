@@ -41,7 +41,8 @@
         <h3>Members</h3>
         <p>The Group Administrator role allows a member to manage this group.</p>
       </div>
-      <span class="groups-member-count">{{groups.selectedGroup.users.length || 0}}</span>
+      <span class="groups-member-count"
+          ng-if="!groups.selectedGroup.$$membersRestricted">{{groups.selectedGroup.users.length || 0}}</span>
     </div>
 
     <div class="groups-add-member" ng-if="groups.canAdministerSelectedGroup()">
@@ -98,6 +99,9 @@
       </div>
       <div class="groups-empty-members" ng-if="groups.selectedGroup.users && !groups.selectedGroup.users.length">
         This group has no members.
+      </div>
+      <div class="groups-empty-members" ng-if="groups.selectedGroup.$$membersRestricted">
+        Only a Group Administrator can see who is in this group.
       </div>
     </div>
   </div>

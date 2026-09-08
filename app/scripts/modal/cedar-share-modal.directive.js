@@ -712,6 +712,11 @@ define([
             );
           }
 
+          // The roster is read here only to decide whether this user administers the group, which
+          // is what reveals the group's own editing controls. Reading it requires administering the
+          // group, so a refusal answers that question rather than failing: it means no. Sharing with
+          // the group does not depend on the roster and carries on either way, so no message is
+          // shown. isGroupAdministrator already reports false when users is unset.
           function getGroupMembers(group, successCallback, errorCallback) {
 
             resourceService.getGroupMembers(group,
@@ -722,6 +727,10 @@ define([
 
                 },
                 function (error) {
+                  if (error && error.status === 403) {
+                    group.users = undefined;
+                    return;
+                  }
                   UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }

@@ -122,13 +122,24 @@ define(['angular'], function (angular) {
       });
     }
 
+    // Only a group's administrators may read its membership, so a refusal here is an ordinary
+    // outcome for a group this user merely belongs to or can see, not a failure worth a message.
+    // users is left unset rather than emptied: an empty array would render as "this group has no
+    // members", which is a different and untrue statement, and canAdministerSelectedGroup already
+    // treats a missing roster as conferring nothing.
     function loadMembers(group) {
       resourceService.getGroupMembers(group, function (response) {
+        group.$$membersRestricted = false;
         group.users = response.users || [];
         sortByName(group.users, function (entry) {
           return getUserName(entry.user);
         });
       }, function (error) {
+        if (error && error.status === 403) {
+          group.users = undefined;
+          group.$$membersRestricted = true;
+          return;
+        }
         UIMessageService.showBackendError('SERVER.GROUPS.load.error', error);
       });
     }
