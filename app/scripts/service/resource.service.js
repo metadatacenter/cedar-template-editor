@@ -799,6 +799,27 @@ define([
           );
         }
 
+        // The permissions payload the server returns is wider than the one it accepts: a grant comes
+        // back carrying the user's name and email, and goes in carrying an identifier alone. The
+        // request types reject anything else, so narrow the object read from the server rather than
+        // echoing it back. The original object is still handed to the request builder, which takes
+        // the ETag from it.
+        function permissionsRequestOf(permissions) {
+          function reference(node) {
+            return node && node['@id'] ? {'@id': node['@id']} : node;
+          }
+
+          return {
+            owner: reference(permissions.owner),
+            userPermissions: (permissions.userPermissions || []).map(function (grant) {
+              return {user: reference(grant.user), role: grant.role};
+            }),
+            groupPermissions: (permissions.groupPermissions || []).map(function (grant) {
+              return {group: reference(grant.group), role: grant.role};
+            })
+          };
+        }
+
         function setResourceShare(resource, permissions, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
@@ -820,7 +841,7 @@ define([
               break;
           }
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, permissions, permissions),
+              httpBuilderService.put(url, permissionsRequestOf(permissions), permissions),
               function (response) {
                 successCallback(response.data);
               },
@@ -930,8 +951,18 @@ define([
         function updateGroupMembers(group, successCallback, errorCallback) {
           var url = urlService.getGroupMembers(group['@id']);
 
+          // The membership the server returns carries each user's name and email; the request it
+          // accepts carries an identifier, a membership flag and an administrator flag. Narrow
+          // rather than echo, or the request is refused.
           var payload = {};
-          payload.users = group.users;
+          payload.users = (group.users || []).map(function (membership) {
+            var user = membership.user;
+            return {
+              user: user && user['@id'] ? {'@id': user['@id']} : user,
+              administrator: membership.administrator,
+              member: membership.member
+            };
+          });
           payload.$$cedarEtag = group.$$cedarMembershipEtag;
 
           authorizedBackendService.doCall(
