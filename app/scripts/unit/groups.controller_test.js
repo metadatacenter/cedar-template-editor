@@ -175,6 +175,33 @@ define([
       expect(controller.selectedGroup['schema:name']).toBe('Researchers');
     });
 
+    it('reports a refused member list as not visible rather than as empty', function () {
+      getGroupMembers.and.callFake(function (group, success, error) {
+        error({status: 403});
+      });
+
+      controller.selectGroup({'@id': 'group-one'});
+
+      // Leaving users unset is the point: an empty array renders as "this group has no members",
+      // which would be a different and untrue claim about a group whose roster is simply not ours
+      // to see.
+      expect(controller.selectedGroup.users).toBeUndefined();
+      expect(controller.selectedGroup.$$membersRestricted).toBe(true);
+      expect(controller.canAdministerSelectedGroup()).toBe(false);
+      expect(showBackendError).not.toHaveBeenCalled();
+    });
+
+    it('still reports a member list that failed for any other reason', function () {
+      getGroupMembers.and.callFake(function (group, success, error) {
+        error({status: 500});
+      });
+
+      controller.selectGroup({'@id': 'group-one'});
+
+      expect(showBackendError).toHaveBeenCalled();
+      expect(controller.selectedGroup.$$membersRestricted).not.toBe(true);
+    });
+
     it('recognizes the signed-in user as a Group Administrator by CEDAR user ID', function () {
       controller.selectedGroup = {
         users: [
