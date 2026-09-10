@@ -11,14 +11,16 @@ define([
     "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
     "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
     "ValueRecommenderService", "UIUtilService", "DataManipulationService",
-    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService", "CeeDirtyTrackerService"];
+    "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService", "CeeDirtyTrackerService",
+    "PreviousRouteService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, $window,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
                                     ValueRecommenderService, UIUtilService, DataManipulationService, CedarUser, UrlService,
-                                    CedarModelTypescriptLibrary, CeeConfigService, CeeDirtyTrackerService) {
+                                    CedarModelTypescriptLibrary, CeeConfigService, CeeDirtyTrackerService,
+                                    PreviousRouteService) {
 
     let vm = this;
     vm.useCee = CedarUser.useMetadataEditorV2();
@@ -375,6 +377,10 @@ define([
           vm.instanceName = savedInstanceName;
           $rootScope.documentTitle = savedInstanceName;
           if (showEditAddress(editUrl)) {
+            // The create address the page arrived on is gone, and the metadata it would create now
+            // exists. Tell the back stack, which tracks AngularJS location changes and would
+            // otherwise record that address as somewhere to return to.
+            PreviousRouteService.supersedeCurrent();
             UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
             owner.enableSaveButton();
           } else {

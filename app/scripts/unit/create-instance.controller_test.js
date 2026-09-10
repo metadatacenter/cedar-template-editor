@@ -52,6 +52,7 @@ define([
         setStatus: angular.noop,
         setVersion: angular.noop
       };
+      var previousRouteService = {supersedeCurrent: jasmine.createSpy('supersedeCurrent')};
       var vm = $controller('CreateInstanceController', {
         $translate: {
           instant: function (key) { return key === 'GENERATEDVALUE.instanceTitle' ? ' metadata' : ''; }
@@ -105,7 +106,8 @@ define([
           markClean: angular.noop,
           hasBaseline: function () { return true; },
           isDirty: function () { return true; }
-        }
+        },
+        PreviousRouteService: previousRouteService
       });
       return {
         vm: vm,
@@ -113,7 +115,8 @@ define([
         instances: templateInstanceService,
         uiUtil: uiUtilService,
         window: fakeWindow,
-        messages: messages
+        messages: messages,
+        previousRoute: previousRouteService
       };
     }
 
@@ -190,6 +193,27 @@ define([
       expect(page.messages.flashSuccess).toHaveBeenCalledWith(
           'SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
       expect(page.messages.flashAfterReload).not.toHaveBeenCalled();
+    });
+
+    // The rewrite is invisible to AngularJS, so the back stack has to be told: without this the
+    // create address stays on it and the back arrow offers a create form for metadata that exists.
+    it('tells the back stack the create address it replaced is gone', function () {
+      var page = creatingWithEditor();
+
+      page.scope.saveInstance();
+
+      expect(page.previousRoute.supersedeCurrent).toHaveBeenCalled();
+    });
+
+    it('leaves the back stack alone when the browser refuses the rewrite', function () {
+      var page = creatingWithEditor();
+      page.window.history.replaceState.and.throwError('cross-origin');
+
+      page.scope.saveInstance();
+      $timeout.flush();
+
+      expect(page.previousRoute.supersedeCurrent).not.toHaveBeenCalled();
+      expect(page.window.location.assign).toHaveBeenCalledWith('/instances/edit/1');
     });
 
     it('updates what it created on the next save, under the identifier the server assigned', function () {
