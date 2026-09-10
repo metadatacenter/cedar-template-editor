@@ -30,6 +30,11 @@ define([
         history: {replaceState: jasmine.createSpy('replaceState')},
         location: {assign: jasmine.createSpy('assign')}
       };
+      var messages = {
+        flashSuccess: jasmine.createSpy('flashSuccess'),
+        flashAfterReload: jasmine.createSpy('flashAfterReload'),
+        showBackendError: angular.noop
+      };
       var templateInstanceService = {
         getTemplateInstance: function () { return {kind: 'instance'}; },
         saveTemplateInstance: jasmine.createSpy('saveTemplateInstance').and.callFake(
@@ -63,11 +68,7 @@ define([
           canEdit: function () { return true; }
         },
         TemplateInstanceService: templateInstanceService,
-        UIMessageService: {
-          flashSuccess: angular.noop,
-          flashAfterReload: angular.noop,
-          showBackendError: angular.noop
-        },
+        UIMessageService: messages,
         AuthorizedBackendService: {doCall: backend},
         CONST: {
           pageId: {RUNTIME: 'runtime'},
@@ -111,7 +112,8 @@ define([
         scope: scope,
         instances: templateInstanceService,
         uiUtil: uiUtilService,
-        window: fakeWindow
+        window: fakeWindow,
+        messages: messages
       };
     }
 
@@ -184,6 +186,10 @@ define([
       // The address a reload or a bookmark would use, so it lands on the saved metadata rather
       // than on a create form for metadata that now exists.
       expect(page.window.history.replaceState).toHaveBeenCalledWith(null, '', '/instances/edit/1');
+      // Nothing discards this document, so the confirmation belongs on it.
+      expect(page.messages.flashSuccess).toHaveBeenCalledWith(
+          'SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+      expect(page.messages.flashAfterReload).not.toHaveBeenCalled();
     });
 
     it('updates what it created on the next save, under the identifier the server assigned', function () {
@@ -206,6 +212,19 @@ define([
       $timeout.flush();
 
       expect(page.window.location.assign).toHaveBeenCalledWith('/instances/edit/1');
+    });
+
+    it('confirms a classic-form save on the page its route change lands on', function () {
+      var page = creating();
+
+      page.scope.saveInstance();
+
+      // A route change keeps the document, and `<toasty>` is a sibling of the routed view, so a
+      // toast raised here survives it. Storing the confirmation instead left it waiting for a full
+      // page load this path never performs, and it appeared on whichever page loaded next.
+      expect(page.messages.flashSuccess).toHaveBeenCalledWith(
+          'SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+      expect(page.messages.flashAfterReload).not.toHaveBeenCalled();
     });
 
     it('starts new metadata from the generated name and saves it under the typed one', function () {

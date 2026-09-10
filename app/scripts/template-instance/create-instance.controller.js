@@ -387,10 +387,12 @@ define([
             });
           }
         } else {
-          // The classic form rebuilds itself across this route change, so the route change is all
-          // this path has ever needed. The confirmation is stored rather than shown, which is how
-          // it has always been raised here.
-          UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
+          // Shown here rather than stored for the next page. The classic form rebuilds itself
+          // across this route change, and a route change keeps the document: `<toasty>` is a
+          // sibling of the routed view, so a toast raised now is still on screen afterwards.
+          // Storing it left the confirmation waiting for a full page load this path never
+          // performs, and it appeared on whichever page happened to load next.
+          UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
           $timeout(function () {
             $location.url(editUrl);
           });
