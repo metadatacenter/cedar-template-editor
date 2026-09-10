@@ -246,7 +246,7 @@ define([
             exceptionMessage = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
           } else {
             if (errorObject !== null) {
-              message = errorObject.errorMessage;
+              message = errorObject.message;
               errorKey = errorObject.errorKey;
               errorReasonKey = errorObject.errorReasonKey;
               if (errorObject.hasOwnProperty('objects')) {
