@@ -911,11 +911,23 @@ define([
           );
         }
 
+        // A group write accepts the name and the description. The document read from the server
+        // carries its identifier, provenance and source hash as well, and the server refuses those
+        // rather than dropping them in silence, so narrow the object read from the server rather
+        // than echoing it back.
+        function groupWriteRequestOf(group) {
+          return {
+            "schema:name"       : group['schema:name'],
+            "schema:description": group['schema:description']
+          };
+        }
+
         function updateGroup(group, successCallback, errorCallback) {
           var url = urlService.getGroup(group['@id']);
 
+          // The original object is still handed to the request builder, which takes the ETag from it.
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(group), group),
+              httpBuilderService.put(url, groupWriteRequestOf(group), group),
               function (response) {
                 successCallback(response.data);
               },

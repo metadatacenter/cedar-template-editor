@@ -26,6 +26,7 @@ define([
       $provide.value('CedarUser', {});
       $provide.value('UrlService', {
         templatePermission: function () { return '/template/one/permissions'; },
+        getGroup: function () { return '/group/one'; },
         getGroupMembers: function () { return '/group/one/users'; }
       });
       $provide.value('CONST', {resourceType: {TEMPLATE: 'template'}});
@@ -58,6 +59,30 @@ define([
         owner: {'@id': 'users/1'},
         userPermissions: [{user: {'@id': 'users/2'}, role: 'viewer'}],
         groupPermissions: [{group: {'@id': 'groups/1'}, role: 'writer'}]
+      });
+      expect(sent.cedarArtifact).toBe(fromTheServer);
+    });
+
+    // A group write accepts the name and the description. The document the server returns carries
+    // its identifier, provenance and source hash too, and sending those back is refused.
+    it('sends a group write as the name and the description alone', function () {
+      var fromTheServer = {
+        '@id': 'groups/1',
+        '@context': {'schema:name': 'https://schema.org/name'},
+        resourceType: 'group',
+        'schema:name': 'Curators',
+        'schema:description': 'the people who curate',
+        'pav:createdOn': '2026-01-01T00:00:00-07:00',
+        sourceHash: 'abc123',
+        specialGroup: null
+      };
+
+      service.updateGroup(fromTheServer, angular.noop, angular.noop);
+
+      var sent = requests.pop();
+      expect(sent.data).toEqual({
+        'schema:name': 'Curators',
+        'schema:description': 'the people who curate'
       });
       expect(sent.cedarArtifact).toBe(fromTheServer);
     });
