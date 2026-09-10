@@ -7,13 +7,13 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-    "HeaderService", "TemplateService", "resourceService", "TemplateInstanceService",
+    "$window", "HeaderService", "TemplateService", "resourceService", "TemplateInstanceService",
     "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
     "QueryParamUtilsService", "FrontendUrlService", "ValidationService",
     "ValueRecommenderService", "UIUtilService", "DataManipulationService",
     "CedarUser", "UrlService", "CedarModelTypescriptLibrary", "CeeConfigService", "CeeDirtyTrackerService"];
 
-  function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
+  function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, $window,
                                     HeaderService, TemplateService, resourceService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
                                     QueryParamUtilsService, FrontendUrlService, ValidationService,
@@ -323,36 +323,78 @@ define([
     };
 
 
+    /**
+     * Point the address bar at the saved metadata, without loading the page again.
+     *
+     * `history.replaceState` rather than `$location`: create and edit are two route definitions,
+     * and ngRoute rebuilds the controller whenever a URL resolves to a different one. Rebuilt, the
+     * embeddable editor is set on mid-teardown and left stuck "CEDAR Embeddable Editor
+     * initializing…", which is why a first save used to load the edit view outright. AngularJS does
+     * not see this write, since its location watcher runs only for changes `$location` itself made,
+     * so `$location` keeps the create URL it parsed. Nothing on this page writes `$location`
+     * afterwards, and the parameters it is read for, `folderId` and `returnTo`, are the same on
+     * both addresses.
+     *
+     * Replacing rather than pushing, so Back returns where the user came from rather than to a
+     * create form for metadata that now exists.
+     *
+     * False when the browser refuses the rewrite, which an edit address on another origin would be.
+     */
+    const showEditAddress = function (editUrl) {
+      try {
+        $window.history.replaceState(null, '', editUrl);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
 // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
 
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));
-        // Raised on the page this save is about to navigate to, not on this one. A toast is a node
-        // in the document that made it, and the `window.location.assign` below discards this
-        // document a digest later — so a plain flash here was created and thrown away before it
-        // painted, and the confirmation was never seen.
-        UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
 
         //$rootScope.$broadcast("form:clean");
 
         UIUtilService.setDirty(false);
         $rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
 
-        $timeout(function () {
-          var newId = response.data['@id'];
-          var editUrl = FrontendUrlService.getInstanceEdit(
-              newId, QueryParamUtilsService.getFolderId(), QueryParamUtilsService.getReturnTo());
-          if (vm.useCee) {
-            // The embeddable editor does not re-initialize across a client-side route change — set on
-            // the element mid-teardown, it is left stuck "CEDAR Embeddable Editor initializing…". Load
-            // the edit view with a full navigation so the editor boots once, cleanly, with the saved
-            // instance (same path a fresh open takes).
-            window.location.assign(editUrl);
-          } else {
-            $location.url(editUrl);
+        const editUrl = FrontendUrlService.getInstanceEdit(
+            response.data['@id'], QueryParamUtilsService.getFolderId(), QueryParamUtilsService.getReturnTo());
+
+        if (vm.useCee) {
+          // The editor stays where it is, and is told nothing. It already shows the metadata that
+          // was just stored, and the one thing it lacks is the identifier the server assigned,
+          // recorded here so the next save updates this artifact rather than creating a second one.
+          $scope.instance['@id'] = response.data['@id'];
+          if (response.data.$$cedarEtag != null) {
+            $scope.instance.$$cedarEtag = response.data.$$cedarEtag;
           }
-        });
+          savedInstanceName = $scope.instance['schema:name'];
+          vm.instanceName = savedInstanceName;
+          $rootScope.documentTitle = savedInstanceName;
+          if (showEditAddress(editUrl)) {
+            UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
+            owner.enableSaveButton();
+          } else {
+            // A browser refusing the rewrite leaves a correct page under a create address. Load the
+            // edit address, which is what this save did before, and raise the confirmation there:
+            // a toast is a node in the document that made it, and this one is about to be discarded.
+            UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
+            $timeout(function () {
+              $window.location.assign(editUrl);
+            });
+          }
+        } else {
+          // The classic form rebuilds itself across this route change, so the route change is all
+          // this path has ever needed. The confirmation is stored rather than shown, which is how
+          // it has always been raised here.
+          UIMessageService.flashAfterReload('success', 'SERVER.INSTANCE.create.success', 'GENERIC.Created');
+          $timeout(function () {
+            $location.url(editUrl);
+          });
+        }
 
         $timeout(function () {
           // don't show validation errors until after any redraws are done
@@ -386,9 +428,16 @@ define([
         // for this save; AuthorizedBackendService consumes it as If-Match and angular.toJson omits
         // the $$ property from the stored artifact body.
         const cedarEtag = $scope.instance && $scope.instance.$$cedarEtag;
+        // The identifier travels the same way, and for the same reason. After a first save the
+        // editor is still showing metadata it holds no identifier for, and the artifact it was
+        // stored as is here; without this, the next save would create a second one.
+        const savedId = $scope.instance && $scope.instance['@id'];
         $scope.instance = cee.currentMetadata;
         if (cedarEtag != null) {
           $scope.instance.$$cedarEtag = cedarEtag;
+        }
+        if (savedId != null) {
+          $scope.instance['@id'] = savedId;
         }
       }
 
