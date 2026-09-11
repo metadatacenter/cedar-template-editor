@@ -353,6 +353,9 @@ define([
 
 // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+      if ($scope.saveButtonDisabled) {
+        return;
+      }
 
       const doSave = function (response) {
         ValidationService.logValidation(response.headers("CEDAR-Validation-Status"));

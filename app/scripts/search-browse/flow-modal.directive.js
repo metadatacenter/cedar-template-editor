@@ -308,6 +308,8 @@ define([
            * @param flow
            */
           $scope.submit = function (flow) {
+            if ($scope.validationPending || $scope.state.submitted) { return; }
+            $scope.validationPending = true;
             var selectedFileNames = [];
             flow.files.forEach(function (flowFile) {
               if (flowFile.file.type != 'application/json') { // Ignore the metadata file
@@ -332,6 +334,7 @@ define([
                 HttpBuilderService.post(url, instanceAndFilenames),
 
                 function (response) {
+                  $scope.validationPending = false;
 
                   if (response.data.isValid == false) {
                     $scope.showValidation = true;
@@ -343,6 +346,7 @@ define([
                   }
                 },
                 function (err) {
+                  $scope.validationPending = false;
                   UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
                 }
             );
@@ -357,6 +361,7 @@ define([
           // flow of control
           //
           $scope.startUpload = function (flow) {
+            if ($scope.state.submitted) { return; }
 
             flow.opts.target = $scope.getTarget();
 

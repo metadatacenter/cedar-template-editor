@@ -86,6 +86,16 @@ define([
       });
     }));
 
+    it('ignores repeated group creation until the request completes and allows retry', function () {
+      createGroup.and.stub();
+      controller.newGroupName = 'Researchers';
+      controller.createGroup(); controller.createGroup();
+      expect(createGroup.calls.count()).toBe(1);
+      createGroup.calls.mostRecent().args[3]({status: 500});
+      controller.createGroup();
+      expect(createGroup.calls.count()).toBe(2);
+    });
+
     it('introduces groups as their own account-level page', function () {
       expect($rootScope.pageTitle).toBe('Groups');
       expect(controller.activeTab).toBe('manage');

@@ -46,17 +46,21 @@ define([
 
 
           function newFolder() {
+            if (vm.mutationPending) { return; }
             if (vm.folder.name) {
+              vm.mutationPending = true;
               resourceService.createFolder(
                   vm.folderId,
                   vm.folder.name,
                   vm.folder.description,
                   function (response) {
+                    vm.mutationPending = false;
                     refresh();
                     UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.folder.name},
                         'GENERIC.Created');
                   },
                   function (response) {
+                    vm.mutationPending = false;
                     UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
                   }
               );

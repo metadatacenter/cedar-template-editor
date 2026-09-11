@@ -180,6 +180,26 @@ define([
       }, {useCee: true});
     }
 
+    it('allows only one pending CEE create and advances to an update after completion', function () {
+      withEditor({'schema:name': 'Example'});
+      var complete;
+      var page = controllerFor({templateId: 'template-1'}, function (request, success) {
+        if (request.kind === 'template') { success({data: template}); }
+        else if (request.kind === 'save') { complete = success; }
+      }, {useCee: true});
+      $timeout.flush();
+      page.scope.saveInstance();
+      page.scope.saveInstance();
+      page.scope.saveInstance();
+      expect(page.instances.saveTemplateInstance.calls.count()).toBe(1);
+      complete({data: {'@id': 'instance-9', $$cedarEtag: '"1"'}, headers: function () { return null; }});
+      $timeout.flush();
+      page.scope.saveInstance();
+      expect(page.instances.updateTemplateInstance.calls.count()).toBe(1);
+      expect(page.instances.updateTemplateInstance).toHaveBeenCalledWith('instance-9',
+          jasmine.objectContaining({$$cedarEtag: '"1"'}));
+    });
+
     it('keeps the embeddable editor on the page when the first save stores the metadata', function () {
       var page = creatingWithEditor();
 
@@ -220,6 +240,7 @@ define([
       var page = creatingWithEditor();
 
       page.scope.saveInstance();
+      $timeout.flush();
       page.scope.saveInstance();
 
       expect(document.querySelector('cedar-embeddable-editor').currentMetadata['@id']).toBeUndefined();

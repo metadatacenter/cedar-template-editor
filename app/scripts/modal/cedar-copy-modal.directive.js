@@ -91,6 +91,7 @@ define([
           }
 
           function updateResource() {
+            if (vm.mutationPending) { return; }
 
             if (vm.selectedDestination) {
               const folderId = vm.selectedDestination['@id'];
@@ -103,11 +104,13 @@ define([
                   newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource['schema:name']});
                 }
 
+                vm.mutationPending = true;
                 resourceService.copyResource(
                     resource,
                     folderId,
                     newTitle,
                     function (response) {
+                      vm.mutationPending = false;
 
                       UIMessageService.flashSuccess('SERVER.RESOURCE.copyToResource.success', {"title": resource['schema:name']},
                           'GENERIC.Copied');
@@ -118,6 +121,7 @@ define([
 
                     },
                     function (response) {
+                      vm.mutationPending = false;
                       UIMessageService.showBackendError('SERVER.RESOURCE.copyToResource.error', response);
                     }
                 );

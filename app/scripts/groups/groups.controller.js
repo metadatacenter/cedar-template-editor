@@ -148,10 +148,12 @@ define(['angular'], function (angular) {
 
     function createGroup() {
       var name = (vm.newGroupName || '').trim();
-      if (!name) {
+      if (!name || vm.createPending) {
         return;
       }
+      vm.createPending = true;
       resourceService.createGroup(name, '', function (created) {
+        vm.createPending = false;
         created.name = groupName(created);
         vm.createdGroup = created;
         vm.groups.push(created);
@@ -160,6 +162,7 @@ define(['angular'], function (angular) {
         selectGroup(created);
         UIMessageService.flashSuccess('SERVER.GROUPS.create.success', {title: name}, 'GENERIC.Created');
       }, function (error) {
+        vm.createPending = false;
         UIMessageService.showBackendError('SERVER.GROUPS.create.error', error);
       });
     }
@@ -185,35 +188,42 @@ define(['angular'], function (angular) {
     }
 
     function saveGroupDetails() {
-      if (!canAdministerSelectedGroup()) {
+      if (vm.detailsPending || !canAdministerSelectedGroup()) {
         return;
       }
       var name = (vm.editName || '').trim();
       if (!name) {
         return;
       }
-      vm.selectedGroup['schema:name'] = name;
-      vm.selectedGroup['schema:description'] = (vm.editDescription || '').trim();
-      resourceService.updateGroup(vm.selectedGroup, function () {
-        vm.selectedGroup.name = name;
+      var group = vm.selectedGroup;
+      vm.detailsPending = true;
+      group['schema:name'] = name;
+      group['schema:description'] = (vm.editDescription || '').trim();
+      resourceService.updateGroup(group, function () {
+        vm.detailsPending = false;
+        group.name = name;
         sortByName(vm.groups, groupName);
         UIMessageService.flashSuccess('SERVER.GROUPS.update.success', {title: name}, 'GENERIC.Updated');
       }, function (error) {
+        vm.detailsPending = false;
         UIMessageService.showBackendError('SERVER.GROUPS.update.error', error);
       });
     }
 
     function deleteSelectedGroup() {
-      if (!canAdministerSelectedGroup()) {
+      if (vm.detailsPending || !canAdministerSelectedGroup()) {
         return;
       }
       var group = vm.selectedGroup;
+      if (group.$$membersPending) { return; }
       UIMessageService.confirmedExecution(function () {
-        if (vm.selectedGroup !== group || !canAdministerSelectedGroup()) {
+        if (vm.detailsPending || group.$$membersPending || vm.selectedGroup !== group || !canAdministerSelectedGroup()) {
           return;
         }
         var name = groupName(group);
+        vm.detailsPending = true;
         resourceService.deleteGroup(group, function () {
+          vm.detailsPending = false;
           // The detail response is a different object from the autocomplete summary.
           vm.groups = vm.groups.filter(function (listedGroup) {
             return listedGroup['@id'] !== group['@id'];
@@ -226,6 +236,7 @@ define(['angular'], function (angular) {
           }
           UIMessageService.flashSuccess('SERVER.GROUPS.delete.success', {title: name}, 'GENERIC.Deleted');
         }, function (error) {
+          vm.detailsPending = false;
           UIMessageService.showBackendError('SERVER.GROUPS.delete.error', error);
         });
       }, 'GENERIC.AreYouSure', 'DASHBOARD.share.confirmDeleteGroup', 'GENERIC.Remove');
@@ -243,7 +254,7 @@ define(['angular'], function (angular) {
     }
 
     function addMember() {
-      if (!vm.newMember || !canAdministerSelectedGroup() || vm.selectedGroup.$$membersPending) {
+      if (!vm.newMember || !canAdministerSelectedGroup() || vm.detailsPending || vm.selectedGroup.$$membersPending) {
         return;
       }
       vm.selectedGroup.users.push({
@@ -256,7 +267,7 @@ define(['angular'], function (angular) {
     }
 
     function removeMember(member) {
-      if (!canAdministerSelectedGroup() || vm.selectedGroup.$$membersPending || isOnlyGroupAdministrator(member)) {
+      if (!canAdministerSelectedGroup() || vm.detailsPending || vm.selectedGroup.$$membersPending || isOnlyGroupAdministrator(member)) {
         return;
       }
       var index = vm.selectedGroup.users.indexOf(member);
@@ -275,14 +286,14 @@ define(['angular'], function (angular) {
       // confirmation is open, then apply the requested state only when the user confirms it.
       var makeAdministrator = !!member.administrator;
       member.administrator = !makeAdministrator;
-      if (!canAdministerSelectedGroup() || vm.selectedGroup.$$membersPending ||
+      if (!canAdministerSelectedGroup() || vm.detailsPending || vm.selectedGroup.$$membersPending ||
           (!makeAdministrator && isOnlyGroupAdministrator(member))) {
         return;
       }
 
       var group = vm.selectedGroup;
       UIMessageService.confirmedExecution(function () {
-        if (vm.selectedGroup !== group || group.$$membersPending ||
+        if (vm.selectedGroup !== group || vm.detailsPending || group.$$membersPending ||
             !canAdministerSelectedGroup() || group.users.indexOf(member) === -1 ||
             (!makeAdministrator && isOnlyGroupAdministrator(member))) {
           return;

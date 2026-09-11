@@ -97,7 +97,7 @@ define([
           }
 
           function moveDisabled() {
-            return !moveEnabled();
+            return vm.mutationPending || !moveEnabled();
           }
 
           function refresh() {
@@ -105,8 +105,10 @@ define([
           }
 
           function updateResource() {
+            if (vm.mutationPending) { return; }
 
             if (moveEnabled()) {
+              vm.mutationPending = true;
 
               const folderId = vm.selectedDestination['@id'];
               const resource = vm.moveResource;
@@ -115,6 +117,7 @@ define([
                   resource,
                   folderId,
                   function (response) {
+                    vm.mutationPending = false;
 
                     UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success',
                         {"title": resource['schema:name']},
@@ -123,6 +126,7 @@ define([
                     refresh();
                   },
                   function (response) {
+                    vm.mutationPending = false;
                     UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
                   }
               );
