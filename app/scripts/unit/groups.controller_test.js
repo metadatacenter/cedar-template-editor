@@ -327,6 +327,32 @@ define([
       expect(controller.selectedGroup['@id']).toBe('group-two');
     });
 
+    it('removes a deleted group from autocomplete by ID after loading its details', function () {
+      var summary = {'@id': 'group-one', 'schema:name': 'cedar-dev'};
+      var other = {'@id': 'group-two', 'schema:name': 'Other'};
+      controller.groups = [summary, other];
+      controller.selectGroup(summary);
+      expect(controller.selectedGroup).not.toBe(summary);
+
+      controller.deleteSelectedGroup();
+
+      expect(controller.groups).toEqual([other]);
+      expect(controller.selectedGroup).toBeNull();
+    });
+
+    it('keeps the autocomplete entry when deletion fails', function () {
+      var summary = {'@id': 'group-one', 'schema:name': 'cedar-dev'};
+      controller.groups = [summary];
+      controller.selectGroup(summary);
+      deleteGroup.and.callFake(function (group, success, error) { error({status: 412}); });
+
+      controller.deleteSelectedGroup();
+
+      expect(controller.groups).toEqual([summary]);
+      expect(controller.selectedGroup['@id']).toBe('group-one');
+      expect(showBackendError).toHaveBeenCalled();
+    });
+
     it('uses the group-specific message after deleting a group', function () {
       var group = {
         'schema:name': 'Researchers',

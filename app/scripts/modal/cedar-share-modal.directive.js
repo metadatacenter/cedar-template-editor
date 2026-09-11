@@ -48,6 +48,7 @@ define([
           vm.permissionsPending = false;
           vm.permissionsSaving = false;
           var permissionsRead = 0;
+          var shareOpening = 0;
           vm.getNode = getNode;
           vm.addShare = addShare;
           vm.removeShare = removeShare;
@@ -336,10 +337,12 @@ define([
 
           // get all the users and groups on the system
           function getNodes() {
+            var opening = shareOpening;
 
               // get the users
               resourceService.getUsers(
                   function (response) {
+                    if (opening !== shareOpening) { return; }
                     vm.resourceUsers = response.users;
                     vm.selectedUserId = initNodes(vm.resourceUsers);
 
@@ -347,6 +350,7 @@ define([
                     // get groups
                     resourceService.getGroups(
                         function (response) {
+                          if (opening !== shareOpening) { return; }
                           vm.resourceGroups = response.groups;
                           vm.selectedGroupId = initNodes(vm.resourceGroups);
 
@@ -451,7 +455,7 @@ define([
           }
 
           function availablePrincipals() {
-            if (!vm.resourceNodes) {
+            if (permissionsBusy() || !vm.resourceNodes) {
               return [];
             }
             return vm.resourceNodes.filter(function (node) {
@@ -802,6 +806,9 @@ define([
 
           // initialize the share dialog
           function openShare(resource) {
+            shareOpening++;
+            vm.selectedResource = null;
+            vm.shares = null;
             getResourceDetails(resource);
             vm.selectedNodeId = null;
             vm.selectedUserId = null;
@@ -838,6 +845,7 @@ define([
 
           // get the resource details which includes the share settinh
           function getResourceDetails(resource) {
+            var opening = shareOpening;
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
             }
@@ -845,6 +853,7 @@ define([
             resourceService.getResourceReport(
                 resource,
                 function (response) {
+                  if (opening !== shareOpening) { return; }
                   vm.selectedResource = response;
                 },
                 function (error) {

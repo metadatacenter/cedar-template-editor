@@ -16,6 +16,8 @@ define([
     var transferResourceOwnership;
     var setResourceShare;
     var getResourceShare;
+    var getResourceReport;
+    var getGroups;
     var confirmedExecution;
     var flashSuccess;
     var refreshWorkspace;
@@ -39,6 +41,8 @@ define([
         groupPermissions: [{group: group, role: 'viewer'}]
       };
 
+      getResourceReport = jasmine.createSpy('getResourceReport').and.callFake(function (selected, success) { success(selected); });
+      getGroups = jasmine.createSpy('getGroups').and.callFake(function (success) { success({groups: [group]}); });
       getResourceShare = jasmine.createSpy('getResourceShare').and.callFake(function (selected, success) {
         success(permissions);
       });
@@ -65,9 +69,9 @@ define([
           canEdit: function () { return true; },
           canTransferOwnership: function () { return true; },
           canManageGrants: function () { return true; },
-          getResourceReport: function (selected, success) { success(selected); },
+          getResourceReport: getResourceReport,
           getUsers: function (success) { success({users: [owner, candidate]}); },
-          getGroups: function (success) { success({groups: [group]}); },
+          getGroups: getGroups,
           getResourceShare: getResourceShare,
           setResourceShare: setResourceShare,
           transferResourceOwnership: transferResourceOwnership
@@ -84,6 +88,44 @@ define([
 
       scope.$broadcast('shareModalVisible', [true, resource]);
     }));
+
+    it('removes a grant using its ID even when the caller has a separate object', function () {
+      controller.removeShare({'@id': group['@id']}, resource);
+      expect(controller.shares.length).toBe(1);
+      expect(controller.shares[0].node['@id']).toBe(candidate['@id']);
+      // Removing access does not delete the group: it becomes available to add again.
+      expect(controller.availablePrincipals()).toContain(group);
+      expect(setResourceShare).toHaveBeenCalled();
+    });
+
+    it('clears the previous resource and grants while a new dialog is loading', function () {
+      getResourceShare.and.stub();
+      getResourceReport.and.stub();
+      var next = {'@id': 'template-two', 'schema:name': 'Next', resourceType: 'template'};
+      scope.$broadcast('shareModalVisible', [true, next]);
+      expect(controller.shares).toBeNull();
+      expect(controller.selectedResource).toBeNull();
+      expect(controller.getResourceName()).toBe('Next');
+      expect(controller.availablePrincipals()).toEqual([]);
+      expect(controller.permissionsBusy()).toBe(true);
+    });
+
+    it('ignores old detail and directory responses after reopening the dialog', function () {
+      getResourceReport.and.stub();
+      getGroups.and.stub();
+      scope.$broadcast('shareModalVisible', [true, resource]);
+      var oldDetails = getResourceReport.calls.mostRecent().args[1];
+      var oldGroups = getGroups.calls.mostRecent().args[0];
+      var next = {'@id': 'template-two', 'schema:name': 'Next', resourceType: 'template'};
+      scope.$broadcast('shareModalVisible', [true, next]);
+      getResourceReport.calls.mostRecent().args[1](next);
+      getGroups.calls.mostRecent().args[0]({groups: []});
+      oldDetails(resource);
+      oldGroups({groups: [group]});
+      expect(controller.selectedResource).toBe(next);
+      expect(controller.resourceGroups).toEqual([]);
+      expect(controller.resourceNodes).not.toContain(group);
+    });
 
     it('requires confirmation before transferring ownership to a directly granted user', function () {
       var event = {

@@ -214,10 +214,10 @@ define(['angular'], function (angular) {
         }
         var name = groupName(group);
         resourceService.deleteGroup(group, function () {
-          var index = vm.groups.indexOf(group);
-          if (index !== -1) {
-            vm.groups.splice(index, 1);
-          }
+          // The detail response is a different object from the autocomplete summary.
+          vm.groups = vm.groups.filter(function (listedGroup) {
+            return listedGroup['@id'] !== group['@id'];
+          });
           if (vm.createdGroup && vm.createdGroup['@id'] === group['@id']) {
             vm.createdGroup = null;
           }
