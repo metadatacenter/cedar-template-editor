@@ -86,6 +86,16 @@ define([
       });
     }));
 
+    it('ignores repeated group creation until the request completes and allows retry', function () {
+      createGroup.and.stub();
+      controller.newGroupName = 'Researchers';
+      controller.createGroup(); controller.createGroup();
+      expect(createGroup.calls.count()).toBe(1);
+      createGroup.calls.mostRecent().args[3]({status: 500});
+      controller.createGroup();
+      expect(createGroup.calls.count()).toBe(2);
+    });
+
     it('introduces groups as their own account-level page', function () {
       expect($rootScope.pageTitle).toBe('Groups');
       expect(controller.activeTab).toBe('manage');
@@ -293,6 +303,66 @@ define([
           'SERVER.GROUPS.update.success', {title: 'Researchers'}, 'GENERIC.Updated');
     });
 
+    it('requires confirmation before deleting a group and leaves it intact on cancel', function () {
+      var group = {'@id': 'group-one', users: [
+        {user: currentUser, administrator: true, member: true}
+      ]};
+      controller.selectedGroup = group;
+      confirmedExecution.and.stub();
+
+      controller.deleteSelectedGroup();
+
+      expect(confirmedExecution).toHaveBeenCalledWith(jasmine.any(Function),
+          'GENERIC.AreYouSure', 'DASHBOARD.share.confirmDeleteGroup', 'GENERIC.Remove');
+      expect(deleteGroup).not.toHaveBeenCalled();
+      expect(controller.selectedGroup).toBe(group);
+
+      confirmedExecution.calls.mostRecent().args[0]();
+      expect(deleteGroup).toHaveBeenCalledWith(group, jasmine.any(Function), jasmine.any(Function));
+    });
+
+    it('does not delete a different group when selection changes during confirmation', function () {
+      controller.selectedGroup = {'@id': 'group-one', users: [
+        {user: currentUser, administrator: true, member: true}
+      ]};
+      confirmedExecution.and.stub();
+      controller.deleteSelectedGroup();
+      controller.selectedGroup = {'@id': 'group-two', users: [
+        {user: currentUser, administrator: true, member: true}
+      ]};
+
+      confirmedExecution.calls.mostRecent().args[0]();
+
+      expect(deleteGroup).not.toHaveBeenCalled();
+      expect(controller.selectedGroup['@id']).toBe('group-two');
+    });
+
+    it('removes a deleted group from autocomplete by ID after loading its details', function () {
+      var summary = {'@id': 'group-one', 'schema:name': 'cedar-dev'};
+      var other = {'@id': 'group-two', 'schema:name': 'Other'};
+      controller.groups = [summary, other];
+      controller.selectGroup(summary);
+      expect(controller.selectedGroup).not.toBe(summary);
+
+      controller.deleteSelectedGroup();
+
+      expect(controller.groups).toEqual([other]);
+      expect(controller.selectedGroup).toBeNull();
+    });
+
+    it('keeps the autocomplete entry when deletion fails', function () {
+      var summary = {'@id': 'group-one', 'schema:name': 'cedar-dev'};
+      controller.groups = [summary];
+      controller.selectGroup(summary);
+      deleteGroup.and.callFake(function (group, success, error) { error({status: 412}); });
+
+      controller.deleteSelectedGroup();
+
+      expect(controller.groups).toEqual([summary]);
+      expect(controller.selectedGroup['@id']).toBe('group-one');
+      expect(showBackendError).toHaveBeenCalled();
+    });
+
     it('uses the group-specific message after deleting a group', function () {
       var group = {
         'schema:name': 'Researchers',
@@ -349,6 +419,46 @@ define([
       expect(updateGroupMembers).toHaveBeenCalled();
       expect(flashSuccess).toHaveBeenCalledWith(
           'SERVER.GROUPS.update.success', {title: 'Researchers'}, 'GENERIC.Updated');
+    });
+
+    it('waits for each membership save before accepting another edit', function () {
+      var first = {user: anotherUser, administrator: false, member: true};
+      var second = {user: {'@id': 'third-user'}, administrator: false, member: true};
+      controller.selectedGroup = {users: [
+        {user: currentUser, administrator: true, member: true}, first, second
+      ]};
+
+      controller.removeMember(first);
+      controller.removeMember(second);
+      controller.newMember = anotherUser;
+      controller.addMember();
+      second.administrator = true;
+      controller.updateGroupAdministrator(second);
+
+      expect(updateGroupMembers.calls.count()).toBe(1);
+      expect(controller.selectedGroup.users.length).toBe(2);
+      expect(second.administrator).toBe(false);
+      updateGroupMembers.calls.mostRecent().args[1]({});
+      controller.removeMember(second);
+      expect(updateGroupMembers.calls.count()).toBe(2);
+      expect(controller.selectedGroup.users.length).toBe(1);
+    });
+
+    it('blocks further edits until a failed save has reloaded membership', function () {
+      var member = {user: anotherUser, administrator: false, member: true};
+      var group = {users: [
+        {user: currentUser, administrator: true, member: true}, member
+      ]};
+      controller.selectedGroup = group;
+      getGroupMembers.and.stub();
+      controller.removeMember(member);
+      updateGroupMembers.calls.mostRecent().args[2]({status: 412});
+      controller.newMember = anotherUser;
+      controller.addMember();
+      expect(updateGroupMembers.calls.count()).toBe(1);
+      getGroupMembers.calls.mostRecent().args[1]({users: group.users});
+      controller.addMember();
+      expect(updateGroupMembers.calls.count()).toBe(2);
     });
 
     it('reloads membership when an optimistic member update fails', function () {

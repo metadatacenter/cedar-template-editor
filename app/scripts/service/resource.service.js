@@ -647,8 +647,17 @@ define([
         function updateFolder(folder, successCallback, errorCallback) {
           var url = urlService.getFolder(folder['@id']);
 
+          // A folder write accepts the name and the description, as the rename command does. The
+          // folder document read from the server carries its identifier and provenance as well, and
+          // the endpoint refuses those. The original object still goes to the request builder,
+          // which takes the ETag from it.
+          var payload = {
+            "schema:name"       : folder['schema:name'],
+            "schema:description": folder['schema:description']
+          };
+
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(folder), folder),
+              httpBuilderService.put(url, payload, folder),
               function (response) {
                 successCallback(response.data);
               },
@@ -691,9 +700,10 @@ define([
           // Listing rows do not carry a resource validator. Read the graph representation immediately
           // before moving, then condition the command on exactly what the user chose to move.
           getResourceDetail(resource, function (current) {
+            // The command names what to move and where. The resource type used to travel with it
+            // and was never read, and the endpoint refuses a property it does not accept.
             var postData = {};
             postData['@id'] = resource['@id'];
-            postData['resourceType'] = resource['resourceType'];
             postData['targetFolderId'] = folderId;
             var request = httpBuilderService.post(urlService.moveNodeToFolder(), postData);
             if (current.$$cedarEtag != null) {
@@ -799,6 +809,27 @@ define([
           );
         }
 
+        // The permissions payload the server returns is wider than the one it accepts: a grant comes
+        // back carrying the user's name and email, and goes in carrying an identifier alone. The
+        // request types reject anything else, so narrow the object read from the server rather than
+        // echoing it back. The original object is still handed to the request builder, which takes
+        // the ETag from it.
+        function permissionsRequestOf(permissions) {
+          function reference(node) {
+            return node && node['@id'] ? {'@id': node['@id']} : node;
+          }
+
+          return {
+            owner: reference(permissions.owner),
+            userPermissions: (permissions.userPermissions || []).map(function (grant) {
+              return {user: reference(grant.user), role: grant.role};
+            }),
+            groupPermissions: (permissions.groupPermissions || []).map(function (grant) {
+              return {group: reference(grant.group), role: grant.role};
+            })
+          };
+        }
+
         function setResourceShare(resource, permissions, successCallback, errorCallback) {
           var url;
           var id = resource['@id'];
@@ -820,7 +851,7 @@ define([
               break;
           }
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, permissions, permissions),
+              httpBuilderService.put(url, permissionsRequestOf(permissions), permissions),
               function (response) {
                 successCallback(response.data);
               },
@@ -890,11 +921,23 @@ define([
           );
         }
 
+        // A group write accepts the name and the description. The document read from the server
+        // carries its identifier, provenance and source hash as well, and the server refuses those
+        // rather than dropping them in silence, so narrow the object read from the server rather
+        // than echoing it back.
+        function groupWriteRequestOf(group) {
+          return {
+            "schema:name"       : group['schema:name'],
+            "schema:description": group['schema:description']
+          };
+        }
+
         function updateGroup(group, successCallback, errorCallback) {
           var url = urlService.getGroup(group['@id']);
 
+          // The original object is still handed to the request builder, which takes the ETag from it.
           authorizedBackendService.doCall(
-              httpBuilderService.put(url, angular.toJson(group), group),
+              httpBuilderService.put(url, groupWriteRequestOf(group), group),
               function (response) {
                 successCallback(response.data);
               },
@@ -930,8 +973,18 @@ define([
         function updateGroupMembers(group, successCallback, errorCallback) {
           var url = urlService.getGroupMembers(group['@id']);
 
+          // The membership the server returns carries each user's name and email; the request it
+          // accepts carries an identifier, a membership flag and an administrator flag. Narrow
+          // rather than echo, or the request is refused.
           var payload = {};
-          payload.users = group.users;
+          payload.users = (group.users || []).map(function (membership) {
+            var user = membership.user;
+            return {
+              user: user && user['@id'] ? {'@id': user['@id']} : user,
+              administrator: membership.administrator,
+              member: membership.member
+            };
+          });
           payload.$$cedarEtag = group.$$cedarMembershipEtag;
 
           authorizedBackendService.doCall(

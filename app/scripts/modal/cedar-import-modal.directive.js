@@ -83,6 +83,7 @@ define([
           let importRefreshInterval; // Used to stop refreshing the status once the import is complete
 
           function startUpload(flow) {
+            if (vm.uploadStatus.submitted) { return; }
             flow.opts.target = vm.getImportUrl(vm.importFolderId);
 
             flow.opts.query = {

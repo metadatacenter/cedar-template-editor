@@ -145,6 +145,7 @@ define([
       }
       UIMessageService.confirmedExecution(
           function () {
+            if ($scope.busy) { return; }
             $scope.busy = true;
             AuthorizedBackendService.doCall(
                 HttpBuilderService.post(UrlService.regenerateApiKey(CedarUser.getUserId(), apiKey.id), {}),
@@ -170,6 +171,7 @@ define([
       }
       UIMessageService.confirmedExecution(
           function () {
+            if ($scope.busy) { return; }
             $scope.busy = true;
             AuthorizedBackendService.doCall(
                 HttpBuilderService.delete(UrlService.deleteApiKey(CedarUser.getUserId(), apiKey.id)),

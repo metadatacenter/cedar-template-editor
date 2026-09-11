@@ -34,16 +34,20 @@ define([
           }
 
           function saveUpdatedArtifacts() {
+            if (vm.mutationPending) { return; }
             let as = document.querySelector('artifact-selector');
             const data = as.artifactsToUpdate;
 
+            vm.mutationPending = true;
             AuthorizedBackendService.doCall(
                 InclusionService.updateInclusions(data),
                 function (response) {
+                  vm.mutationPending = false;
                   UIMessageService.flashSuccess('INCLUSION.bubbling-success');
                   vm.modalVisible = false;
                 },
                 function (err) {
+                  vm.mutationPending = false;
                   UIMessageService.showBackendError('INCLUSION.update-error', err);
 
                 }

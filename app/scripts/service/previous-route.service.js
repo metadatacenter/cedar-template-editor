@@ -42,6 +42,8 @@ define([
     var backStack = [];
     // Set while goBack() navigates, so the location it leaves is not pushed straight back on.
     var returning = false;
+    // Set when the page has rewritten its own address, so the location it leaves is not recorded.
+    var superseded = false;
     // Deep enough for any real session; older entries fall off the bottom.
     var MAX_DEPTH = 50;
 
@@ -55,10 +57,14 @@ define([
       if (newUrl === currentUrl) {
         return;
       }
+      var replaced = superseded;
+      superseded = false;
       if (returning) {
         // goBack() just consumed its target. Recording the page it left would rebuild the entry we
         // popped, and send the next press straight back here.
         returning = false;
+      } else if (replaced) {
+        // The page rewrote its own address, so the location being left is not one to return to.
       } else if (!isUtilityPath(currentPath) && backStack[backStack.length - 1] !== currentUrl) {
         // The page we are leaving was a real location, so remember it as a back target.
         backStack.push(currentUrl);
@@ -90,11 +96,26 @@ define([
     };
 
     /**
+     * Forget the location being left, because the page has replaced its own address.
+     *
+     * A first save of new metadata rewrites the create address to the edit one with
+     * `history.replaceState`, which AngularJS does not see. The next location change would
+     * otherwise record the address the page left — a create form for metadata that now exists —
+     * and the back arrow would return the user to it.
+     */
+    service.supersedeCurrent = function () {
+      superseded = true;
+    };
+
+    /**
      * Navigate back to the last workspace location (folder / search / sharing / hash all preserved),
      * skipping any profile/settings/privacy pages. Falls back to the dashboard when there is no such
      * location yet (e.g. a cold deep-link), preserving whatever state is on the current URL.
      */
     service.goBack = function () {
+      // A rewrite this press did not follow is spent: leaving it set would swallow the next real
+      // back target.
+      superseded = false;
       var index = previousIndex();
       if (index !== -1) {
         var target = backStack[index];

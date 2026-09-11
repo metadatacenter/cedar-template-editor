@@ -14,6 +14,8 @@ define([
     var DASHBOARD = '/dashboard?folderId=folder-1';
     var TEMPLATE = '/templates/edit/template-1';
     var ELEMENT = '/elements/edit/element-1';
+    var CREATE = '/instances/create/template-1?folderId=folder-1';
+    var EDIT = '/instances/edit/instance-1?folderId=folder-1';
 
     beforeEach(module('cedar.templateEditor.service.previousRouteService'));
 
@@ -98,6 +100,42 @@ define([
 
       goBack();
       expect($location.url()).toBe(TEMPLATE);
+    });
+
+    // A first save rewrites the create address to the edit one with history.replaceState, which
+    // AngularJS does not see: the next location change would record the create address as a back
+    // target, and the back arrow would offer a create form for metadata that now exists.
+    it('does not record an address the page replaced under it', function () {
+      goTo(CREATE);
+      PreviousRouteService.supersedeCurrent();
+      goTo(EDIT);
+
+      expect(PreviousRouteService.getPreviousUrl()).toBe(DASHBOARD);
+      goBack();
+      expect($location.url()).toBe(DASHBOARD);
+    });
+
+    it('records the address that replaced it once the user moves on', function () {
+      goTo(CREATE);
+      PreviousRouteService.supersedeCurrent();
+      goTo(EDIT);
+      goTo(TEMPLATE);
+
+      goBack();
+      expect($location.url()).toBe(EDIT);
+    });
+
+    // The flag belongs to the rewrite that set it. A back press that never saw a location change
+    // consumes it, so the next ordinary navigation is still remembered.
+    it('does not let an unused rewrite swallow the next back target', function () {
+      goTo(CREATE);
+      PreviousRouteService.supersedeCurrent();
+      goBack();
+      expect($location.url()).toBe(DASHBOARD);
+
+      goTo(TEMPLATE);
+      goBack();
+      expect($location.url()).toBe(DASHBOARD);
     });
 
     it('reports no previous location for a cold deep link', function () {

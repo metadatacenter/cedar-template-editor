@@ -19,7 +19,7 @@
       <textarea id="group-description" class="form-control" rows="1"
           ng-model="groups.editDescription"
           ng-disabled="!groups.canAdministerSelectedGroup()"
-          placeholder="Optional description"></textarea>
+          ng-attr-placeholder="{{groups.canAdministerSelectedGroup() ? 'Optional description' : undefined}}"></textarea>
     </div>
     <div class="groups-details-actions" ng-if="groups.canAdministerSelectedGroup()">
       <button type="button" class="btn btn-link groups-delete-button"
@@ -56,7 +56,7 @@
             typeahead-select-on-exact="true">
       </div>
       <button type="button" class="btn btn-primary groups-primary-action"
-          ng-disabled="!groups.newMember"
+          ng-disabled="!groups.newMember || groups.selectedGroup.$$membersPending"
           ng-click="groups.addMember()">
         Add member
       </button>
@@ -79,7 +79,7 @@
             tooltip-append-to-body="true">
           <input type="checkbox" ng-model="member.administrator"
               ng-change="groups.updateGroupAdministrator(member)"
-              ng-disabled="!groups.canAdministerSelectedGroup() || groups.isOnlyGroupAdministrator(member)"
+              ng-disabled="!groups.canAdministerSelectedGroup() || groups.selectedGroup.$$membersPending || groups.isOnlyGroupAdministrator(member)"
               aria-label="{{groups.getUserName(member.user)}} is a Group Administrator">
           <span class="sr-only">Group Administrator</span>
         </label>
@@ -90,7 +90,7 @@
             tooltip-append-to-body="true">
           <button type="button" class="btn btn-link groups-remove-member"
               ng-if="groups.canAdministerSelectedGroup()"
-              ng-disabled="groups.isOnlyGroupAdministrator(member)"
+              ng-disabled="groups.selectedGroup.$$membersPending || groups.isOnlyGroupAdministrator(member)"
               ng-click="groups.removeMember(member)"
               aria-label="Remove {{groups.getUserName(member.user)}} from the group">
             <i class="fa fa-trash" aria-hidden="true"></i>
