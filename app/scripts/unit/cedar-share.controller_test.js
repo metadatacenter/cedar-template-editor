@@ -15,6 +15,7 @@ define([
     var permissions;
     var transferResourceOwnership;
     var setResourceShare;
+    var getResourceShare;
     var confirmedExecution;
     var flashSuccess;
     var refreshWorkspace;
@@ -38,6 +39,9 @@ define([
         groupPermissions: [{group: group, role: 'viewer'}]
       };
 
+      getResourceShare = jasmine.createSpy('getResourceShare').and.callFake(function (selected, success) {
+        success(permissions);
+      });
       transferResourceOwnership = jasmine.createSpy('transferResourceOwnership');
       setResourceShare = jasmine.createSpy('setResourceShare').and.callFake(function (selected, updated, success) {
         success(updated);
@@ -64,7 +68,7 @@ define([
           getResourceReport: function (selected, success) { success(selected); },
           getUsers: function (success) { success({users: [owner, candidate]}); },
           getGroups: function (success) { success({groups: [group]}); },
-          getResourceShare: function (selected, success) { success(permissions); },
+          getResourceShare: getResourceShare,
           setResourceShare: setResourceShare,
           transferResourceOwnership: transferResourceOwnership
         },
@@ -130,6 +134,50 @@ define([
 
       expect(confirmedExecution).not.toHaveBeenCalled();
       expect(transferResourceOwnership).not.toHaveBeenCalled();
+    });
+
+    it('waits for a grant save before removing another grant or transferring ownership', function () {
+      setResourceShare.and.stub();
+      controller.removeShare(group, resource);
+      controller.removeShare(candidate, resource);
+      controller.addShare(candidate['@id'], 'manager', 'shared-users', resource);
+      controller.requestOwnershipTransfer(candidate, resource);
+      expect(setResourceShare.calls.count()).toBe(1);
+      expect(controller.shares.length).toBe(1);
+      expect(controller.shares[0].role).toBe('viewer');
+      expect(confirmedExecution).not.toHaveBeenCalled();
+      setResourceShare.calls.mostRecent().args[2]();
+      controller.removeShare(candidate, resource);
+      expect(setResourceShare.calls.count()).toBe(2);
+    });
+
+    it('blocks grant writes while ownership is being transferred', function () {
+      confirmedExecution.and.callFake(function (operation) { operation(); });
+      controller.requestOwnershipTransfer(candidate, resource);
+      controller.removeShare(group, resource);
+      controller.addShare(candidate['@id'], 'editor', 'shared-users', resource);
+      expect(setResourceShare).not.toHaveBeenCalled();
+      expect(controller.shares.length).toBe(2);
+    });
+
+    it('rechecks a pending ownership confirmation if a grant save has started', function () {
+      controller.requestOwnershipTransfer(candidate, resource);
+      setResourceShare.and.stub();
+      controller.removeShare(group, resource);
+      confirmedExecution.calls.mostRecent().args[0]();
+      expect(transferResourceOwnership).not.toHaveBeenCalled();
+    });
+
+    it('waits for the recovery read after a rejected grant save', function () {
+      setResourceShare.and.stub();
+      getResourceShare.and.stub();
+      controller.removeShare(group, resource);
+      setResourceShare.calls.mostRecent().args[3]({status: 412});
+      controller.removeShare(candidate, resource);
+      expect(setResourceShare.calls.count()).toBe(1);
+      getResourceShare.calls.mostRecent().args[1](permissions);
+      controller.removeShare(candidate, resource);
+      expect(setResourceShare.calls.count()).toBe(2);
     });
 
     it('shows an access-updated toast after role and removal changes', function () {
