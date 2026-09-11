@@ -19,7 +19,7 @@
       <textarea id="group-description" class="form-control" rows="1"
           ng-model="groups.editDescription"
           ng-disabled="!groups.canAdministerSelectedGroup()"
-          placeholder="Optional description"></textarea>
+          ng-attr-placeholder="{{groups.canAdministerSelectedGroup() ? 'Optional description' : undefined}}"></textarea>
     </div>
     <div class="groups-details-actions" ng-if="groups.canAdministerSelectedGroup()">
       <button type="button" class="btn btn-link groups-delete-button"
