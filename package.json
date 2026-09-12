@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.12",
+  "version": "2.9.13",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -55,7 +55,7 @@
     "angular-touch": "1.6.3",
     "angular-ui-bootstrap": "2.5.0",
     "bootstrap": "4.1.2",
-    "cedar-embeddable-editor": "2.0.10",
+    "cedar-embeddable-editor": "2.0.11",
     "handsontable": "^0.32.0",
     "install": "0.8.7",
     "jquery": "1.11.3",
