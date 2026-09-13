@@ -80,11 +80,29 @@ define([
     // after the artifact itself has loaded — so the artifact waits here until the editor is
     // configured, rather than the configuration chasing it.
     let ceeConfigured = false;
+    let configuredCee = null;
+    let ceeDestroyed = false;
+
+    const onCeeChange = function () {
+      // Read the model after CEE's mutation announcement; an exact revert is clean again.
+      const dirty = CeeDirtyTrackerService.hasBaseline()
+          ? CeeDirtyTrackerService.isDirty(configuredCee.currentMetadata)
+          : true;
+      UIUtilService.setDirty(dirty || instanceNameDirty());
+      $scope.$evalAsync();
+    };
+
+    $scope.$on('$destroy', function () {
+      ceeDestroyed = true;
+      if (configuredCee) {
+        configuredCee.removeEventListener('change', onCeeChange);
+      }
+    });
     let pendingCeeArtifact = null;
     let ceeWaitTicks = 20;
 
     const configureCee = function () {
-      if (ceeConfigured || !vm.useCee) {
+      if (ceeDestroyed || ceeConfigured || !vm.useCee) {
         return;
       }
       const cee = ceeElement();
@@ -96,6 +114,10 @@ define([
         }
         return;
       }
+      // Configuration already waits for the routed element. Attach here too, before presenting
+      // the artifact, so a late ng-if cannot silently disable unsaved-change protection.
+      configuredCee = cee;
+      cee.addEventListener('change', onCeeChange);
       $scope.ceeConfig.readOnlyMode = $scope.cannotEdit === true;
       cee.config = angular.copy($scope.ceeConfig);
       ceeConfigured = true;
@@ -626,20 +648,7 @@ define([
       }
     };
 
-    $timeout(() => {
-      const cee = ceeElement();
-      if (!cee) return;
-      cee.addEventListener('change', () => {
-        // Older CEE bundles still emit unstructured control events. Preserve
-        // their conservative behaviour until the explicit mutation contract is
-        // present, but use the saved baseline whenever this page established one.
-        const dirty = CeeDirtyTrackerService.hasBaseline()
-            ? CeeDirtyTrackerService.isDirty(cee.currentMetadata)
-            : true;
-        UIUtilService.setDirty(dirty || instanceNameDirty());
-        $scope.$evalAsync();
-      });
-    }, 0);
+
 
 
 // // open the airr submission modal
