@@ -266,4 +266,7 @@ export { YamlArtifactParsingResult };
 export { ComparisonResult };
 export { JsonObjectComparator };
 export { YamlObjectComparator };
+export { Annotations } from './org/metadatacenter/model/cedar/annotation/Annotations';
+export { AnnotationAtId } from './org/metadatacenter/model/cedar/annotation/AnnotationAtId';
+export { AnnotationAtValue } from './org/metadatacenter/model/cedar/annotation/AnnotationAtValue';
 //# sourceMappingURL=index.d.ts.map
