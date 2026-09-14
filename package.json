@@ -51,6 +51,6 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "cedar-embeddable-editor": "2.0.12"
+    "cedar-embeddable-editor": "2.0.13"
   }
 }
