@@ -3,7 +3,8 @@
 define([
   'angular',
   'angularMocks',
-  'cedar/template-editor/template-instance/create-instance.controller'
+  'cedar/template-editor/template-instance/create-instance.controller',
+  'cedar/template-editor/service/cee-dirty-tracker.service'
 ], function () {
 
   describe('CreateInstanceController metadata name:', function () {
@@ -12,6 +13,7 @@ define([
     var $timeout;
 
     beforeEach(module('cedar.templateEditor.templateInstance.createInstanceController'));
+    beforeEach(module('cedar.templateEditor.service.ceeDirtyTrackerService'));
 
     beforeEach(inject(function (_$controller_, _$rootScope_, _$timeout_) {
       $controller = _$controller_;
@@ -101,7 +103,7 @@ define([
           }
         },
         CeeConfigService: {getConfig: function () { return {}; }},
-        CeeDirtyTrackerService: {
+        CeeDirtyTrackerService: settings.tracker || {
           reset: angular.noop,
           markClean: angular.noop,
           hasBaseline: function () { return true; },
@@ -179,6 +181,35 @@ define([
         }
       }, {useCee: true});
     }
+
+    it('tracks edits and exact reverts when CEE appears after the first controller tick', inject(function (CeeDirtyTrackerService) {
+      var receiveInstance;
+      var page = controllerFor({id: 'instance-1'}, function (request, success) {
+        if (request.kind === 'instance') { receiveInstance = success; }
+        if (request.kind === 'template') { success({data: template}); }
+      }, {useCee: true, tracker: CeeDirtyTrackerService});
+      // The routed view has not linked its ng-if element during the first timer callback.
+      $timeout(angular.noop, 0);
+      $timeout.flush();
+      var metadata = {'@id': 'instance-1', notes: {'@value': 'saved'}};
+      var editor = withEditor(metadata);
+      receiveInstance({data: {
+        '@id': 'instance-1', 'schema:isBasedOn': 'template-1', 'schema:name': 'Saved instance'
+      }});
+      expect(CeeDirtyTrackerService.isDirty(editor.currentMetadata)).toBe(false);
+      page.uiUtil.setDirty.calls.reset();
+      metadata.notes['@value'] = 'changed';
+      editor.dispatchEvent(new CustomEvent('change'));
+      expect(page.uiUtil.setDirty).toHaveBeenCalledWith(true);
+      metadata.notes['@value'] = 'saved';
+      editor.dispatchEvent(new CustomEvent('change'));
+      expect(page.uiUtil.setDirty.calls.mostRecent().args).toEqual([false]);
+      page.scope.$destroy();
+      page.uiUtil.setDirty.calls.reset();
+      metadata.notes['@value'] = 'detached editor';
+      editor.dispatchEvent(new CustomEvent('change'));
+      expect(page.uiUtil.setDirty).not.toHaveBeenCalled();
+    }));
 
     it('allows only one pending CEE create and advances to an update after completion', function () {
       withEditor({'schema:name': 'Example'});

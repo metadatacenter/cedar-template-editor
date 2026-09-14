@@ -1,7 +1,7 @@
 {
   "name": "cedar-model-typescript-library",
-  "version": "1.0.2",
-  "description": "CEDAR Model Typescript Library - a library to work with fields, elements, templates and instances implemented in TypeScript",
+  "version": "1.0.8",
+  "description": "TypeScript models, builders, readers, writers, and validators for CEDAR metadata artifacts",
   "main": "index.js",
   "module": "index.esm.js",
   "types": "index.d.ts",
