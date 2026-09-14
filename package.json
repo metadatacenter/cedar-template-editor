@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.14-SNAPSHOT",
+  "version": "2.9.14",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -51,6 +51,6 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.12-dev.20260913.96b2097"
+    "cedar-embeddable-editor": "2.0.12"
   }
 }
