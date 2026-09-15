@@ -128,17 +128,21 @@
 <toasty></toasty>
 
 <section>
+  <!-- Each entry wears the icon its destination already wears: the profile page's account card,
+       the settings page's interface card, the privacy page's policy card, and, for groups, the
+       glyph the sharing dialog gives a group. Logout ends the session rather than opening a
+       page, so it takes the conventional sign-out arrow. -->
   <div id="user-menu-dropdown" class="header-menu-dropdown">
     <ul>
-      <a href="/profile"><li id="user-profile-tool" ><span>Profile</span></li></a>
-      <a href="/settings"><li id="user-settings-tool"><span>Settings</span></li></a>
-      <a href="/logout"><li id="user-logout-tool" ><span>Logout</span></li></a>
+      <a href="/profile"><li id="user-profile-tool" ><span>Profile</span><i class="fa fa-user-circle menu-icon" aria-hidden="true"></i></li></a>
+      <a href="/settings"><li id="user-settings-tool"><span>Settings</span><i class="fa fa-sliders menu-icon" aria-hidden="true"></i></li></a>
+      <a href="/logout"><li id="user-logout-tool" ><span>Logout</span><i class="fa fa-sign-out menu-icon" aria-hidden="true"></i></li></a>
     </ul>
   </div>
   <div id="more-menu-dropdown" class="header-menu-dropdown">
     <ul>
-      <a href="/groups"><li id="user-groups-tool"><span>Groups</span></li></a>
-      <a href="/privacy"><li id="user-privacy" ><span>Privacy</span></li></a>
+      <a href="/groups"><li id="user-groups-tool"><span>Groups</span><i class="fa fa-users menu-icon" aria-hidden="true"></i></li></a>
+      <a href="/privacy"><li id="user-privacy" ><span>Privacy</span><i class="fa fa-shield menu-icon" aria-hidden="true"></i></li></a>
       <!-- Monitoring dashboard: another CEDAR frontend (same Keycloak session), so it opens in a new
            tab but is marked with the cedar tree rather than the "external link" arrow. Only shown to
            users who hold permission_monitor_read - the monitor server rejects everyone else. -->
