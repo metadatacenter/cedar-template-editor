@@ -80,6 +80,7 @@ define([
           UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
         });
 
+        var instanceWarningShown = false;
         var getReport = function (id) {
 
           resourceService.getTemplateReport(
@@ -90,6 +91,12 @@ define([
                 UIUtilService.setVisibleMetadata(0);
                 UIUtilService.setInstances(null);
                 $scope.checkLocking();
+                if (!$scope.cannotEdit && response.numberOfInstances > 0 && !instanceWarningShown) {
+                  instanceWarningShown = true;
+                  UIMessageService.confirmEditingWithInstances(response.numberOfInstances, false, function () {
+                    $scope.$evalAsync($scope.cancelTemplate);
+                  });
+                }
 
               },
               function (error) {

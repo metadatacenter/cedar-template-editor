@@ -97,12 +97,27 @@ define([
       return $scope.canEdit();
     };
 
+    var instanceWarningChecked = false;
     var getDetails = function (id) {
       resourceService.getResourceDetailFromId(
           id, CONST.resourceType.ELEMENT,
           function (response) {
             $scope.details = response;
             $scope.canEdit();
+            if (!$scope.cannotEdit && !instanceWarningChecked) {
+              instanceWarningChecked = true;
+              InclusionService.getContainingInstanceCount(id).then(function (count) {
+                if (count > 0 && !$scope.$$destroyed) {
+                  UIMessageService.confirmEditingWithInstances(count, true, function () {
+                    $scope.$evalAsync($scope.cancelElement);
+                  });
+                }
+              }, function (error) {
+                if (!$scope.$$destroyed) {
+                  UIMessageService.showBackendError('SERVER.ELEMENT.load.error', error);
+                }
+              });
+            }
           },
           function (error) {
             UIMessageService.showBackendError('SERVER.' + 'ELEMENT' + '.load.error', error);

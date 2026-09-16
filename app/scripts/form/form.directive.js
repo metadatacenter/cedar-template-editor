@@ -414,9 +414,7 @@ define([
               //UIMessageService.flashWarning("METADATAEDITOR.draftTemplateWarning");
             }
           } else {
-            if (UIUtilService.hasTotalMetadata()) {
-              UIMessageService.flashWarning("TEMPLATEEDITOR.hasMetadataWarning");
-            } else if (UIUtilService.isLocked()) {
+            if (UIUtilService.isLocked()) {
               UIMessageService.flashWarning(UIUtilService.getLockReason() || "TEMPLATEEDITOR.lock.generic");
             }
           }
