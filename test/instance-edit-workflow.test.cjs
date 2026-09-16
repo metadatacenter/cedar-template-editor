@@ -89,22 +89,25 @@ for (const verdict of [true, false, 'error']) {
     assert.equal(errors.length, verdict === 'error' ? 1 : 0);
   });
 }
-function versionModal({deferred = false} = {}) {
-  let factory, onOpen, destination, complete, fail;
+function versionModal({deferred = false, modalOpen = false} = {}) {
+  let factory, onOpen, destination, complete, fail, afterHidden;
+  let hideRequested = false;
   const calls = [];
   vm.runInNewContext(fs.readFileSync(path.join(scripts, 'modal/cedar-update-template-with-instances-modal.directive.js'), 'utf8'), {
     define: (_, deps, body) => body({module: () => ({directive: (_, fn) => {factory = fn;}})})
   });
   const Controller = factory().controller;
-  const modal = new Controller({$on: (_, fn) => {onOpen = fn;}}, {}, {location: {assign: value => {destination = value;}}}, {url: value => {destination = value;}}, noop,
+  const modal = new Controller({$on: (_, fn) => {onOpen = fn;}, $evalAsync: fn => fn()}, {}, {location: {assign: value => {destination = value;}}}, {url: value => {destination = value;}}, noop,
     {getReturnTo: () => null, getFolderId: () => 'origin'}, {setDirty: noop}, {},
     {doCall(request, ok, error) {calls.push(request); complete = () => ok({data: {'@id': 'new-version', 'pav:version': '0.0.2'}}); fail = error; if (!deferred) complete();}},
     {publishCreateDraftTemplate: (id, form, folder) => ({id, form, folder})},
-    {flashSuccess: noop, showBackendError: noop}, {getFolderContents: folder => `/dashboard?folderId=${folder}`, getWorkspaceReturn: (_, folder) => `/dashboard?folderId=${folder}`});
+    {flashSuccess: noop, showBackendError: noop}, {getFolderContents: folder => `/dashboard?folderId=${folder}`, getWorkspaceReturn: (_, folder) => `/dashboard?folderId=${folder}`},
+    {data: () => ({isShown: modalOpen}), one: (event, fn) => {assert.equal(event, 'hidden.bs.modal'); afterHidden = fn;},
+      modal: action => {assert.equal(action, 'hide'); hideRequested = true;}});
   const original = {'@id': 'original', 'schema:name': 'Study'};
   const proposed = {...original, 'schema:name': 'Revised Study'};
   onOpen(null, [true, {data: {numberOfInstances: 3}}, 'original', proposed]);
-  return {modal, calls, original, proposed, complete: () => complete(), fail: () => fail({}), get destination() {return destination;}};
+  return {modal, calls, original, proposed, get hideRequested() {return hideRequested;}, hidden: () => afterHidden(), complete: () => complete(), fail: () => fail({}), get destination() {return destination;}};
 }
 test('new version without clones sends no clone folder and returns to the originating workspace folder', () => {
   const h = versionModal(); h.modal.doAccept();
@@ -145,3 +148,15 @@ test('discard changes closes the editor without saving', () => {
   assert.equal(h.destination, '/dashboard?folderId=origin');
   assert.equal(h.modal.modalVisible, false);
 });
+
+for (const action of ['doDiscard', 'doAccept']) {
+  test(`${action}: wait for Bootstrap close before navigating past the open-modal route guard`, () => {
+    const h = versionModal({modalOpen: true});
+    h.modal[action]();
+    assert.equal(h.hideRequested, true);
+    assert.equal(h.destination, undefined, 'navigation while the modal is open would be cancelled');
+    h.hidden();
+    assert.equal(h.destination, '/dashboard?folderId=origin');
+    assert.equal(h.calls.length, action === 'doAccept' ? 1 : 0);
+  });
+}

@@ -5,11 +5,11 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
       'cedarUpdateTemplateWithInstancesModal', function () {
         Controller.$inject = ['$scope', '$rootScope', '$window', '$location', '$timeout',
           'QueryParamUtilsService', 'UIUtilService', 'CedarUser', 'AuthorizedBackendService',
-          'TemplateService', 'UIMessageService', 'FrontendUrlService'];
+          'TemplateService', 'UIMessageService', 'FrontendUrlService', '$element'];
 
         function Controller($scope, $rootScope, $window, $location, $timeout, QueryParamUtilsService,
                             UIUtilService, CedarUser, AuthorizedBackendService, TemplateService,
-                            UIMessageService, FrontendUrlService) {
+                            UIMessageService, FrontendUrlService, $element) {
           var vm = this;
           vm.saving = false;
           vm.doCancel = function () {
@@ -18,7 +18,19 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
           function closeEditor() {
             vm.modalVisible = false;
             UIUtilService.setDirty(false);
-            $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
+            function leave() {
+              $scope.$evalAsync(function () {
+                $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
+              });
+            }
+            // The header cancels route changes while a Bootstrap modal is open.
+            // Wait for its actual close event, not just the Angular visibility flag.
+            if (($element.data('bs.modal') || {}).isShown) {
+              $element.one('hidden.bs.modal', leave);
+              $element.modal('hide');
+            } else {
+              leave();
+            }
           }
           vm.doDiscard = function () {
             if (!vm.saving) closeEditor();
