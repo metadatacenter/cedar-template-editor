@@ -51,6 +51,6 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.15-dev.20260915.74d6193"
+    "cedar-embeddable-editor": "2.0.15"
   }
 }
