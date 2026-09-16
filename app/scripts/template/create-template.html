@@ -190,6 +190,12 @@
             <div ng-if="cannotEdit" class="alert alert-warning locked-notice" role="alert">
               <p><i class="fa fa-lock"></i>{{lockReason | translate}}</p>
             </div>
+            <div ng-if="!cannotEdit && details.numberOfInstances > 0 && editImpact !== 'unchanged'"
+                 class="alert" ng-class="{'alert-info': editImpact === 'display', 'alert-warning': editImpact === 'version'}"
+                 role="status" aria-live="polite">
+              <span ng-if="editImpact === 'display'" translate>TEMPLATEEDITOR.editImpactDisplay</span>
+              <span ng-if="editImpact === 'version'" translate>TEMPLATEEDITOR.editImpactVersion</span>
+            </div>
             <div class="clear-save">
               <button id="button-clear-template" type="button" class="btn btn-clear template" ng-click="reset()"
                       ng-hide="isPropertiesEmpty()"

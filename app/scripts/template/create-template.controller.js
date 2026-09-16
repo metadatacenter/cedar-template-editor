@@ -80,6 +80,23 @@ define([
           UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
         });
 
+        // Compare the complete current definition with the last saved one, so manually
+        // restoring a structural edit also restores the safe display-only status.
+        var savedDefinition;
+        var impactTimer;
+        $scope.editImpact = 'unchanged';
+        $scope.$watch('form', function () {
+          $timeout.cancel(impactTimer);
+          if (!savedDefinition || !$scope.details || !$scope.details.numberOfInstances || $scope.cannotEdit) {
+            $scope.editImpact = 'unchanged';
+            return;
+          }
+          impactTimer = $timeout(function () {
+            $scope.editImpact = schemaService.getEditImpact(savedDefinition, $scope.form);
+          }, 200);
+        }, true);
+        $scope.$on('$destroy', function () { $timeout.cancel(impactTimer); });
+
         var instanceWarningShown = false;
         var getReport = function (id) {
 
@@ -139,6 +156,7 @@ define([
                           $rootScope.$broadcast('form:clean');
                           //$rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
                           ValidationService.checkValidation();
+                          savedDefinition = angular.copy($scope.form);
                           getReport($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller
@@ -352,6 +370,8 @@ define([
             UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                 {"title": schemaService.getTitle($scope.form)}, 'GENERIC.Updated');
             owner.enableSaveButton();
+            savedDefinition = angular.copy($scope.form);
+            $scope.editImpact = 'unchanged';
 
             UIUtilService.setDirty(false);
           };
