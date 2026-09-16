@@ -295,9 +295,6 @@ define([
       return (vm.path === "/settings");
     };
 
-    vm.isRuntime = function() {
-      return UIUtilService.isRuntime();
-    };
 
     vm.isShowOutput = function() {
       return UIUtilService.isShowOutput();

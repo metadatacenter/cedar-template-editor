@@ -1071,32 +1071,6 @@ define([
         };
 
 
-        // get order array that can be used to build the spreadsheet columns
-        service.getFlatSpreadsheetOrder = function (node, model) {
-
-          const result = [];
-          service.schemaOf(node)._ui.order.forEach(function (key) {
-            const field = service.schemaOf(service.propertiesOf(node)[key]);
-
-            if (service.isAttributeValueType(field)) {
-
-              if (Array.isArray(model)) {
-                for (let i = 0; i < model[0][key].length; i++) {
-                  if (model[0][key][i]) {
-                    result.push(model[0][key][i]);
-                  }
-                }
-              } else {
-                result.push(key);
-              }
-            } else if (!service.isStaticField(field) && !service.isElement(field) && !service.isMultipleChoiceField(
-                field)) {
-              result.push(key);
-            }
-          });
-          return result;
-        };
-
         //
         //  propertyId and propertyLabels
         //

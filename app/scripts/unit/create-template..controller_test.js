@@ -18,7 +18,6 @@ define(['app', 'angularMocks'], function(app) {
     var StagingService;
     var TemplateElementService;
     var DataUtilService;
-    var SpreadsheetService;
     var UIUtilService;
     var UrlService;
     var UIMessageService;

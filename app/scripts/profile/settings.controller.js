@@ -20,13 +20,6 @@ define([
     // Shows the ACTUALLY loaded bundle; 'unknown' means a CEE older than this exposure.
     $scope.ceeVersion = $window.cedarEmbeddableEditorVersion || 'unknown';
 
-    // ---- New Metadata Editor UI toggle ----
-    $scope.useMetadataEditorV2 = CedarUser.useMetadataEditorV2() || false;
-
-    $scope.toggleMetadataEditorV2 = function () {
-      UISettingsService.saveUseMetadataEditorV2(CedarUser.toggleMetadataEditorV2());
-    }
-
     // ---- Preferred date format ----
     // Values are moment.js-style tokens; the label carries a live example of today's date.
     function example(token) {

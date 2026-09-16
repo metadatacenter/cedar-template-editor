@@ -16,12 +16,8 @@ define([
       serviceId             : "UIUtilService",
       showOutput            : false,
       showOutputTab         : 0,
-      metaToRDF             : null,
-      metaToRDFError        : null,
-      instance              : null,
       modalType             : null,
       selectedFieldOrElement: null,
-      instanceToSave        : null,
       documentState         : {
         form           : null,
         valid          : true,
@@ -37,7 +33,6 @@ define([
       }
     };
 
-    var jsonld = require('jsonld');
     var dms = DataManipulationService;
 
     //
@@ -148,141 +143,9 @@ define([
 
 
     //
-    //  json and rdf output
-    //
-
-    // create the RDF from the current metadata instance
-    service.toRDF = function () {
-      var instance = service.instanceToSave;
-      var copiedForm = jQuery.extend(true, {}, instance);
-      if (copiedForm) {
-        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
-          service.metaToRDFError = err;
-          service.metaToRDF = nquads;
-          service.instance = instance;
-          return service.metaToRDF;
-        });
-      }
-    };
-
-    // get the RDF
-    service.getRDF = function () {
-      return service.metaToRDF;
-    };
-
-    // get any RDF conversion errors
-    service.getRDFError = function () {
-      var result = $translate.instant('SERVER.RDF.SaveFirst');
-      if (service.metaToRDFError) {
-        result = service.metaToRDFError.details.cause.message;
-      }
-      return result;
-    };
-
-
-    //
-    //  view states: spreadsheet, tabbed, and list
-    //
-
-    // is this state currently active?
-    service.isSpreadsheetView = function (viewState) {
-      return (viewState && viewState.selected === 'spreadsheet');
-    };
-
-    service.isListView = function (viewState) {
-      return (viewState && viewState.selected === 'list');
-    };
-
-    service.isTabView = function (viewState) {
-      return (viewState && viewState.selected === 'tab');
-    };
-
-    // toggle through the list of view states, call the callback for spreadsheets
-    service.toggleView = function (viewState) {
-      var oldState = viewState.selected;
-      var index = viewState.views.indexOf(viewState.selected);
-      index = (index + 1) % viewState.views.length;
-      viewState.selected = viewState.views[index];
-
-      // throw away the old spreadsheet
-      if (oldState === 'spreadsheet' && oldState != viewState.selected && typeof viewState.cleanupCallback == 'function') {
-        viewState.cleanupCallback();
-      }
-
-      // create the new spreadsheet
-      if (viewState.selected == 'spreadsheet' && typeof viewState.spreadsheetCallback == 'function') {
-          setTimeout(function () {
-          viewState.spreadsheetCallback();
-        });
-      }
-      return viewState;
-    };
-
-    // switch into full screen mode  for the spreadsheet container
-    service.fullscreen = function (locator) {
-      var elm = document.querySelector('#' + locator + ' .spreadsheetViewContainer');
-      if (!("mozRequestFullScreen" in elm)) {
-        if (!("webkitRequestFullscreen" in elm)) {
-          console.log('no fullscreen ' + document.fullscreenEnabled);
-        } else {
-          elm.webkitRequestFullscreen();
-          elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
-        }
-      } else {
-        elm.mozRequestFullScreen();
-        elm.setAttribute('style', 'width:100%;height:100%;overflow: hidden');
-      }
-    };
-
-    // element or field be edited as a spreadsheet if it is multi-instance
-    // and does not contain nested elements or multi-instance fields
-    service.isSpreadsheetable = function (node) {
-
-      var schema = schemaService.schemaOf(node);
-      var result = schemaService.isCardinalElement(node) && !schemaService.isMultipleChoice(node) && !schemaService.isAttributeValueType(node);
-      if (DataUtilService.isElement(schema) && schemaService.isCardinalElement(node)) {
-        result = dms.getFlatSpreadsheetOrder(node).length > 0;
-      }
-      return result;
-      //return false;
-    };
-
-    // is this an element that can be expanded?
-    service.isExpandable = function (node) {
-      var result = false;
-      if (DataUtilService.isElement(dms.schemaOf(node))) {
-        var props = dms.propertiesOf(node);
-        angular.forEach(props, function (value, key) {
-          if (DataUtilService.isElement(dms.schemaOf(value))) {
-            result = true;
-          }
-        });
-      }
-      return result;
-    };
-
-    service.createViewState = function (node, callback, cleanup) {
-      var viewState = {
-        // views   : ['tab', 'list'],
-        views   : ['tab'],
-        selected: 'tab'
-      };
-      if (service.isSpreadsheetable(node)) {
-        viewState.views.push('spreadsheet');
-        viewState.spreadsheetCallback = callback;
-        viewState.cleanupCallback = cleanup;
-        viewState.selected = 'tab';
-      }
-      return viewState;
-    };
-
-    //
     //  basics
     //
 
-    service.isRuntime = function () {
-      return $rootScope.pageId == 'RUNTIME';
-    };
 
     service.formatTitle = function (node) {
       if (node) {
@@ -369,7 +232,6 @@ define([
               target.find('.element-root').toggle();
               // target.find('.elementTotalContent').first().toggle();
               target.find(".visibilitySwitch").first().toggle();
-              // target.find(".spreadsheetSwitchLink").toggle();
             }
           }, 350
       );

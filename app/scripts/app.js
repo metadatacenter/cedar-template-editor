@@ -5,10 +5,8 @@
 define([
   // angular modules
   'angular',
-  'lib/angucomplete-alt/angucomplete-alt',
   'lib/angular-animate/angular-animate.min',
   'lib/angular-bootstrap/ui-bootstrap-tpls.min',
-  // 'lib/ngHandsontable/dist/ngHandsontable.min',
   'lib/ng-tags-input/ng-tags-input.min',
   'lib/angular-route/angular-route.min',
   'lib/angular-sanitize/angular-sanitize.min',
@@ -22,22 +20,15 @@ define([
 
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap.min',
-  'lib/bootstrap-select/dist/js/bootstrap-select.min',
   'lib/ng-ckeditor/ng-ckeditor.min',
   'ckeditor',
-  'lib/handsontable/dist/handsontable.full',
   'jquery',
   'lib/jquery-ui/jquery-ui.min',
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
-  '3rdparty/angular-fitvids/angular-fitvids',
   'lib/ngprogress/build/ngprogress.min',
   'jsonld',
   'flow',
-
-  // custom libraries
-  'cedar/template-editor/handsontable/SpreadsheetContext',
-  'cedar/template-editor/handsontable/MultiCheckboxEditor',
 
   // cedar template editor modules
   'cedar/template-editor/core/core.module',
@@ -54,7 +45,7 @@ define([
 
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
-], function (angular, jsonld, flow) {
+], function (angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
     'ui.keypress',
@@ -66,7 +57,6 @@ define([
     'pascalprecht.translate',
     'angular-toasty',
     'ngCkeditor',
-    'fitVids',
     'ngProgress',
     'flow',
 

@@ -6,16 +6,14 @@ define([
   angular.module('cedar.templateEditor.form.fieldDirective', [])
       .directive('fieldDirective', fieldDirective);
 
-
-  fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
-    "SpreadsheetService", "CONST", "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
+  fieldDirective.$inject = ["$rootScope",
+    "CONST", "DataManipulationService", "schemaService", "FieldTypeService", "controlledTermDataService",
     "StringUtilsService", "UIUtilService", "ValidationService", "TemporalEditorFieldService", "QuestionTextService", "$location"];
 
-  function fieldDirective($rootScope, $sce, $translate, $filter, SpreadsheetService, CONST,
+  function fieldDirective($rootScope, CONST,
                           DataManipulationService, schemaService,
                           FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService,
                           ValidationService, TemporalEditorFieldService, QuestionTextService, $location) {
-
 
     let linker = function ($scope, $element, attrs) {
 
@@ -50,14 +48,9 @@ define([
 
       let dms = DataManipulationService;
 
-
       //
       // model and ui support
       //
-
-      $scope.isRuntime = function () {
-        return UIUtilService.isRuntime();
-      };
 
       //
       // schema service for template, element, and field access
@@ -126,7 +119,6 @@ define([
         return schemaService.getIdentifier($scope.field);
       };
 
-
       $scope.isSelectable = function () {
         return !$scope.isNested();
       };
@@ -135,11 +127,9 @@ define([
         return $scope.isSelectable();
       };
 
-
       $scope.isRootNode = function () {
         return dms.isRootNode($scope.parentElement, $scope.field);
       };
-
 
       $scope.isRoot = function () {
         return false;
@@ -160,7 +150,6 @@ define([
       $scope.getShortId = function (uri, maxLength) {
         return StringUtilsService.getShortId(uri, maxLength);
       };
-
 
       // is this multiple cardinality?
       $scope.isMultiple = function () {
@@ -209,7 +198,6 @@ define([
       $scope.getDomId = function (node) {
         return dms.getDomId(node);
       };
-
 
       $scope.getPropertyDescription = function () {
         const descriptions = dms.getPropertyDescriptions($scope.parentElement);
@@ -403,28 +391,10 @@ define([
         return dms.hasValueConstraint($scope.field);
       };
 
-      // for now, turn this option off. does the field support using instance type term
-      $scope.hasInstanceType = function () {
-        // var result = FieldTypeService.getFieldTypes().filter(function (obj) {
-        //   return obj.cedarType == schemaService.getInputType($scope.field);
-        // });
-        // return result.length > 0 && result[0].hasInstanceTerm;
-        return false;
-      };
-
-      // does the field support using instance type term
-      $scope.getInstanceType = function () {
-        return dms.getFieldControlledTerms($scope.field);
-      };
-
       // Retrieve appropriate field templates
       $scope.getTemplateUrl = function () {
         return 'scripts/form/field-' + $scope.directory + '/' + schemaService.getInputType(
             $scope.field) + '.html';
-      };
-
-      $scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
       $scope.getYouTubeEmbedFrame = function (field) {
@@ -442,22 +412,6 @@ define([
         }
       };
 
-      $scope.addMoreInput = function () {
-        const maxItems = schemaService.getMaxItems($scope.field);
-        if ((!maxItems || $scope.model.length < maxItems)) {
-          $scope.model.push({'@value': null});
-          $scope.setDirty();
-        }
-      };
-
-      $scope.removeInput = function (index) {
-        const minItems = schemaService.getMinItems($scope.field) || 0;
-        if ($scope.model.length > minItems) {
-          $scope.model.splice(index, 1);
-          $scope.setDirty();
-        }
-      };
-
       $scope.relabelField = function (newTitle) {
         dms.relabelField($scope.getForm(), $scope.fieldKey, newTitle);
       };
@@ -465,7 +419,6 @@ define([
       //
       // controlled terms modal
       //
-
 
       // create an id for the controlled terms modal
       $scope.getModalId = function (type) {
@@ -475,7 +428,6 @@ define([
       $scope.getId = function () {
         return dms.getId($scope.field);
       };
-
 
       //
       // watchers
@@ -508,7 +460,6 @@ define([
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
-
 
         $scope.addOption = function () {
           return (dms.addOption($scope.field));
@@ -560,7 +511,7 @@ define([
       const setDirectory = function () {
         const schema = dms.schemaOf($scope.field);
         const state = schema._tmp && schema._tmp.state || "completed";
-        if ((state === "creating") && !$scope.preview && !UIUtilService.isRuntime()) {
+        if ((state === "creating") && !$scope.preview) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
@@ -596,7 +547,6 @@ define([
           }
         }
       };
-
 
       // If selectedByDefault is false, it is removed from the model
       $scope.cleanSelectedByDefault = function (index) {
@@ -683,7 +633,6 @@ define([
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
 
-
         if (!$scope.model || !angular.isArray($scope.model)) {
           $scope.model = [];
         } else {
@@ -715,33 +664,6 @@ define([
       };
 
       // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledField = function () {
-        // Multiple fields
-        if (angular.isArray($scope.modelValue)) {
-          if ($scope.modelValue.length > 0) {
-            angular.forEach($scope.modelValue, function (m, i) {
-              if (m && m['@value'] && m['@value']['@id']) {
-                $scope.model[i] = {
-                  "@value"    : m['@value']['@id'],
-                  "rdfs:label": m['@value'].label
-                };
-              }
-            });
-          } else {
-            // Default value
-            $scope.model = [{'@value': null}];
-          }
-        }
-        // Single fields
-        else {
-          if ($scope.modelValue && $scope.modelValue['@value'] && $scope.modelValue['@value']["@id"]) {
-            $scope.model['@value'] = $scope.modelValue['@value']["@id"];
-            $scope.model['rdfs:label'] = $scope.modelValue['@value'].label;
-          } else {
-            $scope.model['@value'] = null;
-          }
-        }
-      };
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
@@ -764,25 +686,6 @@ define([
             const valueLabel = $scope.model[item]['@value'];
             $scope.optionsUI.options.push(valueLabel);
           }
-        }
-      };
-
-      $scope.updateUIFromModelControlledField = function () {
-        if (angular.isArray($scope.model)) {
-          $scope.modelValue = [];
-          angular.forEach($scope.model, function (m, i) {
-            $scope.modelValue[i] = {};
-            $scope.modelValue[i]['@value'] = {
-              '@id': m['@value'],
-              label: m['rdfs:label']
-            };
-          });
-        } else {
-          $scope.modelValue = {};
-          $scope.modelValue['@value'] = {
-            '@id': $scope.model['@value'],
-            label: $scope.model['rdfs:label']
-          };
         }
       };
 
@@ -827,170 +730,11 @@ define([
         }
       };
 
-      // Initializes model for fields constrained using controlled terms
-      $scope.initializeControlledField = function () {
-        // If modelValue has not been initialized
-        if (!$scope.modelValue) {
-          let isMultiple = false;
-          if ($scope.field.items) {
-            isMultiple = true;
-          }
-          if ($scope.directory === "render") {
-            if ($rootScope.schemaOf($scope.field)._ui.inputType === "textfield" && $scope.hasValueConstraint()) {
-              // We are populating the template
-              if ($scope.isEditData == null || $scope.isEditData === false) {
-                if (isMultiple) {
-                  $scope.modelValue = []
-                } else {
-                  $scope.modelValue = {};
-                }
-              }
-              // We are editing an instance
-              else {
-                $scope.updateUIFromModelControlledField();
-              }
-            }
-          }
-        }
-      };
-
-      // // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
-      // $scope.setDefaultValueIfEmpty = function (m) {
-      //   console.log('setDefaultValueIfEmpty',UIUtilService.isRuntime())
-      //   if (UIUtilService.isRuntime()) {
-      //     if (!$rootScope.isArray(m)) {
-      //       if (!m) {
-      //         m = {};
-      //       }
-      //       if (m.hasOwnProperty('@value')) {
-      //         // If empty string
-      //         if ((m['@value'] != null) && (m['@value'].length == 0)) {
-      //           m['@value'] = null;
-      //         }
-      //       }
-      //       else {
-      //         m['@value'] = null;
-      //       }
-      //     }
-      //     else {
-      //       for (var i = 0; i < m.length; i++) {
-      //         $scope.setDefaultValueIfEmpty(m[i]);
-      //       }
-      //     }
-      //   }
-      // };
-
-      $scope.initializeValueRecommendationField = function () {
-        const fieldValue = dms.getValueLocation($scope.field);
-        $scope.modelValueRecommendation = {};
-        if ($scope.model) {
-          if ($scope.model['rdfs:label']) {
-            $scope.modelValueRecommendation.valueInfo = {
-              'value'   : $scope.model['rdfs:label'],
-              'valueUri': $scope.model[fieldValue]
-            };
-          } else {
-            $scope.modelValueRecommendation.valueInfo = {
-              'value': $scope.model[fieldValue]
-            };
-          }
-        }
-      };
-
-      $scope.updateModelWhenChangeSelection = function (modelvr) {
-        const fieldValue = dms.getValueLocation($scope.field);
-        // This variable will be used at textfield.html
-        $scope.modelValueRecommendation = modelvr;
-        if (angular.isArray($scope.model)) {
-          angular.forEach(modelvr, function (m, i) {
-            if (m && m.valueInfo && m.valueInfo.value) {
-              $scope.model[i][fieldValue] = m.valueInfo.value;
-              if (m.valueInfo.valueUri) {
-                $scope.model[i]['rdfs:label'] = m.valueInfo.valueUri;
-              }
-            } else {
-              delete $scope.model[i][fieldValue];
-            }
-          });
-        } else {
-          if (modelvr.valueInfo.valueUri) {
-            $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
-            $scope.model['rdfs:label'] = modelvr.valueInfo.value;
-          } else {
-            $scope.model[fieldValue] = modelvr.valueInfo.value;
-            delete $scope.model['rdfs:label'];
-          }
-        }
-      };
-
-      $scope.setIsFirstRefresh = function (isFirstRefresh) {
-        $scope.isFirstRefresh = isFirstRefresh;
-      };
-
-      $scope.updateModelWhenRefresh = function (select, modelvr) {
-        const fieldValue = dms.getValueLocation($scope.field);
-        if (!$scope.isFirstRefresh) {
-          // Check that there are no controlled terms selected
-          if (select.selected.valueUri == null) {
-            if ($rootScope.isArray($scope.model)) {
-              // TODO
-            } else {
-              // If the user entered a new value
-              if (select.search !== modelvr.valueInfo.value) {
-                let modelValue;
-                if (select.search === "" || select.search === undefined) {
-                  modelValue = null;
-                } else {
-                  modelValue = select.search;
-                }
-                $scope.model[fieldValue] = modelValue;
-                delete $scope.model['rdfs:label'];
-                $scope.modelValueRecommendation.valueInfo.value = modelValue;
-              }
-            }
-          }
-        }
-      };
-
-      $scope.clearSearch = function (select) {
-        select.search = '';
-      };
-
-      $scope.clearSelection = function ($event, select) {
-        const fieldValue = dms.getValueLocation($scope.field);
-        $event.stopPropagation();
-        $scope.modelValueRecommendation = {
-          valueInfo: {'value': null, 'valueUri': null},
-        };
-        select.selected = undefined;
-        select.search = "";
-        $scope.model[fieldValue] = dms.getDefaultValue(fieldValue, $scope.field);
-        delete $scope.model['rdfs:label'];
-      };
-
-      $scope.calculateUIScore = function (score) {
-        const s = Math.floor(score * 100);
-        if (s < 1) {
-          return "<1%";
-        } else {
-          return s.toString() + "%";
-        }
-      };
-
-      $scope.getRecommendationType = function (type) {
-        if (type === 'CONTEXT_INDEPENDENT') {
-          return '*';
-        } else {
-          return '';
-        }
-      };
-
       $scope.removeValueRecommendationField = function (field) {
         dms.removeValueRecommendationField(field);
       };
 
       /* end of Value Recommendation functionality */
-
 
       /* start of controlled terms functionality */
 
@@ -1026,7 +770,6 @@ define([
             }
           }, myMap);
 
-
           // get any missing responses
           myMap.forEach(function (value, key) {
             if (myMap.get(key) === "") {
@@ -1034,7 +777,6 @@ define([
                   dms.parseClassLabel(key));
             }
           }, myMap);
-
 
           // fill up the key array
           $scope.addedFieldKeys = [];
@@ -1059,15 +801,6 @@ define([
         controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
         });
-      };
-
-      // get the ontology name from the addedFields map
-      $scope.getOntologyName = function (item) {
-        let result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          result = $scope.addedFields.get(item).ontology;
-        }
-        return result;
       };
 
       // get the class description from the addedFields map
@@ -1168,31 +901,6 @@ define([
         dms.updateProperty('', '', '', $scope.getId(), $scope.parentElement);
       };
 
-
-      // show the controlled terms modal
-      $scope.showModalReadOnly = function (type, searchScope, termType, term) {
-        let q = term.prefLabel || term.name;
-        if (searchScope === 'value-sets') {
-          q = term.uri.substr(term.uri.lastIndexOf('/') + 1);
-        }
-        const source = term.acronym || term.source;
-        const options = {
-          "filterSelection": type,
-          "searchScope"    : searchScope,
-          "modalId"        : "controlled-term-modal",
-          "model"          : $scope.field,
-          "id"             : $scope.getId(),
-          'q'              : q,
-          'source'         : source,
-          'termType'       : termType,
-          'term'           : term,
-          "advanced"       : true,
-          "capabilities"   : ["readResource"]
-        };
-        UIUtilService.showModal(options);
-      };
-
-
       // show the controlled terms modal
       $scope.showModal = function (type, searchScope) {
         const options = {
@@ -1225,7 +933,6 @@ define([
         }
       });
 
-
       // update the property for a field with controlled terms modal selection
       $scope.$on("property:propertyAdded", function (event, args) {
         if ($scope.getId() === args[1]) {
@@ -1238,13 +945,11 @@ define([
         }
       });
 
-
       // open the terms modal
       $scope.showTermsModal = function () {
         $scope.termsModalVisible = true;
         $rootScope.$broadcast('termsModalVisible', [$scope.termsModalVisible, $scope.field]);
       };
-
 
       /* end of controlled terms functionality */
 
@@ -1278,7 +983,6 @@ define([
 
       $scope.init();
     };
-
 
     return {
       templateUrl: 'scripts/form/field.directive.html',
