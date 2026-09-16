@@ -12,7 +12,7 @@ define([
                                      "FieldTypeService", "TemplateElementService", "resourceService", "ValidationService","UIMessageService",
                                      "DataManipulationService", "schemaService","DataUtilService", "UIUtilService", "AuthorizedBackendService",
                                      "FrontendUrlService", "QueryParamUtilsService", "CONST","CedarUser", "InclusionService",
-                                     "CedarModelTypescriptLibrary"];
+                                     "CedarModelTypescriptLibrary", "PreviousRouteService"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -21,7 +21,7 @@ define([
                                    DataManipulationService,schemaService,
                                    DataUtilService,UIUtilService,
                                    AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST,CedarUser, InclusionService,
-                                   CedarModelTypescriptLibrary) {
+                                   CedarModelTypescriptLibrary, PreviousRouteService) {
 
     var dms = DataManipulationService;
 
@@ -349,6 +349,8 @@ define([
         var newId = response.data['@id'];
         dms.createDomIds(response.data);
         // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+        // Also replace the address remembered by CEDAR's own Back control.
+        PreviousRouteService.supersedeCurrent();
         $location.path(FrontendUrlService.getElementEdit(newId)).replace();
 
         $scope.setClean();

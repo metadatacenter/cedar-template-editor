@@ -15,7 +15,7 @@ define([
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser",
-                                          "CedarModelTypescriptLibrary"];
+                                          "CedarModelTypescriptLibrary", "PreviousRouteService"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         HeaderService, StagingService, DataTemplateService,
@@ -24,7 +24,7 @@ define([
                                         controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST, CedarUser,
-                                        CedarModelTypescriptLibrary) {
+                                        CedarModelTypescriptLibrary, PreviousRouteService) {
 
         $rootScope.showSearch = false;
 
@@ -339,6 +339,8 @@ define([
             DataManipulationService.createDomIds(response.data);
             var newId = response.data['@id'];
             // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+            // Also replace the address remembered by CEDAR's own Back control.
+            PreviousRouteService.supersedeCurrent();
             $location.path(FrontendUrlService.getTemplateEdit(newId)).replace();
 
             UIUtilService.setDirty(false);
