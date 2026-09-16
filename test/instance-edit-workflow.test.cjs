@@ -89,25 +89,25 @@ for (const verdict of [true, false, 'error']) {
     assert.equal(errors.length, verdict === 'error' ? 1 : 0);
   });
 }
-function versionModal() {
-  let factory, onOpen, destination;
+function versionModal({deferred = false} = {}) {
+  let factory, onOpen, destination, complete, fail;
   const calls = [];
   vm.runInNewContext(fs.readFileSync(path.join(scripts, 'modal/cedar-update-template-with-instances-modal.directive.js'), 'utf8'), {
     define: (_, deps, body) => body({module: () => ({directive: (_, fn) => {factory = fn;}})})
   });
   const Controller = factory().controller;
   const modal = new Controller({$on: (_, fn) => {onOpen = fn;}}, {}, {}, {path: value => {destination = value;}}, noop,
-    {getFolderId: () => 'origin'}, {}, {},
-    {doCall(request, ok) {calls.push(request); ok({data: {'@id': 'new-version', 'pav:version': '0.0.2'}});}},
+    {getFolderId: () => 'origin'}, {setDirty: noop}, {},
+    {doCall(request, ok, error) {calls.push(request); complete = () => ok({data: {'@id': 'new-version', 'pav:version': '0.0.2'}}); fail = error; if (!deferred) complete();}},
     {publishCreateDraftTemplate: (id, form, folder) => ({id, form, folder})},
-    {flashSuccess: noop}, {getTemplateEdit: (id, folder) => `/edit/${id}?folderId=${folder}`});
+    {flashSuccess: noop, showBackendError: noop}, {getTemplateEdit: (id, folder) => `/edit/${id}?folderId=${folder}`});
   const original = {'@id': 'original', 'schema:name': 'Study'};
   const proposed = {...original, 'schema:name': 'Revised Study'};
   onOpen(null, [true, {data: {numberOfInstances: 3}}, 'original', proposed]);
-  return {modal, calls, original, proposed, get destination() {return destination;}};
+  return {modal, calls, original, proposed, complete: () => complete(), fail: () => fail({}), get destination() {return destination;}};
 }
 test('new version without clones sends no clone folder and opens the returned version', () => {
-  const h = versionModal(); h.modal.selectedOption = 'noClone'; h.modal.doAccept();
+  const h = versionModal(); h.modal.doAccept();
   assert.equal(h.calls.length, 1);
   assert.equal(h.calls[0].id, 'original');
   assert.equal(h.calls[0].form, h.proposed);
@@ -118,4 +118,22 @@ test('cancelling version dialog makes no save request', () => {
   const h = versionModal(); h.modal.doCancel();
   assert.equal(h.calls.length, 0); assert.equal(h.destination, undefined);
   assert.equal(h.modal.modalVisible, false);
+});
+
+test('version save prevents duplicate submissions and allows retry after failure', () => {
+  const h = versionModal({deferred: true});
+  h.modal.doAccept(); h.modal.doAccept(); h.modal.doCancel();
+  assert.equal(h.calls.length, 1); assert.equal(h.modal.modalVisible, true);
+  h.fail(); assert.equal(h.modal.saving, false); assert.equal(h.modal.modalVisible, true);
+  assert.equal(h.destination, undefined);
+  h.modal.doAccept(); assert.equal(h.calls.length, 2); h.complete();
+  assert.equal(h.modal.modalVisible, false);
+});
+test('breaking-change dialog offers version creation and continued editing without cloning', () => {
+  const html = fs.readFileSync(path.join(scripts, 'modal/cedar-update-template-with-instances-modal.directive.html'), 'utf8');
+  const strings = JSON.parse(fs.readFileSync(path.join(scripts, '../resources/i18n/locale-en.json'))).DELTAFINDER.ChangedTemplate;
+  assert.equal(strings.acceptButton, 'Create new version');
+  assert.equal(strings.cancelButton, 'Continue editing');
+  assert.doesNotMatch(html, /selectedOption|newFolderName|doRevert|type="radio"/);
+  assert.match(strings.text1, /remain attached to the original template and will not be changed/);
 });
