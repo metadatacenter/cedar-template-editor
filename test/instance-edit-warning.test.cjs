@@ -50,7 +50,7 @@ test('modal uses exact copy and explicit Continue editing / Cancel choices', () 
   const translate = {instant: key => key.split('.').reduce((value, part) => value[part], strings)};
   const service = make({}, translate, fn => fn(), {});
   service.confirmEditingWithInstances(3, true, () => cancelled++);
-  assert.equal(options.text, 'You can change display labels, descriptions, help text, and order. Other changes require a new template version. If a new template is required, existing instances will remain attached to this original template.');
+  assert.equal(options.text, 'You can change display labels, descriptions, help text, and child field or element order. Other changes will require creation of a new template version on save. If a new template version is required, existing instances will remain attached to this original template.');
   assert.equal(options.confirmButtonText, 'Continue editing');
   assert.equal(options.showCancelButton, true);
   assert.equal(options.allowOutsideClick, false);

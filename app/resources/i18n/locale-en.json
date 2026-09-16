@@ -636,7 +636,7 @@
     },
     "templateInstancesTitle": "This template has {{count}} instance(s)",
     "elementInstancesTitle": "This element is used by templates with {{count}} instance(s)",
-    "instanceEditingMessage": "You can change display labels, descriptions, help text, and order. Other changes require a new template version. If a new template is required, existing instances will remain attached to this original template.",
+    "instanceEditingMessage": "You can change display labels, descriptions, help text, and child field or element order. Other changes will require creation of a new template version on save. If a new template version is required, existing instances will remain attached to this original template.",
     "continueEditing": "Continue editing",
     "lock": {
       "published": "This resource is published and cannot be modified. To change it, create a draft of a new version.",
