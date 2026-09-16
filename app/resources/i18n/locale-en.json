@@ -869,9 +869,10 @@
       "title": "New template version required",
       "templateInfo": "Template: <strong>{{templateName}}</strong> (version {{currentVersion}} draft)",
       "text1": "These changes require a new template version. The {{numInstances}} existing instance(s) will remain attached to the original template and will not be changed.",
-      "text2": "Creating a new version will publish the original template and save your changes as a new draft.",
+      "text2": "Creating a new version will publish the original template and save your changes as a new template.",
       "acceptButton": "Create new version",
-      "cancelButton": "Continue editing"
+      "cancelButton": "Continue editing",
+      "discardButton": "Discard changes"
     },
     "DraftCreated": {
       "workspace": {

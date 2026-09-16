@@ -15,6 +15,14 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
           vm.doCancel = function () {
             if (!vm.saving) vm.modalVisible = false;
           };
+          function closeEditor() {
+            vm.modalVisible = false;
+            UIUtilService.setDirty(false);
+            $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
+          }
+          vm.doDiscard = function () {
+            if (!vm.saving) closeEditor();
+          };
           vm.doAccept = function () {
             if (vm.saving) return;
             vm.saving = true;
@@ -23,9 +31,7 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
                 TemplateService.publishCreateDraftTemplate(vm.copyId, vm.copyCopiedForm, null),
                 function (response) {
                   vm.saving = false;
-                  vm.modalVisible = false;
-                  UIUtilService.setDirty(false);
-                  $location.path(FrontendUrlService.getTemplateEdit(response.data['@id'], QueryParamUtilsService.getFolderId()));
+                  closeEditor();
                   UIMessageService.flashSuccess('DELTAFINDER.DestructiveDetected.create.success',
                       {title: response.data['schema:name'], version: response.data['pav:version']}, 'GENERIC.Created');
                 },

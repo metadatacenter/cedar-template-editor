@@ -10921,3 +10921,31 @@ div.resource-icon {
 
 
 }
+
+// Breaking-change choices remain visibly actionable, with the save action emphasized.
+#update-template-with-instances-modal .version-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  .btn {
+    margin: 0;
+    padding: 10px 20px;
+    border: 1px solid @brand-primary;
+    border-radius: 3px;
+    font-weight: 600;
+    &.version-secondary {
+      background: @white;
+      color: @brand-primary;
+      &:hover { background: @very-lt-gray; }
+    }
+    &.version-create {
+      background: @brand-primary;
+      color: @white;
+      &:hover { background: @brand-primary-hover; }
+    }
+    &:focus-visible { outline: 2px solid @brand-primary; outline-offset: 3px; }
+    &:disabled { opacity: 0.55; cursor: wait; }
+  }
+}

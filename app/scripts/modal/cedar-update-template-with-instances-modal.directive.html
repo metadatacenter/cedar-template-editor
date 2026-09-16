@@ -10,9 +10,10 @@
       <p translate>DELTAFINDER.ChangedTemplate.text2</p>
     </div>
     <div class="modal-footer actions">
-      <div class="clear-save">
-        <button type="button" class="btn btn-save confirm" translate ng-disabled="publish.saving" ng-click="publish.doAccept()">DELTAFINDER.ChangedTemplate.acceptButton</button>
-        <button type="button" class="btn btn-clear" translate ng-disabled="publish.saving" ng-click="publish.doCancel()">DELTAFINDER.ChangedTemplate.cancelButton</button>
+      <div class="version-actions">
+        <button type="button" class="btn version-secondary" translate ng-disabled="publish.saving" ng-click="publish.doDiscard()">DELTAFINDER.ChangedTemplate.discardButton</button>
+        <button type="button" class="btn version-create" translate ng-disabled="publish.saving" ng-click="publish.doAccept()">DELTAFINDER.ChangedTemplate.acceptButton</button>
+        <button type="button" class="btn version-secondary" translate ng-disabled="publish.saving" ng-click="publish.doCancel()">DELTAFINDER.ChangedTemplate.cancelButton</button>
       </div>
     </div>
   </div>
