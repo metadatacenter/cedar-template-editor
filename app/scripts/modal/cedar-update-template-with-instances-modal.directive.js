@@ -40,7 +40,7 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
             vm.saving = true;
             // Version the definition only. Existing instances stay on the original template.
             AuthorizedBackendService.doCall(
-                TemplateService.publishCreateDraftTemplate(vm.copyId, vm.copyCopiedForm, null),
+                TemplateService.publishCreateDraftTemplate(vm.copyId, vm.copyCopiedForm, null, vm.sourceEtag),
                 function (response) {
                   vm.saving = false;
                   closeEditor();
@@ -57,6 +57,7 @@ define('cedar/template-editor/modal/cedar-update-template-with-instances-modal.d
               var resource = params[1].data;
               vm.copyId = params[2];
               vm.copyCopiedForm = params[3];
+              vm.sourceEtag = params[4];
               vm.templateName = vm.copyCopiedForm['schema:name'];
               vm.currentVersion = resource.oldVersion;
               vm.numberOfInstances = resource.numberOfInstances;

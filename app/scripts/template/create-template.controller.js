@@ -457,7 +457,7 @@ define([
                         );
                       } else {
                         $scope.updateTemplateWithInstancesModalVisible = true;
-                        $rootScope.$broadcast('updateTemplateWithInstancesModalVisible', [true, response, id, copiedForm]);
+                        $rootScope.$broadcast('updateTemplateWithInstancesModalVisible', [true, response, id, copiedForm, $scope.form.$$cedarEtag]);
                         // UIMessageService.confirmedExecution(
                         //     function () {
                         //       AuthorizedBackendService.doCall(

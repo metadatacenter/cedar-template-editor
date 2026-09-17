@@ -100,13 +100,13 @@ function versionModal({deferred = false, modalOpen = false} = {}) {
   const modal = new Controller({$on: (_, fn) => {onOpen = fn;}, $evalAsync: fn => fn()}, {}, {location: {assign: value => {destination = value;}}}, {url: value => {destination = value;}}, noop,
     {getReturnTo: () => null, getFolderId: () => 'origin'}, {setDirty: noop}, {},
     {doCall(request, ok, error) {calls.push(request); complete = () => ok({data: {'@id': 'new-version', 'pav:version': '0.0.2'}}); fail = error; if (!deferred) complete();}},
-    {publishCreateDraftTemplate: (id, form, folder) => ({id, form, folder})},
+    {publishCreateDraftTemplate: (id, form, folder, etag) => ({id, form, folder, etag})},
     {flashSuccess: noop, showBackendError: noop}, {getFolderContents: folder => `/dashboard?folderId=${folder}`, getWorkspaceReturn: (_, folder) => `/dashboard?folderId=${folder}`},
     {data: () => ({isShown: modalOpen}), one: (event, fn) => {assert.equal(event, 'hidden.bs.modal'); afterHidden = fn;},
       modal: action => {assert.equal(action, 'hide'); hideRequested = true;}});
   const original = {'@id': 'original', 'schema:name': 'Study'};
   const proposed = {...original, 'schema:name': 'Revised Study'};
-  onOpen(null, [true, {data: {numberOfInstances: 3}}, 'original', proposed]);
+  onOpen(null, [true, {data: {numberOfInstances: 3}}, 'original', proposed, '"7"']);
   return {modal, calls, original, proposed, get hideRequested() {return hideRequested;}, hidden: () => afterHidden(), complete: () => complete(), fail: () => fail({}), get destination() {return destination;}};
 }
 test('new version without clones sends no clone folder and returns to the originating workspace folder', () => {
@@ -115,6 +115,7 @@ test('new version without clones sends no clone folder and returns to the origin
   assert.equal(h.calls[0].id, 'original');
   assert.equal(h.calls[0].form, h.proposed);
   assert.equal(h.calls[0].folder, null);
+  assert.equal(h.calls[0].etag, '"7"');
   assert.equal(h.destination, '/dashboard?folderId=origin');
 });
 test('cancelling version dialog makes no save request', () => {
