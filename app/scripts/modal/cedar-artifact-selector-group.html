@@ -1,0 +1,16 @@
+<!--
+  One kind of reuse — the elements, or the templates, that carry the artifact above them. Recurses
+  with cedar-artifact-selector-artifact.html, which brings its own groups back here.
+-->
+<div class="tree-row tree-group" ng-style="{'padding-left': group.depth * 24 + 'px'}">
+  <button type="button" class="tree-toggle" ng-click="selector.toggleGroup(group)"
+          aria-label="{{group.kind}}">
+    <i class="fa" ng-class="group.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+  </button>
+  <span class="tree-category">{{('INCLUSION.' + group.kind) | translate}}</span>
+</div>
+
+<div ng-if="group.expanded">
+  <div ng-repeat="node in group.artifacts"
+       ng-include="'scripts/modal/cedar-artifact-selector-artifact.html'"></div>
+</div>

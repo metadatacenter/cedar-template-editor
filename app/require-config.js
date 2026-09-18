@@ -25,7 +25,6 @@ require.config({
     'flow'    : 'bower_components/flow.js/dist/flow',
 
     'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd',
-    'artifact-selector': 'third_party_components/artifact-selector/artifact-selector',
     'cedar-embeddable-editor': 'third_party_components/cedar-embeddable-editor/cedar-embeddable-editor'
 
   },
@@ -66,10 +65,6 @@ require.config({
     'cedar-embeddable-editor': {
       deps: ['angular'],
       exports: 'cedar-embeddable-editor'
-    },
-    'artifact-selector': {
-      deps: ['angular'],
-      exports: 'artifact-selector'
     }
   },
   priority: [
@@ -100,7 +95,6 @@ require([
       require([
         'angular',
         'cedar-embeddable-editor',
-        'artifact-selector',
         'app',
         'ngFlow'
       ], function (angular, app, ngFlow) {

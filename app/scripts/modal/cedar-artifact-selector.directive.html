@@ -1,0 +1,47 @@
+<div class="artifact-selector-container">
+
+  <div class="artifact-selector-tree">
+    <div ng-repeat="group in selector.groups"
+         ng-include="'scripts/modal/cedar-artifact-selector-group.html'"></div>
+    <div class="artifact-selector-empty" ng-if="!selector.groups.length" translate>
+      INCLUSION.no-artifacts
+    </div>
+  </div>
+
+  <div class="artifact-selector-separator" ng-if="selector.details"></div>
+
+  <div class="artifact-selector-details" ng-if="selector.details">
+    <h5>
+      <i ng-class="selector.detailsIcon()"></i>
+      {{selector.details['schema:name']}}
+    </h5>
+    <hr/>
+    <div class="detail-row">
+      <div class="field-label" translate>INCLUSION.location</div>
+      <div>{{selector.locationOf(selector.details.path)}}</div>
+    </div>
+    <div class="detail-row">
+      <div class="field-label" translate>INCLUSION.owner</div>
+      <div>{{selector.details.ownedByUserName}}</div>
+    </div>
+    <div class="detail-row">
+      <div class="field-label" translate>INCLUSION.created</div>
+      <div>{{selector.details.createdByUserName}}</div>
+    </div>
+    <div class="detail-row">
+      <div class="field-label" translate>INCLUSION.modified</div>
+      <div>{{selector.details.lastUpdatedByUserName}}</div>
+    </div>
+    <div class="detail-row" ng-if="selector.instanceCount(selector.details)">
+      <div class="field-label" translate>INCLUSION.instances</div>
+      <div>{{selector.instanceCount(selector.details)}}</div>
+    </div>
+    <div class="detail-row">
+      <button type="button" class="btn btn-clear artifact-inspect"
+              ng-click="selector.inspect(selector.details)" translate>
+        INCLUSION.inspect
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -3,9 +3,11 @@
 define([
       'angular',
       'cedar/template-editor/service/cedar-user',
+      'cedar/template-editor/modal/cedar-artifact-selector.directive',
     ], function (angular) {
       angular.module('cedar.templateEditor.modal.cedarInclusionModalDirective', [
-        'cedar.templateEditor.service.cedarUser'
+        'cedar.templateEditor.service.cedarUser',
+        'cedar.templateEditor.modal.cedarArtifactSelectorDirective'
       ]).directive('cedarInclusionModal', cedarInclusionModalDirective);
 
       cedarInclusionModalDirective.$inject = ['CedarUser', 'AuthorizedBackendService', 'InclusionService', 'UIMessageService', 'resourceService', 'FrontendUrlService', 'UrlService', 'TemplateFieldService'];
@@ -26,6 +28,11 @@ define([
           vm.cancel = cancel;
           vm.artifactType;
           vm.artifactName;
+          // The affected tree as the resource server last reported it, and the details of whichever
+          // artifact is selected within it. The selector renders the tree and writes each artifact's
+          // operation back into it, so this object is also the body the update posts.
+          vm.tree = null;
+          vm.artifactDetails = null;
 
 
           // on modal close, scroll to the top the cheap way
@@ -35,12 +42,10 @@ define([
 
           function saveUpdatedArtifacts() {
             if (vm.mutationPending) { return; }
-            let as = document.querySelector('artifact-selector');
-            const data = as.artifactsToUpdate;
 
             vm.mutationPending = true;
             AuthorizedBackendService.doCall(
-                InclusionService.updateInclusions(data),
+                InclusionService.updateInclusions(vm.tree),
                 function (response) {
                   vm.mutationPending = false;
                   UIMessageService.flashSuccess('INCLUSION.bubbling-success');
@@ -58,15 +63,14 @@ define([
             vm.modalVisible = false;
           }
 
-          function handleTreeSelectionChange(data) {
-            const newData = data.detail;
-
+          // Ticking an artifact changes which artifacts are affected, because an element brings
+          // whatever reuses it into the tree. Ask the server for the tree that selection implies.
+          function handleTreeSelectionChange(tree) {
             AuthorizedBackendService.doCall(
-                InclusionService.getInclusions(newData),
+                InclusionService.getInclusions(tree),
                 function ({data:includingArtifacts}) {
                   if(includingArtifacts) {
-                    let as = document.querySelector('artifact-selector');
-                    as.treeData = includingArtifacts;
+                    vm.tree = includingArtifacts;
                   }
                 },
                 function (err) {
@@ -75,15 +79,13 @@ define([
             );
           }
 
-          function handleNodeSelectionChange({detail: selectedNode}) {
-            const {type, atId} = selectedNode;
+          function handleNodeSelectionChange(artifact) {
             resourceService.getResourceDetailFromId(
-                atId,
-                type,
+                artifact.atId,
+                artifact.type,
                 function (response) {
                   if(response) {
-                    let artifactSelectorElement = document.querySelector('artifact-selector');
-                    artifactSelectorElement.artifactDetails = response;
+                    vm.artifactDetails = response;
                   }
                 },
                 function (err) {
@@ -94,16 +96,10 @@ define([
 
           // on modal open
           $scope.$on('inclusionModalVisible', function (event, params, typeOfArtifact, nameOfArtifact) {
-
-            const artifactSelectorElement = document.querySelector('artifact-selector');
             vm.artifactType = typeOfArtifact;
             vm.artifactName = nameOfArtifact;
-            artifactSelectorElement.treeData = params;
-            artifactSelectorElement.originNode = {type:typeOfArtifact, name: nameOfArtifact};
-
-            artifactSelectorElement.addEventListener('treeSelectionChanged', vm.handleTreeSelectionChange);
-            artifactSelectorElement.addEventListener('nodeSelectionChanged', vm.handleNodeSelectionChange);
-
+            vm.artifactDetails = null;
+            vm.tree = params;
           });
         }
 
