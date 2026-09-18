@@ -38,7 +38,6 @@ require.config({
       deps     : ['angular'],
       'exports': 'angular.mock'
     },
-    'lib/angucomplete-alt/angucomplete-alt'                                              : ['angular'],
     'lib/angular-animate/angular-animate.min'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap-tpls.min'                                        : ['angular'],
@@ -56,23 +55,13 @@ require.config({
     },
 
 
-    '3rdparty/angular-fitvids/angular-fitvids': {
-      deps   : ['angular', 'jquery'],
-      exports: 'fitVids'
-    },
 
     'lib/ng-ckeditor/ng-ckeditor.min': ['angular', 'ckeditor'],
     'ckeditor'                       : {
       'exports': 'CKEDITOR'
     },
 
-    // 'lib/ngHandsontable/dist/ngHandsontable.min'                                 : ['angular',
-    //                                                                                 'lib/handsontable/dist/handsontable.full'],
-    'lib/handsontable/dist/handsontable.full'               : {'exports': 'Handsontable'},
     'lib/bootstrap/dist/js/bootstrap.min'                   : ['jquery'],
-    'lib/bootstrap-select/dist/js/bootstrap-select.min'     : ['lib/bootstrap/dist/js/bootstrap.min'],
-    'cedar/template-editor/handsontable/SpreadsheetContext' : ['lib/handsontable/dist/handsontable.full'],
-    'cedar/template-editor/handsontable/MultiCheckboxEditor': ['lib/handsontable/dist/handsontable.full'],
     'lib/ngprogress/build/ngprogress.min'                   : ['angular'],
     'cedar-embeddable-editor': {
       deps: ['angular'],

@@ -15,7 +15,7 @@ define([
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser",
-                                          "CedarModelTypescriptLibrary"];
+                                          "CedarModelTypescriptLibrary", "PreviousRouteService"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         HeaderService, StagingService, DataTemplateService,
@@ -24,7 +24,7 @@ define([
                                         controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST, CedarUser,
-                                        CedarModelTypescriptLibrary) {
+                                        CedarModelTypescriptLibrary, PreviousRouteService) {
 
         $rootScope.showSearch = false;
 
@@ -80,6 +80,24 @@ define([
           UIUtilService.setLocked($scope.cannotEdit, $scope.lockReason);
         });
 
+        // Compare the complete current definition with the last saved one, so manually
+        // restoring a structural edit also restores the safe display-only status.
+        var savedDefinition;
+        var impactTimer;
+        $scope.editImpact = 'unchanged';
+        $scope.$watch('form', function () {
+          $timeout.cancel(impactTimer);
+          if (!savedDefinition || !$scope.details || !$scope.details.numberOfInstances || $scope.cannotEdit) {
+            $scope.editImpact = 'unchanged';
+            return;
+          }
+          impactTimer = $timeout(function () {
+            $scope.editImpact = schemaService.getEditImpact(savedDefinition, $scope.form);
+          }, 200);
+        }, true);
+        $scope.$on('$destroy', function () { $timeout.cancel(impactTimer); });
+
+        var instanceWarningShown = false;
         var getReport = function (id) {
 
           resourceService.getTemplateReport(
@@ -90,6 +108,12 @@ define([
                 UIUtilService.setVisibleMetadata(0);
                 UIUtilService.setInstances(null);
                 $scope.checkLocking();
+                if (!$scope.cannotEdit && response.numberOfInstances > 0 && !instanceWarningShown) {
+                  instanceWarningShown = true;
+                  UIMessageService.confirmEditingWithInstances(response.numberOfInstances, false, function () {
+                    $scope.$evalAsync($scope.cancelTemplate);
+                  });
+                }
 
               },
               function (error) {
@@ -132,6 +156,7 @@ define([
                           $rootScope.$broadcast('form:clean');
                           //$rootScope.$broadcast(CONST.eventId.form.VALIDATION, {state: true});
                           ValidationService.checkValidation();
+                          savedDefinition = angular.copy($scope.form);
                           getReport($scope.form["@id"]);
                           // } else {
                           //   // TODO validate before loading template-controller
@@ -332,6 +357,8 @@ define([
             DataManipulationService.createDomIds(response.data);
             var newId = response.data['@id'];
             // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+            // Also replace the address remembered by CEDAR's own Back control.
+            PreviousRouteService.supersedeCurrent();
             $location.path(FrontendUrlService.getTemplateEdit(newId)).replace();
 
             UIUtilService.setDirty(false);
@@ -343,6 +370,8 @@ define([
             UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                 {"title": schemaService.getTitle($scope.form)}, 'GENERIC.Updated');
             owner.enableSaveButton();
+            savedDefinition = angular.copy($scope.form);
+            $scope.editImpact = 'unchanged';
 
             UIUtilService.setDirty(false);
           };
@@ -428,7 +457,7 @@ define([
                         );
                       } else {
                         $scope.updateTemplateWithInstancesModalVisible = true;
-                        $rootScope.$broadcast('updateTemplateWithInstancesModalVisible', [true, response, id, copiedForm]);
+                        $rootScope.$broadcast('updateTemplateWithInstancesModalVisible', [true, response, id, copiedForm, $scope.form.$$cedarEtag]);
                         // UIMessageService.confirmedExecution(
                         //     function () {
                         //       AuthorizedBackendService.doCall(

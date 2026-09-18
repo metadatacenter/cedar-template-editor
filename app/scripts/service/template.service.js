@@ -34,8 +34,10 @@ define([
       return HttpBuilderService.post(UrlService.checkUpdateTemplate(id), angular.toJson(template));
     };
 
-    service.publishCreateDraftTemplate = function (id, template, newFolderName) {
-      return HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id, newFolderName), angular.toJson(template));
+    service.publishCreateDraftTemplate = function (id, template, newFolderName, sourceEtag) {
+      var request = HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id, newFolderName), angular.toJson(template));
+      request.headers = {'If-Match': sourceEtag || template.$$cedarEtag};
+      return request;
     };
 
     return service;

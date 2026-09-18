@@ -808,11 +808,7 @@ a.share {
     }
   }
 
-  // The classic form indents its inputs differently from the embeddable editor.
-  &.classic {
-    margin-left: 37px;
-    margin-right: 15px;
-  }
+
 }
 
 .link-disabled, .link-disabled:hover {
@@ -3457,10 +3453,7 @@ section.dashboard-elements {
     }
   }
 
-  &.runtime {
-    .element-name-label .cedar-svg-element {
-    }
-  }
+
 }
 
 .navbar.metadata {
@@ -3469,741 +3462,9 @@ section.dashboard-elements {
   }
 }
 
-/*
-================================================
-=== Runtime Form
-================================================
-*/
-.template-body form .runtime {
 
-  font-size: 16px;
 
-  .header-instructions {
-    font-family: "Source Sans Pro", sans-serif;
-    margin-bottom: 10px;
-    font-style: italic;
-    margin-left: 5px;
-  }
 
-  .footer-instructions {
-    font-family: "Source Sans Pro", sans-serif;
-    margin-top: 20px;
-    margin-left: 5px;
-    font-style: italic;
-  }
-
-  .treeview, .treeview ul.tv {
-    list-style-type: none;
-    width: 100%;
-  }
-
-  .validation {
-    color: @dark-accent;
-    padding: 10px;
-  }
-
-  .element-bar {
-    margin: 0 5px;
-    min-width: 12px;
-    min-height: 100%;
-    color: @lt-gray;
-    z-index: 10;
-
-    .bar {
-      margin-top: 10px;
-      min-width: 100%;
-      min-height: calc(~"100% - 10px");
-      &:hover {
-        cursor: pointer;
-        background-color: @brand-primary;
-      }
-    }
-    .bar0 {
-      background-color: @bar0;
-    }
-    .bar1 {
-      background-color: @bar1;
-    }
-    .bar2 {
-      background-color: @bar2;
-    }
-    .bar3 {
-      background-color: @bar3;
-    }
-    .bar4 {
-      background-color: @bar4;
-    }
-    .bar5 {
-      background-color: @bar5;
-    }
-    .bar6 {
-      background-color: @bar6;
-    }
-    .bar7 {
-      background-color: @bar7;
-    }
-    .bar8 {
-      background-color: @bar8;
-    }
-    .bar9 {
-      background-color: @bar9;
-    }
-  }
-
-  .paging {
-    float: right;
-    width: 100%;
-    list-style-type: none;
-    margin: auto;
-    li {
-      a {
-        padding: 5px;
-        background-color: #e8e8e8;
-        font-size: 10px;
-      }
-      &.active a {
-        background-color: @brand-primary;
-      }
-    }
-  }
-
-  .active-container {
-
-    border-left: 1px solid @lt-gray;
-    position: relative;
-    right: 0;
-    background: @lt-gray;
-  }
-
-  &.page {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    position: relative;
-  }
-
-  .toolbar {
-    padding: 0px 22px 0 0;
-    font-size: 18px;
-    button, .paging {
-      background-color: transparent;
-    }
-    .cedar-pager {
-      padding-right: 20px;
-    }
-  }
-
-  //.row-field:hover {
-  //  .toolbar {
-  //    visibility: visible;
-  //  }
-  //}
-
-  //.row-field.isActive {
-  //  .toolbar {
-  //    visibility: visible;
-  //  }
-  //}
-
-  .answer {
-    border: 1px solid transparent;
-    font-size: 1em;
-    cursor: pointer;
-
-    padding-top: 4px;
-    min-height: 30px;
-    padding-left: 10px;
-    .edit {
-      visibility: hidden;
-      margin-right: 20px;
-      color: @med-gray;
-    }
-  }
-
-  //@media (max-width: @screen-sm-min) {
-  //  .answer {
-  //    //margin-left: 20px;
-  //    //margin-right: 5px;
-  //  }
-  //}
-
-  //.myhover:hover {
-  //  cursor: pointer;
-  //}
-
-  .tools {
-    min-height: 2em;
-    padding: 5px 0;
-  }
-
-  .row-field.isActive, .row-field:hover {
-    cursor: pointer;
-    .tools {
-      visibility: visible !important;
-    }
-    .title.field {
-      text-shadow: 1px 0px 0px #666;
-    }
-    .title.element {
-      text-shadow: 1px 0px 0px #71977F;
-    }
-    .title.form {
-      text-shadow: 1px 0px 0px @brand-primary;
-    }
-    .answer {
-      border: 1px solid @very-lt-gray;
-      background: #eee;
-      .edit {
-        visibility: visible;
-      }
-    }
-  }
-
-  .title {
-    text-align: left;
-    display: table-cell;
-    vertical-align: middle;
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: normal;
-    border: 1px solid transparent;
-    .count {
-      font-size: smaller;
-    }
-    &.field {
-
-      color: #666;
-    }
-    &.element {
-      color: #71977F;
-      position: relative;
-    }
-    &.form {
-      font-size: 1.2em;
-      color: @brand-primary;
-    }
-  }
-
-  button {
-    background-color: transparent;
-    color: @dark-gray;
-
-    &.goaway {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-
-    &.delete-hidden {
-      color: transparent;
-    }
-    &.remove-hidden {
-      color: transparent;
-    }
-    &.expand {
-      margin-right: 0;
-      padding-right: 0;
-      margin-left: 0;
-      padding-left: 0;
-    }
-    i {
-      min-width: 12px;
-    }
-    &:disabled {
-      color: @brand-primary-disabled;
-    }
-    &.form-title {
-      margin-left: -6px;
-    }
-
-  }
-
-  .btn.btn-save.active {
-    margin: 10px 0px 10px 0px;
-    background-color: @button-template;
-    color: @white;
-    font-size: 1em;
-    outline: none;
-    &:hover {
-      background-color: @hover-template;
-    }
-  }
-  label.submit-info {
-    font-size: 1em;
-    padding-left: 10px;
-    color: @brand-primary;
-  }
-
-  .field-instance {
-    padding-left: 0;
-    padding-right: 0;
-    &.multiple-instance-field {
-      border: 0px solid @brand-primary-disabled;
-      padding-top: 0px;
-      padding-bottom: 0px;
-      margin-bottom: 0px;
-      background-color: transparent;
-    }
-  }
-
-  .element-group {
-
-    width: 100%;
-    padding: 0px;
-    margin-bottom: 0px;
-    background-color: transparent;
-    .nested-element {
-      border: 0px solid #ddd;
-      padding: 0px;
-      margin: 0;
-      .element-title {
-        margin-left: 20px;
-        margin-bottom: 0px;
-        font-size: 1em;
-      }
-    }
-  }
-
-  .element-root {
-
-    .left-tick {
-      //background-color: #aaa;
-      //position: relative;
-      //bottom: 50%;
-      //height: 1px;
-      //width: 15px;
-      //top: 14px;
-      //left: -16px;
-    }
-
-    .element {
-
-      &.expand {
-      }
-      &.collapse {
-      }
-
-    }
-  }
-
-  .field-root {
-
-    padding: 0px;
-    border-width: 0px;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    background: transparent;
-    min-height: 10px;
-
-    .answer {
-      margin: 5px 15px;
-      border: 1px solid #ccc;
-    }
-
-    .question {
-      margin: 5px;
-      height: auto;
-    }
-
-    .title {
-      color: #666;
-      font-size: 1em;
-    }
-
-    .row-field.isActive:before {
-      //display: inline-block;
-      height: 100%;
-      //vertical-align: middle;
-    }
-
-    input {
-      border-width: 0px;
-      background: @white;
-      height: 20px;
-
-      &.isActive {
-        border: 1px dashed #888;
-      }
-    }
-
-    select {
-      border-width: 0px;
-      background: @white;
-      padding-top: 10px;
-
-      &.isActive {
-        border: 1px dashed #888;
-
-        div.btn-group.bootstrap-select {
-
-          button.btn.dropdown-toggle.dropdown-toggle {
-            box-shadow: none;
-
-          }
-        }
-      }
-    }
-
-    textarea.form-control {
-      border-width: 0px;
-      background: @white;
-      padding-top: 10px;
-
-      &.isActive {
-        border: 1px dashed #888;
-
-      }
-    }
-  }
-
-  .form-group, .input-group {
-
-    margin-right: 10px;
-    margin-bottom: 0px;
-
-    &.radio-item,
-    &.checkbox-item {
-      margin-bottom: 10px;
-
-      .radio:nth-of-type(2) {
-      }
-    }
-
-    .form-control {
-
-      border-radius: 0;
-
-      box-shadow: none;
-      font-size: 16px;
-      color: @black;
-      transition: border-color 0.3s linear;
-      height: 40px;
-    }
-
-    .bootstrap-select {
-      background: @white;
-      .btn-select-picker {
-        font-size: 1em;
-        box-shadow: none;
-      }
-    }
-
-    textarea.form-control {
-      height: auto;
-    }
-
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0px;
-    }
-
-    .input-indicator-icons {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-
-      .cedar-svg-check-circle {
-        color: @button-ok;
-        display: none;
-      }
-      .cedar-svg-help-circle {
-        color: rgba(51, 51, 51, 0.24);
-        display: none;
-        cursor: pointer;
-      }
-      .cedar-svg-warning {
-        color: #dfbd00;
-        display: none;
-      }
-    }
-
-    .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle {
-      display: none;
-      margin-top: -7px;
-    }
-    .empty ~ .input-indicator-icons .cedar-svg-help-circle {
-      display: block;
-      margin-top: -7px;
-    }
-    .ng-valid:not(.ng-empty) ~ .input-indicator-icons .cedar-svg-check-circle {
-      display: block;
-      margin-top: -7px;
-    }
-    .ng-invalid ~ .input-indicator-icons .cedar-svg-warning {
-      display: block;
-      margin-top: -7px;
-    }
-
-    .warning-text {
-      .activ-grotesk-regular;
-      font-style: italic;
-      font-size: 13px;
-      position: absolute;
-      left: 10px;
-      bottom: -25px;
-      display: none;
-    }
-
-    .ng-invalid ~ .warning-text {
-      display: block;
-    }
-
-    .additional-options {
-      padding-top: 20px;
-      padding-left: 10px;
-
-      span.or {
-        .activ-grotesk-bold;
-        color: #999;
-        text-transform: uppercase;
-        font-size: 11px;
-        padding-right: 10px;
-      }
-
-      .btn-file {
-        position: relative;
-        overflow: hidden;
-        background-color: @brand-primary;
-        border-radius: 0;
-        color: @white;
-        .activ-grotesk-regular;
-        border: none;
-        vertical-align: middle;
-        text-transform: uppercase;
-        padding: 18px 30px;
-        .link-transition;
-
-        &:hover {
-          background-color: @brand-primary-hover;
-        }
-      }
-
-      .btn-file input[type="file"] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: @white;
-        cursor: inherit;
-        display: block;
-      }
-    }
-  }
-
-  .required > .extra-label-context:after {
-    content: '*';
-    color: red;
-    display: inline-block;
-    vertical-align: top;
-    font-size: 14px;
-  }
-
-  &.validate {
-    .required.empty {
-    }
-  }
-
-  .date-group {
-
-    .date-label {
-      display: block;
-      padding-bottom: 7px;
-      padding-left: 5px;
-      font-size: 12px;
-      text-transform: uppercase;
-      .activ-grotesk-medium;
-      color: #999;
-    }
-
-    .input-group-addon {
-      padding: 2px 10px;
-      border-radius: 0;
-      background-color: @white;
-      cursor: pointer;
-
-      &:hover {
-        i {
-          color: @brand-primary;
-        }
-      }
-    }
-
-    .bootstrap-datetimepicker-widget ~ .input-group-addon i {
-      color: @brand-primary;
-    }
-
-    &.range {
-      .clearfix;
-
-      .input-group {
-        padding-bottom: 10px;
-        float: left;
-
-        @media (min-width: @screen-sm-min) {
-          width: calc(~"50% - 10px");
-
-          &:first-of-type {
-            margin-right: 10px;
-          }
-
-          &:last-of-type {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-  }
-
-  .date-field-title,
-  .extra-label-context {
-    color: @gray;
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
-
-  h3.section-title {
-    text-transform: uppercase;
-    font-size: 24px;
-    color: @brand-primary;
-    border-top: 1px solid #ddd;
-    padding-top: 40px;
-    margin-top: 0;
-
-    &.page-title {
-      border-top: none;
-      padding-top: 0;
-    }
-  }
-
-  p.section-body {
-    font-size: 16px;
-    line-height: 28px;
-    margin-bottom: 25px;
-  }
-
-  .type-toggle {
-    text-align: center;
-    margin: 0 auto;
-    margin-bottom: 10px;
-    .clearfix();
-
-    .d-option {
-      width: 50%;
-      float: left;
-      padding-bottom: 7px;
-      border-bottom: 5px solid;
-      border-color: #ddd;
-      cursor: pointer;
-      .link-transition;
-
-      span {
-        text-transform: uppercase;
-        .activ-grotesk-medium;
-        font-size: 12px;
-        color: #666;
-      }
-
-      &.active,
-      &:hover {
-        border-color: @brand-primary;
-      }
-    }
-
-    &.date {
-      width: 240px;
-    }
-
-    &.list {
-      width: 300px;
-    }
-
-  }
-
-  .required-text {
-    font-style: italic;
-
-    &:before {
-      content: '*';
-      display: inline-block;
-      vertical-align: top;
-      color: red;
-    }
-  }
-
-}
-
-.spreadsheetViewContainer {
-
-  .myInvalidClass {
-    background: @button-error;
-  }
-
-  .fixed .wtHolder {
-    position: fixed !important;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background: @white;
-    border: 1px solid @very-lt-gray;
-    box-shadow: 5px 5px 5px @very-lt-gray;
-  }
-
-  /* Always show scroll bars */
-
-  ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar:vertical {
-    width: 12px;
-    //margin:10px 0;
-  }
-
-  ::-webkit-scrollbar:horizontal {
-    height: 12px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    border: 0px solid white;
-    background-color: @very-lt-gray;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: @background-gray;
-    border-radius: 0px;
-  }
-
-  ::-webkit-scrollbar-corner {
-
-  }
-
-  background-color: @lt-gray;
-
-  //.handsontable .wtBorder {
-  //  margin-right:-1px;
-  //}
-
-  overflow: hidden;
-  border: 1px solid @very-lt-gray;
-  min-height: 300px;
-
-  .tooltip {
-    position: fixed;
-    white-space: pre-wrap;
-  }
-
-  .ht_master.handsontable {
-    .wtHolder {
-      min-height: 300px;
-    }
-  }
-}
 
 .alert {
   border-radius: 0;
@@ -4215,6 +3476,28 @@ section.dashboard-elements {
 
   i {
     padding-right: 10px;
+  }
+}
+
+.edit-actions {
+  .cee-validation-report {
+    margin: 0 2.5% 15px;
+    text-align: left;
+
+    p {
+      margin: 5px 0 0;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .cee-validation-path {
+      font-family: monospace;
+      font-weight: bold;
+      margin-right: 8px;
+    }
   }
 }
 
@@ -5697,55 +4980,12 @@ p.instructions {
 
 /*
 ================================================
-=== Bootstrap Select Picker
+=== Select controls
 ================================================
 */
-.bootstrap-select {
-  padding-top: 0 !important;
 
-  .btn-select-picker {
-    border-radius: 0;
-    background-color: transparent;
-    border-color: #ddd;
-    height: 40px;
 
-    &:focus {
-      outline: none !important;
-      box-shadow: none;
-    }
-  }
 
-  .dropdown-menu li a {
-    padding: 8px 20px;
-    outline: none;
-
-    &:hover {
-      background-color: @brand-primary;
-    }
-  }
-
-  .caret {
-    background-repeat: no-repeat;
-    width: 15px;
-    height: 10px;
-    border: none;
-    transition: transform 0.3s 0s;
-    transform: rotate(0deg);
-    color: @brand-primary
-  }
-
-  &.open .caret {
-    transform: rotate(180deg);
-  }
-
-  .fa-check.check-mark {
-    color: @brand-primary;
-  }
-}
-
-.bootstrap-select.btn-group .dropdown-toggle .caret {
-  top: 42%;
-}
 
 /*
 ================================================
@@ -5902,9 +5142,7 @@ p.instructions {
   margin-right: 10px;
 }
 
-#cardinality-options .bootstrap-select {
-  width: 100px;
-}
+
 
 .more-input-wrapper {
   position: absolute;
@@ -6936,18 +6174,12 @@ body .template-header .controlled-terms-modal {
     font-weight: normal;
   }
 
-  .bootstrap-select {
-    float: right;
-  }
+
 }
 
-.bootstrap-select .btn-select-picker {
-  background: @white;
-}
 
-.bootstrap-select .btn-select-picker.disabled {
-  background: @gray3;
-}
+
+
 
 .date-group .fa-calendar {
   font-size: 1.5em;
@@ -7912,9 +7144,7 @@ table.apiKey {
             padding: 0;
             font-size: .9em;
           }
-          .bootstrap-select {
-            max-width: 120px;
-          }
+
           .search-input {
             margin-top: 0;
           }
@@ -8372,10 +7602,7 @@ table.apiKey {
       margin: 0 auto;
       &.cannotWrite {
         width: 600px;
-        .bootstrap-select button {
-          padding-left: 40px;
 
-        }
       }
       .modal-body {
         overflow-y: visible;
@@ -8466,15 +7693,8 @@ table.apiKey {
             height: 40px;
           }
         }
-        .bootstrap-select {
-          outline: none;
-        }
-        .bootstrap-select button {
-          padding-left: 5px;
-          outline: none;
-          height: 40px;
 
-        }
+
 
         button i.fa-plus {
           margin: 0 -4px;
@@ -8526,26 +7746,7 @@ table.apiKey {
           border: 1px solid @very-lt-gray;
           padding-right: 24px;
         }
-        .bootstrap-select {
-          button.disabled {
-            background: @white;
-            border: 1px solid @very-lt-gray;
-            color: #333;
-            opacity: 1;
-            .glyphicon {
-              display: none;
-            }
-          }
-          &.small {
-            width: 80px;
-          }
-          &.open {
-            .dropdown-menu {
-              padding: 0 !important;
-              border-radius: 0px !important;
-            }
-          }
-        }
+
 
         .btn-info {
           border-radius: 50%;
@@ -10920,4 +10121,32 @@ div.resource-icon {
   }
 
 
+}
+
+// Breaking-change choices remain visibly actionable, with the save action emphasized.
+#update-template-with-instances-modal .version-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  .btn {
+    margin: 0;
+    padding: 10px 20px;
+    border: 1px solid @brand-primary;
+    border-radius: 3px;
+    font-weight: 600;
+    &.version-secondary {
+      background: @white;
+      color: @brand-primary;
+      &:hover { background: @very-lt-gray; }
+    }
+    &.version-create {
+      background: @brand-primary;
+      color: @white;
+      &:hover { background: @brand-primary-hover; }
+    }
+    &:focus-visible { outline: 2px solid @brand-primary; outline-offset: 3px; }
+    &:disabled { opacity: 0.55; cursor: wait; }
+  }
 }

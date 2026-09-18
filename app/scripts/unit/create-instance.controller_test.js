@@ -3,366 +3,422 @@
 define([
   'angular',
   'angularMocks',
-  'cedar/template-editor/template-instance/create-instance.controller',
-  'cedar/template-editor/service/cee-dirty-tracker.service'
+  'cedar/template-editor/template-instance/create-instance.controller'
 ], function () {
 
-  describe('CreateInstanceController metadata name:', function () {
+  describe('CreateInstanceController CEE validation report:', function () {
     var $controller;
     var $rootScope;
     var $timeout;
+    var cee;
+    var changeListener;
+    var templateInstanceService;
+    var uiUtilService;
+    var ceeDirty;
+    var previousRouteService;
+    var createdInstance;
+    var $window;
+    var vm;
+    var locals;
+    var saveResponse;
+    var deferSave;
 
     beforeEach(module('cedar.templateEditor.templateInstance.createInstanceController'));
-    beforeEach(module('cedar.templateEditor.service.ceeDirtyTrackerService'));
 
     beforeEach(inject(function (_$controller_, _$rootScope_, _$timeout_) {
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $timeout = _$timeout_;
-    }));
 
-    // The page under either renderer. The backend answers each request by its `kind`, which the
-    // service stubs below put on the requests they build. Without `options.useCee` this is the
-    // classic form path, where no embeddable editor exists and the form directive fills
-    // $scope.instance.
-    function controllerFor(routeParams, backend, options) {
-      var settings = options || {};
-      var scope = $rootScope.$new();
-      var fakeWindow = {
+      deferSave = false;
+      saveResponse = null;
+      cee = {
+        removeEventListener: jasmine.createSpy('removeEventListener'),
+        currentMetadata: {'schema:name': 'Example'},
+        dataQualityReport: {
+          requiredFieldValueCount: 2,
+          nonNullRequiredFieldValueCount: 1,
+          problems: [],
+          isValid: false
+        },
+        addEventListener: function (name, listener) {
+          if (name === 'change') {
+            changeListener = listener;
+          }
+        }
+      };
+      templateInstanceService = {
+        saveTemplateInstance: jasmine.createSpy('saveTemplateInstance').and.returnValue({kind: 'save'}),
+        updateTemplateInstance: jasmine.createSpy('updateTemplateInstance').and.callFake(
+            function (id, metadata) {
+              return {kind: 'update', id: id, metadata: metadata};
+            })
+      };
+      uiUtilService = {setDirty: jasmine.createSpy('setDirty'), setLocked: angular.noop};
+      previousRouteService = {supersedeCurrent: jasmine.createSpy('supersedeCurrent')};
+      ceeDirty = true;
+
+      // What the server returns from the create: the same metadata as an artifact, with the
+      // identifier and the validator every later save is made under.
+      createdInstance = {
+        '@id': 'instance-9',
+        'schema:isBasedOn': 'template-1',
+        'schema:name': 'Template metadata',
+        $$cedarEtag: '"1"'
+      };
+      $window = {
+        document: {querySelector: function () { return cee; }},
         history: {replaceState: jasmine.createSpy('replaceState')},
         location: {assign: jasmine.createSpy('assign')}
       };
-      var messages = {
-        flashSuccess: jasmine.createSpy('flashSuccess'),
-        flashAfterReload: jasmine.createSpy('flashAfterReload'),
-        showBackendError: angular.noop
-      };
-      var templateInstanceService = {
-        getTemplateInstance: function () { return {kind: 'instance'}; },
-        saveTemplateInstance: jasmine.createSpy('saveTemplateInstance').and.callFake(
-            function (folderId, instance) {
-              return {kind: 'save', folderId: folderId, instance: instance};
-            }),
-        updateTemplateInstance: jasmine.createSpy('updateTemplateInstance').and.callFake(
-            function (id, instance) {
-              return {kind: 'update', id: id, instance: instance};
-            })
-      };
-      var uiUtilService = {
-        setDirty: jasmine.createSpy('setDirty'),
-        setLocked: angular.noop,
-        setStatus: angular.noop,
-        setVersion: angular.noop
-      };
-      var previousRouteService = {supersedeCurrent: jasmine.createSpy('supersedeCurrent')};
-      var vm = $controller('CreateInstanceController', {
-        $translate: {
-          instant: function (key) { return key === 'GENERATEDVALUE.instanceTitle' ? ' metadata' : ''; }
-        },
+
+      locals = {
         $rootScope: $rootScope,
-        $scope: scope,
-        $routeParams: routeParams,
-        $location: {url: jasmine.createSpy('url')},
-        $window: fakeWindow,
-        HeaderService: {configure: angular.noop, dataContainer: {}},
-        TemplateService: {getTemplate: function () { return {kind: 'template'}; }},
-        resourceService: {
-          getResourceDetailFromId: function (id, type, success) { success({}); },
-          canEdit: function () { return true; }
-        },
-        TemplateInstanceService: templateInstanceService,
-        UIMessageService: messages,
-        AuthorizedBackendService: {doCall: backend},
-        CONST: {
-          pageId: {RUNTIME: 'runtime'},
-          resourceType: {INSTANCE: 'instance'},
-          publication: {STATUS: 'bibo:status', VERSION: 'pav:version'},
-          eventId: {form: {VALIDATION: 'validation'}}
-        },
+        $scope: $rootScope.$new(),
+        $routeParams: {templateId: 'template-1'},
         $timeout: $timeout,
+        $translate: {instant: function (key) { return key === 'GENERATEDVALUE.instanceTitle' ? ' metadata' : ''; }},
+        $window: $window,
+        AuthorizedBackendService: {
+          doCall: function (request, success) {
+            if (request.kind === 'template') {
+              success({data: {'schema:name': 'Template'}});
+            } else if (request.kind === 'save') {
+              if (deferSave) { saveResponse = success; }
+              else { success({data: createdInstance}); }
+            } else if (request.kind === 'update') {
+              success({data: request.metadata});
+            }
+          }
+        },
+        CedarUser: {getHomeFolderId: function () { return 'home'; }},
+        CeeConfigService: {getConfig: function () { return {}; }},
+        CeeDirtyTrackerService: {
+          reset: angular.noop,
+          markClean: angular.noop,
+          hasBaseline: function () { return true; },
+          isDirty: function () { return ceeDirty; }
+        },
+        CONST: {pageId: {RUNTIME: 'runtime'}, resourceType: {INSTANCE: 'instance'}},
+        FrontendUrlService: {
+          decodeRouteIdentifier: function (value) { return value; },
+          getWorkspaceReturn: function () { return '/dashboard'; },
+          getInstanceEdit: function (id) { return '/instances/edit/' + id; }
+        },
+        HeaderService: {configure: angular.noop},
+        PreviousRouteService: previousRouteService,
         QueryParamUtilsService: {
           getFolderId: function () { return 'folder'; },
           getReturnTo: function () { return null; }
         },
-        FrontendUrlService: {getInstanceEdit: function () { return '/instances/edit/1'; }},
-        ValidationService: {checkValidation: angular.noop, logValidation: angular.noop},
-        ValueRecommenderService: {init: angular.noop},
-        UIUtilService: uiUtilService,
-        DataManipulationService: {},
-        CedarUser: {
-          useMetadataEditorV2: function () { return settings.useCee === true; },
-          getHomeFolderId: function () { return 'home'; }
+        resourceService: {},
+        TemplateInstanceService: templateInstanceService,
+        TemplateService: {getTemplate: function () { return {kind: 'template'}; }},
+        UIMessageService: {flashSuccess: angular.noop, flashAfterReload: angular.noop},
+        UIUtilService: uiUtilService
+      };
+      vm = $controller('CreateInstanceController', locals);
+
+      $timeout.flush();
+    }));
+
+    it('detaches CEE and ignores late changes after leaving the page', function () {
+      locals.$scope.$destroy();
+      expect(cee.removeEventListener).toHaveBeenCalledWith('change', changeListener);
+      uiUtilService.setDirty.calls.reset();
+      changeListener({detail: {}});
+      expect(uiUtilService.setDirty).not.toHaveBeenCalled();
+    });
+
+    // An edit view over a saved instance, with the CEE returning a serialized copy on save.
+    function editSetup(pendingUpdate) {
+      var loadedInstance = {
+        '@id': 'instance-1',
+        'schema:isBasedOn': 'template-1',
+        'schema:name': 'Saved instance',
+        $$cedarEtag: '"7"'
+      };
+      var editCee = {
+        removeEventListener: jasmine.createSpy('removeEventListener'),
+        currentMetadata: {
+          '@id': 'instance-1',
+          'schema:isBasedOn': 'template-1',
+          'schema:name': 'Edited instance'
         },
-        UrlService: {fixSingleSlashHttps: function (value) { return value; }},
-        CedarModelTypescriptLibrary: {
-          CedarJsonReaders: {
-            getStrict: function () { return {getTemplateInstanceReader: function () { return {}; }}; }
-          },
-          CedarYamlWriters: {
-            getStrict: function () { return {getTemplateInstanceWriter: function () { return {}; }}; }
+        dataQualityReport: {problems: [], isValid: true},
+        addEventListener: angular.noop
+      };
+      var editService = {
+        getTemplateInstance: function () { return {kind: 'instance'}; },
+        updateTemplateInstance: jasmine.createSpy('updateTemplateInstance').and.callFake(
+            function (id, metadata) {
+              return {kind: 'update', id: id, metadata: metadata};
+            })
+      };
+      var editVm = $controller('CreateInstanceController', {
+        $rootScope: $rootScope,
+        $scope: $rootScope.$new(),
+        $routeParams: {id: 'instance-1'},
+        $timeout: $timeout,
+        $translate: {instant: function () { return ''; }},
+        $window: {
+          document: {querySelector: function () { return editCee; }},
+          location: {assign: jasmine.createSpy('assign')}
+        },
+        AuthorizedBackendService: {
+          doCall: function (request, success, failure) {
+            if (request.kind === 'instance') {
+              success({data: loadedInstance});
+            } else if (request.kind === 'template') {
+              success({data: {'schema:name': 'Template'}});
+            } else if (request.kind === 'update') {
+              if (pendingUpdate) { pendingUpdate(request, success, failure); }
+              else { success({data: request.metadata}); }
+            }
           }
         },
+        CedarUser: {getHomeFolderId: function () { return 'home'; }},
         CeeConfigService: {getConfig: function () { return {}; }},
-        CeeDirtyTrackerService: settings.tracker || {
+        CeeDirtyTrackerService: {
           reset: angular.noop,
           markClean: angular.noop,
           hasBaseline: function () { return true; },
           isDirty: function () { return true; }
         },
-        PreviousRouteService: previousRouteService
+        CONST: {pageId: {RUNTIME: 'runtime'}, resourceType: {INSTANCE: 'instance'}},
+        FrontendUrlService: {
+          decodeRouteIdentifier: function (value) { return value; },
+          getWorkspaceReturn: function () { return '/dashboard'; },
+          getInstanceEdit: function () { return '/instances/edit/1'; }
+        },
+        HeaderService: {configure: angular.noop},
+        PreviousRouteService: previousRouteService,
+        QueryParamUtilsService: {
+          getFolderId: function () { return 'folder'; },
+          getReturnTo: function () { return null; }
+        },
+        resourceService: {
+          getResourceDetailFromId: function (id, type, success) { success({}); },
+          canEdit: function () { return true; }
+        },
+        TemplateInstanceService: editService,
+        TemplateService: {getTemplate: function () { return {kind: 'template'}; }},
+        UIMessageService: {flashSuccess: angular.noop, showBackendError: angular.noop},
+        UIUtilService: {setDirty: angular.noop, setLocked: angular.noop}
       });
-      return {
-        vm: vm,
-        scope: scope,
-        instances: templateInstanceService,
-        uiUtil: uiUtilService,
-        window: fakeWindow,
-        messages: messages,
-        previousRoute: previousRouteService
-      };
+      $timeout.flush();
+      return {cee: editCee, service: editService, vm: editVm};
     }
 
-    // The embeddable editor as the page finds it: an element in the document carrying the metadata.
-    // `currentMetadata` is a getter that answers with a fresh copy, because the real one serializes
-    // the form on every read — so nothing the page writes onto a copy is there the next time, which
-    // is the whole reason the identifier has to be kept by the controller.
-    function withEditor(metadata) {
-      var element = document.createElement('cedar-embeddable-editor');
-      Object.defineProperty(element, 'currentMetadata', {
-        get: function () { return angular.copy(metadata); }
+    it('waits for an editor the routed view links a few digests late', function () {
+      var misses = 3;
+      var lateWindow = angular.extend({}, $window, {
+        document: {querySelector: function () { return misses-- > 0 ? null : cee; }}
       });
-      document.body.appendChild(element);
-      return element;
-    }
+      changeListener = null;
 
-    afterEach(function () {
-      var element = document.querySelector('cedar-embeddable-editor');
-      if (element) {
-        element.parentNode.removeChild(element);
-      }
+      $controller('CreateInstanceController', angular.extend({}, locals, {$window: lateWindow}));
+      // The first look misses. The page neither watches yet nor gives up.
+      expect(changeListener).toBeNull();
+
+      $timeout.flush();
+      expect(changeListener).not.toBeNull();
+
+      ceeDirty = true;
+      uiUtilService.setDirty.calls.reset();
+      changeListener({detail: null});
+      expect(uiUtilService.setDirty).toHaveBeenCalledWith(true);
     });
 
-    var template = {'schema:name': 'Template', 'schema:description': 'About it'};
-
-    function creating() {
-      return controllerFor({templateId: 'template-1'}, function (request, success) {
-        if (request.kind === 'template') {
-          success({data: template});
-        } else if (request.kind === 'save') {
-          success({data: {'@id': 'instance-1'}, headers: function () { return null; }});
-        }
+    it('gives up on an editor that never arrives, rather than waiting forever', function () {
+      var neverWindow = angular.extend({}, $window, {
+        document: {querySelector: function () { return null; }},
+        location: {assign: jasmine.createSpy('assign')}
       });
-    }
+      changeListener = null;
 
-    function editing() {
-      return controllerFor({id: 'instance-1'}, function (request, success) {
-        if (request.kind === 'instance') {
-          success({data: {'@id': 'instance-1', 'schema:isBasedOn': 'template-1', 'schema:name': 'Saved instance'}});
-        } else if (request.kind === 'template') {
-          success({data: template});
-        } else if (request.kind === 'update') {
-          success({data: request.instance, headers: function () { return null; }});
-        }
-      });
-    }
-
-    function creatingWithEditor() {
-      withEditor({'schema:name': 'Example'});
-      return controllerFor({templateId: 'template-1'}, function (request, success) {
-        if (request.kind === 'template') {
-          success({data: template});
-        } else if (request.kind === 'save') {
-          success({
-            data: {'@id': 'instance-9', $$cedarEtag: '"1"'},
-            headers: function () { return null; }
-          });
-        } else if (request.kind === 'update') {
-          success({data: request.instance, headers: function () { return null; }});
-        }
-      }, {useCee: true});
-    }
-
-    it('tracks edits and exact reverts when CEE appears after the first controller tick', inject(function (CeeDirtyTrackerService) {
-      var receiveInstance;
-      var page = controllerFor({id: 'instance-1'}, function (request, success) {
-        if (request.kind === 'instance') { receiveInstance = success; }
-        if (request.kind === 'template') { success({data: template}); }
-      }, {useCee: true, tracker: CeeDirtyTrackerService});
-      // The routed view has not linked its ng-if element during the first timer callback.
-      $timeout(angular.noop, 0);
+      $controller('CreateInstanceController', angular.extend({}, locals, {
+        $window: neverWindow,
+        UIMessageService: {showBackendError: jasmine.createSpy('showBackendError')}
+      }));
       $timeout.flush();
-      var metadata = {'@id': 'instance-1', notes: {'@value': 'saved'}};
-      var editor = withEditor(metadata);
-      receiveInstance({data: {
-        '@id': 'instance-1', 'schema:isBasedOn': 'template-1', 'schema:name': 'Saved instance'
-      }});
-      expect(CeeDirtyTrackerService.isDirty(editor.currentMetadata)).toBe(false);
-      page.uiUtil.setDirty.calls.reset();
-      metadata.notes['@value'] = 'changed';
-      editor.dispatchEvent(new CustomEvent('change'));
-      expect(page.uiUtil.setDirty).toHaveBeenCalledWith(true);
-      metadata.notes['@value'] = 'saved';
-      editor.dispatchEvent(new CustomEvent('change'));
-      expect(page.uiUtil.setDirty.calls.mostRecent().args).toEqual([false]);
-      page.scope.$destroy();
-      page.uiUtil.setDirty.calls.reset();
-      metadata.notes['@value'] = 'detached editor';
-      editor.dispatchEvent(new CustomEvent('change'));
-      expect(page.uiUtil.setDirty).not.toHaveBeenCalled();
-    }));
 
-    it('allows only one pending CEE create and advances to an update after completion', function () {
-      withEditor({'schema:name': 'Example'});
-      var complete;
-      var page = controllerFor({templateId: 'template-1'}, function (request, success) {
-        if (request.kind === 'template') { success({data: template}); }
-        else if (request.kind === 'save') { complete = success; }
-      }, {useCee: true});
-      $timeout.flush();
-      page.scope.saveInstance();
-      page.scope.saveInstance();
-      page.scope.saveInstance();
-      expect(page.instances.saveTemplateInstance.calls.count()).toBe(1);
-      complete({data: {'@id': 'instance-9', $$cedarEtag: '"1"'}, headers: function () { return null; }});
-      $timeout.flush();
-      page.scope.saveInstance();
-      expect(page.instances.updateTemplateInstance.calls.count()).toBe(1);
-      expect(page.instances.updateTemplateInstance).toHaveBeenCalledWith('instance-9',
+      expect(changeListener).toBeNull();
+      expect(neverWindow.location.assign).toHaveBeenCalled();
+    });
+
+    it('shows the initial invalid report, including the counter fallback when no problem paths are available', function () {
+      expect(vm.showValidationReport()).toBe(true);
+      expect(vm.missingRequiredFieldCount).toBe(1);
+      expect(vm.missingRequiredFieldMessage).toBe('1 required field is missing.');
+      expect(vm.validationProblems).toEqual([]);
+      expect(vm.saveButtonDisabled).toBe(false);
+    });
+
+    it('updates paths and messages from the report carried by a CEE change event', function () {
+      var problem = {
+        path: ['_author', '_email'],
+        field: '_email',
+        code: 'required',
+        message: 'A required value is missing.',
+        value: null
+      };
+
+      changeListener({detail: {dataQualityReport: {
+        requiredFieldValueCount: 1,
+        nonNullRequiredFieldValueCount: 0,
+        problems: [problem],
+        isValid: false
+      }}});
+      $rootScope.$digest();
+
+      expect(vm.validationProblems).toEqual([problem]);
+      expect(vm.problemPath(problem)).toBe('_author / _email');
+      expect(vm.saveButtonDisabled).toBe(false);
+    });
+
+    it('allows only one pending CEE create and uses its returned revision on the next save', function () {
+      deferSave = true;
+      vm.save();
+      vm.save();
+      vm.save();
+      expect(templateInstanceService.saveTemplateInstance.calls.count()).toBe(1);
+      expect(templateInstanceService.updateTemplateInstance).not.toHaveBeenCalled();
+      saveResponse({data: createdInstance});
+      vm.save();
+      expect(templateInstanceService.updateTemplateInstance.calls.count()).toBe(1);
+      expect(templateInstanceService.updateTemplateInstance).toHaveBeenCalledWith('instance-9',
           jasmine.objectContaining({$$cedarEtag: '"1"'}));
     });
 
-    it('keeps the embeddable editor on the page when the first save stores the metadata', function () {
-      var page = creatingWithEditor();
+    it('does not use validation errors to prohibit save', function () {
+      vm.save();
 
-      page.scope.saveInstance();
-
-      expect(page.window.location.assign).not.toHaveBeenCalled();
-      // The address a reload or a bookmark would use, so it lands on the saved metadata rather
-      // than on a create form for metadata that now exists.
-      expect(page.window.history.replaceState).toHaveBeenCalledWith(null, '', '/instances/edit/1');
-      // Nothing discards this document, so the confirmation belongs on it.
-      expect(page.messages.flashSuccess).toHaveBeenCalledWith(
-          'SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
-      expect(page.messages.flashAfterReload).not.toHaveBeenCalled();
+      expect(templateInstanceService.saveTemplateInstance).toHaveBeenCalled();
     });
 
-    // The rewrite is invisible to AngularJS, so the back stack has to be told: without this the
-    // create address stays on it and the back arrow offers a create form for metadata that exists.
-    it('tells the back stack the create address it replaced is gone', function () {
-      var page = creatingWithEditor();
-
-      page.scope.saveInstance();
-
-      expect(page.previousRoute.supersedeCurrent).toHaveBeenCalled();
+    it('ignores rapid update clicks and releases the save lock after a failed request', function () {
+      var fail;
+      var edit = editSetup(function (request, success, failure) { fail = failure; });
+      edit.vm.save(); edit.vm.save(); edit.vm.save();
+      expect(edit.service.updateTemplateInstance.calls.count()).toBe(1);
+      fail({status: 412});
+      expect(edit.vm.saveButtonDisabled).toBe(false);
+      edit.vm.save();
+      expect(edit.service.updateTemplateInstance.calls.count()).toBe(2);
     });
 
-    it('leaves the back stack alone when the browser refuses the rewrite', function () {
-      var page = creatingWithEditor();
-      page.window.history.replaceState.and.throwError('cross-origin');
+    it('preserves the loaded ETag when CEE returns a serialized copy for update', function () {
+      var edit = editSetup();
 
-      page.scope.saveInstance();
-      $timeout.flush();
+      edit.vm.save();
 
-      expect(page.previousRoute.supersedeCurrent).not.toHaveBeenCalled();
-      expect(page.window.location.assign).toHaveBeenCalledWith('/instances/edit/1');
-    });
-
-    it('updates what it created on the next save, under the identifier the server assigned', function () {
-      var page = creatingWithEditor();
-
-      page.scope.saveInstance();
-      $timeout.flush();
-      page.scope.saveInstance();
-
-      expect(document.querySelector('cedar-embeddable-editor').currentMetadata['@id']).toBeUndefined();
-      expect(page.instances.saveTemplateInstance.calls.count()).toBe(1);
-      expect(page.instances.updateTemplateInstance).toHaveBeenCalledWith(
-          'instance-9', jasmine.objectContaining({'@id': 'instance-9', $$cedarEtag: '"1"'}));
-    });
-
-    it('loads the edit address when the browser refuses to rewrite it', function () {
-      var page = creatingWithEditor();
-      page.window.history.replaceState.and.throwError('cross-origin');
-
-      page.scope.saveInstance();
-      $timeout.flush();
-
-      expect(page.window.location.assign).toHaveBeenCalledWith('/instances/edit/1');
-    });
-
-    it('confirms a classic-form save on the page its route change lands on', function () {
-      var page = creating();
-
-      page.scope.saveInstance();
-
-      // A route change keeps the document, and `<toasty>` is a sibling of the routed view, so a
-      // toast raised here survives it. Storing the confirmation instead left it waiting for a full
-      // page load this path never performs, and it appeared on whichever page loaded next.
-      expect(page.messages.flashSuccess).toHaveBeenCalledWith(
-          'SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
-      expect(page.messages.flashAfterReload).not.toHaveBeenCalled();
+      expect(edit.cee.currentMetadata.$$cedarEtag).toBeUndefined();
+      expect(edit.service.updateTemplateInstance).toHaveBeenCalledWith(
+          'instance-1', jasmine.objectContaining({$$cedarEtag: '"7"'}));
     });
 
     it('starts new metadata from the generated name and saves it under the typed one', function () {
-      var page = creating();
-      expect(page.vm.instanceName).toBe('Template metadata');
+      expect(vm.instanceName).toBe('Template metadata');
 
-      page.vm.instanceName = 'Asthma cohort, run 7';
-      page.scope.saveInstance();
+      vm.instanceName = 'Asthma cohort, run 7';
+      vm.save();
 
-      expect(page.instances.saveTemplateInstance).toHaveBeenCalledWith(
+      expect(templateInstanceService.saveTemplateInstance).toHaveBeenCalledWith(
           'folder', jasmine.objectContaining({'schema:name': 'Asthma cohort, run 7'}));
     });
 
     it('falls back to the generated name when the field is blank', function () {
-      var page = creating();
+      vm.instanceName = '   ';
+      vm.save();
 
-      page.vm.instanceName = '   ';
-      page.scope.saveInstance();
-
-      expect(page.instances.saveTemplateInstance).toHaveBeenCalledWith(
+      expect(templateInstanceService.saveTemplateInstance).toHaveBeenCalledWith(
           'folder', jasmine.objectContaining({'schema:name': 'Template metadata'}));
     });
 
-    it('counts a changed name as unsaved work, and an unchanged one as none', function () {
-      var page = creating();
-      page.uiUtil.setDirty.calls.reset();
+    it('counts a changed name as unsaved work, on its own and alongside a clean editor', function () {
+      uiUtilService.setDirty.calls.reset();
+      vm.instanceName = 'Template metadata';
+      vm.instanceNameChanged();
+      expect(uiUtilService.setDirty).not.toHaveBeenCalled();
 
-      page.vm.instanceName = 'Template metadata';
-      page.vm.instanceNameChanged();
-      expect(page.uiUtil.setDirty).not.toHaveBeenCalled();
+      vm.instanceName = 'Something else';
+      vm.instanceNameChanged();
+      expect(uiUtilService.setDirty).toHaveBeenCalledWith(true);
 
-      page.vm.instanceName = 'Something else';
-      page.vm.instanceNameChanged();
-      expect(page.uiUtil.setDirty).toHaveBeenCalledWith(true);
+      uiUtilService.setDirty.calls.reset();
+      ceeDirty = false;
+      changeListener({detail: {}});
+      expect(uiUtilService.setDirty).toHaveBeenCalledWith(true);
     });
 
     it('names the metadata in the bar above as the field is typed, not only once saved', function () {
-      var page = creating();
-
-      page.vm.instanceName = 'Asthma cohort, run 7';
-      page.vm.instanceNameChanged();
+      vm.instanceName = 'Asthma cohort, run 7';
+      vm.instanceNameChanged();
 
       expect($rootScope.documentTitle).toBe('Asthma cohort, run 7');
     });
 
     it('shows the name an empty field would save rather than an empty bar', function () {
-      var page = creating();
-
-      page.vm.instanceName = '   ';
-      page.vm.instanceNameChanged();
+      vm.instanceName = '   ';
+      vm.instanceNameChanged();
 
       expect($rootScope.documentTitle).toBe('Template metadata');
     });
 
+    it('stays on the page when the first save stores the metadata', function () {
+      vm.save();
+
+      expect($window.location.assign).not.toHaveBeenCalled();
+      // The address a reload or a bookmark would use, so the page it lands on is the saved
+      // metadata rather than a create form for metadata that now exists.
+      expect($window.history.replaceState).toHaveBeenCalledWith(null, '', '/instances/edit/instance-9');
+    });
+
+    // The rewrite is invisible to AngularJS, so the back stack has to be told: without this the
+    // create address stays on it and the back arrow offers a create form for metadata that exists.
+    it('tells the back stack the create address it replaced is gone', function () {
+      vm.save();
+
+      expect(previousRouteService.supersedeCurrent).toHaveBeenCalled();
+    });
+
+    it('leaves the back stack alone when the browser refuses the rewrite', function () {
+      $window.history.replaceState.and.throwError('refused');
+
+      vm.save();
+
+      expect(previousRouteService.supersedeCurrent).not.toHaveBeenCalled();
+      expect($window.location.assign).toHaveBeenCalled();
+    });
+
+    it('updates what it created on the next save, under the identifier the server assigned', function () {
+      vm.save();
+      vm.save();
+
+      // The editor is never handed the stored artifact, so its copy still carries no identifier.
+      expect(cee.currentMetadata['@id']).toBeUndefined();
+      expect(templateInstanceService.saveTemplateInstance.calls.count()).toBe(1);
+      expect(templateInstanceService.updateTemplateInstance).toHaveBeenCalledWith(
+          'instance-9', jasmine.objectContaining({'@id': 'instance-9', $$cedarEtag: '"1"'}));
+    });
+
+    it('loads the edit address when the browser refuses to rewrite it', function () {
+      $window.history.replaceState.and.throwError('cross-origin');
+
+      vm.save();
+
+      expect($window.location.assign).toHaveBeenCalledWith('/instances/edit/instance-9');
+    });
+
     it('loads the saved name for editing and updates under the edited one', function () {
-      var page = editing();
-      expect(page.vm.instanceName).toBe('Saved instance');
+      var edit = editSetup();
+      expect(edit.vm.instanceName).toBe('Saved instance');
 
-      page.vm.instanceName = 'Renamed instance';
-      page.scope.saveInstance();
+      edit.vm.instanceName = 'Renamed instance';
+      edit.vm.save();
 
-      expect(page.instances.updateTemplateInstance).toHaveBeenCalledWith(
+      expect(edit.service.updateTemplateInstance).toHaveBeenCalledWith(
           'instance-1', jasmine.objectContaining({'schema:name': 'Renamed instance'}));
       expect($rootScope.documentTitle).toBe('Renamed instance');
     });

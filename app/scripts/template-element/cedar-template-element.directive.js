@@ -6,10 +6,10 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
-  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'schemaService','DataUtilService',
-                                           'SpreadsheetService', 'UIUtilService'];
+  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'schemaService',
+                                           'UIUtilService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, schemaService,DataUtilService, SpreadsheetService,
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, schemaService,
                                          UIUtilService) {
 
     var directive = {
@@ -147,7 +147,7 @@ define([
 
         var result =
             !scope.isRoot() &&
-            !UIUtilService.isRuntime() &&
+
             !scope.isNested() &&
             UIUtilService.isEditState(scope.element);
 
@@ -155,80 +155,6 @@ define([
       };
 
       scope.elementId = dms.getUiId(scope.element);
-
-      var resetElement = function (el, settings) {
-        angular.forEach(el, function (model, key) {
-          if (settings[key] && settings[key].minItems && angular.isArray(model)) {
-            model.splice(settings[key].minItems, model.length);
-          }
-          if (!DataUtilService.isSpecialKey(key)) {
-            if (key == '@value') {
-              if (angular.isArray(model)) {
-                if (dms.schemaOf(settings)._ui.inputType == "list") {
-                  model.splice(0, model.length);
-                } else {
-                  for (var i = 0; i < model.length; i++) {
-                    if (typeof(model[i]['@value']) == "string") {
-                      model[i]['@value'] = "";
-                    } else if (angular.isArray(model[i]['@value'])) {
-                      model[i]['@value'] = [];
-                    } else if (angular.isObject(model[i]['@value'])) {
-                      model[i]['@value'] = {};
-                    }
-                  }
-                }
-              } else if (typeof(model) == "string") {
-                el[key] = "";
-              } else if (angular.isArray(model)) {
-                el[key] = [];
-              } else if (angular.isObject(model)) {
-                el[key] = {};
-              }
-            } else {
-              if (settings[key]) {
-                resetElement(model, settings[key]);
-              } else {
-                // This case el is an array
-                angular.forEach(model, function (v, k) {
-                  if (k == '@value') {
-                    if (angular.isArray(v)) {
-                      if (dms.schemaOf(settings)._ui.inputType == "list") {
-                        v.splice(0, v.length);
-                      } else {
-                        for (var i = 0; i < v.length; i++) {
-
-                          if (typeof(v[i]['@value']) == "string") {
-                            v[i]['@value'] = "";
-                          } else if (angular.isArray(v[i]['@value'])) {
-                            v[i]['@value'] = [];
-                          } else if (angular.isObject(v[i]['@value'])) {
-                            v[i]['@value'] = {};
-                          }
-
-                        }
-                      }
-                    } else if (typeof(v) == "string") {
-                      model[k] = "";
-                    } else if (angular.isArray(v)) {
-                      model[k] = [];
-                    } else if (angular.isObject(v)) {
-                      model[k] = {};
-                    }
-                  }
-                  else if (k == 'rdfs:label') {
-                    delete model[k];
-                  }
-                  else if (k !== '@type') {
-                    if (settings[k]) {
-                      resetElement(v, settings[k]);
-                    }
-                  }
-                });
-              }
-            }
-          }
-        });
-      };
 
       scope.getPropertyLabel = function () {
         return dms.getPropertyLabels(scope.parentElement)[scope.key];
@@ -253,7 +179,7 @@ define([
       };
 
       var parseElement = function () {
-        if (!UIUtilService.isRuntime() && scope.element) {
+        if (scope.element) {
           if (angular.isArray(scope.model)) {
             angular.forEach(scope.model, function (m) {
               dms.findChildren(dms.propertiesOf(scope.element), m);
@@ -264,18 +190,18 @@ define([
         }
       };
 
-      if (!UIUtilService.isRuntime()) {
-        if (!scope.model) {
-          if (scope.element.items) {
-            scope.model = [];
-          } else {
-            scope.model = {};
-          }
+      if (!scope.model) {
+        if (scope.element.items) {
+          scope.model = [];
+        } else {
+          scope.model = {};
         }
-
-        parseElement();
-        setLabels();
       }
+
+      parseElement();
+      setLabels();
+
+
 
       if (!scope.state) {
         if (scope.element && schemaService.schemaOf(scope.element)._ui && schemaService.getTitle(scope.element)) {
@@ -295,48 +221,6 @@ define([
         return (UIUtilService.isEditState(scope.element));
       };
 
-
-      // add a multiple cardinality element
-      scope.selectedTab = 0;
-      scope.addElement = function () {
-        if (UIUtilService.isRuntime()) {
-          if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
-            var seed = {};
-
-            if (scope.model.length > 0) {
-              seed = angular.copy(scope.model[0]);
-              resetElement(seed, scope.element);
-              scope.model.push(seed);
-            } else {
-
-              scope.model.push(seed);
-              if (angular.isArray(scope.model)) {
-                angular.forEach(scope.model, function (m) {
-                  dms.findChildren(dms.propertiesOf(scope.element), m);
-                });
-              } else {
-                dms.findChildren(dms.propertiesOf(scope.element), scope.model);
-              }
-              resetElement(seed, scope.element);
-            }
-            scope.selectedTab = scope.model.length - 1;
-          }
-        }
-      };
-
-      // remove a multiple cardinality element
-      scope.removeElement = function (index) {
-        if (scope.model.length > scope.element.minItems) {
-          scope.model.splice(index, 1);
-          if (index + 1 > scope.model.length) {
-            scope.selectedTab = scope.model.length - 1;
-          }
-        }
-      };
-
-      scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, element);
-      };
 
       scope.isExpanded = function () {
         return dms.isExpanded(scope.element);

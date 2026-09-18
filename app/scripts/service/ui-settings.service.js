@@ -145,9 +145,6 @@ define([
       service.saveUIPreference('resourceVersionFilter.version', prefValue);
     };
 
-    service.saveUseMetadataEditorV2= function(prefValue) {
-      service.saveUIPreference('useMetadataEditorV2', prefValue);
-    };
 
     service.savePreferredDateFormat = function(prefValue) {
       service.saveUIPreference('preferredDateFormat', prefValue);

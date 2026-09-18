@@ -141,6 +141,26 @@ define([
           });
     };
 
+    service.confirmEditingWithInstances = function (count, isElement, onCancel) {
+      swal({
+        title: $translate.instant(isElement ? 'TEMPLATEEDITOR.elementInstancesTitle' :
+            'TEMPLATEEDITOR.templateInstancesTitle', {count: count}),
+        text: $translate.instant('TEMPLATEEDITOR.instanceEditingMessage'),
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: $translate.instant('TEMPLATEEDITOR.continueEditing'),
+        cancelButtonText: $translate.instant('GENERIC.Cancel'),
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        closeOnConfirm: true,
+        closeOnCancel: true,
+        customClass: 'cedarSWAL',
+        confirmButtonColor: null
+      }, function (confirmed) {
+        if (!confirmed) { onCancel(); }
+      });
+    };
+
     service.acknowledgedExecution = function (callback, titleKey, textKey, confirmTextKey) {
       swal({
             title             : $translate.instant(titleKey),

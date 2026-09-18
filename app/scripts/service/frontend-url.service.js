@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.frontendUrlService', [])
       .service('FrontendUrlService', FrontendUrlService);
 
-  FrontendUrlService.$inject = [];
+  FrontendUrlService.$inject = ['$window'];
 
-  function FrontendUrlService() {
+  function FrontendUrlService($window) {
 
     let openViewBase = null;
     let dataciteDOIBase = null
@@ -28,6 +28,35 @@ define([
       }).join('&');
       return query ? url + '?' + query : url;
     }
+
+    service.decodeRouteIdentifier = function (value) {
+      if (value === null || value === undefined) {
+        return value;
+      }
+      var decoded = value;
+      try {
+        decoded = decodeURIComponent(value);
+      } catch (error) {
+        // Let the backend reject a malformed identifier instead of crashing the route shell.
+      }
+      // AngularJS may decode an encoded slash in a path parameter before exposing it,
+      // leaving an otherwise valid URL with one slash after the scheme.
+      return decoded.replace(/^(https?):\/([^/])/, '$1://$2');
+    };
+
+    service.getWorkspaceReturn = function (returnTo, folderId) {
+      if (returnTo) {
+        try {
+          var candidate = new $window.URL(returnTo, $window.location.href);
+          if (candidate.origin === $window.location.origin && !candidate.username && !candidate.password) {
+            return candidate.href;
+          }
+        } catch (error) {
+          // Invalid return addresses fall back to the local workspace.
+        }
+      }
+      return withQuery('/dashboard', {folderId: folderId});
+    };
 
     service.init = function () {
       openViewBase = config.openViewBase;

@@ -1,55 +1,19 @@
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header" id="updateTemplateWithInstancesModalHeader">
-      <button type="button" class="close" ng-click="dc.updateTemplateWithInstancesModalVisible=false" aria-label="Close"><span
-          aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" >
-        <span translate>DELTAFINDER.ChangedTemplate.title</span>
-        </h4>
+      <button type="button" class="close" ng-click="publish.doCancel()" ng-disabled="publish.saving" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title"><span translate>DELTAFINDER.ChangedTemplate.title</span></h4>
     </div>
     <div class="modal-body">
-      <div style="padding:0 0 20px 0">
-        <div ng-bind-html="'DELTAFINDER.ChangedTemplate.templateInfo' | translate: { templateName: publish.templateName, currentVersion: publish.currentVersion }"></div>
-      </div>
-
-      <div style="padding:0 0 20px 0" ng-bind-html="'DELTAFINDER.ChangedTemplate.text1' | translate: { numInstances: publish.numberOfInstances, nextVersion: publish.nextVersion }"></div>
-
-      <div style="padding:0 0 20px 0">
-        <span translate>DELTAFINDER.ChangedTemplate.text2</span>
-      </div>
-
-      <div style="padding:0 0 20px 0">
-        <div style="margin-bottom: 10px;">
-          <label>
-            <input type="radio" ng-model="publish.selectedOption" value="clone" style="margin-right: 8px;">
-            <span translate>DELTAFINDER.ChangedTemplate.option1</span>
-          </label>
-        </div>
-
-        <div style="margin-bottom: 10px; margin-left: 24px;" ng-show="publish.selectedOption === 'clone'">
-          <span style="display: block; margin-bottom: 5px;" translate>DELTAFINDER.ChangedTemplate.instancesNewFolderName</span>
-          <input name="newFolderName" id="version-new-folder-name" ng-model="publish.newFolderName" style="width: 300px">
-        </div>
-
-        <div style="margin-bottom: 10px;">
-          <label>
-            <input type="radio" ng-model="publish.selectedOption" value="noClone" style="margin-right: 8px;">
-            <span translate>DELTAFINDER.ChangedTemplate.option2</span>
-          </label>
-        </div>
-
-        <div style="margin-bottom: 10px;">
-          <label>
-            <input type="radio" ng-model="publish.selectedOption" value="revert" style="margin-right: 8px;">
-            <span translate>DELTAFINDER.ChangedTemplate.option3</span>
-          </label>
-        </div>
-      </div>
+      <p ng-bind-html="'DELTAFINDER.ChangedTemplate.templateInfo' | translate: { templateName: publish.templateName, currentVersion: publish.currentVersion }"></p>
+      <p ng-bind-html="'DELTAFINDER.ChangedTemplate.text1' | translate: { numInstances: publish.numberOfInstances }"></p>
+      <p translate>DELTAFINDER.ChangedTemplate.text2</p>
     </div>
     <div class="modal-footer actions">
-      <div class="clear-save">
-        <button type="button" class="btn btn-save confirm" translate ng-click="publish.doAccept()">DELTAFINDER.ChangedTemplate.acceptButton</button>
-        <button type="button" class="btn btn-clear" translate ng-click="publish.doCancel()">GENERIC.Cancel</button>
+      <div class="version-actions">
+        <button type="button" class="btn version-secondary" translate ng-disabled="publish.saving" ng-click="publish.doDiscard()">DELTAFINDER.ChangedTemplate.discardButton</button>
+        <button type="button" class="btn version-create" translate ng-disabled="publish.saving" ng-click="publish.doAccept()">DELTAFINDER.ChangedTemplate.acceptButton</button>
+        <button type="button" class="btn version-secondary" translate ng-disabled="publish.saving" ng-click="publish.doCancel()">DELTAFINDER.ChangedTemplate.cancelButton</button>
       </div>
     </div>
   </div>

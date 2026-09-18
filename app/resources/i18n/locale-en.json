@@ -634,7 +634,12 @@
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     },
-    "hasMetadataWarning": "The template has metadata and should not be modified.",
+    "templateInstancesTitle": "This template has {{count}} instance(s)",
+    "elementInstancesTitle": "This element is used by templates with {{count}} instance(s)",
+    "editImpactDisplay": "Display changes only — existing instances are unaffected.",
+    "editImpactVersion": "New version required on save — existing instances will remain on the original template.",
+    "instanceEditingMessage": "You can change display labels, descriptions, help text, and child field or element order. Other changes will require creation of a new template version on save. If a new template version is required, existing instances will remain attached to the original template.",
+    "continueEditing": "Continue editing",
     "lock": {
       "published": "This resource is published and cannot be modified. To change it, create a draft of a new version.",
       "noEditPermission": "You do not have permission to edit this resource.",
@@ -862,20 +867,14 @@
         "success": "The template <b>{{title}}</b> version <b>{{version}}</b>  has been created."
       }
     },
-    "ChangedTemplate":{
-      "title": "Template changes detected!",
+    "ChangedTemplate": {
+      "title": "New template version required",
       "templateInfo": "Template: <strong>{{templateName}}</strong> (version {{currentVersion}} draft)",
-      "text1" : "The template <strong>has {{numInstances}} instance(s)</strong>. If you save the template, the old version will be published, and the new version {{nextVersion}} will be saved as draft.",
-      "text2" : "You have the following options:",
-      "option1": "New version with clones - Produce a new version of this template, clone the old instances, link the clones to the new template.",
-      "option2": "New version no instances - Produce a new version of this template, leaving the current instances linked to the original template.",
-      "option3": "Revert - reload the original template, discarding any changes",
-      "newVersionWithCones": "New version with clones",
-      "newVersionNoCones": "New version no instances",
-      "revert": "Revert",
-      "instancesNewFolderName": "Folder name for cloned instances:",
-      "acceptButton": "Accept",
-      "cloneNotification": "The instances will be cloned into the specified folder."
+      "text1": "The changes you have made to this template require a new template version since existing instances will not be compatible with it. The {{numInstances}} existing instance(s) will remain attached to the original template and will not be changed.",
+      "text2": "Creating a new version will publish the original template and save your changes as a new template.",
+      "acceptButton": "Create new version",
+      "cancelButton": "Continue editing",
+      "discardButton": "Discard changes"
     },
     "DraftCreated": {
       "workspace": {

@@ -862,6 +862,44 @@ define([
       }
     };
 
+    // Conservative authoring feedback, not a replacement for the server's save check.
+    // Only artifact presentation metadata is ignored; identically named keys inside
+    // constraints, JSON-LD contexts, or user properties remain significant.
+    service.getEditImpact = function (original, current) {
+      function normalize(value, presentation, artifact, location) {
+        if (Array.isArray(value)) {
+          var values = value.map(function (item) { return normalize(item, presentation, false); });
+          return presentation && location === 'order' ? values.sort() : values;
+        }
+        if (!value || typeof value !== 'object') return value;
+        var result = {};
+        Object.keys(value).sort().forEach(function (key) {
+          if (key === '$$hashKey' || ((artifact || location === 'property') && key === '_tmp')) return;
+          if (presentation && artifact && ['title', 'description', 'schema:description', 'skos:prefLabel', 'skos:altLabel'].indexOf(key) !== -1) return;
+          if (presentation && location === 'ui' && ['propertyLabels', 'propertyDescriptions', 'description', 'helpText'].indexOf(key) !== -1) return;
+          if (artifact && key === 'properties') {
+            var properties = {};
+            Object.keys(value[key]).sort().forEach(function (name) {
+              var child = value[key][name];
+              properties[name] = normalize(child, presentation, !!(child && child._ui), 'property');
+            });
+            result[key] = properties;
+          } else if (key === 'items' && location === 'property') {
+            result[key] = normalize(value[key], presentation, !!value[key]._ui);
+          } else {
+            result[key] = normalize(value[key], presentation, false,
+                artifact && key === '_ui' ? 'ui' : location === 'ui' && key === 'order' ? 'order' : undefined);
+          }
+        });
+        return result;
+      }
+      function signature(value, presentation) {
+        return JSON.stringify(normalize(value, presentation, true));
+      }
+      if (signature(original, false) === signature(current, false)) return 'unchanged';
+      return signature(original, true) === signature(current, true) ? 'display' : 'version';
+    };
+
     return service;
   }
 

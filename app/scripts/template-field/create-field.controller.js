@@ -15,7 +15,7 @@ define([
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
                                    "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService",
-                                   "CedarModelTypescriptLibrary"];
+                                   "CedarModelTypescriptLibrary", "PreviousRouteService"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -24,7 +24,7 @@ define([
                                  DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
                                  CONST,CedarUser, InclusionService,
-                                 CedarModelTypescriptLibrary) {
+                                 CedarModelTypescriptLibrary, PreviousRouteService) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -294,6 +294,8 @@ define([
         var newId = response.data['@id'];
         dms.createDomIds(response.data);
         // Replace, don't stack: the create route is dead once saved and renders identically to this one.
+        // Also replace the address remembered by CEDAR's own Back control.
+        PreviousRouteService.supersedeCurrent();
         $location.path(FrontendUrlService.getFieldEdit(newId)).replace();
         $scope.setClean();
       };

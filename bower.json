@@ -21,7 +21,6 @@
     "jquery": "1.9.1",
     "moment": "2.10.6",
     "ng-ckeditor": "0.2.1",
-    "ngHandsontable": "0.7.0",
     "ng-tags-input": "3.2.0",
     "perfnow-polyfill": "*",
     "requirejs": "2.1.22",
