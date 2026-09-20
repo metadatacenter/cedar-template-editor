@@ -277,6 +277,18 @@ define([
       expect(vm.saveButtonDisabled).toBe(false);
     });
 
+    it('blocks invalid supplied values but allows incomplete metadata to save', function () {
+      cee.dataQualityReport.problems = [{code: 'email', path: ['Email'], message: 'Invalid email.'}];
+      vm.save();
+      expect(vm.validationErrors.length).toBe(1);
+      expect(vm.validationWarnings.length).toBe(1);
+      expect(templateInstanceService.saveTemplateInstance).not.toHaveBeenCalled();
+      cee.dataQualityReport.problems = [{code: 'required', path: ['Title'], message: 'Required.'}];
+      vm.save();
+      expect(vm.validationErrors.length).toBe(0);
+      expect(templateInstanceService.saveTemplateInstance).toHaveBeenCalled();
+    });
+
     it('allows only one pending CEE create and uses its returned revision on the next save', function () {
       deferSave = true;
       vm.save();
