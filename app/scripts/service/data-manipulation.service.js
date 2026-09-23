@@ -1216,6 +1216,19 @@ define([
           }
           //field._ui.inputType = inputType;
 
+          // A temporal field carries the precision it is read at. Only the field's own settings
+          // panel used to write it, so a date added and saved without opening that panel was
+          // stored as {"inputType": "temporal"} and nothing else — an artifact the meta-schema
+          // accepts, because it asks every literal field for an inputType and nothing more, and
+          // that cedar-artifact-library then cannot read at all: "No text value present for field
+          // temporalGranularity". Fourteen such fields reached production between 2018 and 2026.
+          // The default is the one setDateTimeTypeFromUI picks for a plain date, which is also
+          // what all but three temporal fields in production carry.
+          if (inputType === 'temporal') {
+            field._ui.temporalGranularity = 'day';
+            field._valueConstraints.temporalType = 'xsd:date';
+          }
+
           // Constrain the @type of @value according to the field type
           let valueAtType = null;
           if (inputType === 'date' || inputType === 'numeric') {

@@ -21,7 +21,11 @@
         <span ng-if="inclusion.artifactType === 'element'" translate>INCLUSION.instructions-element</span>
       </div>
 
-      <artifact-selector ng-on="selectedChange($event) = inclusion.changed($event)" ></artifact-selector>
+      <cedar-artifact-selector
+          tree="inclusion.tree"
+          details="inclusion.artifactDetails"
+          on-selection-change="inclusion.handleTreeSelectionChange(tree)"
+          on-artifact-select="inclusion.handleNodeSelectionChange(artifact)"></cedar-artifact-selector>
 
     </div>
     <div class="modal-footer actions inclusion-footer-container">

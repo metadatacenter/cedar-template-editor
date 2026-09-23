@@ -22,3 +22,5 @@ tests/env.js
 tests/config/test-env.js
 
 app/third_party_components/cedar-embeddable-editor/
+
+app/third_party_components/cedar-design-tokens/

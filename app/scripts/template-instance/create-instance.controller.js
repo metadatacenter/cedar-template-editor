@@ -89,6 +89,21 @@ define([
       vm.missingRequiredFieldCount = Math.max(0, requiredCount - completedRequiredCount);
       vm.missingRequiredFieldMessage = vm.missingRequiredFieldCount === 1 ?
           '1 required field is missing.' : vm.missingRequiredFieldCount + ' required fields are missing.';
+      vm.validationWarnings = vm.validationProblems.filter(function (problem) {
+        return ['required', 'missingProperty', 'minItems'].indexOf(problem.code) !== -1;
+      });
+      vm.validationErrors = vm.validationProblems.filter(function (problem) {
+        return ['required', 'missingProperty', 'minItems'].indexOf(problem.code) === -1;
+      });
+      if (vm.missingRequiredFieldCount > 0 && !vm.validationProblems.some(function (problem) {
+        return problem.code === 'required';
+      })) {
+        vm.validationWarnings.push({message: vm.missingRequiredFieldMessage});
+      }
+      if (vm.validationReport && vm.validationReport.isValid === false &&
+          !vm.validationWarnings.length && !vm.validationErrors.length) {
+        vm.validationErrors.push({message: 'Review invalid metadata before saving.'});
+      }
     }
 
     vm.showValidationReport = function () {
@@ -338,6 +353,10 @@ define([
 
     vm.save = function () {
       if (vm.saveButtonDisabled || !vm.canEdit || !cee || !cee.currentMetadata) {
+        return;
+      }
+      updateValidationReport(cee.dataQualityReport);
+      if (vm.validationErrors.length) {
         return;
       }
       vm.saveButtonDisabled = true;

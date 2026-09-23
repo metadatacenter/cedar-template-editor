@@ -857,7 +857,18 @@
     "bubbling-success" : "Selected artifacts updates successfully",
     "field-updated" : "Origin : Field",
     "element-updated" : "Origin : Element",
-    "event" : "updated"
+    "event" : "updated",
+    "elements": "Elements",
+    "templates": "Templates",
+    "published": "published",
+    "published-hint": "Published version: its content is fixed. Create a new version to carry this change into it.",
+    "location": "LOCATION",
+    "owner": "OWNER",
+    "created": "CREATED",
+    "modified": "MODIFIED",
+    "instances": "INSTANCES",
+    "inspect": "Inspect",
+    "no-artifacts": "No other artifact reuses this one."
   },
   "DELTAFINDER": {
     "DestructiveDetected":{

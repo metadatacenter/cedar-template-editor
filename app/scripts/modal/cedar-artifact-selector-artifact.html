@@ -1,0 +1,36 @@
+<!--
+  One artifact that reuses the edited one. A published artifact offers no tick: the update command
+  refuses such a target and fails the whole request, so the globe says why instead.
+-->
+<div class="tree-row tree-artifact" ng-style="{'padding-left': node.depth * 24 + 'px'}">
+
+  <button type="button" class="tree-toggle" ng-if="node.groups.length"
+          ng-click="selector.toggleNode(node)" aria-label="{{node.name}}">
+    <i class="fa" ng-class="node.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+  </button>
+  <span class="tree-toggle tree-toggle-spacer" ng-if="!node.groups.length"></span>
+
+  <input type="checkbox" class="tree-tick"
+         ng-checked="selector.isTicked(node)"
+         ng-disabled="node.published"
+         ng-click="selector.tick(node)"
+         title="{{node.published ? ('INCLUSION.published-hint' | translate) : node.name}}"/>
+
+  <span class="artifact-name"
+        ng-class="selector.selectedId === node.id ? 'selected-artifact' : 'not-selected-artifact'"
+        ng-click="selector.selectArtifact(node)">
+    {{node.name}}
+    <i class="fa fa-info-circle"></i>
+  </span>
+
+  <span class="published-artifact" ng-if="node.published"
+        title="{{'INCLUSION.published-hint' | translate}}">
+    <i class="fa fa-globe"></i> <span translate>INCLUSION.published</span>
+  </span>
+
+</div>
+
+<div ng-if="node.expanded">
+  <div ng-repeat="group in node.groups"
+       ng-include="'scripts/modal/cedar-artifact-selector-group.html'"></div>
+</div>
