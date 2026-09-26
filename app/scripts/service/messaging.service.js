@@ -57,17 +57,38 @@ define([
       );
     };
 
+    // The messaging server answers GET /messages one page at a time. The page shows every message, so
+    // the pages are gathered into one listing before the callback sees it. The next offset is computed
+    // from the page rather than read from its paging links, whose host is the server's own view of the
+    // request and not necessarily the one the browser reached.
+    var MESSAGE_PAGE_SIZE = 500;
+
     service.loadMessages = function (callback) {
-      var url = UrlService.messagingMessages();
-      AuthorizedBackendService.doCall(
-          HttpBuilderService.get(url),
-          function (response) {
-            callback(response.data);
-          },
-          function (error) {
-            UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
-          }
-      );
+      var listing = null;
+      var loadPage = function (offset) {
+        var url = UrlService.messagingMessages() + '?limit=' + MESSAGE_PAGE_SIZE + '&offset=' + offset;
+        AuthorizedBackendService.doCall(
+            HttpBuilderService.get(url),
+            function (response) {
+              var page = response.data;
+              if (listing === null) {
+                listing = page;
+              } else {
+                listing.messages = listing.messages.concat(page.messages);
+              }
+              var nextOffset = page.currentOffset + page.messages.length;
+              if (page.messages.length > 0 && nextOffset < page.totalCount) {
+                loadPage(nextOffset);
+              } else {
+                callback(listing);
+              }
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
+            }
+        );
+      };
+      loadPage(0);
     };
 
     service.markAllMessagesAsRead = function() {
@@ -83,6 +104,8 @@ define([
       );
     };
 
+    // One page per heartbeat is enough: every message shown here is marked notified, so the next
+    // heartbeat's page holds whatever this one did not reach.
     service.readAndNotify = function (callback) {
       var url = UrlService.messagingNotNotifiedMessages();
       AuthorizedBackendService.doCall(
