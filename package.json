@@ -52,6 +52,6 @@
   },
   "dependencies": {
     "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20260926.182ba1fd",
-    "cedar-embeddable-editor": "2.0.17"
+    "cedar-embeddable-editor": "2.0.18"
   }
 }
