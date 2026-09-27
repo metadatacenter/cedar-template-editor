@@ -18,6 +18,7 @@ define([
     var previousRouteService;
     var createdInstance;
     var $window;
+    var browser;
     var vm;
     var locals;
     var saveResponse;
@@ -67,12 +68,19 @@ define([
         $$cedarEtag: '"1"'
       };
       $window = {
-        document: {querySelector: function () { return cee; }},
+        document: {querySelectorAll: function () { return [cee]; }},
         history: {replaceState: jasmine.createSpy('replaceState')},
-        location: {assign: jasmine.createSpy('assign')}
+        location: {
+          assign: jasmine.createSpy('assign'),
+          href: 'https://cedar.example/instances/create/template-1',
+          origin: 'https://cedar.example'
+        }
       };
+      // The controller rewrites the address through $browser, which records the URL as it writes it.
+      browser = {url: jasmine.createSpy('url')};
 
       locals = {
+        $browser: browser,
         $rootScope: $rootScope,
         $scope: $rootScope.$new(),
         $routeParams: {templateId: 'template-1'},
@@ -162,7 +170,7 @@ define([
         $timeout: $timeout,
         $translate: {instant: function () { return ''; }},
         $window: {
-          document: {querySelector: function () { return editCee; }},
+          document: {querySelectorAll: function () { return [editCee]; }},
           location: {assign: jasmine.createSpy('assign')}
         },
         AuthorizedBackendService: {
@@ -213,7 +221,7 @@ define([
     it('waits for an editor the routed view links a few digests late', function () {
       var misses = 3;
       var lateWindow = angular.extend({}, $window, {
-        document: {querySelector: function () { return misses-- > 0 ? null : cee; }}
+        document: {querySelectorAll: function () { return misses-- > 0 ? [] : [cee]; }}
       });
       changeListener = null;
 
@@ -232,7 +240,7 @@ define([
 
     it('gives up on an editor that never arrives, rather than waiting forever', function () {
       var neverWindow = angular.extend({}, $window, {
-        document: {querySelector: function () { return null; }},
+        document: {querySelectorAll: function () { return []; }},
         location: {assign: jasmine.createSpy('assign')}
       });
       changeListener = null;
@@ -384,7 +392,7 @@ define([
       expect($window.location.assign).not.toHaveBeenCalled();
       // The address a reload or a bookmark would use, so the page it lands on is the saved
       // metadata rather than a create form for metadata that now exists.
-      expect($window.history.replaceState).toHaveBeenCalledWith(null, '', '/instances/edit/instance-9');
+      expect(browser.url).toHaveBeenCalledWith('https://cedar.example/instances/edit/instance-9', true);
     });
 
     // The rewrite is invisible to AngularJS, so the back stack has to be told: without this the
@@ -395,8 +403,8 @@ define([
       expect(previousRouteService.supersedeCurrent).toHaveBeenCalled();
     });
 
-    it('leaves the back stack alone when the browser refuses the rewrite', function () {
-      $window.history.replaceState.and.throwError('refused');
+    it('leaves the back stack alone when the browser cannot rewrite the address', function () {
+      delete $window.history.replaceState;
 
       vm.save();
 
@@ -415,8 +423,8 @@ define([
           'instance-9', jasmine.objectContaining({'@id': 'instance-9', $$cedarEtag: '"1"'}));
     });
 
-    it('loads the edit address when the browser refuses to rewrite it', function () {
-      $window.history.replaceState.and.throwError('cross-origin');
+    it('loads the edit address when the browser cannot rewrite it', function () {
+      delete $window.history.replaceState;
 
       vm.save();
 

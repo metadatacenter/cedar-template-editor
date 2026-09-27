@@ -7,13 +7,13 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = [
-    '$rootScope', '$scope', '$routeParams', '$timeout', '$translate', '$window',
+    '$browser', '$rootScope', '$scope', '$routeParams', '$timeout', '$translate', '$window',
     'AuthorizedBackendService', 'CedarUser', 'CeeConfigService', 'CeeDirtyTrackerService',
     'CONST', 'FrontendUrlService', 'HeaderService', 'PreviousRouteService', 'QueryParamUtilsService',
     'resourceService', 'TemplateInstanceService', 'TemplateService', 'UIMessageService', 'UIUtilService'
   ];
 
-  function CreateInstanceController($rootScope, $scope, $routeParams, $timeout, $translate, $window,
+  function CreateInstanceController($browser, $rootScope, $scope, $routeParams, $timeout, $translate, $window,
                                     AuthorizedBackendService, CedarUser, CeeConfigService,
                                     CeeDirtyTrackerService, CONST, FrontendUrlService, HeaderService,
                                     PreviousRouteService, QueryParamUtilsService, resourceService,
@@ -256,27 +256,39 @@ define([
     /**
      * Point the address bar at the saved metadata, without loading the page again.
      *
-     * `history.replaceState` rather than `$location`: create and edit are two route definitions,
-     * and ngRoute rebuilds the controller whenever a URL resolves to a different one. That is what
-     * discarded the editor, and the reason a first save used to cost a full page load. AngularJS
-     * does not see this write, since its location watcher runs only for changes `$location` itself
-     * made, so `$location` keeps the create URL it parsed. Nothing on this page writes `$location`,
-     * and the two parameters it is read for, `folderId` and `returnTo`, are the same on both
-     * addresses.
+     * Not through `$location`: create and edit are two route definitions, and ngRoute rebuilds the
+     * view and its controller whenever the URL resolves to a different one. That discarded the
+     * editor, and was the reason a first save used to cost a full page load.
+     *
+     * Not through `history.replaceState` either. Every digest compares the browser's URL with the
+     * one AngularJS last recorded (`$browser.$$checkUrlChange`), so a rewrite AngularJS did not make
+     * reaches ngRoute on the next digest and rebuilds the view all the same. The rebuilt view's
+     * controller then looked for the editor while the outgoing view was still leaving, found the
+     * outgoing one, and configured it a second time, which the editor ignores. The incoming editor
+     * was never configured and stayed empty. `$browser.url` rewrites the address and the recorded
+     * URL together, so the digest finds nothing to report. `$location` keeps the create URL it
+     * parsed; nothing on this page writes `$location`, and the two parameters it is read for,
+     * `folderId` and `returnTo`, are the same on both addresses.
      *
      * Replacing rather than pushing, so Back returns where the user came from rather than to a
      * create form for metadata that now exists.
      *
-     * False when the browser refuses the rewrite, which an edit address on another origin would be.
-     * The caller then loads that address, which is what this save did before.
+     * False for an edit address on another origin, which the browser would refuse to show without
+     * loading it; `$browser.url` records the URL before rewriting, so it is not asked to try. The
+     * caller then loads that address, which is what this save did before.
      */
     function showEditAddress(editUrl) {
+      var target;
       try {
-        $window.history.replaceState(null, '', editUrl);
-        return true;
+        target = new URL(editUrl, $window.location.href);
       } catch (e) {
         return false;
       }
+      if (target.origin !== $window.location.origin || !$window.history || !$window.history.replaceState) {
+        return false;
+      }
+      $browser.url(target.href, true);
+      return true;
     }
 
     /**
@@ -382,9 +394,22 @@ define([
     HeaderService.configure(CONST.pageId.RUNTIME);
     CeeDirtyTrackerService.reset();
 
+    /**
+     * The editor in this controller's view.
+     *
+     * During a route change the outgoing view stays on the page while it leaves, and ngView inserts
+     * the incoming view after it. The first editor on the page can therefore belong to the view
+     * being removed, and configuring that one leaves this view's editor empty. The last is always
+     * this view's.
+     */
+    function viewEditor() {
+      var editors = $window.document.querySelectorAll('cedar-embeddable-editor');
+      return editors.length ? editors[editors.length - 1] : null;
+    }
+
     function startWhenEditorPresent() {
       if (destroyed) { return; }
-      cee = $window.document.querySelector('cedar-embeddable-editor');
+      cee = viewEditor();
       if (!cee) {
         // A page whose editor is one digest late is still a working page. Only a wait that runs
         // out means the editor is genuinely absent.
