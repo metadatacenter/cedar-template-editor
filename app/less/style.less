@@ -10128,3 +10128,15 @@ div.resource-icon {
     &:disabled { opacity: 0.55; cursor: wait; }
   }
 }
+
+// Keep the retiring Groups page on its existing local brand palette.
+#groups-page input[type="checkbox"],
+#groups-page input[type="radio"] {
+  accent-color: @brand-primary;
+}
+#groups-page .form-control:focus {
+  border-color: @brand-primary;
+  box-shadow: none;
+  outline: 2px solid @brand-primary;
+  outline-offset: 2px;
+}
