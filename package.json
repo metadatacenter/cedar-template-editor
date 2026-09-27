@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.19-SNAPSHOT",
+  "version": "2.9.19",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -51,7 +51,7 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20260926.182ba1fd",
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20260927.g6da3a86b7a1c.t0427",
     "cedar-embeddable-editor": "2.0.18"
   }
 }
