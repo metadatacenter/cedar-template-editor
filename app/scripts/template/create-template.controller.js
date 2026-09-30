@@ -555,7 +555,7 @@ define([
               schemaService.setTitle($scope.form, $translate.instant("VALIDATION.noNameField"));
             }
             if (!schemaService.getDescription($scope.form)) {
-              schemaService.setDescription($scope.form, $translate.instant("VALIDATION.noDescriptionField"));
+              schemaService.setDescription($scope.form, "");
             }
           }
           $scope.toRDF();

@@ -150,7 +150,7 @@ define([
         HeaderService.dataContainer.currentObjectScope = $scope.field;
 
         schemaService.setTitle($scope.field, title || $translate.instant("VALIDATION.noNameField"));
-        schemaService.setDescription($scope.field, description || $translate.instant("VALIDATION.noDescriptionField"));
+        schemaService.setDescription($scope.field, description || "");
         if (identifier) {
           schemaService.setIdentifier($scope.field, identifier );
         }
