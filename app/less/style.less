@@ -254,7 +254,7 @@ button {
     li {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 10px;
       padding: 8px 12px;
       border-radius: 6px;
@@ -265,14 +265,14 @@ button {
       }
       // Marker for links that open outside the app (in a new tab).
       .external-icon {
-        color: @med-gray;
+        color: @brand-primary;
         font-size: 11px;
         flex: 0 0 auto;
       }
       // Marker for links to another CEDAR frontend: a new tab, but still inside CEDAR.
-      // The cedar tree, in the CEDAR green, sets it apart from the gray external-link arrow.
+      // Its tree glyph distinguishes it from external links; both use the theme color.
       .cedar-icon {
-        color: darken(@field-color, 12%);
+        color: @brand-primary;
         flex: 0 0 auto;
       }
 
@@ -550,9 +550,11 @@ a.share {
         font-size: 18px;
       }
       i.fa.fa-lock, i.fa.fa-exclamation-triangle {
+        --cedar-icon-color: @button-warning;
         color: @button-warning;
       }
       i.fa.fa-circle.unsaved {
+        --cedar-icon-color: @unsaved-indicator;
         color: @unsaved-indicator;
       }
     }
@@ -10127,4 +10129,16 @@ div.resource-icon {
     &:focus-visible { outline: 2px solid @brand-primary; outline-offset: 3px; }
     &:disabled { opacity: 0.55; cursor: wait; }
   }
+}
+
+// Keep the retiring Groups page on its existing local brand palette.
+#groups-page input[type="checkbox"],
+#groups-page input[type="radio"] {
+  accent-color: @brand-primary;
+}
+#groups-page .form-control:focus {
+  border-color: @brand-primary;
+  box-shadow: none;
+  outline: 2px solid @brand-primary;
+  outline-offset: 2px;
 }
