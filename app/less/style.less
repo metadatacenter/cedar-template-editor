@@ -752,7 +752,9 @@ a.share {
 // text fields: the same 48px box, 1px black outline and 4px corners, the same type, the text 16px
 // in, and the label sitting in a notch on the top border. The editor renders in a shadow root, so
 // none of its styles reach this element, and the look is restated here from its computed values.
-// It sits 29px in from the column edges, where the editor places its own fields.
+// CEE 2.0.21 and earlier register the text faces as `CEE Roboto`, later releases as `CEDAR Roboto`,
+// so the stacks below name both. It sits 29px in from the column edges, where the editor places its
+// own fields.
 .instance-name-container {
   position: relative;
   // The editor below insets its fields by `clamp(12px, 3cqi, 32px)`, and nothing in either
@@ -768,7 +770,7 @@ a.share {
     margin: 0;
     padding: 0 4px;
     background: @white;
-    font-family: "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "CEDAR Roboto", "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10.5px;
     font-weight: 400;
     line-height: 12px;
@@ -783,7 +785,7 @@ a.share {
     border: 1px solid #000;
     border-radius: 4px;
     box-shadow: none;
-    font-family: "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "CEDAR Roboto", "CEE Roboto", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 24px;
