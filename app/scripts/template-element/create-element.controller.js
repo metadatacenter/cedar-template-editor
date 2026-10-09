@@ -517,7 +517,7 @@ define([
           dms.setTitle($scope.element, $translate.instant("VALIDATION.noNameElement"));
         }
         if (!dms.getDescription($scope.element)) {
-          dms.setDescription($scope.element, $translate.instant("VALIDATION.noDescriptionElement"));
+          dms.setDescription($scope.element, "");
         }
       }
     });
