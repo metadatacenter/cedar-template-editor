@@ -51,7 +51,7 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261015.54e88e84",
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261017.cd6b7daf",
     "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.24-dev.20261016.69857db"
   }
 }
