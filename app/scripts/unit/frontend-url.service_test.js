@@ -26,5 +26,23 @@ define([
           .toBe('/dashboard?folderId=folder%2F1');
       expect(FrontendUrlService.getWorkspaceReturn(null, null)).toBe('/dashboard');
     }));
+
+    // Cancelling an editor opened without a folder, for example from OpenView, returns to the dashboard
+    // without naming a folder, so the dashboard opens the home folder instead of asking for one called undefined.
+    it('leaves a missing folder identifier out of every dashboard and messaging address', inject(function (FrontendUrlService) {
+      [undefined, null, ''].forEach(function (missing) {
+        expect(FrontendUrlService.getFolderContents(missing)).toBe('/dashboard');
+        expect(FrontendUrlService.getSearchAll(missing)).toBe('/dashboard?search=*');
+        expect(FrontendUrlService.getSharedWithMe(missing)).toBe('/dashboard?sharing=shared-with-me');
+        expect(FrontendUrlService.getSharedWithEverybody(missing)).toBe('/dashboard?sharing=shared-with-everybody');
+        expect(FrontendUrlService.getSpecialFolders(missing)).toBe('/dashboard?viewMode=view-special-folders');
+        expect(FrontendUrlService.getMessaging(missing)).toBe('/messaging');
+        expect(FrontendUrlService.getWorkspaceReturn(null, missing)).toBe('/dashboard');
+      });
+      var folder = 'https://repo.example/folders/1';
+      expect(FrontendUrlService.getFolderContents(folder)).toBe('/dashboard?folderId=' + encodeURIComponent(folder));
+      expect(FrontendUrlService.getSearchAll(folder)).toBe('/dashboard?search=*&folderId=' + encodeURIComponent(folder));
+      expect(FrontendUrlService.getMessaging(folder)).toBe('/messaging?folderId=' + encodeURIComponent(folder));
+    }));
   });
 });
