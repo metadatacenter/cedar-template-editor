@@ -45,7 +45,7 @@
               <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata"
                   ng-click="vm.cancel()" style="outline:none;" translate>GENERIC.Cancel
               </button>
-              <button type="button" id="button-save-metadata" ng-disabled="vm.saveButtonDisabled || vm.validationErrors.length"
+              <button type="button" id="button-save-metadata" ng-disabled="vm.saveButtonDisabled || vm.validationBlocked"
                   class="btn btn-save metadata" ng-click="vm.save()" style="outline:none;" translate>GENERIC.Save
               </button>
             </div>
