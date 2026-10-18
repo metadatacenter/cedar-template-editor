@@ -278,6 +278,27 @@
     "IMPEX": {
       "error": "There was an error while importing the files!<br /><br />VIEW TECHNICAL DETAILS!"
     },
+    "CATEGORY": {
+      "loadTree": {
+        "error": "There was an error while loading the categories!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "CATEGORYSEARCH": {
+      "error": "There was an error while listing the artifacts in the category!<br /><br />VIEW TECHNICAL DETAILS!"
+    },
+    "APIKEY": {
+      "update": {
+        "error": "There was an error while changing your API keys!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "MESSAGING": {
+      "load": {
+        "error": "There was an error while loading your messages!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "markAllRead": {
+        "error": "There was an error while marking your messages as read!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
     "FOLDER": {
       "create": {
         "success": "The folder <b>{{title}}</b> has been created.",
@@ -345,6 +366,9 @@
       },
       "load-for-instance": {
         "error": "Although the the metadata were loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "checkUpdate": {
+        "error": "There was an error while checking whether the changes are compatible with the template's instances!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
         "success": "The template has been deleted.",

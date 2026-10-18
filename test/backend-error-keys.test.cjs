@@ -11,14 +11,6 @@ function translation(key) {
   return key.split('.').reduce((node, part) => (node && typeof node === 'object' ? node[part] : undefined), locale);
 }
 
-// Keys whose toast has never had a translation. Each needs wording before it can leave this list.
-const UNTRANSLATED = new Set([
-  'CATEGORYSERVICE.errorReadingCategoryTree',
-  'SERVER.CATEGORYSEARCH.error',
-  'SERVER.GENERIC.error',
-  'SERVER.MESSAGING.load.error',
-  'SERVER.TEMPLATE.checkUpdate.error',
-]);
 
 function sources(directory) {
   return fs.readdirSync(directory, {withFileTypes: true}).flatMap(entry => {
@@ -37,13 +29,6 @@ const calls = sources(scripts).flatMap(file =>
 
 test('every error toast key has an English translation', () => {
   assert.ok(calls.length > 20, `only ${calls.length} toast keys found`);
-  const missing = calls.filter(call => typeof translation(call.key) !== 'string' && !UNTRANSLATED.has(call.key));
+  const missing = calls.filter(call => typeof translation(call.key) !== 'string');
   assert.deepEqual(missing, []);
-});
-
-test('the keys listed as untranslated are still used and still lack a translation', () => {
-  for (const key of UNTRANSLATED) {
-    assert.ok(calls.some(call => call.key === key), `${key} is no longer used`);
-    assert.equal(typeof translation(key), 'undefined', `${key} now has a translation`);
-  }
 });

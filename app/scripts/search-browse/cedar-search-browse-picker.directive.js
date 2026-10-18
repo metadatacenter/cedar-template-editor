@@ -1017,7 +1017,7 @@ define([
                   vm.categoryTree = response;
                 },
                 function (error) {
-                  UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+                  UIMessageService.showBackendError('SERVER.CATEGORY.loadTree.error', error);
                   vm.loading = false;
                 });
           }

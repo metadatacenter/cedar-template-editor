@@ -99,7 +99,7 @@ define([
             // do nothing
           },
           function (error) {
-            UIMessageService.showBackendError('SERVER.MESSAGING.load.error', error);
+            UIMessageService.showBackendError('SERVER.MESSAGING.markAllRead.error', error);
           }
       );
     };
