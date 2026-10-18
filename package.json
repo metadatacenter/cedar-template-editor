@@ -7,6 +7,7 @@
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
+    "pretest": "gulp copy:policy",
     "test": "node_modules/karma/bin/karma start karma.conf.js --browsers ChromeHeadless --single-run",
     "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
