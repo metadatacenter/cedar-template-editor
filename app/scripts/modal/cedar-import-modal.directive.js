@@ -141,7 +141,7 @@ define([
                   },
                   function (err) {
                     clearInterval(importRefreshInterval);
-                    UIMessageService.showBackendError('IMPEX.error', err);
+                    UIMessageService.showBackendError('SERVER.IMPEX.error', err);
                     return err;
                   }
               );
