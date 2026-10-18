@@ -2,6 +2,7 @@
 
 define([
   'angular',
+  'cedar/template-editor/form/exact-number.directive',
   'cedar/template-editor/controlled-term/controlled-term.module',
   'cedar/template-editor/form/field.directive',
   'cedar/template-editor/form/form.directive',
@@ -18,6 +19,7 @@ define([
 
 ], function (angular) {
   angular.module('cedar.templateEditor.form', [
+    'cedar.templateEditor.form.exactNumber',
     'cedar.templateEditor.controlledTerm',
     'cedar.templateEditor.form.fieldDirective',
     'cedar.templateEditor.form.formDirective',

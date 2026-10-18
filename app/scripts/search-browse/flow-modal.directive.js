@@ -2,9 +2,9 @@
 
 
 define([
-      'angular'
+      'angular', 'cedar/template-editor/core/json-source-policy'
 
-    ], function (angular) {
+    ], function (angular, sourceJson) {
       angular.module('cedar.templateEditor.searchBrowse.flowModal', []).directive('flowModal', flowModal);
 
       /* new folder modal  */
@@ -215,7 +215,7 @@ define([
 
                         // this needs a timeout or flow vomits
                         $timeout(function () {
-                          var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)],
+                          var blob = new Blob([sourceJson.stringify(instanceResponse.data, 2)],
                               {type: 'application/json'});
                           blob.name = name + '.json';
                           $scope.metadataFiles.push(blob.name);
@@ -246,7 +246,7 @@ define([
 
                     // this needs a timeout or flow vomits
                     $timeout(function () {
-                      var blob = new Blob([JSON.stringify(instanceResponse.data, null, 2)],
+                      var blob = new Blob([sourceJson.stringify(instanceResponse.data, 2)],
                           {type: 'application/json'});
                       blob.name = name + '.json';
                       $scope.metadataFiles.push(blob.name);
