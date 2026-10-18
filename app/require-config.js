@@ -24,6 +24,7 @@ require.config({
     'ngFlow'  : 'bower_components/ng-flow/dist/ng-flow-standalone',
     'flow'    : 'bower_components/flow.js/dist/flow',
 
+    'CedarValidationPolicy': 'third_party_components/cedar-model-typescript-library/policy.umd',
     'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd',
     'cedar-embeddable-editor': 'third_party_components/cedar-embeddable-editor/cedar-embeddable-editor'
 

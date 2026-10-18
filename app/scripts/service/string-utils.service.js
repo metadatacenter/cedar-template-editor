@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular',
-], function (angular) {
+  'angular', 'CedarValidationPolicy',
+], function (angular, policy) {
   angular.module('cedar.templateEditor.service.stringUtilsService', [])
       .service('StringUtilsService', StringUtilsService);
 
@@ -24,10 +24,12 @@ define([
         var tag = document.createElement('div');
         tag.innerHTML = text;
         var plainText = tag.innerText;
-        if (plainText.length > maxLength) {
-          var trimmedText = plainText.substr(0, maxLength);
+        var shortened = policy.DisplayText.take(plainText, maxLength);
+        if (shortened !== plainText) {
+          var trimmedText = shortened;
           //re-trim if we are in the middle of a word
-          trimmedText = trimmedText.substr(0, Math.min(trimmedText.length, trimmedText.lastIndexOf(" ")));
+          var space = trimmedText.lastIndexOf(" ");
+          if (space > 0) trimmedText = trimmedText.slice(0, space);
           return trimmedText + finalString;
         }
         else {
@@ -42,9 +44,9 @@ define([
     service.getShortId = function(uri, maxLength) {
       var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
       var shortId = lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
-      if (maxLength && shortId.length > maxLength) {
-        var start = shortId.length - maxLength;
-        shortId = '...' + shortId.substr(start, shortId.length - 1);
+      if (maxLength) {
+        var shortened = policy.DisplayText.take(shortId, maxLength, true);
+        if (shortened !== shortId) shortId = '...' + shortened;
       }
       return shortId;
     }

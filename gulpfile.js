@@ -65,6 +65,11 @@ gulp.task('copy:tokens', function () {
       .pipe(gulp.dest('app/third_party_components/cedar-design-tokens/'));
 });
 
+gulp.task('copy:policy', function () {
+  return gulp.src('node_modules/cedar-model-typescript-library/policy.umd.js')
+      .pipe(gulp.dest('app/third_party_components/cedar-model-typescript-library/'));
+});
+
 gulp.task('copy:cee', function () {
   return gulp.src('node_modules/cedar-embeddable-editor/cedar-embeddable-editor.js')
       .pipe(gulp.dest('app/third_party_components/cedar-embeddable-editor/'));
@@ -254,7 +259,7 @@ if (cedarFrontendBehavior === 'develop') {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'copy:tokens', 'replace-url', 'replace-version');
+taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'copy:tokens', 'copy:policy', 'replace-url', 'replace-version');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();

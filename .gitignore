@@ -26,3 +26,6 @@ tests/config/test-env.js
 app/third_party_components/cedar-embeddable-editor/
 
 app/third_party_components/cedar-design-tokens/
+
+# Built from the pinned lightweight policy package by gulp copy:policy.
+app/third_party_components/cedar-model-typescript-library/policy.umd.js

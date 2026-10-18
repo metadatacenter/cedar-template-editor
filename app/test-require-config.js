@@ -36,6 +36,7 @@ require.config({
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
     'jsonld'  : 'bower_components/jsonld/js/jsonld',
+    'CedarValidationPolicy': 'third_party_components/cedar-model-typescript-library/policy.umd',
     'CedarModelTypescriptLibrary': 'third_party_components/cedar-model-typescript-library/index.umd',
   },
   shim    : {
