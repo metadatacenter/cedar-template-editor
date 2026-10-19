@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular', 'cedar/template-editor/core/json-source-policy'
+], function (angular, sourceJson) {
   angular.module('cedar.templateEditor.service.schemaService', [])
       .service('schemaService', schemaService);
 
@@ -871,7 +871,7 @@ define([
           var values = value.map(function (item) { return normalize(item, presentation, false); });
           return presentation && location === 'order' ? values.sort() : values;
         }
-        if (!value || typeof value !== 'object') return value;
+        if (!value || typeof value !== 'object' || sourceJson.isExact(value)) return value;
         var result = {};
         Object.keys(value).sort().forEach(function (key) {
           if (key === '$$hashKey' || ((artifact || location === 'property') && key === '_tmp')) return;
@@ -894,7 +894,7 @@ define([
         return result;
       }
       function signature(value, presentation) {
-        return JSON.stringify(normalize(value, presentation, true));
+        return sourceJson.stringify(normalize(value, presentation, true));
       }
       if (signature(original, false) === signature(current, false)) return 'unchanged';
       return signature(original, true) === signature(current, true) ? 'display' : 'version';

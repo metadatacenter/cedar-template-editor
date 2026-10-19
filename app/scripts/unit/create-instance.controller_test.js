@@ -12,6 +12,7 @@ define([
     var $timeout;
     var cee;
     var changeListener;
+    var validationListener;
     var templateInstanceService;
     var uiUtilService;
     var ceeDirty;
@@ -43,6 +44,7 @@ define([
           isValid: false
         },
         addEventListener: function (name, listener) {
+          if (name === 'validationChange') { validationListener = listener; }
           if (name === 'change') {
             changeListener = listener;
           }
@@ -144,6 +146,7 @@ define([
         '@id': 'instance-1',
         'schema:isBasedOn': 'template-1',
         'schema:name': 'Saved instance',
+        unexpectedAnswer: {'@value': 'Must remain visible to structural validation'},
         $$cedarEtag: '"7"'
       };
       var editCee = {
@@ -285,16 +288,24 @@ define([
       expect(vm.saveButtonDisabled).toBe(false);
     });
 
-    it('blocks invalid supplied values but allows incomplete metadata to save', function () {
-      cee.dataQualityReport.problems = [{code: 'email', path: ['Email'], message: 'Invalid email.'}];
+    it('uses shared save facts to block structural defects and allow quality findings', function () {
+      cee.dataQualityReport.canSave = false;
+      cee.dataQualityReport.problems = [{code: 'numberType', severity: 'error', blocksSave: true, path: ['Count'], message: 'Malformed number.'}];
       vm.save();
       expect(vm.validationErrors.length).toBe(1);
-      expect(vm.validationWarnings.length).toBe(1);
       expect(templateInstanceService.saveTemplateInstance).not.toHaveBeenCalled();
-      cee.dataQualityReport.problems = [{code: 'required', path: ['Title'], message: 'Required.'}];
+      cee.dataQualityReport.canSave = true;
+      cee.dataQualityReport.problems = [{code: 'maxValue', severity: 'warning', blocksSave: false, path: ['Count'], message: 'Above maximum.'}];
       vm.save();
       expect(vm.validationErrors.length).toBe(0);
       expect(templateInstanceService.saveTemplateInstance).toHaveBeenCalled();
+    });
+
+    it('waits for current verification and releases the save gate on validationChange', function () {
+      validationListener({detail: {problems: [], isValid: false, canSave: false, pendingValidation: true}});
+      expect(vm.validationBlocked).toBe(true);
+      validationListener({detail: {problems: [{code: 'semanticUnavailable', severity: 'warning', blocksSave: false}], isValid: false, canSave: true}});
+      expect(vm.validationBlocked).toBe(false);
     });
 
     it('allows only one pending CEE create and uses its returned revision on the next save', function () {
@@ -331,6 +342,9 @@ define([
     it('preserves the loaded ETag when CEE returns a serialized copy for update', function () {
       var edit = editSetup();
 
+      expect(edit.cee.templateAndInstanceObject.instanceObject.$$cedarEtag).toBeUndefined();
+      expect(edit.cee.templateAndInstanceObject.instanceObject.unexpectedAnswer).toEqual(
+          {'@value': 'Must remain visible to structural validation'});
       edit.vm.save();
 
       expect(edit.cee.currentMetadata.$$cedarEtag).toBeUndefined();

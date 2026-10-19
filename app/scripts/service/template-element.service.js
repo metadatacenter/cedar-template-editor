@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular', 'cedar/template-editor/core/json-source-policy'
+], function (angular, sourceJson) {
   angular.module('cedar.templateEditor.service.templateElementService', [])
       .service('TemplateElementService', TemplateElementService);
 
@@ -23,11 +23,11 @@ define([
     };
 
     service.saveTemplateElement = function (folderId, element) {
-      return HttpBuilderService.post(UrlService.postTemplateElement(folderId), angular.toJson(element));
+      return HttpBuilderService.post(UrlService.postTemplateElement(folderId), sourceJson.stringify(element));
     };
 
     service.updateTemplateElement = function (id, element, validatorArtifact) {
-      return HttpBuilderService.put(UrlService.getTemplateElement(id), angular.toJson(element), validatorArtifact || element);
+      return HttpBuilderService.put(UrlService.getTemplateElement(id), sourceJson.stringify(element), validatorArtifact || element);
     };
 
     return service;

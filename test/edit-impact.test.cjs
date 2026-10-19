@@ -4,9 +4,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const scripts = path.join(__dirname, '../app/scripts');
-let make;
+const policy = require('cedar-model-typescript-library/policy');
+let make, source;
+vm.runInNewContext(fs.readFileSync(path.join(scripts, 'core/json-source-policy.js'), 'utf8'), {
+  define: (_, factory) => {source = factory({module: () => ({config: () => {}})}, policy);}
+});
 vm.runInNewContext(fs.readFileSync(path.join(scripts, 'service/schema.service.js'), 'utf8'), {
-  define: (_, factory) => factory({module: () => ({service: (_, constructor) => {make = constructor;}})})
+  define: (_, factory) => factory({module: () => ({service: (_, constructor) => {make = constructor;}})}, source)
 });
 const service = make({}, {}, {});
 function fixture() {

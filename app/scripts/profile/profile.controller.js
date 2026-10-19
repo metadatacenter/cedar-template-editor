@@ -113,7 +113,7 @@ define([
 
     function onKeyError(error) {
       $scope.busy = false;
-      UIMessageService.showBackendError('SERVER.GENERIC.error', error);
+      UIMessageService.showBackendError('SERVER.APIKEY.update.error', error);
     }
 
     // Creates a new API key. An optional description is taken from the input; when blank the backend

@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular', 'cedar/template-editor/core/json-source-policy'
+], function (angular, source) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
@@ -90,18 +90,19 @@ define([
       vm.missingRequiredFieldMessage = vm.missingRequiredFieldCount === 1 ?
           '1 required field is missing.' : vm.missingRequiredFieldCount + ' required fields are missing.';
       vm.validationWarnings = vm.validationProblems.filter(function (problem) {
-        return ['required', 'missingProperty', 'minItems'].indexOf(problem.code) !== -1;
+        return problem.blocksSave === false || (problem.blocksSave !== true && problem.severity === 'warning');
       });
       vm.validationErrors = vm.validationProblems.filter(function (problem) {
-        return ['required', 'missingProperty', 'minItems'].indexOf(problem.code) === -1;
+        return problem.blocksSave === true || (problem.blocksSave !== false && problem.severity !== 'warning');
       });
       if (vm.missingRequiredFieldCount > 0 && !vm.validationProblems.some(function (problem) {
         return problem.code === 'required';
       })) {
         vm.validationWarnings.push({message: vm.missingRequiredFieldMessage});
       }
-      if (vm.validationReport && vm.validationReport.isValid === false &&
-          !vm.validationWarnings.length && !vm.validationErrors.length) {
+      vm.validationBlocked = !vm.validationReport || vm.validationReport.pendingValidation === true ||
+          (typeof vm.validationReport.canSave === 'boolean' ? !vm.validationReport.canSave : vm.validationErrors.length > 0);
+      if (vm.validationBlocked && !vm.validationWarnings.length && !vm.validationErrors.length) {
         vm.validationErrors.push({message: 'Review invalid metadata before saving.'});
       }
     }
@@ -159,6 +160,10 @@ define([
         pendingArtifact = artifact;
         return;
       }
+      // Transport validators and Angular bookkeeping belong to the host, not the artifact.
+      // Use the same exact-number-preserving boundary as HTTP writes; savedInstance keeps
+      // its ETag for the next conditional update, and real artifact properties stay intact.
+      artifact = source.parse(source.stringify(artifact));
       if (artifact.instanceObject) {
         cee.templateAndInstanceObject = artifact;
       } else {
@@ -177,9 +182,18 @@ define([
       $scope.$evalAsync();
     }
 
+    function onCeeValidation(event) {
+      if (destroyed) { return; }
+      updateValidationReport(event && event.detail ? event.detail : cee.dataQualityReport);
+      $scope.$evalAsync();
+    }
+
     $scope.$on('$destroy', function () {
       destroyed = true;
-      if (cee) { cee.removeEventListener('change', onCeeChange); }
+      if (cee) {
+        cee.removeEventListener('change', onCeeChange);
+        cee.removeEventListener('validationChange', onCeeValidation);
+      }
     });
 
     function finishLoad() {
@@ -368,7 +382,7 @@ define([
         return;
       }
       updateValidationReport(cee.dataQualityReport);
-      if (vm.validationErrors.length) {
+      if (vm.validationBlocked) {
         return;
       }
       vm.saveButtonDisabled = true;
@@ -421,6 +435,7 @@ define([
         return;
       }
       cee.addEventListener('change', onCeeChange);
+      cee.addEventListener('validationChange', onCeeValidation);
 
       if ($routeParams.templateId !== undefined) {
         // Creating an instance reads no resource details, so nothing is left to settle.

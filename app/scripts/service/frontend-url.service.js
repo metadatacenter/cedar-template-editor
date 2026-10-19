@@ -85,8 +85,11 @@ define([
       return withQuery('/instances/edit/' + id, {folderId: folderId, returnTo: returnTo});
     };
 
+    // An editor opened without a folder, such as one reached from OpenView, has no folder identifier to
+    // return to. Each dashboard and messaging address then leaves the parameter out, and the page it
+    // opens falls back to the home folder.
     service.getFolderContents = function (folderId) {
-      return '/dashboard?folderId=' + encodeURIComponent(folderId);
+      return withQuery('/dashboard', {folderId: folderId});
     };
 
     service.getMyWorkspace = function () {
@@ -94,23 +97,23 @@ define([
     };
 
     service.getSearchAll = function (folderId) {
-      return '/dashboard?search=*&folderId=' + folderId;
+      return withQuery('/dashboard', {search: '*', folderId: folderId});
     };
 
     service.getSharedWithMe = function (folderId) {
-      return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
+      return withQuery('/dashboard', {sharing: 'shared-with-me', folderId: folderId});
     };
 
     service.getSpecialFolders = function (folderId) {
-      return '/dashboard?viewMode=view-special-folders&folderId=' + folderId;
+      return withQuery('/dashboard', {viewMode: 'view-special-folders', folderId: folderId});
     };
 
     service.getSharedWithEverybody = function (folderId) {
-      return '/dashboard?sharing=shared-with-everybody&folderId=' + folderId;
+      return withQuery('/dashboard', {sharing: 'shared-with-everybody', folderId: folderId});
     };
 
     service.getMessaging = function (folderId) {
-      return '/messaging?folderId=' + encodeURIComponent(folderId);
+      return withQuery('/messaging', {folderId: folderId});
     };
 
     service.openField = function (id) {

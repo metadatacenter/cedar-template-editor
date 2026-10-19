@@ -2,6 +2,7 @@
 
 define([
   'angular',
+  'cedar/template-editor/core/json-source-policy',
   'cedar/template-editor/core/config',
   'cedar/template-editor/core/constants',
   'cedar/template-editor/core/run',
@@ -15,6 +16,7 @@ define([
   'cedar/template-editor/core/copy-to-clipboard.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.core', [
+    'cedar.templateEditor.core.jsonSourcePolicy',
     'cedar.templateEditor.core.config',
     'cedar.templateEditor.core.constants',
     'cedar.templateEditor.core.run',

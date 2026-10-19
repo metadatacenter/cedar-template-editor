@@ -806,7 +806,7 @@ define([
                     },
                     function (err) {
                       vm.descriptionPending = false;
-                      UIMessageService.showBackendError('SERVER.field.update.error', err);
+                      UIMessageService.showBackendError('SERVER.FIELD.update.error', err);
                     }
                 );
               } else if (nodeType === 'element') {
@@ -1017,7 +1017,7 @@ define([
                   vm.categoryTree = response;
                 },
                 function (error) {
-                  UIMessageService.showBackendError('CATEGORYSERVICE.errorReadingCategoryTree', error);
+                  UIMessageService.showBackendError('SERVER.CATEGORY.loadTree.error', error);
                   vm.loading = false;
                 });
           }
