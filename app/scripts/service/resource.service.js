@@ -71,7 +71,6 @@ define([
           canMakeNotOpen           : canMakeNotOpen,
           canOpenOpen              : canOpenOpen,
           canOpenDatacite          : canOpenDatacite,
-          canSubmit                : canSubmit,
           canCreateDraft           : canCreateDraft,
           canPopulate              : canPopulate,
           publishResource          : publishResource,
@@ -1095,10 +1094,6 @@ define([
               return true;
           }
           return false;
-        }
-
-        function canSubmit(resource) {
-          return this.hasAvailableAction(resource, 'submit');
         }
 
         function canCreateDraft(resource) {

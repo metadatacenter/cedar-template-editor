@@ -63,7 +63,6 @@ define([
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
-          vm.showFlowModal = showFlowModal;
           vm.showImportModal = showImportModal;
 
           vm.copyModalVisible = false;
@@ -72,7 +71,6 @@ define([
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
-          vm.flowModalVisible = false;
           vm.importModalVisible = false;
 
           vm.getFacets = getFacets;
@@ -114,7 +112,6 @@ define([
           vm.params = $location.search();
           vm.hash = $location.hash();
           vm.resources = [];
-          vm.canNotSubmit = true;
           vm.cannotEdit = false;
           vm.cannotManageGrants = false;
           vm.cannotMove = false;
@@ -552,10 +549,6 @@ define([
             }
           };
 
-          vm.canSubmit = function () {
-            return hasSelected() && resourceService.canSubmit(getSelected());
-          };
-
           vm.getNumberOfInstances = function () {
             if (hasSelected() && getSelected()[CONST.model.NUMBEROFINSTANCES]) {
               var value = getSelected()[CONST.model.NUMBEROFINSTANCES];
@@ -603,7 +596,6 @@ define([
 
           vm.setPermissions = function () {
             vm.cannotEdit = !vm.canEdit();
-            vm.canNotSubmit = !vm.canSubmit();
             vm.cannotManageGrants = !vm.canManageGrants();
             vm.cannotMove = !vm.canMove();
             vm.cannotCopy = !vm.canCopy();
@@ -2538,16 +2530,6 @@ define([
               vm.publishModalVisible = true;
               const homeFolderId = CedarUser.getHomeFolderId();
               $scope.$broadcast('publishModalVisible', [vm.publishModalVisible, r, callback, action]);
-            }
-          }
-
-          // open the 'submission' modal
-          function showFlowModal() {
-            let r = getSelected();
-            if (r && resourceService.canSubmit(r)) {
-              vm.flowModalVisible = true;
-              $scope.$broadcast('flowModalVisible',
-                  [vm.flowModalVisible, r['@id'], r[CONST.model.NAME]]);
             }
           }
 

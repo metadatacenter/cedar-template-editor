@@ -92,13 +92,9 @@
     "FillOutTemplate": "Fill Out Template",
     "AddElement": "Add Element",
     "AddField": "Add Field",
-    "Pause": "Pause",
     "UploadFiles": "Upload files",
     "Report": "Report",
-    "Resume": "Resume",
     "Clear": "Clear",
-    "Submit": "Submit",
-    "Next": "Next",
     "Done": "Done",
     "SaveTemplate": "Save Template",
     "FillOutATemplate": "Fill Out a Template",
@@ -259,7 +255,6 @@
     "removeProperty": "Remove property",
     "unreadMessageCount": "You have unread messages",
     "message": "Open messages",
-    "repoSubmission": "Submit to repository",
     "copyDOI": "Copy DOI",
     "copyParentFolderId": "Copy parent folder id"
   },
@@ -272,9 +267,6 @@
     "instance": "Metadata"
   },
   "SERVER": {
-    "WORKSPACE": {
-      "error": "There was an error while executing the workspace request!<br /><br />VIEW TECHNICAL DETAILS!"
-    },
     "IMPEX": {
       "error": "There was an error while importing the files!<br /><br />VIEW TECHNICAL DETAILS!"
     },
@@ -524,7 +516,6 @@
       "copyParentFolderId": "Copy parent folder Id",
       "move": "Move to...",
       "rename": "Rename...",
-      "submit": "Submit...",
       "makeopen": "Enable OpenView",
       "makenotopen": "Disable OpenView",
       "openopen": "Visit OpenView",
@@ -675,11 +666,6 @@
     "errorBioPortal": "Error establishing a connection to BioPortal. Please try again later",
     "errorTerminology": "Error connecting to Terminology Server"
   },
-  "VALUERECOMMENDER": {
-    "noResults": "No recommended values...",
-    "enabled": "Value Recommendation for this template has been enabled",
-    "errorCallingService": "Error calling Value Recommender service"
-  },
   "PLACEHOLDER": {
     "email": "bob@company.com",
     "url": "http://company.com",
@@ -687,7 +673,6 @@
   },
   "VALIDATION": {
     "templateLoad": "The template is invalid and cannot be opened.",
-    "externalValidation": "External validation",
     "minBiggerThanMax": "Min cannot be greater than Max.",
     "fieldTitleEmpty": "'Field Title' input cannot be left empty.",
     "optionEmpty": "'Option' input cannot be left empty.",

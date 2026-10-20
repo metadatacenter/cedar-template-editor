@@ -1,9 +1,8 @@
 'use strict';
 
 define([
-  'angular',
-  'json!config/validation-service.conf.json'
-], function (angular, config) {
+  'angular'
+], function (angular) {
   angular.module('cedar.templateEditor.service.validationService', [])
       .service('ValidationService', ValidationService);
 
@@ -13,7 +12,6 @@ define([
   function ValidationService($rootScope, $timeout, DataManipulationService, resourceService, UIMessageService, CONST) {
 
     const dms = DataManipulationService;
-    let validationTypes = [];
     const resourceType = {
       'https://schema.metadatacenter.org/core/Template'           : 'template',
       'https://schema.metadatacenter.org/core/TemplateField'      : 'field',
@@ -23,29 +21,6 @@ define([
 
     let service = {
       serviceId: "ValidationService"
-    };
-
-    service.init = function () {
-      validationTypes = config;
-    };
-
-    service.getValidationTypes = function () {
-      return validationTypes;
-    };
-
-    service.isValidationTemplate = function (value, action) {
-      let result;
-      if (value) {
-        var template = value.toLowerCase();
-        validationTypes.forEach(function (item, index, array) {
-          if (template.indexOf(item.template) > -1) {
-            if (item.action.includes(action)) {
-              result = item.type;
-            }
-          }
-        });
-      }
-      return result;
     };
 
     // validate the json that will be saved
@@ -105,8 +80,6 @@ define([
       }
 
     };
-
-    service.init();
 
     return service;
   }
