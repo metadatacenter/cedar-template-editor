@@ -36,7 +36,8 @@ define([
         var startParseForm = function () {
           if (!$scope.form) { return; }
           dms.findChildren($scope.form.properties, $scope.model);
-          if (!dms.isStaticField($scope.form)) {
+          // Only templates and elements order their children. The meta-schema forbids an order in a field's _ui.
+          if (!$scope.isFirstClassField($scope.form)) {
             $scope.form._ui = $scope.form._ui || {};
             $scope.form._ui.order = $scope.form._ui.order || [];
             if (!$scope.form._ui.order.length) {
