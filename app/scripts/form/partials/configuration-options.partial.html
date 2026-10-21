@@ -23,11 +23,6 @@
            ng-click="setTab('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
-      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
-          ng-class="{active: isTabActive('value-recommendation')}"
-          ng-click="setTab('value-recommendation');  $event.stopPropagation();">
-        <span>Suggestions</span>
-      </div>
       <div ng-if="allowsHidden()" class="element-toggle table-cell-style hidden-tab"
           ng-class="{active: isTabActive('hidden')}"
           ng-click="setTab('hidden');  $event.stopPropagation();">
@@ -265,22 +260,6 @@
       <div class="date-range d-option yesno-required-yes"
           ng-click="setDirty();setRequired(true);$event.stopPropagation();"
           ng-class="{active: isRequired()}">
-        <span>Yes</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Value Recommendation tab  -->
-  <div id="value-recommendation" class="value-recommendation-options" ng-show="isTabActive('value-recommendation')">
-    <div class="type-toggle date">
-      <div class="single-date d-option yesno-suggestions-no"
-          ng-click="setDirty();removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
-          ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled == undefined}">
-        <span>No</span>
-      </div>
-      <div class="date-range d-option yesno-suggestions-yes"
-          ng-click="setDirty();$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
-          ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled}">
         <span>Yes</span>
       </div>
     </div>

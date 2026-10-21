@@ -8,7 +8,6 @@
     "hasControlledTerms": true,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": true,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -21,7 +20,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -34,7 +32,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -47,7 +44,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -60,7 +56,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -73,7 +68,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -86,7 +80,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -99,7 +92,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -112,7 +104,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -125,7 +116,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": true
   },
@@ -138,7 +128,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -151,7 +140,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -164,7 +152,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -177,7 +164,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -190,7 +176,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -203,7 +188,6 @@
     "hasControlledTerms": false,
     "staticField": true,
     "allowsMultiple": false,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": false,
     "allowsRequired": false
   },
@@ -216,7 +200,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -229,7 +212,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -242,7 +224,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -255,7 +236,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -268,7 +248,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -281,7 +260,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   },
@@ -294,7 +272,6 @@
     "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": true,
-    "allowsValueRecommendation": false,
     "hasInstanceTerm": true,
     "allowsRequired": true
   }

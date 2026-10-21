@@ -19,7 +19,7 @@ define([
 
       $scope.termsModalVisible = false;
       $scope.errorMessages = null;
-      const tabSet = ["options", "values", "cardinality", "range", "required", "value-recommendation", "hidden", "field"];
+      const tabSet = ["options", "values", "cardinality", "range", "required", "hidden", "field"];
       $scope.activeTab = null;
       $scope.viewType = 'table';
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -371,14 +371,6 @@ define([
         return result.length > 0 && result[0].allowsMultiple && !dms.isRootNode($scope.parentElement, $scope.field);
       };
 
-      // does the field support value recommendation?
-      $scope.allowsValueRecommendation = function () {
-        const result = FieldTypeService.getFieldTypes().filter(function (obj) {
-          return obj.cedarType === schemaService.getInputType($scope.field);
-        });
-        return result.length > 0 && result[0].allowsValueRecommendation;
-      };
-
       // does the field support using controlled terms
       $scope.allowsControlledTerms = function () {
         const result = FieldTypeService.getFieldTypes().filter(function (obj) {
@@ -524,12 +516,6 @@ define([
       // Checking each field to see if required, will trigger flag for use to see there is required fields
       if ($scope.hasValueConstraint() && schemaService.isRequired($scope.field)) {
         $scope.$emit('formHasRequiredfield._uis');
-      }
-
-      // Load values when opening an instance
-      if ($scope.model) {
-        const fieldValue = dms.getValueLocation($scope.field);
-        $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
       const parseField = function () {
@@ -729,12 +715,6 @@ define([
           field._valueConstraints.multipleChoice = multipleChoice;
         }
       };
-
-      $scope.removeValueRecommendationField = function (field) {
-        dms.removeValueRecommendationField(field);
-      };
-
-      /* end of Value Recommendation functionality */
 
       /* start of controlled terms functionality */
 

@@ -2005,11 +2005,6 @@ define([
         // controlled terms
         //
 
-        // has recommendations?
-        service.valueRecommendationEnabled = function (node) {
-          return service.schemaOf(node)._ui.valueRecommendationEnabled;
-        };
-
         // get the controlled terms list for field types
         service.getFieldControlledTerms = function (node) {
           if (service.isStaticField(node) || service.isAttributeValueType(node)) { // static or attribute value fields
@@ -2152,11 +2147,6 @@ define([
             }
           }
           service.initializeSchema(node);
-        };
-
-
-        service.removeValueRecommendationField = function (node) {
-          delete service.schemaOf(node)._ui.valueRecommendationEnabled;
         };
 
 

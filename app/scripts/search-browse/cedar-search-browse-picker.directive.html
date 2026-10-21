@@ -284,7 +284,6 @@
                                                move="dc.showMoveModal" delete="dc.deleteResource"
                                                copy="dc.showCopyModal"
                                                rename="dc.showRenameModal"
-                                               submit="dc.showFlowModal"
                                                publish-modal="dc.showPublishModal" publish-callback="dc.publishResource"
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
@@ -294,7 +293,7 @@
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
-                                               can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
+                                               can-not-rename="dc.canNotRename"
                                                cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen" can-not-make-not-open="dc.canNotMakeNotOpen"
                                                can-not-open-open="true"
@@ -376,7 +375,6 @@
                                                move="dc.showMoveModal" delete="dc.deleteResource"
                                                copy="dc.showCopyModal"
                                                rename="dc.showRenameModal"
-                                               submit="dc.showFlowModal"
                                                publish-modal="dc.showPublishModal" publish-callback="dc.publishResource"
                                                draft-callback="dc.createDraftResource"
                                                make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
@@ -386,7 +384,7 @@
                                                can-not-publish="dc.canNotPublish"
                                                can-not-create-draft="dc.canNotCreateDraft"
                                                can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
-                                               can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
+                                               can-not-rename="dc.canNotRename"
                                                cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                                can-not-make-open="dc.canNotMakeOpen"
                                                can-not-make-not-open="dc.canNotMakeNotOpen"
@@ -539,7 +537,6 @@
                                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                                            rename="dc.showRenameModal"
-                                           submit="dc.showFlowModal"
                                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource"
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
@@ -549,7 +546,7 @@
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
                                            can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
-                                           can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
+                                           can-not-rename="dc.canNotRename"
                                            cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                            is-folder="dc.isFolder()"
                                            can-not-make-open="dc.canNotMakeOpen"
@@ -696,7 +693,6 @@
                                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
                                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
                                            rename="dc.showRenameModal"
-                                           submit="dc.showFlowModal"
                                            publish-modal="dc.showPublishModal" publish-callback="dc.publishResource"
                                            draft-callback="dc.createDraftResource"
                                            make-open="dc.makeOpen" make-not-open="dc.makeNotOpen"
@@ -705,7 +701,7 @@
                                            open-download="dc.openDownload"
                                            can-not-publish="dc.canNotPublish"
                                            can-not-create-draft="dc.canNotCreateDraft"
-                                           can-not-submit="dc.canNotSubmit" can-not-rename="dc.canNotRename"
+                                           can-not-rename="dc.canNotRename"
                                            can-not-populate="dc.canNotPopulate" cannot-copy="dc.cannotCopy"
                                            cannot-move="dc.cannotMove" cannot-manage-grants="dc.cannotManageGrants" can-not-delete="dc.canNotDelete"
                                            is-folder="dc.isFolder()"
@@ -1132,14 +1128,6 @@
                      style="padding: 10px;list-style: none"
                      data-keyboard="true" data-backdrop="static" share-resource="resource">
   </cedar-share-modal>
-</section>
-
-<!-- submission modal -->
-<section>
-  <flow-modal cedar-modal-show modal-visible="dc.flowModalVisible" class="modal fade"
-              id="flow-modal" tabindex="-1" role="dialog" aria-labelledby="flowModalHeader"
-              data-keyboard="true" data-backdrop="static">
-  </flow-modal>
 </section>
 
 <!-- import modal -->

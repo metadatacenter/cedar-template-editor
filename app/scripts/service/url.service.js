@@ -14,10 +14,8 @@ define([
     let userService = null;
     let terminologyService = null;
     let resourceService = null;
-    let valueRecommenderService = null;
     let schemaService = null;
     let groupService = null;
-    let submissionService = null;
     let messagingService = null;
     let impexService = null;
     const paging = function (page, size, defaultPage, defaultSize, pageString, sizeString) {
@@ -34,10 +32,8 @@ define([
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;
       resourceService = config.resourceRestAPI;
-      valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
-      submissionService = config.submissionRestAPI;
       messagingService = config.messagingRestAPI;
       impexService = config.impexRestAPI;
     };
@@ -139,24 +135,12 @@ define([
       return terminologyService + "/bioportal";
     };
 
-    service.valueRecommender = function () {
-      return valueRecommenderService;
-    };
-
     service.groupBase = function () {
       return groupService;
     };
 
     service.messagingBase = function () {
       return messagingService;
-    };
-
-    service.getValueRecommendation = function () {
-      return this.valueRecommender() + '/command/recommend';
-    };
-
-    service.canGenerateRecommendations = function () {
-      return this.valueRecommender() + '/command/can-generate-recommendations';
     };
 
     service.resourceBase = function () {
@@ -297,42 +281,6 @@ define([
 
     service.messagingMarkAllMessagesAsRead = function () {
       return this.messagingBase() + '/command/mark-all-as-read';
-    };
-
-    service.immportWorkspaces = function () {
-      return submissionService + '/command/immport-workspaces';
-    };
-
-    service.lincsValidation = function () {
-      return submissionService + '/command/validate-lincs';
-    };
-
-    service.biosampleValidation = function () {
-      return submissionService + '/command/validate-biosample';
-    };
-
-    service.ncbiSubmission = function () {
-      return submissionService + '/command/upload-ncbi-to-cedar';
-    };
-
-    service.airrSubmission = function () {
-      return submissionService + '/command/upload-cairr-to-cedar';
-    };
-
-    service.immportSubmission = function () {
-      return submissionService + '/command/immport-submit';
-    };
-
-    service.lincsSubmission = function () {
-      return 'https://httpbin.org/post';
-    };
-
-    service.ncbiValidation = function () {
-      return submissionService + '/command/validate-ncbi';
-    };
-
-    service.airrValidation = function () {
-      return submissionService + '/command/validate-cairr';
     };
 
     service.importCadsrForms = function (folderId) {

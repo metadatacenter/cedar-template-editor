@@ -21,7 +21,6 @@ define(['app', 'angular'], function (app) {
 
     var hiddenTabSelector = ".detail-options .hidden-tab";
     var cardinalityTabSelector = ".detail-options .cardinality-tab";
-    var suggestionsTabSelector = ".detail-options .value-recommendation-tab";
     var valuesTabSelector = ".detail-options .value-controlled-terms-tab";
     var requiredTabSelector = ".detail-options .required-tab";
     var cardinalityTabsSelector = ".cardinality-options .d-option";
@@ -206,7 +205,6 @@ define(['app', 'angular'], function (app) {
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
         expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
         expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
       });
@@ -240,7 +238,6 @@ define(['app', 'angular'], function (app) {
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(1);
         expect($(compiledDirective).find(hiddenTabSelector).length).toBe(1);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(1);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(1);
         expect($(compiledDirective).find(requiredTabSelector).length).toBe(1);
       });
@@ -304,7 +301,6 @@ define(['app', 'angular'], function (app) {
       it("should show only the correct tabs", function () {
         expect($(compiledDirective).find(cardinalityTabSelector).length).toBe(0);
         expect($(compiledDirective).find(hiddenTabSelector).length).toBe(0);
-        expect($(compiledDirective).find(suggestionsTabSelector).length).toBe(0);
         expect($(compiledDirective).find(valuesTabSelector).length).toBe(0);
         expect($(compiledDirective).find(requiredTabSelector).length).toBe(0);
       });
