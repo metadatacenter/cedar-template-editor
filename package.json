@@ -1,6 +1,6 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.28-SNAPSHOT",
+  "version": "2.9.28",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
@@ -52,8 +52,8 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261021.g94a6cf571437.t0711",
-    "cedar-embeddable-editor": "2.0.27",
-    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.23-dev.20261021.gaf01a35f5a33.t0711"
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261022.g2230ee9f0e8a.t0102",
+    "cedar-embeddable-editor": "2.0.28",
+    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.23-dev.20261022.g47b1968f5072.t0102"
   }
 }
