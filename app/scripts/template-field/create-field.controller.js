@@ -460,7 +460,7 @@ define([
       return copiedForm;
     };
 
-    $scope.getYamlRepresentation = function () {
+    $scope.writeYaml = function () {
       let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
@@ -469,6 +469,16 @@ define([
       let jsonTemplateFieldReaderResult = $scope.fieldReader.readFromObject(copiedForm);
       let fieldWriter = $scope.yamlWriters.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
       return fieldWriter.getAsYamlString(jsonTemplateFieldReaderResult.field);
+    };
+
+    // The YAML writer refuses an artifact it cannot state, such as one whose field the author has
+    // just left without a name. The open preview then says why, rather than failing on every digest.
+    $scope.getYamlRepresentation = function () {
+      try {
+        return $scope.writeYaml();
+      } catch (error) {
+        return error.message;
+      }
     };
 
     $scope.cancelField = function () {
@@ -524,7 +534,8 @@ define([
     };
 
     $scope.copyYaml2Clipboard = function () {
-      navigator.clipboard.writeText(this.getYamlRepresentation()).then(function(){
+      // A write the YAML writer refuses takes the same path as a copy the browser refuses.
+      Promise.resolve().then(() => navigator.clipboard.writeText($scope.writeYaml())).then(function(){
         UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
         $scope.$apply();
       }).catch((err)=>{
