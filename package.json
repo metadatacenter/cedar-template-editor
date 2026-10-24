@@ -52,8 +52,8 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261021.c0dd06d3",
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261023.3a17e143",
     "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.29-dev.20261023.8578b9e",
-    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.24-dev.20261023.d305e0c"
+    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.24-dev.20261023.02aadf5"
   }
 }
