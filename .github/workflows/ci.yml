@@ -26,10 +26,10 @@ jobs:
       - name: Check out the frontend
         uses: actions/checkout@v7
 
-      - name: Use Node 24.22.0
+      - name: Use Node 24.22.1
         uses: actions/setup-node@v6
         with:
-          node-version: 24.22.0
+          node-version: 24.22.1
           cache: npm
 
       - name: Install the locked dependency graph
