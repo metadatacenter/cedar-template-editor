@@ -2,6 +2,7 @@ function UserProfileHandler() {
 
   this.userHandler = null;
   this.callback = null;
+  this.failureCallback = null;
   this.usersUrl = null;
   this.userUrl = null;
   this.homeFolderId = null;
@@ -19,7 +20,18 @@ function UserProfileHandler() {
       service.usersUrl = urlConfigData.userRestAPI + '/users';
       service.userUrl = service.usersUrl + '/' + userId;
       success();
+    }).fail(function (error) {
+      service.loadFailed('the URL configuration', error);
     });
+  };
+
+  // The application starts only after both loads succeed, and the page stays hidden until it does. A failure
+  // that went unreported therefore left a blank page and no indication of what had gone wrong.
+  this.loadFailed = function (what, error) {
+    console.error('CEDAR could not load ' + what + ': HTTP ' + error.status + ' ' + error.statusText);
+    if (this.failureCallback) {
+      this.failureCallback();
+    }
   };
 
   this.userProfileLoadedDoCallback = function (userData) {
@@ -43,15 +55,18 @@ function UserProfileHandler() {
             if (error.status === 404) {
               console.log("User was not found using the REST API. Create it!");
               service.userProfileLoadedDoCallback(null);
+            } else {
+              service.loadFailed('the user profile', error);
             }
           }
         }
     );
   };
 
-  this.proceed = function (userHandler, callback) {
+  this.proceed = function (userHandler, callback, failureCallback) {
     this.userHandler = userHandler;
     this.callback = callback;
+    this.failureCallback = failureCallback;
 
     const pt = this.userHandler.getParsedToken();
     const userId = pt.sub;

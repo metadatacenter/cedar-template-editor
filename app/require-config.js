@@ -114,7 +114,7 @@ require([
         window.bootstrapUserHandler.doLogin();
       } else {
         const uph = new UserProfileHandler();
-        uph.proceed(window.bootstrapUserHandler, continueWithAngularApp);
+        uph.proceed(window.bootstrapUserHandler, continueWithAngularApp, failInitUserHandler);
       }
     }
 
