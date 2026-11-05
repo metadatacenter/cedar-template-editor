@@ -95,7 +95,6 @@ require([
     function continueWithAngularApp() {
       require([
         'angular',
-        'cedar-embeddable-editor',
         'app',
         'ngFlow'
       ], function (angular, app, ngFlow) {

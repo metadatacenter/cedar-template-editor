@@ -1,8 +1,8 @@
 'use strict';
 
 define([
-  'angular', 'cedar/template-editor/core/json-source-policy'
-], function (angular, source) {
+  'angular', 'cedar/template-editor/core/json-source-policy', 'cedar/template-editor/core/cee-loader'
+], function (angular, source, ceeLoader) {
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
@@ -446,6 +446,12 @@ define([
       }
     }
 
-    $timeout(startWhenEditorPresent, 0);
+    ceeLoader.load($window, function () {
+      $timeout(startWhenEditorPresent, 0);
+    }, function (error) {
+      $timeout(function () {
+        if (!destroyed) showLoadError('SERVER.INSTANCE.load.error', error);
+      }, 0);
+    });
   }
 });
