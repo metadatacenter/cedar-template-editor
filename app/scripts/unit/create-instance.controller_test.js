@@ -3,8 +3,9 @@
 define([
   'angular',
   'angularMocks',
+  'cedar/template-editor/core/cee-loader',
   'cedar/template-editor/template-instance/create-instance.controller'
-], function () {
+], function (angular, mocks, ceeLoader) {
 
   describe('CreateInstanceController CEE validation report:', function () {
     var $controller;
@@ -28,6 +29,7 @@ define([
     beforeEach(module('cedar.templateEditor.templateInstance.createInstanceController'));
 
     beforeEach(inject(function (_$controller_, _$rootScope_, _$timeout_) {
+      spyOn(ceeLoader, 'load').and.callFake(function (target, ready) { ready(); });
       $controller = _$controller_;
       $rootScope = _$rootScope_;
       $timeout = _$timeout_;
