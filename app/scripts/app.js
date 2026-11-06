@@ -27,7 +27,6 @@ define([
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
   'lib/ngprogress/build/ngprogress.min',
-  'jsonld',
   'flow',
 
   // cedar template editor modules
