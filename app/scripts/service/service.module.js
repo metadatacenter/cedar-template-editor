@@ -2,6 +2,7 @@
 
 define([
   'angular',
+  'cedar/template-editor/service/yaml.service',
   'cedar/template-editor/service/authorized-backend.service',
   'cedar/template-editor/service/client-side-validation.service',
   'cedar/template-editor/service/data-manipulation.service',
@@ -43,6 +44,7 @@ define([
   'cedar/template-editor/service/cee-dirty-tracker.service'
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
+    'cedar.templateEditor.service.yamlService',
     'cedar.templateEditor.service.authorizedBackendService',
     'cedar.templateEditor.service.clientSideValidationService',
     'cedar.templateEditor.service.dataManipulationService',
