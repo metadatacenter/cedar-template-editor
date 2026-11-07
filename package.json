@@ -52,7 +52,7 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261106.gc995b81116d2.t1722",
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261106.5294fab4",
     "cedar-embeddable-editor": "2.0.32",
     "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.28-dev.20261106.g5b1a8b2b1812.t1722"
   }
