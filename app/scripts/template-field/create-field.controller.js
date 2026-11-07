@@ -2,12 +2,8 @@
 
 define([
   'angular',
-  'CedarModelTypescriptLibrary',
-], function (angular, CedarModelTypescriptLibrary) {
+], function (angular) {
   angular.module('cedar.templateEditor.templateField.createFieldController', [])
-      .factory('CedarModelTypescriptLibrary', function() {
-        return CedarModelTypescriptLibrary;  // Return the UMD bundle object
-      })
       .controller('CreateFieldController', CreateFieldController);
 
   CreateFieldController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
@@ -15,7 +11,7 @@ define([
                                    "FieldTypeService", "TemplateFieldService", "resourceService", "ValidationService","UIMessageService",
                                    "DataManipulationService", "UIUtilService", "AuthorizedBackendService",
                                    "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser", "InclusionService",
-                                   "CedarModelTypescriptLibrary", "PreviousRouteService"];
+                                   "YamlService", "PreviousRouteService"];
 
 
   function CreateFieldController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
@@ -24,7 +20,7 @@ define([
                                  DataManipulationService,
                                  UIUtilService, AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService,
                                  CONST,CedarUser, InclusionService,
-                                 CedarModelTypescriptLibrary, PreviousRouteService) {
+                                 YamlService, PreviousRouteService) {
 
     // shortcut
     var dms = DataManipulationService;
@@ -61,9 +57,6 @@ define([
 
     $scope.inclusionModalVisible = false;
 
-    let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
-    $scope.fieldReader = jsonReaders.getTemplateFieldReader();
-    $scope.yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
 
     $scope.canEdit = function () {
       if (!$scope.details) {
@@ -438,17 +431,6 @@ define([
     });
 
 
-    $scope.toRDF = function () {
-      var jsonld = require('jsonld');
-      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
-      if (copiedForm) {
-        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
-          $rootScope.jsonToRDF = nquads;
-          return nquads;
-        });
-      }
-    };
-
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
@@ -461,24 +443,23 @@ define([
     };
 
     $scope.writeYaml = function () {
+      var library = YamlService.get();
+      var reader = library.CedarJsonReaders.getStrict().getTemplateFieldReader();
+      var writers = library.CedarYamlWriters.getStrict();
       let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         dms.stripTmps(copiedForm);
         dms.stripClearedConstraints(copiedForm);
       }
-      let jsonTemplateFieldReaderResult = $scope.fieldReader.readFromObject(copiedForm);
-      let fieldWriter = $scope.yamlWriters.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
+      let jsonTemplateFieldReaderResult = reader.readFromObject(copiedForm);
+      let fieldWriter = writers.getFieldWriterForField(jsonTemplateFieldReaderResult.field);
       return fieldWriter.getAsYamlString(jsonTemplateFieldReaderResult.field);
     };
 
     // The YAML writer refuses an artifact it cannot state, such as one whose field the author has
     // just left without a name. The open preview then says why, rather than failing on every digest.
     $scope.getYamlRepresentation = function () {
-      try {
-        return $scope.writeYaml();
-      } catch (error) {
-        return error.message;
-      }
+      return YamlService.preview($scope, $scope.writeYaml);
     };
 
     $scope.cancelField = function () {
@@ -535,7 +516,7 @@ define([
 
     $scope.copyYaml2Clipboard = function () {
       // A write the YAML writer refuses takes the same path as a copy the browser refuses.
-      Promise.resolve().then(() => navigator.clipboard.writeText($scope.writeYaml())).then(function(){
+      Promise.resolve(YamlService.copy($scope.writeYaml)).then(function(){
         UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
         $scope.$apply();
       }).catch((err)=>{

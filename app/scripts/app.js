@@ -20,14 +20,12 @@ define([
 
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap.min',
-  'lib/ng-ckeditor/ng-ckeditor.min',
-  'ckeditor',
+  'cedar/template-editor/form/deferred-ckeditor.directive',
   'jquery',
   'lib/jquery-ui/jquery-ui.min',
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
   'lib/ngprogress/build/ngprogress.min',
-  'jsonld',
   'flow',
 
   // cedar template editor modules
@@ -56,7 +54,7 @@ define([
     'ui.sortable',
     'pascalprecht.translate',
     'angular-toasty',
-    'ngCkeditor',
+    'cedar.templateEditor.deferredCkeditor',
     'ngProgress',
     'flow',
 

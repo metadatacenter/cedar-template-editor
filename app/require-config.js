@@ -20,8 +20,7 @@ require.config({
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld'  : 'bower_components/jsonld/js/jsonld',
-    'ngFlow'  : 'bower_components/ng-flow/dist/ng-flow-standalone',
+    'ngFlow'  : 'bower_components/ng-flow/dist/ng-flow',
     'flow'    : 'bower_components/flow.js/dist/flow',
 
     'CedarValidationPolicy': 'third_party_components/cedar-model-typescript-library/policy.umd',
@@ -48,7 +47,7 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty.min'                                         : ['angular'],
     'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
-    'ngFlow'                                                                             : ['angular'],
+    'ngFlow'                                                                             : ['angular', 'flow'],
     'flow'                                                                               : ['angular'],
     'moment'                                                                             : {
       'exports': 'moment'

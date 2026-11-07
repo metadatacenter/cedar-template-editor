@@ -22,7 +22,7 @@ module.exports = function (config) {
 
       // flow
       'bower_components/flow.js/dist/flow.js',
-      'bower_components/ng-flow/dist/ng-flow-standalone.js',
+      'bower_components/ng-flow/dist/ng-flow.js',
 
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',

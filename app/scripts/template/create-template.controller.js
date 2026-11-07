@@ -2,7 +2,6 @@
 
 define([
   'angular',
-  'CedarModelTypescriptLibrary',
     ], function (angular) {
       angular.module('cedar.templateEditor.template.createTemplateController', [])
           .controller('CreateTemplateController', CreateTemplateController);
@@ -15,7 +14,7 @@ define([
                                           "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST", "CedarUser",
-                                          "CedarModelTypescriptLibrary", "PreviousRouteService"];
+                                          "YamlService", "PreviousRouteService"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         HeaderService, StagingService, DataTemplateService,
@@ -24,7 +23,7 @@ define([
                                         controlledTermDataService, StringUtilsService,
                                         DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST, CedarUser,
-                                        CedarModelTypescriptLibrary, PreviousRouteService) {
+                                        YamlService, PreviousRouteService) {
 
         $rootScope.showSearch = false;
 
@@ -51,10 +50,6 @@ define([
 
         $scope.isTemplate = true;
 
-        let jsonReaders = CedarModelTypescriptLibrary.CedarJsonReaders.getStrict();
-        $scope.templateReader = jsonReaders.getTemplateReader();
-        let yamlWriters = CedarModelTypescriptLibrary.CedarYamlWriters.getStrict();
-        $scope.templateWriter = yamlWriters.getTemplateWriter();
 
         $scope.updateTemplateWithInstancesModalVisible = false;
 
@@ -558,7 +553,6 @@ define([
               schemaService.setDescription($scope.form, "");
             }
           }
-          $scope.toRDF();
         });
 
         // create a copy of the form with the _tmp fields stripped out
@@ -573,35 +567,23 @@ define([
         };
 
         $scope.writeYaml = function () {
+          var library = YamlService.get();
+          var reader = library.CedarJsonReaders.getStrict().getTemplateReader();
+          var writers = library.CedarYamlWriters.getStrict();
           let copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
           if (copiedForm) {
             DataManipulationService.stripTmps(copiedForm);
             DataManipulationService.stripClearedConstraints(copiedForm);
             DataManipulationService.updateKeys(copiedForm);
           }
-          let jsonTemplateReaderResult = $scope.templateReader.readFromObject(copiedForm);
-          return $scope.templateWriter.getAsYamlString(jsonTemplateReaderResult.template);
+          let jsonTemplateReaderResult = reader.readFromObject(copiedForm);
+          return writers.getTemplateWriter().getAsYamlString(jsonTemplateReaderResult.template);
         };
 
         // The YAML writer refuses an artifact it cannot state, such as one whose field the author has
         // just left without a name. The open preview then says why, rather than failing on every digest.
         $scope.getYamlRepresentation = function () {
-          try {
-            return $scope.writeYaml();
-          } catch (error) {
-            return error.message;
-          }
-        };
-
-        $scope.toRDF = function () {
-          var jsonld = require('jsonld');
-          var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
-          if (copiedForm) {
-            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
-              $rootScope.jsonToRDF = nquads;
-              return nquads;
-            });
-          }
+          return YamlService.preview($scope, $scope.writeYaml);
         };
 
         // cancel the form and go back to the current folder
@@ -730,7 +712,7 @@ define([
 
         $scope.copyYaml2Clipboard = function () {
           // A write the YAML writer refuses takes the same path as a copy the browser refuses.
-          Promise.resolve().then(() => navigator.clipboard.writeText($scope.writeYaml())).then(function(){
+          Promise.resolve(YamlService.copy($scope.writeYaml)).then(function(){
             UIMessageService.flashSuccess('METADATAEDITOR.YamlCopied', {"title": "METADATAEDITOR.YamlCopied"}, 'GENERIC.Copied');
             $scope.$apply();
           }).catch((err)=>{
