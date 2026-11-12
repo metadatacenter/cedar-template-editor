@@ -9,7 +9,6 @@ define(['app', 'angular'], function (app) {
     var $controller;
     var $httpBackend;
     var $templateCache;
-    var $timeout;
     var CedarUser;
     var appData = applicationData.getConfig();
     var cedarUser = cedarUserData.getConfig(appData);
@@ -68,7 +67,7 @@ define(['app', 'angular'], function (app) {
     });
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
                   _StagingService_, _DataManipulationService_, _DataUtilService_, _UIUtilService_,
                   _TemplateElementService_,_UrlService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
@@ -76,7 +75,6 @@ define(['app', 'angular'], function (app) {
           $controller = _$controller_;
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
-          $timeout = _$timeout_;
 
           StagingService = _StagingService_;
           DataManipulationService = _DataManipulationService_;
@@ -261,70 +259,6 @@ define(['app', 'angular'], function (app) {
 
         });
 
-        // TODO not using debounce to handle new property names
-        xit("should accept and retain new property value ", function () {
-          var value = 'some text';
-          var key = 'some text';
-
-          // should have an element-name-label
-          var elm = compiledDirective[0];
-          var name = elm.querySelector('p.element-name-label input');
-          var nameElm = angular.element(name);
-          nameElm.triggerHandler('click');
-          nameElm.val(value);
-          nameElm.triggerHandler('change');
-          // to flush the debounce
-          $timeout.flush();
-
-          // check an object's value for a key
-          function hasValue(obj, key, value) {
-            return obj.hasOwnProperty(key) && obj[key] === value;
-          }
-
-          // does it have the new value in the property labels?
-          var test = [];
-          test.push($cedarTemplateElementScope.parentElement["_ui"]["propertyLabels"]);
-
-          expect(test.some(function (propertyLabels) {
-            return hasValue(propertyLabels, key, value);
-          })).toEqual(true);
-        });
-
-        xit("should allow cardinality to be set to multiple and default is 1..N", function () {
-
-          // first just set this element multiple
-          var elm = compiledDirective[0];
-          var multiple = elm.querySelector('.detail-options');
-          var multipleElm = angular.element(multiple);
-          multipleElm.triggerHandler('click');
-
-          // make sure it is not multi-instance at first
-          var rangeBefore = elm.querySelector('.multiple-instance-cardinality.ng-hide');
-          var noActiveBefore = elm.querySelector('.d-option.clear-value.active');
-          var yesActiveBefore = elm.querySelector('.d-option.set-value.active');
-          expect(noActiveBefore == null).toBe(false);
-          expect(yesActiveBefore == null).toBe(true);
-
-          // now turn on multiple
-          var yesOption = elm.querySelector('#cardinality-options .set-value');
-          var yesElm = angular.element(yesOption);
-          yesElm.triggerHandler('click');
-
-          // make sure yes and no are correct before and after turning on cardinality
-          var noActiveAfter = elm.querySelector('.d-option.clear-value.active');
-          var yesActiveAfter = elm.querySelector('.d-option.set-value.active');
-          expect(noActiveAfter == null).toBe(true);
-          expect(yesActiveAfter == null).toBe(false);
-          var rangeAfter = elm.querySelector('.multiple-instance-cardinality.ng-hide');
-          expect(rangeBefore != null).toBe(true);
-          expect(rangeAfter == null).toBe(true);
-
-          // make sure the range is 1..N by default
-          var range = elm.querySelector('span.multiple-instance-cardinality');
-          expect(range.innerHTML.trim() == '1 .. N').toBe(true);
-
-        });
-
         it("should allow cardinality to be set to 0..N", function () {
 
           // first just set this element multiple
@@ -355,29 +289,6 @@ define(['app', 'angular'], function (app) {
           yesElm.triggerHandler('click');
 
 
-        });
-
-        xit("should delete an element", function () {
-
-          var elm = compiledDirective[0];
-          var name = elm.querySelector('p.element-name-label input');
-          expect(name != null).toBe(true);
-          var trashElm = angular.element(elm.querySelector('div.trash'));
-          trashElm.on('click', function (e) {
-            $cedarTemplateElementScope.$apply(function () {
-
-              // make sure the parent has removed the child
-              expect(DataManipulationService.removeChild($cedarTemplateElementScope.parentElement,
-                      $cedarTemplateElementScope.element) == null).toBe(true);
-
-              // TODO doesn't update dom to show the deleted element
-              // var nameAfter = elm.querySelector('p.element-name-label input');
-              // expect(nameAfter == null).toBe(true);
-            });
-
-
-          });
-          trashElm.triggerHandler('click');
         });
 
 
