@@ -40,7 +40,6 @@ jobs:
 
       - name: Run the unit suite
         env:
-          CHROME_BIN: /usr/bin/google-chrome
           CEDAR_FRONTEND_BEHAVIOR: develop
           CEDAR_FRONTEND_TARGET: local
           CEDAR_FRONTEND_local_UI_HOST: metadatacenter.orgx

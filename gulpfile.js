@@ -65,8 +65,12 @@ gulp.task('copy:tokens', function () {
       .pipe(gulp.dest('app/third_party_components/cedar-design-tokens/'));
 });
 
-gulp.task('copy:policy', function () {
-  return gulp.src('node_modules/cedar-model-typescript-library/policy.umd.js')
+// The editor loads the validation policy at startup and the full model library when an author opens
+// or copies a YAML representation. Both bundles are copied from the pinned model package, so the
+// YAML writer cannot fall behind the dependency.
+gulp.task('copy:model', function () {
+  var model = 'node_modules/cedar-model-typescript-library/';
+  return gulp.src([model + '{policy,index}.umd.js', model + '{policy,index}.umd.js.map', model + 'license.txt'])
       .pipe(gulp.dest('app/third_party_components/cedar-model-typescript-library/'));
 });
 
@@ -257,7 +261,7 @@ if (cedarFrontendBehavior === 'develop') {
   exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'copy:tokens', 'copy:policy', 'replace-url', 'replace-version');
+taskNameList.push('lint', 'less', 'copy:resources', 'copy:cee', 'copy:tokens', 'copy:model', 'replace-url', 'replace-version');
 // Launch tasks
 gulp.task('default', gulp.series(taskNameList, function (done) {
   done();

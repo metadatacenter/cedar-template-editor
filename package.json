@@ -1,13 +1,13 @@
 {
   "name": "cedar-template-editor",
-  "version": "2.9.34",
+  "version": "2.9.35",
   "publishConfig": {
     "registry": "https://nexus.bmir.stanford.edu/repository/npm-cedar/"
   },
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
-    "pretest": "gulp copy:policy",
+    "pretest": "gulp copy:model",
     "test": "node_modules/karma/bin/karma start karma.conf.js --browsers ChromeHeadless --single-run",
     "install": "#npm run webdrivermanager:clean && npm run webdrivermanager:update"
   },
@@ -52,8 +52,8 @@
     "sync-request": "2.2.0"
   },
   "dependencies": {
-    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261108.g80589684d6ec.t2032",
-    "cedar-embeddable-editor": "2.0.33",
-    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.28-dev.20261108.g99988bcea5c1.t2032"
+    "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261112.g471a00ac39ac.t1059",
+    "cedar-embeddable-editor": "2.0.34",
+    "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.29-dev.20261112.g174e1df06def.t1059"
   }
 }
