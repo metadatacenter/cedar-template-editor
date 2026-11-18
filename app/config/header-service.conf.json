@@ -3,9 +3,6 @@
   "stickyThreshold": 0,
   "scrollSelector": ".template-container.scrollable-content",
   "_comment": "Settings for different pages",
-  "DASHBOARD": {
-    "enabled": false
-  },
   "ELEMENT": {
     "enabled": true,
     "scrollLimit": 180

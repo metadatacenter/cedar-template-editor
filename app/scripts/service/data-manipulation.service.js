@@ -1,9 +1,8 @@
 'use strict';
 
 define([
-      'angular',
-      'json!config/data-manipulation-service.conf.json'
-    ], function (angular, config) {
+      'angular'
+    ], function (angular) {
       angular.module('cedar.templateEditor.service.dataManipulationService', [])
           .service('DataManipulationService', DataManipulationService);
 
@@ -14,18 +13,11 @@ define([
                                        $rootScope,
                                        $translate, $sce, CONST) {
 
-        // Base path to generate field ids
-        // TODO: fields will be saved as objects on server, they will get their id there
-        // TODO: need to assign a temporary id, which will be replaced on server side
-        let idBasePath = null;
-
-
         const service = {
           serviceId: "DataManipulationService"
         };
 
         service.init = function () {
-          idBasePath = config.idBasePath;
         };
 
         //

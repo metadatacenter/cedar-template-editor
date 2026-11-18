@@ -13,7 +13,6 @@ define([
 
     let openViewBase = null;
     let dataciteDOIBase = null
-    let downloadBase = null
     let monitoringBase = null
 
     let service = {
@@ -61,7 +60,6 @@ define([
     service.init = function () {
       openViewBase = config.openViewBase;
       dataciteDOIBase = config.dataciteDOIBase;
-      downloadBase = config.downloadBase;
       monitoringBase = config.monitoringFrontend;
     };
 
@@ -142,10 +140,6 @@ define([
 
     service.dataciteInstance = function (id) {
       return dataciteDOIBase + '/' + encodeURIComponent(id);
-    };
-
-    service.downloadResource = function (id) {
-      return downloadBase + '/' + encodeURIComponent(id);
     };
 
     // The CEDAR monitoring dashboard: a separate CEDAR frontend on the same Keycloak realm,

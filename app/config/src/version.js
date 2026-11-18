@@ -5,7 +5,7 @@ window.cedarDevelopmentMode = cedarDevelopmentModeValue;
 window.cedarCacheControl = window.cedarVersion + window.cedarVersionModifier +
     (window.cedarSourceCommit ? "-" + window.cedarSourceCommit.substring(0, 12) : "") +
     (window.cedarDevelopmentMode ? "-dev-" + Date.now() : "");
-window.versioningEnabled = true;
+window.cedarCeeVersion = "cedarCeeVersionValue";
 window.makeOpenEnabled = true;
 window.categoryTreeEnabled = true;
 window.dataciteEnabled = dataciteEnabledValue;

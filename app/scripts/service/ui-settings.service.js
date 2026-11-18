@@ -12,11 +12,7 @@ define([
 
   function UISettingsService(AuthorizedBackendService, UserService, UIMessageService) {
 
-    var settingsMenu = null;
-    var listView = null;
-    var populateAForm = null;
     var resourceTypeFilters = null;
-    var orderDropdown = null;
     var workspaceView = null;
     var selectedResource = null;
 
@@ -25,11 +21,7 @@ define([
     };
 
     service.init = function () {
-      settingsMenu = config.settingsMenu;
-      listView = config.listView;
-      populateAForm = config.populateAForm;
       resourceTypeFilters = config.resourceTypeFilters;
-      orderDropdown = config.orderDropdown;
       workspaceView = config.workspaceView;
     };
 
@@ -49,24 +41,8 @@ define([
       return selectedResource != null;
     };
 
-    service.getSettingsMenuItems = function () {
-      return settingsMenu;
-    };
-
-    service.getListViewHeaders = function () {
-      return listView.headers;
-    };
-
-    service.getPopulateAForm = function () {
-      return populateAForm;
-    };
-
     service.getResourceTypeFilters = function () {
       return resourceTypeFilters;
-    };
-
-    service.getOrderOptions = function () {
-      return orderDropdown;
     };
 
     service.getRequestLimit = function () {
