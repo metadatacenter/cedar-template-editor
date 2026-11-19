@@ -4,11 +4,9 @@
   "terminologyRestAPI": "terminologyServerUrl",
   "schemaRestAPI": "schemaServerUrl",
   "groupRestAPI": "groupServerUrl",
-  "bioontologyRestAPI": "https://data.bioontology.org/",
   "messagingRestAPI": "messagingServerUrl",
   "openViewBase": "openViewBaseUrl",
   "impexRestAPI": "impexServerUrl",
   "monitoringFrontend": "monitoringFrontendUrl",
-  "dataciteDOIBase": "dataciteDOIBaseUrl",
-  "downloadBase": "downloadBaseUrl"
+  "dataciteDOIBase": "dataciteDOIBaseUrl"
 }

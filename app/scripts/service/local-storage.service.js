@@ -1,9 +1,8 @@
 'use strict';
 
 define([
-  'angular',
-  'json!config/data-manipulation-service.conf.json'
-], function (angular, config) {
+  'angular'
+], function (angular) {
   angular.module('cedar.templateEditor.service.localStorageService', [])
       .service('LocalStorageService', LocalStorageService);
 

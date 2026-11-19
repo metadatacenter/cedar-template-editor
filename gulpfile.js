@@ -20,6 +20,7 @@ var gulp = require('gulp'),
         fs = require('fs')
     );
 var execFileSync = require('child_process').execFileSync;
+var readFileSync = require('fs').readFileSync;
 
 /**
  * Create error handling exception.
@@ -101,7 +102,6 @@ gulp.task('html', function (done) {
 // Task to replace service URLs
 gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.' + cedarRestHost))
       .pipe(replace('resourceServerUrl', 'https://resource.' + cedarRestHost))
       .pipe(replace('userServerUrl', 'https://user.' + cedarRestHost))
       .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarRestHost))
@@ -114,7 +114,6 @@ gulp.task('replace-url', function (done) {
       // The monitoring dashboard is a sibling frontend (not a REST service), so it hangs off the UI host.
       .pipe(replace('monitoringFrontendUrl', 'https://monitoring.' + cedarUIHost))
       .pipe(replace('dataciteDOIBaseUrl', 'https://bridging.' + cedarRestHost + '/doi/datacite'))
-      .pipe(replace('downloadBaseUrl', 'https://bridging.' + cedarRestHost + '/resources/download'))
       .pipe(gulp.dest('app/config/'));
   done();
   gulp.src(['app/config/src/embeddable-editor-config.json'])
@@ -124,11 +123,24 @@ gulp.task('replace-url', function (done) {
   done();
 });
 
+// Returns the version of the installed CEE package, whose bundle copy:cee copies into the served
+// tree. The Settings page shows it, because CEE sets its own version global only when it loads, and
+// only the metadata editor loads it. When the package is not installed, the version is empty and the
+// page shows it as unknown.
+function bundledCeeVersion() {
+  try {
+    return JSON.parse(readFileSync('node_modules/cedar-embeddable-editor/package.json', 'utf8')).version || '';
+  } catch (error) {
+    return '';
+  }
+}
+
 // Task to set up version numbers in included js file
 gulp.task('replace-version', function (done) {
   gulp.src(['app/config/src/version.js'])
       .pipe(replace('cedarVersionValue', cedarVersion))
       .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(replace('cedarCeeVersionValue', bundledCeeVersion()))
       .pipe(replace('cedarSourceCommitValue', cedarSourceCommit))
       .pipe(replace('cedarDevelopmentModeValue', cedarFrontendBehavior === 'develop'))
       .pipe(replace('dataciteEnabledValue', dataciteEnabled))
