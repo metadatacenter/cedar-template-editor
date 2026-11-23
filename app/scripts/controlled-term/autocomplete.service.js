@@ -73,25 +73,23 @@ define([
 
     service.setAutocompleteResultsPaging = function (field_id, query, field_type, source_uri, response) {
 
-      // page, pageCount, pageSize, prevPage, nextPage
+      // nextPage is the one-based page to ask for next, or 0 when there is none; pageSize is the limit asked
+      // for. Both are worked out from the paging envelope: the limit and offset the page was served at, and
+      // a next link when there is more to read.
       var cache = service.autocompleteResultsCache[field_id][query];
       cache.paging = cache.paging || {};
       cache.paging[field_type] = cache.paging[field_type] || {};
       cache.paging[field_type][source_uri] = cache.paging[field_type][source_uri] || {
-        page     : 0,
-        pageCount: 1,
-        pageSize : 1,
-        prevPage : 0,
-        nextPage : 0
+        pageSize: 0,
+        nextPage: 0
       };
 
-      if (response.hasOwnProperty('page')) {
+      if (response.request && response.request.limit > 0) {
+        var limit = response.request.limit;
+        var page = Math.floor((response.currentOffset || 0) / limit) + 1;
         cache.paging[field_type][source_uri] = {
-          page     : response.page,
-          pageCount: response.pageCount,
-          pageSize : response.pageSize,
-          prevPage : response.prevPage,
-          nextPage : response.nextPage
+          pageSize: limit,
+          nextPage: response.paging && response.paging.next ? page + 1 : 0
         };
       }
     };

@@ -18,10 +18,11 @@ define([
     let groupService = null;
     let messagingService = null;
     let impexService = null;
-    const paging = function (page, size, defaultPage, defaultSize, pageString, sizeString) {
-      const p = page > 0 ? page : defaultPage;
+    // Callers ask for a one-based page of a given size; the terminology server pages by limit and offset.
+    const paging = function (page, size, defaultSize) {
+      const p = page > 0 ? page : 1;
       const s = size > 0 ? size : defaultSize;
-      return pageString + '=' + p + '&' + sizeString + '=' + s;
+      return 'limit=' + s + '&offset=' + (p - 1) * s;
     };
 
     var service = {
@@ -88,7 +89,7 @@ define([
     };
 
     service.templateInstancesBasedOn = function (query, size) {
-      return this.base() + "/search?is_based_on=" + this.encodeURIComponent(query) + "&page=1&page_size=" + size;
+      return this.base() + "/search?is_based_on=" + this.encodeURIComponent(query) + "&limit=" + size + "&offset=0";
     };
 
     service.getTemplateInstance = function (id) {
@@ -345,19 +346,19 @@ define([
     service.getAllValuesInValueSetByValue = function (valueId, vsCollection, page, size) {
       console.log('getAllValuesInValueSetByValue');
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + this.encodeURIComponent(valueId)
-          + "/all-values?" + paging(page, size, 1, 50, 'page', 'page_size');
+          + "/all-values?" + paging(page, size, 50);
     };
 
     service.getClassChildren = function (acronym, classId, page, size) {
       console.log('getClassChildreen', acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
-          + "/children?" + paging(page, size, 1, 1000, 'page', 'pageSize');
+          + "/children?" + paging(page, size, 500);
     };
 
     service.getClassDescendants = function (acronym, classId, page, size) {
       console.log('getClassDescendants', acronym, classId);
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(classId)
-          + "/descendants?" + paging(page, size, 1, 1000, 'page', 'pageSize');
+          + "/descendants?" + paging(page, size, 500);
     };
 
     service.getPropertyChildren = function (acronym, propertyId) {
@@ -392,17 +393,17 @@ define([
           propertyId) + '/tree';
     };
 
-    // Note: BioPortal does not support returning value set values in alphabetical order, so we use 1000 as the default
-    // page size to avoid having UI issues in CDEs associated to large value sets.
+    // Note: BioPortal does not support returning value set values in alphabetical order, so the data service reads
+    // up to 1000 values, in pages of 500, to avoid having UI issues in CDEs associated to large value sets.
     // See https://github.com/metadatacenter/cedar-project/issues/1110
     service.getValuesInValueSet = function (vsCollection, vsId, page, size) {
       return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + this.encodeURIComponent(vsId)
-          + "/values?" + paging(page, size, 1, 1000, 'page', 'pageSize');
+          + "/values?" + paging(page, size, 500);
     };
 
     service.searchClasses = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query)
-          + "&scope=classes&" + paging(page, size, 1, 1000, 'page', 'page_size');
+          + "&scope=classes&" + paging(page, size, 500);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -411,7 +412,7 @@ define([
 
     service.searchProperties = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/property_search?q=" + this.encodeURIComponent(query)
-          + "&" + paging(page, size, 1, 50, 'page', 'pageSize');
+          + "&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -420,7 +421,7 @@ define([
 
     service.searchClassesAndValues = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query)
-          + "&scope=classes,values&" + paging(page, size, 1, 50, 'page', 'page_size');
+          + "&scope=classes,values&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -429,7 +430,7 @@ define([
 
     service.searchClassesValueSetsAndValues = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
-          "&scope=all&" + paging(page, size, 1, 50, 'page', 'page_size');
+          "&scope=all&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -438,7 +439,7 @@ define([
 
     service.searchValueSetsAndValues = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
-          "&scope=value_sets,values&" + paging(page, size, 1, 50, 'page', 'page_size');
+          "&scope=value_sets,values&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -447,7 +448,7 @@ define([
 
     service.searchValueSets = function (query, sources, size, page) {
       let url = this.controlledTerm() + "/search?q=" + this.encodeURIComponent(query) +
-          "&scope=value_sets&" + paging(page, size, 1, 50, 'page', 'page_size');
+          "&scope=value_sets&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
       }
@@ -457,10 +458,10 @@ define([
     service.autocompleteOntology = function (query, acronym, page, size) {
       let url = this.controlledTerm();
       if (query === '*') {
-        url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 1, 500, 'page', 'page_size');
+        url += "/ontologies/" + acronym + "/classes?" + paging(page, size, 500);
       } else {
         url += "/search?q=" + this.encodeURIComponent(query) +
-            "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 1, 500, 'page', 'page_size');
+            "&scope=classes&sources=" + acronym + "&suggest=true&" + paging(page, size, 500);
       }
       return url;
     };
@@ -470,11 +471,11 @@ define([
 
       if (query === '*') {
         url += '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(subtree_root_id)
-            + '/descendants?' + paging(page, size, 1, 500, 'page', 'page_size');
+            + '/descendants?' + paging(page, size, 500);
       } else {
         url += '/search?q=' + this.encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
             '&subtree_root_id=' + this.encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
-            "&suggest=true&" + paging(page, size, 1, 500, 'page', 'page_size');
+            "&suggest=true&" + paging(page, size, 500);
       }
       return url;
     };

@@ -377,6 +377,33 @@ define([
       );
     }
 
+    // The rows of a listing read a page at a time, up to maxRows. The server serves at most 500 rows a page,
+    // and these listings were read as one page of up to 1000 before it did.
+    function collectPages(request, maxRows) {
+      var rows = [];
+      var read = function (pageRequest) {
+        return AuthorizedBackendService.doCall(
+            pageRequest,
+            function (response) {
+              var page = response.data.collection || [];
+              rows = rows.concat(page);
+              var more = response.data.paging && response.data.paging.next && page.length > 0;
+              if (more && rows.length < maxRows) {
+                var next = angular.extend({}, pageRequest, {
+                  url: pageRequest.url.replace(/([?&]offset=)\d+/, '$1' + (response.data.currentOffset + page.length))
+                });
+                return read(next);
+              }
+              return rows.slice(0, maxRows);
+            },
+            function (err) {
+              return handleServerError(err);
+            }
+        );
+      };
+      return read(request);
+    }
+
     function getAllValuesInValueSetByValue(valueId, vsCollection) {
       init();
       return AuthorizedBackendService.doCall(
@@ -392,28 +419,12 @@ define([
 
     function getClassChildren(acronym, classId) {
       init();
-      return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getClassChildren(acronym, classId),
-          function (response) {
-            return response.data.collection;
-          },
-          function (err) {
-            return handleServerError(err);
-          }
-      );
+      return collectPages(ControlledTermHttpService.getClassChildren(acronym, classId), 1000);
     }
 
     function getClassDescendants(acronym, classId) {
       init();
-      return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getClassDescendants(acronym, classId),
-          function (response) {
-            return response.data.collection;
-          },
-          function (err) {
-            return handleServerError(err);
-          }
-      );
+      return collectPages(ControlledTermHttpService.getClassDescendants(acronym, classId), 1000);
     }
 
     function getPropertyChildren(acronym, propertyId) {
@@ -509,15 +520,7 @@ define([
 
     function getValuesInValueSet(vsCollection, vsId, page, size) {
       init();
-      return AuthorizedBackendService.doCall(
-          ControlledTermHttpService.getValuesInValueSet(vsCollection, vsId, page, size),
-          function (response) {
-            return response.data.collection;
-          },
-          function (err) {
-            return handleServerError(err);
-          }
-      );
+      return collectPages(ControlledTermHttpService.getValuesInValueSet(vsCollection, vsId, page, size), 1000);
     }
 
     function getAcronym(result) {

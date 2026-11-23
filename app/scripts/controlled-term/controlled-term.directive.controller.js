@@ -632,14 +632,9 @@ define([
     $scope.$on(
         'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
         function (event, args) {
-          /**
-           * Get values for the current value set and compute an estimate by multiplying number
-           * of pages by values per page.
-           *
-           * TODO: request terminology API to supply this value more easily.
-           */
-          provisionalClassService.getValueSetValues(args.valueSet['@id']).then(function (valuesResponse) {
-            var numChildren = valuesResponse.pageCount * valuesResponse.pageSize;
+          // The number of values the value set holds, up to the 1000 the data service reads.
+          provisionalClassService.getValueSetValues(args.valueSet['@id']).then(function (values) {
+            var numChildren = (values || []).length;
             var constraint = {
               'numChildren' : numChildren,
               'name'        : args.valueSet.prefLabel,
