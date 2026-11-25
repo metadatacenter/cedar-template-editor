@@ -29,7 +29,7 @@ define([
     };
 
     service.updateOwnUser = function (instance) {
-      return HttpBuilderService.put(UrlService.getUser(CedarUser.getUserId()), angular.toJson(instance));
+      return HttpBuilderService.patch(UrlService.getUser(CedarUser.getUserId()), angular.toJson(instance));
     };
 
     return service;

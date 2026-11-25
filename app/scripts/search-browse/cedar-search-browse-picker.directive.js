@@ -1651,7 +1651,7 @@ define([
               responseType: 'blob'
             };
 
-            $http.post(downloadUrl || '', {}, config).then(function(response) {
+            $http.get(downloadUrl || '', config).then(function(response) {
               var blob = new Blob([response.data], { type: response.headers('Content-Type') });
               var downloadUrl = URL.createObjectURL(blob);
               var a = document.createElement('a');

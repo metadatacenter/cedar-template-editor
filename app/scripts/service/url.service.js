@@ -261,7 +261,7 @@ define([
     };
 
     service.messagingSummary = function () {
-      return this.messagingBase() + '/summary';
+      return this.messagingBase() + '/messages/summary';
     };
 
     service.messagingMessages = function () {

@@ -83,7 +83,7 @@ define(['app', 'angular'], function (app) {
       httpData.init($httpBackend);
       httpData.getFile('resources/i18n/locale-en.json');
       httpData.getFile('img/plus.png');
-      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.getUrl(UrlService.base(), 'messaging', '/messages/summary');
     });
 
 

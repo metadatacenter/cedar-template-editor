@@ -34,7 +34,7 @@ var httpData = {
 
 
       config: {
-        "/summary"                                                                                                                                                                                      : {
+        "/messages/summary"                                                                                                                                                                                    : {
           "total"      : 7,
           "unread"     : 1,
           "notnotified": 0

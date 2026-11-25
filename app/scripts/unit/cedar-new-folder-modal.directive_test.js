@@ -69,7 +69,7 @@ define(['app', 'angular'], function (app) {
       httpData.getFile('config/url-service.conf.json?v=undefined');
       httpData.getFile('img/plus.png');
       // httpData.getFile('img/close_modal.png');
-      httpData.getUrl(UrlService.base(), 'messaging', '/summary');
+      httpData.getUrl(UrlService.base(), 'messaging', '/messages/summary');
     });
 
     describe('In a template,', function () {
