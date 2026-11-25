@@ -35,7 +35,12 @@ define([
     };
 
     service.publishCreateDraftTemplate = function (id, template, newFolderName, sourceEtag) {
-      var request = HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id, newFolderName), sourceJson.stringify(template));
+      // The command takes the definition and its options in one body; an absent option is left out.
+      var body = {template: template};
+      if (newFolderName !== null && newFolderName !== undefined) {
+        body.newFolderName = newFolderName;
+      }
+      var request = HttpBuilderService.post(UrlService.publishCreateDraftTemplate(id), sourceJson.stringify(body));
       request.headers = {'If-Match': sourceEtag || template.$$cedarEtag};
       return request;
     };

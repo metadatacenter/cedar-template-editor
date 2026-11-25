@@ -216,12 +216,8 @@ define([
       return this.resourceBase() + "/command/check-update-template/" + this.encodeURIComponent(id);
     };
 
-    service.publishCreateDraftTemplate = function (id, newFolderName) {
-      var url = this.resourceBase() + "/command/publish-create-draft-template/" + this.encodeURIComponent(id);
-      if (newFolderName !== null && newFolderName !== undefined) {
-        url += "?folder_name=" + this.encodeURIComponent(newFolderName);
-      }
-      return url;
+    service.publishCreateDraftTemplate = function (id) {
+      return this.resourceBase() + "/command/publish-create-draft-template/" + this.encodeURIComponent(id);
     };
 
     service.getUsers = function () {
