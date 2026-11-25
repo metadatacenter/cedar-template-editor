@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@org.metadatacenter/cedar-design-tokens": "0.1.0-dev.20261118.97a9f152",
-    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.38-dev.20261125.7e33e0c",
+    "cedar-embeddable-editor": "npm:@org.metadatacenter/cedar-embeddable-editor@2.0.38-dev.20261125.d63f1a7",
     "cedar-model-typescript-library": "npm:@org.metadatacenter/cedar-model-typescript-library@1.0.30-dev.20261119.026a31c"
   }
 }
