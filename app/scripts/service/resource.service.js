@@ -743,13 +743,27 @@ define([
           );
         }
 
-        function changeOpenState(resource, url, successCallback, errorCallback) {
+        function resourceUrl(resource) {
+          var id = resource['@id'];
+          switch (resource.resourceType) {
+            case CONST.resourceType.FOLDER:
+              return urlService.getFolder(id);
+            case CONST.resourceType.ELEMENT:
+              return urlService.getTemplateElement(id);
+            case CONST.resourceType.FIELD:
+              return urlService.getTemplateField(id);
+            case CONST.resourceType.TEMPLATE:
+              return urlService.getTemplate(id);
+            case CONST.resourceType.INSTANCE:
+              return urlService.getTemplateInstance(id);
+          }
+        }
+
+        function changeOpenState(resource, open, successCallback, errorCallback) {
           // Folder/search rows are summaries and carry no trustworthy graph-record validator.
-          // Read /details immediately before the command, then condition the POST on that ETag.
+          // Read /details immediately before the change, then condition the PATCH on that ETag.
           getResourceDetail(resource, function (current) {
-            var postData = {};
-            postData['@id'] = resource['@id'];
-            var request = httpBuilderService.post(url, postData);
+            var request = httpBuilderService.patch(resourceUrl(resource), {'isOpen': open});
             if (current.$$cedarEtag != null) {
               request.headers = {'If-Match': current.$$cedarEtag};
             }
@@ -764,19 +778,19 @@ define([
         }
 
         function makeArtifactOpen(resource, successCallback, errorCallback) {
-          changeOpenState(resource, urlService.makeArtifactOpen(), successCallback, errorCallback);
+          changeOpenState(resource, true, successCallback, errorCallback);
         }
 
         function makeArtifactNotOpen(resource, successCallback, errorCallback) {
-          changeOpenState(resource, urlService.makeArtifactNotOpen(), successCallback, errorCallback);
+          changeOpenState(resource, false, successCallback, errorCallback);
         }
 
         function makeFolderOpen(resource, successCallback, errorCallback) {
-          changeOpenState(resource, urlService.makeFolderOpen(), successCallback, errorCallback);
+          changeOpenState(resource, true, successCallback, errorCallback);
         }
 
         function makeFolderNotOpen(resource, successCallback, errorCallback) {
-          changeOpenState(resource, urlService.makeFolderNotOpen(), successCallback, errorCallback);
+          changeOpenState(resource, false, successCallback, errorCallback);
         }
 
         function getResourceShare(resource, successCallback, errorCallback) {
