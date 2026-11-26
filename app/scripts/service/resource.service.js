@@ -714,11 +714,10 @@ define([
 
         function publishResource(resource, newVersion, successCallback, errorCallback) {
           var postData = {};
-          postData['@id'] = resource['@id'];
           postData['newVersion'] = newVersion;
-          var url = urlService.publishResource();
+          var url = resourceUrl(resource) + "/publication";
           authorizedBackendService.doCall(
-              httpBuilderService.post(url, postData),
+              httpBuilderService.patch(url, postData),
               function (response) {
                 successCallback(response.data);
               },
@@ -873,8 +872,8 @@ define([
         }
 
         function transferResourceOwnership(resource, newOwnerId, permissions, successCallback, errorCallback) {
-          var payload = {'@id': resource['@id'], newOwnerId: newOwnerId};
-          var request = httpBuilderService.post(urlService.transferResourceOwnership(), payload);
+          var payload = {newOwnerId: newOwnerId};
+          var request = httpBuilderService.patch(resourceUrl(resource) + "/permissions", payload);
           if (permissions.$$cedarEtag != null) {
             request.headers = {'If-Match': permissions.$$cedarEtag};
           }
@@ -1119,16 +1118,14 @@ define([
         }
 
         function renameNode(resource, name, description) {
-          let command = {
-            "@id": resource['@id']
-          };
+          let command = {};
           if (name != null) {
             command["schema:name"] = name;
           }
           if (description != null) {
             command["schema:description"] = description;
           }
-          var request = httpBuilderService.post(urlService.renameNode(), angular.toJson(command));
+          var request = httpBuilderService.patch(resourceUrl(resource), angular.toJson(command));
           if (resource.$$cedarEtag != null) {
             request.headers = {'If-Match': resource.$$cedarEtag};
           }

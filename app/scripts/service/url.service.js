@@ -193,7 +193,7 @@ define([
     };
 
     service.validateResource = function (resourceType) {
-      return this.base() + '/command/validate' + '?resource_type=' + this.encodeURIComponent(resourceType);
+      return this.base() + '/artifact-validations/' + this.encodeURIComponent(resourceType);
     };
 
     service.copyResourceToFolder = function () {
@@ -204,20 +204,12 @@ define([
       return this.resourceBase() + "/command/move-resource-to-folder";
     };
 
-    service.renameNode = function () {
-      return this.resourceBase() + "/command/rename-resource";
-    };
-
-    service.transferResourceOwnership = function () {
-      return this.resourceBase() + "/command/transfer-resource-ownership";
-    };
-
     service.checkUpdateTemplate = function (id) {
-      return this.resourceBase() + "/command/check-update-template/" + this.encodeURIComponent(id);
+      return this.resourceBase() + "/template-update-checks/" + this.encodeURIComponent(id);
     };
 
     service.publishCreateDraftTemplate = function (id) {
-      return this.resourceBase() + "/command/publish-create-draft-template/" + this.encodeURIComponent(id);
+      return this.resourceBase() + "/template-drafts/" + this.encodeURIComponent(id);
     };
 
     service.getUsers = function () {
@@ -407,7 +399,7 @@ define([
     };
 
     service.searchProperties = function (query, sources, size, page) {
-      let url = this.controlledTerm() + "/property_search?q=" + this.encodeURIComponent(query)
+      let url = this.controlledTerm() + "/property-search?q=" + this.encodeURIComponent(query)
           + "&" + paging(page, size, 50);
       if (sources) {
         url += "&sources=" + sources;
@@ -469,16 +461,13 @@ define([
         url += '/ontologies/' + acronym + '/classes/' + this.encodeURIComponent(subtree_root_id)
             + '/descendants?' + paging(page, size, 500);
       } else {
-        url += '/search?q=' + this.encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
-            '&subtree_root_id=' + this.encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
+        url += '/search?q=' + this.encodeURIComponent(query) + '&scope=classes' + '&source_acronym=' + acronym +
+            '&term_iri=' + this.encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
             "&suggest=true&" + paging(page, size, 500);
       }
       return url;
     };
 
-    service.publishResource = function () {
-      return this.resourceBase() + "/command/publish-artifact";
-    };
 
     service.createDraftResource = function () {
       return this.resourceBase() + "/command/create-draft-artifact";
@@ -500,11 +489,11 @@ define([
     }
 
     service.getInclusions = function () {
-      return this.resourceBase() + '/command/inclusions-subgraph-preview';
+      return this.resourceBase() + '/inclusion-subgraphs/query';
     };
 
     service.updateInclusions = function () {
-      return this.resourceBase() + '/command/inclusions-subgraph-update';
+      return this.resourceBase() + '/command/update-inclusions-subgraph';
     };
 
     service.downloadTemplateField = function (templateFieldId, compact) {

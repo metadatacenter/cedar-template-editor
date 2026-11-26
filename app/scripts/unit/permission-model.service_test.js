@@ -25,11 +25,11 @@ define([
       $provide.value('DataManipulationService', {});
       $provide.value('CedarUser', {});
       $provide.value('UrlService', {
-        transferResourceOwnership: function () {
-          return '/command/transfer-resource-ownership';
+        getTemplate: function () {
+          return '/templates/resource-one';
         }
       });
-      $provide.value('CONST', {resourceType: {}});
+      $provide.value('CONST', {resourceType: {TEMPLATE: 'template'}});
     }));
 
     beforeEach(inject(function (_resourceService_) {
@@ -63,11 +63,11 @@ define([
 
     it('uses the dedicated conditional ownership-transfer endpoint', function () {
       service.transferResourceOwnership(
-          {'@id': 'resource-one'}, 'user-two', {$$cedarEtag: '"7"'},
+          {'@id': 'resource-one', resourceType: 'template'}, 'user-two', {$$cedarEtag: '"7"'},
           angular.noop, angular.noop);
-      expect(requests[0].method).toBe('POST');
-      expect(requests[0].url).toBe('/command/transfer-resource-ownership');
-      expect(requests[0].data).toEqual({'@id': 'resource-one', newOwnerId: 'user-two'});
+      expect(requests[0].method).toBe('PATCH');
+      expect(requests[0].url).toBe('/templates/resource-one/permissions');
+      expect(requests[0].data).toEqual({newOwnerId: 'user-two'});
       expect(requests[0].headers['If-Match']).toBe('"7"');
     });
   });
